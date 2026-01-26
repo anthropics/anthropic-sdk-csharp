@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
@@ -6,6 +7,225 @@ using Anthropic.Models.Messages.Batches;
 using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages.Batches;
+
+public class BatchCreateParamsTest : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var parameters = new BatchCreateParams
+        {
+            Requests =
+            [
+                new()
+                {
+                    CustomID = "my-custom-id-1",
+                    Params = new()
+                    {
+                        MaxTokens = 1024,
+                        Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                        Model = Messages::Model.ClaudeSonnet4_5_20250929,
+                        Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        ServiceTier = ServiceTier.Auto,
+                        StopSequences = ["string"],
+                        Stream = true,
+                        System = new(
+                            [
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ]
+                        ),
+                        Temperature = 1,
+                        Thinking = new Messages::ThinkingConfigEnabled(1024),
+                        ToolChoice = new Messages::ToolChoiceAuto()
+                        {
+                            DisableParallelToolUse = true,
+                        },
+                        Tools =
+                        [
+                            new Messages::Tool()
+                            {
+                                InputSchema = new()
+                                {
+                                    Properties = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "location", JsonSerializer.SerializeToElement("bar") },
+                                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                    Required = ["location"],
+                                },
+                                Name = "name",
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                Description = "Get the current weather in a given location",
+                                Type = Messages::Type.Custom,
+                            },
+                        ],
+                        TopK = 5,
+                        TopP = 0.7,
+                    },
+                },
+            ],
+        };
+
+        List<Request> expectedRequests =
+        [
+            new()
+            {
+                CustomID = "my-custom-id-1",
+                Params = new()
+                {
+                    MaxTokens = 1024,
+                    Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                    Model = Messages::Model.ClaudeSonnet4_5_20250929,
+                    Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                    ServiceTier = ServiceTier.Auto,
+                    StopSequences = ["string"],
+                    Stream = true,
+                    System = new(
+                        [
+                            new Messages::TextBlockParam()
+                            {
+                                Text = "Today's date is 2024-06-01.",
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                Citations =
+                                [
+                                    new Messages::CitationCharLocationParam()
+                                    {
+                                        CitedText = "cited_text",
+                                        DocumentIndex = 0,
+                                        DocumentTitle = "x",
+                                        EndCharIndex = 0,
+                                        StartCharIndex = 0,
+                                    },
+                                ],
+                            },
+                        ]
+                    ),
+                    Temperature = 1,
+                    Thinking = new Messages::ThinkingConfigEnabled(1024),
+                    ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+                    Tools =
+                    [
+                        new Messages::Tool()
+                        {
+                            InputSchema = new()
+                            {
+                                Properties = new Dictionary<string, JsonElement>()
+                                {
+                                    { "location", JsonSerializer.SerializeToElement("bar") },
+                                    { "unit", JsonSerializer.SerializeToElement("bar") },
+                                },
+                                Required = ["location"],
+                            },
+                            Name = "name",
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                            Description = "Get the current weather in a given location",
+                            Type = Messages::Type.Custom,
+                        },
+                    ],
+                    TopK = 5,
+                    TopP = 0.7,
+                },
+            },
+        ];
+
+        Assert.Equal(expectedRequests.Count, parameters.Requests.Count);
+        for (int i = 0; i < expectedRequests.Count; i++)
+        {
+            Assert.Equal(expectedRequests[i], parameters.Requests[i]);
+        }
+    }
+
+    [Fact]
+    public void Url_Works()
+    {
+        BatchCreateParams parameters = new()
+        {
+            Requests =
+            [
+                new()
+                {
+                    CustomID = "my-custom-id-1",
+                    Params = new()
+                    {
+                        MaxTokens = 1024,
+                        Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                        Model = Messages::Model.ClaudeSonnet4_5_20250929,
+                        Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        ServiceTier = ServiceTier.Auto,
+                        StopSequences = ["string"],
+                        Stream = true,
+                        System = new(
+                            [
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ]
+                        ),
+                        Temperature = 1,
+                        Thinking = new Messages::ThinkingConfigEnabled(1024),
+                        ToolChoice = new Messages::ToolChoiceAuto()
+                        {
+                            DisableParallelToolUse = true,
+                        },
+                        Tools =
+                        [
+                            new Messages::Tool()
+                            {
+                                InputSchema = new()
+                                {
+                                    Properties = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "location", JsonSerializer.SerializeToElement("bar") },
+                                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                    Required = ["location"],
+                                },
+                                Name = "name",
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                Description = "Get the current weather in a given location",
+                                Type = Messages::Type.Custom,
+                            },
+                        ],
+                        TopK = 5,
+                        TopP = 0.7,
+                    },
+                },
+            ],
+        };
+
+        var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.Equal(new Uri("https://api.anthropic.com/v1/messages/batches"), url);
+    }
+}
 
 public class RequestTest : TestBase
 {
@@ -19,7 +239,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = Messages::Model.ClaudeOpus4_5_20251101,
+                Model = Messages::Model.ClaudeSonnet4_5_20250929,
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
@@ -29,7 +249,7 @@ public class RequestTest : TestBase
                         new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                             Citations =
                             [
                                 new Messages::CitationCharLocationParam()
@@ -61,7 +281,7 @@ public class RequestTest : TestBase
                             Required = ["location"],
                         },
                         Name = "name",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Description = "Get the current weather in a given location",
                         Type = Messages::Type.Custom,
                     },
@@ -76,7 +296,7 @@ public class RequestTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
@@ -86,7 +306,7 @@ public class RequestTest : TestBase
                     new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::CitationCharLocationParam()
@@ -118,7 +338,7 @@ public class RequestTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
                     Type = Messages::Type.Custom,
                 },
@@ -141,7 +361,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = Messages::Model.ClaudeOpus4_5_20251101,
+                Model = Messages::Model.ClaudeSonnet4_5_20250929,
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
@@ -151,7 +371,7 @@ public class RequestTest : TestBase
                         new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                             Citations =
                             [
                                 new Messages::CitationCharLocationParam()
@@ -183,7 +403,7 @@ public class RequestTest : TestBase
                             Required = ["location"],
                         },
                         Name = "name",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Description = "Get the current weather in a given location",
                         Type = Messages::Type.Custom,
                     },
@@ -193,8 +413,8 @@ public class RequestTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Request>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Request>(json, ModelBase.SerializerOptions);
 
         Assert.Equal(model, deserialized);
     }
@@ -209,7 +429,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = Messages::Model.ClaudeOpus4_5_20251101,
+                Model = Messages::Model.ClaudeSonnet4_5_20250929,
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
@@ -219,7 +439,7 @@ public class RequestTest : TestBase
                         new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                             Citations =
                             [
                                 new Messages::CitationCharLocationParam()
@@ -251,7 +471,7 @@ public class RequestTest : TestBase
                             Required = ["location"],
                         },
                         Name = "name",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Description = "Get the current weather in a given location",
                         Type = Messages::Type.Custom,
                     },
@@ -261,8 +481,11 @@ public class RequestTest : TestBase
             },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Request>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Request>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedCustomID = "my-custom-id-1";
@@ -270,7 +493,7 @@ public class RequestTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
@@ -280,7 +503,7 @@ public class RequestTest : TestBase
                     new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::CitationCharLocationParam()
@@ -312,7 +535,7 @@ public class RequestTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
                     Type = Messages::Type.Custom,
                 },
@@ -335,7 +558,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = Messages::Model.ClaudeOpus4_5_20251101,
+                Model = Messages::Model.ClaudeSonnet4_5_20250929,
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
@@ -345,7 +568,7 @@ public class RequestTest : TestBase
                         new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                             Citations =
                             [
                                 new Messages::CitationCharLocationParam()
@@ -377,7 +600,7 @@ public class RequestTest : TestBase
                             Required = ["location"],
                         },
                         Name = "name",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Description = "Get the current weather in a given location",
                         Type = Messages::Type.Custom,
                     },
@@ -400,7 +623,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
@@ -410,7 +633,7 @@ public class ParamsTest : TestBase
                     new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::CitationCharLocationParam()
@@ -442,7 +665,7 @@ public class ParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
                     Type = Messages::Type.Custom,
                 },
@@ -456,7 +679,7 @@ public class ParamsTest : TestBase
         [
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_5_20251101;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeSonnet4_5_20250929;
         Messages::Metadata expectedMetadata = new()
         {
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
@@ -469,7 +692,7 @@ public class ParamsTest : TestBase
                 new Messages::TextBlockParam()
                 {
                     Text = "Today's date is 2024-06-01.",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Citations =
                     [
                         new Messages::CitationCharLocationParam()
@@ -504,7 +727,7 @@ public class ParamsTest : TestBase
                     Required = ["location"],
                 },
                 Name = "name",
-                CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Description = "Get the current weather in a given location",
                 Type = Messages::Type.Custom,
             },
@@ -549,7 +772,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
@@ -559,7 +782,7 @@ public class ParamsTest : TestBase
                     new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::CitationCharLocationParam()
@@ -591,7 +814,7 @@ public class ParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
                     Type = Messages::Type.Custom,
                 },
@@ -600,8 +823,8 @@ public class ParamsTest : TestBase
             TopP = 0.7,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Params>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Params>(json, ModelBase.SerializerOptions);
 
         Assert.Equal(model, deserialized);
     }
@@ -613,7 +836,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
@@ -623,7 +846,7 @@ public class ParamsTest : TestBase
                     new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::CitationCharLocationParam()
@@ -655,7 +878,7 @@ public class ParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
                     Type = Messages::Type.Custom,
                 },
@@ -664,8 +887,8 @@ public class ParamsTest : TestBase
             TopP = 0.7,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Params>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Params>(element, ModelBase.SerializerOptions);
         Assert.NotNull(deserialized);
 
         long expectedMaxTokens = 1024;
@@ -673,7 +896,7 @@ public class ParamsTest : TestBase
         [
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_5_20251101;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeSonnet4_5_20250929;
         Messages::Metadata expectedMetadata = new()
         {
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
@@ -686,7 +909,7 @@ public class ParamsTest : TestBase
                 new Messages::TextBlockParam()
                 {
                     Text = "Today's date is 2024-06-01.",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Citations =
                     [
                         new Messages::CitationCharLocationParam()
@@ -721,7 +944,7 @@ public class ParamsTest : TestBase
                     Required = ["location"],
                 },
                 Name = "name",
-                CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Description = "Get the current weather in a given location",
                 Type = Messages::Type.Custom,
             },
@@ -766,7 +989,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
@@ -776,7 +999,7 @@ public class ParamsTest : TestBase
                     new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::CitationCharLocationParam()
@@ -808,7 +1031,7 @@ public class ParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
                     Type = Messages::Type.Custom,
                 },
@@ -827,7 +1050,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeSonnet4_5_20250929,
         };
 
         Assert.Null(model.Metadata);
@@ -861,7 +1084,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeSonnet4_5_20250929,
         };
 
         model.Validate();
@@ -874,7 +1097,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeSonnet4_5_20250929,
 
             // Null should be interpreted as omitted for these properties
             Metadata = null,
@@ -921,7 +1144,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeSonnet4_5_20250929,
 
             // Null should be interpreted as omitted for these properties
             Metadata = null,
@@ -957,7 +1180,7 @@ public class ServiceTierTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, ServiceTier>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -986,7 +1209,7 @@ public class ServiceTierTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, ServiceTier>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -1004,7 +1227,7 @@ public class ParamsSystemTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        ParamsSystem value = new("string");
+        ParamsSystem value = "string";
         value.Validate();
     }
 
@@ -1016,7 +1239,7 @@ public class ParamsSystemTest : TestBase
                 new Messages::TextBlockParam()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Citations =
                     [
                         new Messages::CitationCharLocationParam()
@@ -1037,9 +1260,12 @@ public class ParamsSystemTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        ParamsSystem value = new("string");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(element);
+        ParamsSystem value = "string";
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -1052,7 +1278,7 @@ public class ParamsSystemTest : TestBase
                 new Messages::TextBlockParam()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Citations =
                     [
                         new Messages::CitationCharLocationParam()
@@ -1067,8 +1293,11 @@ public class ParamsSystemTest : TestBase
                 },
             ]
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

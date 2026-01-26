@@ -19,8 +19,12 @@ public sealed record class BetaMetadata : JsonModel
     /// </summary>
     public string? UserID
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "user_id"); }
-        init { JsonModel.Set(this._rawData, "user_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("user_id");
+        }
+        init { this._rawData.Set("user_id", value); }
     }
 
     /// <inheritdoc/>
@@ -36,14 +40,14 @@ public sealed record class BetaMetadata : JsonModel
 
     public BetaMetadata(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMetadata(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

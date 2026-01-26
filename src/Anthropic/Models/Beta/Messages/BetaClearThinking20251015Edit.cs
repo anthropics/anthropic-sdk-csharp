@@ -16,8 +16,12 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
 {
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -26,7 +30,11 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
     /// </summary>
     public Keep? Keep
     {
-        get { return JsonModel.GetNullableClass<Keep>(this.RawData, "keep"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<Keep>("keep");
+        }
         init
         {
             if (value == null)
@@ -34,7 +42,7 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "keep", value);
+            this._rawData.Set("keep", value);
         }
     }
 
@@ -44,7 +52,7 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"")
+                JsonSerializer.SerializeToElement("clear_thinking_20251015")
             )
         )
         {
@@ -55,7 +63,7 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
 
     public BetaClearThinking20251015Edit()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
+        this.Type = JsonSerializer.SerializeToElement("clear_thinking_20251015");
     }
 
     public BetaClearThinking20251015Edit(
@@ -65,16 +73,16 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
 
     public BetaClearThinking20251015Edit(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
+        this.Type = JsonSerializer.SerializeToElement("clear_thinking_20251015");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaClearThinking20251015Edit(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -100,7 +108,7 @@ class BetaClearThinking20251015EditFromRaw : IFromRawJson<BetaClearThinking20251
 /// will have their thinking blocks removed.
 /// </summary>
 [JsonConverter(typeof(KeepConverter))]
-public record class Keep
+public record class Keep : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -108,7 +116,13 @@ public record class Keep
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement? Type
@@ -305,7 +319,7 @@ public record class Keep
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -327,6 +341,9 @@ public record class Keep
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class KeepConverter : JsonConverter<Keep>
@@ -389,17 +406,17 @@ sealed class KeepConverter : JsonConverter<Keep>
     }
 }
 
-[JsonConverter(typeof(Converter))]
+[JsonConverter(typeof(UnionMember2Converter))]
 public record class UnionMember2
 {
     public JsonElement Element { get; private init; }
 
     public UnionMember2()
     {
-        Element = JsonSerializer.Deserialize<JsonElement>("\"all\"");
+        Element = JsonSerializer.SerializeToElement("all");
     }
 
-    UnionMember2(JsonElement element)
+    internal UnionMember2(JsonElement element)
     {
         Element = element;
     }
@@ -435,25 +452,25 @@ public record class UnionMember2
 
         return JsonElement.DeepEquals(this.Element, other.Element);
     }
+}
 
-    class Converter : JsonConverter<UnionMember2>
+class UnionMember2Converter : JsonConverter<UnionMember2>
+{
+    public override UnionMember2? Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
     {
-        public override UnionMember2? Read(
-            ref Utf8JsonReader reader,
-            System::Type typeToConvert,
-            JsonSerializerOptions options
-        )
-        {
-            return new(JsonSerializer.Deserialize<JsonElement>(ref reader, options));
-        }
+        return new(JsonSerializer.Deserialize<JsonElement>(ref reader, options));
+    }
 
-        public override void Write(
-            Utf8JsonWriter writer,
-            UnionMember2 value,
-            JsonSerializerOptions options
-        )
-        {
-            JsonSerializer.Serialize(writer, value.Element, options);
-        }
+    public override void Write(
+        Utf8JsonWriter writer,
+        UnionMember2 value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(writer, value.Element, options);
     }
 }

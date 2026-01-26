@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models;
 
 namespace Anthropic.Tests.Models;
@@ -11,7 +12,7 @@ public class NotFoundErrorTest : TestBase
         var model = new NotFoundError { Message = "message" };
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("not_found_error");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -22,8 +23,11 @@ public class NotFoundErrorTest : TestBase
     {
         var model = new NotFoundError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<NotFoundError>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<NotFoundError>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -33,12 +37,15 @@ public class NotFoundErrorTest : TestBase
     {
         var model = new NotFoundError { Message = "message" };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<NotFoundError>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<NotFoundError>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("not_found_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

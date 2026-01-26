@@ -15,14 +15,22 @@ public sealed record class MessageParam : JsonModel
 {
     public required MessageParamContent Content
     {
-        get { return JsonModel.GetNotNullClass<MessageParamContent>(this.RawData, "content"); }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<MessageParamContent>("content");
+        }
+        init { this._rawData.Set("content", value); }
     }
 
     public required ApiEnum<string, Role> Role
     {
-        get { return JsonModel.GetNotNullClass<ApiEnum<string, Role>>(this.RawData, "role"); }
-        init { JsonModel.Set(this._rawData, "role", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, Role>>("role");
+        }
+        init { this._rawData.Set("role", value); }
     }
 
     /// <inheritdoc/>
@@ -39,14 +47,14 @@ public sealed record class MessageParam : JsonModel
 
     public MessageParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     MessageParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -65,7 +73,7 @@ class MessageParamFromRaw : IFromRawJson<MessageParam>
 }
 
 [JsonConverter(typeof(MessageParamContentConverter))]
-public record class MessageParamContent
+public record class MessageParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -73,7 +81,13 @@ public record class MessageParamContent
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public MessageParamContent(string value, JsonElement? element = null)
@@ -167,7 +181,7 @@ public record class MessageParamContent
             case string value:
                 @string(value);
                 break;
-            case List<ContentBlockParam> value:
+            case IReadOnlyList<ContentBlockParam> value:
                 contentBlockParams(value);
                 break;
             default:
@@ -228,7 +242,7 @@ public record class MessageParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -247,6 +261,9 @@ public record class MessageParamContent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class MessageParamContentConverter : JsonConverter<MessageParamContent>

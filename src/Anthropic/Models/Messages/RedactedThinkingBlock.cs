@@ -13,14 +13,22 @@ public sealed record class RedactedThinkingBlock : JsonModel
 {
     public required string Data
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
-        init { JsonModel.Set(this._rawData, "data", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("data");
+        }
+        init { this._rawData.Set("data", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -30,7 +38,7 @@ public sealed record class RedactedThinkingBlock : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"")
+                JsonSerializer.SerializeToElement("redacted_thinking")
             )
         )
         {
@@ -40,7 +48,7 @@ public sealed record class RedactedThinkingBlock : JsonModel
 
     public RedactedThinkingBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("redacted_thinking");
     }
 
     public RedactedThinkingBlock(RedactedThinkingBlock redactedThinkingBlock)
@@ -48,16 +56,16 @@ public sealed record class RedactedThinkingBlock : JsonModel
 
     public RedactedThinkingBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("redacted_thinking");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     RedactedThinkingBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

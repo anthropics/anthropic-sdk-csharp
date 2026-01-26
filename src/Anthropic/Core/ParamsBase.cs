@@ -31,14 +31,14 @@ public abstract record class ParamsBase
         };
     }
 
-    private protected FreezableDictionary<string, JsonElement> _rawQueryData = [];
+    private protected JsonDictionary _rawQueryData = new();
 
-    private protected FreezableDictionary<string, JsonElement> _rawHeaderData = [];
+    private protected JsonDictionary _rawHeaderData = new();
 
     protected ParamsBase(ParamsBase paramsBase)
     {
-        this._rawHeaderData = [.. paramsBase._rawHeaderData];
-        this._rawQueryData = [.. paramsBase._rawQueryData];
+        this._rawHeaderData = new(paramsBase._rawHeaderData);
+        this._rawQueryData = new(paramsBase._rawQueryData);
     }
 
     public IReadOnlyDictionary<string, JsonElement> RawQueryData
@@ -197,9 +197,9 @@ public abstract record class ParamsBase
             request.Headers.Add(header.Key, header.Value);
         }
 
-        if (options.APIKey != null)
+        if (options.ApiKey != null)
         {
-            request.Headers.Add("X-Api-Key", options.APIKey);
+            request.Headers.Add("X-Api-Key", options.ApiKey);
         }
         if (options.AuthToken != null)
         {

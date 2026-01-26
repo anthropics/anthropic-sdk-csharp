@@ -242,15 +242,9 @@ public static class AnthropicClientExtensions
                         finishReason = ToFinishReason(rawMessageDelta.Delta.StopReason);
                         if (rawMessageDelta.Usage is { } deltaUsage)
                         {
-                            UsageDetails current = ToUsageDetails(deltaUsage);
-                            if (usageDetails is null)
-                            {
-                                usageDetails = current;
-                            }
-                            else
-                            {
-                                usageDetails.Add(current);
-                            }
+                            // https://platform.claude.com/docs/en/build-with-claude/streaming
+                            // "The token counts shown in the usage field of the message_delta event are cumulative."
+                            usageDetails = ToUsageDetails(deltaUsage);
                         }
                         break;
 
@@ -306,7 +300,7 @@ public static class AnthropicClientExtensions
                                 );
                                 break;
 
-                            case InputJSONDelta inputDelta:
+                            case InputJsonDelta inputDelta:
                                 if (
                                     streamingFunctions is not null
                                     && streamingFunctions.TryGetValue(
@@ -315,7 +309,7 @@ public static class AnthropicClientExtensions
                                     )
                                 )
                                 {
-                                    functionData.Arguments.Append(inputDelta.PartialJSON);
+                                    functionData.Arguments.Append(inputDelta.PartialJson);
                                 }
                                 break;
 
@@ -481,7 +475,7 @@ public static class AnthropicClientExtensions
                                 new DocumentBlockParam()
                                 {
                                     Source = new(
-                                        new Base64PDFSource() { Data = dc.Base64Data.ToString() }
+                                        new Base64PdfSource() { Data = dc.Base64Data.ToString() }
                                     ),
                                 }
                             );
@@ -505,7 +499,7 @@ public static class AnthropicClientExtensions
                             contents.Add(
                                 new ImageBlockParam()
                                 {
-                                    Source = new(new URLImageSource() { URL = uc.Uri.AbsoluteUri }),
+                                    Source = new(new UrlImageSource() { Url = uc.Uri.AbsoluteUri }),
                                 }
                             );
                             break;
@@ -519,7 +513,7 @@ public static class AnthropicClientExtensions
                             contents.Add(
                                 new DocumentBlockParam()
                                 {
-                                    Source = new(new URLPDFSource() { URL = uc.Uri.AbsoluteUri }),
+                                    Source = new(new UrlPdfSource() { Url = uc.Uri.AbsoluteUri }),
                                 }
                             );
                             break;
@@ -607,7 +601,7 @@ public static class AnthropicClientExtensions
                                                 new DocumentBlockParam()
                                                 {
                                                     Source = new(
-                                                        new Base64PDFSource()
+                                                        new Base64PdfSource()
                                                         {
                                                             Data = dc.Base64Data.ToString(),
                                                         }
@@ -641,9 +635,9 @@ public static class AnthropicClientExtensions
                                                     new ImageBlockParam()
                                                     {
                                                         Source = new(
-                                                            new URLImageSource()
+                                                            new UrlImageSource()
                                                             {
-                                                                URL = uc.Uri.AbsoluteUri,
+                                                                Url = uc.Uri.AbsoluteUri,
                                                             }
                                                         ),
                                                     }
@@ -658,9 +652,9 @@ public static class AnthropicClientExtensions
                                                 new DocumentBlockParam()
                                                 {
                                                     Source = new(
-                                                        new URLPDFSource()
+                                                        new UrlPdfSource()
                                                         {
-                                                            URL = uc.Uri.AbsoluteUri,
+                                                            Url = uc.Uri.AbsoluteUri,
                                                         }
                                                     ),
                                                 }
@@ -845,7 +839,11 @@ public static class AnthropicClientExtensions
                                     {
                                         Name = af.Name,
                                         Description = af.Description,
-                                        InputSchema = new(properties) { Required = required },
+                                        InputSchema = new InputSchema()
+                                        {
+                                            Properties = properties,
+                                            Required = required,
+                                        },
                                     }
                                 );
                                 break;
@@ -1044,7 +1042,7 @@ public static class AnthropicClientExtensions
             if (citation.TryPickCitationsWebSearchResultLocation(out var webSearchLocation))
             {
                 annotation.Url = Uri.TryCreate(
-                    webSearchLocation.URL,
+                    webSearchLocation.Url,
                     UriKind.Absolute,
                     out Uri? url
                 )

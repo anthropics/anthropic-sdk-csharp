@@ -16,38 +16,50 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
 {
     public required string ID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
-        init { JsonModel.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     public required IReadOnlyDictionary<string, JsonElement> Input
     {
         get
         {
-            return JsonModel.GetNotNullClass<Dictionary<string, JsonElement>>(
-                this.RawData,
-                "input"
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<FrozenDictionary<string, JsonElement>>("input");
+        }
+        init
+        {
+            this._rawData.Set<FrozenDictionary<string, JsonElement>>(
+                "input",
+                FrozenDictionary.ToFrozenDictionary(value)
             );
         }
-        init { JsonModel.Set(this._rawData, "input", value); }
     }
 
     public required ApiEnum<string, BetaServerToolUseBlockParamName> Name
     {
         get
         {
-            return JsonModel.GetNotNullClass<ApiEnum<string, BetaServerToolUseBlockParamName>>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, BetaServerToolUseBlockParamName>>(
                 "name"
             );
         }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -57,12 +69,10 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -72,10 +82,8 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaServerToolUseBlockParamCaller>(
-                this.RawData,
-                "caller"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaServerToolUseBlockParamCaller>("caller");
         }
         init
         {
@@ -84,7 +92,7 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "caller", value);
+            this._rawData.Set("caller", value);
         }
     }
 
@@ -95,10 +103,7 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
         _ = this.Input;
         this.Name.Validate();
         if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"")
-            )
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("server_tool_use"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -109,7 +114,7 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
 
     public BetaServerToolUseBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        this.Type = JsonSerializer.SerializeToElement("server_tool_use");
     }
 
     public BetaServerToolUseBlockParam(BetaServerToolUseBlockParam betaServerToolUseBlockParam)
@@ -117,16 +122,16 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
 
     public BetaServerToolUseBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        this.Type = JsonSerializer.SerializeToElement("server_tool_use");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaServerToolUseBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -212,7 +217,7 @@ sealed class BetaServerToolUseBlockParamNameConverter
 /// Tool invocation directly from the model.
 /// </summary>
 [JsonConverter(typeof(BetaServerToolUseBlockParamCallerConverter))]
-public record class BetaServerToolUseBlockParamCaller
+public record class BetaServerToolUseBlockParamCaller : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -220,7 +225,13 @@ public record class BetaServerToolUseBlockParamCaller
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -382,7 +393,7 @@ public record class BetaServerToolUseBlockParamCaller
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -405,6 +416,9 @@ public record class BetaServerToolUseBlockParamCaller
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaServerToolUseBlockParamCallerConverter

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -11,9 +12,7 @@ public class BetaCodeExecutionOutputBlockParamTest : TestBase
         var model = new BetaCodeExecutionOutputBlockParam { FileID = "file_id" };
 
         string expectedFileID = "file_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_output\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_output");
 
         Assert.Equal(expectedFileID, model.FileID);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -24,8 +23,11 @@ public class BetaCodeExecutionOutputBlockParamTest : TestBase
     {
         var model = new BetaCodeExecutionOutputBlockParam { FileID = "file_id" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionOutputBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionOutputBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -35,14 +37,15 @@ public class BetaCodeExecutionOutputBlockParamTest : TestBase
     {
         var model = new BetaCodeExecutionOutputBlockParam { FileID = "file_id" };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionOutputBlockParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionOutputBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedFileID = "file_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_output\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_output");
 
         Assert.Equal(expectedFileID, deserialized.FileID);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

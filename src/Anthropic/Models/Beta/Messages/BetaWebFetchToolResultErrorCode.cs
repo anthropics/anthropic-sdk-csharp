@@ -9,9 +9,9 @@ namespace Anthropic.Models.Beta.Messages;
 public enum BetaWebFetchToolResultErrorCode
 {
     InvalidToolInput,
-    URLTooLong,
-    URLNotAllowed,
-    URLNotAccessible,
+    UrlTooLong,
+    UrlNotAllowed,
+    UrlNotAccessible,
     UnsupportedContentType,
     TooManyRequests,
     MaxUsesExceeded,
@@ -30,9 +30,9 @@ sealed class BetaWebFetchToolResultErrorCodeConverter
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
             "invalid_tool_input" => BetaWebFetchToolResultErrorCode.InvalidToolInput,
-            "url_too_long" => BetaWebFetchToolResultErrorCode.URLTooLong,
-            "url_not_allowed" => BetaWebFetchToolResultErrorCode.URLNotAllowed,
-            "url_not_accessible" => BetaWebFetchToolResultErrorCode.URLNotAccessible,
+            "url_too_long" => BetaWebFetchToolResultErrorCode.UrlTooLong,
+            "url_not_allowed" => BetaWebFetchToolResultErrorCode.UrlNotAllowed,
+            "url_not_accessible" => BetaWebFetchToolResultErrorCode.UrlNotAccessible,
             "unsupported_content_type" => BetaWebFetchToolResultErrorCode.UnsupportedContentType,
             "too_many_requests" => BetaWebFetchToolResultErrorCode.TooManyRequests,
             "max_uses_exceeded" => BetaWebFetchToolResultErrorCode.MaxUsesExceeded,
@@ -52,9 +52,9 @@ sealed class BetaWebFetchToolResultErrorCodeConverter
             value switch
             {
                 BetaWebFetchToolResultErrorCode.InvalidToolInput => "invalid_tool_input",
-                BetaWebFetchToolResultErrorCode.URLTooLong => "url_too_long",
-                BetaWebFetchToolResultErrorCode.URLNotAllowed => "url_not_allowed",
-                BetaWebFetchToolResultErrorCode.URLNotAccessible => "url_not_accessible",
+                BetaWebFetchToolResultErrorCode.UrlTooLong => "url_too_long",
+                BetaWebFetchToolResultErrorCode.UrlNotAllowed => "url_not_allowed",
+                BetaWebFetchToolResultErrorCode.UrlNotAccessible => "url_not_accessible",
                 BetaWebFetchToolResultErrorCode.UnsupportedContentType =>
                     "unsupported_content_type",
                 BetaWebFetchToolResultErrorCode.TooManyRequests => "too_many_requests",

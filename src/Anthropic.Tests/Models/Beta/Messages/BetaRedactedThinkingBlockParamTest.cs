@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -11,7 +12,7 @@ public class BetaRedactedThinkingBlockParamTest : TestBase
         var model = new BetaRedactedThinkingBlockParam { Data = "data" };
 
         string expectedData = "data";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("redacted_thinking");
 
         Assert.Equal(expectedData, model.Data);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -22,8 +23,11 @@ public class BetaRedactedThinkingBlockParamTest : TestBase
     {
         var model = new BetaRedactedThinkingBlockParam { Data = "data" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaRedactedThinkingBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRedactedThinkingBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -33,12 +37,15 @@ public class BetaRedactedThinkingBlockParamTest : TestBase
     {
         var model = new BetaRedactedThinkingBlockParam { Data = "data" };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaRedactedThinkingBlockParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRedactedThinkingBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedData = "data";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("redacted_thinking");
 
         Assert.Equal(expectedData, deserialized.Data);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

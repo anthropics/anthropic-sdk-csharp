@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -9,234 +10,214 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void TextValidationWorks()
     {
-        BetaContentBlock value = new(
-            new BetaTextBlock()
-            {
-                Citations =
-                [
-                    new BetaCitationCharLocation()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "document_title",
-                        EndCharIndex = 0,
-                        FileID = "file_id",
-                        StartCharIndex = 0,
-                    },
-                ],
-                Text = "text",
-            }
-        );
+        BetaContentBlock value = new BetaTextBlock()
+        {
+            Citations =
+            [
+                new BetaCitationCharLocation()
+                {
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "document_title",
+                    EndCharIndex = 0,
+                    FileID = "file_id",
+                    StartCharIndex = 0,
+                },
+            ],
+            Text = "text",
+        };
         value.Validate();
     }
 
     [Fact]
     public void ThinkingValidationWorks()
     {
-        BetaContentBlock value = new(
-            new BetaThinkingBlock() { Signature = "signature", Thinking = "thinking" }
-        );
+        BetaContentBlock value = new BetaThinkingBlock()
+        {
+            Signature = "signature",
+            Thinking = "thinking",
+        };
         value.Validate();
     }
 
     [Fact]
     public void RedactedThinkingValidationWorks()
     {
-        BetaContentBlock value = new(new BetaRedactedThinkingBlock("data"));
+        BetaContentBlock value = new BetaRedactedThinkingBlock("data");
         value.Validate();
     }
 
     [Fact]
     public void ToolUseValidationWorks()
     {
-        BetaContentBlock value = new(
-            new BetaToolUseBlock()
+        BetaContentBlock value = new BetaToolUseBlock()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
             {
-                ID = "id",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-                Name = "x",
-                Caller = new BetaDirectCaller(),
-            }
-        );
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+            Caller = new BetaDirectCaller(),
+        };
         value.Validate();
     }
 
     [Fact]
     public void ServerToolUseValidationWorks()
     {
-        BetaContentBlock value = new(
-            new BetaServerToolUseBlock()
+        BetaContentBlock value = new BetaServerToolUseBlock()
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Caller = new BetaDirectCaller(),
+            Input = new Dictionary<string, JsonElement>()
             {
-                ID = "srvtoolu_SQfNkl1n_JR_",
-                Caller = new BetaDirectCaller(),
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-                Name = Name.WebSearch,
-            }
-        );
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = Name.WebSearch,
+        };
         value.Validate();
     }
 
     [Fact]
     public void WebSearchToolResultValidationWorks()
     {
-        BetaContentBlock value = new(
-            new BetaWebSearchToolResultBlock()
-            {
-                Content = new BetaWebSearchToolResultError(
-                    BetaWebSearchToolResultErrorCode.InvalidToolInput
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
-        );
+        BetaContentBlock value = new BetaWebSearchToolResultBlock()
+        {
+            Content = new BetaWebSearchToolResultError(
+                BetaWebSearchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
         value.Validate();
     }
 
     [Fact]
     public void WebFetchToolResultValidationWorks()
     {
-        BetaContentBlock value = new(
-            new BetaWebFetchToolResultBlock()
-            {
-                Content = new BetaWebFetchToolResultErrorBlock(
-                    BetaWebFetchToolResultErrorCode.InvalidToolInput
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
-        );
+        BetaContentBlock value = new BetaWebFetchToolResultBlock()
+        {
+            Content = new BetaWebFetchToolResultErrorBlock(
+                BetaWebFetchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
         value.Validate();
     }
 
     [Fact]
     public void CodeExecutionToolResultValidationWorks()
     {
-        BetaContentBlock value = new(
-            new BetaCodeExecutionToolResultBlock()
-            {
-                Content = new BetaCodeExecutionToolResultError(
-                    BetaCodeExecutionToolResultErrorCode.InvalidToolInput
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
-        );
+        BetaContentBlock value = new BetaCodeExecutionToolResultBlock()
+        {
+            Content = new BetaCodeExecutionToolResultError(
+                BetaCodeExecutionToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
         value.Validate();
     }
 
     [Fact]
     public void BashCodeExecutionToolResultValidationWorks()
     {
-        BetaContentBlock value = new(
-            new BetaBashCodeExecutionToolResultBlock()
-            {
-                Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
-        );
+        BetaContentBlock value = new BetaBashCodeExecutionToolResultBlock()
+        {
+            Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
         value.Validate();
     }
 
     [Fact]
     public void TextEditorCodeExecutionToolResultValidationWorks()
     {
-        BetaContentBlock value = new(
-            new BetaTextEditorCodeExecutionToolResultBlock()
+        BetaContentBlock value = new BetaTextEditorCodeExecutionToolResultBlock()
+        {
+            Content = new BetaTextEditorCodeExecutionToolResultError()
             {
-                Content = new BetaTextEditorCodeExecutionToolResultError()
-                {
-                    ErrorCode =
-                        BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
-                    ErrorMessage = "error_message",
-                },
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
-        );
+                ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
         value.Validate();
     }
 
     [Fact]
     public void ToolSearchToolResultValidationWorks()
     {
-        BetaContentBlock value = new(
-            new BetaToolSearchToolResultBlock()
+        BetaContentBlock value = new BetaToolSearchToolResultBlock()
+        {
+            Content = new BetaToolSearchToolResultError()
             {
-                Content = new BetaToolSearchToolResultError()
-                {
-                    ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
-                    ErrorMessage = "error_message",
-                },
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
-        );
+                ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
         value.Validate();
     }
 
     [Fact]
-    public void MCPToolUseValidationWorks()
+    public void McpToolUseValidationWorks()
     {
-        BetaContentBlock value = new(
-            new BetaMCPToolUseBlock()
+        BetaContentBlock value = new BetaMcpToolUseBlock()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
             {
-                ID = "id",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-                Name = "name",
-                ServerName = "server_name",
-            }
-        );
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "name",
+            ServerName = "server_name",
+        };
         value.Validate();
     }
 
     [Fact]
-    public void MCPToolResultValidationWorks()
+    public void McpToolResultValidationWorks()
     {
-        BetaContentBlock value = new(
-            new BetaMCPToolResultBlock()
-            {
-                Content = "string",
-                IsError = true,
-                ToolUseID = "tool_use_id",
-            }
-        );
+        BetaContentBlock value = new BetaMcpToolResultBlock()
+        {
+            Content = "string",
+            IsError = true,
+            ToolUseID = "tool_use_id",
+        };
         value.Validate();
     }
 
     [Fact]
     public void ContainerUploadValidationWorks()
     {
-        BetaContentBlock value = new(new BetaContainerUploadBlock("file_id"));
+        BetaContentBlock value = new BetaContainerUploadBlock("file_id");
         value.Validate();
     }
 
     [Fact]
     public void TextSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(
-            new BetaTextBlock()
-            {
-                Citations =
-                [
-                    new BetaCitationCharLocation()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "document_title",
-                        EndCharIndex = 0,
-                        FileID = "file_id",
-                        StartCharIndex = 0,
-                    },
-                ],
-                Text = "text",
-            }
+        BetaContentBlock value = new BetaTextBlock()
+        {
+            Citations =
+            [
+                new BetaCitationCharLocation()
+                {
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "document_title",
+                    EndCharIndex = 0,
+                    FileID = "file_id",
+                    StartCharIndex = 0,
+                },
+            ],
+            Text = "text",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -244,11 +225,16 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void ThinkingSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(
-            new BetaThinkingBlock() { Signature = "signature", Thinking = "thinking" }
+        BetaContentBlock value = new BetaThinkingBlock()
+        {
+            Signature = "signature",
+            Thinking = "thinking",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -256,9 +242,12 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void RedactedThinkingSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(new BetaRedactedThinkingBlock("data"));
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
+        BetaContentBlock value = new BetaRedactedThinkingBlock("data");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -266,20 +255,21 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void ToolUseSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(
-            new BetaToolUseBlock()
+        BetaContentBlock value = new BetaToolUseBlock()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
             {
-                ID = "id",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-                Name = "x",
-                Caller = new BetaDirectCaller(),
-            }
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+            Caller = new BetaDirectCaller(),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -287,20 +277,21 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void ServerToolUseSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(
-            new BetaServerToolUseBlock()
+        BetaContentBlock value = new BetaServerToolUseBlock()
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Caller = new BetaDirectCaller(),
+            Input = new Dictionary<string, JsonElement>()
             {
-                ID = "srvtoolu_SQfNkl1n_JR_",
-                Caller = new BetaDirectCaller(),
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-                Name = Name.WebSearch,
-            }
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = Name.WebSearch,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -308,17 +299,18 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void WebSearchToolResultSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(
-            new BetaWebSearchToolResultBlock()
-            {
-                Content = new BetaWebSearchToolResultError(
-                    BetaWebSearchToolResultErrorCode.InvalidToolInput
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
+        BetaContentBlock value = new BetaWebSearchToolResultBlock()
+        {
+            Content = new BetaWebSearchToolResultError(
+                BetaWebSearchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -326,17 +318,18 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void WebFetchToolResultSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(
-            new BetaWebFetchToolResultBlock()
-            {
-                Content = new BetaWebFetchToolResultErrorBlock(
-                    BetaWebFetchToolResultErrorCode.InvalidToolInput
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
+        BetaContentBlock value = new BetaWebFetchToolResultBlock()
+        {
+            Content = new BetaWebFetchToolResultErrorBlock(
+                BetaWebFetchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -344,17 +337,18 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void CodeExecutionToolResultSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(
-            new BetaCodeExecutionToolResultBlock()
-            {
-                Content = new BetaCodeExecutionToolResultError(
-                    BetaCodeExecutionToolResultErrorCode.InvalidToolInput
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
+        BetaContentBlock value = new BetaCodeExecutionToolResultBlock()
+        {
+            Content = new BetaCodeExecutionToolResultError(
+                BetaCodeExecutionToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -362,15 +356,16 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void BashCodeExecutionToolResultSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(
-            new BetaBashCodeExecutionToolResultBlock()
-            {
-                Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
+        BetaContentBlock value = new BetaBashCodeExecutionToolResultBlock()
+        {
+            Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -378,20 +373,20 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void TextEditorCodeExecutionToolResultSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(
-            new BetaTextEditorCodeExecutionToolResultBlock()
+        BetaContentBlock value = new BetaTextEditorCodeExecutionToolResultBlock()
+        {
+            Content = new BetaTextEditorCodeExecutionToolResultError()
             {
-                Content = new BetaTextEditorCodeExecutionToolResultError()
-                {
-                    ErrorCode =
-                        BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
-                    ErrorMessage = "error_message",
-                },
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
+                ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -399,57 +394,60 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void ToolSearchToolResultSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(
-            new BetaToolSearchToolResultBlock()
+        BetaContentBlock value = new BetaToolSearchToolResultBlock()
+        {
+            Content = new BetaToolSearchToolResultError()
             {
-                Content = new BetaToolSearchToolResultError()
-                {
-                    ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
-                    ErrorMessage = "error_message",
-                },
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
+                ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void MCPToolUseSerializationRoundtripWorks()
+    public void McpToolUseSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(
-            new BetaMCPToolUseBlock()
+        BetaContentBlock value = new BetaMcpToolUseBlock()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
             {
-                ID = "id",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-                Name = "name",
-                ServerName = "server_name",
-            }
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "name",
+            ServerName = "server_name",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void MCPToolResultSerializationRoundtripWorks()
+    public void McpToolResultSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(
-            new BetaMCPToolResultBlock()
-            {
-                Content = "string",
-                IsError = true,
-                ToolUseID = "tool_use_id",
-            }
+        BetaContentBlock value = new BetaMcpToolResultBlock()
+        {
+            Content = "string",
+            IsError = true,
+            ToolUseID = "tool_use_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -457,9 +455,12 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void ContainerUploadSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new(new BetaContainerUploadBlock("file_id"));
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
+        BetaContentBlock value = new BetaContainerUploadBlock("file_id");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

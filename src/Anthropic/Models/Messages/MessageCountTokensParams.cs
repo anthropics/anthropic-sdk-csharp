@@ -22,7 +22,7 @@ namespace Anthropic.Models.Messages;
 /// </summary>
 public sealed record class MessageCountTokensParams : ParamsBase
 {
-    readonly FreezableDictionary<string, JsonElement> _rawBodyData = [];
+    readonly JsonDictionary _rawBodyData = new();
     public IReadOnlyDictionary<string, JsonElement> RawBodyData
     {
         get { return this._rawBodyData.Freeze(); }
@@ -81,8 +81,18 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public required IReadOnlyList<MessageParam> Messages
     {
-        get { return JsonModel.GetNotNullClass<List<MessageParam>>(this.RawBodyData, "messages"); }
-        init { JsonModel.Set(this._rawBodyData, "messages", value); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullStruct<ImmutableArray<MessageParam>>("messages");
+        }
+        init
+        {
+            this._rawBodyData.Set<ImmutableArray<MessageParam>>(
+                "messages",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -91,8 +101,12 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get { return JsonModel.GetNotNullClass<ApiEnum<string, Model>>(this.RawBodyData, "model"); }
-        init { JsonModel.Set(this._rawBodyData, "model", value); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullClass<ApiEnum<string, Model>>("model");
+        }
+        init { this._rawBodyData.Set("model", value); }
     }
 
     /// <summary>
@@ -105,10 +119,8 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNullableClass<MessageCountTokensParamsSystem>(
-                this.RawBodyData,
-                "system"
-            );
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<MessageCountTokensParamsSystem>("system");
         }
         init
         {
@@ -117,7 +129,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "system", value);
+            this._rawBodyData.Set("system", value);
         }
     }
 
@@ -135,7 +147,8 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNullableClass<ThinkingConfigParam>(this.RawBodyData, "thinking");
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<ThinkingConfigParam>("thinking");
         }
         init
         {
@@ -144,7 +157,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "thinking", value);
+            this._rawBodyData.Set("thinking", value);
         }
     }
 
@@ -154,7 +167,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public ToolChoice? ToolChoice
     {
-        get { return JsonModel.GetNullableClass<ToolChoice>(this.RawBodyData, "tool_choice"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<ToolChoice>("tool_choice");
+        }
         init
         {
             if (value == null)
@@ -162,7 +179,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "tool_choice", value);
+            this._rawBodyData.Set("tool_choice", value);
         }
     }
 
@@ -217,8 +234,8 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNullableClass<List<MessageCountTokensTool>>(
-                this.RawBodyData,
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<ImmutableArray<MessageCountTokensTool>>(
                 "tools"
             );
         }
@@ -229,7 +246,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "tools", value);
+            this._rawBodyData.Set<ImmutableArray<MessageCountTokensTool>?>(
+                "tools",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -238,7 +258,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     public MessageCountTokensParams(MessageCountTokensParams messageCountTokensParams)
         : base(messageCountTokensParams)
     {
-        this._rawBodyData = [.. messageCountTokensParams._rawBodyData];
+        this._rawBodyData = new(messageCountTokensParams._rawBodyData);
     }
 
     public MessageCountTokensParams(
@@ -247,9 +267,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
         IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
-        this._rawBodyData = [.. rawBodyData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
     }
 
 #pragma warning disable CS8618
@@ -260,9 +280,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
         FrozenDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
-        this._rawBodyData = [.. rawBodyData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
     }
 #pragma warning restore CS8618
 
@@ -293,7 +313,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     internal override HttpContent? BodyContent()
     {
         return new StringContent(
-            JsonSerializer.Serialize(this.RawBodyData),
+            JsonSerializer.Serialize(this.RawBodyData, ModelBase.SerializerOptions),
             Encoding.UTF8,
             "application/json"
         );
@@ -316,7 +336,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
 /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
 /// </summary>
 [JsonConverter(typeof(MessageCountTokensParamsSystemConverter))]
-public record class MessageCountTokensParamsSystem
+public record class MessageCountTokensParamsSystem : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -324,7 +344,13 @@ public record class MessageCountTokensParamsSystem
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public MessageCountTokensParamsSystem(string value, JsonElement? element = null)
@@ -419,7 +445,7 @@ public record class MessageCountTokensParamsSystem
             case string value:
                 @string(value);
                 break;
-            case List<TextBlockParam> value:
+            case IReadOnlyList<TextBlockParam> value:
                 textBlockParams(value);
                 break;
             default:
@@ -480,7 +506,7 @@ public record class MessageCountTokensParamsSystem
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -499,6 +525,9 @@ public record class MessageCountTokensParamsSystem
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class MessageCountTokensParamsSystemConverter : JsonConverter<MessageCountTokensParamsSystem>

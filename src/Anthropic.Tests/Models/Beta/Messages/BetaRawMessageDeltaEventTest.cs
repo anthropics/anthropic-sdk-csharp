@@ -78,7 +78,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_delta");
         Messages::BetaMessageDeltaUsage expectedUsage = new()
         {
             CacheCreationInputTokens = 2051,
@@ -137,8 +137,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageDeltaEvent>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageDeltaEvent>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -186,8 +189,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
             },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageDeltaEvent>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageDeltaEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         Messages::BetaContextManagementResponse expectedContextManagement = new(
@@ -218,7 +224,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_delta");
         Messages::BetaMessageDeltaUsage expectedUsage = new()
         {
             CacheCreationInputTokens = 2051,
@@ -352,8 +358,11 @@ public class DeltaTest : TestBase
             StopSequence = "stop_sequence",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Messages::Delta>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::Delta>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -381,8 +390,11 @@ public class DeltaTest : TestBase
             StopSequence = "stop_sequence",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Messages::Delta>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::Delta>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         Messages::BetaContainer expectedContainer = new()

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -10,7 +11,7 @@ public class RawMessageStopEventTest : TestBase
     {
         var model = new RawMessageStopEvent { };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_stop");
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -20,8 +21,11 @@ public class RawMessageStopEventTest : TestBase
     {
         var model = new RawMessageStopEvent { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawMessageStopEvent>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawMessageStopEvent>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -31,11 +35,14 @@ public class RawMessageStopEventTest : TestBase
     {
         var model = new RawMessageStopEvent { };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawMessageStopEvent>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawMessageStopEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_stop");
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }

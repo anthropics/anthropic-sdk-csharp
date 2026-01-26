@@ -21,61 +21,30 @@ namespace Anthropic;
 /// </summary>
 public interface IAnthropicClient : IDisposable
 {
-    /// <summary>
-    /// The HTTP client to use for making requests in the SDK.
-    /// </summary>
+    /// <inheritdoc cref="ClientOptions.HttpClient" />
     HttpClient HttpClient { get; init; }
 
-    /// <summary>
-    /// The base URL to use for every request.
-    ///
-    /// <para>Defaults to the production environment: <see cref="EnvironmentUrl.Production"/></para>
-    /// </summary>
+    /// <inheritdoc cref="ClientOptions.BaseUrl" />
     string BaseUrl { get; init; }
 
-    /// <summary>
-    /// Whether to validate every response before returning it.
-    ///
-    /// <para>Defaults to false, which means the shape of the response will not be
-    /// validated upfront. Instead, validation will only occur for the parts of the
-    /// response that are accessed.</para>
-    /// </summary>
+    /// <inheritdoc cref="ClientOptions.ResponseValidation" />
     bool ResponseValidation { get; init; }
 
-    /// <summary>
-    /// The maximum number of times to retry failed requests, with a short exponential backoff between requests.
-    ///
-    /// <para>
-    /// Only the following error types are retried:
-    /// <list type="bullet">
-    ///   <item>Connection errors (for example, due to a network connectivity problem)</item>
-    ///   <item>408 Request Timeout</item>
-    ///   <item>409 Conflict</item>
-    ///   <item>429 Rate Limit</item>
-    ///   <item>5xx Internal</item>
-    /// </list>
-    /// </para>
-    ///
-    /// <para>The API may also explicitly instruct the SDK to retry or not retry a request.</para>
-    ///
-    /// <para>Defaults to 2 when null. Set to 0 to
-    /// disable retries, which also ignores API instructions to retry.</para>
-    /// </summary>
+    /// <inheritdoc cref="ClientOptions.MaxRetries" />
     int? MaxRetries { get; init; }
 
-    /// <summary>
-    /// Sets the maximum time allowed for a complete HTTP call, not including retries.
-    ///
-    /// <para>This includes resolving DNS, connecting, writing the request body, server processing, as
-    /// well as reading the response body.</para>
-    ///
-    /// <para>Defaults to <c>TimeSpan.FromMinutes(10)</c> when null.</para>
-    /// </summary>
+    /// <inheritdoc cref="ClientOptions.Timeout" />
     TimeSpan? Timeout { get; init; }
 
-    string? APIKey { get; init; }
+    string? ApiKey { get; init; }
 
     string? AuthToken { get; init; }
+
+    /// <summary>
+    /// Returns a view of this service that provides access to raw HTTP responses
+    /// for each method.
+    /// </summary>
+    IAnthropicClientWithRawResponse WithRawResponse { get; }
 
     /// <summary>
     /// Returns a view of this service with the given option modifications applied.
@@ -89,6 +58,44 @@ public interface IAnthropicClient : IDisposable
     IModelService Models { get; }
 
     IBetaService Beta { get; }
+}
+
+/// <summary>
+/// A view of <see cref="IAnthropicClient"/> that provides access to raw HTTP responses for each method.
+/// </summary>
+public interface IAnthropicClientWithRawResponse : IDisposable
+{
+    /// <inheritdoc cref="ClientOptions.HttpClient" />
+    HttpClient HttpClient { get; init; }
+
+    /// <inheritdoc cref="ClientOptions.BaseUrl" />
+    string BaseUrl { get; init; }
+
+    /// <inheritdoc cref="ClientOptions.ResponseValidation" />
+    bool ResponseValidation { get; init; }
+
+    /// <inheritdoc cref="ClientOptions.MaxRetries" />
+    int? MaxRetries { get; init; }
+
+    /// <inheritdoc cref="ClientOptions.Timeout" />
+    TimeSpan? Timeout { get; init; }
+
+    string? ApiKey { get; init; }
+
+    string? AuthToken { get; init; }
+
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
+    IAnthropicClientWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
+    IMessageServiceWithRawResponse Messages { get; }
+
+    IModelServiceWithRawResponse Models { get; }
+
+    IBetaServiceWithRawResponse Beta { get; }
 
     /// <summary>
     /// Sends a request to the Anthropic REST API.

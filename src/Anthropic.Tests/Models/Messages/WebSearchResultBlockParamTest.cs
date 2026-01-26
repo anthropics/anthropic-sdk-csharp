@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -12,20 +13,20 @@ public class WebSearchResultBlockParamTest : TestBase
         {
             EncryptedContent = "encrypted_content",
             Title = "title",
-            URL = "url",
+            Url = "url",
             PageAge = "page_age",
         };
 
         string expectedEncryptedContent = "encrypted_content";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
-        string expectedURL = "url";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result");
+        string expectedUrl = "url";
         string expectedPageAge = "page_age";
 
         Assert.Equal(expectedEncryptedContent, model.EncryptedContent);
         Assert.Equal(expectedTitle, model.Title);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
-        Assert.Equal(expectedURL, model.URL);
+        Assert.Equal(expectedUrl, model.Url);
         Assert.Equal(expectedPageAge, model.PageAge);
     }
 
@@ -36,12 +37,15 @@ public class WebSearchResultBlockParamTest : TestBase
         {
             EncryptedContent = "encrypted_content",
             Title = "title",
-            URL = "url",
+            Url = "url",
             PageAge = "page_age",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<WebSearchResultBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<WebSearchResultBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -53,24 +57,27 @@ public class WebSearchResultBlockParamTest : TestBase
         {
             EncryptedContent = "encrypted_content",
             Title = "title",
-            URL = "url",
+            Url = "url",
             PageAge = "page_age",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<WebSearchResultBlockParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<WebSearchResultBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedEncryptedContent = "encrypted_content";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
-        string expectedURL = "url";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result");
+        string expectedUrl = "url";
         string expectedPageAge = "page_age";
 
         Assert.Equal(expectedEncryptedContent, deserialized.EncryptedContent);
         Assert.Equal(expectedTitle, deserialized.Title);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
-        Assert.Equal(expectedURL, deserialized.URL);
+        Assert.Equal(expectedUrl, deserialized.Url);
         Assert.Equal(expectedPageAge, deserialized.PageAge);
     }
 
@@ -81,7 +88,7 @@ public class WebSearchResultBlockParamTest : TestBase
         {
             EncryptedContent = "encrypted_content",
             Title = "title",
-            URL = "url",
+            Url = "url",
             PageAge = "page_age",
         };
 
@@ -95,7 +102,7 @@ public class WebSearchResultBlockParamTest : TestBase
         {
             EncryptedContent = "encrypted_content",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
         Assert.Null(model.PageAge);
@@ -109,7 +116,7 @@ public class WebSearchResultBlockParamTest : TestBase
         {
             EncryptedContent = "encrypted_content",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
         model.Validate();
@@ -122,7 +129,7 @@ public class WebSearchResultBlockParamTest : TestBase
         {
             EncryptedContent = "encrypted_content",
             Title = "title",
-            URL = "url",
+            Url = "url",
 
             PageAge = null,
         };
@@ -138,7 +145,7 @@ public class WebSearchResultBlockParamTest : TestBase
         {
             EncryptedContent = "encrypted_content",
             Title = "title",
-            URL = "url",
+            Url = "url",
 
             PageAge = null,
         };

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -21,9 +22,7 @@ public class BetaCodeExecutionToolResultBlockTest : TestBase
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_tool_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_tool_result");
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
@@ -41,8 +40,11 @@ public class BetaCodeExecutionToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlock>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlock>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -58,8 +60,11 @@ public class BetaCodeExecutionToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlock>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         BetaCodeExecutionToolResultBlockContent expectedContent =
@@ -67,9 +72,7 @@ public class BetaCodeExecutionToolResultBlockTest : TestBase
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_tool_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_tool_result");
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);

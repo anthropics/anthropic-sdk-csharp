@@ -16,14 +16,22 @@ public sealed record class BetaServerToolCaller : JsonModel
 {
     public required string ToolID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_id"); }
-        init { JsonModel.Set(this._rawData, "tool_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_id");
+        }
+        init { this._rawData.Set("tool_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -33,7 +41,7 @@ public sealed record class BetaServerToolCaller : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250825\"")
+                JsonSerializer.SerializeToElement("code_execution_20250825")
             )
         )
         {
@@ -43,7 +51,7 @@ public sealed record class BetaServerToolCaller : JsonModel
 
     public BetaServerToolCaller()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250825\"");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_20250825");
     }
 
     public BetaServerToolCaller(BetaServerToolCaller betaServerToolCaller)
@@ -51,16 +59,16 @@ public sealed record class BetaServerToolCaller : JsonModel
 
     public BetaServerToolCaller(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250825\"");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_20250825");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaServerToolCaller(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

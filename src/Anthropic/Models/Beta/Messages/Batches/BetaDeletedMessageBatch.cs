@@ -16,8 +16,12 @@ public sealed record class BetaDeletedMessageBatch : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
-        init { JsonModel.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -27,8 +31,12 @@ public sealed record class BetaDeletedMessageBatch : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -38,7 +46,7 @@ public sealed record class BetaDeletedMessageBatch : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"")
+                JsonSerializer.SerializeToElement("message_batch_deleted")
             )
         )
         {
@@ -48,7 +56,7 @@ public sealed record class BetaDeletedMessageBatch : JsonModel
 
     public BetaDeletedMessageBatch()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch_deleted");
     }
 
     public BetaDeletedMessageBatch(BetaDeletedMessageBatch betaDeletedMessageBatch)
@@ -56,16 +64,16 @@ public sealed record class BetaDeletedMessageBatch : JsonModel
 
     public BetaDeletedMessageBatch(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch_deleted");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaDeletedMessageBatch(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

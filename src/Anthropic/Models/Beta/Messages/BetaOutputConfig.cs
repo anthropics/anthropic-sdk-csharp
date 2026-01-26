@@ -17,8 +17,12 @@ public sealed record class BetaOutputConfig : JsonModel
     /// </summary>
     public ApiEnum<string, Effort>? Effort
     {
-        get { return JsonModel.GetNullableClass<ApiEnum<string, Effort>>(this.RawData, "effort"); }
-        init { JsonModel.Set(this._rawData, "effort", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, Effort>>("effort");
+        }
+        init { this._rawData.Set("effort", value); }
     }
 
     /// <inheritdoc/>
@@ -34,14 +38,14 @@ public sealed record class BetaOutputConfig : JsonModel
 
     public BetaOutputConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaOutputConfig(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

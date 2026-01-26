@@ -17,30 +17,27 @@ public sealed record class BetaContentBlockSource : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<BetaContentBlockSourceContent>(
-                this.RawData,
-                "content"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaContentBlockSourceContent>("content");
         }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        init { this._rawData.Set("content", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Content.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"content\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("content")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -48,7 +45,7 @@ public sealed record class BetaContentBlockSource : JsonModel
 
     public BetaContentBlockSource()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        this.Type = JsonSerializer.SerializeToElement("content");
     }
 
     public BetaContentBlockSource(BetaContentBlockSource betaContentBlockSource)
@@ -56,16 +53,16 @@ public sealed record class BetaContentBlockSource : JsonModel
 
     public BetaContentBlockSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        this.Type = JsonSerializer.SerializeToElement("content");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaContentBlockSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -94,7 +91,7 @@ class BetaContentBlockSourceFromRaw : IFromRawJson<BetaContentBlockSource>
 }
 
 [JsonConverter(typeof(BetaContentBlockSourceContentConverter))]
-public record class BetaContentBlockSourceContent
+public record class BetaContentBlockSourceContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -102,7 +99,13 @@ public record class BetaContentBlockSourceContent
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public BetaContentBlockSourceContent(string value, JsonElement? element = null)
@@ -201,7 +204,7 @@ public record class BetaContentBlockSourceContent
             case string value:
                 @string(value);
                 break;
-            case List<MessageBetaContentBlockSourceContent> value:
+            case IReadOnlyList<MessageBetaContentBlockSourceContent> value:
                 betaContentBlockSourceContent(value);
                 break;
             default:
@@ -267,7 +270,7 @@ public record class BetaContentBlockSourceContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -286,6 +289,9 @@ public record class BetaContentBlockSourceContent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentBlockSourceContent>

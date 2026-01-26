@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 using Messages = Anthropic.Models.Beta.Messages;
 
@@ -57,7 +58,7 @@ public class BetaRawMessageStartEventTest : TestBase
                         },
                     ]
                 ),
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -122,7 +123,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     },
                 ]
             ),
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -136,7 +137,7 @@ public class BetaRawMessageStartEventTest : TestBase
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
             },
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_start\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_start");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -192,7 +193,7 @@ public class BetaRawMessageStartEventTest : TestBase
                         },
                     ]
                 ),
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -212,8 +213,11 @@ public class BetaRawMessageStartEventTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStartEvent>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStartEvent>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -268,7 +272,7 @@ public class BetaRawMessageStartEventTest : TestBase
                         },
                     ]
                 ),
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -288,8 +292,11 @@ public class BetaRawMessageStartEventTest : TestBase
             },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStartEvent>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStartEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         Messages::BetaMessage expectedMessage = new()
@@ -337,7 +344,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     },
                 ]
             ),
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -351,7 +358,7 @@ public class BetaRawMessageStartEventTest : TestBase
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
             },
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_start\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_start");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -407,7 +414,7 @@ public class BetaRawMessageStartEventTest : TestBase
                         },
                     ]
                 ),
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()

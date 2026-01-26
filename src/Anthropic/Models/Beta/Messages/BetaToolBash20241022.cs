@@ -1,6 +1,8 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
@@ -19,23 +21,32 @@ public sealed record class BetaToolBash20241022 : JsonModel
     /// </summary>
     public JsonElement Name
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     public IReadOnlyList<ApiEnum<string, BetaToolBash20241022AllowedCaller>>? AllowedCallers
     {
         get
         {
-            return JsonModel.GetNullableClass<
-                List<ApiEnum<string, BetaToolBash20241022AllowedCaller>>
-            >(this.RawData, "allowed_callers");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaToolBash20241022AllowedCaller>>
+            >("allowed_callers");
         }
         init
         {
@@ -44,7 +55,10 @@ public sealed record class BetaToolBash20241022 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "allowed_callers", value);
+            this._rawData.Set<ImmutableArray<ApiEnum<string, BetaToolBash20241022AllowedCaller>>?>(
+                "allowed_callers",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -55,12 +69,10 @@ public sealed record class BetaToolBash20241022 : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -69,7 +81,11 @@ public sealed record class BetaToolBash20241022 : JsonModel
     /// </summary>
     public bool? DeferLoading
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("defer_loading");
+        }
         init
         {
             if (value == null)
@@ -77,18 +93,18 @@ public sealed record class BetaToolBash20241022 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "defer_loading", value);
+            this._rawData.Set("defer_loading", value);
         }
     }
 
-    public IReadOnlyList<Dictionary<string, JsonElement>>? InputExamples
+    public IReadOnlyList<IReadOnlyDictionary<string, JsonElement>>? InputExamples
     {
         get
         {
-            return JsonModel.GetNullableClass<List<Dictionary<string, JsonElement>>>(
-                this.RawData,
-                "input_examples"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<FrozenDictionary<string, JsonElement>>
+            >("input_examples");
         }
         init
         {
@@ -97,13 +113,27 @@ public sealed record class BetaToolBash20241022 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "input_examples", value);
+            this._rawData.Set<ImmutableArray<FrozenDictionary<string, JsonElement>>?>(
+                "input_examples",
+                value == null
+                    ? null
+                    : ImmutableArray.ToImmutableArray(
+                        Enumerable.Select(
+                            value,
+                            (item) => FrozenDictionary.ToFrozenDictionary(item)
+                        )
+                    )
+            );
         }
     }
 
     public bool? Strict
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "strict"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("strict");
+        }
         init
         {
             if (value == null)
@@ -111,23 +141,18 @@ public sealed record class BetaToolBash20241022 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "strict", value);
+            this._rawData.Set("strict", value);
         }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.Deserialize<JsonElement>("\"bash\"")))
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("bash")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"bash_20241022\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("bash_20241022")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -143,8 +168,8 @@ public sealed record class BetaToolBash20241022 : JsonModel
 
     public BetaToolBash20241022()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_20241022\"");
+        this.Name = JsonSerializer.SerializeToElement("bash");
+        this.Type = JsonSerializer.SerializeToElement("bash_20241022");
     }
 
     public BetaToolBash20241022(BetaToolBash20241022 betaToolBash20241022)
@@ -152,17 +177,17 @@ public sealed record class BetaToolBash20241022 : JsonModel
 
     public BetaToolBash20241022(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_20241022\"");
+        this.Name = JsonSerializer.SerializeToElement("bash");
+        this.Type = JsonSerializer.SerializeToElement("bash_20241022");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaToolBash20241022(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -11,7 +12,7 @@ public class BetaContentBlockSourceTest : TestBase
         var model = new BetaContentBlockSource { Content = "string" };
 
         BetaContentBlockSourceContent expectedContent = "string";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content");
 
         Assert.Equal(expectedContent, model.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -22,8 +23,11 @@ public class BetaContentBlockSourceTest : TestBase
     {
         var model = new BetaContentBlockSource { Content = "string" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSource>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSource>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -33,12 +37,15 @@ public class BetaContentBlockSourceTest : TestBase
     {
         var model = new BetaContentBlockSource { Content = "string" };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSource>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         BetaContentBlockSourceContent expectedContent = "string";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content");
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -58,7 +65,7 @@ public class BetaContentBlockSourceContentTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        BetaContentBlockSourceContent value = new("string");
+        BetaContentBlockSourceContent value = "string";
         value.Validate();
     }
 
@@ -71,7 +78,7 @@ public class BetaContentBlockSourceContentTest : TestBase
                     new BetaTextBlockParam()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new BetaCitationCharLocationParam()
@@ -93,9 +100,12 @@ public class BetaContentBlockSourceContentTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        BetaContentBlockSourceContent value = new("string");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSourceContent>(element);
+        BetaContentBlockSourceContent value = "string";
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSourceContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -109,7 +119,7 @@ public class BetaContentBlockSourceContentTest : TestBase
                     new BetaTextBlockParam()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new BetaCitationCharLocationParam()
@@ -125,8 +135,11 @@ public class BetaContentBlockSourceContentTest : TestBase
                 ),
             ]
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSourceContent>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSourceContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

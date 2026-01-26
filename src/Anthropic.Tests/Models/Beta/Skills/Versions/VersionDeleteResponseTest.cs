@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Skills.Versions;
 
 namespace Anthropic.Tests.Models.Beta.Skills.Versions;
@@ -22,8 +23,11 @@ public class VersionDeleteResponseTest : TestBase
     {
         var model = new VersionDeleteResponse { ID = "1759178010641129", Type = "type" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<VersionDeleteResponse>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<VersionDeleteResponse>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -33,8 +37,11 @@ public class VersionDeleteResponseTest : TestBase
     {
         var model = new VersionDeleteResponse { ID = "1759178010641129", Type = "type" };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<VersionDeleteResponse>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<VersionDeleteResponse>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedID = "1759178010641129";

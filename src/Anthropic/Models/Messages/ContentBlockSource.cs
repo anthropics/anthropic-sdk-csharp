@@ -15,26 +15,29 @@ public sealed record class ContentBlockSource : JsonModel
 {
     public required Content Content
     {
-        get { return JsonModel.GetNotNullClass<Content>(this.RawData, "content"); }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Content>("content");
+        }
+        init { this._rawData.Set("content", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Content.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"content\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("content")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -42,7 +45,7 @@ public sealed record class ContentBlockSource : JsonModel
 
     public ContentBlockSource()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        this.Type = JsonSerializer.SerializeToElement("content");
     }
 
     public ContentBlockSource(ContentBlockSource contentBlockSource)
@@ -50,16 +53,16 @@ public sealed record class ContentBlockSource : JsonModel
 
     public ContentBlockSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        this.Type = JsonSerializer.SerializeToElement("content");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ContentBlockSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -87,7 +90,7 @@ class ContentBlockSourceFromRaw : IFromRawJson<ContentBlockSource>
 }
 
 [JsonConverter(typeof(ContentConverter))]
-public record class Content
+public record class Content : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -95,7 +98,13 @@ public record class Content
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public Content(string value, JsonElement? element = null)
@@ -189,7 +198,7 @@ public record class Content
             case string value:
                 @string(value);
                 break;
-            case List<ContentBlockSourceContent> value:
+            case IReadOnlyList<ContentBlockSourceContent> value:
                 contentBlockSourceContent(value);
                 break;
             default:
@@ -250,7 +259,7 @@ public record class Content
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -267,6 +276,9 @@ public record class Content
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class ContentConverter : JsonConverter<Content>

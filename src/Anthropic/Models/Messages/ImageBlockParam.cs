@@ -14,14 +14,22 @@ public sealed record class ImageBlockParam : JsonModel
 {
     public required ImageBlockParamSource Source
     {
-        get { return JsonModel.GetNotNullClass<ImageBlockParamSource>(this.RawData, "source"); }
-        init { JsonModel.Set(this._rawData, "source", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ImageBlockParamSource>("source");
+        }
+        init { this._rawData.Set("source", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -31,18 +39,17 @@ public sealed record class ImageBlockParam : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
         }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Source.Validate();
-        if (
-            !JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"image\""))
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("image")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -51,7 +58,7 @@ public sealed record class ImageBlockParam : JsonModel
 
     public ImageBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
+        this.Type = JsonSerializer.SerializeToElement("image");
     }
 
     public ImageBlockParam(ImageBlockParam imageBlockParam)
@@ -59,16 +66,16 @@ public sealed record class ImageBlockParam : JsonModel
 
     public ImageBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
+        this.Type = JsonSerializer.SerializeToElement("image");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ImageBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -94,7 +101,7 @@ class ImageBlockParamFromRaw : IFromRawJson<ImageBlockParam>
 }
 
 [JsonConverter(typeof(ImageBlockParamSourceConverter))]
-public record class ImageBlockParamSource
+public record class ImageBlockParamSource : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -102,7 +109,13 @@ public record class ImageBlockParamSource
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -116,7 +129,7 @@ public record class ImageBlockParamSource
         this._element = element;
     }
 
-    public ImageBlockParamSource(URLImageSource value, JsonElement? element = null)
+    public ImageBlockParamSource(UrlImageSource value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -150,22 +163,22 @@ public record class ImageBlockParamSource
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="URLImageSource"/>.
+    /// type <see cref="UrlImageSource"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickURLImage(out var value)) {
-    ///     // `value` is of type `URLImageSource`
+    /// if (instance.TryPickUrlImage(out var value)) {
+    ///     // `value` is of type `UrlImageSource`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickURLImage([NotNullWhen(true)] out URLImageSource? value)
+    public bool TryPickUrlImage([NotNullWhen(true)] out UrlImageSource? value)
     {
-        value = this.Value as URLImageSource;
+        value = this.Value as UrlImageSource;
         return value != null;
     }
 
@@ -184,14 +197,14 @@ public record class ImageBlockParamSource
     /// <code>
     /// instance.Switch(
     ///     (Base64ImageSource value) => {...},
-    ///     (URLImageSource value) => {...}
+    ///     (UrlImageSource value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<Base64ImageSource> base64Image,
-        System::Action<URLImageSource> urlImage
+        System::Action<UrlImageSource> urlImage
     )
     {
         switch (this.Value)
@@ -199,7 +212,7 @@ public record class ImageBlockParamSource
             case Base64ImageSource value:
                 base64Image(value);
                 break;
-            case URLImageSource value:
+            case UrlImageSource value:
                 urlImage(value);
                 break;
             default:
@@ -225,20 +238,20 @@ public record class ImageBlockParamSource
     /// <code>
     /// var result = instance.Match(
     ///     (Base64ImageSource value) => {...},
-    ///     (URLImageSource value) => {...}
+    ///     (UrlImageSource value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
         System::Func<Base64ImageSource, T> base64Image,
-        System::Func<URLImageSource, T> urlImage
+        System::Func<UrlImageSource, T> urlImage
     )
     {
         return this.Value switch
         {
             Base64ImageSource value => base64Image(value),
-            URLImageSource value => urlImage(value),
+            UrlImageSource value => urlImage(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ImageBlockParamSource"
             ),
@@ -247,7 +260,7 @@ public record class ImageBlockParamSource
 
     public static implicit operator ImageBlockParamSource(Base64ImageSource value) => new(value);
 
-    public static implicit operator ImageBlockParamSource(URLImageSource value) => new(value);
+    public static implicit operator ImageBlockParamSource(UrlImageSource value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -259,7 +272,7 @@ public record class ImageBlockParamSource
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -279,6 +292,9 @@ public record class ImageBlockParamSource
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSource>
@@ -328,7 +344,7 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<URLImageSource>(element, options);
+                    var deserialized = JsonSerializer.Deserialize<UrlImageSource>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();

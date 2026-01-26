@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -14,7 +15,7 @@ public class BetaMemoryTool20250818RenameCommandTest : TestBase
             OldPath = "/memories/draft.txt",
         };
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"rename\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("rename");
         string expectedNewPath = "/memories/final.txt";
         string expectedOldPath = "/memories/draft.txt";
 
@@ -32,8 +33,11 @@ public class BetaMemoryTool20250818RenameCommandTest : TestBase
             OldPath = "/memories/draft.txt",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818RenameCommand>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818RenameCommand>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -47,11 +51,14 @@ public class BetaMemoryTool20250818RenameCommandTest : TestBase
             OldPath = "/memories/draft.txt",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818RenameCommand>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818RenameCommand>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"rename\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("rename");
         string expectedNewPath = "/memories/final.txt";
         string expectedOldPath = "/memories/draft.txt";
 

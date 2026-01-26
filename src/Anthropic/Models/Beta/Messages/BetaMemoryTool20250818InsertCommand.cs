@@ -21,8 +21,12 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
     /// </summary>
     public JsonElement Command
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { JsonModel.Set(this._rawData, "command", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("command");
+        }
+        init { this._rawData.Set("command", value); }
     }
 
     /// <summary>
@@ -30,8 +34,12 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
     /// </summary>
     public required long InsertLine
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "insert_line"); }
-        init { JsonModel.Set(this._rawData, "insert_line", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("insert_line");
+        }
+        init { this._rawData.Set("insert_line", value); }
     }
 
     /// <summary>
@@ -39,8 +47,12 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
     /// </summary>
     public required string InsertText
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "insert_text"); }
-        init { JsonModel.Set(this._rawData, "insert_text", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("insert_text");
+        }
+        init { this._rawData.Set("insert_text", value); }
     }
 
     /// <summary>
@@ -48,19 +60,18 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
     /// </summary>
     public required string Path
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "path"); }
-        init { JsonModel.Set(this._rawData, "path", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("path");
+        }
+        init { this._rawData.Set("path", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Command,
-                JsonSerializer.Deserialize<JsonElement>("\"insert\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Command, JsonSerializer.SerializeToElement("insert")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -71,7 +82,7 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
 
     public BetaMemoryTool20250818InsertCommand()
     {
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"insert\"");
+        this.Command = JsonSerializer.SerializeToElement("insert");
     }
 
     public BetaMemoryTool20250818InsertCommand(
@@ -81,16 +92,16 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
 
     public BetaMemoryTool20250818InsertCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"insert\"");
+        this.Command = JsonSerializer.SerializeToElement("insert");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMemoryTool20250818InsertCommand(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -18,14 +18,22 @@ public sealed record class ToolTextEditor20250124 : JsonModel
     /// </summary>
     public JsonElement Name
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -35,9 +43,10 @@ public sealed record class ToolTextEditor20250124 : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
         }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <inheritdoc/>
@@ -46,7 +55,7 @@ public sealed record class ToolTextEditor20250124 : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"str_replace_editor\"")
+                JsonSerializer.SerializeToElement("str_replace_editor")
             )
         )
         {
@@ -55,7 +64,7 @@ public sealed record class ToolTextEditor20250124 : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"text_editor_20250124\"")
+                JsonSerializer.SerializeToElement("text_editor_20250124")
             )
         )
         {
@@ -66,8 +75,8 @@ public sealed record class ToolTextEditor20250124 : JsonModel
 
     public ToolTextEditor20250124()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"str_replace_editor\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_editor_20250124\"");
+        this.Name = JsonSerializer.SerializeToElement("str_replace_editor");
+        this.Type = JsonSerializer.SerializeToElement("text_editor_20250124");
     }
 
     public ToolTextEditor20250124(ToolTextEditor20250124 toolTextEditor20250124)
@@ -75,17 +84,17 @@ public sealed record class ToolTextEditor20250124 : JsonModel
 
     public ToolTextEditor20250124(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"str_replace_editor\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_editor_20250124\"");
+        this.Name = JsonSerializer.SerializeToElement("str_replace_editor");
+        this.Type = JsonSerializer.SerializeToElement("text_editor_20250124");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ToolTextEditor20250124(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

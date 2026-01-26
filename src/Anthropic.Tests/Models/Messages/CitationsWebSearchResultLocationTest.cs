@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -13,22 +14,20 @@ public class CitationsWebSearchResultLocationTest : TestBase
             CitedText = "cited_text",
             EncryptedIndex = "encrypted_index",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
         string expectedCitedText = "cited_text";
         string expectedEncryptedIndex = "encrypted_index";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_result_location\""
-        );
-        string expectedURL = "url";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result_location");
+        string expectedUrl = "url";
 
         Assert.Equal(expectedCitedText, model.CitedText);
         Assert.Equal(expectedEncryptedIndex, model.EncryptedIndex);
         Assert.Equal(expectedTitle, model.Title);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
-        Assert.Equal(expectedURL, model.URL);
+        Assert.Equal(expectedUrl, model.Url);
     }
 
     [Fact]
@@ -39,11 +38,14 @@ public class CitationsWebSearchResultLocationTest : TestBase
             CitedText = "cited_text",
             EncryptedIndex = "encrypted_index",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CitationsWebSearchResultLocation>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<CitationsWebSearchResultLocation>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -56,26 +58,27 @@ public class CitationsWebSearchResultLocationTest : TestBase
             CitedText = "cited_text",
             EncryptedIndex = "encrypted_index",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CitationsWebSearchResultLocation>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<CitationsWebSearchResultLocation>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedCitedText = "cited_text";
         string expectedEncryptedIndex = "encrypted_index";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_result_location\""
-        );
-        string expectedURL = "url";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result_location");
+        string expectedUrl = "url";
 
         Assert.Equal(expectedCitedText, deserialized.CitedText);
         Assert.Equal(expectedEncryptedIndex, deserialized.EncryptedIndex);
         Assert.Equal(expectedTitle, deserialized.Title);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
-        Assert.Equal(expectedURL, deserialized.URL);
+        Assert.Equal(expectedUrl, deserialized.Url);
     }
 
     [Fact]
@@ -86,7 +89,7 @@ public class CitationsWebSearchResultLocationTest : TestBase
             CitedText = "cited_text",
             EncryptedIndex = "encrypted_index",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
         model.Validate();

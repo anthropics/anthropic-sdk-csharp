@@ -15,14 +15,22 @@ public sealed record class BetaMessageParam : JsonModel
 {
     public required BetaMessageParamContent Content
     {
-        get { return JsonModel.GetNotNullClass<BetaMessageParamContent>(this.RawData, "content"); }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaMessageParamContent>("content");
+        }
+        init { this._rawData.Set("content", value); }
     }
 
     public required ApiEnum<string, Role> Role
     {
-        get { return JsonModel.GetNotNullClass<ApiEnum<string, Role>>(this.RawData, "role"); }
-        init { JsonModel.Set(this._rawData, "role", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, Role>>("role");
+        }
+        init { this._rawData.Set("role", value); }
     }
 
     /// <inheritdoc/>
@@ -39,14 +47,14 @@ public sealed record class BetaMessageParam : JsonModel
 
     public BetaMessageParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMessageParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -67,7 +75,7 @@ class BetaMessageParamFromRaw : IFromRawJson<BetaMessageParam>
 }
 
 [JsonConverter(typeof(BetaMessageParamContentConverter))]
-public record class BetaMessageParamContent
+public record class BetaMessageParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -75,7 +83,13 @@ public record class BetaMessageParamContent
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public BetaMessageParamContent(string value, JsonElement? element = null)
@@ -172,7 +186,7 @@ public record class BetaMessageParamContent
             case string value:
                 @string(value);
                 break;
-            case List<BetaContentBlockParam> value:
+            case IReadOnlyList<BetaContentBlockParam> value:
                 betaContentBlockParams(value);
                 break;
             default:
@@ -233,7 +247,7 @@ public record class BetaMessageParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -252,6 +266,9 @@ public record class BetaMessageParamContent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamContent>

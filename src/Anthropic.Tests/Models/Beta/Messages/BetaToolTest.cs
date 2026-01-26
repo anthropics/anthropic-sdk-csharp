@@ -24,7 +24,7 @@ public class BetaToolTest : TestBase
             },
             Name = "name",
             AllowedCallers = [BetaToolAllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
             InputExamples =
@@ -52,7 +52,7 @@ public class BetaToolTest : TestBase
         [
             BetaToolAllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         string expectedDescription = "Get the current weather in a given location";
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -108,7 +108,7 @@ public class BetaToolTest : TestBase
             },
             Name = "name",
             AllowedCallers = [BetaToolAllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
             InputExamples =
@@ -122,8 +122,8 @@ public class BetaToolTest : TestBase
             Type = BetaToolType.Custom,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaTool>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaTool>(json, ModelBase.SerializerOptions);
 
         Assert.Equal(model, deserialized);
     }
@@ -144,7 +144,7 @@ public class BetaToolTest : TestBase
             },
             Name = "name",
             AllowedCallers = [BetaToolAllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
             InputExamples =
@@ -158,8 +158,11 @@ public class BetaToolTest : TestBase
             Type = BetaToolType.Custom,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaTool>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaTool>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         InputSchema expectedInputSchema = new()
@@ -176,7 +179,7 @@ public class BetaToolTest : TestBase
         [
             BetaToolAllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         string expectedDescription = "Get the current weather in a given location";
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -232,7 +235,7 @@ public class BetaToolTest : TestBase
             },
             Name = "name",
             AllowedCallers = [BetaToolAllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
             InputExamples =
@@ -264,7 +267,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = BetaToolType.Custom,
         };
 
@@ -295,7 +298,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = BetaToolType.Custom,
         };
 
@@ -317,7 +320,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = BetaToolType.Custom,
 
             // Null should be interpreted as omitted for these properties
@@ -355,7 +358,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = BetaToolType.Custom,
 
             // Null should be interpreted as omitted for these properties
@@ -521,7 +524,7 @@ public class InputSchemaTest : TestBase
             Required = ["location"],
         };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"object\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("object");
         Dictionary<string, JsonElement> expectedProperties = new()
         {
             { "location", JsonSerializer.SerializeToElement("bar") },
@@ -559,8 +562,11 @@ public class InputSchemaTest : TestBase
             Required = ["location"],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<InputSchema>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<InputSchema>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -578,11 +584,14 @@ public class InputSchemaTest : TestBase
             Required = ["location"],
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<InputSchema>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<InputSchema>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"object\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("object");
         Dictionary<string, JsonElement> expectedProperties = new()
         {
             { "location", JsonSerializer.SerializeToElement("bar") },
@@ -678,7 +687,7 @@ public class BetaToolAllowedCallerTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolAllowedCaller>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -707,7 +716,7 @@ public class BetaToolAllowedCallerTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolAllowedCaller>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -735,7 +744,7 @@ public class BetaToolTypeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolType>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -763,7 +772,7 @@ public class BetaToolTypeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolType>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

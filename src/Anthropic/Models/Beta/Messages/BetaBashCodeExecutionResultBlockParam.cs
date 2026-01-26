@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -20,36 +21,58 @@ public sealed record class BetaBashCodeExecutionResultBlockParam : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<List<BetaBashCodeExecutionOutputBlockParam>>(
-                this.RawData,
-                "content"
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<
+                ImmutableArray<BetaBashCodeExecutionOutputBlockParam>
+            >("content");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaBashCodeExecutionOutputBlockParam>>(
+                "content",
+                ImmutableArray.ToImmutableArray(value)
             );
         }
-        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required long ReturnCode
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "return_code"); }
-        init { JsonModel.Set(this._rawData, "return_code", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("return_code");
+        }
+        init { this._rawData.Set("return_code", value); }
     }
 
     public required string Stderr
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "stderr"); }
-        init { JsonModel.Set(this._rawData, "stderr", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("stderr");
+        }
+        init { this._rawData.Set("stderr", value); }
     }
 
     public required string Stdout
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "stdout"); }
-        init { JsonModel.Set(this._rawData, "stdout", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("stdout");
+        }
+        init { this._rawData.Set("stdout", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -65,7 +88,7 @@ public sealed record class BetaBashCodeExecutionResultBlockParam : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_result\"")
+                JsonSerializer.SerializeToElement("bash_code_execution_result")
             )
         )
         {
@@ -75,7 +98,7 @@ public sealed record class BetaBashCodeExecutionResultBlockParam : JsonModel
 
     public BetaBashCodeExecutionResultBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_result\"");
+        this.Type = JsonSerializer.SerializeToElement("bash_code_execution_result");
     }
 
     public BetaBashCodeExecutionResultBlockParam(
@@ -85,16 +108,16 @@ public sealed record class BetaBashCodeExecutionResultBlockParam : JsonModel
 
     public BetaBashCodeExecutionResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_result\"");
+        this.Type = JsonSerializer.SerializeToElement("bash_code_execution_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaBashCodeExecutionResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

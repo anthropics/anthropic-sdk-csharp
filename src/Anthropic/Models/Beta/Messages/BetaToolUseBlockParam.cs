@@ -14,32 +14,48 @@ public sealed record class BetaToolUseBlockParam : JsonModel
 {
     public required string ID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
-        init { JsonModel.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     public required IReadOnlyDictionary<string, JsonElement> Input
     {
         get
         {
-            return JsonModel.GetNotNullClass<Dictionary<string, JsonElement>>(
-                this.RawData,
-                "input"
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<FrozenDictionary<string, JsonElement>>("input");
+        }
+        init
+        {
+            this._rawData.Set<FrozenDictionary<string, JsonElement>>(
+                "input",
+                FrozenDictionary.ToFrozenDictionary(value)
             );
         }
-        init { JsonModel.Set(this._rawData, "input", value); }
     }
 
     public required string Name
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "name"); }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -49,12 +65,10 @@ public sealed record class BetaToolUseBlockParam : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -64,7 +78,8 @@ public sealed record class BetaToolUseBlockParam : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaToolUseBlockParamCaller>(this.RawData, "caller");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaToolUseBlockParamCaller>("caller");
         }
         init
         {
@@ -73,7 +88,7 @@ public sealed record class BetaToolUseBlockParam : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "caller", value);
+            this._rawData.Set("caller", value);
         }
     }
 
@@ -83,12 +98,7 @@ public sealed record class BetaToolUseBlockParam : JsonModel
         _ = this.ID;
         _ = this.Input;
         _ = this.Name;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"tool_use\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("tool_use")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -98,7 +108,7 @@ public sealed record class BetaToolUseBlockParam : JsonModel
 
     public BetaToolUseBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_use");
     }
 
     public BetaToolUseBlockParam(BetaToolUseBlockParam betaToolUseBlockParam)
@@ -106,16 +116,16 @@ public sealed record class BetaToolUseBlockParam : JsonModel
 
     public BetaToolUseBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_use");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaToolUseBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -140,7 +150,7 @@ class BetaToolUseBlockParamFromRaw : IFromRawJson<BetaToolUseBlockParam>
 /// Tool invocation directly from the model.
 /// </summary>
 [JsonConverter(typeof(BetaToolUseBlockParamCallerConverter))]
-public record class BetaToolUseBlockParamCaller
+public record class BetaToolUseBlockParamCaller : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -148,7 +158,13 @@ public record class BetaToolUseBlockParamCaller
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -307,7 +323,7 @@ public record class BetaToolUseBlockParamCaller
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -330,6 +346,9 @@ public record class BetaToolUseBlockParamCaller
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaToolUseBlockParamCallerConverter : JsonConverter<BetaToolUseBlockParamCaller>

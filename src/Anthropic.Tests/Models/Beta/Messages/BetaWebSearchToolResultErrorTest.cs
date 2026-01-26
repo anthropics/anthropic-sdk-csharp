@@ -16,8 +16,8 @@ public class BetaWebSearchToolResultErrorTest : TestBase
 
         ApiEnum<string, BetaWebSearchToolResultErrorCode> expectedErrorCode =
             BetaWebSearchToolResultErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "web_search_tool_result_error"
         );
 
         Assert.Equal(expectedErrorCode, model.ErrorCode);
@@ -32,8 +32,11 @@ public class BetaWebSearchToolResultErrorTest : TestBase
             ErrorCode = BetaWebSearchToolResultErrorCode.InvalidToolInput,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultError>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultError>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -46,14 +49,17 @@ public class BetaWebSearchToolResultErrorTest : TestBase
             ErrorCode = BetaWebSearchToolResultErrorCode.InvalidToolInput,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultError>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultError>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         ApiEnum<string, BetaWebSearchToolResultErrorCode> expectedErrorCode =
             BetaWebSearchToolResultErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "web_search_tool_result_error"
         );
 
         Assert.Equal(expectedErrorCode, deserialized.ErrorCode);

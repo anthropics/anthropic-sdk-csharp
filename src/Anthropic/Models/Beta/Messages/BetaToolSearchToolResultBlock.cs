@@ -18,24 +18,30 @@ public sealed record class BetaToolSearchToolResultBlock : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<BetaToolSearchToolResultBlockContent>(
-                this.RawData,
-                "content"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaToolSearchToolResultBlockContent>("content");
         }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_use_id");
+        }
+        init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -46,7 +52,7 @@ public sealed record class BetaToolSearchToolResultBlock : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_result\"")
+                JsonSerializer.SerializeToElement("tool_search_tool_result")
             )
         )
         {
@@ -56,7 +62,7 @@ public sealed record class BetaToolSearchToolResultBlock : JsonModel
 
     public BetaToolSearchToolResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_search_tool_result");
     }
 
     public BetaToolSearchToolResultBlock(
@@ -66,16 +72,16 @@ public sealed record class BetaToolSearchToolResultBlock : JsonModel
 
     public BetaToolSearchToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_search_tool_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaToolSearchToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -97,7 +103,7 @@ class BetaToolSearchToolResultBlockFromRaw : IFromRawJson<BetaToolSearchToolResu
 }
 
 [JsonConverter(typeof(BetaToolSearchToolResultBlockContentConverter))]
-public record class BetaToolSearchToolResultBlockContent
+public record class BetaToolSearchToolResultBlockContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -105,7 +111,13 @@ public record class BetaToolSearchToolResultBlockContent
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -282,7 +294,7 @@ public record class BetaToolSearchToolResultBlockContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -305,6 +317,9 @@ public record class BetaToolSearchToolResultBlockContent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaToolSearchToolResultBlockContentConverter

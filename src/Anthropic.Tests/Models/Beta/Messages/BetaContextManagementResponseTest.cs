@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -52,8 +53,11 @@ public class BetaContextManagementResponseTest : TestBase
             ],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContextManagementResponse>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContextManagementResponse>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -73,8 +77,11 @@ public class BetaContextManagementResponseTest : TestBase
             ],
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContextManagementResponse>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContextManagementResponse>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         List<AppliedEdit> expectedAppliedEdits =
@@ -117,41 +124,38 @@ public class AppliedEditTest : TestBase
     [Fact]
     public void BetaClearToolUses20250919EditResponseValidationWorks()
     {
-        AppliedEdit value = new(
-            new BetaClearToolUses20250919EditResponse()
-            {
-                ClearedInputTokens = 0,
-                ClearedToolUses = 0,
-            }
-        );
+        AppliedEdit value = new BetaClearToolUses20250919EditResponse()
+        {
+            ClearedInputTokens = 0,
+            ClearedToolUses = 0,
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaClearThinking20251015EditResponseValidationWorks()
     {
-        AppliedEdit value = new(
-            new BetaClearThinking20251015EditResponse()
-            {
-                ClearedInputTokens = 0,
-                ClearedThinkingTurns = 0,
-            }
-        );
+        AppliedEdit value = new BetaClearThinking20251015EditResponse()
+        {
+            ClearedInputTokens = 0,
+            ClearedThinkingTurns = 0,
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaClearToolUses20250919EditResponseSerializationRoundtripWorks()
     {
-        AppliedEdit value = new(
-            new BetaClearToolUses20250919EditResponse()
-            {
-                ClearedInputTokens = 0,
-                ClearedToolUses = 0,
-            }
+        AppliedEdit value = new BetaClearToolUses20250919EditResponse()
+        {
+            ClearedInputTokens = 0,
+            ClearedToolUses = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -159,15 +163,16 @@ public class AppliedEditTest : TestBase
     [Fact]
     public void BetaClearThinking20251015EditResponseSerializationRoundtripWorks()
     {
-        AppliedEdit value = new(
-            new BetaClearThinking20251015EditResponse()
-            {
-                ClearedInputTokens = 0,
-                ClearedThinkingTurns = 0,
-            }
+        AppliedEdit value = new BetaClearThinking20251015EditResponse()
+        {
+            ClearedInputTokens = 0,
+            ClearedThinkingTurns = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(element);
 
         Assert.Equal(value, deserialized);
     }

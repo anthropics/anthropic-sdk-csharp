@@ -15,26 +15,29 @@ public sealed record class MessageBatchSucceededResult : JsonModel
 {
     public required Message Message
     {
-        get { return JsonModel.GetNotNullClass<Message>(this.RawData, "message"); }
-        init { JsonModel.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Message>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Message.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"succeeded\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("succeeded")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -42,7 +45,7 @@ public sealed record class MessageBatchSucceededResult : JsonModel
 
     public MessageBatchSucceededResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
+        this.Type = JsonSerializer.SerializeToElement("succeeded");
     }
 
     public MessageBatchSucceededResult(MessageBatchSucceededResult messageBatchSucceededResult)
@@ -50,16 +53,16 @@ public sealed record class MessageBatchSucceededResult : JsonModel
 
     public MessageBatchSucceededResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
+        this.Type = JsonSerializer.SerializeToElement("succeeded");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     MessageBatchSucceededResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

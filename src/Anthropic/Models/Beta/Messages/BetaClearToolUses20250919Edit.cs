@@ -17,8 +17,12 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
 {
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -29,12 +33,10 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaInputTokensClearAtLeast>(
-                this.RawData,
-                "clear_at_least"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaInputTokensClearAtLeast>("clear_at_least");
         }
-        init { JsonModel.Set(this._rawData, "clear_at_least", value); }
+        init { this._rawData.Set("clear_at_least", value); }
     }
 
     /// <summary>
@@ -44,9 +46,10 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<ClearToolInputs>(this.RawData, "clear_tool_inputs");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ClearToolInputs>("clear_tool_inputs");
         }
-        init { JsonModel.Set(this._rawData, "clear_tool_inputs", value); }
+        init { this._rawData.Set("clear_tool_inputs", value); }
     }
 
     /// <summary>
@@ -54,8 +57,18 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     /// </summary>
     public IReadOnlyList<string>? ExcludeTools
     {
-        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "exclude_tools"); }
-        init { JsonModel.Set(this._rawData, "exclude_tools", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<string>>("exclude_tools");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<string>?>(
+                "exclude_tools",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -63,7 +76,11 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     /// </summary>
     public BetaToolUsesKeep? Keep
     {
-        get { return JsonModel.GetNullableClass<BetaToolUsesKeep>(this.RawData, "keep"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaToolUsesKeep>("keep");
+        }
         init
         {
             if (value == null)
@@ -71,7 +88,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "keep", value);
+            this._rawData.Set("keep", value);
         }
     }
 
@@ -80,7 +97,11 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     /// </summary>
     public Trigger? Trigger
     {
-        get { return JsonModel.GetNullableClass<Trigger>(this.RawData, "trigger"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<Trigger>("trigger");
+        }
         init
         {
             if (value == null)
@@ -88,7 +109,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "trigger", value);
+            this._rawData.Set("trigger", value);
         }
     }
 
@@ -98,7 +119,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"clear_tool_uses_20250919\"")
+                JsonSerializer.SerializeToElement("clear_tool_uses_20250919")
             )
         )
         {
@@ -113,7 +134,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
 
     public BetaClearToolUses20250919Edit()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_tool_uses_20250919\"");
+        this.Type = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
     }
 
     public BetaClearToolUses20250919Edit(
@@ -123,16 +144,16 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
 
     public BetaClearToolUses20250919Edit(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_tool_uses_20250919\"");
+        this.Type = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaClearToolUses20250919Edit(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -157,7 +178,7 @@ class BetaClearToolUses20250919EditFromRaw : IFromRawJson<BetaClearToolUses20250
 /// Whether to clear all tool inputs (bool) or specific tool inputs to clear (list)
 /// </summary>
 [JsonConverter(typeof(ClearToolInputsConverter))]
-public record class ClearToolInputs
+public record class ClearToolInputs : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -165,7 +186,13 @@ public record class ClearToolInputs
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public ClearToolInputs(bool value, JsonElement? element = null)
@@ -254,7 +281,7 @@ public record class ClearToolInputs
             case bool value:
                 @bool(value);
                 break;
-            case List<string> value:
+            case IReadOnlyList<string> value:
                 strings(value);
                 break;
             default:
@@ -312,7 +339,7 @@ public record class ClearToolInputs
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -331,6 +358,9 @@ public record class ClearToolInputs
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
@@ -381,7 +411,7 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
 /// Condition that triggers the context management strategy
 /// </summary>
 [JsonConverter(typeof(TriggerConverter))]
-public record class Trigger
+public record class Trigger : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -389,7 +419,13 @@ public record class Trigger
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -551,7 +587,7 @@ public record class Trigger
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -572,6 +608,9 @@ public record class Trigger
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class TriggerConverter : JsonConverter<Trigger>

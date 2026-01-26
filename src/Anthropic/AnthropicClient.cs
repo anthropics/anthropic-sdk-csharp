@@ -14,6 +14,115 @@ namespace Anthropic;
 /// <inheritdoc/>
 public class AnthropicClient : IAnthropicClient
 {
+    protected readonly ClientOptions _options;
+
+    /// <inheritdoc/>
+    public HttpClient HttpClient
+    {
+        get { return this._options.HttpClient; }
+        init { this._options.HttpClient = value; }
+    }
+
+    /// <inheritdoc/>
+    public string BaseUrl
+    {
+        get { return this._options.BaseUrl; }
+        init { this._options.BaseUrl = value; }
+    }
+
+    /// <inheritdoc/>
+    public bool ResponseValidation
+    {
+        get { return this._options.ResponseValidation; }
+        init { this._options.ResponseValidation = value; }
+    }
+
+    /// <inheritdoc/>
+    public int? MaxRetries
+    {
+        get { return this._options.MaxRetries; }
+        init { this._options.MaxRetries = value; }
+    }
+
+    /// <inheritdoc/>
+    public TimeSpan? Timeout
+    {
+        get { return this._options.Timeout; }
+        init { this._options.Timeout = value; }
+    }
+
+    /// <inheritdoc/>
+    public virtual string? ApiKey
+    {
+        get { return this._options.ApiKey; }
+        init { this._options.ApiKey = value; }
+    }
+
+    /// <inheritdoc/>
+    public string? AuthToken
+    {
+        get { return this._options.AuthToken; }
+        init { this._options.AuthToken = value; }
+    }
+
+    readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
+
+    /// <inheritdoc/>
+    public virtual IAnthropicClientWithRawResponse WithRawResponse
+    {
+        get { return _withRawResponse.Value; }
+    }
+
+    /// <inheritdoc/>
+    public virtual IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new AnthropicClient(modifier(this._options));
+    }
+
+    readonly Lazy<IMessageService> _messages;
+    public IMessageService Messages
+    {
+        get { return _messages.Value; }
+    }
+
+    readonly Lazy<IModelService> _models;
+    public IModelService Models
+    {
+        get { return _models.Value; }
+    }
+
+    readonly Lazy<IBetaService> _beta;
+    public IBetaService Beta
+    {
+        get { return _beta.Value; }
+    }
+
+    public void Dispose()
+    {
+        HttpClient.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
+    public AnthropicClient()
+    {
+        _options = new();
+
+        _withRawResponse = new(() => new AnthropicClientWithRawResponse(this._options));
+        _messages = new(() => new MessageService(this));
+        _models = new(() => new ModelService(this));
+        _beta = new(() => new BetaService(this));
+    }
+
+    public AnthropicClient(ClientOptions options)
+        : this()
+    {
+        _options = options;
+    }
+}
+
+/// <inheritdoc/>
+public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
+{
 #if NET
     static readonly Random Random = Random.Shared;
 #else
@@ -63,10 +172,10 @@ public class AnthropicClient : IAnthropicClient
     }
 
     /// <inheritdoc/>
-    public virtual string? APIKey
+    public virtual string? ApiKey
     {
-        get { return this._options.APIKey; }
-        init { this._options.APIKey = value; }
+        get { return this._options.ApiKey; }
+        init { this._options.ApiKey = value; }
     }
 
     /// <inheritdoc/>
@@ -77,25 +186,27 @@ public class AnthropicClient : IAnthropicClient
     }
 
     /// <inheritdoc/>
-    public virtual IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    public virtual IAnthropicClientWithRawResponse WithOptions(
+        Func<ClientOptions, ClientOptions> modifier
+    )
     {
-        return new AnthropicClient(modifier(this._options));
+        return new AnthropicClientWithRawResponse(modifier(this._options));
     }
 
-    readonly Lazy<IMessageService> _messages;
-    public virtual IMessageService Messages
+    readonly Lazy<IMessageServiceWithRawResponse> _messages;
+    public IMessageServiceWithRawResponse Messages
     {
         get { return _messages.Value; }
     }
 
-    readonly Lazy<IModelService> _models;
-    public virtual IModelService Models
+    readonly Lazy<IModelServiceWithRawResponse> _models;
+    public IModelServiceWithRawResponse Models
     {
         get { return _models.Value; }
     }
 
-    readonly Lazy<IBetaService> _beta;
-    public virtual IBetaService Beta
+    readonly Lazy<IBetaServiceWithRawResponse> _beta;
+    public IBetaServiceWithRawResponse Beta
     {
         get { return _beta.Value; }
     }
@@ -127,7 +238,7 @@ public class AnthropicClient : IAnthropicClient
 
             if (response != null && (++retries > maxRetries || !ShouldRetry(response)))
             {
-                if (response.Message.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
                     return response;
                 }
@@ -135,7 +246,7 @@ public class AnthropicClient : IAnthropicClient
                 try
                 {
                     throw AnthropicExceptionFactory.CreateApiException(
-                        response.Message.StatusCode,
+                        response.StatusCode,
                         await response.ReadAsString(cancellationToken).ConfigureAwait(false)
                     );
                 }
@@ -218,7 +329,7 @@ public class AnthropicClient : IAnthropicClient
         {
             throw new AnthropicIOException("I/O exception", e);
         }
-        return new() { Message = responseMessage, CancellationToken = cts.Token };
+        return new() { RawMessage = responseMessage, CancellationToken = cts.Token };
     }
 
     static TimeSpan ComputeRetryBackoff(int retries, HttpResponse? response)
@@ -240,7 +351,7 @@ public class AnthropicClient : IAnthropicClient
     static TimeSpan? ParseRetryAfterMsHeader(HttpResponse? response)
     {
         IEnumerable<string>? headerValues = null;
-        response?.Message.Headers.TryGetValues("Retry-After-Ms", out headerValues);
+        response?.TryGetHeaderValues("Retry-After-Ms", out headerValues);
         var headerValue = headerValues == null ? null : Enumerable.FirstOrDefault(headerValues);
         if (headerValue == null)
         {
@@ -258,7 +369,7 @@ public class AnthropicClient : IAnthropicClient
     static TimeSpan? ParseRetryAfterHeader(HttpResponse? response)
     {
         IEnumerable<string>? headerValues = null;
-        response?.Message.Headers.TryGetValues("Retry-After", out headerValues);
+        response?.TryGetHeaderValues("Retry-After", out headerValues);
         var headerValue = headerValues == null ? null : Enumerable.FirstOrDefault(headerValues);
         if (headerValue == null)
         {
@@ -280,7 +391,7 @@ public class AnthropicClient : IAnthropicClient
     static bool ShouldRetry(HttpResponse response)
     {
         if (
-            response.Message.Headers.TryGetValues("X-Should-Retry", out var headerValues)
+            response.TryGetHeaderValues("X-Should-Retry", out var headerValues)
             && bool.TryParse(Enumerable.FirstOrDefault(headerValues), out var shouldRetry)
         )
         {
@@ -288,7 +399,7 @@ public class AnthropicClient : IAnthropicClient
             return shouldRetry;
         }
 
-        return (int)response.Message.StatusCode switch
+        return (int)response.StatusCode switch
         {
             // Retry on request timeouts
             408
@@ -318,16 +429,16 @@ public class AnthropicClient : IAnthropicClient
         GC.SuppressFinalize(this);
     }
 
-    public AnthropicClient()
+    public AnthropicClientWithRawResponse()
     {
         _options = new();
 
-        _messages = new(() => new MessageService(this));
-        _models = new(() => new ModelService(this));
-        _beta = new(() => new BetaService(this));
+        _messages = new(() => new MessageServiceWithRawResponse(this));
+        _models = new(() => new ModelServiceWithRawResponse(this));
+        _beta = new(() => new BetaServiceWithRawResponse(this));
     }
 
-    public AnthropicClient(ClientOptions options)
+    public AnthropicClientWithRawResponse(ClientOptions options)
         : this()
     {
         _options = options;

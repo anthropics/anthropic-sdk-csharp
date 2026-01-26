@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -22,8 +23,11 @@ public class CacheCreationTest : TestBase
     {
         var model = new CacheCreation { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CacheCreation>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<CacheCreation>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -33,8 +37,11 @@ public class CacheCreationTest : TestBase
     {
         var model = new CacheCreation { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CacheCreation>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<CacheCreation>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         long expectedEphemeral1hInputTokens = 0;

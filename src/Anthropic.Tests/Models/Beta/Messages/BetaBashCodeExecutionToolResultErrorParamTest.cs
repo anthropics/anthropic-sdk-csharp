@@ -17,8 +17,8 @@ public class BetaBashCodeExecutionToolResultErrorParamTest : TestBase
 
         ApiEnum<string, BetaBashCodeExecutionToolResultErrorParamErrorCode> expectedErrorCode =
             BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"bash_code_execution_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "bash_code_execution_tool_result_error"
         );
 
         Assert.Equal(expectedErrorCode, model.ErrorCode);
@@ -33,9 +33,10 @@ public class BetaBashCodeExecutionToolResultErrorParamTest : TestBase
             ErrorCode = BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultErrorParam>(
-            json
+            json,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(model, deserialized);
@@ -49,16 +50,17 @@ public class BetaBashCodeExecutionToolResultErrorParamTest : TestBase
             ErrorCode = BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultErrorParam>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
         ApiEnum<string, BetaBashCodeExecutionToolResultErrorParamErrorCode> expectedErrorCode =
             BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"bash_code_execution_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "bash_code_execution_tool_result_error"
         );
 
         Assert.Equal(expectedErrorCode, deserialized.ErrorCode);
@@ -97,10 +99,7 @@ public class BetaBashCodeExecutionToolResultErrorParamErrorCodeTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaBashCodeExecutionToolResultErrorParamErrorCode>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -132,10 +131,7 @@ public class BetaBashCodeExecutionToolResultErrorParamErrorCodeTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaBashCodeExecutionToolResultErrorParamErrorCode>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaBashCodeExecutionToolResultErrorParamErrorCode>

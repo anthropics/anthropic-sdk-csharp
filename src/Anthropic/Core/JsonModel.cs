@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text.Json;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Core;
 
@@ -11,13 +10,7 @@ namespace Anthropic.Core;
 /// </summary>
 public abstract record class JsonModel : ModelBase
 {
-    private protected FreezableDictionary<string, JsonElement> _rawData = [];
-
-    protected JsonModel(JsonModel jsonModel)
-        : base(jsonModel)
-    {
-        this._rawData = [.. jsonModel._rawData];
-    }
+    private protected JsonDictionary _rawData = new();
 
     /// <summary>
     /// The backing JSON properties of the instance.
@@ -27,139 +20,25 @@ public abstract record class JsonModel : ModelBase
         get { return this._rawData.Freeze(); }
     }
 
-    internal static void Set<T>(IDictionary<string, JsonElement> dictionary, string key, T value)
+    protected JsonModel(JsonModel jsonModel)
+        : base(jsonModel)
     {
-        dictionary[key] = JsonSerializer.SerializeToElement(value, SerializerOptions);
+        this._rawData = new(jsonModel._rawData);
     }
 
-    internal static T GetNotNullClass<T>(
-        IReadOnlyDictionary<string, JsonElement> dictionary,
-        string key
-    )
-        where T : class
-    {
-        if (!dictionary.TryGetValue(key, out var element))
-        {
-            throw new AnthropicInvalidDataException($"'{key}' cannot be absent");
-        }
-
-        try
-        {
-            return JsonSerializer.Deserialize<T>(element, SerializerOptions)
-                ?? throw new AnthropicInvalidDataException($"'{key}' cannot be null");
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
-    }
-
-    internal static T GetNotNullStruct<T>(
-        IReadOnlyDictionary<string, JsonElement> dictionary,
-        string key
-    )
-        where T : struct
-    {
-        if (!dictionary.TryGetValue(key, out var element))
-        {
-            throw new AnthropicInvalidDataException($"'{key}' cannot be absent");
-        }
-
-        try
-        {
-            return JsonSerializer.Deserialize<T?>(element, SerializerOptions)
-                ?? throw new AnthropicInvalidDataException($"'{key}' cannot be null");
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
-    }
-
-    internal static T? GetNullableClass<T>(
-        IReadOnlyDictionary<string, JsonElement> dictionary,
-        string key
-    )
-        where T : class
-    {
-        if (!dictionary.TryGetValue(key, out var element))
-        {
-            return null;
-        }
-
-        try
-        {
-            return JsonSerializer.Deserialize<T?>(element, SerializerOptions);
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
-    }
-
-    internal static T? GetNullableStruct<T>(
-        IReadOnlyDictionary<string, JsonElement> dictionary,
-        string key
-    )
-        where T : struct
-    {
-        if (!dictionary.TryGetValue(key, out var element))
-        {
-            return null;
-        }
-
-        try
-        {
-            return JsonSerializer.Deserialize<T?>(element, SerializerOptions);
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
-    }
-
-    public sealed override string ToString() =>
-        JsonSerializer.Serialize(this.RawData, ToStringSerializerOptions);
+    public sealed override string ToString() => this._rawData.ToString();
 
     public virtual bool Equals(JsonModel? other)
     {
-        if (other == null || this.RawData.Count != other.RawData.Count)
+        if (other == null)
         {
             return false;
         }
 
-        foreach (var item in this.RawData)
-        {
-            if (!other.RawData.TryGetValue(item.Key, out var otherValue))
-            {
-                return false;
-            }
-
-            if (!JsonElement.DeepEquals(item.Value, otherValue))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return this._rawData.Equals(other._rawData);
     }
 
-    public override int GetHashCode()
-    {
-        return 0;
-    }
+    public override int GetHashCode() => this._rawData.GetHashCode();
 }
 
 /// <summary>

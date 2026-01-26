@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -12,8 +13,8 @@ public class BetaToolSearchToolSearchResultBlockTest : TestBase
         var model = new BetaToolSearchToolSearchResultBlock { ToolReferences = [new("tool_name")] };
 
         List<BetaToolReferenceBlock> expectedToolReferences = [new("tool_name")];
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_search_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "tool_search_tool_search_result"
         );
 
         Assert.Equal(expectedToolReferences.Count, model.ToolReferences.Count);
@@ -29,8 +30,11 @@ public class BetaToolSearchToolSearchResultBlockTest : TestBase
     {
         var model = new BetaToolSearchToolSearchResultBlock { ToolReferences = [new("tool_name")] };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolSearchResultBlock>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolSearchResultBlock>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -40,13 +44,16 @@ public class BetaToolSearchToolSearchResultBlockTest : TestBase
     {
         var model = new BetaToolSearchToolSearchResultBlock { ToolReferences = [new("tool_name")] };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolSearchResultBlock>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolSearchResultBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         List<BetaToolReferenceBlock> expectedToolReferences = [new("tool_name")];
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_search_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "tool_search_tool_search_result"
         );
 
         Assert.Equal(expectedToolReferences.Count, deserialized.ToolReferences.Count);

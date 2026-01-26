@@ -18,14 +18,22 @@ public sealed record class BetaBashCodeExecutionOutputBlockParam : JsonModel
 {
     public required string FileID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "file_id"); }
-        init { JsonModel.Set(this._rawData, "file_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("file_id");
+        }
+        init { this._rawData.Set("file_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -35,7 +43,7 @@ public sealed record class BetaBashCodeExecutionOutputBlockParam : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_output\"")
+                JsonSerializer.SerializeToElement("bash_code_execution_output")
             )
         )
         {
@@ -45,7 +53,7 @@ public sealed record class BetaBashCodeExecutionOutputBlockParam : JsonModel
 
     public BetaBashCodeExecutionOutputBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_output\"");
+        this.Type = JsonSerializer.SerializeToElement("bash_code_execution_output");
     }
 
     public BetaBashCodeExecutionOutputBlockParam(
@@ -55,16 +63,16 @@ public sealed record class BetaBashCodeExecutionOutputBlockParam : JsonModel
 
     public BetaBashCodeExecutionOutputBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_output\"");
+        this.Type = JsonSerializer.SerializeToElement("bash_code_execution_output");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaBashCodeExecutionOutputBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

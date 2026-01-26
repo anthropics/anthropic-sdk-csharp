@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta;
 
 namespace Anthropic.Tests.Models.Beta;
@@ -11,7 +12,7 @@ public class BetaBillingErrorTest : TestBase
         var model = new BetaBillingError { Message = "message" };
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"billing_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("billing_error");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -22,8 +23,11 @@ public class BetaBillingErrorTest : TestBase
     {
         var model = new BetaBillingError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaBillingError>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaBillingError>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -33,12 +37,15 @@ public class BetaBillingErrorTest : TestBase
     {
         var model = new BetaBillingError { Message = "message" };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaBillingError>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaBillingError>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"billing_error\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("billing_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

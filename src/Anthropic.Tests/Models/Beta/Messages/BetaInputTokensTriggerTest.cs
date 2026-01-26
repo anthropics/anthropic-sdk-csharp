@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -10,7 +11,7 @@ public class BetaInputTokensTriggerTest : TestBase
     {
         var model = new BetaInputTokensTrigger { Value = 1 };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("input_tokens");
         long expectedValue = 1;
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -22,8 +23,11 @@ public class BetaInputTokensTriggerTest : TestBase
     {
         var model = new BetaInputTokensTrigger { Value = 1 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaInputTokensTrigger>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaInputTokensTrigger>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -33,11 +37,14 @@ public class BetaInputTokensTriggerTest : TestBase
     {
         var model = new BetaInputTokensTrigger { Value = 1 };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaInputTokensTrigger>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaInputTokensTrigger>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("input_tokens");
         long expectedValue = 1;
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

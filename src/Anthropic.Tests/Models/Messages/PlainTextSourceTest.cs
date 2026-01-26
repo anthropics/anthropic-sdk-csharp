@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -11,8 +12,8 @@ public class PlainTextSourceTest : TestBase
         var model = new PlainTextSource { Data = "data" };
 
         string expectedData = "data";
-        JsonElement expectedMediaType = JsonSerializer.Deserialize<JsonElement>("\"text/plain\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        JsonElement expectedMediaType = JsonSerializer.SerializeToElement("text/plain");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
 
         Assert.Equal(expectedData, model.Data);
         Assert.True(JsonElement.DeepEquals(expectedMediaType, model.MediaType));
@@ -24,8 +25,11 @@ public class PlainTextSourceTest : TestBase
     {
         var model = new PlainTextSource { Data = "data" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<PlainTextSource>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<PlainTextSource>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -35,13 +39,16 @@ public class PlainTextSourceTest : TestBase
     {
         var model = new PlainTextSource { Data = "data" };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<PlainTextSource>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<PlainTextSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedData = "data";
-        JsonElement expectedMediaType = JsonSerializer.Deserialize<JsonElement>("\"text/plain\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        JsonElement expectedMediaType = JsonSerializer.SerializeToElement("text/plain");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
 
         Assert.Equal(expectedData, deserialized.Data);
         Assert.True(JsonElement.DeepEquals(expectedMediaType, deserialized.MediaType));

@@ -14,14 +14,22 @@ public sealed record class CitationsDelta : JsonModel
 {
     public required Citation Citation
     {
-        get { return JsonModel.GetNotNullClass<Citation>(this.RawData, "citation"); }
-        init { JsonModel.Set(this._rawData, "citation", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Citation>("citation");
+        }
+        init { this._rawData.Set("citation", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -29,10 +37,7 @@ public sealed record class CitationsDelta : JsonModel
     {
         this.Citation.Validate();
         if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"")
-            )
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("citations_delta"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -41,7 +46,7 @@ public sealed record class CitationsDelta : JsonModel
 
     public CitationsDelta()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("citations_delta");
     }
 
     public CitationsDelta(CitationsDelta citationsDelta)
@@ -49,16 +54,16 @@ public sealed record class CitationsDelta : JsonModel
 
     public CitationsDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("citations_delta");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     CitationsDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -84,7 +89,7 @@ class CitationsDeltaFromRaw : IFromRawJson<CitationsDelta>
 }
 
 [JsonConverter(typeof(CitationConverter))]
-public record class Citation
+public record class Citation : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -92,7 +97,13 @@ public record class Citation
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public string CitedText
@@ -473,7 +484,7 @@ public record class Citation
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -497,6 +508,9 @@ public record class Citation
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class CitationConverter : JsonConverter<Citation>

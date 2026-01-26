@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 using Anthropic.Models.Messages.Batches;
 
@@ -35,7 +36,7 @@ public class MessageBatchIndividualResponseTest : TestBase
                             Text = "Hi! My name is Claude.",
                         },
                     ],
-                    Model = Model.ClaudeOpus4_5_20251101,
+                    Model = Model.ClaudeSonnet4_5_20250929,
                     StopReason = StopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -80,7 +81,7 @@ public class MessageBatchIndividualResponseTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -133,7 +134,7 @@ public class MessageBatchIndividualResponseTest : TestBase
                             Text = "Hi! My name is Claude.",
                         },
                     ],
-                    Model = Model.ClaudeOpus4_5_20251101,
+                    Model = Model.ClaudeSonnet4_5_20250929,
                     StopReason = StopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -154,8 +155,11 @@ public class MessageBatchIndividualResponseTest : TestBase
             ),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchIndividualResponse>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchIndividualResponse>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -189,7 +193,7 @@ public class MessageBatchIndividualResponseTest : TestBase
                             Text = "Hi! My name is Claude.",
                         },
                     ],
-                    Model = Model.ClaudeOpus4_5_20251101,
+                    Model = Model.ClaudeSonnet4_5_20250929,
                     StopReason = StopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -210,8 +214,11 @@ public class MessageBatchIndividualResponseTest : TestBase
             ),
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchIndividualResponse>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchIndividualResponse>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedCustomID = "my-custom-id-1";
@@ -238,7 +245,7 @@ public class MessageBatchIndividualResponseTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -291,7 +298,7 @@ public class MessageBatchIndividualResponseTest : TestBase
                             Text = "Hi! My name is Claude.",
                         },
                     ],
-                    Model = Model.ClaudeOpus4_5_20251101,
+                    Model = Model.ClaudeSonnet4_5_20250929,
                     StopReason = StopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()

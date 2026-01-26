@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages.Batches;
 
 namespace Anthropic.Tests.Models.Messages.Batches;
@@ -10,7 +11,7 @@ public class MessageBatchExpiredResultTest : TestBase
     {
         var model = new MessageBatchExpiredResult { };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("expired");
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -20,8 +21,11 @@ public class MessageBatchExpiredResultTest : TestBase
     {
         var model = new MessageBatchExpiredResult { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchExpiredResult>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchExpiredResult>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -31,11 +35,14 @@ public class MessageBatchExpiredResultTest : TestBase
     {
         var model = new MessageBatchExpiredResult { };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchExpiredResult>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchExpiredResult>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("expired");
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }

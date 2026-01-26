@@ -21,18 +21,20 @@ public sealed record class BetaBashCodeExecutionToolResultError : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<ApiEnum<string, ErrorCode>>(
-                this.RawData,
-                "error_code"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, ErrorCode>>("error_code");
         }
-        init { JsonModel.Set(this._rawData, "error_code", value); }
+        init { this._rawData.Set("error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -42,7 +44,7 @@ public sealed record class BetaBashCodeExecutionToolResultError : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_tool_result_error\"")
+                JsonSerializer.SerializeToElement("bash_code_execution_tool_result_error")
             )
         )
         {
@@ -52,9 +54,7 @@ public sealed record class BetaBashCodeExecutionToolResultError : JsonModel
 
     public BetaBashCodeExecutionToolResultError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"bash_code_execution_tool_result_error\""
-        );
+        this.Type = JsonSerializer.SerializeToElement("bash_code_execution_tool_result_error");
     }
 
     public BetaBashCodeExecutionToolResultError(
@@ -64,18 +64,16 @@ public sealed record class BetaBashCodeExecutionToolResultError : JsonModel
 
     public BetaBashCodeExecutionToolResultError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"bash_code_execution_tool_result_error\""
-        );
+        this.Type = JsonSerializer.SerializeToElement("bash_code_execution_tool_result_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaBashCodeExecutionToolResultError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

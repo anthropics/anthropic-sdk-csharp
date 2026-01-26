@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -13,18 +14,18 @@ public class ImageBlockParamTest : TestBase
             Source = new Base64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         ImageBlockParamSource expectedSource = new Base64ImageSource()
         {
             Data = "U3RhaW5sZXNzIHJvY2tz",
-            MediaType = MediaType.ImageJPEG,
+            MediaType = MediaType.ImageJpeg,
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"image\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("image");
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedSource, model.Source);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -39,13 +40,16 @@ public class ImageBlockParamTest : TestBase
             Source = new Base64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -58,22 +62,25 @@ public class ImageBlockParamTest : TestBase
             Source = new Base64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         ImageBlockParamSource expectedSource = new Base64ImageSource()
         {
             Data = "U3RhaW5sZXNzIHJvY2tz",
-            MediaType = MediaType.ImageJPEG,
+            MediaType = MediaType.ImageJpeg,
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"image\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("image");
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedSource, deserialized.Source);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -88,9 +95,9 @@ public class ImageBlockParamTest : TestBase
             Source = new Base64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -104,7 +111,7 @@ public class ImageBlockParamTest : TestBase
             Source = new Base64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
         };
 
@@ -120,7 +127,7 @@ public class ImageBlockParamTest : TestBase
             Source = new Base64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
         };
 
@@ -135,7 +142,7 @@ public class ImageBlockParamTest : TestBase
             Source = new Base64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
 
             CacheControl = null,
@@ -153,7 +160,7 @@ public class ImageBlockParamTest : TestBase
             Source = new Base64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
 
             CacheControl = null,
@@ -168,45 +175,47 @@ public class ImageBlockParamSourceTest : TestBase
     [Fact]
     public void Base64ImageValidationWorks()
     {
-        ImageBlockParamSource value = new(
-            new Base64ImageSource()
-            {
-                Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
-            }
-        );
+        ImageBlockParamSource value = new Base64ImageSource()
+        {
+            Data = "U3RhaW5sZXNzIHJvY2tz",
+            MediaType = MediaType.ImageJpeg,
+        };
         value.Validate();
     }
 
     [Fact]
-    public void URLImageValidationWorks()
+    public void UrlImageValidationWorks()
     {
-        ImageBlockParamSource value = new(new URLImageSource("url"));
+        ImageBlockParamSource value = new UrlImageSource("url");
         value.Validate();
     }
 
     [Fact]
     public void Base64ImageSerializationRoundtripWorks()
     {
-        ImageBlockParamSource value = new(
-            new Base64ImageSource()
-            {
-                Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
-            }
+        ImageBlockParamSource value = new Base64ImageSource()
+        {
+            Data = "U3RhaW5sZXNzIHJvY2tz",
+            MediaType = MediaType.ImageJpeg,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ImageBlockParamSource>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ImageBlockParamSource>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void URLImageSerializationRoundtripWorks()
+    public void UrlImageSerializationRoundtripWorks()
     {
-        ImageBlockParamSource value = new(new URLImageSource("url"));
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ImageBlockParamSource>(element);
+        ImageBlockParamSource value = new UrlImageSource("url");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ImageBlockParamSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

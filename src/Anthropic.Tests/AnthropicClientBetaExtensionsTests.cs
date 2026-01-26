@@ -24,7 +24,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public void AsIChatClient_ReturnsValidChatClient()
     {
-        var client = new AnthropicClient { APIKey = "test-key" }.Beta;
+        var client = new AnthropicClient { ApiKey = "test-key" }.Beta;
         Assert.NotNull(client.AsIChatClient("claude-haiku-4-5"));
     }
 
@@ -41,7 +41,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [InlineData(int.MinValue)]
     public void AsIChatClient_ThrowsOnNonPositiveDefaultMaxTokens(int defaultMaxTokens)
     {
-        var client = new AnthropicClient { APIKey = "test-key" }.Beta;
+        var client = new AnthropicClient { ApiKey = "test-key" }.Beta;
         Assert.Throws<ArgumentOutOfRangeException>(
             "defaultMaxOutputTokens",
             () => client.AsIChatClient(defaultMaxOutputTokens: defaultMaxTokens)
@@ -51,7 +51,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public void AsIChatClient_GetService_ReturnsClient()
     {
-        AnthropicClient client = new() { APIKey = "test-key" };
+        AnthropicClient client = new() { ApiKey = "test-key" };
         IChatClient chatClient = CreateChatClient(client, "claude-haiku-4-5");
 
         Assert.Same(client.Beta, chatClient.GetService<IBetaService>());
@@ -454,7 +454,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.NotNull(mcpToolCall.Arguments);
         Assert.True(mcpToolCall.Arguments.ContainsKey("query"));
         Assert.NotNull(mcpToolCall.RawRepresentation);
-        Assert.IsType<BetaMCPToolUseBlock>(mcpToolCall.RawRepresentation);
+        Assert.IsType<BetaMcpToolUseBlock>(mcpToolCall.RawRepresentation);
     }
 
     [Fact]
@@ -514,7 +514,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.Single(mcpResult.Output);
         Assert.Equal("Result from MCP tool", ((TextContent)mcpResult.Output[0]).Text);
         Assert.NotNull(mcpResult.RawRepresentation);
-        Assert.IsType<BetaMCPToolResultBlock>(mcpResult.RawRepresentation);
+        Assert.IsType<BetaMcpToolResultBlock>(mcpResult.RawRepresentation);
     }
 
     [Fact]
@@ -1122,10 +1122,12 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                     "name": "enhanced_tool",
                     "description": "A tool with additional properties",
                     "input_schema": {
-                        "query": {
-                            "type": "string"
-                        },
                         "type": "object",
+                        "properties": {
+                            "query": {
+                                "type": "string"
+                            }
+                        },
                         "required": ["query"]
                     },
                     "defer_loading": true,
@@ -1215,10 +1217,12 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                     "name": "strict_tool",
                     "description": "A tool with only strict property",
                     "input_schema": {
-                        "value": {
-                            "type": "integer"
-                        },
                         "type": "object",
+                        "properties": {
+                            "value": {
+                                "type": "integer"
+                            }
+                        },
                         "required": ["value"]
                     },
                     "strict": true

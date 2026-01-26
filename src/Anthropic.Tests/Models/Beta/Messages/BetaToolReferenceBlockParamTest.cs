@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -11,12 +12,12 @@ public class BetaToolReferenceBlockParamTest : TestBase
         var model = new BetaToolReferenceBlockParam
         {
             ToolName = "tool_name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string expectedToolName = "tool_name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_reference");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedToolName, model.ToolName);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -29,11 +30,14 @@ public class BetaToolReferenceBlockParamTest : TestBase
         var model = new BetaToolReferenceBlockParam
         {
             ToolName = "tool_name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolReferenceBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolReferenceBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -44,16 +48,19 @@ public class BetaToolReferenceBlockParamTest : TestBase
         var model = new BetaToolReferenceBlockParam
         {
             ToolName = "tool_name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolReferenceBlockParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolReferenceBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedToolName = "tool_name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_reference");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedToolName, deserialized.ToolName);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -66,7 +73,7 @@ public class BetaToolReferenceBlockParamTest : TestBase
         var model = new BetaToolReferenceBlockParam
         {
             ToolName = "tool_name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();

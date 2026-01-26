@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -11,7 +12,7 @@ public class TextDeltaTest : TestBase
         var model = new TextDelta { Text = "text" };
 
         string expectedText = "text";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_delta");
 
         Assert.Equal(expectedText, model.Text);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -22,8 +23,8 @@ public class TextDeltaTest : TestBase
     {
         var model = new TextDelta { Text = "text" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<TextDelta>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<TextDelta>(json, ModelBase.SerializerOptions);
 
         Assert.Equal(model, deserialized);
     }
@@ -33,12 +34,15 @@ public class TextDeltaTest : TestBase
     {
         var model = new TextDelta { Text = "text" };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<TextDelta>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<TextDelta>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedText = "text";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text_delta\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_delta");
 
         Assert.Equal(expectedText, deserialized.Text);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

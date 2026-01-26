@@ -14,7 +14,7 @@ public class BetaMemoryTool20250818Test : TestBase
         var model = new BetaMemoryTool20250818
         {
             AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -26,13 +26,13 @@ public class BetaMemoryTool20250818Test : TestBase
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"memory\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"memory_20250818\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("memory");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_20250818");
         List<ApiEnum<string, BetaMemoryTool20250818AllowedCaller>> expectedAllowedCallers =
         [
             BetaMemoryTool20250818AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
@@ -74,7 +74,7 @@ public class BetaMemoryTool20250818Test : TestBase
         var model = new BetaMemoryTool20250818
         {
             AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -86,8 +86,11 @@ public class BetaMemoryTool20250818Test : TestBase
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -98,7 +101,7 @@ public class BetaMemoryTool20250818Test : TestBase
         var model = new BetaMemoryTool20250818
         {
             AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -110,17 +113,20 @@ public class BetaMemoryTool20250818Test : TestBase
             Strict = true,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"memory\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"memory_20250818\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("memory");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_20250818");
         List<ApiEnum<string, BetaMemoryTool20250818AllowedCaller>> expectedAllowedCallers =
         [
             BetaMemoryTool20250818AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
@@ -162,7 +168,7 @@ public class BetaMemoryTool20250818Test : TestBase
         var model = new BetaMemoryTool20250818
         {
             AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -180,7 +186,7 @@ public class BetaMemoryTool20250818Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaMemoryTool20250818 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaMemoryTool20250818 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         Assert.Null(model.AllowedCallers);
         Assert.False(model.RawData.ContainsKey("allowed_callers"));
@@ -195,7 +201,7 @@ public class BetaMemoryTool20250818Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaMemoryTool20250818 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaMemoryTool20250818 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         model.Validate();
     }
@@ -205,7 +211,7 @@ public class BetaMemoryTool20250818Test : TestBase
     {
         var model = new BetaMemoryTool20250818
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -229,7 +235,7 @@ public class BetaMemoryTool20250818Test : TestBase
     {
         var model = new BetaMemoryTool20250818
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -345,10 +351,7 @@ public class BetaMemoryTool20250818AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaMemoryTool20250818AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -375,10 +378,7 @@ public class BetaMemoryTool20250818AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaMemoryTool20250818AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaMemoryTool20250818AllowedCaller>

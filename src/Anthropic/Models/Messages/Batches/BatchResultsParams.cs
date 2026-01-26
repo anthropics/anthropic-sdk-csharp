@@ -24,15 +24,18 @@ public sealed record class BatchResultsParams : ParamsBase
     public BatchResultsParams() { }
 
     public BatchResultsParams(BatchResultsParams batchResultsParams)
-        : base(batchResultsParams) { }
+        : base(batchResultsParams)
+    {
+        this.MessageBatchID = batchResultsParams.MessageBatchID;
+    }
 
     public BatchResultsParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
     }
 
 #pragma warning disable CS8618
@@ -42,8 +45,8 @@ public sealed record class BatchResultsParams : ParamsBase
         FrozenDictionary<string, JsonElement> rawQueryData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
     }
 #pragma warning restore CS8618
 

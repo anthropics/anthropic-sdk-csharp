@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -22,9 +23,7 @@ public class BetaCitationContentBlockLocationParamTest : TestBase
         string expectedDocumentTitle = "x";
         long expectedEndBlockIndex = 0;
         long expectedStartBlockIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_location\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_location");
 
         Assert.Equal(expectedCitedText, model.CitedText);
         Assert.Equal(expectedDocumentIndex, model.DocumentIndex);
@@ -46,8 +45,11 @@ public class BetaCitationContentBlockLocationParamTest : TestBase
             StartBlockIndex = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCitationContentBlockLocationParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationContentBlockLocationParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -64,9 +66,10 @@ public class BetaCitationContentBlockLocationParamTest : TestBase
             StartBlockIndex = 0,
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaCitationContentBlockLocationParam>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
@@ -75,9 +78,7 @@ public class BetaCitationContentBlockLocationParamTest : TestBase
         string expectedDocumentTitle = "x";
         long expectedEndBlockIndex = 0;
         long expectedStartBlockIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_location\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_location");
 
         Assert.Equal(expectedCitedText, deserialized.CitedText);
         Assert.Equal(expectedDocumentIndex, deserialized.DocumentIndex);

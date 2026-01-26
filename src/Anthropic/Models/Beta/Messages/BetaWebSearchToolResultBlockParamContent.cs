@@ -3,13 +3,14 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaWebSearchToolResultBlockParamContentConverter))]
-public record class BetaWebSearchToolResultBlockParamContent
+public record class BetaWebSearchToolResultBlockParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -17,7 +18,13 @@ public record class BetaWebSearchToolResultBlockParamContent
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public BetaWebSearchToolResultBlockParamContent(
@@ -114,7 +121,7 @@ public record class BetaWebSearchToolResultBlockParamContent
     {
         switch (this.Value)
         {
-            case List<BetaWebSearchResultBlockParam> value:
+            case IReadOnlyList<BetaWebSearchResultBlockParam> value:
                 resultBlock(value);
                 break;
             case BetaWebSearchToolRequestError value:
@@ -181,7 +188,7 @@ public record class BetaWebSearchToolResultBlockParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -201,6 +208,9 @@ public record class BetaWebSearchToolResultBlockParamContent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaWebSearchToolResultBlockParamContentConverter

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -20,9 +21,7 @@ public class WebSearchToolResultBlockTest : TestBase
             WebSearchToolResultErrorErrorCode.InvalidToolInput
         );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_tool_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
@@ -40,8 +39,11 @@ public class WebSearchToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlock>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlock>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -57,17 +59,18 @@ public class WebSearchToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlock>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         WebSearchToolResultBlockContent expectedContent = new WebSearchToolResultError(
             WebSearchToolResultErrorErrorCode.InvalidToolInput
         );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_tool_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);

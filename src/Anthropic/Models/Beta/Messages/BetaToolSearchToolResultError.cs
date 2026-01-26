@@ -18,23 +18,32 @@ public sealed record class BetaToolSearchToolResultError : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<
                 ApiEnum<string, BetaToolSearchToolResultErrorErrorCode>
-            >(this.RawData, "error_code");
+            >("error_code");
         }
-        init { JsonModel.Set(this._rawData, "error_code", value); }
+        init { this._rawData.Set("error_code", value); }
     }
 
     public required string? ErrorMessage
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "error_message"); }
-        init { JsonModel.Set(this._rawData, "error_message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("error_message");
+        }
+        init { this._rawData.Set("error_message", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -45,7 +54,7 @@ public sealed record class BetaToolSearchToolResultError : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_result_error\"")
+                JsonSerializer.SerializeToElement("tool_search_tool_result_error")
             )
         )
         {
@@ -55,7 +64,7 @@ public sealed record class BetaToolSearchToolResultError : JsonModel
 
     public BetaToolSearchToolResultError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_search_tool_result_error");
     }
 
     public BetaToolSearchToolResultError(
@@ -65,16 +74,16 @@ public sealed record class BetaToolSearchToolResultError : JsonModel
 
     public BetaToolSearchToolResultError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_search_tool_result_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaToolSearchToolResultError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

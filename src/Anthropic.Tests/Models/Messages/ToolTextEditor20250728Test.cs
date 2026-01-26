@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -10,17 +11,13 @@ public class ToolTextEditor20250728Test : TestBase
     {
         var model = new ToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"str_replace_based_edit_tool\""
-        );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_20250728\""
-        );
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedName = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_editor_20250728");
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         long expectedMaxCharacters = 1;
 
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
@@ -34,12 +31,15 @@ public class ToolTextEditor20250728Test : TestBase
     {
         var model = new ToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250728>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250728>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -49,21 +49,20 @@ public class ToolTextEditor20250728Test : TestBase
     {
         var model = new ToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250728>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250728>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"str_replace_based_edit_tool\""
-        );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_20250728\""
-        );
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedName = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_editor_20250728");
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         long expectedMaxCharacters = 1;
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
@@ -77,7 +76,7 @@ public class ToolTextEditor20250728Test : TestBase
     {
         var model = new ToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
         };
 

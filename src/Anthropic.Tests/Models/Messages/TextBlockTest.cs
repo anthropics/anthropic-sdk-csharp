@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -39,7 +40,7 @@ public class TextBlockTest : TestBase
             },
         ];
         string expectedText = "text";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
 
         Assert.NotNull(model.Citations);
         Assert.Equal(expectedCitations.Count, model.Citations.Count);
@@ -71,8 +72,8 @@ public class TextBlockTest : TestBase
             Text = "text",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<TextBlock>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<TextBlock>(json, ModelBase.SerializerOptions);
 
         Assert.Equal(model, deserialized);
     }
@@ -97,8 +98,11 @@ public class TextBlockTest : TestBase
             Text = "text",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<TextBlock>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<TextBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         List<TextCitation> expectedCitations =
@@ -114,7 +118,7 @@ public class TextBlockTest : TestBase
             },
         ];
         string expectedText = "text";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
 
         Assert.NotNull(deserialized.Citations);
         Assert.Equal(expectedCitations.Count, deserialized.Citations.Count);

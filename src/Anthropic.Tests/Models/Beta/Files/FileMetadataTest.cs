@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Files;
 
 namespace Anthropic.Tests.Models.Beta.Files;
@@ -24,7 +25,7 @@ public class FileMetadataTest : TestBase
         string expectedFilename = "x";
         string expectedMimeType = "x";
         long expectedSizeBytes = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("file");
         bool expectedDownloadable = true;
 
         Assert.Equal(expectedID, model.ID);
@@ -49,8 +50,11 @@ public class FileMetadataTest : TestBase
             Downloadable = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<FileMetadata>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<FileMetadata>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -68,8 +72,11 @@ public class FileMetadataTest : TestBase
             Downloadable = true,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<FileMetadata>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<FileMetadata>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedID = "id";
@@ -77,7 +84,7 @@ public class FileMetadataTest : TestBase
         string expectedFilename = "x";
         string expectedMimeType = "x";
         long expectedSizeBytes = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("file");
         bool expectedDownloadable = true;
 
         Assert.Equal(expectedID, deserialized.ID);

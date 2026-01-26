@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -12,9 +13,7 @@ public class RawContentBlockDeltaEventTest : TestBase
 
         RawContentBlockDelta expectedDelta = new TextDelta("text");
         long expectedIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_delta\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_delta");
 
         Assert.Equal(expectedDelta, model.Delta);
         Assert.Equal(expectedIndex, model.Index);
@@ -26,8 +25,11 @@ public class RawContentBlockDeltaEventTest : TestBase
     {
         var model = new RawContentBlockDeltaEvent { Delta = new TextDelta("text"), Index = 0 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockDeltaEvent>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockDeltaEvent>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -37,15 +39,16 @@ public class RawContentBlockDeltaEventTest : TestBase
     {
         var model = new RawContentBlockDeltaEvent { Delta = new TextDelta("text"), Index = 0 };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockDeltaEvent>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockDeltaEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         RawContentBlockDelta expectedDelta = new TextDelta("text");
         long expectedIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_delta\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_delta");
 
         Assert.Equal(expectedDelta, deserialized.Delta);
         Assert.Equal(expectedIndex, deserialized.Index);

@@ -16,21 +16,140 @@ public sealed class VersionService : IVersionService
         request.Headers.Add("anthropic-beta", "skills-2025-10-02");
     }
 
+    readonly Lazy<IVersionServiceWithRawResponse> _withRawResponse;
+
+    /// <inheritdoc/>
+    public IVersionServiceWithRawResponse WithRawResponse
+    {
+        get { return _withRawResponse.Value; }
+    }
+
+    readonly IAnthropicClient _client;
+
     /// <inheritdoc/>
     public IVersionService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new VersionService(this._client.WithOptions(modifier));
     }
 
-    readonly IAnthropicClient _client;
-
     public VersionService(IAnthropicClient client)
+    {
+        _client = client;
+
+        _withRawResponse = new(() => new VersionServiceWithRawResponse(client.WithRawResponse));
+    }
+
+    /// <inheritdoc/>
+    public async Task<VersionCreateResponse> Create(
+        VersionCreateParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var response = await this
+            .WithRawResponse.Create(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public Task<VersionCreateResponse> Create(
+        string skillID,
+        VersionCreateParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.Create(parameters with { SkillID = skillID }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public async Task<VersionRetrieveResponse> Retrieve(
+        VersionRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var response = await this
+            .WithRawResponse.Retrieve(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public Task<VersionRetrieveResponse> Retrieve(
+        string version,
+        VersionRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return this.Retrieve(parameters with { Version = version }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public async Task<VersionListPage> List(
+        VersionListParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var response = await this
+            .WithRawResponse.List(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public Task<VersionListPage> List(
+        string skillID,
+        VersionListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.List(parameters with { SkillID = skillID }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public async Task<VersionDeleteResponse> Delete(
+        VersionDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var response = await this
+            .WithRawResponse.Delete(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public Task<VersionDeleteResponse> Delete(
+        string version,
+        VersionDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return this.Delete(parameters with { Version = version }, cancellationToken);
+    }
+}
+
+/// <inheritdoc/>
+public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawResponse
+{
+    readonly IAnthropicClientWithRawResponse _client;
+
+    /// <inheritdoc/>
+    public IVersionServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new VersionServiceWithRawResponse(this._client.WithOptions(modifier));
+    }
+
+    public VersionServiceWithRawResponse(IAnthropicClientWithRawResponse client)
     {
         _client = client;
     }
 
     /// <inheritdoc/>
-    public async Task<VersionCreateResponse> Create(
+    public async Task<HttpResponse<VersionCreateResponse>> Create(
         VersionCreateParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -45,21 +164,25 @@ public sealed class VersionService : IVersionService
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this
-            ._client.Execute(request, cancellationToken)
-            .ConfigureAwait(false);
-        var version = await response
-            .Deserialize<VersionCreateResponse>(cancellationToken)
-            .ConfigureAwait(false);
-        if (this._client.ResponseValidation)
-        {
-            version.Validate();
-        }
-        return version;
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var version = await response
+                    .Deserialize<VersionCreateResponse>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    version.Validate();
+                }
+                return version;
+            }
+        );
     }
 
     /// <inheritdoc/>
-    public async Task<VersionCreateResponse> Create(
+    public Task<HttpResponse<VersionCreateResponse>> Create(
         string skillID,
         VersionCreateParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -67,11 +190,11 @@ public sealed class VersionService : IVersionService
     {
         parameters ??= new();
 
-        return await this.Create(parameters with { SkillID = skillID }, cancellationToken);
+        return this.Create(parameters with { SkillID = skillID }, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public async Task<VersionRetrieveResponse> Retrieve(
+    public async Task<HttpResponse<VersionRetrieveResponse>> Retrieve(
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -86,31 +209,35 @@ public sealed class VersionService : IVersionService
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this
-            ._client.Execute(request, cancellationToken)
-            .ConfigureAwait(false);
-        var version = await response
-            .Deserialize<VersionRetrieveResponse>(cancellationToken)
-            .ConfigureAwait(false);
-        if (this._client.ResponseValidation)
-        {
-            version.Validate();
-        }
-        return version;
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var version = await response
+                    .Deserialize<VersionRetrieveResponse>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    version.Validate();
+                }
+                return version;
+            }
+        );
     }
 
     /// <inheritdoc/>
-    public async Task<VersionRetrieveResponse> Retrieve(
+    public Task<HttpResponse<VersionRetrieveResponse>> Retrieve(
         string version,
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        return await this.Retrieve(parameters with { Version = version }, cancellationToken);
+        return this.Retrieve(parameters with { Version = version }, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public async Task<VersionListPageResponse> List(
+    public async Task<HttpResponse<VersionListPage>> List(
         VersionListParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -125,21 +252,25 @@ public sealed class VersionService : IVersionService
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this
-            ._client.Execute(request, cancellationToken)
-            .ConfigureAwait(false);
-        var page = await response
-            .Deserialize<VersionListPageResponse>(cancellationToken)
-            .ConfigureAwait(false);
-        if (this._client.ResponseValidation)
-        {
-            page.Validate();
-        }
-        return page;
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var page = await response
+                    .Deserialize<VersionListPageResponse>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    page.Validate();
+                }
+                return new VersionListPage(this, parameters, page);
+            }
+        );
     }
 
     /// <inheritdoc/>
-    public async Task<VersionListPageResponse> List(
+    public Task<HttpResponse<VersionListPage>> List(
         string skillID,
         VersionListParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -147,11 +278,11 @@ public sealed class VersionService : IVersionService
     {
         parameters ??= new();
 
-        return await this.List(parameters with { SkillID = skillID }, cancellationToken);
+        return this.List(parameters with { SkillID = skillID }, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public async Task<VersionDeleteResponse> Delete(
+    public async Task<HttpResponse<VersionDeleteResponse>> Delete(
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -166,26 +297,30 @@ public sealed class VersionService : IVersionService
             Method = HttpMethod.Delete,
             Params = parameters,
         };
-        using var response = await this
-            ._client.Execute(request, cancellationToken)
-            .ConfigureAwait(false);
-        var version = await response
-            .Deserialize<VersionDeleteResponse>(cancellationToken)
-            .ConfigureAwait(false);
-        if (this._client.ResponseValidation)
-        {
-            version.Validate();
-        }
-        return version;
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var version = await response
+                    .Deserialize<VersionDeleteResponse>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    version.Validate();
+                }
+                return version;
+            }
+        );
     }
 
     /// <inheritdoc/>
-    public async Task<VersionDeleteResponse> Delete(
+    public Task<HttpResponse<VersionDeleteResponse>> Delete(
         string version,
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        return await this.Delete(parameters with { Version = version }, cancellationToken);
+        return this.Delete(parameters with { Version = version }, cancellationToken);
     }
 }

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -20,8 +21,11 @@ public class BetaMetadataTest : TestBase
     {
         var model = new BetaMetadata { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMetadata>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMetadata>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -31,8 +35,11 @@ public class BetaMetadataTest : TestBase
     {
         var model = new BetaMetadata { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMetadata>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMetadata>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedUserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b";

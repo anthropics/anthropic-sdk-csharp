@@ -16,7 +16,7 @@ public class BetaToolComputerUse20241022Test : TestBase
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
             AllowedCallers = [BetaToolComputerUse20241022AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             DisplayNumber = 0,
             InputExamples =
@@ -31,13 +31,13 @@ public class BetaToolComputerUse20241022Test : TestBase
 
         long expectedDisplayHeightPx = 1;
         long expectedDisplayWidthPx = 1;
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"computer\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"computer_20241022\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("computer");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("computer_20241022");
         List<ApiEnum<string, BetaToolComputerUse20241022AllowedCaller>> expectedAllowedCallers =
         [
             BetaToolComputerUse20241022AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         long expectedDisplayNumber = 0;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -85,7 +85,7 @@ public class BetaToolComputerUse20241022Test : TestBase
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
             AllowedCallers = [BetaToolComputerUse20241022AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             DisplayNumber = 0,
             InputExamples =
@@ -98,8 +98,11 @@ public class BetaToolComputerUse20241022Test : TestBase
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20241022>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20241022>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -112,7 +115,7 @@ public class BetaToolComputerUse20241022Test : TestBase
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
             AllowedCallers = [BetaToolComputerUse20241022AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             DisplayNumber = 0,
             InputExamples =
@@ -125,19 +128,22 @@ public class BetaToolComputerUse20241022Test : TestBase
             Strict = true,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20241022>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20241022>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         long expectedDisplayHeightPx = 1;
         long expectedDisplayWidthPx = 1;
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"computer\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"computer_20241022\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("computer");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("computer_20241022");
         List<ApiEnum<string, BetaToolComputerUse20241022AllowedCaller>> expectedAllowedCallers =
         [
             BetaToolComputerUse20241022AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         long expectedDisplayNumber = 0;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -185,7 +191,7 @@ public class BetaToolComputerUse20241022Test : TestBase
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
             AllowedCallers = [BetaToolComputerUse20241022AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             DisplayNumber = 0,
             InputExamples =
@@ -208,7 +214,7 @@ public class BetaToolComputerUse20241022Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DisplayNumber = 0,
         };
 
@@ -229,7 +235,7 @@ public class BetaToolComputerUse20241022Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DisplayNumber = 0,
         };
 
@@ -243,7 +249,7 @@ public class BetaToolComputerUse20241022Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DisplayNumber = 0,
 
             // Null should be interpreted as omitted for these properties
@@ -270,7 +276,7 @@ public class BetaToolComputerUse20241022Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DisplayNumber = 0,
 
             // Null should be interpreted as omitted for these properties
@@ -401,10 +407,7 @@ public class BetaToolComputerUse20241022AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolComputerUse20241022AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -431,10 +434,7 @@ public class BetaToolComputerUse20241022AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolComputerUse20241022AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolComputerUse20241022AllowedCaller>

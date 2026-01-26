@@ -21,24 +21,32 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<BetaBashCodeExecutionToolResultBlockParamContent>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaBashCodeExecutionToolResultBlockParamContent>(
                 "content"
             );
         }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_use_id");
+        }
+        init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -48,12 +56,10 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <inheritdoc/>
@@ -64,7 +70,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_tool_result\"")
+                JsonSerializer.SerializeToElement("bash_code_execution_tool_result")
             )
         )
         {
@@ -75,7 +81,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam : JsonModel
 
     public BetaBashCodeExecutionToolResultBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("bash_code_execution_tool_result");
     }
 
     public BetaBashCodeExecutionToolResultBlockParam(
@@ -87,16 +93,16 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam : JsonModel
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("bash_code_execution_tool_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaBashCodeExecutionToolResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -119,7 +125,7 @@ class BetaBashCodeExecutionToolResultBlockParamFromRaw
 }
 
 [JsonConverter(typeof(BetaBashCodeExecutionToolResultBlockParamContentConverter))]
-public record class BetaBashCodeExecutionToolResultBlockParamContent
+public record class BetaBashCodeExecutionToolResultBlockParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -127,7 +133,13 @@ public record class BetaBashCodeExecutionToolResultBlockParamContent
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -310,7 +322,7 @@ public record class BetaBashCodeExecutionToolResultBlockParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -335,6 +347,9 @@ public record class BetaBashCodeExecutionToolResultBlockParamContent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaBashCodeExecutionToolResultBlockParamContentConverter

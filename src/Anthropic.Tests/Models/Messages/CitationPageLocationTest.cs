@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -24,7 +25,7 @@ public class CitationPageLocationTest : TestBase
         long expectedEndPageNumber = 0;
         string expectedFileID = "file_id";
         long expectedStartPageNumber = 1;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"page_location\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("page_location");
 
         Assert.Equal(expectedCitedText, model.CitedText);
         Assert.Equal(expectedDocumentIndex, model.DocumentIndex);
@@ -48,8 +49,11 @@ public class CitationPageLocationTest : TestBase
             StartPageNumber = 1,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CitationPageLocation>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<CitationPageLocation>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -67,8 +71,11 @@ public class CitationPageLocationTest : TestBase
             StartPageNumber = 1,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CitationPageLocation>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<CitationPageLocation>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedCitedText = "cited_text";
@@ -77,7 +84,7 @@ public class CitationPageLocationTest : TestBase
         long expectedEndPageNumber = 0;
         string expectedFileID = "file_id";
         long expectedStartPageNumber = 1;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"page_location\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("page_location");
 
         Assert.Equal(expectedCitedText, deserialized.CitedText);
         Assert.Equal(expectedDocumentIndex, deserialized.DocumentIndex);

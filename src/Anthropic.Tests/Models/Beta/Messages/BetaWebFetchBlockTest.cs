@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -13,27 +14,27 @@ public class BetaWebFetchBlockTest : TestBase
             Content = new()
             {
                 Citations = new(true),
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
                 Title = "title",
             },
             RetrievedAt = "retrieved_at",
-            URL = "url",
+            Url = "url",
         };
 
         BetaDocumentBlock expectedContent = new()
         {
             Citations = new(true),
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
             Title = "title",
         };
         string expectedRetrievedAt = "retrieved_at";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
-        string expectedURL = "url";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_result");
+        string expectedUrl = "url";
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedRetrievedAt, model.RetrievedAt);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
-        Assert.Equal(expectedURL, model.URL);
+        Assert.Equal(expectedUrl, model.Url);
     }
 
     [Fact]
@@ -44,15 +45,18 @@ public class BetaWebFetchBlockTest : TestBase
             Content = new()
             {
                 Citations = new(true),
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
                 Title = "title",
             },
             RetrievedAt = "retrieved_at",
-            URL = "url",
+            Url = "url",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlock>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlock>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -65,31 +69,34 @@ public class BetaWebFetchBlockTest : TestBase
             Content = new()
             {
                 Citations = new(true),
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
                 Title = "title",
             },
             RetrievedAt = "retrieved_at",
-            URL = "url",
+            Url = "url",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlock>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         BetaDocumentBlock expectedContent = new()
         {
             Citations = new(true),
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
             Title = "title",
         };
         string expectedRetrievedAt = "retrieved_at";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
-        string expectedURL = "url";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_result");
+        string expectedUrl = "url";
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedRetrievedAt, deserialized.RetrievedAt);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
-        Assert.Equal(expectedURL, deserialized.URL);
+        Assert.Equal(expectedUrl, deserialized.Url);
     }
 
     [Fact]
@@ -100,11 +107,11 @@ public class BetaWebFetchBlockTest : TestBase
             Content = new()
             {
                 Citations = new(true),
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
                 Title = "title",
             },
             RetrievedAt = "retrieved_at",
-            URL = "url",
+            Url = "url",
         };
 
         model.Validate();

@@ -23,7 +23,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
             Type = Type.Custom,
         };
@@ -38,7 +38,7 @@ public class ToolTest : TestBase
             Required = ["location"],
         };
         string expectedName = "name";
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         string expectedDescription = "Get the current weather in a given location";
         ApiEnum<string, Type> expectedType = Type.Custom;
 
@@ -64,13 +64,13 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
             Type = Type.Custom,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Tool>(json, ModelBase.SerializerOptions);
 
         Assert.Equal(model, deserialized);
     }
@@ -90,13 +90,13 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
             Type = Type.Custom,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Tool>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
         Assert.NotNull(deserialized);
 
         InputSchema expectedInputSchema = new()
@@ -109,7 +109,7 @@ public class ToolTest : TestBase
             Required = ["location"],
         };
         string expectedName = "name";
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         string expectedDescription = "Get the current weather in a given location";
         ApiEnum<string, Type> expectedType = Type.Custom;
 
@@ -135,7 +135,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
             Type = Type.Custom,
         };
@@ -158,7 +158,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = Type.Custom,
         };
 
@@ -181,7 +181,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = Type.Custom,
         };
 
@@ -203,7 +203,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = Type.Custom,
 
             // Null should be interpreted as omitted for these properties
@@ -229,7 +229,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = Type.Custom,
 
             // Null should be interpreted as omitted for these properties
@@ -351,7 +351,7 @@ public class InputSchemaTest : TestBase
             Required = ["location"],
         };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"object\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("object");
         Dictionary<string, JsonElement> expectedProperties = new()
         {
             { "location", JsonSerializer.SerializeToElement("bar") },
@@ -389,8 +389,11 @@ public class InputSchemaTest : TestBase
             Required = ["location"],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<InputSchema>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<InputSchema>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -408,11 +411,14 @@ public class InputSchemaTest : TestBase
             Required = ["location"],
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<InputSchema>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<InputSchema>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"object\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("object");
         Dictionary<string, JsonElement> expectedProperties = new()
         {
             { "location", JsonSerializer.SerializeToElement("bar") },
@@ -507,7 +513,7 @@ public class TypeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, Type>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -535,7 +541,7 @@ public class TypeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, Type>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

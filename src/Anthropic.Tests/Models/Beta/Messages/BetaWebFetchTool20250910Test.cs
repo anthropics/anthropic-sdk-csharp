@@ -16,7 +16,7 @@ public class BetaWebFetchTool20250910Test : TestBase
             AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             DeferLoading = true,
             MaxContentTokens = 1,
@@ -24,17 +24,15 @@ public class BetaWebFetchTool20250910Test : TestBase
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_fetch\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_fetch_20250910\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_fetch");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_20250910");
         List<ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>> expectedAllowedCallers =
         [
             BetaWebFetchTool20250910AllowedCaller.Direct,
         ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCitationsConfigParam expectedCitations = new() { Enabled = true };
         bool expectedDeferLoading = true;
         long expectedMaxContentTokens = 1;
@@ -77,7 +75,7 @@ public class BetaWebFetchTool20250910Test : TestBase
             AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             DeferLoading = true,
             MaxContentTokens = 1,
@@ -85,8 +83,11 @@ public class BetaWebFetchTool20250910Test : TestBase
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -99,7 +100,7 @@ public class BetaWebFetchTool20250910Test : TestBase
             AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             DeferLoading = true,
             MaxContentTokens = 1,
@@ -107,21 +108,22 @@ public class BetaWebFetchTool20250910Test : TestBase
             Strict = true,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_fetch\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_fetch_20250910\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_fetch");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_20250910");
         List<ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>> expectedAllowedCallers =
         [
             BetaWebFetchTool20250910AllowedCaller.Direct,
         ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCitationsConfigParam expectedCitations = new() { Enabled = true };
         bool expectedDeferLoading = true;
         long expectedMaxContentTokens = 1;
@@ -164,7 +166,7 @@ public class BetaWebFetchTool20250910Test : TestBase
             AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             DeferLoading = true,
             MaxContentTokens = 1,
@@ -182,7 +184,7 @@ public class BetaWebFetchTool20250910Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
@@ -203,7 +205,7 @@ public class BetaWebFetchTool20250910Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
@@ -219,7 +221,7 @@ public class BetaWebFetchTool20250910Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
@@ -245,7 +247,7 @@ public class BetaWebFetchTool20250910Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
@@ -365,10 +367,7 @@ public class BetaWebFetchTool20250910AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -395,10 +394,7 @@ public class BetaWebFetchTool20250910AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>

@@ -17,8 +17,12 @@ public sealed record class Usage : JsonModel
     /// </summary>
     public required CacheCreation? CacheCreation
     {
-        get { return JsonModel.GetNullableClass<CacheCreation>(this.RawData, "cache_creation"); }
-        init { JsonModel.Set(this._rawData, "cache_creation", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheCreation>("cache_creation");
+        }
+        init { this._rawData.Set("cache_creation", value); }
     }
 
     /// <summary>
@@ -28,9 +32,10 @@ public sealed record class Usage : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableStruct<long>(this.RawData, "cache_creation_input_tokens");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("cache_creation_input_tokens");
         }
-        init { JsonModel.Set(this._rawData, "cache_creation_input_tokens", value); }
+        init { this._rawData.Set("cache_creation_input_tokens", value); }
     }
 
     /// <summary>
@@ -38,8 +43,12 @@ public sealed record class Usage : JsonModel
     /// </summary>
     public required long? CacheReadInputTokens
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawData, "cache_read_input_tokens"); }
-        init { JsonModel.Set(this._rawData, "cache_read_input_tokens", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("cache_read_input_tokens");
+        }
+        init { this._rawData.Set("cache_read_input_tokens", value); }
     }
 
     /// <summary>
@@ -47,8 +56,12 @@ public sealed record class Usage : JsonModel
     /// </summary>
     public required long InputTokens
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "input_tokens"); }
-        init { JsonModel.Set(this._rawData, "input_tokens", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("input_tokens");
+        }
+        init { this._rawData.Set("input_tokens", value); }
     }
 
     /// <summary>
@@ -56,8 +69,12 @@ public sealed record class Usage : JsonModel
     /// </summary>
     public required long OutputTokens
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "output_tokens"); }
-        init { JsonModel.Set(this._rawData, "output_tokens", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("output_tokens");
+        }
+        init { this._rawData.Set("output_tokens", value); }
     }
 
     /// <summary>
@@ -65,8 +82,12 @@ public sealed record class Usage : JsonModel
     /// </summary>
     public required ServerToolUsage? ServerToolUse
     {
-        get { return JsonModel.GetNullableClass<ServerToolUsage>(this.RawData, "server_tool_use"); }
-        init { JsonModel.Set(this._rawData, "server_tool_use", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ServerToolUsage>("server_tool_use");
+        }
+        init { this._rawData.Set("server_tool_use", value); }
     }
 
     /// <summary>
@@ -76,12 +97,12 @@ public sealed record class Usage : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<ApiEnum<string, UsageServiceTier>>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, UsageServiceTier>>(
                 "service_tier"
             );
         }
-        init { JsonModel.Set(this._rawData, "service_tier", value); }
+        init { this._rawData.Set("service_tier", value); }
     }
 
     /// <inheritdoc/>
@@ -103,14 +124,14 @@ public sealed record class Usage : JsonModel
 
     public Usage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     Usage(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

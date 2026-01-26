@@ -13,14 +13,22 @@ public sealed record class InvalidRequestError : JsonModel
 {
     public required string Message
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "message"); }
-        init { JsonModel.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -30,7 +38,7 @@ public sealed record class InvalidRequestError : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"")
+                JsonSerializer.SerializeToElement("invalid_request_error")
             )
         )
         {
@@ -40,7 +48,7 @@ public sealed record class InvalidRequestError : JsonModel
 
     public InvalidRequestError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"");
+        this.Type = JsonSerializer.SerializeToElement("invalid_request_error");
     }
 
     public InvalidRequestError(InvalidRequestError invalidRequestError)
@@ -48,16 +56,16 @@ public sealed record class InvalidRequestError : JsonModel
 
     public InvalidRequestError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"");
+        this.Type = JsonSerializer.SerializeToElement("invalid_request_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     InvalidRequestError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

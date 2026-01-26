@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 using Anthropic.Models.Messages.Batches;
 
@@ -33,7 +34,7 @@ public class MessageBatchSucceededResultTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -75,7 +76,7 @@ public class MessageBatchSucceededResultTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -89,7 +90,7 @@ public class MessageBatchSucceededResultTest : TestBase
                 ServiceTier = UsageServiceTier.Standard,
             },
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("succeeded");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -122,7 +123,7 @@ public class MessageBatchSucceededResultTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -142,8 +143,11 @@ public class MessageBatchSucceededResultTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchSucceededResult>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchSucceededResult>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -175,7 +179,7 @@ public class MessageBatchSucceededResultTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -195,8 +199,11 @@ public class MessageBatchSucceededResultTest : TestBase
             },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchSucceededResult>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchSucceededResult>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         Message expectedMessage = new()
@@ -221,7 +228,7 @@ public class MessageBatchSucceededResultTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -235,7 +242,7 @@ public class MessageBatchSucceededResultTest : TestBase
                 ServiceTier = UsageServiceTier.Standard,
             },
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("succeeded");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -268,7 +275,7 @@ public class MessageBatchSucceededResultTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()

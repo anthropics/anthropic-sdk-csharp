@@ -24,7 +24,7 @@ jobs:
 
       - name: Publish package to nuget.org
         run: dotnet nuget push
-          ${{ github.workspace }}/artifacts/packages/*.nupkg
+          $(find ${{ github.workspace }}/artifacts/packages/*.nupkg ! -name "*.symbols.nupkg")
           --source https://api.nuget.org/v3/index.json
           --api-key $NUGET_API_KEY
         env:

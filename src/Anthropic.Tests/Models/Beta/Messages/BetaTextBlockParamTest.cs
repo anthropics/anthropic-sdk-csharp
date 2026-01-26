@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -12,7 +13,7 @@ public class BetaTextBlockParamTest : TestBase
         var model = new BetaTextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new BetaCitationCharLocationParam()
@@ -27,8 +28,8 @@ public class BetaTextBlockParamTest : TestBase
         };
 
         string expectedText = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         List<BetaTextCitationParam> expectedCitations =
         [
             new BetaCitationCharLocationParam()
@@ -58,7 +59,7 @@ public class BetaTextBlockParamTest : TestBase
         var model = new BetaTextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new BetaCitationCharLocationParam()
@@ -72,8 +73,11 @@ public class BetaTextBlockParamTest : TestBase
             ],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaTextBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaTextBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -84,7 +88,7 @@ public class BetaTextBlockParamTest : TestBase
         var model = new BetaTextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new BetaCitationCharLocationParam()
@@ -98,13 +102,16 @@ public class BetaTextBlockParamTest : TestBase
             ],
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaTextBlockParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaTextBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedText = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         List<BetaTextCitationParam> expectedCitations =
         [
             new BetaCitationCharLocationParam()
@@ -134,7 +141,7 @@ public class BetaTextBlockParamTest : TestBase
         var model = new BetaTextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new BetaCitationCharLocationParam()

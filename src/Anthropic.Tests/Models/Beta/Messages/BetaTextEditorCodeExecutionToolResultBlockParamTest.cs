@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -17,7 +18,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorMessage = "error_message",
             },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         BetaTextEditorCodeExecutionToolResultBlockParamContent expectedContent =
@@ -28,10 +29,10 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorMessage = "error_message",
             };
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_tool_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_tool_result"
         );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
@@ -51,12 +52,15 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorMessage = "error_message",
             },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParam>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParam>(
+                json,
+                ModelBase.SerializerOptions
+            );
 
         Assert.Equal(model, deserialized);
     }
@@ -73,12 +77,15 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorMessage = "error_message",
             },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParam>(element);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParam>(
+                element,
+                ModelBase.SerializerOptions
+            );
         Assert.NotNull(deserialized);
 
         BetaTextEditorCodeExecutionToolResultBlockParamContent expectedContent =
@@ -89,10 +96,10 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorMessage = "error_message",
             };
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_tool_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_tool_result"
         );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
@@ -112,7 +119,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorMessage = "error_message",
             },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -198,21 +205,20 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
     [Fact]
     public void BetaTextEditorCodeExecutionToolResultErrorParamValidationWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value =
             new BetaTextEditorCodeExecutionToolResultErrorParam()
             {
                 ErrorCode =
                     BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
-            }
-        );
+            };
         value.Validate();
     }
 
     [Fact]
     public void BetaTextEditorCodeExecutionViewResultBlockParamValidationWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value =
             new BetaTextEditorCodeExecutionViewResultBlockParam()
             {
                 Content = "content",
@@ -220,24 +226,22 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
                 NumLines = 0,
                 StartLine = 0,
                 TotalLines = 0,
-            }
-        );
+            };
         value.Validate();
     }
 
     [Fact]
     public void BetaTextEditorCodeExecutionCreateResultBlockParamValidationWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
-            new BetaTextEditorCodeExecutionCreateResultBlockParam(true)
-        );
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value =
+            new BetaTextEditorCodeExecutionCreateResultBlockParam(true);
         value.Validate();
     }
 
     [Fact]
     public void BetaTextEditorCodeExecutionStrReplaceResultBlockParamValidationWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value =
             new BetaTextEditorCodeExecutionStrReplaceResultBlockParam()
             {
                 Lines = ["string"],
@@ -245,26 +249,25 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
                 NewStart = 0,
                 OldLines = 0,
                 OldStart = 0,
-            }
-        );
+            };
         value.Validate();
     }
 
     [Fact]
     public void BetaTextEditorCodeExecutionToolResultErrorParamSerializationRoundtripWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value =
             new BetaTextEditorCodeExecutionToolResultErrorParam()
             {
                 ErrorCode =
                     BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
-            }
-        );
-        string element = JsonSerializer.Serialize(value);
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
-                element
+                element,
+                ModelBase.SerializerOptions
             );
 
         Assert.Equal(value, deserialized);
@@ -273,7 +276,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
     [Fact]
     public void BetaTextEditorCodeExecutionViewResultBlockParamSerializationRoundtripWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value =
             new BetaTextEditorCodeExecutionViewResultBlockParam()
             {
                 Content = "content",
@@ -281,12 +284,12 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
                 NumLines = 0,
                 StartLine = 0,
                 TotalLines = 0,
-            }
-        );
-        string element = JsonSerializer.Serialize(value);
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
-                element
+                element,
+                ModelBase.SerializerOptions
             );
 
         Assert.Equal(value, deserialized);
@@ -295,13 +298,13 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
     [Fact]
     public void BetaTextEditorCodeExecutionCreateResultBlockParamSerializationRoundtripWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
-            new BetaTextEditorCodeExecutionCreateResultBlockParam(true)
-        );
-        string element = JsonSerializer.Serialize(value);
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value =
+            new BetaTextEditorCodeExecutionCreateResultBlockParam(true);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
-                element
+                element,
+                ModelBase.SerializerOptions
             );
 
         Assert.Equal(value, deserialized);
@@ -310,7 +313,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
     [Fact]
     public void BetaTextEditorCodeExecutionStrReplaceResultBlockParamSerializationRoundtripWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value =
             new BetaTextEditorCodeExecutionStrReplaceResultBlockParam()
             {
                 Lines = ["string"],
@@ -318,12 +321,12 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
                 NewStart = 0,
                 OldLines = 0,
                 OldStart = 0,
-            }
-        );
-        string element = JsonSerializer.Serialize(value);
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
-                element
+                element,
+                ModelBase.SerializerOptions
             );
 
         Assert.Equal(value, deserialized);

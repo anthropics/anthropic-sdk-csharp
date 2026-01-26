@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -13,18 +14,18 @@ public class BetaImageBlockParamTest : TestBase
             Source = new BetaBase64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         BetaImageBlockParamSource expectedSource = new BetaBase64ImageSource()
         {
             Data = "U3RhaW5sZXNzIHJvY2tz",
-            MediaType = MediaType.ImageJPEG,
+            MediaType = MediaType.ImageJpeg,
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"image\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("image");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedSource, model.Source);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -39,13 +40,16 @@ public class BetaImageBlockParamTest : TestBase
             Source = new BetaBase64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaImageBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaImageBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -58,22 +62,25 @@ public class BetaImageBlockParamTest : TestBase
             Source = new BetaBase64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaImageBlockParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaImageBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         BetaImageBlockParamSource expectedSource = new BetaBase64ImageSource()
         {
             Data = "U3RhaW5sZXNzIHJvY2tz",
-            MediaType = MediaType.ImageJPEG,
+            MediaType = MediaType.ImageJpeg,
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"image\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("image");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedSource, deserialized.Source);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -88,9 +95,9 @@ public class BetaImageBlockParamTest : TestBase
             Source = new BetaBase64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -104,7 +111,7 @@ public class BetaImageBlockParamTest : TestBase
             Source = new BetaBase64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
         };
 
@@ -120,7 +127,7 @@ public class BetaImageBlockParamTest : TestBase
             Source = new BetaBase64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
         };
 
@@ -135,7 +142,7 @@ public class BetaImageBlockParamTest : TestBase
             Source = new BetaBase64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
 
             CacheControl = null,
@@ -153,7 +160,7 @@ public class BetaImageBlockParamTest : TestBase
             Source = new BetaBase64ImageSource()
             {
                 Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
+                MediaType = MediaType.ImageJpeg,
             },
 
             CacheControl = null,
@@ -168,52 +175,54 @@ public class BetaImageBlockParamSourceTest : TestBase
     [Fact]
     public void BetaBase64ImageValidationWorks()
     {
-        BetaImageBlockParamSource value = new(
-            new BetaBase64ImageSource()
-            {
-                Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
-            }
-        );
+        BetaImageBlockParamSource value = new BetaBase64ImageSource()
+        {
+            Data = "U3RhaW5sZXNzIHJvY2tz",
+            MediaType = MediaType.ImageJpeg,
+        };
         value.Validate();
     }
 
     [Fact]
-    public void BetaURLImageValidationWorks()
+    public void BetaUrlImageValidationWorks()
     {
-        BetaImageBlockParamSource value = new(new BetaURLImageSource("url"));
+        BetaImageBlockParamSource value = new BetaUrlImageSource("url");
         value.Validate();
     }
 
     [Fact]
     public void BetaFileImageValidationWorks()
     {
-        BetaImageBlockParamSource value = new(new BetaFileImageSource("file_id"));
+        BetaImageBlockParamSource value = new BetaFileImageSource("file_id");
         value.Validate();
     }
 
     [Fact]
     public void BetaBase64ImageSerializationRoundtripWorks()
     {
-        BetaImageBlockParamSource value = new(
-            new BetaBase64ImageSource()
-            {
-                Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJPEG,
-            }
+        BetaImageBlockParamSource value = new BetaBase64ImageSource()
+        {
+            Data = "U3RhaW5sZXNzIHJvY2tz",
+            MediaType = MediaType.ImageJpeg,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaImageBlockParamSource>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaImageBlockParamSource>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void BetaURLImageSerializationRoundtripWorks()
+    public void BetaUrlImageSerializationRoundtripWorks()
     {
-        BetaImageBlockParamSource value = new(new BetaURLImageSource("url"));
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaImageBlockParamSource>(element);
+        BetaImageBlockParamSource value = new BetaUrlImageSource("url");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaImageBlockParamSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -221,9 +230,12 @@ public class BetaImageBlockParamSourceTest : TestBase
     [Fact]
     public void BetaFileImageSerializationRoundtripWorks()
     {
-        BetaImageBlockParamSource value = new(new BetaFileImageSource("file_id"));
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaImageBlockParamSource>(element);
+        BetaImageBlockParamSource value = new BetaFileImageSource("file_id");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaImageBlockParamSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

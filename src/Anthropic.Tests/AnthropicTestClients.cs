@@ -39,7 +39,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
             rows.Add(
                 new TheoryDataRow(
                     [
-                        new AnthropicClient() { BaseUrl = DataServiceUrl, APIKey = ApiKey },
+                        new AnthropicClient() { BaseUrl = DataServiceUrl, ApiKey = ApiKey },
                         .. testData
                             .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Anthropic))
                             .Select(f => f.TestData)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
@@ -23,10 +24,10 @@ public sealed record class SkillDeleteParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
-                this.RawHeaderData,
-                "anthropic-beta"
-            );
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, AnthropicBeta>>
+            >("anthropic-beta");
         }
         init
         {
@@ -35,22 +36,28 @@ public sealed record class SkillDeleteParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawHeaderData, "anthropic-beta", value);
+            this._rawHeaderData.Set<ImmutableArray<ApiEnum<string, AnthropicBeta>>?>(
+                "anthropic-beta",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
     public SkillDeleteParams() { }
 
     public SkillDeleteParams(SkillDeleteParams skillDeleteParams)
-        : base(skillDeleteParams) { }
+        : base(skillDeleteParams)
+    {
+        this.SkillID = skillDeleteParams.SkillID;
+    }
 
     public SkillDeleteParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
     }
 
 #pragma warning disable CS8618
@@ -60,8 +67,8 @@ public sealed record class SkillDeleteParams : ParamsBase
         FrozenDictionary<string, JsonElement> rawQueryData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
     }
 #pragma warning restore CS8618
 

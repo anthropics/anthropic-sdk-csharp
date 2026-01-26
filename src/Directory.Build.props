@@ -4,10 +4,14 @@
     <Company>Anthropic</Company>
     <PackageTags>sdk;api;http;library</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright 2025 Anthropic</Copyright>
+    <Copyright>Copyright 2026 Anthropic</Copyright>
     <PackageProjectUrl>https://docs.anthropic.com/claude/reference/</PackageProjectUrl>
     <RepositoryUrl>https://www.github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+
+    <!-- Strong naming -->
+    <AssemblyOriginatorKeyFile>../../Open.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
 
     <!-- Documentation-->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

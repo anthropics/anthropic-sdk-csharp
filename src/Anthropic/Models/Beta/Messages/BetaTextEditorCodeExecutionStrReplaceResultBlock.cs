@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -18,38 +19,68 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlock : Js
 {
     public required IReadOnlyList<string>? Lines
     {
-        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "lines"); }
-        init { JsonModel.Set(this._rawData, "lines", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<string>>("lines");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<string>?>(
+                "lines",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     public required long? NewLines
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawData, "new_lines"); }
-        init { JsonModel.Set(this._rawData, "new_lines", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("new_lines");
+        }
+        init { this._rawData.Set("new_lines", value); }
     }
 
     public required long? NewStart
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawData, "new_start"); }
-        init { JsonModel.Set(this._rawData, "new_start", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("new_start");
+        }
+        init { this._rawData.Set("new_start", value); }
     }
 
     public required long? OldLines
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawData, "old_lines"); }
-        init { JsonModel.Set(this._rawData, "old_lines", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("old_lines");
+        }
+        init { this._rawData.Set("old_lines", value); }
     }
 
     public required long? OldStart
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawData, "old_start"); }
-        init { JsonModel.Set(this._rawData, "old_start", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("old_start");
+        }
+        init { this._rawData.Set("old_start", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -63,9 +94,7 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlock : Js
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>(
-                    "\"text_editor_code_execution_str_replace_result\""
-                )
+                JsonSerializer.SerializeToElement("text_editor_code_execution_str_replace_result")
             )
         )
         {
@@ -75,8 +104,8 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlock : Js
 
     public BetaTextEditorCodeExecutionStrReplaceResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_str_replace_result\""
+        this.Type = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_str_replace_result"
         );
     }
 
@@ -89,10 +118,10 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlock : Js
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_str_replace_result\""
+        this.Type = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_str_replace_result"
         );
     }
 
@@ -100,7 +129,7 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlock : Js
     [SetsRequiredMembers]
     BetaTextEditorCodeExecutionStrReplaceResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -14,26 +14,32 @@ public sealed record class BetaBase64ImageSource : JsonModel
 {
     public required string Data
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
-        init { JsonModel.Set(this._rawData, "data", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("data");
+        }
+        init { this._rawData.Set("data", value); }
     }
 
     public required ApiEnum<string, MediaType> MediaType
     {
         get
         {
-            return JsonModel.GetNotNullClass<ApiEnum<string, MediaType>>(
-                this.RawData,
-                "media_type"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, MediaType>>("media_type");
         }
-        init { JsonModel.Set(this._rawData, "media_type", value); }
+        init { this._rawData.Set("media_type", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -41,12 +47,7 @@ public sealed record class BetaBase64ImageSource : JsonModel
     {
         _ = this.Data;
         this.MediaType.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"base64\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("base64")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -54,7 +55,7 @@ public sealed record class BetaBase64ImageSource : JsonModel
 
     public BetaBase64ImageSource()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
+        this.Type = JsonSerializer.SerializeToElement("base64");
     }
 
     public BetaBase64ImageSource(BetaBase64ImageSource betaBase64ImageSource)
@@ -62,16 +63,16 @@ public sealed record class BetaBase64ImageSource : JsonModel
 
     public BetaBase64ImageSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
+        this.Type = JsonSerializer.SerializeToElement("base64");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaBase64ImageSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -95,9 +96,9 @@ class BetaBase64ImageSourceFromRaw : IFromRawJson<BetaBase64ImageSource>
 [JsonConverter(typeof(MediaTypeConverter))]
 public enum MediaType
 {
-    ImageJPEG,
-    ImagePNG,
-    ImageGIF,
+    ImageJpeg,
+    ImagePng,
+    ImageGif,
     ImageWebP,
 }
 
@@ -111,9 +112,9 @@ sealed class MediaTypeConverter : JsonConverter<MediaType>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "image/jpeg" => MediaType.ImageJPEG,
-            "image/png" => MediaType.ImagePNG,
-            "image/gif" => MediaType.ImageGIF,
+            "image/jpeg" => MediaType.ImageJpeg,
+            "image/png" => MediaType.ImagePng,
+            "image/gif" => MediaType.ImageGif,
             "image/webp" => MediaType.ImageWebP,
             _ => (MediaType)(-1),
         };
@@ -129,9 +130,9 @@ sealed class MediaTypeConverter : JsonConverter<MediaType>
             writer,
             value switch
             {
-                MediaType.ImageJPEG => "image/jpeg",
-                MediaType.ImagePNG => "image/png",
-                MediaType.ImageGIF => "image/gif",
+                MediaType.ImageJpeg => "image/jpeg",
+                MediaType.ImagePng => "image/png",
+                MediaType.ImageGif => "image/gif",
                 MediaType.ImageWebP => "image/webp",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))

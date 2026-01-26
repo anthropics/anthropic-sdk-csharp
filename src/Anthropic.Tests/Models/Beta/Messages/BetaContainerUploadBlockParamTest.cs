@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -11,12 +12,12 @@ public class BetaContainerUploadBlockParamTest : TestBase
         var model = new BetaContainerUploadBlockParam
         {
             FileID = "file_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string expectedFileID = "file_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("container_upload");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedFileID, model.FileID);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -29,11 +30,14 @@ public class BetaContainerUploadBlockParamTest : TestBase
         var model = new BetaContainerUploadBlockParam
         {
             FileID = "file_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContainerUploadBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContainerUploadBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -44,16 +48,19 @@ public class BetaContainerUploadBlockParamTest : TestBase
         var model = new BetaContainerUploadBlockParam
         {
             FileID = "file_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContainerUploadBlockParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContainerUploadBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedFileID = "file_id";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("container_upload");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedFileID, deserialized.FileID);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -66,7 +73,7 @@ public class BetaContainerUploadBlockParamTest : TestBase
         var model = new BetaContainerUploadBlockParam
         {
             FileID = "file_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();

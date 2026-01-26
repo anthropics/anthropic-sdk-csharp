@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -20,18 +21,28 @@ public sealed record class BetaToolSearchToolSearchResultBlockParam : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<List<BetaToolReferenceBlockParam>>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<BetaToolReferenceBlockParam>>(
                 "tool_references"
             );
         }
-        init { JsonModel.Set(this._rawData, "tool_references", value); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaToolReferenceBlockParam>>(
+                "tool_references",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -44,7 +55,7 @@ public sealed record class BetaToolSearchToolSearchResultBlockParam : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_search_result\"")
+                JsonSerializer.SerializeToElement("tool_search_tool_search_result")
             )
         )
         {
@@ -54,7 +65,7 @@ public sealed record class BetaToolSearchToolSearchResultBlockParam : JsonModel
 
     public BetaToolSearchToolSearchResultBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_search_result\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_search_tool_search_result");
     }
 
     public BetaToolSearchToolSearchResultBlockParam(
@@ -66,16 +77,16 @@ public sealed record class BetaToolSearchToolSearchResultBlockParam : JsonModel
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_search_result\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_search_tool_search_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaToolSearchToolSearchResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -89,7 +100,7 @@ public sealed record class BetaToolSearchToolSearchResultBlockParam : JsonModel
 
     [SetsRequiredMembers]
     public BetaToolSearchToolSearchResultBlockParam(
-        List<BetaToolReferenceBlockParam> toolReferences
+        IReadOnlyList<BetaToolReferenceBlockParam> toolReferences
     )
         : this()
     {

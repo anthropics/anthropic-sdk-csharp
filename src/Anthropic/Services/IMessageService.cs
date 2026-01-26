@@ -16,6 +16,12 @@ namespace Anthropic.Services;
 public interface IMessageService
 {
     /// <summary>
+    /// Returns a view of this service that provides access to raw HTTP responses
+    /// for each method.
+    /// </summary>
+    IMessageServiceWithRawResponse WithRawResponse { get; }
+
+    /// <summary>
     /// Returns a view of this service with the given option modifications applied.
     ///
     /// <para>The original service is not modified.</para>
@@ -61,6 +67,49 @@ public interface IMessageService
     /// <para>Learn more about token counting in our [user guide](https://docs.claude.com/en/docs/build-with-claude/token-counting)</para>
     /// </summary>
     Task<MessageTokensCount> CountTokens(
+        MessageCountTokensParams parameters,
+        CancellationToken cancellationToken = default
+    );
+}
+
+/// <summary>
+/// A view of <see cref="IMessageService"/> that provides access to raw
+/// HTTP responses for each method.
+/// </summary>
+public interface IMessageServiceWithRawResponse
+{
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
+    IMessageServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
+    IBatchServiceWithRawResponse Batches { get; }
+
+    /// <summary>
+    /// Returns a raw HTTP response for `post /v1/messages`, but is otherwise the
+    /// same as <see cref="IMessageService.Create(MessageCreateParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<Message>> Create(
+        MessageCreateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for `post /v1/messages`, but is otherwise the
+    /// same as <see cref="IMessageService.CreateStreaming(MessageCreateParams, CancellationToken)"/>.
+    /// </summary>
+    Task<StreamingHttpResponse<RawMessageStreamEvent>> CreateStreaming(
+        MessageCreateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for `post /v1/messages/count_tokens`, but is otherwise the
+    /// same as <see cref="IMessageService.CountTokens(MessageCountTokensParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<MessageTokensCount>> CountTokens(
         MessageCountTokensParams parameters,
         CancellationToken cancellationToken = default
     );
