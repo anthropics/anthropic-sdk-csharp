@@ -2241,13 +2241,15 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                     "name": "tool_with_optional",
                     "description": "A tool with an optional nullable parameter",
                     "input_schema": {
-                        "required_param": {
-                            "type": "string"
-                        },
-                        "optional_number": {
-                            "type": "integer"
-                        },
                         "type": "object",
+                        "properties": {
+                            "required_param": {
+                                "type": "string"
+                            },
+                            "optional_number": {
+                                "type": "integer"
+                            }
+                        },
                         "required": ["required_param"]
                     }
                 }]
