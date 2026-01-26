@@ -2289,7 +2289,8 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
 
         ChatResponse response = await chatClient.GetResponseAsync(
             "Call tool with optional param",
-            options
+            options,
+            TestContext.Current.CancellationToken
         );
         Assert.NotNull(response);
     }
@@ -2378,7 +2379,8 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
 
         ChatResponse response = await chatClient.GetResponseAsync(
             "Call tool with required nullable",
-            options
+            options,
+            TestContext.Current.CancellationToken
         );
         Assert.NotNull(response);
     }

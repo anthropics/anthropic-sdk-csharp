@@ -39,15 +39,15 @@ public static class AIContentCacheExtensions
     /// <para>
     /// For optimal caching in agentic loops, place cache breakpoints on:
     /// <list type="bullet">
-    ///   <item>System prompts (use <see cref="TTL.TTL1h"/> for stable prompts)</item>
-    ///   <item>The last content block before the current turn (use <see cref="TTL.TTL5m"/>)</item>
+    ///   <item>System prompts (use <see cref="Ttl.Ttl1h"/> for stable prompts)</item>
+    ///   <item>The last content block before the current turn (use <see cref="Ttl.Ttl5m"/>)</item>
     ///   <item>Large tool results that won't change</item>
     /// </list>
     /// </para>
     /// </remarks>
     /// <example>
     /// <code>
-    /// var systemContent = new TextContent(systemPrompt).WithCacheControl(new CacheControlEphemeral { TTL = TTL.TTL1h });
+    /// var systemContent = new TextContent(systemPrompt).WithCacheControl(new CacheControlEphemeral { Ttl = Ttl.Ttl1h });
     /// chatMessages.Add(new ChatMessage(ChatRole.System, [systemContent]));
     /// </code>
     /// </example>
@@ -72,23 +72,23 @@ public static class AIContentCacheExtensions
     /// <typeparam name="T">The type of <see cref="AIContent"/>.</typeparam>
     /// <param name="content">The content to configure caching for.</param>
     /// <param name="ttl">
-    /// The time-to-live for the cache. Use <see cref="TTL.TTL5m"/> (5 minutes) for dynamic content
-    /// or <see cref="TTL.TTL1h"/> (1 hour) for stable content like system prompts.
+    /// The time-to-live for the cache. Use <see cref="Ttl.Ttl5m"/> (5 minutes) for dynamic content
+    /// or <see cref="Ttl.Ttl1h"/> (1 hour) for stable content like system prompts.
     /// Pass <see langword="null"/> for the default TTL (5 minutes).
     /// </param>
     /// <returns>The same <paramref name="content"/> instance for method chaining.</returns>
     /// <example>
     /// <code>
     /// // Cache system prompt for 1 hour
-    /// var systemContent = new TextContent(systemPrompt).WithCacheControl(TTL.TTL1h);
+    /// var systemContent = new TextContent(systemPrompt).WithCacheControl(Ttl.Ttl1h);
     ///
     /// // Cache conversation context for 5 minutes (default)
     /// var lastMessage = messages[^1].Contents.Last();
-    /// lastMessage.WithCacheControl(TTL.TTL5m);
+    /// lastMessage.WithCacheControl(Ttl.Ttl5m);
     /// </code>
     /// </example>
-    public static T WithCacheControl<T>(this T content, TTL? ttl)
-        where T : AIContent => content.WithCacheControl(new CacheControlEphemeral { TTL = ttl });
+    public static T WithCacheControl<T>(this T content, Ttl? ttl)
+        where T : AIContent => content.WithCacheControl(new CacheControlEphemeral { Ttl = ttl });
 
     /// <summary>
     /// Gets the cache control configuration for this content block, if any.

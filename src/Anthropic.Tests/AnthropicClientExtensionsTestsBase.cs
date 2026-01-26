@@ -4711,7 +4711,10 @@ public abstract class AnthropicClientExtensionsTestsBase
             new(ChatRole.User, "Hello"),
         ];
 
-        ChatResponse response = await chatClient.GetResponseAsync(messages);
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
         Assert.NotNull(response);
     }
 
@@ -4758,12 +4761,15 @@ public abstract class AnthropicClientExtensionsTestsBase
         IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
 
         var userContent = new TextContent("What is the meaning of life?").WithCacheControl(
-            Anthropic.Models.Messages.TTL.TTL5m
+            Anthropic.Models.Messages.Ttl.Ttl5m
         );
 
         List<ChatMessage> messages = [new(ChatRole.User, [userContent])];
 
-        ChatResponse response = await chatClient.GetResponseAsync(messages);
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
         Assert.NotNull(response);
     }
 
@@ -4819,14 +4825,17 @@ public abstract class AnthropicClientExtensionsTestsBase
         var imageContent = new DataContent(
             "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
             "image/png"
-        ).WithCacheControl(Anthropic.Models.Messages.TTL.TTL1h);
+        ).WithCacheControl(Anthropic.Models.Messages.Ttl.Ttl1h);
 
         List<ChatMessage> messages =
         [
             new(ChatRole.User, [imageContent, new TextContent("What do you see?")]),
         ];
 
-        ChatResponse response = await chatClient.GetResponseAsync(messages);
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
         Assert.NotNull(response);
     }
 
