@@ -377,7 +377,7 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
         var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            return new(JsonSerializer.Deserialize<bool>(element, options));
+            return new(JsonSerializer.Deserialize<bool>(element, options), element);
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
