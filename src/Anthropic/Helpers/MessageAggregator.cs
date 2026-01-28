@@ -69,7 +69,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
 
         void As<TDelta>(Func<IEnumerable<TDelta>, ContentBlock> factory)
         {
-            // those blocks are DELTA variants not the source block
+            // those blocks are delta variants not the source block
             // e.g TextBlock and TextDelta
             resultBlock = factory([.. blockContents.Select(e => e.Value).OfType<TDelta>()]);
         }
