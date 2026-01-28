@@ -17,13 +17,16 @@ public class FileListParamsTest : TestBase
             AfterID = "after_id",
             BeforeID = "before_id",
             Limit = 1,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         string expectedAfterID = "after_id";
         string expectedBeforeID = "before_id";
         long expectedLimit = 1;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedAfterID, parameters.AfterID);
         Assert.Equal(expectedBeforeID, parameters.BeforeID);
@@ -97,12 +100,12 @@ public class FileListParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        FileListParams parameters = new() { Betas = ["string"] };
+        FileListParams parameters = new() { Betas = [AnthropicBeta.MessageBatches2024_09_24] };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["files-api-2025-04-14", "string"],
+            ["files-api-2025-04-14", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -115,7 +118,7 @@ public class FileListParamsTest : TestBase
             AfterID = "after_id",
             BeforeID = "before_id",
             Limit = 1,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         FileListParams copied = new(parameters);

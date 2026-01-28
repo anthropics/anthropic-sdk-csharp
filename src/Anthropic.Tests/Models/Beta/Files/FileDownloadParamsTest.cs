@@ -12,10 +12,17 @@ public class FileDownloadParamsTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var parameters = new FileDownloadParams { FileID = "file_id", Betas = ["string"] };
+        var parameters = new FileDownloadParams
+        {
+            FileID = "file_id",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
 
         string expectedFileID = "file_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedFileID, parameters.FileID);
         Assert.NotNull(parameters.Betas);
@@ -64,12 +71,16 @@ public class FileDownloadParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        FileDownloadParams parameters = new() { FileID = "file_id", Betas = ["string"] };
+        FileDownloadParams parameters = new()
+        {
+            FileID = "file_id",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["files-api-2025-04-14", "string"],
+            ["files-api-2025-04-14", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -77,7 +88,11 @@ public class FileDownloadParamsTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var parameters = new FileDownloadParams { FileID = "file_id", Betas = ["string"] };
+        var parameters = new FileDownloadParams
+        {
+            FileID = "file_id",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
 
         FileDownloadParams copied = new(parameters);
 

@@ -12,10 +12,17 @@ public class ModelRetrieveParamsTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var parameters = new ModelRetrieveParams { ModelID = "model_id", Betas = ["string"] };
+        var parameters = new ModelRetrieveParams
+        {
+            ModelID = "model_id",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
 
         string expectedModelID = "model_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedModelID, parameters.ModelID);
         Assert.NotNull(parameters.Betas);
@@ -64,17 +71,28 @@ public class ModelRetrieveParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        ModelRetrieveParams parameters = new() { ModelID = "model_id", Betas = ["string"] };
+        ModelRetrieveParams parameters = new()
+        {
+            ModelID = "model_id",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(["string"], requestMessage.Headers.GetValues("anthropic-beta"));
+        Assert.Equal(
+            ["message-batches-2024-09-24"],
+            requestMessage.Headers.GetValues("anthropic-beta")
+        );
     }
 
     [Fact]
     public void CopyConstructor_Works()
     {
-        var parameters = new ModelRetrieveParams { ModelID = "model_id", Betas = ["string"] };
+        var parameters = new ModelRetrieveParams
+        {
+            ModelID = "model_id",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
 
         ModelRetrieveParams copied = new(parameters);
 

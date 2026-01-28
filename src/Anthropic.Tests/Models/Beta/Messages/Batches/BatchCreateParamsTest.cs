@@ -151,7 +151,7 @@ public class BatchCreateParamsTest : TestBase
                     },
                 },
             ],
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         List<Request> expectedRequests =
@@ -283,7 +283,10 @@ public class BatchCreateParamsTest : TestBase
                 },
             },
         ];
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedRequests.Count, parameters.Requests.Count);
         for (int i = 0; i < expectedRequests.Count; i++)
@@ -873,13 +876,13 @@ public class BatchCreateParamsTest : TestBase
                     },
                 },
             ],
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24", "string"],
+            ["message-batches-2024-09-24", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -1022,7 +1025,7 @@ public class BatchCreateParamsTest : TestBase
                     },
                 },
             ],
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         BatchCreateParams copied = new(parameters);

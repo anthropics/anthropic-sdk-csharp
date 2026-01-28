@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Text;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Skills;
 
 namespace Anthropic.Tests.Models.Beta.Skills;
@@ -39,7 +40,7 @@ public class SkillCreateParamsTest : TestBase
     [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new SkillCreateParams { Betas = ["string"] };
+        var parameters = new SkillCreateParams { Betas = [AnthropicBeta.MessageBatches2024_09_24] };
 
         Assert.Null(parameters.DisplayTitle);
         Assert.False(parameters.RawBodyData.ContainsKey("display_title"));
@@ -52,7 +53,7 @@ public class SkillCreateParamsTest : TestBase
     {
         var parameters = new SkillCreateParams
         {
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
             DisplayTitle = null,
             Files = null,
@@ -78,12 +79,12 @@ public class SkillCreateParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        SkillCreateParams parameters = new() { Betas = ["string"] };
+        SkillCreateParams parameters = new() { Betas = [AnthropicBeta.MessageBatches2024_09_24] };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["skills-2025-10-02", "string"],
+            ["skills-2025-10-02", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }

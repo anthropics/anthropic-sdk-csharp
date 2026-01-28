@@ -16,12 +16,15 @@ public class VersionRetrieveParamsTest : TestBase
         {
             SkillID = "skill_id",
             Version = "version",
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         string expectedSkillID = "skill_id";
         string expectedVersion = "version";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedSkillID, parameters.SkillID);
         Assert.Equal(expectedVersion, parameters.Version);
@@ -76,13 +79,13 @@ public class VersionRetrieveParamsTest : TestBase
         {
             SkillID = "skill_id",
             Version = "version",
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["skills-2025-10-02", "string"],
+            ["skills-2025-10-02", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -94,7 +97,7 @@ public class VersionRetrieveParamsTest : TestBase
         {
             SkillID = "skill_id",
             Version = "version",
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         VersionRetrieveParams copied = new(parameters);

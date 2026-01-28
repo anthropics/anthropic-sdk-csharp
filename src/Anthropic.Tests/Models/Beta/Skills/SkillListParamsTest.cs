@@ -17,13 +17,16 @@ public class SkillListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             Source = "source",
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         long expectedLimit = 0;
         string expectedPage = "page";
         string expectedSource = "source";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedLimit, parameters.Limit);
         Assert.Equal(expectedPage, parameters.Page);
@@ -69,7 +72,11 @@ public class SkillListParamsTest : TestBase
     [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new SkillListParams { Limit = 0, Betas = ["string"] };
+        var parameters = new SkillListParams
+        {
+            Limit = 0,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
 
         Assert.Null(parameters.Page);
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
@@ -83,7 +90,7 @@ public class SkillListParamsTest : TestBase
         var parameters = new SkillListParams
         {
             Limit = 0,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
             Page = null,
             Source = null,
@@ -117,12 +124,12 @@ public class SkillListParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        SkillListParams parameters = new() { Betas = ["string"] };
+        SkillListParams parameters = new() { Betas = [AnthropicBeta.MessageBatches2024_09_24] };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["skills-2025-10-02", "string"],
+            ["skills-2025-10-02", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -135,7 +142,7 @@ public class SkillListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             Source = "source",
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         SkillListParams copied = new(parameters);

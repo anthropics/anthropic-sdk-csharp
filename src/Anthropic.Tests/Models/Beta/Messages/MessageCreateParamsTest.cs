@@ -132,7 +132,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         long expectedMaxTokens = 1024;
@@ -256,7 +256,10 @@ public class MessageCreateParamsTest : TestBase
         ];
         long expectedTopK = 5;
         double expectedTopP = 0.7;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedMaxTokens, parameters.MaxTokens);
         Assert.Equal(expectedMessages.Count, parameters.Messages.Count);
@@ -548,7 +551,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         Assert.Null(parameters.Container);
@@ -645,7 +648,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
             Container = null,
             ContextManagement = null,
@@ -684,12 +687,15 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
             Model = Messages::Model.ClaudeSonnet4_5_20250929,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(["string"], requestMessage.Headers.GetValues("anthropic-beta"));
+        Assert.Equal(
+            ["message-batches-2024-09-24"],
+            requestMessage.Headers.GetValues("anthropic-beta")
+        );
     }
 
     [Fact]
@@ -812,7 +818,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         MessageCreateParams copied = new(parameters);

@@ -111,7 +111,7 @@ public class MessageCountTokensParamsTest : TestBase
                     Type = BetaToolType.Custom,
                 },
             ],
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         List<BetaMessageParam> expectedMessages = [new() { Content = "string", Role = Role.User }];
@@ -212,7 +212,10 @@ public class MessageCountTokensParamsTest : TestBase
                 Type = BetaToolType.Custom,
             },
         ];
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedMessages.Count, parameters.Messages.Count);
         for (int i = 0; i < expectedMessages.Count; i++)
@@ -426,7 +429,7 @@ public class MessageCountTokensParamsTest : TestBase
                     Type = BetaToolType.Custom,
                 },
             ],
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         Assert.Null(parameters.ContextManagement);
@@ -514,7 +517,7 @@ public class MessageCountTokensParamsTest : TestBase
                     Type = BetaToolType.Custom,
                 },
             ],
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
             ContextManagement = null,
             OutputFormat = null,
@@ -548,12 +551,15 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Role.User }],
             Model = Messages::Model.ClaudeOpus4_5_20251101,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(["string"], requestMessage.Headers.GetValues("anthropic-beta"));
+        Assert.Equal(
+            ["message-batches-2024-09-24"],
+            requestMessage.Headers.GetValues("anthropic-beta")
+        );
     }
 
     [Fact]
@@ -656,7 +662,7 @@ public class MessageCountTokensParamsTest : TestBase
                     Type = BetaToolType.Custom,
                 },
             ],
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         MessageCountTokensParams copied = new(parameters);
