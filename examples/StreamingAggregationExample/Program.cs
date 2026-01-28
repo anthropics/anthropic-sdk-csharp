@@ -21,10 +21,11 @@ IAsyncEnumerable<RawMessageStreamEvent> responseUpdates = client.Messages.Create
     parameters
 );
 
-// some streaming endpoints have build-in aggregators that create logically aggregated objects that represent the full stream as its counterpart single object.
+// some streaming endpoints have built-in aggregators that create logically aggregated objects.
+// these represent the full stream as a single object.
 var message = await responseUpdates.Aggregate().ConfigureAwait(false);
 
-// you can also add an aggregator as part of your linq chain to get realtime streaming and aggregation
+// you can also add an aggregator as part of your LINQ chain to get real-time streaming and aggregation
 
 var aggregator = new MessageContentAggregator();
 await foreach (RawMessageStreamEvent rawEvent in responseUpdates.CollectAsync(aggregator))

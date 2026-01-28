@@ -23,7 +23,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
                 .OfType<RawMessageStartEvent>()
                 .SingleOrDefault()
             ?? throw new InvalidOperationException(
-                $"Expected to find exactly one {nameof(RawMessageStartEvent)} but found either non or more then one."
+                $"Expected to find exactly one {nameof(RawMessageStartEvent)} but found either none or more then one."
             );
 
         var contentBlocks = new List<ContentBlock>();
