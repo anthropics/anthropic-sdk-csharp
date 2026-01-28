@@ -12,7 +12,7 @@ namespace Anthropic;
 public static class SseAggregatorExtensions
 {
     /// <summary>
-    /// Aggregates all messages received by the streaming event and aggregates them into a single object once the sender indicated a fully delivered stream.
+    /// Aggregates all messages received by the streaming event and aggregates them into a single object once the sender indicates a fully delivered stream.
     /// </summary>
     /// <param name="source">A enumerable as provided by the <see cref="IMessageService.CreateStreaming(Models.Messages.MessageCreateParams)"/></param>
     /// <returns>A task that completes once all messages have been received or in the event of improper streaming and exception.</returns>
@@ -24,7 +24,7 @@ public static class SseAggregatorExtensions
     }
 
     /// <summary>
-    /// Aggregates all messages received by the streaming event and aggregates them into a single object once the sender indicated a fully delivered stream.
+    /// Aggregates all messages received by the streaming event and aggregates them into a single object once the sender indicates a fully delivered stream.
     /// </summary>
     /// <param name="source">A enumerable as provided by the <see cref="IBetaService.CreateStreaming(Models.Beta.Messages.MessageCreateParams)"/></param>
     /// <returns>A task that completes once all messages have been received or in the event of improper streaming and exception.</returns>
@@ -36,7 +36,7 @@ public static class SseAggregatorExtensions
     }
 
     /// <summary>
-    /// Aggregates all messages received by the streaming event and aggregates them into a single object once the sender indicated a fully delivered stream.
+    /// Aggregates all messages received by the streaming event and aggregates them into a single object once the sender indicates a fully delivered stream.
     /// </summary>
     /// <typeparam name="TMessage">The type of message as provided by the Api.</typeparam>
     /// <typeparam name="TResult">The Result object that the aggregator should build.</typeparam>
