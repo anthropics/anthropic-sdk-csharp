@@ -29,7 +29,7 @@ public class MessageServiceTest
                 ServiceTier = BetaUsageServiceTier.Standard,
             },
             Container = null,
-            ContextManagement = null,
+            ContextManagement = null
         };
 
     private static MessageCreateParams StreamingParam =>
