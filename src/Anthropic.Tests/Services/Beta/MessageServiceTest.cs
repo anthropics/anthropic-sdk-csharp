@@ -11,24 +11,24 @@ namespace Anthropic.Tests.Services.Beta;
 public class MessageServiceTest
 {
     private static BetaMessage GenerateStartMessage =>
-          new()
-          {
-              ID = "Test",
-              Content = [],
-              Model = Messages::Model.Claude3OpusLatest,
-              StopReason = BetaStopReason.ToolUse,
-              StopSequence = "",
-              Usage = new()
-              {
-                  CacheCreation = null,
-                  CacheCreationInputTokens = null,
-                  CacheReadInputTokens = null,
-                  InputTokens = 25,
-                  OutputTokens = 25,
-                  ServerToolUse = null,
-                  ServiceTier = BetaUsageServiceTier.Standard,
-              },
-          };
+        new()
+        {
+            ID = "Test",
+            Content = [],
+            Model = Messages::Model.Claude3OpusLatest,
+            StopReason = BetaStopReason.ToolUse,
+            StopSequence = "",
+            Usage = new()
+            {
+                CacheCreation = null,
+                CacheCreationInputTokens = null,
+                CacheReadInputTokens = null,
+                InputTokens = 25,
+                OutputTokens = 25,
+                ServerToolUse = null,
+                ServiceTier = BetaUsageServiceTier.Standard,
+            },
+        };
 
     private static MessageCreateParams StreamingParam =>
         new()
@@ -106,8 +106,6 @@ public class MessageServiceTest
         betaMessageTokensCount.Validate();
     }
 
-
-
     [Fact]
     public async Task CreateStreamingAggregation_WorksNoContent_RawMessageStartEvent()
     {
@@ -122,10 +120,7 @@ public class MessageServiceTest
         }
         messagesServiceMock
             .Setup(e =>
-                e.CreateStreaming(
-                    It.IsAny<MessageCreateParams>(),
-                    It.IsAny<CancellationToken>()
-                )
+                e.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
             )
             .Returns(GetTestValues);
 
@@ -155,10 +150,7 @@ public class MessageServiceTest
         }
         messagesServiceMock
             .Setup(e =>
-                e.CreateStreaming(
-                    It.IsAny<MessageCreateParams>(),
-                    It.IsAny<CancellationToken>()
-                )
+                e.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
             )
             .Returns(GetTestValues);
 
@@ -186,7 +178,9 @@ public class MessageServiceTest
                 new BetaRawContentBlockStartEvent()
                 {
                     Index = 0,
-                    ContentBlock = new(new BetaTextBlock() { Citations = [], Text = "Test Output" }),
+                    ContentBlock = new(
+                        new BetaTextBlock() { Citations = [], Text = "Test Output" }
+                    ),
                 }
             );
             yield return new(new BetaRawContentBlockStopEvent() { Index = 0 });
@@ -196,10 +190,7 @@ public class MessageServiceTest
 
         messagesServiceMock
             .Setup(e =>
-                e.CreateStreaming(
-                    It.IsAny<MessageCreateParams>(),
-                    It.IsAny<CancellationToken>()
-                )
+                e.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
             )
             .Returns(GetTestValues);
 
@@ -237,17 +228,18 @@ public class MessageServiceTest
             );
             yield return new(new BetaRawContentBlockStopEvent() { Index = 0 });
             yield return new(
-                new BetaRawContentBlockDeltaEvent() { Index = 0, Delta = new(new BetaTextDelta("Test")) }
+                new BetaRawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new BetaTextDelta("Test")),
+                }
             );
             yield return new(new BetaRawMessageStopEvent());
             await Task.CompletedTask;
         }
         messagesServiceMock
             .Setup(e =>
-                e.CreateStreaming(
-                    It.IsAny<MessageCreateParams>(),
-                    It.IsAny<CancellationToken>()
-                )
+                e.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
             )
             .Returns(GetTestValues);
 
@@ -284,7 +276,11 @@ public class MessageServiceTest
                 }
             );
             yield return new(
-                new BetaRawContentBlockDeltaEvent() { Index = 0, Delta = new(new BetaTextDelta("Test")) }
+                new BetaRawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new BetaTextDelta("Test")),
+                }
             );
             yield return new(
                 new BetaRawContentBlockDeltaEvent()
@@ -321,10 +317,7 @@ public class MessageServiceTest
         }
         messagesServiceMock
             .Setup(e =>
-                e.CreateStreaming(
-                    It.IsAny<MessageCreateParams>(),
-                    It.IsAny<CancellationToken>()
-                )
+                e.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
             )
             .Returns(GetTestValues);
 
