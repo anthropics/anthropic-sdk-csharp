@@ -315,7 +315,7 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
         var instance = new AnthropicFoundryIdentityTokenCredentials(credential, TestResourceName);
 
         // Assert
-        Assert.IsAssignableFrom<IAnthropicFoundryCredentials>(instance);
+        Assert.IsType<IAnthropicFoundryCredentials>(instance, exactMatch: false);
     }
 
     [Fact]
