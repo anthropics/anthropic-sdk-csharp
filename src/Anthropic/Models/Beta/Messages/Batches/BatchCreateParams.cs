@@ -453,8 +453,7 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
-    /// Configuration options for the model's output. Controls aspects like output
-    /// format or how much effort the model puts into its response.
+    /// Configuration options for the model's output, such as the output format.
     /// </summary>
     public BetaOutputConfig? OutputConfig
     {

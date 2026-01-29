@@ -159,6 +159,9 @@ public sealed record class BetaTool : JsonModel
         }
     }
 
+    /// <summary>
+    /// When true, guarantees schema validation on tool names and inputs
+    /// </summary>
     public bool? Strict
     {
         get

@@ -149,6 +149,9 @@ public sealed record class BetaWebSearchTool20250305 : JsonModel
         init { this._rawData.Set("max_uses", value); }
     }
 
+    /// <summary>
+    /// When true, guarantees schema validation on tool names and inputs
+    /// </summary>
     public bool? Strict
     {
         get

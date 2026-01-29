@@ -154,6 +154,27 @@ public record class MessageCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// Configuration options for the model's output, such as the output format.
+    /// </summary>
+    public OutputConfig? OutputConfig
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<OutputConfig>("output_config");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("output_config", value);
+        }
+    }
+
+    /// <summary>
     /// Determines whether to use priority capacity (if available) or standard capacity
     /// for this request.
     ///

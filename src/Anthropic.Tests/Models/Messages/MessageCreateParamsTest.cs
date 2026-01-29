@@ -18,6 +18,16 @@ public class MessageCreateParamsTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = Messages::ServiceTier.Auto,
             StopSequences = ["string"],
             System = new(
@@ -59,6 +69,7 @@ public class MessageCreateParamsTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    Strict = true,
                     Type = Messages::Type.Custom,
                 },
             ],
@@ -75,6 +86,16 @@ public class MessageCreateParamsTest : TestBase
         Messages::Metadata expectedMetadata = new()
         {
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
+        };
+        Messages::OutputConfig expectedOutputConfig = new()
+        {
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
         };
         ApiEnum<string, Messages::ServiceTier> expectedServiceTier = Messages::ServiceTier.Auto;
         List<string> expectedStopSequences = ["string"];
@@ -120,6 +141,7 @@ public class MessageCreateParamsTest : TestBase
                 Name = "name",
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Description = "Get the current weather in a given location",
+                Strict = true,
                 Type = Messages::Type.Custom,
             },
         ];
@@ -134,6 +156,7 @@ public class MessageCreateParamsTest : TestBase
         }
         Assert.Equal(expectedModel, parameters.Model);
         Assert.Equal(expectedMetadata, parameters.Metadata);
+        Assert.Equal(expectedOutputConfig, parameters.OutputConfig);
         Assert.Equal(expectedServiceTier, parameters.ServiceTier);
         Assert.NotNull(parameters.StopSequences);
         Assert.Equal(expectedStopSequences.Count, parameters.StopSequences.Count);
@@ -167,6 +190,8 @@ public class MessageCreateParamsTest : TestBase
 
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.OutputConfig);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_config"));
         Assert.Null(parameters.ServiceTier);
         Assert.False(parameters.RawBodyData.ContainsKey("service_tier"));
         Assert.Null(parameters.StopSequences);
@@ -198,6 +223,7 @@ public class MessageCreateParamsTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             Metadata = null,
+            OutputConfig = null,
             ServiceTier = null,
             StopSequences = null,
             System = null,
@@ -211,6 +237,8 @@ public class MessageCreateParamsTest : TestBase
 
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.OutputConfig);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_config"));
         Assert.Null(parameters.ServiceTier);
         Assert.False(parameters.RawBodyData.ContainsKey("service_tier"));
         Assert.Null(parameters.StopSequences);
@@ -255,6 +283,16 @@ public class MessageCreateParamsTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = Messages::ServiceTier.Auto,
             StopSequences = ["string"],
             System = new(
@@ -296,6 +334,7 @@ public class MessageCreateParamsTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    Strict = true,
                     Type = Messages::Type.Custom,
                 },
             ],

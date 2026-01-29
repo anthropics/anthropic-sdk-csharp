@@ -24,6 +24,7 @@ public class MessageCountTokensToolTest : TestBase
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
+            Strict = true,
             Type = Type.Custom,
         };
         value.Validate();
@@ -35,6 +36,7 @@ public class MessageCountTokensToolTest : TestBase
         MessageCountTokensTool value = new ToolBash20250124()
         {
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Strict = true,
         };
         value.Validate();
     }
@@ -45,6 +47,7 @@ public class MessageCountTokensToolTest : TestBase
         MessageCountTokensTool value = new ToolTextEditor20250124()
         {
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Strict = true,
         };
         value.Validate();
     }
@@ -55,6 +58,7 @@ public class MessageCountTokensToolTest : TestBase
         MessageCountTokensTool value = new ToolTextEditor20250429()
         {
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Strict = true,
         };
         value.Validate();
     }
@@ -66,6 +70,7 @@ public class MessageCountTokensToolTest : TestBase
         {
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
+            Strict = true,
         };
         value.Validate();
     }
@@ -79,6 +84,7 @@ public class MessageCountTokensToolTest : TestBase
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
+            Strict = true,
             UserLocation = new()
             {
                 City = "New York",
@@ -107,6 +113,7 @@ public class MessageCountTokensToolTest : TestBase
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
+            Strict = true,
             Type = Type.Custom,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -124,6 +131,7 @@ public class MessageCountTokensToolTest : TestBase
         MessageCountTokensTool value = new ToolBash20250124()
         {
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Strict = true,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(
@@ -140,6 +148,7 @@ public class MessageCountTokensToolTest : TestBase
         MessageCountTokensTool value = new ToolTextEditor20250124()
         {
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Strict = true,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(
@@ -156,6 +165,7 @@ public class MessageCountTokensToolTest : TestBase
         MessageCountTokensTool value = new ToolTextEditor20250429()
         {
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Strict = true,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(
@@ -173,6 +183,7 @@ public class MessageCountTokensToolTest : TestBase
         {
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
+            Strict = true,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(
@@ -192,6 +203,7 @@ public class MessageCountTokensToolTest : TestBase
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
+            Strict = true,
             UserLocation = new()
             {
                 City = "New York",

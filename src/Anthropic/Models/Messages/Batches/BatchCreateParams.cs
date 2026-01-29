@@ -367,6 +367,27 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
+    /// Configuration options for the model's output, such as the output format.
+    /// </summary>
+    public OutputConfig? OutputConfig
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<OutputConfig>("output_config");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("output_config", value);
+        }
+    }
+
+    /// <summary>
     /// Determines whether to use priority capacity (if available) or standard capacity
     /// for this request.
     ///
@@ -682,6 +703,7 @@ public sealed record class Params : JsonModel
         }
         this.Model.Validate();
         this.Metadata?.Validate();
+        this.OutputConfig?.Validate();
         this.ServiceTier?.Validate();
         _ = this.StopSequences;
         _ = this.Stream;

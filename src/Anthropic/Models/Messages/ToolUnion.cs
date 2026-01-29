@@ -40,6 +40,21 @@ public record class ToolUnion : ModelBase
         }
     }
 
+    public bool? Strict
+    {
+        get
+        {
+            return Match<bool?>(
+                tool: (x) => x.Strict,
+                bash20250124: (x) => x.Strict,
+                textEditor20250124: (x) => x.Strict,
+                textEditor20250429: (x) => x.Strict,
+                textEditor20250728: (x) => x.Strict,
+                webSearchTool20250305: (x) => x.Strict
+            );
+        }
+    }
+
     public ToolUnion(Tool value, JsonElement? element = null)
     {
         this.Value = value;

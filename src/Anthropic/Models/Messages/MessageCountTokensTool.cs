@@ -40,6 +40,21 @@ public record class MessageCountTokensTool : ModelBase
         }
     }
 
+    public bool? Strict
+    {
+        get
+        {
+            return Match<bool?>(
+                tool: (x) => x.Strict,
+                toolBash20250124: (x) => x.Strict,
+                toolTextEditor20250124: (x) => x.Strict,
+                toolTextEditor20250429: (x) => x.Strict,
+                toolTextEditor20250728: (x) => x.Strict,
+                webSearchTool20250305: (x) => x.Strict
+            );
+        }
+    }
+
     public MessageCountTokensTool(Tool value, JsonElement? element = null)
     {
         this.Value = value;

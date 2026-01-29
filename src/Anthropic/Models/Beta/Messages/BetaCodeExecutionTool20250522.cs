@@ -98,6 +98,9 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
         }
     }
 
+    /// <summary>
+    /// When true, guarantees schema validation on tool names and inputs
+    /// </summary>
     public bool? Strict
     {
         get

@@ -16,6 +16,7 @@ public class WebSearchTool20250305Test : TestBase
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
+            Strict = true,
             UserLocation = new()
             {
                 City = "New York",
@@ -31,6 +32,7 @@ public class WebSearchTool20250305Test : TestBase
         List<string> expectedBlockedDomains = ["string"];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         long expectedMaxUses = 1;
+        bool expectedStrict = true;
         UserLocation expectedUserLocation = new()
         {
             City = "New York",
@@ -55,6 +57,7 @@ public class WebSearchTool20250305Test : TestBase
         }
         Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedMaxUses, model.MaxUses);
+        Assert.Equal(expectedStrict, model.Strict);
         Assert.Equal(expectedUserLocation, model.UserLocation);
     }
 
@@ -67,6 +70,7 @@ public class WebSearchTool20250305Test : TestBase
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
+            Strict = true,
             UserLocation = new()
             {
                 City = "New York",
@@ -94,6 +98,7 @@ public class WebSearchTool20250305Test : TestBase
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
+            Strict = true,
             UserLocation = new()
             {
                 City = "New York",
@@ -116,6 +121,7 @@ public class WebSearchTool20250305Test : TestBase
         List<string> expectedBlockedDomains = ["string"];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         long expectedMaxUses = 1;
+        bool expectedStrict = true;
         UserLocation expectedUserLocation = new()
         {
             City = "New York",
@@ -140,11 +146,56 @@ public class WebSearchTool20250305Test : TestBase
         }
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedMaxUses, deserialized.MaxUses);
+        Assert.Equal(expectedStrict, deserialized.Strict);
         Assert.Equal(expectedUserLocation, deserialized.UserLocation);
     }
 
     [Fact]
     public void Validation_Works()
+    {
+        var model = new WebSearchTool20250305
+        {
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            MaxUses = 1,
+            Strict = true,
+            UserLocation = new()
+            {
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new WebSearchTool20250305
+        {
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            MaxUses = 1,
+            UserLocation = new()
+            {
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+        };
+
+        Assert.Null(model.Strict);
+        Assert.False(model.RawData.ContainsKey("strict"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
         var model = new WebSearchTool20250305
         {
@@ -165,9 +216,58 @@ public class WebSearchTool20250305Test : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
+    {
+        var model = new WebSearchTool20250305
+        {
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            MaxUses = 1,
+            UserLocation = new()
+            {
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+
+            // Null should be interpreted as omitted for these properties
+            Strict = null,
+        };
+
+        Assert.Null(model.Strict);
+        Assert.False(model.RawData.ContainsKey("strict"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new WebSearchTool20250305
+        {
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            MaxUses = 1,
+            UserLocation = new()
+            {
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+
+            // Null should be interpreted as omitted for these properties
+            Strict = null,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new WebSearchTool20250305 { };
+        var model = new WebSearchTool20250305 { Strict = true };
 
         Assert.Null(model.AllowedDomains);
         Assert.False(model.RawData.ContainsKey("allowed_domains"));
@@ -184,7 +284,7 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new WebSearchTool20250305 { };
+        var model = new WebSearchTool20250305 { Strict = true };
 
         model.Validate();
     }
@@ -194,6 +294,8 @@ public class WebSearchTool20250305Test : TestBase
     {
         var model = new WebSearchTool20250305
         {
+            Strict = true,
+
             AllowedDomains = null,
             BlockedDomains = null,
             CacheControl = null,
@@ -218,6 +320,8 @@ public class WebSearchTool20250305Test : TestBase
     {
         var model = new WebSearchTool20250305
         {
+            Strict = true,
+
             AllowedDomains = null,
             BlockedDomains = null,
             CacheControl = null,
@@ -237,6 +341,7 @@ public class WebSearchTool20250305Test : TestBase
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
+            Strict = true,
             UserLocation = new()
             {
                 City = "New York",

@@ -15,6 +15,16 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_5_20251101,
+            OutputConfig = new()
+            {
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             System = new(
                 [
                     new Messages::TextBlockParam()
@@ -53,6 +63,7 @@ public class MessageCountTokensParamsTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    Strict = true,
                     Type = Messages::Type.Custom,
                 },
             ],
@@ -63,6 +74,16 @@ public class MessageCountTokensParamsTest : TestBase
             new() { Content = "string", Role = Messages::Role.User },
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_5_20251101;
+        Messages::OutputConfig expectedOutputConfig = new()
+        {
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
         Messages::MessageCountTokensParamsSystem expectedSystem = new(
             [
                 new Messages::TextBlockParam()
@@ -104,6 +125,7 @@ public class MessageCountTokensParamsTest : TestBase
                 Name = "name",
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Description = "Get the current weather in a given location",
+                Strict = true,
                 Type = Messages::Type.Custom,
             },
         ];
@@ -114,6 +136,7 @@ public class MessageCountTokensParamsTest : TestBase
             Assert.Equal(expectedMessages[i], parameters.Messages[i]);
         }
         Assert.Equal(expectedModel, parameters.Model);
+        Assert.Equal(expectedOutputConfig, parameters.OutputConfig);
         Assert.Equal(expectedSystem, parameters.System);
         Assert.Equal(expectedThinking, parameters.Thinking);
         Assert.Equal(expectedToolChoice, parameters.ToolChoice);
@@ -134,6 +157,8 @@ public class MessageCountTokensParamsTest : TestBase
             Model = Messages::Model.ClaudeOpus4_5_20251101,
         };
 
+        Assert.Null(parameters.OutputConfig);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_config"));
         Assert.Null(parameters.System);
         Assert.False(parameters.RawBodyData.ContainsKey("system"));
         Assert.Null(parameters.Thinking);
@@ -153,12 +178,15 @@ public class MessageCountTokensParamsTest : TestBase
             Model = Messages::Model.ClaudeOpus4_5_20251101,
 
             // Null should be interpreted as omitted for these properties
+            OutputConfig = null,
             System = null,
             Thinking = null,
             ToolChoice = null,
             Tools = null,
         };
 
+        Assert.Null(parameters.OutputConfig);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_config"));
         Assert.Null(parameters.System);
         Assert.False(parameters.RawBodyData.ContainsKey("system"));
         Assert.Null(parameters.Thinking);
@@ -190,6 +218,16 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_5_20251101,
+            OutputConfig = new()
+            {
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             System = new(
                 [
                     new Messages::TextBlockParam()
@@ -228,6 +266,7 @@ public class MessageCountTokensParamsTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    Strict = true,
                     Type = Messages::Type.Custom,
                 },
             ],

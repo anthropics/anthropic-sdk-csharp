@@ -13,7 +13,10 @@ namespace Anthropic.Models.Beta.Messages;
 public sealed record class BetaOutputConfig : JsonModel
 {
     /// <summary>
-    /// All possible effort levels.
+    /// How much effort the model should put into its response. Higher effort levels
+    /// may result in more thorough analysis but take longer.
+    ///
+    /// <para>Valid values are `low`, `medium`, or `high`.</para>
     /// </summary>
     public ApiEnum<string, Effort>? Effort
     {
@@ -26,8 +29,7 @@ public sealed record class BetaOutputConfig : JsonModel
     }
 
     /// <summary>
-    ///  A schema to specify Claude's output format in responses. See [structured
-    /// outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
+    /// A schema to specify Claude's output format in responses. See [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
     /// </summary>
     public BetaJsonOutputFormat? Format
     {
@@ -84,7 +86,10 @@ class BetaOutputConfigFromRaw : IFromRawJson<BetaOutputConfig>
 }
 
 /// <summary>
-/// All possible effort levels.
+/// How much effort the model should put into its response. Higher effort levels may
+/// result in more thorough analysis but take longer.
+///
+/// <para>Valid values are `low`, `medium`, or `high`.</para>
 /// </summary>
 [JsonConverter(typeof(EffortConverter))]
 public enum Effort

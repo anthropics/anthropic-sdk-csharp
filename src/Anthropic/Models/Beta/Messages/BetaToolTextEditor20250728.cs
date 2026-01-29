@@ -142,6 +142,9 @@ public sealed record class BetaToolTextEditor20250728 : JsonModel
         init { this._rawData.Set("max_characters", value); }
     }
 
+    /// <summary>
+    /// When true, guarantees schema validation on tool names and inputs
+    /// </summary>
     public bool? Strict
     {
         get

@@ -25,6 +25,16 @@ public class BatchServiceTest : TestBase
                             Messages = [new() { Content = "Hello, world", Role = Role.User }],
                             Model = Model.ClaudeSonnet4_5_20250929,
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                            OutputConfig = new()
+                            {
+                                Format = new()
+                                {
+                                    Schema = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                },
+                            },
                             ServiceTier = Batches::ServiceTier.Auto,
                             StopSequences = ["string"],
                             Stream = true,
@@ -70,6 +80,7 @@ public class BatchServiceTest : TestBase
                                     Name = "name",
                                     CacheControl = new() { Ttl = Ttl.Ttl5m },
                                     Description = "Get the current weather in a given location",
+                                    Strict = true,
                                     Type = Type.Custom,
                                 },
                             ],
