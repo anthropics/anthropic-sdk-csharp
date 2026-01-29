@@ -523,7 +523,7 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
                 Assert.Single(headers, h => h.Key == "User-Agent");
                 if (headers.TryGetValues("User-Agent", out var values))
                 {
-                    capturedUserAgentValues = values.ToArray();
+                    capturedUserAgentValues = [.. values];
                 }
             },
         };
@@ -589,7 +589,7 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
                 Assert.Single(headers, h => h.Key == "User-Agent");
                 if (headers.TryGetValues("User-Agent", out var values))
                 {
-                    capturedUserAgentValues = values.ToArray();
+                    capturedUserAgentValues = [.. values];
                 }
             },
         };
@@ -657,7 +657,7 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
                 Assert.Single(headers, h => h.Key == "User-Agent");
                 if (headers.TryGetValues("User-Agent", out var values))
                 {
-                    capturedUserAgentValues = values.ToArray();
+                    capturedUserAgentValues = [.. values];
                 }
             },
         };
@@ -672,10 +672,10 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
 
         Assert.NotNull(response);
         Assert.NotNull(capturedUserAgentValues);
-        // Verify the MEAI user-agent is present and has correct format
+        // Verify the MEAI user-agent is present and has correct format (MEAI or MEAI/version)
         Assert.Contains(
             capturedUserAgentValues,
-            v => System.Text.RegularExpressions.Regex.IsMatch(v, @"MEAI(/[\d\.]+)?")
+            v => v.StartsWith("MEAI", StringComparison.Ordinal)
         );
         Assert.Contains(capturedUserAgentValues, v => v.Contains("AnthropicClient"));
     }
