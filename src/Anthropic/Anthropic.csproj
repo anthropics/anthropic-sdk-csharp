@@ -3,7 +3,7 @@
     <!-- Metadata -->
     <AssemblyTitle>Anthropic C#</AssemblyTitle>
     <AssemblyName>Anthropic</AssemblyName>
-    <VersionPrefix>12.2.0</VersionPrefix>
+    <VersionPrefix>12.3.0</VersionPrefix>
     <Description>The official .NET library for the Anthropic API.</Description>
     <OutputType>Library</OutputType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
