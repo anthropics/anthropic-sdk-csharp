@@ -2222,7 +2222,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public async Task GetResponseAsync_IncludesMeaiUserAgentHeader()
     {
-        string? capturedUserAgent = null;
+        string[]? capturedUserAgentValues = null;
         VerbatimHttpHandler handler = new(
             expectedRequest: """
             {
@@ -2258,11 +2258,11 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         {
             OnRequestHeaders = headers =>
             {
+                // Verify there's exactly one User-Agent header entry
+                Assert.Single(headers, h => h.Key == "User-Agent");
                 if (headers.TryGetValues("User-Agent", out var values))
                 {
-                    var valuesArray = values.ToArray();
-                    Assert.Single(valuesArray);
-                    capturedUserAgent = valuesArray[0];
+                    capturedUserAgentValues = values.ToArray();
                 }
             },
         };
@@ -2276,14 +2276,15 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         );
 
         Assert.NotNull(response);
-        Assert.NotNull(capturedUserAgent);
-        Assert.Contains("MEAI", capturedUserAgent);
+        Assert.NotNull(capturedUserAgentValues);
+        Assert.Contains(capturedUserAgentValues, v => v.Contains("MEAI"));
+        Assert.Contains(capturedUserAgentValues, v => v.Contains("AnthropicClient"));
     }
 
     [Fact]
     public async Task GetStreamingResponseAsync_IncludesMeaiUserAgentHeader()
     {
-        string? capturedUserAgent = null;
+        string[]? capturedUserAgentValues = null;
         VerbatimHttpHandler handler = new(
             expectedRequest: """
             {
@@ -2323,11 +2324,11 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         {
             OnRequestHeaders = headers =>
             {
+                // Verify there's exactly one User-Agent header entry
+                Assert.Single(headers, h => h.Key == "User-Agent");
                 if (headers.TryGetValues("User-Agent", out var values))
                 {
-                    var valuesArray = values.ToArray();
-                    Assert.Single(valuesArray);
-                    capturedUserAgent = valuesArray[0];
+                    capturedUserAgentValues = values.ToArray();
                 }
             },
         };
@@ -2345,14 +2346,15 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
             // Consume the stream
         }
 
-        Assert.NotNull(capturedUserAgent);
-        Assert.Contains("MEAI", capturedUserAgent);
+        Assert.NotNull(capturedUserAgentValues);
+        Assert.Contains(capturedUserAgentValues, v => v.Contains("MEAI"));
+        Assert.Contains(capturedUserAgentValues, v => v.Contains("AnthropicClient"));
     }
 
     [Fact]
     public async Task GetResponseAsync_MeaiUserAgentHeader_HasCorrectFormat()
     {
-        string? capturedUserAgent = null;
+        string[]? capturedUserAgentValues = null;
         VerbatimHttpHandler handler = new(
             expectedRequest: """
             {
@@ -2388,11 +2390,11 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         {
             OnRequestHeaders = headers =>
             {
+                // Verify there's exactly one User-Agent header entry
+                Assert.Single(headers, h => h.Key == "User-Agent");
                 if (headers.TryGetValues("User-Agent", out var values))
                 {
-                    var valuesArray = values.ToArray();
-                    Assert.Single(valuesArray);
-                    capturedUserAgent = valuesArray[0];
+                    capturedUserAgentValues = values.ToArray();
                 }
             },
         };
@@ -2406,9 +2408,13 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         );
 
         Assert.NotNull(response);
-        Assert.NotNull(capturedUserAgent);
-        // Verify the MEAI user-agent starts with "MEAI" and optionally has a version
-        Assert.Matches(@"MEAI(/[\d\.]+)?", capturedUserAgent);
+        Assert.NotNull(capturedUserAgentValues);
+        // Verify the MEAI user-agent is present and has correct format
+        Assert.Contains(
+            capturedUserAgentValues,
+            v => System.Text.RegularExpressions.Regex.IsMatch(v, @"MEAI(/[\d\.]+)?")
+        );
+        Assert.Contains(capturedUserAgentValues, v => v.Contains("AnthropicClient"));
     }
 
     [Fact]
@@ -2453,14 +2459,14 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         {
             OnRequestHeaders = headers =>
             {
+                // Verify there's exactly one User-Agent header entry
+                Assert.Single(headers, h => h.Key == "User-Agent");
                 hasAnthropicVersion = headers.Contains("anthropic-version");
                 if (headers.TryGetValues("User-Agent", out var values))
                 {
                     var valuesArray = values.ToArray();
-                    Assert.Single(valuesArray);
-                    var userAgentValue = valuesArray[0];
-                    hasMeaiUserAgent = userAgentValue.Contains("MEAI");
-                    hasDefaultUserAgent = userAgentValue.Contains("AnthropicClient");
+                    hasMeaiUserAgent = valuesArray.Any(v => v.Contains("MEAI"));
+                    hasDefaultUserAgent = valuesArray.Any(v => v.Contains("AnthropicClient"));
                 }
             },
         };
