@@ -119,8 +119,11 @@ public sealed record class BetaMcpToolset : JsonModel
         this.Type = JsonSerializer.SerializeToElement("mcp_toolset");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMcpToolset(BetaMcpToolset betaMcpToolset)
         : base(betaMcpToolset) { }
+#pragma warning restore CS8618
 
     public BetaMcpToolset(IReadOnlyDictionary<string, JsonElement> rawData)
     {

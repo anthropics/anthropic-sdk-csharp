@@ -114,4 +114,23 @@ public class SkillRetrieveResponseTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new SkillRetrieveResponse
+        {
+            ID = "skill_01JAbcdefghijklmnopqrstuvw",
+            CreatedAt = "2024-10-30T23:58:27.427722Z",
+            DisplayTitle = "My Custom Skill",
+            LatestVersion = "1759178010641129",
+            Source = "custom",
+            Type = "type",
+            UpdatedAt = "2024-10-30T23:58:27.427722Z",
+        };
+
+        SkillRetrieveResponse copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

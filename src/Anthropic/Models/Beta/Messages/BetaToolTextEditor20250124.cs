@@ -183,8 +183,11 @@ public sealed record class BetaToolTextEditor20250124 : JsonModel
         this.Type = JsonSerializer.SerializeToElement("text_editor_20250124");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolTextEditor20250124(BetaToolTextEditor20250124 betaToolTextEditor20250124)
         : base(betaToolTextEditor20250124) { }
+#pragma warning restore CS8618
 
     public BetaToolTextEditor20250124(IReadOnlyDictionary<string, JsonElement> rawData)
     {

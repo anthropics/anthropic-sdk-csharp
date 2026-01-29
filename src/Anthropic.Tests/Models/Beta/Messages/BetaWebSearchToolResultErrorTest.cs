@@ -76,4 +76,17 @@ public class BetaWebSearchToolResultErrorTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaWebSearchToolResultError
+        {
+            ErrorCode = BetaWebSearchToolResultErrorCode.InvalidToolInput,
+        };
+
+        BetaWebSearchToolResultError copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

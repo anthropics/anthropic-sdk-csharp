@@ -54,4 +54,14 @@ public class BetaMessageBatchExpiredResultTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMessageBatchExpiredResult { };
+
+        BetaMessageBatchExpiredResult copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

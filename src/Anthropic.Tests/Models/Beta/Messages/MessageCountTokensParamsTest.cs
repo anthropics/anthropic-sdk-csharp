@@ -42,7 +42,17 @@ public class MessageCountTokensParamsTest : TestBase
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
             ],
-            OutputConfig = new() { Effort = Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -101,7 +111,7 @@ public class MessageCountTokensParamsTest : TestBase
                     Type = BetaToolType.Custom,
                 },
             ],
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         List<BetaMessageParam> expectedMessages = [new() { Content = "string", Role = Role.User }];
@@ -130,7 +140,17 @@ public class MessageCountTokensParamsTest : TestBase
                 ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
             },
         ];
-        BetaOutputConfig expectedOutputConfig = new() { Effort = Effort.Low };
+        BetaOutputConfig expectedOutputConfig = new()
+        {
+            Effort = Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
         BetaJsonOutputFormat expectedOutputFormat = new()
         {
             Schema = new Dictionary<string, JsonElement>()
@@ -192,7 +212,10 @@ public class MessageCountTokensParamsTest : TestBase
                 Type = BetaToolType.Custom,
             },
         ];
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedMessages.Count, parameters.Messages.Count);
         for (int i = 0; i < expectedMessages.Count; i++)
@@ -344,7 +367,17 @@ public class MessageCountTokensParamsTest : TestBase
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
             ],
-            OutputConfig = new() { Effort = Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             System = new(
                 [
                     new BetaTextBlockParam()
@@ -396,7 +429,7 @@ public class MessageCountTokensParamsTest : TestBase
                     Type = BetaToolType.Custom,
                 },
             ],
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         Assert.Null(parameters.ContextManagement);
@@ -422,7 +455,17 @@ public class MessageCountTokensParamsTest : TestBase
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
             ],
-            OutputConfig = new() { Effort = Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             System = new(
                 [
                     new BetaTextBlockParam()
@@ -474,7 +517,7 @@ public class MessageCountTokensParamsTest : TestBase
                     Type = BetaToolType.Custom,
                 },
             ],
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
             ContextManagement = null,
             OutputFormat = null,
@@ -508,12 +551,123 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Role.User }],
             Model = Messages::Model.ClaudeOpus4_5_20251101,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(["string"], requestMessage.Headers.GetValues("anthropic-beta"));
+        Assert.Equal(
+            ["message-batches-2024-09-24"],
+            requestMessage.Headers.GetValues("anthropic-beta")
+        );
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new MessageCountTokensParams
+        {
+            Messages = [new() { Content = "string", Role = Role.User }],
+            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            ContextManagement = new()
+            {
+                Edits =
+                [
+                    new BetaClearToolUses20250919Edit()
+                    {
+                        ClearAtLeast = new(0),
+                        ClearToolInputs = true,
+                        ExcludeTools = ["string"],
+                        Keep = new(0),
+                        Trigger = new BetaInputTokensTrigger(1),
+                    },
+                ],
+            },
+            McpServers =
+            [
+                new()
+                {
+                    Name = "name",
+                    Url = "url",
+                    AuthorizationToken = "authorization_token",
+                    ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
+                },
+            ],
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            OutputFormat = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+            System = new(
+                [
+                    new BetaTextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Thinking = new BetaThinkingConfigEnabled(1024),
+            ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new BetaTool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = BetaToolType.Custom,
+                },
+            ],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
+
+        MessageCountTokensParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
     }
 }
 

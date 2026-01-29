@@ -80,8 +80,11 @@ public sealed record class ServerToolUseBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("server_tool_use");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ServerToolUseBlock(ServerToolUseBlock serverToolUseBlock)
         : base(serverToolUseBlock) { }
+#pragma warning restore CS8618
 
     public ServerToolUseBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {

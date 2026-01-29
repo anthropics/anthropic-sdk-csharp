@@ -48,10 +48,13 @@ public sealed record class BetaMessageBatchErroredResult : JsonModel
         this.Type = JsonSerializer.SerializeToElement("errored");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMessageBatchErroredResult(
         BetaMessageBatchErroredResult betaMessageBatchErroredResult
     )
         : base(betaMessageBatchErroredResult) { }
+#pragma warning restore CS8618
 
     public BetaMessageBatchErroredResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {

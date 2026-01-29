@@ -286,6 +286,26 @@ public class BetaServerToolUseBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaServerToolUseBlockParam
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = BetaServerToolUseBlockParamName.WebSearch,
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new BetaDirectCaller(),
+        };
+
+        BetaServerToolUseBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaServerToolUseBlockParamNameTest : TestBase

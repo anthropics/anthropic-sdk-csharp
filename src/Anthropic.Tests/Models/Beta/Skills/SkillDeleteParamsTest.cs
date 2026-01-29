@@ -12,10 +12,17 @@ public class SkillDeleteParamsTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var parameters = new SkillDeleteParams { SkillID = "skill_id", Betas = ["string"] };
+        var parameters = new SkillDeleteParams
+        {
+            SkillID = "skill_id",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
 
         string expectedSkillID = "skill_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedSkillID, parameters.SkillID);
         Assert.NotNull(parameters.Betas);
@@ -64,13 +71,31 @@ public class SkillDeleteParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        SkillDeleteParams parameters = new() { SkillID = "skill_id", Betas = ["string"] };
+        SkillDeleteParams parameters = new()
+        {
+            SkillID = "skill_id",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["skills-2025-10-02", "string"],
+            ["skills-2025-10-02", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new SkillDeleteParams
+        {
+            SkillID = "skill_id",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
+
+        SkillDeleteParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
     }
 }

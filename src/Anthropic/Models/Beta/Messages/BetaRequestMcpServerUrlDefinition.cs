@@ -86,10 +86,13 @@ public sealed record class BetaRequestMcpServerUrlDefinition : JsonModel
         this.Type = JsonSerializer.SerializeToElement("url");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaRequestMcpServerUrlDefinition(
         BetaRequestMcpServerUrlDefinition betaRequestMcpServerUrlDefinition
     )
         : base(betaRequestMcpServerUrlDefinition) { }
+#pragma warning restore CS8618
 
     public BetaRequestMcpServerUrlDefinition(IReadOnlyDictionary<string, JsonElement> rawData)
     {

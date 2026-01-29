@@ -135,4 +135,18 @@ public class BetaMemoryTool20250818ViewCommandTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMemoryTool20250818ViewCommand
+        {
+            Path = "/memories",
+            ViewRange = [1, 10],
+        };
+
+        BetaMemoryTool20250818ViewCommand copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

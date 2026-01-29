@@ -58,4 +58,14 @@ public class BetaServerToolCallerTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaServerToolCaller { ToolID = "srvtoolu_SQfNkl1n_JR_" };
+
+        BetaServerToolCaller copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

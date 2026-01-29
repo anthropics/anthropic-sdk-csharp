@@ -172,8 +172,11 @@ public sealed record class BetaToolBash20241022 : JsonModel
         this.Type = JsonSerializer.SerializeToElement("bash_20241022");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolBash20241022(BetaToolBash20241022 betaToolBash20241022)
         : base(betaToolBash20241022) { }
+#pragma warning restore CS8618
 
     public BetaToolBash20241022(IReadOnlyDictionary<string, JsonElement> rawData)
     {

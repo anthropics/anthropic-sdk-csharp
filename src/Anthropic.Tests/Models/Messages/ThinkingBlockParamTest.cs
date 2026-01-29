@@ -62,4 +62,14 @@ public class ThinkingBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ThinkingBlockParam { Signature = "signature", Thinking = "thinking" };
+
+        ThinkingBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

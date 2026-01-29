@@ -280,4 +280,49 @@ public class MessageTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Message
+        {
+            ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+            Content =
+            [
+                new TextBlock()
+                {
+                    Citations =
+                    [
+                        new CitationCharLocation()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "document_title",
+                            EndCharIndex = 0,
+                            FileID = "file_id",
+                            StartCharIndex = 0,
+                        },
+                    ],
+                    Text = "Hi! My name is Claude.",
+                },
+            ],
+            Model = Model.ClaudeSonnet4_5_20250929,
+            StopReason = StopReason.EndTurn,
+            StopSequence = null,
+            Usage = new()
+            {
+                CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+                CacheCreationInputTokens = 2051,
+                CacheReadInputTokens = 2051,
+                InputTokens = 2095,
+                OutputTokens = 503,
+                ServerToolUse = new(0),
+                ServiceTier = UsageServiceTier.Standard,
+            },
+        };
+
+        Message copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

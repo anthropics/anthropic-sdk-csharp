@@ -58,4 +58,14 @@ public class BetaToolReferenceBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolReferenceBlock { ToolName = "tool_name" };
+
+        BetaToolReferenceBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

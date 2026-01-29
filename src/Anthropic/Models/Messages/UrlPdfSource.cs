@@ -46,8 +46,11 @@ public sealed record class UrlPdfSource : JsonModel
         this.Type = JsonSerializer.SerializeToElement("url");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public UrlPdfSource(UrlPdfSource urlPdfSource)
         : base(urlPdfSource) { }
+#pragma warning restore CS8618
 
     public UrlPdfSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {

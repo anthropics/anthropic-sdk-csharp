@@ -86,4 +86,19 @@ public class BetaMemoryTool20250818StrReplaceCommandTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMemoryTool20250818StrReplaceCommand
+        {
+            NewStr = "Favorite color: green",
+            OldStr = "Favorite color: blue",
+            Path = "/memories/preferences.txt",
+        };
+
+        BetaMemoryTool20250818StrReplaceCommand copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

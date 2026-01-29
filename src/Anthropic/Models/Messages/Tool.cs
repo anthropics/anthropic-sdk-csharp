@@ -107,8 +107,11 @@ public sealed record class Tool : JsonModel
 
     public Tool() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public Tool(Tool tool)
         : base(tool) { }
+#pragma warning restore CS8618
 
     public Tool(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -206,8 +209,11 @@ public sealed record class InputSchema : JsonModel
         this.Type = JsonSerializer.SerializeToElement("object");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public InputSchema(InputSchema inputSchema)
         : base(inputSchema) { }
+#pragma warning restore CS8618
 
     public InputSchema(IReadOnlyDictionary<string, JsonElement> rawData)
     {

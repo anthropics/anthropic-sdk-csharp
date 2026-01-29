@@ -128,6 +128,25 @@ public class BetaUsageTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaUsage
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 2051,
+            CacheReadInputTokens = 2051,
+            InputTokens = 2095,
+            OutputTokens = 503,
+            ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
+            ServiceTier = BetaUsageServiceTier.Standard,
+        };
+
+        BetaUsage copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaUsageServiceTierTest : TestBase

@@ -80,4 +80,18 @@ public class BetaMemoryTool20250818CreateCommandTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMemoryTool20250818CreateCommand
+        {
+            FileText = "Meeting notes:\n- Discussed project timeline\n- Next steps defined\n",
+            Path = "/memories/notes.txt",
+        };
+
+        BetaMemoryTool20250818CreateCommand copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

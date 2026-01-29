@@ -128,6 +128,27 @@ public class RawMessageDeltaEventTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new RawMessageDeltaEvent
+        {
+            Delta = new() { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" },
+            Usage = new()
+            {
+                CacheCreationInputTokens = 2051,
+                CacheReadInputTokens = 2051,
+                InputTokens = 2095,
+                OutputTokens = 503,
+                ServerToolUse = new(0),
+            },
+        };
+
+        RawMessageDeltaEvent copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class DeltaTest : TestBase
@@ -177,5 +198,15 @@ public class DeltaTest : TestBase
         var model = new Delta { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" };
 
         model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Delta { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" };
+
+        Delta copied = new(model);
+
+        Assert.Equal(model, copied);
     }
 }

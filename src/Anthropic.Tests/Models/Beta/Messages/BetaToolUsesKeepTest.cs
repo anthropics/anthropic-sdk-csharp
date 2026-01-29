@@ -58,4 +58,14 @@ public class BetaToolUsesKeepTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolUsesKeep { Value = 0 };
+
+        BetaToolUsesKeep copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

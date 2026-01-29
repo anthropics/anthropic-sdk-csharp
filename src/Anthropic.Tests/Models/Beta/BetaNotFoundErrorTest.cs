@@ -58,4 +58,14 @@ public class BetaNotFoundErrorTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaNotFoundError { Message = "message" };
+
+        BetaNotFoundError copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

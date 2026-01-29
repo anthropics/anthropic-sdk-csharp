@@ -85,6 +85,20 @@ public class BetaTextEditorCodeExecutionToolResultErrorTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaTextEditorCodeExecutionToolResultError
+        {
+            ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
+        };
+
+        BetaTextEditorCodeExecutionToolResultError copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaTextEditorCodeExecutionToolResultErrorErrorCodeTest : TestBase

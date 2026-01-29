@@ -15,11 +15,14 @@ public class BatchResultsParamsTest : TestBase
         var parameters = new BatchResultsParams
         {
             MessageBatchID = "message_batch_id",
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         string expectedMessageBatchID = "message_batch_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedMessageBatchID, parameters.MessageBatchID);
         Assert.NotNull(parameters.Betas);
@@ -74,14 +77,28 @@ public class BatchResultsParamsTest : TestBase
         BatchResultsParams parameters = new()
         {
             MessageBatchID = "message_batch_id",
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24", "string"],
+            ["message-batches-2024-09-24", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new BatchResultsParams
+        {
+            MessageBatchID = "message_batch_id",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
+
+        BatchResultsParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
     }
 }

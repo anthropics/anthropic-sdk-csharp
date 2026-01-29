@@ -58,4 +58,14 @@ public class BetaRateLimitErrorTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaRateLimitError { Message = "message" };
+
+        BetaRateLimitError copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

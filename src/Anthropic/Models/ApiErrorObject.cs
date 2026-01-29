@@ -46,8 +46,11 @@ public sealed record class ApiErrorObject : JsonModel
         this.Type = JsonSerializer.SerializeToElement("api_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ApiErrorObject(ApiErrorObject apiErrorObject)
         : base(apiErrorObject) { }
+#pragma warning restore CS8618
 
     public ApiErrorObject(IReadOnlyDictionary<string, JsonElement> rawData)
     {

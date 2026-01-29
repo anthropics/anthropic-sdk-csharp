@@ -182,6 +182,61 @@ public class MessageCountTokensParamsTest : TestBase
 
         Assert.Equal(new Uri("https://api.anthropic.com/v1/messages/count_tokens"), url);
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new Messages::MessageCountTokensParams
+        {
+            Messages = [new() { Content = "string", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            System = new(
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new Messages::Tool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    Description = "Get the current weather in a given location",
+                    Type = Messages::Type.Custom,
+                },
+            ],
+        };
+
+        Messages::MessageCountTokensParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }
 
 public class MessageCountTokensParamsSystemTest : TestBase

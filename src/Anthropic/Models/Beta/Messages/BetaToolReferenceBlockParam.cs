@@ -65,8 +65,11 @@ public sealed record class BetaToolReferenceBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("tool_reference");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolReferenceBlockParam(BetaToolReferenceBlockParam betaToolReferenceBlockParam)
         : base(betaToolReferenceBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaToolReferenceBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

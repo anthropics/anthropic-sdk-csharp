@@ -94,6 +94,9 @@ public record class ApiEnum<TRaw, TEnum>(JsonElement Json)
         return other != null && JsonElement.DeepEquals(this.Json, other.Json);
     }
 
+    public override string ToString() =>
+        JsonSerializer.Serialize(this.Json, ModelBase.ToStringSerializerOptions);
+
     public override int GetHashCode()
     {
         return 0;

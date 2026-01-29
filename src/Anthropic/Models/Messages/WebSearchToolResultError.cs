@@ -56,8 +56,11 @@ public sealed record class WebSearchToolResultError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("web_search_tool_result_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public WebSearchToolResultError(WebSearchToolResultError webSearchToolResultError)
         : base(webSearchToolResultError) { }
+#pragma warning restore CS8618
 
     public WebSearchToolResultError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -106,6 +109,7 @@ public enum WebSearchToolResultErrorErrorCode
     MaxUsesExceeded,
     TooManyRequests,
     QueryTooLong,
+    RequestTooLarge,
 }
 
 sealed class WebSearchToolResultErrorErrorCodeConverter
@@ -124,6 +128,7 @@ sealed class WebSearchToolResultErrorErrorCodeConverter
             "max_uses_exceeded" => WebSearchToolResultErrorErrorCode.MaxUsesExceeded,
             "too_many_requests" => WebSearchToolResultErrorErrorCode.TooManyRequests,
             "query_too_long" => WebSearchToolResultErrorErrorCode.QueryTooLong,
+            "request_too_large" => WebSearchToolResultErrorErrorCode.RequestTooLarge,
             _ => (WebSearchToolResultErrorErrorCode)(-1),
         };
     }
@@ -143,6 +148,7 @@ sealed class WebSearchToolResultErrorErrorCodeConverter
                 WebSearchToolResultErrorErrorCode.MaxUsesExceeded => "max_uses_exceeded",
                 WebSearchToolResultErrorErrorCode.TooManyRequests => "too_many_requests",
                 WebSearchToolResultErrorErrorCode.QueryTooLong => "query_too_long",
+                WebSearchToolResultErrorErrorCode.RequestTooLarge => "request_too_large",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

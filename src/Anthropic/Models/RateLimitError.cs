@@ -51,8 +51,11 @@ public sealed record class RateLimitError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("rate_limit_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public RateLimitError(RateLimitError rateLimitError)
         : base(rateLimitError) { }
+#pragma warning restore CS8618
 
     public RateLimitError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

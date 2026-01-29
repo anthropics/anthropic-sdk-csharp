@@ -122,4 +122,24 @@ public class VersionRetrieveResponseTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new VersionRetrieveResponse
+        {
+            ID = "skillver_01JAbcdefghijklmnopqrstuvw",
+            CreatedAt = "2024-10-30T23:58:27.427722Z",
+            Description = "A custom skill for doing something useful",
+            Directory = "my-skill",
+            Name = "my-skill",
+            SkillID = "skill_01JAbcdefghijklmnopqrstuvw",
+            Type = "type",
+            Version = "1759178010641129",
+        };
+
+        VersionRetrieveResponse copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -116,4 +116,24 @@ public class BetaWebFetchBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaWebFetchBlock
+        {
+            Content = new()
+            {
+                Citations = new(true),
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                Title = "title",
+            },
+            RetrievedAt = "retrieved_at",
+            Url = "url",
+        };
+
+        BetaWebFetchBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

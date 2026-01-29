@@ -85,10 +85,13 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
         this.Command = JsonSerializer.SerializeToElement("insert");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMemoryTool20250818InsertCommand(
         BetaMemoryTool20250818InsertCommand betaMemoryTool20250818InsertCommand
     )
         : base(betaMemoryTool20250818InsertCommand) { }
+#pragma warning restore CS8618
 
     public BetaMemoryTool20250818InsertCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -154,4 +154,20 @@ public class BetaRequestMcpServerUrlDefinitionTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaRequestMcpServerUrlDefinition
+        {
+            Name = "name",
+            Url = "url",
+            AuthorizationToken = "authorization_token",
+            ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
+        };
+
+        BetaRequestMcpServerUrlDefinition copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

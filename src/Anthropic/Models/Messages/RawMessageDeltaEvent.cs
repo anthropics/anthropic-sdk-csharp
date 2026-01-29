@@ -74,8 +74,11 @@ public sealed record class RawMessageDeltaEvent : JsonModel
         this.Type = JsonSerializer.SerializeToElement("message_delta");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public RawMessageDeltaEvent(RawMessageDeltaEvent rawMessageDeltaEvent)
         : base(rawMessageDeltaEvent) { }
+#pragma warning restore CS8618
 
     public RawMessageDeltaEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -141,8 +144,11 @@ public sealed record class Delta : JsonModel
 
     public Delta() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public Delta(Delta delta)
         : base(delta) { }
+#pragma warning restore CS8618
 
     public Delta(IReadOnlyDictionary<string, JsonElement> rawData)
     {

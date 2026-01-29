@@ -56,8 +56,11 @@ public sealed record class BetaContainerUploadBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("container_upload");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaContainerUploadBlock(BetaContainerUploadBlock betaContainerUploadBlock)
         : base(betaContainerUploadBlock) { }
+#pragma warning restore CS8618
 
     public BetaContainerUploadBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {

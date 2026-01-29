@@ -46,8 +46,11 @@ public sealed record class BetaGatewayTimeoutError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("timeout_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaGatewayTimeoutError(BetaGatewayTimeoutError betaGatewayTimeoutError)
         : base(betaGatewayTimeoutError) { }
+#pragma warning restore CS8618
 
     public BetaGatewayTimeoutError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

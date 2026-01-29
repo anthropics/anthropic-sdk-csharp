@@ -334,6 +334,31 @@ public class ToolTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Tool
+        {
+            InputSchema = new()
+            {
+                Properties = new Dictionary<string, JsonElement>()
+                {
+                    { "location", JsonSerializer.SerializeToElement("bar") },
+                    { "unit", JsonSerializer.SerializeToElement("bar") },
+                },
+                Required = ["location"],
+            },
+            Name = "name",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Description = "Get the current weather in a given location",
+            Type = Type.Custom,
+        };
+
+        Tool copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class InputSchemaTest : TestBase
@@ -495,6 +520,24 @@ public class InputSchemaTest : TestBase
         var model = new InputSchema { Properties = null, Required = null };
 
         model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new InputSchema
+        {
+            Properties = new Dictionary<string, JsonElement>()
+            {
+                { "location", JsonSerializer.SerializeToElement("bar") },
+                { "unit", JsonSerializer.SerializeToElement("bar") },
+            },
+            Required = ["location"],
+        };
+
+        InputSchema copied = new(model);
+
+        Assert.Equal(model, copied);
     }
 }
 

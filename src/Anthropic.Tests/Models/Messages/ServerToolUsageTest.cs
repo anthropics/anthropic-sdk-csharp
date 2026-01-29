@@ -54,4 +54,14 @@ public class ServerToolUsageTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ServerToolUsage { WebSearchRequests = 0 };
+
+        ServerToolUsage copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

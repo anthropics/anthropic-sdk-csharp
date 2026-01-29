@@ -83,10 +83,13 @@ public sealed record class BetaCodeExecutionToolResultBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("code_execution_tool_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaCodeExecutionToolResultBlockParam(
         BetaCodeExecutionToolResultBlockParam betaCodeExecutionToolResultBlockParam
     )
         : base(betaCodeExecutionToolResultBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaCodeExecutionToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

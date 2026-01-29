@@ -51,10 +51,13 @@ public sealed record class BetaRequestMcpServerToolConfiguration : JsonModel
 
     public BetaRequestMcpServerToolConfiguration() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaRequestMcpServerToolConfiguration(
         BetaRequestMcpServerToolConfiguration betaRequestMcpServerToolConfiguration
     )
         : base(betaRequestMcpServerToolConfiguration) { }
+#pragma warning restore CS8618
 
     public BetaRequestMcpServerToolConfiguration(IReadOnlyDictionary<string, JsonElement> rawData)
     {

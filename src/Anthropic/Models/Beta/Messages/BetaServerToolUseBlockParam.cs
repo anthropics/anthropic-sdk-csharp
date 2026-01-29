@@ -117,8 +117,11 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("server_tool_use");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaServerToolUseBlockParam(BetaServerToolUseBlockParam betaServerToolUseBlockParam)
         : base(betaServerToolUseBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaServerToolUseBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

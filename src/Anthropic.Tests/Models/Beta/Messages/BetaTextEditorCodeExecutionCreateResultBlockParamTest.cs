@@ -64,4 +64,14 @@ public class BetaTextEditorCodeExecutionCreateResultBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaTextEditorCodeExecutionCreateResultBlockParam { IsFileUpdate = true };
+
+        BetaTextEditorCodeExecutionCreateResultBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

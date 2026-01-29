@@ -149,10 +149,13 @@ public sealed record class BetaToolSearchToolRegex20251119 : JsonModel
         this.Name = JsonSerializer.SerializeToElement("tool_search_tool_regex");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolSearchToolRegex20251119(
         BetaToolSearchToolRegex20251119 betaToolSearchToolRegex20251119
     )
         : base(betaToolSearchToolRegex20251119) { }
+#pragma warning restore CS8618
 
     public BetaToolSearchToolRegex20251119(IReadOnlyDictionary<string, JsonElement> rawData)
     {

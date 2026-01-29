@@ -58,4 +58,14 @@ public class BetaAuthenticationErrorTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaAuthenticationError { Message = "message" };
+
+        BetaAuthenticationError copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

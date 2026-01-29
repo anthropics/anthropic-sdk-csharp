@@ -110,4 +110,22 @@ public class CitationContentBlockLocationTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new CitationContentBlockLocation
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndBlockIndex = 0,
+            FileID = "file_id",
+            StartBlockIndex = 0,
+        };
+
+        CitationContentBlockLocation copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -91,8 +91,11 @@ public sealed record class FileListPageResponse : JsonModel
 
     public FileListPageResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public FileListPageResponse(FileListPageResponse fileListPageResponse)
         : base(fileListPageResponse) { }
+#pragma warning restore CS8618
 
     public FileListPageResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

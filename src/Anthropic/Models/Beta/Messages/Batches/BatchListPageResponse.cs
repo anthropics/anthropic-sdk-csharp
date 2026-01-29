@@ -80,8 +80,11 @@ public sealed record class BatchListPageResponse : JsonModel
 
     public BatchListPageResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BatchListPageResponse(BatchListPageResponse batchListPageResponse)
         : base(batchListPageResponse) { }
+#pragma warning restore CS8618
 
     public BatchListPageResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -58,4 +58,14 @@ public class VersionDeleteResponseTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new VersionDeleteResponse { ID = "1759178010641129", Type = "type" };
+
+        VersionDeleteResponse copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -198,6 +198,26 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaTextEditorCodeExecutionToolResultBlockParam
+        {
+            Content = new BetaTextEditorCodeExecutionToolResultErrorParam()
+            {
+                ErrorCode =
+                    BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        BetaTextEditorCodeExecutionToolResultBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBase

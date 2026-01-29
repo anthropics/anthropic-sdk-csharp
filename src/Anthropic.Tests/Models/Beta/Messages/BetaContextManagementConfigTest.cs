@@ -179,6 +179,29 @@ public class BetaContextManagementConfigTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaContextManagementConfig
+        {
+            Edits =
+            [
+                new BetaClearToolUses20250919Edit()
+                {
+                    ClearAtLeast = new(0),
+                    ClearToolInputs = true,
+                    ExcludeTools = ["string"],
+                    Keep = new(0),
+                    Trigger = new BetaInputTokensTrigger(1),
+                },
+            ],
+        };
+
+        BetaContextManagementConfig copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class EditTest : TestBase

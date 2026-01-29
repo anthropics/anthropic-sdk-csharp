@@ -58,4 +58,14 @@ public class BetaInputTokensClearAtLeastTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaInputTokensClearAtLeast { Value = 0 };
+
+        BetaInputTokensClearAtLeast copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -57,8 +57,11 @@ public sealed record class ThinkingBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("thinking");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ThinkingBlock(ThinkingBlock thinkingBlock)
         : base(thinkingBlock) { }
+#pragma warning restore CS8618
 
     public ThinkingBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -54,8 +54,11 @@ public sealed record class BetaServerToolCaller : JsonModel
         this.Type = JsonSerializer.SerializeToElement("code_execution_20250825");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaServerToolCaller(BetaServerToolCaller betaServerToolCaller)
         : base(betaServerToolCaller) { }
+#pragma warning restore CS8618
 
     public BetaServerToolCaller(IReadOnlyDictionary<string, JsonElement> rawData)
     {

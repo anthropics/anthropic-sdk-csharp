@@ -58,4 +58,14 @@ public class CacheCreationTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new CacheCreation { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 };
+
+        CacheCreation copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -78,4 +78,18 @@ public class BetaErrorResponseTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaErrorResponse
+        {
+            Error = new BetaInvalidRequestError("message"),
+            RequestID = "request_id",
+        };
+
+        BetaErrorResponse copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

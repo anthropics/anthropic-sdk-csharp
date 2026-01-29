@@ -28,8 +28,11 @@ public sealed record class BetaCitationConfig : JsonModel
 
     public BetaCitationConfig() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaCitationConfig(BetaCitationConfig betaCitationConfig)
         : base(betaCitationConfig) { }
+#pragma warning restore CS8618
 
     public BetaCitationConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {

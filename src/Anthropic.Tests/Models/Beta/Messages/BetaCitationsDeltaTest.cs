@@ -118,6 +118,27 @@ public class BetaCitationsDeltaTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaCitationsDelta
+        {
+            Citation = new BetaCitationCharLocation()
+            {
+                CitedText = "cited_text",
+                DocumentIndex = 0,
+                DocumentTitle = "document_title",
+                EndCharIndex = 0,
+                FileID = "file_id",
+                StartCharIndex = 0,
+            },
+        };
+
+        BetaCitationsDelta copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class CitationTest : TestBase
