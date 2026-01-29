@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -140,13 +141,13 @@ public static class AnthropicBetaClientExtensions
         private const int DefaultMaxTokens = 1024;
         private const string MeaiUserAgentHeaderKey = "User-Agent";
 
-        private static readonly IReadOnlyDictionary<string, JsonElement> s_meaiHeaderData =
+        private static readonly FrozenDictionary<string, JsonElement> s_meaiHeaderData =
             new Dictionary<string, JsonElement>
             {
                 [MeaiUserAgentHeaderKey] = JsonSerializer.SerializeToElement(
                     CreateMeaiUserAgentValue()
                 ),
-            };
+            }.ToFrozenDictionary();
 
         private static string CreateMeaiUserAgentValue()
         {
@@ -1185,11 +1186,7 @@ public static class AnthropicBetaClientExtensions
 
         private static MessageCreateParams AddMeaiHeaders(MessageCreateParams createParams)
         {
-            Dictionary<string, JsonElement> mergedHeaders = [];
-            foreach (var header in s_meaiHeaderData)
-            {
-                mergedHeaders[header.Key] = header.Value;
-            }
+            Dictionary<string, JsonElement> mergedHeaders = new(s_meaiHeaderData);
 
             foreach (var header in createParams.RawHeaderData)
             {

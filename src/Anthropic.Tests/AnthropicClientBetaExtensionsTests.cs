@@ -2260,7 +2260,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
             {
                 if (headers.TryGetValues("User-Agent", out var values))
                 {
-                    capturedUserAgent = string.Join(" ", values);
+                    var valuesArray = values.ToArray();
+                    Assert.Single(valuesArray);
+                    capturedUserAgent = valuesArray[0];
                 }
             },
         };
@@ -2323,7 +2325,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
             {
                 if (headers.TryGetValues("User-Agent", out var values))
                 {
-                    capturedUserAgent = string.Join(" ", values);
+                    var valuesArray = values.ToArray();
+                    Assert.Single(valuesArray);
+                    capturedUserAgent = valuesArray[0];
                 }
             },
         };
@@ -2386,7 +2390,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
             {
                 if (headers.TryGetValues("User-Agent", out var values))
                 {
-                    capturedUserAgent = string.Join(" ", values);
+                    var valuesArray = values.ToArray();
+                    Assert.Single(valuesArray);
+                    capturedUserAgent = valuesArray[0];
                 }
             },
         };
@@ -2450,7 +2456,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 hasAnthropicVersion = headers.Contains("anthropic-version");
                 if (headers.TryGetValues("User-Agent", out var values))
                 {
-                    var userAgentValue = string.Join(" ", values);
+                    var valuesArray = values.ToArray();
+                    Assert.Single(valuesArray);
+                    var userAgentValue = valuesArray[0];
                     hasMeaiUserAgent = userAgentValue.Contains("MEAI");
                     hasDefaultUserAgent = userAgentValue.Contains("AnthropicClient");
                 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -90,12 +91,13 @@ public static class AnthropicClientExtensions
         private const int DefaultMaxTokens = 1024;
         private const string MeaiUserAgentHeaderKey = "User-Agent";
 
-        private static readonly Dictionary<string, JsonElement> s_meaiHeaderData = new()
-        {
-            [MeaiUserAgentHeaderKey] = JsonSerializer.SerializeToElement(
-                CreateMeaiUserAgentValue()
-            ),
-        };
+        private static readonly FrozenDictionary<string, JsonElement> s_meaiHeaderData =
+            new Dictionary<string, JsonElement>
+            {
+                [MeaiUserAgentHeaderKey] = JsonSerializer.SerializeToElement(
+                    CreateMeaiUserAgentValue()
+                ),
+            }.ToFrozenDictionary();
 
         private readonly IAnthropicClient _anthropicClient = anthropicClient;
         private readonly string? _defaultModelId = defaultModelId;
