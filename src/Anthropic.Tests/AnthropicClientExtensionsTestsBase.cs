@@ -4613,6 +4613,232 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.NotNull(response);
     }
 
+    [Fact]
+    public void WithCacheControl_SetsAdditionalProperty()
+    {
+        var content = new TextContent("Hello, world!");
+
+        content.WithCacheControl(Anthropic.Models.Messages.Ttl.Ttl5m);
+
+        Assert.NotNull(content.AdditionalProperties);
+        var cacheControl = content.GetCacheControl();
+        Assert.NotNull(cacheControl);
+        Assert.True(cacheControl.Ttl == Anthropic.Models.Messages.Ttl.Ttl5m);
+    }
+
+    [Fact]
+    public void WithCacheControl_CacheControlEphemeral_SetsAdditionalProperty()
+    {
+        var content = new TextContent("Hello, world!");
+        var cacheControl = new Anthropic.Models.Messages.CacheControlEphemeral
+        {
+            Ttl = Anthropic.Models.Messages.Ttl.Ttl1h,
+        };
+
+        content.WithCacheControl(cacheControl);
+
+        var retrieved = content.GetCacheControl();
+        Assert.NotNull(retrieved);
+        Assert.True(retrieved.Ttl == Anthropic.Models.Messages.Ttl.Ttl1h);
+    }
+
+    [Fact]
+    public void WithCacheControl_Null_RemovesCacheControl()
+    {
+        var content = new TextContent("Hello, world!");
+        content.WithCacheControl(Anthropic.Models.Messages.Ttl.Ttl5m);
+
+        Assert.NotNull(content.GetCacheControl());
+
+        content.WithCacheControl((Anthropic.Models.Messages.CacheControlEphemeral?)null);
+
+        Assert.Null(content.GetCacheControl());
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithCacheControlOnSystemMessage()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Hello"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "system": [{
+                    "type": "text",
+                    "text": "You are a helpful assistant.",
+                    "cache_control": {
+                        "type": "ephemeral",
+                        "ttl": "1h"
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_cache_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Hello!"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var systemContent = new TextContent("You are a helpful assistant.").WithCacheControl(
+            Anthropic.Models.Messages.Ttl.Ttl1h
+        );
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.System, [systemContent]),
+            new(ChatRole.User, "Hello"),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithCacheControlOnUserMessage()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "What is the meaning of life?",
+                        "cache_control": {
+                            "type": "ephemeral",
+                            "ttl": "5m"
+                        }
+                    }]
+                }],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_cache_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "42"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 15,
+                    "output_tokens": 3
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var userContent = new TextContent("What is the meaning of life?").WithCacheControl(
+            Anthropic.Models.Messages.Ttl.Ttl5m
+        );
+
+        List<ChatMessage> messages = [new(ChatRole.User, [userContent])];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithCacheControlOnImage()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "image",
+                        "source": {
+                            "type": "base64",
+                            "media_type": "image/png",
+                            "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+                        },
+                        "cache_control": {
+                            "type": "ephemeral",
+                            "ttl": "1h"
+                        }
+                    }, {
+                        "type": "text",
+                        "text": "What do you see?"
+                    }]
+                }],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_cache_03",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "I see a small image."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 100,
+                    "output_tokens": 10
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var imageContent = new DataContent(
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+            "image/png"
+        ).WithCacheControl(Anthropic.Models.Messages.Ttl.Ttl1h);
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, [imageContent, new TextContent("What do you see?")]),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
     protected sealed class VerbatimHttpHandler(string expectedRequest, string actualResponse)
         : HttpMessageHandler
     {
