@@ -66,10 +66,13 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
         this.Type = JsonSerializer.SerializeToElement("clear_thinking_20251015");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaClearThinking20251015Edit(
         BetaClearThinking20251015Edit betaClearThinking20251015Edit
     )
         : base(betaClearThinking20251015Edit) { }
+#pragma warning restore CS8618
 
     public BetaClearThinking20251015Edit(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -169,6 +169,35 @@ public class RawContentBlockStartEventTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new RawContentBlockStartEvent
+        {
+            ContentBlock = new TextBlock()
+            {
+                Citations =
+                [
+                    new CitationCharLocation()
+                    {
+                        CitedText = "cited_text",
+                        DocumentIndex = 0,
+                        DocumentTitle = "document_title",
+                        EndCharIndex = 0,
+                        FileID = "file_id",
+                        StartCharIndex = 0,
+                    },
+                ],
+                Text = "text",
+            },
+            Index = 0,
+        };
+
+        RawContentBlockStartEvent copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class RawContentBlockStartEventContentBlockTest : TestBase

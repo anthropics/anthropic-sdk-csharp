@@ -152,4 +152,20 @@ public class BetaWebSearchResultBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaWebSearchResultBlockParam
+        {
+            EncryptedContent = "encrypted_content",
+            Title = "title",
+            Url = "url",
+            PageAge = "page_age",
+        };
+
+        BetaWebSearchResultBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

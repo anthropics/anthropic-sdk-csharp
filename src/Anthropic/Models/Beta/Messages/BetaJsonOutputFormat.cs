@@ -55,8 +55,11 @@ public sealed record class BetaJsonOutputFormat : JsonModel
         this.Type = JsonSerializer.SerializeToElement("json_schema");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaJsonOutputFormat(BetaJsonOutputFormat betaJsonOutputFormat)
         : base(betaJsonOutputFormat) { }
+#pragma warning restore CS8618
 
     public BetaJsonOutputFormat(IReadOnlyDictionary<string, JsonElement> rawData)
     {

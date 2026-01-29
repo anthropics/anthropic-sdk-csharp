@@ -58,8 +58,11 @@ public sealed record class BetaBase64ImageSource : JsonModel
         this.Type = JsonSerializer.SerializeToElement("base64");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaBase64ImageSource(BetaBase64ImageSource betaBase64ImageSource)
         : base(betaBase64ImageSource) { }
+#pragma warning restore CS8618
 
     public BetaBase64ImageSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {

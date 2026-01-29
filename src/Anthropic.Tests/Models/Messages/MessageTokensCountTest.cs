@@ -54,4 +54,14 @@ public class MessageTokensCountTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new MessageTokensCount { InputTokens = 2095 };
+
+        MessageTokensCount copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

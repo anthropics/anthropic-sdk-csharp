@@ -94,4 +94,20 @@ public class CitationWebSearchResultLocationParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new CitationWebSearchResultLocationParam
+        {
+            CitedText = "cited_text",
+            EncryptedIndex = "encrypted_index",
+            Title = "x",
+            Url = "x",
+        };
+
+        CitationWebSearchResultLocationParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -98,8 +98,11 @@ public sealed record class BetaCodeExecutionResultBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("code_execution_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaCodeExecutionResultBlock(BetaCodeExecutionResultBlock betaCodeExecutionResultBlock)
         : base(betaCodeExecutionResultBlock) { }
+#pragma warning restore CS8618
 
     public BetaCodeExecutionResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -31,8 +31,11 @@ public sealed record class ServerToolUsage : JsonModel
 
     public ServerToolUsage() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ServerToolUsage(ServerToolUsage serverToolUsage)
         : base(serverToolUsage) { }
+#pragma warning restore CS8618
 
     public ServerToolUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {

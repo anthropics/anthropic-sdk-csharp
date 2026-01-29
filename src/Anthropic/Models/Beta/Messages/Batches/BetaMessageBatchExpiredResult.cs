@@ -37,10 +37,13 @@ public sealed record class BetaMessageBatchExpiredResult : JsonModel
         this.Type = JsonSerializer.SerializeToElement("expired");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMessageBatchExpiredResult(
         BetaMessageBatchExpiredResult betaMessageBatchExpiredResult
     )
         : base(betaMessageBatchExpiredResult) { }
+#pragma warning restore CS8618
 
     public BetaMessageBatchExpiredResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {

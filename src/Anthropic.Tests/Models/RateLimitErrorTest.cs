@@ -58,4 +58,14 @@ public class RateLimitErrorTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new RateLimitError { Message = "message" };
+
+        RateLimitError copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

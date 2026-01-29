@@ -356,6 +356,30 @@ public class BetaToolTextEditor20250728Test : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolTextEditor20250728
+        {
+            AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            MaxCharacters = 1,
+            Strict = true,
+        };
+
+        BetaToolTextEditor20250728 copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaToolTextEditor20250728AllowedCallerTest : TestBase

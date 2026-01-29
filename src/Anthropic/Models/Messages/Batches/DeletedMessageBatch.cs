@@ -59,8 +59,11 @@ public sealed record class DeletedMessageBatch : JsonModel
         this.Type = JsonSerializer.SerializeToElement("message_batch_deleted");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public DeletedMessageBatch(DeletedMessageBatch deletedMessageBatch)
         : base(deletedMessageBatch) { }
+#pragma warning restore CS8618
 
     public DeletedMessageBatch(IReadOnlyDictionary<string, JsonElement> rawData)
     {

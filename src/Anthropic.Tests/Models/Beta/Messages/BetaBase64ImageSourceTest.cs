@@ -79,6 +79,20 @@ public class BetaBase64ImageSourceTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaBase64ImageSource
+        {
+            Data = "U3RhaW5sZXNzIHJvY2tz",
+            MediaType = MediaType.ImageJpeg,
+        };
+
+        BetaBase64ImageSource copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class MediaTypeTest : TestBase

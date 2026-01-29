@@ -101,8 +101,11 @@ public sealed record class CitationCharLocation : JsonModel
         this.Type = JsonSerializer.SerializeToElement("char_location");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public CitationCharLocation(CitationCharLocation citationCharLocation)
         : base(citationCharLocation) { }
+#pragma warning restore CS8618
 
     public CitationCharLocation(IReadOnlyDictionary<string, JsonElement> rawData)
     {

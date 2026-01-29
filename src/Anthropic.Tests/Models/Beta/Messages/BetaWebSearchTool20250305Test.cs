@@ -390,6 +390,32 @@ public class BetaWebSearchTool20250305Test : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaWebSearchTool20250305
+        {
+            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxUses = 1,
+            Strict = true,
+            UserLocation = new()
+            {
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+        };
+
+        BetaWebSearchTool20250305 copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaWebSearchTool20250305AllowedCallerTest : TestBase
@@ -593,5 +619,21 @@ public class UserLocationTest : TestBase
         };
 
         model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new UserLocation
+        {
+            City = "New York",
+            Country = "US",
+            Region = "California",
+            Timezone = "America/New_York",
+        };
+
+        UserLocation copied = new(model);
+
+        Assert.Equal(model, copied);
     }
 }

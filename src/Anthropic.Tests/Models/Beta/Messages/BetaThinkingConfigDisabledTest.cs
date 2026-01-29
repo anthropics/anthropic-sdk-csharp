@@ -54,4 +54,14 @@ public class BetaThinkingConfigDisabledTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaThinkingConfigDisabled { };
+
+        BetaThinkingConfigDisabled copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

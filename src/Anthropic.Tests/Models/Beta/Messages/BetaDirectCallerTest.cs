@@ -54,4 +54,14 @@ public class BetaDirectCallerTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaDirectCaller { };
+
+        BetaDirectCaller copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

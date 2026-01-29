@@ -71,4 +71,14 @@ public class BetaToolSearchToolSearchResultBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolSearchToolSearchResultBlock { ToolReferences = [new("tool_name")] };
+
+        BetaToolSearchToolSearchResultBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

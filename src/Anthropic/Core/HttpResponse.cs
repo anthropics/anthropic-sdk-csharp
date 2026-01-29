@@ -39,6 +39,20 @@ public class HttpResponse : IDisposable
         [NotNullWhen(true)] out IEnumerable<string>? values
     ) => RawMessage.Headers.TryGetValues(name, out values);
 
+    public sealed override string ToString() => this.RawMessage.ToString();
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not HttpResponse other)
+        {
+            return false;
+        }
+
+        return this.RawMessage.Equals(other.RawMessage);
+    }
+
+    public override int GetHashCode() => this.RawMessage.GetHashCode();
+
     public async Task<T> Deserialize<T>(Threading::CancellationToken cancellationToken = default)
     {
         using var cts = Threading::CancellationTokenSource.CreateLinkedTokenSource(
@@ -95,7 +109,7 @@ public class HttpResponse : IDisposable
     }
 }
 
-public sealed class HttpResponse<T> : global::Anthropic.Core.HttpResponse
+public sealed class HttpResponse<T> : HttpResponse
 {
     readonly Func<Threading::CancellationToken, Task<T>> _deserialize;
 
@@ -106,7 +120,7 @@ public sealed class HttpResponse<T> : global::Anthropic.Core.HttpResponse
 
     [SetsRequiredMembers]
     internal HttpResponse(
-        global::Anthropic.Core.HttpResponse response,
+        HttpResponse response,
         Func<Threading::CancellationToken, Task<T>> deserialize
     )
         : this(deserialize)
@@ -125,7 +139,7 @@ public sealed class HttpResponse<T> : global::Anthropic.Core.HttpResponse
     }
 }
 
-public sealed class StreamingHttpResponse<T> : global::Anthropic.Core.HttpResponse
+public sealed class StreamingHttpResponse<T> : HttpResponse
 {
     readonly Func<Threading::CancellationToken, IAsyncEnumerable<T>> _enumerate;
 
@@ -138,7 +152,7 @@ public sealed class StreamingHttpResponse<T> : global::Anthropic.Core.HttpRespon
 
     [SetsRequiredMembers]
     internal StreamingHttpResponse(
-        global::Anthropic.Core.HttpResponse response,
+        HttpResponse response,
         Func<Threading::CancellationToken, IAsyncEnumerable<T>> enumerate
     )
         : this(enumerate)

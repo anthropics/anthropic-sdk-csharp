@@ -46,8 +46,11 @@ public sealed record class BetaApiError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("api_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaApiError(BetaApiError betaApiError)
         : base(betaApiError) { }
+#pragma warning restore CS8618
 
     public BetaApiError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

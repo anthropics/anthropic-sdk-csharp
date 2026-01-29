@@ -98,4 +98,21 @@ public class BetaMessageBatchRequestCountsTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMessageBatchRequestCounts
+        {
+            Canceled = 10,
+            Errored = 30,
+            Expired = 10,
+            Processing = 100,
+            Succeeded = 50,
+        };
+
+        BetaMessageBatchRequestCounts copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

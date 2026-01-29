@@ -141,8 +141,11 @@ public sealed record class VersionRetrieveResponse : JsonModel
 
     public VersionRetrieveResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public VersionRetrieveResponse(VersionRetrieveResponse versionRetrieveResponse)
         : base(versionRetrieveResponse) { }
+#pragma warning restore CS8618
 
     public VersionRetrieveResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

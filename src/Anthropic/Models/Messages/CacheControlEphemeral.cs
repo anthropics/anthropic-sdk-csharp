@@ -62,8 +62,11 @@ public sealed record class CacheControlEphemeral : JsonModel
         this.Type = JsonSerializer.SerializeToElement("ephemeral");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public CacheControlEphemeral(CacheControlEphemeral cacheControlEphemeral)
         : base(cacheControlEphemeral) { }
+#pragma warning restore CS8618
 
     public CacheControlEphemeral(IReadOnlyDictionary<string, JsonElement> rawData)
     {

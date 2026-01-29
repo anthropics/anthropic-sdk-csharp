@@ -131,6 +131,21 @@ public class BetaSkillParamsTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaSkillParams
+        {
+            SkillID = "x",
+            Type = BetaSkillParamsType.Anthropic,
+            Version = "x",
+        };
+
+        BetaSkillParams copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaSkillParamsTypeTest : TestBase

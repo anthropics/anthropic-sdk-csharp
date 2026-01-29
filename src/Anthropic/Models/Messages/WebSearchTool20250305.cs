@@ -144,8 +144,11 @@ public sealed record class WebSearchTool20250305 : JsonModel
         this.Type = JsonSerializer.SerializeToElement("web_search_20250305");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public WebSearchTool20250305(WebSearchTool20250305 webSearchTool20250305)
         : base(webSearchTool20250305) { }
+#pragma warning restore CS8618
 
     public WebSearchTool20250305(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -267,8 +270,11 @@ public sealed record class UserLocation : JsonModel
         this.Type = JsonSerializer.SerializeToElement("approximate");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public UserLocation(UserLocation userLocation)
         : base(userLocation) { }
+#pragma warning restore CS8618
 
     public UserLocation(IReadOnlyDictionary<string, JsonElement> rawData)
     {

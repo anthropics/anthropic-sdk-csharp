@@ -374,4 +374,31 @@ public class FileListPageResponseTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new FileListPageResponse
+        {
+            Data =
+            [
+                new()
+                {
+                    ID = "id",
+                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Filename = "x",
+                    MimeType = "x",
+                    SizeBytes = 0,
+                    Downloadable = true,
+                },
+            ],
+            FirstID = "first_id",
+            HasMore = true,
+            LastID = "last_id",
+        };
+
+        FileListPageResponse copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

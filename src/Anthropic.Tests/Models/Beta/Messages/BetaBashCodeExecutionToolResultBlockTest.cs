@@ -86,6 +86,20 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaBashCodeExecutionToolResultBlock
+        {
+            Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+
+        BetaBashCodeExecutionToolResultBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class ContentTest : TestBase

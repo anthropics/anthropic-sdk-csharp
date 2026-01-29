@@ -25,16 +25,34 @@ public sealed record class BetaOutputConfig : JsonModel
         init { this._rawData.Set("effort", value); }
     }
 
+    /// <summary>
+    ///  A schema to specify Claude's output format in responses. See [structured
+    /// outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
+    /// </summary>
+    public BetaJsonOutputFormat? Format
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaJsonOutputFormat>("format");
+        }
+        init { this._rawData.Set("format", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Effort?.Validate();
+        this.Format?.Validate();
     }
 
     public BetaOutputConfig() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaOutputConfig(BetaOutputConfig betaOutputConfig)
         : base(betaOutputConfig) { }
+#pragma warning restore CS8618
 
     public BetaOutputConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {

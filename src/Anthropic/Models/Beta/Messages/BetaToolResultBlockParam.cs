@@ -102,8 +102,11 @@ public sealed record class BetaToolResultBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("tool_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolResultBlockParam(BetaToolResultBlockParam betaToolResultBlockParam)
         : base(betaToolResultBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

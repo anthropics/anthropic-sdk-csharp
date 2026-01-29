@@ -53,8 +53,11 @@ public sealed record class RedactedThinkingBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("redacted_thinking");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public RedactedThinkingBlockParam(RedactedThinkingBlockParam redactedThinkingBlockParam)
         : base(redactedThinkingBlockParam) { }
+#pragma warning restore CS8618
 
     public RedactedThinkingBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

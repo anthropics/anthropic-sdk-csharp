@@ -122,4 +122,18 @@ public class BetaToolReferenceBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolReferenceBlockParam
+        {
+            ToolName = "tool_name",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        BetaToolReferenceBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

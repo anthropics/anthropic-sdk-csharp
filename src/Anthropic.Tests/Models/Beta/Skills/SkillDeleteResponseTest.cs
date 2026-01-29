@@ -74,4 +74,18 @@ public class SkillDeleteResponseTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new SkillDeleteResponse
+        {
+            ID = "skill_01JAbcdefghijklmnopqrstuvw",
+            Type = "type",
+        };
+
+        SkillDeleteResponse copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -113,4 +113,21 @@ public class ServerToolUseBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ServerToolUseBlock
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
+
+        ServerToolUseBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

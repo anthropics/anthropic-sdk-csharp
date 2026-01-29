@@ -101,6 +101,16 @@ public class BetaClearThinking20251015EditTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaClearThinking20251015Edit { Keep = new BetaThinkingTurns(1) };
+
+        BetaClearThinking20251015Edit copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class KeepTest : TestBase

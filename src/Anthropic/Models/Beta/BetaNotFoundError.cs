@@ -48,8 +48,11 @@ public sealed record class BetaNotFoundError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("not_found_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaNotFoundError(BetaNotFoundError betaNotFoundError)
         : base(betaNotFoundError) { }
+#pragma warning restore CS8618
 
     public BetaNotFoundError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

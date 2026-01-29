@@ -62,4 +62,14 @@ public class BetaBase64PdfSourceTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaBase64PdfSource { Data = "U3RhaW5sZXNzIHJvY2tz" };
+
+        BetaBase64PdfSource copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

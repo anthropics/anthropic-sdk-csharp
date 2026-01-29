@@ -51,8 +51,11 @@ public sealed record class BetaInputJsonDelta : JsonModel
         this.Type = JsonSerializer.SerializeToElement("input_json_delta");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaInputJsonDelta(BetaInputJsonDelta betaInputJsonDelta)
         : base(betaInputJsonDelta) { }
+#pragma warning restore CS8618
 
     public BetaInputJsonDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {

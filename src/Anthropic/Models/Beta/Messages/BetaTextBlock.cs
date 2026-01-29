@@ -74,8 +74,11 @@ public sealed record class BetaTextBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("text");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaTextBlock(BetaTextBlock betaTextBlock)
         : base(betaTextBlock) { }
+#pragma warning restore CS8618
 
     public BetaTextBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {

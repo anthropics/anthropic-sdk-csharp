@@ -45,10 +45,13 @@ public sealed record class BetaContextManagementResponse : JsonModel
 
     public BetaContextManagementResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaContextManagementResponse(
         BetaContextManagementResponse betaContextManagementResponse
     )
         : base(betaContextManagementResponse) { }
+#pragma warning restore CS8618
 
     public BetaContextManagementResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

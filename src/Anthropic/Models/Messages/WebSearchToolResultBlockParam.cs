@@ -78,10 +78,13 @@ public sealed record class WebSearchToolResultBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("web_search_tool_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public WebSearchToolResultBlockParam(
         WebSearchToolResultBlockParam webSearchToolResultBlockParam
     )
         : base(webSearchToolResultBlockParam) { }
+#pragma warning restore CS8618
 
     public WebSearchToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -58,4 +58,14 @@ public class BetaTextDeltaTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaTextDelta { Text = "text" };
+
+        BetaTextDelta copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

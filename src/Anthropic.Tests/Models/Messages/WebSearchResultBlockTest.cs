@@ -94,4 +94,20 @@ public class WebSearchResultBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new WebSearchResultBlock
+        {
+            EncryptedContent = "encrypted_content",
+            PageAge = "page_age",
+            Title = "title",
+            Url = "url",
+        };
+
+        WebSearchResultBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -106,4 +106,21 @@ public class BetaMessageDeltaUsageTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMessageDeltaUsage
+        {
+            CacheCreationInputTokens = 2051,
+            CacheReadInputTokens = 2051,
+            InputTokens = 2095,
+            OutputTokens = 503,
+            ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
+        };
+
+        BetaMessageDeltaUsage copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -78,4 +78,18 @@ public class ErrorResponseTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ErrorResponse
+        {
+            Error = new InvalidRequestError("message"),
+            RequestID = "request_id",
+        };
+
+        ErrorResponse copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

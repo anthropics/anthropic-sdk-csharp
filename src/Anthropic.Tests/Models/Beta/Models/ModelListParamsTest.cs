@@ -17,13 +17,16 @@ public class ModelListParamsTest : TestBase
             AfterID = "after_id",
             BeforeID = "before_id",
             Limit = 1,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         string expectedAfterID = "after_id";
         string expectedBeforeID = "before_id";
         long expectedLimit = 1;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedAfterID, parameters.AfterID);
         Assert.Equal(expectedBeforeID, parameters.BeforeID);
@@ -97,10 +100,29 @@ public class ModelListParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        ModelListParams parameters = new() { Betas = ["string"] };
+        ModelListParams parameters = new() { Betas = [AnthropicBeta.MessageBatches2024_09_24] };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(["string"], requestMessage.Headers.GetValues("anthropic-beta"));
+        Assert.Equal(
+            ["message-batches-2024-09-24"],
+            requestMessage.Headers.GetValues("anthropic-beta")
+        );
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new ModelListParams
+        {
+            AfterID = "after_id",
+            BeforeID = "before_id",
+            Limit = 1,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
+
+        ModelListParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
     }
 }

@@ -46,8 +46,11 @@ public sealed record class BetaThinkingDelta : JsonModel
         this.Type = JsonSerializer.SerializeToElement("thinking_delta");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaThinkingDelta(BetaThinkingDelta betaThinkingDelta)
         : base(betaThinkingDelta) { }
+#pragma warning restore CS8618
 
     public BetaThinkingDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {

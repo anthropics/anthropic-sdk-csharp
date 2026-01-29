@@ -54,8 +54,11 @@ public sealed record class WebSearchToolRequestError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("web_search_tool_result_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public WebSearchToolRequestError(WebSearchToolRequestError webSearchToolRequestError)
         : base(webSearchToolRequestError) { }
+#pragma warning restore CS8618
 
     public WebSearchToolRequestError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -104,6 +107,7 @@ public enum ErrorCode
     MaxUsesExceeded,
     TooManyRequests,
     QueryTooLong,
+    RequestTooLarge,
 }
 
 sealed class ErrorCodeConverter : JsonConverter<ErrorCode>
@@ -121,6 +125,7 @@ sealed class ErrorCodeConverter : JsonConverter<ErrorCode>
             "max_uses_exceeded" => ErrorCode.MaxUsesExceeded,
             "too_many_requests" => ErrorCode.TooManyRequests,
             "query_too_long" => ErrorCode.QueryTooLong,
+            "request_too_large" => ErrorCode.RequestTooLarge,
             _ => (ErrorCode)(-1),
         };
     }
@@ -140,6 +145,7 @@ sealed class ErrorCodeConverter : JsonConverter<ErrorCode>
                 ErrorCode.MaxUsesExceeded => "max_uses_exceeded",
                 ErrorCode.TooManyRequests => "too_many_requests",
                 ErrorCode.QueryTooLong => "query_too_long",
+                ErrorCode.RequestTooLarge => "request_too_large",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

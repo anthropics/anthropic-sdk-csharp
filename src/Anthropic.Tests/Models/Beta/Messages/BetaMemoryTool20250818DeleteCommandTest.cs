@@ -58,4 +58,14 @@ public class BetaMemoryTool20250818DeleteCommandTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMemoryTool20250818DeleteCommand { Path = "/memories/old_file.txt" };
+
+        BetaMemoryTool20250818DeleteCommand copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

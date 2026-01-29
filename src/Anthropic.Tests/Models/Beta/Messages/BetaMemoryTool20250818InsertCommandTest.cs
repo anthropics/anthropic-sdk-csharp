@@ -86,4 +86,19 @@ public class BetaMemoryTool20250818InsertCommandTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMemoryTool20250818InsertCommand
+        {
+            InsertLine = 2,
+            InsertText = "- Review memory tool documentation\n",
+            Path = "/memories/todo.txt",
+        };
+
+        BetaMemoryTool20250818InsertCommand copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

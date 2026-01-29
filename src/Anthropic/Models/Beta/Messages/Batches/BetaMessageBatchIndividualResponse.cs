@@ -61,10 +61,13 @@ public sealed record class BetaMessageBatchIndividualResponse : JsonModel
 
     public BetaMessageBatchIndividualResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMessageBatchIndividualResponse(
         BetaMessageBatchIndividualResponse betaMessageBatchIndividualResponse
     )
         : base(betaMessageBatchIndividualResponse) { }
+#pragma warning restore CS8618
 
     public BetaMessageBatchIndividualResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

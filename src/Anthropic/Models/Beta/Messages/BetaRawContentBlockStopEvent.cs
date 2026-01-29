@@ -53,8 +53,11 @@ public sealed record class BetaRawContentBlockStopEvent : JsonModel
         this.Type = JsonSerializer.SerializeToElement("content_block_stop");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaRawContentBlockStopEvent(BetaRawContentBlockStopEvent betaRawContentBlockStopEvent)
         : base(betaRawContentBlockStopEvent) { }
+#pragma warning restore CS8618
 
     public BetaRawContentBlockStopEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {

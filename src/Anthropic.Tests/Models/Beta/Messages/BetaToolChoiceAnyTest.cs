@@ -100,4 +100,14 @@ public class BetaToolChoiceAnyTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolChoiceAny { DisableParallelToolUse = true };
+
+        BetaToolChoiceAny copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -90,6 +90,22 @@ public class BetaWebFetchToolResultBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaWebFetchToolResultBlock
+        {
+            Content = new BetaWebFetchToolResultErrorBlock(
+                BetaWebFetchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+
+        BetaWebFetchToolResultBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaWebFetchToolResultBlockContentTest : TestBase

@@ -38,8 +38,11 @@ public sealed record class BetaDirectCaller : JsonModel
         this.Type = JsonSerializer.SerializeToElement("direct");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaDirectCaller(BetaDirectCaller betaDirectCaller)
         : base(betaDirectCaller) { }
+#pragma warning restore CS8618
 
     public BetaDirectCaller(IReadOnlyDictionary<string, JsonElement> rawData)
     {

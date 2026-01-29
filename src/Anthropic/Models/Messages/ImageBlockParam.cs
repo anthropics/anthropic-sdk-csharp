@@ -61,8 +61,11 @@ public sealed record class ImageBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("image");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ImageBlockParam(ImageBlockParam imageBlockParam)
         : base(imageBlockParam) { }
+#pragma warning restore CS8618
 
     public ImageBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

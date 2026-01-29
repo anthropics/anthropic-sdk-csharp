@@ -152,4 +152,29 @@ public class TextBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new TextBlock
+        {
+            Citations =
+            [
+                new CitationCharLocation()
+                {
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "document_title",
+                    EndCharIndex = 0,
+                    FileID = "file_id",
+                    StartCharIndex = 0,
+                },
+            ],
+            Text = "text",
+        };
+
+        TextBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

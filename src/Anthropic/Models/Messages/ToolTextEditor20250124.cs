@@ -79,8 +79,11 @@ public sealed record class ToolTextEditor20250124 : JsonModel
         this.Type = JsonSerializer.SerializeToElement("text_editor_20250124");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ToolTextEditor20250124(ToolTextEditor20250124 toolTextEditor20250124)
         : base(toolTextEditor20250124) { }
+#pragma warning restore CS8618
 
     public ToolTextEditor20250124(IReadOnlyDictionary<string, JsonElement> rawData)
     {

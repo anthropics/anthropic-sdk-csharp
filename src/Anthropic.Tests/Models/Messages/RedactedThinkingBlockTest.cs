@@ -58,4 +58,14 @@ public class RedactedThinkingBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new RedactedThinkingBlock { Data = "data" };
+
+        RedactedThinkingBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

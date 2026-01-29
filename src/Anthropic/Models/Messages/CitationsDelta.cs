@@ -49,8 +49,11 @@ public sealed record class CitationsDelta : JsonModel
         this.Type = JsonSerializer.SerializeToElement("citations_delta");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public CitationsDelta(CitationsDelta citationsDelta)
         : base(citationsDelta) { }
+#pragma warning restore CS8618
 
     public CitationsDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {

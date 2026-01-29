@@ -62,4 +62,14 @@ public class ThinkingBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ThinkingBlock { Signature = "signature", Thinking = "thinking" };
+
+        ThinkingBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

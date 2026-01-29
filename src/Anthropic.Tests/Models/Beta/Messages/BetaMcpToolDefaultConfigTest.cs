@@ -106,4 +106,14 @@ public class BetaMcpToolDefaultConfigTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMcpToolDefaultConfig { DeferLoading = true, Enabled = true };
+
+        BetaMcpToolDefaultConfig copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

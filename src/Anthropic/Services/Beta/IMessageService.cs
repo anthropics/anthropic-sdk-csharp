@@ -19,16 +19,14 @@ public interface IMessageService
     /// Returns a view of this service that provides access to raw HTTP responses
     /// for each method.
     /// </summary>
-    global::Anthropic.Services.Beta.IMessageServiceWithRawResponse WithRawResponse { get; }
+    IMessageServiceWithRawResponse WithRawResponse { get; }
 
     /// <summary>
     /// Returns a view of this service with the given option modifications applied.
     ///
     /// <para>The original service is not modified.</para>
     /// </summary>
-    global::Anthropic.Services.Beta.IMessageService WithOptions(
-        Func<ClientOptions, ClientOptions> modifier
-    );
+    IMessageService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     IBatchService Batches { get; }
 
@@ -75,7 +73,7 @@ public interface IMessageService
 }
 
 /// <summary>
-/// A view of <see cref="global::Anthropic.Services.Beta.IMessageService"/> that provides access to raw
+/// A view of <see cref="IMessageService"/> that provides access to raw
 /// HTTP responses for each method.
 /// </summary>
 public interface IMessageServiceWithRawResponse
@@ -85,15 +83,13 @@ public interface IMessageServiceWithRawResponse
     ///
     /// <para>The original service is not modified.</para>
     /// </summary>
-    global::Anthropic.Services.Beta.IMessageServiceWithRawResponse WithOptions(
-        Func<ClientOptions, ClientOptions> modifier
-    );
+    IMessageServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     IBatchServiceWithRawResponse Batches { get; }
 
     /// <summary>
     /// Returns a raw HTTP response for `post /v1/messages?beta=true`, but is otherwise the
-    /// same as <see cref="global::Anthropic.Services.Beta.IMessageService.Create(MessageCreateParams, CancellationToken)"/>.
+    /// same as <see cref="IMessageService.Create(MessageCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaMessage>> Create(
         MessageCreateParams parameters,
@@ -102,7 +98,7 @@ public interface IMessageServiceWithRawResponse
 
     /// <summary>
     /// Returns a raw HTTP response for `post /v1/messages?beta=true`, but is otherwise the
-    /// same as <see cref="global::Anthropic.Services.Beta.IMessageService.CreateStreaming(MessageCreateParams, CancellationToken)"/>.
+    /// same as <see cref="IMessageService.CreateStreaming(MessageCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<StreamingHttpResponse<BetaRawMessageStreamEvent>> CreateStreaming(
         MessageCreateParams parameters,
@@ -111,7 +107,7 @@ public interface IMessageServiceWithRawResponse
 
     /// <summary>
     /// Returns a raw HTTP response for `post /v1/messages/count_tokens?beta=true`, but is otherwise the
-    /// same as <see cref="global::Anthropic.Services.Beta.IMessageService.CountTokens(MessageCountTokensParams, CancellationToken)"/>.
+    /// same as <see cref="IMessageService.CountTokens(MessageCountTokensParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaMessageTokensCount>> CountTokens(
         MessageCountTokensParams parameters,

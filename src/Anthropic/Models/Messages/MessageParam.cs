@@ -42,8 +42,11 @@ public sealed record class MessageParam : JsonModel
 
     public MessageParam() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public MessageParam(MessageParam messageParam)
         : base(messageParam) { }
+#pragma warning restore CS8618
 
     public MessageParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

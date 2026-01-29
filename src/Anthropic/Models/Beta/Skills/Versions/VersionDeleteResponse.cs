@@ -49,8 +49,11 @@ public sealed record class VersionDeleteResponse : JsonModel
 
     public VersionDeleteResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public VersionDeleteResponse(VersionDeleteResponse versionDeleteResponse)
         : base(versionDeleteResponse) { }
+#pragma warning restore CS8618
 
     public VersionDeleteResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

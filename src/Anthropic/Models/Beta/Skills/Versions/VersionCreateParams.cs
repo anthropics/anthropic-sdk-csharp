@@ -12,8 +12,12 @@ namespace Anthropic.Models.Beta.Skills.Versions;
 
 /// <summary>
 /// Create Skill Version
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
 /// </summary>
-public sealed record class VersionCreateParams : ParamsBase
+public record class VersionCreateParams : ParamsBase
 {
     readonly MultipartJsonDictionary _rawBodyData = new();
     public IReadOnlyDictionary<string, MultipartJsonElement> RawBodyData
@@ -73,6 +77,8 @@ public sealed record class VersionCreateParams : ParamsBase
 
     public VersionCreateParams() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public VersionCreateParams(VersionCreateParams versionCreateParams)
         : base(versionCreateParams)
     {
@@ -80,6 +86,7 @@ public sealed record class VersionCreateParams : ParamsBase
 
         this._rawBodyData = new(versionCreateParams._rawBodyData);
     }
+#pragma warning restore CS8618
 
     public VersionCreateParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -144,5 +151,10 @@ public sealed record class VersionCreateParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }

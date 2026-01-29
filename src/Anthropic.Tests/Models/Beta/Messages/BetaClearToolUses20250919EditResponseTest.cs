@@ -78,4 +78,18 @@ public class BetaClearToolUses20250919EditResponseTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaClearToolUses20250919EditResponse
+        {
+            ClearedInputTokens = 0,
+            ClearedToolUses = 0,
+        };
+
+        BetaClearToolUses20250919EditResponse copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

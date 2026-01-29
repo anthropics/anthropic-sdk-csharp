@@ -51,8 +51,11 @@ public sealed record class InvalidRequestError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("invalid_request_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public InvalidRequestError(InvalidRequestError invalidRequestError)
         : base(invalidRequestError) { }
+#pragma warning restore CS8618
 
     public InvalidRequestError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

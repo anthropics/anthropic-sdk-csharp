@@ -86,6 +86,21 @@ public class BetaMcpToolResultBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMcpToolResultBlock
+        {
+            Content = "string",
+            IsError = true,
+            ToolUseID = "tool_use_id",
+        };
+
+        BetaMcpToolResultBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaMcpToolResultBlockContentTest : TestBase

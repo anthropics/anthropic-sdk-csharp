@@ -22,8 +22,12 @@ namespace Anthropic.Models.Beta.Messages.Batches;
 /// can take up to 24 hours to complete.</para>
 ///
 /// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
 /// </summary>
-public sealed record class BatchCreateParams : ParamsBase
+public record class BatchCreateParams : ParamsBase
 {
     readonly JsonDictionary _rawBodyData = new();
     public IReadOnlyDictionary<string, JsonElement> RawBodyData
@@ -79,11 +83,14 @@ public sealed record class BatchCreateParams : ParamsBase
 
     public BatchCreateParams() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BatchCreateParams(BatchCreateParams batchCreateParams)
         : base(batchCreateParams)
     {
         this._rawBodyData = new(batchCreateParams._rawBodyData);
     }
+#pragma warning restore CS8618
 
     public BatchCreateParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -124,6 +131,28 @@ public sealed record class BatchCreateParams : ParamsBase
         );
     }
 
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            new Dictionary<string, object?>()
+            {
+                ["HeaderData"] = this._rawHeaderData.Freeze(),
+                ["QueryData"] = this._rawQueryData.Freeze(),
+                ["BodyData"] = this._rawBodyData.Freeze(),
+            },
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public virtual bool Equals(BatchCreateParams? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        return this._rawHeaderData.Equals(other._rawHeaderData)
+            && this._rawQueryData.Equals(other._rawQueryData)
+            && this._rawBodyData.Equals(other._rawBodyData);
+    }
+
     public override System::Uri Url(ClientOptions options)
     {
         return new System::UriBuilder(
@@ -151,6 +180,11 @@ public sealed record class BatchCreateParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 
@@ -198,8 +232,11 @@ public sealed record class Request : JsonModel
 
     public Request() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public Request(Request request)
         : base(request) { }
+#pragma warning restore CS8618
 
     public Request(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -340,14 +377,12 @@ public sealed record class Params : JsonModel
     /// <summary>
     /// Container identifier for reuse across requests.
     /// </summary>
-    public global::Anthropic.Models.Beta.Messages.Batches.Container? Container
+    public Container? Container
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<global::Anthropic.Models.Beta.Messages.Batches.Container>(
-                "container"
-            );
+            return this._rawData.GetNullableClass<Container>("container");
         }
         init { this._rawData.Set("container", value); }
     }
@@ -418,8 +453,8 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
-    /// Configuration options for the model's output. Controls aspects like how much
-    /// effort the model puts into its response.
+    /// Configuration options for the model's output. Controls aspects like output
+    /// format or how much effort the model puts into its response.
     /// </summary>
     public BetaOutputConfig? OutputConfig
     {
@@ -440,8 +475,12 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
-    ///  A schema to specify Claude's output format in responses.
+    /// Deprecated: Use `output_config.format` instead. See [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
+    ///
+    /// <para>A schema to specify Claude's output format in responses. This parameter
+    /// will be removed in a future release.</para>
     /// </summary>
+    [System::Obsolete("deprecated")]
     public BetaJsonOutputFormat? OutputFormat
     {
         get
@@ -795,8 +834,11 @@ public sealed record class Params : JsonModel
 
     public Params() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public Params(Params params_)
         : base(params_) { }
+#pragma warning restore CS8618
 
     public Params(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -828,7 +870,7 @@ class ParamsFromRaw : IFromRawJson<Params>
 /// <summary>
 /// Container identifier for reuse across requests.
 /// </summary>
-[JsonConverter(typeof(global::Anthropic.Models.Beta.Messages.Batches.ContainerConverter))]
+[JsonConverter(typeof(ContainerConverter))]
 public record class Container : ModelBase
 {
     public object? Value { get; } = null;
@@ -981,13 +1023,9 @@ public record class Container : ModelBase
         };
     }
 
-    public static implicit operator global::Anthropic.Models.Beta.Messages.Batches.Container(
-        BetaContainerParams value
-    ) => new(value);
+    public static implicit operator Container(BetaContainerParams value) => new(value);
 
-    public static implicit operator global::Anthropic.Models.Beta.Messages.Batches.Container(
-        string value
-    ) => new(value);
+    public static implicit operator Container(string value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -1008,7 +1046,7 @@ public record class Container : ModelBase
         this.Switch((betaContainerParams) => betaContainerParams.Validate(), (_) => { });
     }
 
-    public virtual bool Equals(global::Anthropic.Models.Beta.Messages.Batches.Container? other)
+    public virtual bool Equals(Container? other)
     {
         return other != null && JsonElement.DeepEquals(this.Json, other.Json);
     }
@@ -1022,10 +1060,9 @@ public record class Container : ModelBase
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
-sealed class ContainerConverter
-    : JsonConverter<global::Anthropic.Models.Beta.Messages.Batches.Container?>
+sealed class ContainerConverter : JsonConverter<Container?>
 {
-    public override global::Anthropic.Models.Beta.Messages.Batches.Container? Read(
+    public override Container? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -1064,7 +1101,7 @@ sealed class ContainerConverter
 
     public override void Write(
         Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Messages.Batches.Container? value,
+        Container? value,
         JsonSerializerOptions options
     )
     {

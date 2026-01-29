@@ -118,6 +118,27 @@ public class CitationsDeltaTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new CitationsDelta
+        {
+            Citation = new CitationCharLocation()
+            {
+                CitedText = "cited_text",
+                DocumentIndex = 0,
+                DocumentTitle = "document_title",
+                EndCharIndex = 0,
+                FileID = "file_id",
+                StartCharIndex = 0,
+            },
+        };
+
+        CitationsDelta copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class CitationTest : TestBase

@@ -58,4 +58,14 @@ public class BetaBillingErrorTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaBillingError { Message = "message" };
+
+        BetaBillingError copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

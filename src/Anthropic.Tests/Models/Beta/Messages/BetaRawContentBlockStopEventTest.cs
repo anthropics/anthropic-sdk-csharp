@@ -58,4 +58,14 @@ public class BetaRawContentBlockStopEventTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaRawContentBlockStopEvent { Index = 0 };
+
+        BetaRawContentBlockStopEvent copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

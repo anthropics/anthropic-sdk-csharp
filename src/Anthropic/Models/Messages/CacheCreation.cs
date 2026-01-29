@@ -45,8 +45,11 @@ public sealed record class CacheCreation : JsonModel
 
     public CacheCreation() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public CacheCreation(CacheCreation cacheCreation)
         : base(cacheCreation) { }
+#pragma warning restore CS8618
 
     public CacheCreation(IReadOnlyDictionary<string, JsonElement> rawData)
     {

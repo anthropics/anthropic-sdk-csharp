@@ -59,8 +59,11 @@ public sealed record class DeletedFile : JsonModel
 
     public DeletedFile() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public DeletedFile(DeletedFile deletedFile)
         : base(deletedFile) { }
+#pragma warning restore CS8618
 
     public DeletedFile(IReadOnlyDictionary<string, JsonElement> rawData)
     {

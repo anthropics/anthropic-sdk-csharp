@@ -152,4 +152,20 @@ public class WebSearchResultBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new WebSearchResultBlockParam
+        {
+            EncryptedContent = "encrypted_content",
+            Title = "title",
+            Url = "url",
+            PageAge = "page_age",
+        };
+
+        WebSearchResultBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

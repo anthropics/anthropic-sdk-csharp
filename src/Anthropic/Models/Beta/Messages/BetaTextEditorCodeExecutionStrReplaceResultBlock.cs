@@ -109,10 +109,13 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlock : Js
         );
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaTextEditorCodeExecutionStrReplaceResultBlock(
         BetaTextEditorCodeExecutionStrReplaceResultBlock betaTextEditorCodeExecutionStrReplaceResultBlock
     )
         : base(betaTextEditorCodeExecutionStrReplaceResultBlock) { }
+#pragma warning restore CS8618
 
     public BetaTextEditorCodeExecutionStrReplaceResultBlock(
         IReadOnlyDictionary<string, JsonElement> rawData

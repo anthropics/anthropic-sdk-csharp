@@ -58,4 +58,14 @@ public class BetaApiErrorTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaApiError { Message = "message" };
+
+        BetaApiError copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

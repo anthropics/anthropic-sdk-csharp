@@ -148,4 +148,28 @@ public class ModelListPageResponseTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ModelListPageResponse
+        {
+            Data =
+            [
+                new()
+                {
+                    ID = "claude-sonnet-4-20250514",
+                    CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
+                    DisplayName = "Claude Sonnet 4",
+                },
+            ],
+            FirstID = "first_id",
+            HasMore = true,
+            LastID = "last_id",
+        };
+
+        ModelListPageResponse copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

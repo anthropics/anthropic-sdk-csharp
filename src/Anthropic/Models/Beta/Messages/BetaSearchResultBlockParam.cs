@@ -113,8 +113,11 @@ public sealed record class BetaSearchResultBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("search_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaSearchResultBlockParam(BetaSearchResultBlockParam betaSearchResultBlockParam)
         : base(betaSearchResultBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaSearchResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

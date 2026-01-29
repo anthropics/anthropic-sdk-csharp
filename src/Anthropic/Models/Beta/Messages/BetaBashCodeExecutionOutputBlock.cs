@@ -56,10 +56,13 @@ public sealed record class BetaBashCodeExecutionOutputBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("bash_code_execution_output");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaBashCodeExecutionOutputBlock(
         BetaBashCodeExecutionOutputBlock betaBashCodeExecutionOutputBlock
     )
         : base(betaBashCodeExecutionOutputBlock) { }
+#pragma warning restore CS8618
 
     public BetaBashCodeExecutionOutputBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {

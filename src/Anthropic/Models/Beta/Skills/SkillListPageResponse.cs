@@ -75,8 +75,11 @@ public sealed record class SkillListPageResponse : JsonModel
 
     public SkillListPageResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public SkillListPageResponse(SkillListPageResponse skillListPageResponse)
         : base(skillListPageResponse) { }
+#pragma warning restore CS8618
 
     public SkillListPageResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

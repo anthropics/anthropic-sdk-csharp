@@ -49,8 +49,11 @@ public sealed record class SkillDeleteResponse : JsonModel
 
     public SkillDeleteResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public SkillDeleteResponse(SkillDeleteResponse skillDeleteResponse)
         : base(skillDeleteResponse) { }
+#pragma warning restore CS8618
 
     public SkillDeleteResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -57,10 +57,13 @@ public sealed record class BetaMemoryTool20250818DeleteCommand : JsonModel
         this.Command = JsonSerializer.SerializeToElement("delete");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMemoryTool20250818DeleteCommand(
         BetaMemoryTool20250818DeleteCommand betaMemoryTool20250818DeleteCommand
     )
         : base(betaMemoryTool20250818DeleteCommand) { }
+#pragma warning restore CS8618
 
     public BetaMemoryTool20250818DeleteCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {

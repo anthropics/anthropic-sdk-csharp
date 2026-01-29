@@ -58,4 +58,14 @@ public class ThinkingDeltaTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ThinkingDelta { Thinking = "thinking" };
+
+        ThinkingDelta copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

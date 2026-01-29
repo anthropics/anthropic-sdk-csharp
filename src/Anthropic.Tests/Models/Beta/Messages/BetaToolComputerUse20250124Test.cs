@@ -388,6 +388,32 @@ public class BetaToolComputerUse20250124Test : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolComputerUse20250124
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [BetaToolComputerUse20250124AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            DisplayNumber = 0,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+
+        BetaToolComputerUse20250124 copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaToolComputerUse20250124AllowedCallerTest : TestBase

@@ -58,4 +58,14 @@ public class BetaThinkingConfigEnabledTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaThinkingConfigEnabled { BudgetTokens = 1024 };
+
+        BetaThinkingConfigEnabled copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

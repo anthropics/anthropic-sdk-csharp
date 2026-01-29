@@ -96,4 +96,14 @@ public class ToolBash20250124Test : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ToolBash20250124 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
+
+        ToolBash20250124 copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -101,6 +101,16 @@ public class BetaCacheControlEphemeralTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaCacheControlEphemeral { Ttl = Ttl.Ttl5m };
+
+        BetaCacheControlEphemeral copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class TtlTest : TestBase

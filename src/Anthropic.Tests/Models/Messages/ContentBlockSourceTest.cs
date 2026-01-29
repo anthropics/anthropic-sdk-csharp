@@ -58,6 +58,16 @@ public class ContentBlockSourceTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ContentBlockSource { Content = "string" };
+
+        ContentBlockSource copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class ContentTest : TestBase

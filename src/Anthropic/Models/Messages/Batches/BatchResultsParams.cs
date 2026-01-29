@@ -16,18 +16,25 @@ namespace Anthropic.Models.Messages.Batches;
 /// as requests. Use the `custom_id` field to match results to requests.</para>
 ///
 /// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
 /// </summary>
-public sealed record class BatchResultsParams : ParamsBase
+public record class BatchResultsParams : ParamsBase
 {
     public string? MessageBatchID { get; init; }
 
     public BatchResultsParams() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BatchResultsParams(BatchResultsParams batchResultsParams)
         : base(batchResultsParams)
     {
         this.MessageBatchID = batchResultsParams.MessageBatchID;
     }
+#pragma warning restore CS8618
 
     public BatchResultsParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -62,6 +69,28 @@ public sealed record class BatchResultsParams : ParamsBase
         );
     }
 
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            new Dictionary<string, object?>()
+            {
+                ["MessageBatchID"] = this.MessageBatchID,
+                ["HeaderData"] = this._rawHeaderData.Freeze(),
+                ["QueryData"] = this._rawQueryData.Freeze(),
+            },
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public virtual bool Equals(BatchResultsParams? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        return (this.MessageBatchID?.Equals(other.MessageBatchID) ?? other.MessageBatchID == null)
+            && this._rawHeaderData.Equals(other._rawHeaderData)
+            && this._rawQueryData.Equals(other._rawQueryData);
+    }
+
     public override Uri Url(ClientOptions options)
     {
         return new UriBuilder(
@@ -80,5 +109,10 @@ public sealed record class BatchResultsParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }

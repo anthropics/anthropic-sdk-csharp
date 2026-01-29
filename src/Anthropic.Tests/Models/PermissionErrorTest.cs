@@ -58,4 +58,14 @@ public class PermissionErrorTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new PermissionError { Message = "message" };
+
+        PermissionError copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

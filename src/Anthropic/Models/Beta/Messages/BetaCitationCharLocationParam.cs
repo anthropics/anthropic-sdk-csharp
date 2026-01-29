@@ -92,10 +92,13 @@ public sealed record class BetaCitationCharLocationParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("char_location");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaCitationCharLocationParam(
         BetaCitationCharLocationParam betaCitationCharLocationParam
     )
         : base(betaCitationCharLocationParam) { }
+#pragma warning restore CS8618
 
     public BetaCitationCharLocationParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

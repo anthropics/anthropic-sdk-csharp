@@ -58,4 +58,14 @@ public class UrlImageSourceTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new UrlImageSource { Url = "url" };
+
+        UrlImageSource copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

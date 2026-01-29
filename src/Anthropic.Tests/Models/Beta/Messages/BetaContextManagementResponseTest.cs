@@ -117,6 +117,26 @@ public class BetaContextManagementResponseTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaContextManagementResponse
+        {
+            AppliedEdits =
+            [
+                new BetaClearToolUses20250919EditResponse()
+                {
+                    ClearedInputTokens = 0,
+                    ClearedToolUses = 0,
+                },
+            ],
+        };
+
+        BetaContextManagementResponse copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class AppliedEditTest : TestBase

@@ -245,6 +245,23 @@ public class BetaClearToolUses20250919EditTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaClearToolUses20250919Edit
+        {
+            ClearAtLeast = new(0),
+            ClearToolInputs = true,
+            ExcludeTools = ["string"],
+            Keep = new(0),
+            Trigger = new BetaInputTokensTrigger(1),
+        };
+
+        BetaClearToolUses20250919Edit copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class ClearToolInputsTest : TestBase

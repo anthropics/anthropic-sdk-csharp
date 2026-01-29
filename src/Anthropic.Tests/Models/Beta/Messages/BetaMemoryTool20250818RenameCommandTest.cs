@@ -78,4 +78,18 @@ public class BetaMemoryTool20250818RenameCommandTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMemoryTool20250818RenameCommand
+        {
+            NewPath = "/memories/final.txt",
+            OldPath = "/memories/draft.txt",
+        };
+
+        BetaMemoryTool20250818RenameCommand copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

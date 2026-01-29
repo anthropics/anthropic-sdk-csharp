@@ -125,4 +125,23 @@ public class BetaMcpToolUseBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMcpToolUseBlock
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "name",
+            ServerName = "server_name",
+        };
+
+        BetaMcpToolUseBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

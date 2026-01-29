@@ -17,16 +17,14 @@ public interface IModelService
     /// Returns a view of this service that provides access to raw HTTP responses
     /// for each method.
     /// </summary>
-    global::Anthropic.Services.Beta.IModelServiceWithRawResponse WithRawResponse { get; }
+    IModelServiceWithRawResponse WithRawResponse { get; }
 
     /// <summary>
     /// Returns a view of this service with the given option modifications applied.
     ///
     /// <para>The original service is not modified.</para>
     /// </summary>
-    global::Anthropic.Services.Beta.IModelService WithOptions(
-        Func<ClientOptions, ClientOptions> modifier
-    );
+    IModelService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
     /// Get a specific model.
@@ -59,7 +57,7 @@ public interface IModelService
 }
 
 /// <summary>
-/// A view of <see cref="global::Anthropic.Services.Beta.IModelService"/> that provides access to raw
+/// A view of <see cref="IModelService"/> that provides access to raw
 /// HTTP responses for each method.
 /// </summary>
 public interface IModelServiceWithRawResponse
@@ -69,13 +67,11 @@ public interface IModelServiceWithRawResponse
     ///
     /// <para>The original service is not modified.</para>
     /// </summary>
-    global::Anthropic.Services.Beta.IModelServiceWithRawResponse WithOptions(
-        Func<ClientOptions, ClientOptions> modifier
-    );
+    IModelServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
     /// Returns a raw HTTP response for `get /v1/models/{model_id}?beta=true`, but is otherwise the
-    /// same as <see cref="global::Anthropic.Services.Beta.IModelService.Retrieve(ModelRetrieveParams, CancellationToken)"/>.
+    /// same as <see cref="IModelService.Retrieve(ModelRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaModelInfo>> Retrieve(
         ModelRetrieveParams parameters,
@@ -91,7 +87,7 @@ public interface IModelServiceWithRawResponse
 
     /// <summary>
     /// Returns a raw HTTP response for `get /v1/models?beta=true`, but is otherwise the
-    /// same as <see cref="global::Anthropic.Services.Beta.IModelService.List(ModelListParams?, CancellationToken)"/>.
+    /// same as <see cref="IModelService.List(ModelListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ModelListPage>> List(
         ModelListParams? parameters = null,

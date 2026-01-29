@@ -237,8 +237,11 @@ public sealed record class BetaMessage : JsonModel
         this.Type = JsonSerializer.SerializeToElement("message");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMessage(BetaMessage betaMessage)
         : base(betaMessage) { }
+#pragma warning restore CS8618
 
     public BetaMessage(IReadOnlyDictionary<string, JsonElement> rawData)
     {

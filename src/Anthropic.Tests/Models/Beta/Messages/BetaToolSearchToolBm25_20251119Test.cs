@@ -250,6 +250,23 @@ public class BetaToolSearchToolBm25_20251119Test : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolSearchToolBm25_20251119
+        {
+            Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
+            AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+
+        BetaToolSearchToolBm25_20251119 copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaToolSearchToolBm25_20251119TypeTest : TestBase

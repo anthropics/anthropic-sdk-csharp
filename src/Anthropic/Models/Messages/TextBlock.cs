@@ -74,8 +74,11 @@ public sealed record class TextBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("text");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public TextBlock(TextBlock textBlock)
         : base(textBlock) { }
+#pragma warning restore CS8618
 
     public TextBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {

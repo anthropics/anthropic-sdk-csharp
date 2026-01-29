@@ -147,10 +147,13 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
         this.Type = JsonSerializer.SerializeToElement("code_execution_20250522");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaCodeExecutionTool20250522(
         BetaCodeExecutionTool20250522 betaCodeExecutionTool20250522
     )
         : base(betaCodeExecutionTool20250522) { }
+#pragma warning restore CS8618
 
     public BetaCodeExecutionTool20250522(IReadOnlyDictionary<string, JsonElement> rawData)
     {

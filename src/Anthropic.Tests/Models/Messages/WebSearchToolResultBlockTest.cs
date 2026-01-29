@@ -90,4 +90,20 @@ public class WebSearchToolResultBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new WebSearchToolResultBlock
+        {
+            Content = new WebSearchToolResultError(
+                WebSearchToolResultErrorErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+
+        WebSearchToolResultBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

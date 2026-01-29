@@ -78,4 +78,18 @@ public class BetaRawContentBlockDeltaEventTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaRawContentBlockDeltaEvent
+        {
+            Delta = new BetaTextDelta("text"),
+            Index = 0,
+        };
+
+        BetaRawContentBlockDeltaEvent copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -226,6 +226,22 @@ public class BetaCodeExecutionTool20250522Test : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaCodeExecutionTool20250522
+        {
+            AllowedCallers = [AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+
+        BetaCodeExecutionTool20250522 copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class AllowedCallerTest : TestBase

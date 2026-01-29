@@ -22,19 +22,6 @@ public sealed record class BetaServerToolUseBlock : JsonModel
         init { this._rawData.Set("id", value); }
     }
 
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
-    public required Caller Caller
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<Caller>("caller");
-        }
-        init { this._rawData.Set("caller", value); }
-    }
-
     public required IReadOnlyDictionary<string, JsonElement> Input
     {
         get
@@ -71,11 +58,31 @@ public sealed record class BetaServerToolUseBlock : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
+    /// <summary>
+    /// Tool invocation directly from the model.
+    /// </summary>
+    public Caller? Caller
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<Caller>("caller");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("caller", value);
+        }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
-        this.Caller.Validate();
         _ = this.Input;
         this.Name.Validate();
         if (
@@ -84,6 +91,7 @@ public sealed record class BetaServerToolUseBlock : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
+        this.Caller?.Validate();
     }
 
     public BetaServerToolUseBlock()
@@ -91,8 +99,11 @@ public sealed record class BetaServerToolUseBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("server_tool_use");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaServerToolUseBlock(BetaServerToolUseBlock betaServerToolUseBlock)
         : base(betaServerToolUseBlock) { }
+#pragma warning restore CS8618
 
     public BetaServerToolUseBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -124,6 +135,61 @@ class BetaServerToolUseBlockFromRaw : IFromRawJson<BetaServerToolUseBlock>
     public BetaServerToolUseBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaServerToolUseBlock.FromRawUnchecked(rawData);
+}
+
+[JsonConverter(typeof(NameConverter))]
+public enum Name
+{
+    WebSearch,
+    WebFetch,
+    CodeExecution,
+    BashCodeExecution,
+    TextEditorCodeExecution,
+    ToolSearchToolRegex,
+    ToolSearchToolBm25,
+}
+
+sealed class NameConverter : JsonConverter<Name>
+{
+    public override Name Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "web_search" => Name.WebSearch,
+            "web_fetch" => Name.WebFetch,
+            "code_execution" => Name.CodeExecution,
+            "bash_code_execution" => Name.BashCodeExecution,
+            "text_editor_code_execution" => Name.TextEditorCodeExecution,
+            "tool_search_tool_regex" => Name.ToolSearchToolRegex,
+            "tool_search_tool_bm25" => Name.ToolSearchToolBm25,
+            _ => (Name)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, Name value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                Name.WebSearch => "web_search",
+                Name.WebFetch => "web_fetch",
+                Name.CodeExecution => "code_execution",
+                Name.BashCodeExecution => "bash_code_execution",
+                Name.TextEditorCodeExecution => "text_editor_code_execution",
+                Name.ToolSearchToolRegex => "tool_search_tool_regex",
+                Name.ToolSearchToolBm25 => "tool_search_tool_bm25",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
 }
 
 /// <summary>
@@ -400,60 +466,5 @@ sealed class CallerConverter : JsonConverter<Caller>
     public override void Write(Utf8JsonWriter writer, Caller value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
-    }
-}
-
-[JsonConverter(typeof(NameConverter))]
-public enum Name
-{
-    WebSearch,
-    WebFetch,
-    CodeExecution,
-    BashCodeExecution,
-    TextEditorCodeExecution,
-    ToolSearchToolRegex,
-    ToolSearchToolBm25,
-}
-
-sealed class NameConverter : JsonConverter<Name>
-{
-    public override Name Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "web_search" => Name.WebSearch,
-            "web_fetch" => Name.WebFetch,
-            "code_execution" => Name.CodeExecution,
-            "bash_code_execution" => Name.BashCodeExecution,
-            "text_editor_code_execution" => Name.TextEditorCodeExecution,
-            "tool_search_tool_regex" => Name.ToolSearchToolRegex,
-            "tool_search_tool_bm25" => Name.ToolSearchToolBm25,
-            _ => (Name)(-1),
-        };
-    }
-
-    public override void Write(Utf8JsonWriter writer, Name value, JsonSerializerOptions options)
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                Name.WebSearch => "web_search",
-                Name.WebFetch => "web_fetch",
-                Name.CodeExecution => "code_execution",
-                Name.BashCodeExecution => "bash_code_execution",
-                Name.TextEditorCodeExecution => "text_editor_code_execution",
-                Name.ToolSearchToolRegex => "tool_search_tool_regex",
-                Name.ToolSearchToolBm25 => "tool_search_tool_bm25",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
     }
 }

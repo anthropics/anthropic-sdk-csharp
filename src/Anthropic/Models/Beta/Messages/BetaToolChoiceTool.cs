@@ -77,8 +77,11 @@ public sealed record class BetaToolChoiceTool : JsonModel
         this.Type = JsonSerializer.SerializeToElement("tool");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolChoiceTool(BetaToolChoiceTool betaToolChoiceTool)
         : base(betaToolChoiceTool) { }
+#pragma warning restore CS8618
 
     public BetaToolChoiceTool(IReadOnlyDictionary<string, JsonElement> rawData)
     {

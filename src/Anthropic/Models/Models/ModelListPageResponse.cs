@@ -80,8 +80,11 @@ public sealed record class ModelListPageResponse : JsonModel
 
     public ModelListPageResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ModelListPageResponse(ModelListPageResponse modelListPageResponse)
         : base(modelListPageResponse) { }
+#pragma warning restore CS8618
 
     public ModelListPageResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

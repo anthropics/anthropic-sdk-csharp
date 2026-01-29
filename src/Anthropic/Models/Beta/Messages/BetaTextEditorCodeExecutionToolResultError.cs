@@ -72,10 +72,13 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError : JsonMode
         );
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaTextEditorCodeExecutionToolResultError(
         BetaTextEditorCodeExecutionToolResultError betaTextEditorCodeExecutionToolResultError
     )
         : base(betaTextEditorCodeExecutionToolResultError) { }
+#pragma warning restore CS8618
 
     public BetaTextEditorCodeExecutionToolResultError(
         IReadOnlyDictionary<string, JsonElement> rawData

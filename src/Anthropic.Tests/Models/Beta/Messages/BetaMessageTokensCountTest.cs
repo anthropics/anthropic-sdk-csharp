@@ -58,4 +58,14 @@ public class BetaMessageTokensCountTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMessageTokensCount { ContextManagement = new(0), InputTokens = 2095 };
+
+        BetaMessageTokensCount copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

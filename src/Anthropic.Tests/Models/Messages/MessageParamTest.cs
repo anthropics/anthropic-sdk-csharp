@@ -59,6 +59,16 @@ public class MessageParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new MessageParam { Content = "string", Role = Role.User };
+
+        MessageParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class MessageParamContentTest : TestBase

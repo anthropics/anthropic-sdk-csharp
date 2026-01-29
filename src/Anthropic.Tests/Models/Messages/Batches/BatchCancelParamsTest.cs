@@ -27,4 +27,14 @@ public class BatchCancelParamsTest : TestBase
             url
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new BatchCancelParams { MessageBatchID = "message_batch_id" };
+
+        BatchCancelParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

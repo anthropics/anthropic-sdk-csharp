@@ -119,4 +119,21 @@ public class BetaTextEditorCodeExecutionStrReplaceResultBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaTextEditorCodeExecutionStrReplaceResultBlock
+        {
+            Lines = ["string"],
+            NewLines = 0,
+            NewStart = 0,
+            OldLines = 0,
+            OldStart = 0,
+        };
+
+        BetaTextEditorCodeExecutionStrReplaceResultBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

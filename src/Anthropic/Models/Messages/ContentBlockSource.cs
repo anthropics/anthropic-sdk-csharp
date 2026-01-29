@@ -48,8 +48,11 @@ public sealed record class ContentBlockSource : JsonModel
         this.Type = JsonSerializer.SerializeToElement("content");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ContentBlockSource(ContentBlockSource contentBlockSource)
         : base(contentBlockSource) { }
+#pragma warning restore CS8618
 
     public ContentBlockSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -78,4 +78,18 @@ public class BetaClearThinking20251015EditResponseTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaClearThinking20251015EditResponse
+        {
+            ClearedInputTokens = 0,
+            ClearedThinkingTurns = 0,
+        };
+
+        BetaClearThinking20251015EditResponse copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

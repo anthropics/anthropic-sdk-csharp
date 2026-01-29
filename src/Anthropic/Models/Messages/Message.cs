@@ -204,8 +204,11 @@ public sealed record class Message : JsonModel
         this.Type = JsonSerializer.SerializeToElement("message");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public Message(Message message)
         : base(message) { }
+#pragma warning restore CS8618
 
     public Message(IReadOnlyDictionary<string, JsonElement> rawData)
     {

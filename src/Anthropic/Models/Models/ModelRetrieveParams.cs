@@ -15,8 +15,12 @@ namespace Anthropic.Models.Models;
 ///
 /// <para>The Models API response can be used to determine information about a specific
 /// model or resolve a model alias to a model ID.</para>
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
 /// </summary>
-public sealed record class ModelRetrieveParams : ParamsBase
+public record class ModelRetrieveParams : ParamsBase
 {
     public string? ModelID { get; init; }
 
@@ -48,11 +52,14 @@ public sealed record class ModelRetrieveParams : ParamsBase
 
     public ModelRetrieveParams() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ModelRetrieveParams(ModelRetrieveParams modelRetrieveParams)
         : base(modelRetrieveParams)
     {
         this.ModelID = modelRetrieveParams.ModelID;
     }
+#pragma warning restore CS8618
 
     public ModelRetrieveParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -87,6 +94,28 @@ public sealed record class ModelRetrieveParams : ParamsBase
         );
     }
 
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            new Dictionary<string, object?>()
+            {
+                ["ModelID"] = this.ModelID,
+                ["HeaderData"] = this._rawHeaderData.Freeze(),
+                ["QueryData"] = this._rawQueryData.Freeze(),
+            },
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public virtual bool Equals(ModelRetrieveParams? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        return (this.ModelID?.Equals(other.ModelID) ?? other.ModelID == null)
+            && this._rawHeaderData.Equals(other._rawHeaderData)
+            && this._rawQueryData.Equals(other._rawQueryData);
+    }
+
     public override Uri Url(ClientOptions options)
     {
         return new UriBuilder(
@@ -104,5 +133,10 @@ public sealed record class ModelRetrieveParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }

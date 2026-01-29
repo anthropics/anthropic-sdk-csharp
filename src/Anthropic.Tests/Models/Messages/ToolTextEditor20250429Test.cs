@@ -96,4 +96,14 @@ public class ToolTextEditor20250429Test : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ToolTextEditor20250429 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
+
+        ToolTextEditor20250429 copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

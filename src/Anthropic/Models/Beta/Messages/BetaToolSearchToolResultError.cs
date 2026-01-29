@@ -67,10 +67,13 @@ public sealed record class BetaToolSearchToolResultError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("tool_search_tool_result_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolSearchToolResultError(
         BetaToolSearchToolResultError betaToolSearchToolResultError
     )
         : base(betaToolSearchToolResultError) { }
+#pragma warning restore CS8618
 
     public BetaToolSearchToolResultError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

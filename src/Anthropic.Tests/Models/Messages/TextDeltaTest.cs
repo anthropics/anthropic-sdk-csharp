@@ -55,4 +55,14 @@ public class TextDeltaTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new TextDelta { Text = "text" };
+
+        TextDelta copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

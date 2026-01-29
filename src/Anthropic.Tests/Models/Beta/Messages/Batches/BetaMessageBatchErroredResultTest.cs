@@ -95,4 +95,21 @@ public class BetaMessageBatchErroredResultTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMessageBatchErroredResult
+        {
+            Error = new()
+            {
+                Error = new BetaInvalidRequestError("message"),
+                RequestID = "request_id",
+            },
+        };
+
+        BetaMessageBatchErroredResult copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

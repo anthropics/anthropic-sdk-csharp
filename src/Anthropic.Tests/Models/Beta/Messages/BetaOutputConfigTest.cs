@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
@@ -10,17 +11,45 @@ public class BetaOutputConfigTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaOutputConfig { Effort = Effort.Low };
+        var model = new BetaOutputConfig
+        {
+            Effort = Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
 
         ApiEnum<string, Effort> expectedEffort = Effort.Low;
+        BetaJsonOutputFormat expectedFormat = new()
+        {
+            Schema = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
 
         Assert.Equal(expectedEffort, model.Effort);
+        Assert.Equal(expectedFormat, model.Format);
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaOutputConfig { Effort = Effort.Low };
+        var model = new BetaOutputConfig
+        {
+            Effort = Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaOutputConfig>(
@@ -34,7 +63,17 @@ public class BetaOutputConfigTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaOutputConfig { Effort = Effort.Low };
+        var model = new BetaOutputConfig
+        {
+            Effort = Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaOutputConfig>(
@@ -44,14 +83,32 @@ public class BetaOutputConfigTest : TestBase
         Assert.NotNull(deserialized);
 
         ApiEnum<string, Effort> expectedEffort = Effort.Low;
+        BetaJsonOutputFormat expectedFormat = new()
+        {
+            Schema = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
 
         Assert.Equal(expectedEffort, deserialized.Effort);
+        Assert.Equal(expectedFormat, deserialized.Format);
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaOutputConfig { Effort = Effort.Low };
+        var model = new BetaOutputConfig
+        {
+            Effort = Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
 
         model.Validate();
     }
@@ -63,6 +120,8 @@ public class BetaOutputConfigTest : TestBase
 
         Assert.Null(model.Effort);
         Assert.False(model.RawData.ContainsKey("effort"));
+        Assert.Null(model.Format);
+        Assert.False(model.RawData.ContainsKey("format"));
     }
 
     [Fact]
@@ -76,18 +135,40 @@ public class BetaOutputConfigTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new BetaOutputConfig { Effort = null };
+        var model = new BetaOutputConfig { Effort = null, Format = null };
 
         Assert.Null(model.Effort);
         Assert.True(model.RawData.ContainsKey("effort"));
+        Assert.Null(model.Format);
+        Assert.True(model.RawData.ContainsKey("format"));
     }
 
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new BetaOutputConfig { Effort = null };
+        var model = new BetaOutputConfig { Effort = null, Format = null };
 
         model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaOutputConfig
+        {
+            Effort = Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
+
+        BetaOutputConfig copied = new(model);
+
+        Assert.Equal(model, copied);
     }
 }
 

@@ -117,4 +117,22 @@ public class ToolUseBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ToolUseBlock
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+        };
+
+        ToolUseBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

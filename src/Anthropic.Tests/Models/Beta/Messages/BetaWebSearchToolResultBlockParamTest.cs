@@ -240,4 +240,29 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaWebSearchToolResultBlockParam
+        {
+            Content = new(
+                [
+                    new BetaWebSearchResultBlockParam()
+                    {
+                        EncryptedContent = "encrypted_content",
+                        Title = "title",
+                        Url = "url",
+                        PageAge = "page_age",
+                    },
+                ]
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        BetaWebSearchToolResultBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

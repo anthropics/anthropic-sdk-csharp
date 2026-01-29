@@ -85,10 +85,13 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand : JsonModel
         this.Command = JsonSerializer.SerializeToElement("str_replace");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMemoryTool20250818StrReplaceCommand(
         BetaMemoryTool20250818StrReplaceCommand betaMemoryTool20250818StrReplaceCommand
     )
         : base(betaMemoryTool20250818StrReplaceCommand) { }
+#pragma warning restore CS8618
 
     public BetaMemoryTool20250818StrReplaceCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {

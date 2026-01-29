@@ -58,4 +58,14 @@ public class BetaRedactedThinkingBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaRedactedThinkingBlockParam { Data = "data" };
+
+        BetaRedactedThinkingBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

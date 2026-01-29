@@ -58,4 +58,14 @@ public class BetaDeletedMessageBatchTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaDeletedMessageBatch { ID = "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF" };
+
+        BetaDeletedMessageBatch copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -164,6 +164,23 @@ public class DocumentBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new DocumentBlockParam
+        {
+            Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            Context = "x",
+            Title = "x",
+        };
+
+        DocumentBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class SourceTest : TestBase

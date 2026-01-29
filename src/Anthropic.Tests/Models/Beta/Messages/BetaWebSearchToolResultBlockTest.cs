@@ -90,4 +90,20 @@ public class BetaWebSearchToolResultBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaWebSearchToolResultBlock
+        {
+            Content = new BetaWebSearchToolResultError(
+                BetaWebSearchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+
+        BetaWebSearchToolResultBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

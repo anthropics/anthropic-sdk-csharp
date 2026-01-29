@@ -74,4 +74,18 @@ public class BetaCacheCreationTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaCacheCreation
+        {
+            Ephemeral1hInputTokens = 0,
+            Ephemeral5mInputTokens = 0,
+        };
+
+        BetaCacheCreation copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

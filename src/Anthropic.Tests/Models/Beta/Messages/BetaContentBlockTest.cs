@@ -69,12 +69,12 @@ public class BetaContentBlockTest : TestBase
         BetaContentBlock value = new BetaServerToolUseBlock()
         {
             ID = "srvtoolu_SQfNkl1n_JR_",
-            Caller = new BetaDirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = Name.WebSearch,
+            Caller = new BetaDirectCaller(),
         };
         value.Validate();
     }
@@ -280,12 +280,12 @@ public class BetaContentBlockTest : TestBase
         BetaContentBlock value = new BetaServerToolUseBlock()
         {
             ID = "srvtoolu_SQfNkl1n_JR_",
-            Caller = new BetaDirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = Name.WebSearch,
+            Caller = new BetaDirectCaller(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(

@@ -51,8 +51,11 @@ public sealed record class BetaPermissionError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("permission_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaPermissionError(BetaPermissionError betaPermissionError)
         : base(betaPermissionError) { }
+#pragma warning restore CS8618
 
     public BetaPermissionError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

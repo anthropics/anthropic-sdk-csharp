@@ -84,8 +84,11 @@ public sealed record class ModelInfo : JsonModel
         this.Type = JsonSerializer.SerializeToElement("model");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ModelInfo(ModelInfo modelInfo)
         : base(modelInfo) { }
+#pragma warning restore CS8618
 
     public ModelInfo(IReadOnlyDictionary<string, JsonElement> rawData)
     {

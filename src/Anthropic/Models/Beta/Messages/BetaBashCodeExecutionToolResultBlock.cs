@@ -68,10 +68,13 @@ public sealed record class BetaBashCodeExecutionToolResultBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("bash_code_execution_tool_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaBashCodeExecutionToolResultBlock(
         BetaBashCodeExecutionToolResultBlock betaBashCodeExecutionToolResultBlock
     )
         : base(betaBashCodeExecutionToolResultBlock) { }
+#pragma warning restore CS8618
 
     public BetaBashCodeExecutionToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -131,4 +131,18 @@ public class BetaRequestMcpServerToolConfigurationTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaRequestMcpServerToolConfiguration
+        {
+            AllowedTools = ["string"],
+            Enabled = true,
+        };
+
+        BetaRequestMcpServerToolConfiguration copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

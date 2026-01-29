@@ -103,4 +103,20 @@ public class BetaCodeExecutionResultBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaCodeExecutionResultBlockParam
+        {
+            Content = [new("file_id")],
+            ReturnCode = 0,
+            Stderr = "stderr",
+            Stdout = "stdout",
+        };
+
+        BetaCodeExecutionResultBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -87,4 +87,19 @@ public class BetaModelInfoTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaModelInfo
+        {
+            ID = "claude-sonnet-4-20250514",
+            CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
+            DisplayName = "Claude Sonnet 4",
+        };
+
+        BetaModelInfo copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

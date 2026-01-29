@@ -58,10 +58,13 @@ public sealed record class BetaWebFetchToolResultErrorBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("web_fetch_tool_result_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaWebFetchToolResultErrorBlockParam(
         BetaWebFetchToolResultErrorBlockParam betaWebFetchToolResultErrorBlockParam
     )
         : base(betaWebFetchToolResultErrorBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaWebFetchToolResultErrorBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

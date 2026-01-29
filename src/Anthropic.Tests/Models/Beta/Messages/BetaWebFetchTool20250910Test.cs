@@ -348,6 +348,27 @@ public class BetaWebFetchTool20250910Test : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaWebFetchTool20250910
+        {
+            AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            DeferLoading = true,
+            MaxContentTokens = 1,
+            MaxUses = 1,
+            Strict = true,
+        };
+
+        BetaWebFetchTool20250910 copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaWebFetchTool20250910AllowedCallerTest : TestBase

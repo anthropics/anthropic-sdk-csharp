@@ -54,4 +54,14 @@ public class BetaCountTokensContextManagementResponseTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaCountTokensContextManagementResponse { OriginalInputTokens = 0 };
+
+        BetaCountTokensContextManagementResponse copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

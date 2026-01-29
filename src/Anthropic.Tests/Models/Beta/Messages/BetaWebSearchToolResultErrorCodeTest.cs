@@ -13,6 +13,7 @@ public class BetaWebSearchToolResultErrorCodeTest : TestBase
     [InlineData(BetaWebSearchToolResultErrorCode.MaxUsesExceeded)]
     [InlineData(BetaWebSearchToolResultErrorCode.TooManyRequests)]
     [InlineData(BetaWebSearchToolResultErrorCode.QueryTooLong)]
+    [InlineData(BetaWebSearchToolResultErrorCode.RequestTooLarge)]
     public void Validation_Works(BetaWebSearchToolResultErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -38,6 +39,7 @@ public class BetaWebSearchToolResultErrorCodeTest : TestBase
     [InlineData(BetaWebSearchToolResultErrorCode.MaxUsesExceeded)]
     [InlineData(BetaWebSearchToolResultErrorCode.TooManyRequests)]
     [InlineData(BetaWebSearchToolResultErrorCode.QueryTooLong)]
+    [InlineData(BetaWebSearchToolResultErrorCode.RequestTooLarge)]
     public void SerializationRoundtrip_Works(BetaWebSearchToolResultErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us

@@ -45,8 +45,11 @@ public sealed record class BetaServerToolUsage : JsonModel
 
     public BetaServerToolUsage() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaServerToolUsage(BetaServerToolUsage betaServerToolUsage)
         : base(betaServerToolUsage) { }
+#pragma warning restore CS8618
 
     public BetaServerToolUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {

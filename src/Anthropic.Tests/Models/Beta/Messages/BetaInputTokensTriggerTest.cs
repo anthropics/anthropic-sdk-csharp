@@ -58,4 +58,14 @@ public class BetaInputTokensTriggerTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaInputTokensTrigger { Value = 1 };
+
+        BetaInputTokensTrigger copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

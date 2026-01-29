@@ -70,8 +70,11 @@ public sealed record class VersionListPageResponse : JsonModel
 
     public VersionListPageResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public VersionListPageResponse(VersionListPageResponse versionListPageResponse)
         : base(versionListPageResponse) { }
+#pragma warning restore CS8618
 
     public VersionListPageResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

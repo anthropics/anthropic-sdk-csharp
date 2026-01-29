@@ -207,4 +207,24 @@ public class BetaMcpToolUseBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMcpToolUseBlockParam
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "name",
+            ServerName = "server_name",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        BetaMcpToolUseBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

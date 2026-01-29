@@ -62,4 +62,14 @@ public class BetaThinkingBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaThinkingBlockParam { Signature = "signature", Thinking = "thinking" };
+
+        BetaThinkingBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

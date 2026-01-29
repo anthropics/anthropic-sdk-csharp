@@ -70,10 +70,13 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlock : JsonMode
         this.Type = JsonSerializer.SerializeToElement("text_editor_code_execution_tool_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaTextEditorCodeExecutionToolResultBlock(
         BetaTextEditorCodeExecutionToolResultBlock betaTextEditorCodeExecutionToolResultBlock
     )
         : base(betaTextEditorCodeExecutionToolResultBlock) { }
+#pragma warning restore CS8618
 
     public BetaTextEditorCodeExecutionToolResultBlock(
         IReadOnlyDictionary<string, JsonElement> rawData

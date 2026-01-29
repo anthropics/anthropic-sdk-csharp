@@ -102,4 +102,21 @@ public class CitationPageLocationParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new CitationPageLocationParam
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndPageNumber = 0,
+            StartPageNumber = 1,
+        };
+
+        CitationPageLocationParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

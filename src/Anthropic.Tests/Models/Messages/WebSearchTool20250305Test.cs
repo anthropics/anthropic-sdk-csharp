@@ -227,6 +227,29 @@ public class WebSearchTool20250305Test : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new WebSearchTool20250305
+        {
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            MaxUses = 1,
+            UserLocation = new()
+            {
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+        };
+
+        WebSearchTool20250305 copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class UserLocationTest : TestBase
@@ -376,5 +399,21 @@ public class UserLocationTest : TestBase
         };
 
         model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new UserLocation
+        {
+            City = "New York",
+            Country = "US",
+            Region = "California",
+            Timezone = "America/New_York",
+        };
+
+        UserLocation copied = new(model);
+
+        Assert.Equal(model, copied);
     }
 }

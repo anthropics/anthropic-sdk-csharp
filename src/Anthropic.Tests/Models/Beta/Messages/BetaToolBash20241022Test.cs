@@ -332,6 +332,29 @@ public class BetaToolBash20241022Test : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolBash20241022
+        {
+            AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+
+        BetaToolBash20241022 copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaToolBash20241022AllowedCallerTest : TestBase

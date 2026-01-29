@@ -36,8 +36,11 @@ public sealed record class CitationsConfigParam : JsonModel
 
     public CitationsConfigParam() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public CitationsConfigParam(CitationsConfigParam citationsConfigParam)
         : base(citationsConfigParam) { }
+#pragma warning restore CS8618
 
     public CitationsConfigParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

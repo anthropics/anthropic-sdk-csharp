@@ -46,8 +46,11 @@ public sealed record class BetaBillingError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("billing_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaBillingError(BetaBillingError betaBillingError)
         : base(betaBillingError) { }
+#pragma warning restore CS8618
 
     public BetaBillingError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

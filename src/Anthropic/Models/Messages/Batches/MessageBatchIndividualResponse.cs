@@ -61,10 +61,13 @@ public sealed record class MessageBatchIndividualResponse : JsonModel
 
     public MessageBatchIndividualResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public MessageBatchIndividualResponse(
         MessageBatchIndividualResponse messageBatchIndividualResponse
     )
         : base(messageBatchIndividualResponse) { }
+#pragma warning restore CS8618
 
     public MessageBatchIndividualResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

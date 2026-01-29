@@ -77,6 +77,19 @@ public class WebSearchToolResultErrorTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new WebSearchToolResultError
+        {
+            ErrorCode = WebSearchToolResultErrorErrorCode.InvalidToolInput,
+        };
+
+        WebSearchToolResultError copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class WebSearchToolResultErrorErrorCodeTest : TestBase
@@ -87,6 +100,7 @@ public class WebSearchToolResultErrorErrorCodeTest : TestBase
     [InlineData(WebSearchToolResultErrorErrorCode.MaxUsesExceeded)]
     [InlineData(WebSearchToolResultErrorErrorCode.TooManyRequests)]
     [InlineData(WebSearchToolResultErrorErrorCode.QueryTooLong)]
+    [InlineData(WebSearchToolResultErrorErrorCode.RequestTooLarge)]
     public void Validation_Works(WebSearchToolResultErrorErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -112,6 +126,7 @@ public class WebSearchToolResultErrorErrorCodeTest : TestBase
     [InlineData(WebSearchToolResultErrorErrorCode.MaxUsesExceeded)]
     [InlineData(WebSearchToolResultErrorErrorCode.TooManyRequests)]
     [InlineData(WebSearchToolResultErrorErrorCode.QueryTooLong)]
+    [InlineData(WebSearchToolResultErrorErrorCode.RequestTooLarge)]
     public void SerializationRoundtrip_Works(WebSearchToolResultErrorErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us

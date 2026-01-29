@@ -32,8 +32,11 @@ public sealed record class MessageTokensCount : JsonModel
 
     public MessageTokensCount() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public MessageTokensCount(MessageTokensCount messageTokensCount)
         : base(messageTokensCount) { }
+#pragma warning restore CS8618
 
     public MessageTokensCount(IReadOnlyDictionary<string, JsonElement> rawData)
     {

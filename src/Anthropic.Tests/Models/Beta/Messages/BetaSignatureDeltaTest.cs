@@ -58,4 +58,14 @@ public class BetaSignatureDeltaTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaSignatureDelta { Signature = "signature" };
+
+        BetaSignatureDelta copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

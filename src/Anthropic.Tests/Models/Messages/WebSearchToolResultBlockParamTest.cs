@@ -240,4 +240,29 @@ public class WebSearchToolResultBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new WebSearchToolResultBlockParam
+        {
+            Content = new(
+                [
+                    new WebSearchResultBlockParam()
+                    {
+                        EncryptedContent = "encrypted_content",
+                        Title = "title",
+                        Url = "url",
+                        PageAge = "page_age",
+                    },
+                ]
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        WebSearchToolResultBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

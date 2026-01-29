@@ -9,12 +9,12 @@ using Anthropic.Models.Beta.Models;
 namespace Anthropic.Services.Beta;
 
 /// <inheritdoc/>
-public sealed class ModelService : global::Anthropic.Services.Beta.IModelService
+public sealed class ModelService : IModelService
 {
-    readonly Lazy<global::Anthropic.Services.Beta.IModelServiceWithRawResponse> _withRawResponse;
+    readonly Lazy<IModelServiceWithRawResponse> _withRawResponse;
 
     /// <inheritdoc/>
-    public global::Anthropic.Services.Beta.IModelServiceWithRawResponse WithRawResponse
+    public IModelServiceWithRawResponse WithRawResponse
     {
         get { return _withRawResponse.Value; }
     }
@@ -22,20 +22,16 @@ public sealed class ModelService : global::Anthropic.Services.Beta.IModelService
     readonly IAnthropicClient _client;
 
     /// <inheritdoc/>
-    public global::Anthropic.Services.Beta.IModelService WithOptions(
-        Func<ClientOptions, ClientOptions> modifier
-    )
+    public IModelService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new global::Anthropic.Services.Beta.ModelService(this._client.WithOptions(modifier));
+        return new ModelService(this._client.WithOptions(modifier));
     }
 
     public ModelService(IAnthropicClient client)
     {
         _client = client;
 
-        _withRawResponse = new(() =>
-            new global::Anthropic.Services.Beta.ModelServiceWithRawResponse(client.WithRawResponse)
-        );
+        _withRawResponse = new(() => new ModelServiceWithRawResponse(client.WithRawResponse));
     }
 
     /// <inheritdoc/>
@@ -76,19 +72,14 @@ public sealed class ModelService : global::Anthropic.Services.Beta.IModelService
 }
 
 /// <inheritdoc/>
-public sealed class ModelServiceWithRawResponse
-    : global::Anthropic.Services.Beta.IModelServiceWithRawResponse
+public sealed class ModelServiceWithRawResponse : IModelServiceWithRawResponse
 {
     readonly IAnthropicClientWithRawResponse _client;
 
     /// <inheritdoc/>
-    public global::Anthropic.Services.Beta.IModelServiceWithRawResponse WithOptions(
-        Func<ClientOptions, ClientOptions> modifier
-    )
+    public IModelServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new global::Anthropic.Services.Beta.ModelServiceWithRawResponse(
-            this._client.WithOptions(modifier)
-        );
+        return new ModelServiceWithRawResponse(this._client.WithOptions(modifier));
     }
 
     public ModelServiceWithRawResponse(IAnthropicClientWithRawResponse client)
