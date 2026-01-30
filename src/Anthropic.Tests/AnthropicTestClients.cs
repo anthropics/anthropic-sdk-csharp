@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Anthropic.Bedrock;
 using Anthropic.Foundry;
 using Xunit.Sdk;
 using Xunit.v3;
@@ -42,7 +43,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
                         new AnthropicClient() { BaseUrl = DataServiceUrl, ApiKey = ApiKey },
                         .. testData
                             .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Anthropic))
-                            .Select(f => f.TestData)
+                            .SelectMany(f => f.TestData)
                             .ToArray(),
                     ]
                 )
@@ -61,7 +62,30 @@ public class AnthropicTestClientsAttribute : DataAttribute
                         },
                         .. testData
                             .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Foundry))
-                            .Select(f => f.TestData)
+                            .SelectMany(f => f.TestData)
+                            .ToArray(),
+                    ]
+                )
+            );
+        }
+        if (TestSupportTypes.HasFlag(TestSupportTypes.Bedrock))
+        {
+            rows.Add(
+                new TheoryDataRow(
+                    [
+                        new AnthropicBedrockClient(
+                            new AnthropicBedrockApiTokenCredentials()
+                            {
+                                BearerToken = ApiKey,
+                                Region = Resource,
+                            }
+                        )
+                        {
+                            BaseUrl = DataServiceUrl,
+                        },
+                        .. testData
+                            .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Bedrock))
+                            .SelectMany(f => f.TestData)
                             .ToArray(),
                     ]
                 )
@@ -75,14 +99,14 @@ public class AnthropicTestClientsAttribute : DataAttribute
 [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = true)]
 sealed class AnthropicTestDataAttribute : Attribute
 {
-    public AnthropicTestDataAttribute(TestSupportTypes testSupport, object testData)
+    public AnthropicTestDataAttribute(TestSupportTypes testSupport, params object[] testData)
     {
         TestSupport = testSupport;
         TestData = testData;
     }
 
     public TestSupportTypes TestSupport { get; }
-    public object TestData { get; }
+    public object[] TestData { get; }
 }
 
 [Flags]
@@ -91,4 +115,5 @@ public enum TestSupportTypes
     All = Anthropic | Foundry,
     Anthropic = 1 << 1,
     Foundry = 1 << 2,
+    Bedrock = 1 << 3,
 }

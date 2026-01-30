@@ -6,7 +6,7 @@ namespace Anthropic.Tests.Services.Beta;
 public class FileServiceTest
 {
     [Theory]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task List_Works(IAnthropicClient client)
     {
         var page = await client.Beta.Files.List(new(), TestContext.Current.CancellationToken);
@@ -14,7 +14,7 @@ public class FileServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task Delete_Works(IAnthropicClient client)
     {
         var deletedFile = await client.Beta.Files.Delete(
@@ -33,7 +33,7 @@ public class FileServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task RetrieveMetadata_Works(IAnthropicClient client)
     {
         var fileMetadata = await client.Beta.Files.RetrieveMetadata(

@@ -21,6 +21,8 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
     <ProjectReference Include="..\Anthropic\Anthropic.csproj" />
     <ProjectReference Include="..\Anthropic.Foundry\Anthropic.Foundry.csproj" />
+    <ProjectReference Include="..\Anthropic.Bedrock\Anthropic.Bedrock.csproj" />
+
     <Using Include="Xunit" />
   </ItemGroup>
 </Project>
