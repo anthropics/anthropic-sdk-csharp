@@ -291,10 +291,10 @@ public record class BetaMessageBatchResult : ModelBase
         );
     }
 
-    public virtual bool Equals(BetaMessageBatchResult? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaMessageBatchResult? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -303,6 +303,18 @@ public record class BetaMessageBatchResult : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaMessageBatchSucceededResult _ => 0,
+            BetaMessageBatchErroredResult _ => 1,
+            BetaMessageBatchCanceledResult _ => 2,
+            BetaMessageBatchExpiredResult _ => 3,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchResult>

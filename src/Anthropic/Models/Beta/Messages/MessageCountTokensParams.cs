@@ -660,10 +660,10 @@ public record class MessageCountTokensParamsSystem : ModelBase
         }
     }
 
-    public virtual bool Equals(MessageCountTokensParamsSystem? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(MessageCountTokensParamsSystem? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -672,6 +672,16 @@ public record class MessageCountTokensParamsSystem : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            string _ => 0,
+            IReadOnlyList<BetaTextBlockParam> _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class MessageCountTokensParamsSystemConverter : JsonConverter<MessageCountTokensParamsSystem>
@@ -1729,10 +1739,10 @@ public record class Tool : ModelBase
         );
     }
 
-    public virtual bool Equals(Tool? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(Tool? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -1741,6 +1751,32 @@ public record class Tool : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaTool _ => 0,
+            BetaToolBash20241022 _ => 1,
+            BetaToolBash20250124 _ => 2,
+            BetaCodeExecutionTool20250522 _ => 3,
+            BetaCodeExecutionTool20250825 _ => 4,
+            BetaToolComputerUse20241022 _ => 5,
+            BetaMemoryTool20250818 _ => 6,
+            BetaToolComputerUse20250124 _ => 7,
+            BetaToolTextEditor20241022 _ => 8,
+            BetaToolComputerUse20251124 _ => 9,
+            BetaToolTextEditor20250124 _ => 10,
+            BetaToolTextEditor20250429 _ => 11,
+            BetaToolTextEditor20250728 _ => 12,
+            BetaWebSearchTool20250305 _ => 13,
+            BetaWebFetchTool20250910 _ => 14,
+            BetaToolSearchToolBm25_20251119 _ => 15,
+            BetaToolSearchToolRegex20251119 _ => 16,
+            BetaMcpToolset _ => 17,
+            _ => -1,
+        };
+    }
 }
 
 sealed class ToolConverter : JsonConverter<Tool>

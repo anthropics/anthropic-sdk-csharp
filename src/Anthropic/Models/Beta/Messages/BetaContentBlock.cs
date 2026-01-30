@@ -743,10 +743,10 @@ public record class BetaContentBlock : ModelBase
         );
     }
 
-    public virtual bool Equals(BetaContentBlock? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaContentBlock? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -755,6 +755,28 @@ public record class BetaContentBlock : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaTextBlock _ => 0,
+            BetaThinkingBlock _ => 1,
+            BetaRedactedThinkingBlock _ => 2,
+            BetaToolUseBlock _ => 3,
+            BetaServerToolUseBlock _ => 4,
+            BetaWebSearchToolResultBlock _ => 5,
+            BetaWebFetchToolResultBlock _ => 6,
+            BetaCodeExecutionToolResultBlock _ => 7,
+            BetaBashCodeExecutionToolResultBlock _ => 8,
+            BetaTextEditorCodeExecutionToolResultBlock _ => 9,
+            BetaToolSearchToolResultBlock _ => 10,
+            BetaMcpToolUseBlock _ => 11,
+            BetaMcpToolResultBlock _ => 12,
+            BetaContainerUploadBlock _ => 13,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>

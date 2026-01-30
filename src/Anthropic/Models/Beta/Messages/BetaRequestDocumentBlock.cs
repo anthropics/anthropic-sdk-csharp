@@ -483,10 +483,10 @@ public record class BetaRequestDocumentBlockSource : ModelBase
         );
     }
 
-    public virtual bool Equals(BetaRequestDocumentBlockSource? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaRequestDocumentBlockSource? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -495,6 +495,19 @@ public record class BetaRequestDocumentBlockSource : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaBase64PdfSource _ => 0,
+            BetaPlainTextSource _ => 1,
+            BetaContentBlockSource _ => 2,
+            BetaUrlPdfSource _ => 3,
+            BetaFileDocumentSource _ => 4,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequestDocumentBlockSource>

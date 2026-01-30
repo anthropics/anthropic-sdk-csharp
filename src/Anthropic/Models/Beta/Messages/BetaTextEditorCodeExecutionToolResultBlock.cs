@@ -431,10 +431,10 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent : ModelBas
         );
     }
 
-    public virtual bool Equals(BetaTextEditorCodeExecutionToolResultBlockContent? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaTextEditorCodeExecutionToolResultBlockContent? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -443,6 +443,18 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent : ModelBas
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaTextEditorCodeExecutionToolResultError _ => 0,
+            BetaTextEditorCodeExecutionViewResultBlock _ => 1,
+            BetaTextEditorCodeExecutionCreateResultBlock _ => 2,
+            BetaTextEditorCodeExecutionStrReplaceResultBlock _ => 3,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaTextEditorCodeExecutionToolResultBlockContentConverter

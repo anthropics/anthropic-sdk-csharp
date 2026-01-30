@@ -594,10 +594,10 @@ public record class ContentBlockParam : ModelBase
         );
     }
 
-    public virtual bool Equals(ContentBlockParam? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(ContentBlockParam? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -606,6 +606,24 @@ public record class ContentBlockParam : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            TextBlockParam _ => 0,
+            ImageBlockParam _ => 1,
+            DocumentBlockParam _ => 2,
+            SearchResultBlockParam _ => 3,
+            ThinkingBlockParam _ => 4,
+            RedactedThinkingBlockParam _ => 5,
+            ToolUseBlockParam _ => 6,
+            ToolResultBlockParam _ => 7,
+            ServerToolUseBlockParam _ => 8,
+            WebSearchToolResultBlockParam _ => 9,
+            _ => -1,
+        };
+    }
 }
 
 sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>

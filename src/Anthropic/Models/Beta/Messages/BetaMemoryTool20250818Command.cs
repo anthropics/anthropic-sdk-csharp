@@ -412,10 +412,10 @@ public record class BetaMemoryTool20250818Command : ModelBase
         );
     }
 
-    public virtual bool Equals(BetaMemoryTool20250818Command? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaMemoryTool20250818Command? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -424,6 +424,20 @@ public record class BetaMemoryTool20250818Command : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaMemoryTool20250818ViewCommand _ => 0,
+            BetaMemoryTool20250818CreateCommand _ => 1,
+            BetaMemoryTool20250818StrReplaceCommand _ => 2,
+            BetaMemoryTool20250818InsertCommand _ => 3,
+            BetaMemoryTool20250818DeleteCommand _ => 4,
+            BetaMemoryTool20250818RenameCommand _ => 5,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTool20250818Command>

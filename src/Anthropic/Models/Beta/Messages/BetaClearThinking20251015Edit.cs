@@ -335,10 +335,10 @@ public record class Keep : ModelBase
         );
     }
 
-    public virtual bool Equals(Keep? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(Keep? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -347,6 +347,17 @@ public record class Keep : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaThinkingTurns _ => 0,
+            BetaAllThinkingTurns _ => 1,
+            UnionMember2 _ => 2,
+            _ => -1,
+        };
+    }
 }
 
 sealed class KeepConverter : JsonConverter<Keep>
