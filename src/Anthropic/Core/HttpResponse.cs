@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -31,6 +32,20 @@ public class HttpResponse : IDisposable
     }
 
     public Threading::CancellationToken CancellationToken { get; init; } = default;
+
+    /// <summary>
+    /// Returns the value of the <c>request-id</c> header, or null if there's no
+    /// such header in the response.
+    /// </summary>
+    public string? RequestID
+    {
+        get
+        {
+            return RawMessage.Headers.TryGetValues("request-id", out var value)
+                ? Enumerable.FirstOrDefault(value)
+                : null;
+        }
+    }
 
     public IEnumerable<string> GetHeaderValues(string name) => RawMessage.Headers.GetValues(name);
 
