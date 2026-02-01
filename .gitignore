@@ -3,3 +3,6 @@ bin/
 obj/
 .vs/
 .idea/
+
+# do not edit! excludes generated files used internally
+.artifacts/

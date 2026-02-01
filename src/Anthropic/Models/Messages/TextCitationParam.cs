@@ -418,10 +418,10 @@ public record class TextCitationParam : ModelBase
         );
     }
 
-    public virtual bool Equals(TextCitationParam? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(TextCitationParam? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -430,6 +430,19 @@ public record class TextCitationParam : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            CitationCharLocationParam _ => 0,
+            CitationPageLocationParam _ => 1,
+            CitationContentBlockLocationParam _ => 2,
+            CitationWebSearchResultLocationParam _ => 3,
+            CitationSearchResultLocationParam _ => 4,
+            _ => -1,
+        };
+    }
 }
 
 sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>

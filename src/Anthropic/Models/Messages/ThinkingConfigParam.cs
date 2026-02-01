@@ -200,10 +200,10 @@ public record class ThinkingConfigParam : ModelBase
         this.Switch((enabled) => enabled.Validate(), (disabled) => disabled.Validate());
     }
 
-    public virtual bool Equals(ThinkingConfigParam? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(ThinkingConfigParam? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -212,6 +212,16 @@ public record class ThinkingConfigParam : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            ThinkingConfigEnabled _ => 0,
+            ThinkingConfigDisabled _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>

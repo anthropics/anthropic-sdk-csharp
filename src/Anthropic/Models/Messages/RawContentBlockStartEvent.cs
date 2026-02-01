@@ -486,10 +486,10 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
         );
     }
 
-    public virtual bool Equals(RawContentBlockStartEventContentBlock? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(RawContentBlockStartEventContentBlock? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -498,6 +498,20 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            TextBlock _ => 0,
+            ThinkingBlock _ => 1,
+            RedactedThinkingBlock _ => 2,
+            ToolUseBlock _ => 3,
+            ServerToolUseBlock _ => 4,
+            WebSearchToolResultBlock _ => 5,
+            _ => -1,
+        };
+    }
 }
 
 sealed class RawContentBlockStartEventContentBlockConverter

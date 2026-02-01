@@ -377,10 +377,10 @@ public record class Caller : ModelBase
         );
     }
 
-    public virtual bool Equals(Caller? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(Caller? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -389,6 +389,16 @@ public record class Caller : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaDirectCaller _ => 0,
+            BetaServerToolCaller _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class CallerConverter : JsonConverter<Caller>

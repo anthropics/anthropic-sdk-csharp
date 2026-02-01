@@ -204,10 +204,10 @@ public record class ContentBlockSourceContent : ModelBase
         );
     }
 
-    public virtual bool Equals(ContentBlockSourceContent? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(ContentBlockSourceContent? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -216,6 +216,16 @@ public record class ContentBlockSourceContent : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            TextBlockParam _ => 0,
+            ImageBlockParam _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSourceContent>

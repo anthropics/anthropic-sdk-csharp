@@ -317,10 +317,10 @@ public record class ToolResultBlockParamContent : ModelBase
         }
     }
 
-    public virtual bool Equals(ToolResultBlockParamContent? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(ToolResultBlockParamContent? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -329,6 +329,16 @@ public record class ToolResultBlockParamContent : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            string _ => 0,
+            IReadOnlyList<Block> _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBlockParamContent>
@@ -669,10 +679,10 @@ public record class Block : ModelBase
         );
     }
 
-    public virtual bool Equals(Block? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(Block? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -681,6 +691,18 @@ public record class Block : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            TextBlockParam _ => 0,
+            ImageBlockParam _ => 1,
+            SearchResultBlockParam _ => 2,
+            DocumentBlockParam _ => 3,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BlockConverter : JsonConverter<Block>

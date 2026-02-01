@@ -391,10 +391,10 @@ public record class BetaRawMessageStreamEvent : ModelBase
         );
     }
 
-    public virtual bool Equals(BetaRawMessageStreamEvent? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaRawMessageStreamEvent? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -403,6 +403,20 @@ public record class BetaRawMessageStreamEvent : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaRawMessageStartEvent _ => 0,
+            BetaRawMessageDeltaEvent _ => 1,
+            BetaRawMessageStopEvent _ => 2,
+            BetaRawContentBlockStartEvent _ => 3,
+            BetaRawContentBlockDeltaEvent _ => 4,
+            BetaRawContentBlockStopEvent _ => 5,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageStreamEvent>

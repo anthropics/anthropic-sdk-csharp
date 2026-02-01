@@ -3,7 +3,7 @@
     <RootNamespace>Anthropic.Foundry</RootNamespace>
     <AssemblyName>Anthropic.Foundry</AssemblyName>
     <PackageId>Anthropic.Foundry</PackageId>
-    <Version>0.4.1</Version>
+    <Version>0.4.2</Version>
     <PackageIcon>logo.png</PackageIcon>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>

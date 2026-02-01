@@ -199,10 +199,10 @@ public record class BetaWebSearchToolResultBlockContent : ModelBase
         this.Switch((error) => error.Validate(), (_) => { });
     }
 
-    public virtual bool Equals(BetaWebSearchToolResultBlockContent? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaWebSearchToolResultBlockContent? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -211,6 +211,16 @@ public record class BetaWebSearchToolResultBlockContent : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaWebSearchToolResultError _ => 0,
+            IReadOnlyList<BetaWebSearchResultBlock> _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaWebSearchToolResultBlockContentConverter

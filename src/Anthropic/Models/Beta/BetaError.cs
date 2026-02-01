@@ -488,10 +488,10 @@ public record class BetaError : ModelBase
         );
     }
 
-    public virtual bool Equals(BetaError? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaError? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -500,6 +500,23 @@ public record class BetaError : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaInvalidRequestError _ => 0,
+            BetaAuthenticationError _ => 1,
+            BetaBillingError _ => 2,
+            BetaPermissionError _ => 3,
+            BetaNotFoundError _ => 4,
+            BetaRateLimitError _ => 5,
+            BetaGatewayTimeoutError _ => 6,
+            BetaApiError _ => 7,
+            BetaOverloadedError _ => 8,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaErrorConverter : JsonConverter<BetaError>

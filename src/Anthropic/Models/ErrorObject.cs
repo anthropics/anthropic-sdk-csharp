@@ -490,10 +490,10 @@ public record class ErrorObject : ModelBase
         );
     }
 
-    public virtual bool Equals(ErrorObject? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(ErrorObject? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -502,6 +502,23 @@ public record class ErrorObject : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            InvalidRequestError _ => 0,
+            AuthenticationError _ => 1,
+            BillingError _ => 2,
+            PermissionError _ => 3,
+            NotFoundError _ => 4,
+            RateLimitError _ => 5,
+            GatewayTimeoutError _ => 6,
+            ApiErrorObject _ => 7,
+            OverloadedError _ => 8,
+            _ => -1,
+        };
+    }
 }
 
 sealed class ErrorObjectConverter : JsonConverter<ErrorObject>

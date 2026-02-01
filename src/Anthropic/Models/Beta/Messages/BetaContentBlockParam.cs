@@ -1024,10 +1024,10 @@ public record class BetaContentBlockParam : ModelBase
         );
     }
 
-    public virtual bool Equals(BetaContentBlockParam? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaContentBlockParam? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -1036,6 +1036,32 @@ public record class BetaContentBlockParam : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaTextBlockParam _ => 0,
+            BetaImageBlockParam _ => 1,
+            BetaRequestDocumentBlock _ => 2,
+            BetaSearchResultBlockParam _ => 3,
+            BetaThinkingBlockParam _ => 4,
+            BetaRedactedThinkingBlockParam _ => 5,
+            BetaToolUseBlockParam _ => 6,
+            BetaToolResultBlockParam _ => 7,
+            BetaServerToolUseBlockParam _ => 8,
+            BetaWebSearchToolResultBlockParam _ => 9,
+            BetaWebFetchToolResultBlockParam _ => 10,
+            BetaCodeExecutionToolResultBlockParam _ => 11,
+            BetaBashCodeExecutionToolResultBlockParam _ => 12,
+            BetaTextEditorCodeExecutionToolResultBlockParam _ => 13,
+            BetaToolSearchToolResultBlockParam _ => 14,
+            BetaMcpToolUseBlockParam _ => 15,
+            BetaRequestMcpToolResultBlockParam _ => 16,
+            BetaContainerUploadBlockParam _ => 17,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockParam>
