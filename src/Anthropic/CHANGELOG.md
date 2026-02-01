@@ -1,5 +1,18 @@
 # Changelog
 
+## 12.4.0 (2026-02-01)
+
+Full Changelog: [Anthropic-v12.3.0...Anthropic-v12.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.3.0...Anthropic-v12.4.0)
+
+### Features
+
+* **client:** add common response headers to `HttpResponse` ([9834908](https://github.com/anthropics/anthropic-sdk-csharp/commit/98349082a391234569be16049f1a6a1f24c20100))
+
+
+### Bug Fixes
+
+* **client:** improve union equality method ([2f857bb](https://github.com/anthropics/anthropic-sdk-csharp/commit/2f857bbad40967cb13f689dd773a59d2ef55614d))
+
 ## 12.3.0 (2026-01-29)
 
 Full Changelog: [Anthropic-v12.2.0...Anthropic-v12.3.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.2.0...Anthropic-v12.3.0)
