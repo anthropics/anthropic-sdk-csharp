@@ -51,8 +51,11 @@ public sealed record class BetaInvalidRequestError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("invalid_request_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaInvalidRequestError(BetaInvalidRequestError betaInvalidRequestError)
         : base(betaInvalidRequestError) { }
+#pragma warning restore CS8618
 
     public BetaInvalidRequestError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

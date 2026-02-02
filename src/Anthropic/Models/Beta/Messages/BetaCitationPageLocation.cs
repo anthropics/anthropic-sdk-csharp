@@ -103,8 +103,11 @@ public sealed record class BetaCitationPageLocation : JsonModel
         this.Type = JsonSerializer.SerializeToElement("page_location");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaCitationPageLocation(BetaCitationPageLocation betaCitationPageLocation)
         : base(betaCitationPageLocation) { }
+#pragma warning restore CS8618
 
     public BetaCitationPageLocation(IReadOnlyDictionary<string, JsonElement> rawData)
     {

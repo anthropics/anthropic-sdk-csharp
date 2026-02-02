@@ -20,8 +20,12 @@ namespace Anthropic.Models.Messages.Batches;
 /// can take up to 24 hours to complete.</para>
 ///
 /// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
 /// </summary>
-public sealed record class BatchCreateParams : ParamsBase
+public record class BatchCreateParams : ParamsBase
 {
     readonly JsonDictionary _rawBodyData = new();
     public IReadOnlyDictionary<string, JsonElement> RawBodyData
@@ -51,11 +55,14 @@ public sealed record class BatchCreateParams : ParamsBase
 
     public BatchCreateParams() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BatchCreateParams(BatchCreateParams batchCreateParams)
         : base(batchCreateParams)
     {
         this._rawBodyData = new(batchCreateParams._rawBodyData);
     }
+#pragma warning restore CS8618
 
     public BatchCreateParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -96,6 +103,28 @@ public sealed record class BatchCreateParams : ParamsBase
         );
     }
 
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            new Dictionary<string, object?>()
+            {
+                ["HeaderData"] = this._rawHeaderData.Freeze(),
+                ["QueryData"] = this._rawQueryData.Freeze(),
+                ["BodyData"] = this._rawBodyData.Freeze(),
+            },
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public virtual bool Equals(BatchCreateParams? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        return this._rawHeaderData.Equals(other._rawHeaderData)
+            && this._rawQueryData.Equals(other._rawQueryData)
+            && this._rawBodyData.Equals(other._rawBodyData);
+    }
+
     public override System::Uri Url(ClientOptions options)
     {
         return new System::UriBuilder(
@@ -122,6 +151,11 @@ public sealed record class BatchCreateParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 
@@ -169,8 +203,11 @@ public sealed record class Request : JsonModel
 
     public Request() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public Request(Request request)
         : base(request) { }
+#pragma warning restore CS8618
 
     public Request(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -330,20 +367,39 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
+    /// Configuration options for the model's output, such as the output format.
+    /// </summary>
+    public OutputConfig? OutputConfig
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<OutputConfig>("output_config");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("output_config", value);
+        }
+    }
+
+    /// <summary>
     /// Determines whether to use priority capacity (if available) or standard capacity
     /// for this request.
     ///
     /// <para>Anthropic offers different levels of service for your API requests.
     /// See [service-tiers](https://docs.claude.com/en/api/service-tiers) for details.</para>
     /// </summary>
-    public ApiEnum<string, global::Anthropic.Models.Messages.Batches.ServiceTier>? ServiceTier
+    public ApiEnum<string, ServiceTier>? ServiceTier
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<
-                ApiEnum<string, global::Anthropic.Models.Messages.Batches.ServiceTier>
-            >("service_tier");
+            return this._rawData.GetNullableClass<ApiEnum<string, ServiceTier>>("service_tier");
         }
         init
         {
@@ -647,6 +703,7 @@ public sealed record class Params : JsonModel
         }
         this.Model.Validate();
         this.Metadata?.Validate();
+        this.OutputConfig?.Validate();
         this.ServiceTier?.Validate();
         _ = this.StopSequences;
         _ = this.Stream;
@@ -664,8 +721,11 @@ public sealed record class Params : JsonModel
 
     public Params() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public Params(Params params_)
         : base(params_) { }
+#pragma warning restore CS8618
 
     public Params(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -701,17 +761,16 @@ class ParamsFromRaw : IFromRawJson<Params>
 /// <para>Anthropic offers different levels of service for your API requests. See
 /// [service-tiers](https://docs.claude.com/en/api/service-tiers) for details.</para>
 /// </summary>
-[JsonConverter(typeof(global::Anthropic.Models.Messages.Batches.ServiceTierConverter))]
+[JsonConverter(typeof(ServiceTierConverter))]
 public enum ServiceTier
 {
     Auto,
     StandardOnly,
 }
 
-sealed class ServiceTierConverter
-    : JsonConverter<global::Anthropic.Models.Messages.Batches.ServiceTier>
+sealed class ServiceTierConverter : JsonConverter<ServiceTier>
 {
-    public override global::Anthropic.Models.Messages.Batches.ServiceTier Read(
+    public override ServiceTier Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -719,15 +778,15 @@ sealed class ServiceTierConverter
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "auto" => global::Anthropic.Models.Messages.Batches.ServiceTier.Auto,
-            "standard_only" => global::Anthropic.Models.Messages.Batches.ServiceTier.StandardOnly,
-            _ => (global::Anthropic.Models.Messages.Batches.ServiceTier)(-1),
+            "auto" => ServiceTier.Auto,
+            "standard_only" => ServiceTier.StandardOnly,
+            _ => (ServiceTier)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        global::Anthropic.Models.Messages.Batches.ServiceTier value,
+        ServiceTier value,
         JsonSerializerOptions options
     )
     {
@@ -735,9 +794,8 @@ sealed class ServiceTierConverter
             writer,
             value switch
             {
-                global::Anthropic.Models.Messages.Batches.ServiceTier.Auto => "auto",
-                global::Anthropic.Models.Messages.Batches.ServiceTier.StandardOnly =>
-                    "standard_only",
+                ServiceTier.Auto => "auto",
+                ServiceTier.StandardOnly => "standard_only",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
@@ -931,10 +989,10 @@ public record class ParamsSystem : ModelBase
         }
     }
 
-    public virtual bool Equals(ParamsSystem? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(ParamsSystem? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -943,6 +1001,16 @@ public record class ParamsSystem : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            string _ => 0,
+            IReadOnlyList<TextBlockParam> _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class ParamsSystemConverter : JsonConverter<ParamsSystem>

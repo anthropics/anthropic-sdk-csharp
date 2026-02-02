@@ -73,8 +73,11 @@ public sealed record class BetaContainer : JsonModel
 
     public BetaContainer() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaContainer(BetaContainer betaContainer)
         : base(betaContainer) { }
+#pragma warning restore CS8618
 
     public BetaContainer(IReadOnlyDictionary<string, JsonElement> rawData)
     {

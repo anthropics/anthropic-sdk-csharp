@@ -104,8 +104,11 @@ public sealed record class BetaMcpToolUseBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("mcp_tool_use");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMcpToolUseBlockParam(BetaMcpToolUseBlockParam betaMcpToolUseBlockParam)
         : base(betaMcpToolUseBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaMcpToolUseBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

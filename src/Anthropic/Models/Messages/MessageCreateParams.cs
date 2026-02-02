@@ -19,8 +19,12 @@ namespace Anthropic.Models.Messages;
 /// <para>The Messages API can be used for either single queries or stateless multi-turn conversations.</para>
 ///
 /// <para>Learn more about the Messages API in our [user guide](https://docs.claude.com/en/docs/initial-setup)</para>
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
 /// </summary>
-public sealed record class MessageCreateParams : ParamsBase
+public record class MessageCreateParams : ParamsBase
 {
     readonly JsonDictionary _rawBodyData = new();
     public IReadOnlyDictionary<string, JsonElement> RawBodyData
@@ -146,6 +150,27 @@ public sealed record class MessageCreateParams : ParamsBase
             }
 
             this._rawBodyData.Set("metadata", value);
+        }
+    }
+
+    /// <summary>
+    /// Configuration options for the model's output, such as the output format.
+    /// </summary>
+    public OutputConfig? OutputConfig
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<OutputConfig>("output_config");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("output_config", value);
         }
     }
 
@@ -433,11 +458,14 @@ public sealed record class MessageCreateParams : ParamsBase
 
     public MessageCreateParams() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public MessageCreateParams(MessageCreateParams messageCreateParams)
         : base(messageCreateParams)
     {
         this._rawBodyData = new(messageCreateParams._rawBodyData);
     }
+#pragma warning restore CS8618
 
     public MessageCreateParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -478,6 +506,28 @@ public sealed record class MessageCreateParams : ParamsBase
         );
     }
 
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            new Dictionary<string, object?>()
+            {
+                ["HeaderData"] = this._rawHeaderData.Freeze(),
+                ["QueryData"] = this._rawQueryData.Freeze(),
+                ["BodyData"] = this._rawBodyData.Freeze(),
+            },
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public virtual bool Equals(MessageCreateParams? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        return this._rawHeaderData.Equals(other._rawHeaderData)
+            && this._rawQueryData.Equals(other._rawQueryData)
+            && this._rawBodyData.Equals(other._rawBodyData);
+    }
+
     public override System::Uri Url(ClientOptions options)
     {
         return new System::UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/messages")
@@ -502,6 +552,11 @@ public sealed record class MessageCreateParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 
@@ -743,10 +798,10 @@ public record class MessageCreateParamsSystem : ModelBase
         }
     }
 
-    public virtual bool Equals(MessageCreateParamsSystem? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(MessageCreateParamsSystem? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -755,6 +810,16 @@ public record class MessageCreateParamsSystem : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            string _ => 0,
+            IReadOnlyList<TextBlockParam> _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class MessageCreateParamsSystemConverter : JsonConverter<MessageCreateParamsSystem>

@@ -26,6 +26,16 @@ public class BatchCreateParamsTest : TestBase
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                         Model = Messages::Model.ClaudeSonnet4_5_20250929,
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        OutputConfig = new()
+                        {
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
                         ServiceTier = ServiceTier.Auto,
                         StopSequences = ["string"],
                         Stream = true,
@@ -71,6 +81,7 @@ public class BatchCreateParamsTest : TestBase
                                 Name = "name",
                                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                                 Description = "Get the current weather in a given location",
+                                Strict = true,
                                 Type = Messages::Type.Custom,
                             },
                         ],
@@ -92,6 +103,16 @@ public class BatchCreateParamsTest : TestBase
                     Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                     Model = Messages::Model.ClaudeSonnet4_5_20250929,
                     Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                    OutputConfig = new()
+                    {
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                    },
                     ServiceTier = ServiceTier.Auto,
                     StopSequences = ["string"],
                     Stream = true,
@@ -134,6 +155,7 @@ public class BatchCreateParamsTest : TestBase
                             Name = "name",
                             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                             Description = "Get the current weather in a given location",
+                            Strict = true,
                             Type = Messages::Type.Custom,
                         },
                     ],
@@ -166,6 +188,16 @@ public class BatchCreateParamsTest : TestBase
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                         Model = Messages::Model.ClaudeSonnet4_5_20250929,
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        OutputConfig = new()
+                        {
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
                         ServiceTier = ServiceTier.Auto,
                         StopSequences = ["string"],
                         Stream = true,
@@ -211,6 +243,7 @@ public class BatchCreateParamsTest : TestBase
                                 Name = "name",
                                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                                 Description = "Get the current weather in a given location",
+                                Strict = true,
                                 Type = Messages::Type.Custom,
                             },
                         ],
@@ -224,6 +257,93 @@ public class BatchCreateParamsTest : TestBase
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(new Uri("https://api.anthropic.com/v1/messages/batches"), url);
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new BatchCreateParams
+        {
+            Requests =
+            [
+                new()
+                {
+                    CustomID = "my-custom-id-1",
+                    Params = new()
+                    {
+                        MaxTokens = 1024,
+                        Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                        Model = Messages::Model.ClaudeSonnet4_5_20250929,
+                        Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        OutputConfig = new()
+                        {
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
+                        ServiceTier = ServiceTier.Auto,
+                        StopSequences = ["string"],
+                        Stream = true,
+                        System = new(
+                            [
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ]
+                        ),
+                        Temperature = 1,
+                        Thinking = new Messages::ThinkingConfigEnabled(1024),
+                        ToolChoice = new Messages::ToolChoiceAuto()
+                        {
+                            DisableParallelToolUse = true,
+                        },
+                        Tools =
+                        [
+                            new Messages::Tool()
+                            {
+                                InputSchema = new()
+                                {
+                                    Properties = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "location", JsonSerializer.SerializeToElement("bar") },
+                                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                    Required = ["location"],
+                                },
+                                Name = "name",
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                Description = "Get the current weather in a given location",
+                                Strict = true,
+                                Type = Messages::Type.Custom,
+                            },
+                        ],
+                        TopK = 5,
+                        TopP = 0.7,
+                    },
+                },
+            ],
+        };
+
+        BatchCreateParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
     }
 }
 
@@ -241,6 +361,16 @@ public class RequestTest : TestBase
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                 Model = Messages::Model.ClaudeSonnet4_5_20250929,
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                OutputConfig = new()
+                {
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
                 Stream = true,
@@ -283,6 +413,7 @@ public class RequestTest : TestBase
                         Name = "name",
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Description = "Get the current weather in a given location",
+                        Strict = true,
                         Type = Messages::Type.Custom,
                     },
                 ],
@@ -298,6 +429,16 @@ public class RequestTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -340,6 +481,7 @@ public class RequestTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    Strict = true,
                     Type = Messages::Type.Custom,
                 },
             ],
@@ -363,6 +505,16 @@ public class RequestTest : TestBase
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                 Model = Messages::Model.ClaudeSonnet4_5_20250929,
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                OutputConfig = new()
+                {
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
                 Stream = true,
@@ -405,6 +557,7 @@ public class RequestTest : TestBase
                         Name = "name",
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Description = "Get the current weather in a given location",
+                        Strict = true,
                         Type = Messages::Type.Custom,
                     },
                 ],
@@ -431,6 +584,16 @@ public class RequestTest : TestBase
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                 Model = Messages::Model.ClaudeSonnet4_5_20250929,
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                OutputConfig = new()
+                {
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
                 Stream = true,
@@ -473,6 +636,7 @@ public class RequestTest : TestBase
                         Name = "name",
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Description = "Get the current weather in a given location",
+                        Strict = true,
                         Type = Messages::Type.Custom,
                     },
                 ],
@@ -495,6 +659,16 @@ public class RequestTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -537,6 +711,7 @@ public class RequestTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    Strict = true,
                     Type = Messages::Type.Custom,
                 },
             ],
@@ -560,6 +735,16 @@ public class RequestTest : TestBase
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                 Model = Messages::Model.ClaudeSonnet4_5_20250929,
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                OutputConfig = new()
+                {
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
                 Stream = true,
@@ -602,6 +787,7 @@ public class RequestTest : TestBase
                         Name = "name",
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Description = "Get the current weather in a given location",
+                        Strict = true,
                         Type = Messages::Type.Custom,
                     },
                 ],
@@ -611,6 +797,84 @@ public class RequestTest : TestBase
         };
 
         model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Request
+        {
+            CustomID = "my-custom-id-1",
+            Params = new()
+            {
+                MaxTokens = 1024,
+                Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                Model = Messages::Model.ClaudeSonnet4_5_20250929,
+                Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                OutputConfig = new()
+                {
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
+                ServiceTier = ServiceTier.Auto,
+                StopSequences = ["string"],
+                Stream = true,
+                System = new(
+                    [
+                        new Messages::TextBlockParam()
+                        {
+                            Text = "Today's date is 2024-06-01.",
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new Messages::CitationCharLocationParam()
+                                {
+                                    CitedText = "cited_text",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        },
+                    ]
+                ),
+                Temperature = 1,
+                Thinking = new Messages::ThinkingConfigEnabled(1024),
+                ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+                Tools =
+                [
+                    new Messages::Tool()
+                    {
+                        InputSchema = new()
+                        {
+                            Properties = new Dictionary<string, JsonElement>()
+                            {
+                                { "location", JsonSerializer.SerializeToElement("bar") },
+                                { "unit", JsonSerializer.SerializeToElement("bar") },
+                            },
+                            Required = ["location"],
+                        },
+                        Name = "name",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Description = "Get the current weather in a given location",
+                        Strict = true,
+                        Type = Messages::Type.Custom,
+                    },
+                ],
+                TopK = 5,
+                TopP = 0.7,
+            },
+        };
+
+        Request copied = new(model);
+
+        Assert.Equal(model, copied);
     }
 }
 
@@ -625,6 +889,16 @@ public class ParamsTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -667,6 +941,7 @@ public class ParamsTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    Strict = true,
                     Type = Messages::Type.Custom,
                 },
             ],
@@ -683,6 +958,16 @@ public class ParamsTest : TestBase
         Messages::Metadata expectedMetadata = new()
         {
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
+        };
+        Messages::OutputConfig expectedOutputConfig = new()
+        {
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
         };
         ApiEnum<string, ServiceTier> expectedServiceTier = ServiceTier.Auto;
         List<string> expectedStopSequences = ["string"];
@@ -729,6 +1014,7 @@ public class ParamsTest : TestBase
                 Name = "name",
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Description = "Get the current weather in a given location",
+                Strict = true,
                 Type = Messages::Type.Custom,
             },
         ];
@@ -743,6 +1029,7 @@ public class ParamsTest : TestBase
         }
         Assert.Equal(expectedModel, model.Model);
         Assert.Equal(expectedMetadata, model.Metadata);
+        Assert.Equal(expectedOutputConfig, model.OutputConfig);
         Assert.Equal(expectedServiceTier, model.ServiceTier);
         Assert.NotNull(model.StopSequences);
         Assert.Equal(expectedStopSequences.Count, model.StopSequences.Count);
@@ -774,6 +1061,16 @@ public class ParamsTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -816,6 +1113,7 @@ public class ParamsTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    Strict = true,
                     Type = Messages::Type.Custom,
                 },
             ],
@@ -838,6 +1136,16 @@ public class ParamsTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -880,6 +1188,7 @@ public class ParamsTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    Strict = true,
                     Type = Messages::Type.Custom,
                 },
             ],
@@ -900,6 +1209,16 @@ public class ParamsTest : TestBase
         Messages::Metadata expectedMetadata = new()
         {
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
+        };
+        Messages::OutputConfig expectedOutputConfig = new()
+        {
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
         };
         ApiEnum<string, ServiceTier> expectedServiceTier = ServiceTier.Auto;
         List<string> expectedStopSequences = ["string"];
@@ -946,6 +1265,7 @@ public class ParamsTest : TestBase
                 Name = "name",
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Description = "Get the current weather in a given location",
+                Strict = true,
                 Type = Messages::Type.Custom,
             },
         ];
@@ -960,6 +1280,7 @@ public class ParamsTest : TestBase
         }
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.Equal(expectedMetadata, deserialized.Metadata);
+        Assert.Equal(expectedOutputConfig, deserialized.OutputConfig);
         Assert.Equal(expectedServiceTier, deserialized.ServiceTier);
         Assert.NotNull(deserialized.StopSequences);
         Assert.Equal(expectedStopSequences.Count, deserialized.StopSequences.Count);
@@ -991,6 +1312,16 @@ public class ParamsTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeSonnet4_5_20250929,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -1033,6 +1364,7 @@ public class ParamsTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    Strict = true,
                     Type = Messages::Type.Custom,
                 },
             ],
@@ -1055,6 +1387,8 @@ public class ParamsTest : TestBase
 
         Assert.Null(model.Metadata);
         Assert.False(model.RawData.ContainsKey("metadata"));
+        Assert.Null(model.OutputConfig);
+        Assert.False(model.RawData.ContainsKey("output_config"));
         Assert.Null(model.ServiceTier);
         Assert.False(model.RawData.ContainsKey("service_tier"));
         Assert.Null(model.StopSequences);
@@ -1101,6 +1435,7 @@ public class ParamsTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             Metadata = null,
+            OutputConfig = null,
             ServiceTier = null,
             StopSequences = null,
             Stream = null,
@@ -1115,6 +1450,8 @@ public class ParamsTest : TestBase
 
         Assert.Null(model.Metadata);
         Assert.False(model.RawData.ContainsKey("metadata"));
+        Assert.Null(model.OutputConfig);
+        Assert.False(model.RawData.ContainsKey("output_config"));
         Assert.Null(model.ServiceTier);
         Assert.False(model.RawData.ContainsKey("service_tier"));
         Assert.Null(model.StopSequences);
@@ -1148,6 +1485,7 @@ public class ParamsTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             Metadata = null,
+            OutputConfig = null,
             ServiceTier = null,
             StopSequences = null,
             Stream = null,
@@ -1161,6 +1499,80 @@ public class ParamsTest : TestBase
         };
 
         model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Params
+        {
+            MaxTokens = 1024,
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeSonnet4_5_20250929,
+            Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            ServiceTier = ServiceTier.Auto,
+            StopSequences = ["string"],
+            Stream = true,
+            System = new(
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Temperature = 1,
+            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new Messages::Tool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    Description = "Get the current weather in a given location",
+                    Strict = true,
+                    Type = Messages::Type.Custom,
+                },
+            ],
+            TopK = 5,
+            TopP = 0.7,
+        };
+
+        Params copied = new(model);
+
+        Assert.Equal(model, copied);
     }
 }
 

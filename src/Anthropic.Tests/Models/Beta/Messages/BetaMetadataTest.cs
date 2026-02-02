@@ -88,4 +88,14 @@ public class BetaMetadataTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMetadata { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" };
+
+        BetaMetadata copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

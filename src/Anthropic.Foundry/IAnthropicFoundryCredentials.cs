@@ -57,19 +57,9 @@ public class DefaultAnthropicFoundryCredentials
             return new AnthropicFoundryApiKeyCredentials(apiKey, resourceName ?? envResourceName);
         }
 
-        var defaultCredentialsProvider = new DefaultAzureCredential();
-
-        var azureToken = await defaultCredentialsProvider
-            .GetTokenAsync(new() { })
-            .ConfigureAwait(false);
-        if (!azureToken.Equals(default))
-        {
-            return new AnthropicFoundryIdentityTokenCredentials(
-                azureToken,
-                resourceName ?? envResourceName
-            );
-        }
-
-        return null;
+        return new AnthropicFoundryIdentityTokenCredentials(
+            new DefaultAzureCredential(),
+            resourceName ?? envResourceName
+        );
     }
 }

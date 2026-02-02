@@ -319,10 +319,10 @@ public record class BetaRawContentBlockDelta : ModelBase
         );
     }
 
-    public virtual bool Equals(BetaRawContentBlockDelta? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaRawContentBlockDelta? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -331,6 +331,19 @@ public record class BetaRawContentBlockDelta : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaTextDelta _ => 0,
+            BetaInputJsonDelta _ => 1,
+            BetaCitationsDelta _ => 2,
+            BetaThinkingDelta _ => 3,
+            BetaSignatureDelta _ => 4,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlockDelta>

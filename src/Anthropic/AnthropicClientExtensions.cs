@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
@@ -87,11 +89,46 @@ public static class AnthropicClientExtensions
     ) : IChatClient
     {
         private const int DefaultMaxTokens = 1024;
+        private const string MeaiUserAgentHeaderKey = "User-Agent";
+
+        private static readonly FrozenDictionary<string, JsonElement> s_meaiHeaderData =
+            new Dictionary<string, JsonElement>
+            {
+                [MeaiUserAgentHeaderKey] = JsonSerializer.SerializeToElement(
+                    CreateMeaiUserAgentValue()
+                ),
+            }.ToFrozenDictionary();
 
         private readonly IAnthropicClient _anthropicClient = anthropicClient;
         private readonly string? _defaultModelId = defaultModelId;
         private readonly int _defaultMaxTokens = defaultMaxTokens ?? DefaultMaxTokens;
         private ChatClientMetadata? _metadata;
+
+        private static string CreateMeaiUserAgentValue()
+        {
+            const string Name = "MEAI";
+
+            if (
+                typeof(IChatClient)
+                    .Assembly.GetCustomAttribute<System.Reflection.AssemblyInformationalVersionAttribute>()
+                    ?.InformationalVersion
+                is string version
+            )
+            {
+                int pos = version.IndexOf('+');
+                if (pos >= 0)
+                {
+                    version = version.Substring(0, pos);
+                }
+
+                if (version.Length > 0)
+                {
+                    return $"{Name}/{version}";
+                }
+            }
+
+            return Name;
+        }
 
         /// <inheritdoc />
         void IDisposable.Dispose() { }
@@ -242,15 +279,9 @@ public static class AnthropicClientExtensions
                         finishReason = ToFinishReason(rawMessageDelta.Delta.StopReason);
                         if (rawMessageDelta.Usage is { } deltaUsage)
                         {
-                            UsageDetails current = ToUsageDetails(deltaUsage);
-                            if (usageDetails is null)
-                            {
-                                usageDetails = current;
-                            }
-                            else
-                            {
-                                usageDetails.Add(current);
-                            }
+                            // https://platform.claude.com/docs/en/build-with-claude/streaming
+                            // "The token counts shown in the usage field of the message_delta event are cumulative."
+                            usageDetails = ToUsageDetails(deltaUsage);
                         }
                         break;
 
@@ -905,7 +936,24 @@ public static class AnthropicClientExtensions
                 createParams = createParams with { System = systemMessages };
             }
 
-            return createParams;
+            // Merge the MEAI user-agent header with existing headers
+            return AddMeaiHeaders(createParams);
+        }
+
+        private static MessageCreateParams AddMeaiHeaders(MessageCreateParams createParams)
+        {
+            Dictionary<string, JsonElement> mergedHeaders = new(s_meaiHeaderData);
+
+            foreach (var header in createParams.RawHeaderData)
+            {
+                mergedHeaders[header.Key] = header.Value;
+            }
+
+            return MessageCreateParams.FromRawUnchecked(
+                mergedHeaders,
+                createParams.RawQueryData,
+                createParams.RawBodyData
+            );
         }
 
         private static UsageDetails ToUsageDetails(Usage usage) =>

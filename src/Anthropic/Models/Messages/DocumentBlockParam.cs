@@ -94,8 +94,11 @@ public sealed record class DocumentBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("document");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public DocumentBlockParam(DocumentBlockParam documentBlockParam)
         : base(documentBlockParam) { }
+#pragma warning restore CS8618
 
     public DocumentBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -427,10 +430,10 @@ public record class Source : ModelBase
         );
     }
 
-    public virtual bool Equals(Source? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(Source? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -439,6 +442,18 @@ public record class Source : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            Base64PdfSource _ => 0,
+            PlainTextSource _ => 1,
+            ContentBlockSource _ => 2,
+            UrlPdfSource _ => 3,
+            _ => -1,
+        };
+    }
 }
 
 sealed class SourceConverter : JsonConverter<Source>

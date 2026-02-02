@@ -58,8 +58,11 @@ public sealed record class BetaMcpToolConfig : JsonModel
 
     public BetaMcpToolConfig() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMcpToolConfig(BetaMcpToolConfig betaMcpToolConfig)
         : base(betaMcpToolConfig) { }
+#pragma warning restore CS8618
 
     public BetaMcpToolConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {

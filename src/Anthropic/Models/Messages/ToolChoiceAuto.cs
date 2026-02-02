@@ -63,8 +63,11 @@ public sealed record class ToolChoiceAuto : JsonModel
         this.Type = JsonSerializer.SerializeToElement("auto");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ToolChoiceAuto(ToolChoiceAuto toolChoiceAuto)
         : base(toolChoiceAuto) { }
+#pragma warning restore CS8618
 
     public ToolChoiceAuto(IReadOnlyDictionary<string, JsonElement> rawData)
     {

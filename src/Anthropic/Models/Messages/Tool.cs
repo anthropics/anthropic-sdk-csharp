@@ -83,6 +83,27 @@ public sealed record class Tool : JsonModel
         }
     }
 
+    /// <summary>
+    /// When true, guarantees schema validation on tool names and inputs
+    /// </summary>
+    public bool? Strict
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("strict");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("strict", value);
+        }
+    }
+
     public ApiEnum<string, global::Anthropic.Models.Messages.Type>? Type
     {
         get
@@ -102,13 +123,17 @@ public sealed record class Tool : JsonModel
         _ = this.Name;
         this.CacheControl?.Validate();
         _ = this.Description;
+        _ = this.Strict;
         this.Type?.Validate();
     }
 
     public Tool() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public Tool(Tool tool)
         : base(tool) { }
+#pragma warning restore CS8618
 
     public Tool(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -206,8 +231,11 @@ public sealed record class InputSchema : JsonModel
         this.Type = JsonSerializer.SerializeToElement("object");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public InputSchema(InputSchema inputSchema)
         : base(inputSchema) { }
+#pragma warning restore CS8618
 
     public InputSchema(IReadOnlyDictionary<string, JsonElement> rawData)
     {

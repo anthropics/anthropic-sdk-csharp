@@ -12,8 +12,12 @@ namespace Anthropic.Models.Beta.Skills;
 
 /// <summary>
 /// Get Skill
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
 /// </summary>
-public sealed record class SkillRetrieveParams : ParamsBase
+public record class SkillRetrieveParams : ParamsBase
 {
     public string? SkillID { get; init; }
 
@@ -45,11 +49,14 @@ public sealed record class SkillRetrieveParams : ParamsBase
 
     public SkillRetrieveParams() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public SkillRetrieveParams(SkillRetrieveParams skillRetrieveParams)
         : base(skillRetrieveParams)
     {
         this.SkillID = skillRetrieveParams.SkillID;
     }
+#pragma warning restore CS8618
 
     public SkillRetrieveParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -84,6 +91,28 @@ public sealed record class SkillRetrieveParams : ParamsBase
         );
     }
 
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            new Dictionary<string, object?>()
+            {
+                ["SkillID"] = this.SkillID,
+                ["HeaderData"] = this._rawHeaderData.Freeze(),
+                ["QueryData"] = this._rawQueryData.Freeze(),
+            },
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public virtual bool Equals(SkillRetrieveParams? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        return (this.SkillID?.Equals(other.SkillID) ?? other.SkillID == null)
+            && this._rawHeaderData.Equals(other._rawHeaderData)
+            && this._rawQueryData.Equals(other._rawQueryData);
+    }
+
     public override Uri Url(ClientOptions options)
     {
         return new UriBuilder(
@@ -103,5 +132,10 @@ public sealed record class SkillRetrieveParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }

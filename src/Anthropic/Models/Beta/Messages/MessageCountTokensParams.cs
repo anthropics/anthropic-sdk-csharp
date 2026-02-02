@@ -20,8 +20,12 @@ namespace Anthropic.Models.Beta.Messages;
 /// including tools, images, and documents, without creating it.</para>
 ///
 /// <para>Learn more about token counting in our [user guide](https://docs.claude.com/en/docs/build-with-claude/token-counting)</para>
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
 /// </summary>
-public sealed record class MessageCountTokensParams : ParamsBase
+public record class MessageCountTokensParams : ParamsBase
 {
     readonly JsonDictionary _rawBodyData = new();
     public IReadOnlyDictionary<string, JsonElement> RawBodyData
@@ -155,8 +159,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     }
 
     /// <summary>
-    /// Configuration options for the model's output. Controls aspects like how much
-    /// effort the model puts into its response.
+    /// Configuration options for the model's output, such as the output format.
     /// </summary>
     public BetaOutputConfig? OutputConfig
     {
@@ -177,8 +180,12 @@ public sealed record class MessageCountTokensParams : ParamsBase
     }
 
     /// <summary>
-    ///  A schema to specify Claude's output format in responses.
+    /// Deprecated: Use `output_config.format` instead. See [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
+    ///
+    /// <para>A schema to specify Claude's output format in responses. This parameter
+    /// will be removed in a future release.</para>
     /// </summary>
+    [System::Obsolete("deprecated")]
     public BetaJsonOutputFormat? OutputFormat
     {
         get
@@ -359,11 +366,14 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
     public MessageCountTokensParams() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public MessageCountTokensParams(MessageCountTokensParams messageCountTokensParams)
         : base(messageCountTokensParams)
     {
         this._rawBodyData = new(messageCountTokensParams._rawBodyData);
     }
+#pragma warning restore CS8618
 
     public MessageCountTokensParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -404,6 +414,28 @@ public sealed record class MessageCountTokensParams : ParamsBase
         );
     }
 
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            new Dictionary<string, object?>()
+            {
+                ["HeaderData"] = this._rawHeaderData.Freeze(),
+                ["QueryData"] = this._rawQueryData.Freeze(),
+                ["BodyData"] = this._rawBodyData.Freeze(),
+            },
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public virtual bool Equals(MessageCountTokensParams? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        return this._rawHeaderData.Equals(other._rawHeaderData)
+            && this._rawQueryData.Equals(other._rawQueryData)
+            && this._rawBodyData.Equals(other._rawBodyData);
+    }
+
     public override System::Uri Url(ClientOptions options)
     {
         return new System::UriBuilder(
@@ -430,6 +462,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 
@@ -623,10 +660,10 @@ public record class MessageCountTokensParamsSystem : ModelBase
         }
     }
 
-    public virtual bool Equals(MessageCountTokensParamsSystem? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(MessageCountTokensParamsSystem? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -635,6 +672,16 @@ public record class MessageCountTokensParamsSystem : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            string _ => 0,
+            IReadOnlyList<BetaTextBlockParam> _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class MessageCountTokensParamsSystemConverter : JsonConverter<MessageCountTokensParamsSystem>
@@ -1692,10 +1739,10 @@ public record class Tool : ModelBase
         );
     }
 
-    public virtual bool Equals(Tool? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(Tool? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -1704,6 +1751,32 @@ public record class Tool : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaTool _ => 0,
+            BetaToolBash20241022 _ => 1,
+            BetaToolBash20250124 _ => 2,
+            BetaCodeExecutionTool20250522 _ => 3,
+            BetaCodeExecutionTool20250825 _ => 4,
+            BetaToolComputerUse20241022 _ => 5,
+            BetaMemoryTool20250818 _ => 6,
+            BetaToolComputerUse20250124 _ => 7,
+            BetaToolTextEditor20241022 _ => 8,
+            BetaToolComputerUse20251124 _ => 9,
+            BetaToolTextEditor20250124 _ => 10,
+            BetaToolTextEditor20250429 _ => 11,
+            BetaToolTextEditor20250728 _ => 12,
+            BetaWebSearchTool20250305 _ => 13,
+            BetaWebFetchTool20250910 _ => 14,
+            BetaToolSearchToolBm25_20251119 _ => 15,
+            BetaToolSearchToolRegex20251119 _ => 16,
+            BetaMcpToolset _ => 17,
+            _ => -1,
+        };
+    }
 }
 
 sealed class ToolConverter : JsonConverter<Tool>

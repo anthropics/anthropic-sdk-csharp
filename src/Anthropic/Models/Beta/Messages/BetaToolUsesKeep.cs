@@ -46,8 +46,11 @@ public sealed record class BetaToolUsesKeep : JsonModel
         this.Type = JsonSerializer.SerializeToElement("tool_uses");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolUsesKeep(BetaToolUsesKeep betaToolUsesKeep)
         : base(betaToolUsesKeep) { }
+#pragma warning restore CS8618
 
     public BetaToolUsesKeep(IReadOnlyDictionary<string, JsonElement> rawData)
     {

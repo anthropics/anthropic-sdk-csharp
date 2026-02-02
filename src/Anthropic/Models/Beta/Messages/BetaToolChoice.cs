@@ -294,10 +294,10 @@ public record class BetaToolChoice : ModelBase
         );
     }
 
-    public virtual bool Equals(BetaToolChoice? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaToolChoice? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -306,6 +306,18 @@ public record class BetaToolChoice : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaToolChoiceAuto _ => 0,
+            BetaToolChoiceAny _ => 1,
+            BetaToolChoiceTool _ => 2,
+            BetaToolChoiceNone _ => 3,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>

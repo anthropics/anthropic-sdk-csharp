@@ -58,4 +58,14 @@ public class BetaServerToolUsageTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaServerToolUsage { WebFetchRequests = 2, WebSearchRequests = 0 };
+
+        BetaServerToolUsage copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

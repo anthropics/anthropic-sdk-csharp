@@ -58,4 +58,14 @@ public class BetaBashCodeExecutionOutputBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaBashCodeExecutionOutputBlockParam { FileID = "file_id" };
+
+        BetaBashCodeExecutionOutputBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

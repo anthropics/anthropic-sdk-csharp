@@ -101,4 +101,20 @@ public class BetaJsonOutputFormatTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaJsonOutputFormat
+        {
+            Schema = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
+
+        BetaJsonOutputFormat copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

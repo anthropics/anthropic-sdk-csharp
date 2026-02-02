@@ -285,6 +285,54 @@ public class BetaRawMessageDeltaEventTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Messages::BetaRawMessageDeltaEvent
+        {
+            ContextManagement = new(
+                [
+                    new Messages::BetaClearToolUses20250919EditResponse()
+                    {
+                        ClearedInputTokens = 0,
+                        ClearedToolUses = 0,
+                    },
+                ]
+            ),
+            Delta = new()
+            {
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "x",
+                            Type = Messages::Type.Anthropic,
+                            Version = "x",
+                        },
+                    ],
+                },
+                StopReason = Messages::BetaStopReason.EndTurn,
+                StopSequence = "stop_sequence",
+            },
+            Usage = new()
+            {
+                CacheCreationInputTokens = 2051,
+                CacheReadInputTokens = 2051,
+                InputTokens = 2095,
+                OutputTokens = 503,
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
+            },
+        };
+
+        Messages::BetaRawMessageDeltaEvent copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class DeltaTest : TestBase
@@ -444,5 +492,33 @@ public class DeltaTest : TestBase
         };
 
         model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Messages::Delta
+        {
+            Container = new()
+            {
+                ID = "id",
+                ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "x",
+                        Type = Messages::Type.Anthropic,
+                        Version = "x",
+                    },
+                ],
+            },
+            StopReason = Messages::BetaStopReason.EndTurn,
+            StopSequence = "stop_sequence",
+        };
+
+        Messages::Delta copied = new(model);
+
+        Assert.Equal(model, copied);
     }
 }

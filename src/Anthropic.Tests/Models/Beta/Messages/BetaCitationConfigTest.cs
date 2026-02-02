@@ -54,4 +54,14 @@ public class BetaCitationConfigTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaCitationConfig { Enabled = true };
+
+        BetaCitationConfig copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

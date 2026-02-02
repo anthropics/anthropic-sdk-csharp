@@ -135,8 +135,11 @@ public sealed record class FileMetadata : JsonModel
         this.Type = JsonSerializer.SerializeToElement("file");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public FileMetadata(FileMetadata fileMetadata)
         : base(fileMetadata) { }
+#pragma warning restore CS8618
 
     public FileMetadata(IReadOnlyDictionary<string, JsonElement> rawData)
     {

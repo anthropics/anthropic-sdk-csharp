@@ -168,6 +168,24 @@ public class ImageBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ImageBlockParam
+        {
+            Source = new Base64ImageSource()
+            {
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJpeg,
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        ImageBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class ImageBlockParamSourceTest : TestBase

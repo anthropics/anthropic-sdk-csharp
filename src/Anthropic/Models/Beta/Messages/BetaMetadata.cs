@@ -35,8 +35,11 @@ public sealed record class BetaMetadata : JsonModel
 
     public BetaMetadata() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMetadata(BetaMetadata betaMetadata)
         : base(betaMetadata) { }
+#pragma warning restore CS8618
 
     public BetaMetadata(IReadOnlyDictionary<string, JsonElement> rawData)
     {

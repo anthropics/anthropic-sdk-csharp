@@ -46,8 +46,11 @@ public sealed record class BetaFileImageSource : JsonModel
         this.Type = JsonSerializer.SerializeToElement("file");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaFileImageSource(BetaFileImageSource betaFileImageSource)
         : base(betaFileImageSource) { }
+#pragma warning restore CS8618
 
     public BetaFileImageSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {

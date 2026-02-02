@@ -61,8 +61,11 @@ public sealed record class BetaImageBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("image");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaImageBlockParam(BetaImageBlockParam betaImageBlockParam)
         : base(betaImageBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaImageBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -336,10 +339,10 @@ public record class BetaImageBlockParamSource : ModelBase
         );
     }
 
-    public virtual bool Equals(BetaImageBlockParamSource? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaImageBlockParamSource? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -348,6 +351,17 @@ public record class BetaImageBlockParamSource : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaBase64ImageSource _ => 0,
+            BetaUrlImageSource _ => 1,
+            BetaFileImageSource _ => 2,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockParamSource>

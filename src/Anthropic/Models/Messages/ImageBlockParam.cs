@@ -61,8 +61,11 @@ public sealed record class ImageBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("image");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ImageBlockParam(ImageBlockParam imageBlockParam)
         : base(imageBlockParam) { }
+#pragma warning restore CS8618
 
     public ImageBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -283,10 +286,10 @@ public record class ImageBlockParamSource : ModelBase
         this.Switch((base64Image) => base64Image.Validate(), (urlImage) => urlImage.Validate());
     }
 
-    public virtual bool Equals(ImageBlockParamSource? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(ImageBlockParamSource? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -295,6 +298,16 @@ public record class ImageBlockParamSource : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            Base64ImageSource _ => 0,
+            UrlImageSource _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSource>

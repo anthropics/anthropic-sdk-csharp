@@ -84,10 +84,13 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("bash_code_execution_tool_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaBashCodeExecutionToolResultBlockParam(
         BetaBashCodeExecutionToolResultBlockParam betaBashCodeExecutionToolResultBlockParam
     )
         : base(betaBashCodeExecutionToolResultBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaBashCodeExecutionToolResultBlockParam(
         IReadOnlyDictionary<string, JsonElement> rawData
@@ -338,10 +341,10 @@ public record class BetaBashCodeExecutionToolResultBlockParamContent : ModelBase
         );
     }
 
-    public virtual bool Equals(BetaBashCodeExecutionToolResultBlockParamContent? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaBashCodeExecutionToolResultBlockParamContent? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -350,6 +353,16 @@ public record class BetaBashCodeExecutionToolResultBlockParamContent : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaBashCodeExecutionToolResultErrorParam _ => 0,
+            BetaBashCodeExecutionResultBlockParam _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaBashCodeExecutionToolResultBlockParamContentConverter

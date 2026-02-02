@@ -104,6 +104,9 @@ public sealed record class BetaToolSearchToolBm25_20251119 : JsonModel
         }
     }
 
+    /// <summary>
+    /// When true, guarantees schema validation on tool names and inputs
+    /// </summary>
     public bool? Strict
     {
         get
@@ -149,10 +152,13 @@ public sealed record class BetaToolSearchToolBm25_20251119 : JsonModel
         this.Name = JsonSerializer.SerializeToElement("tool_search_tool_bm25");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolSearchToolBm25_20251119(
         BetaToolSearchToolBm25_20251119 betaToolSearchToolBm25_20251119
     )
         : base(betaToolSearchToolBm25_20251119) { }
+#pragma warning restore CS8618
 
     public BetaToolSearchToolBm25_20251119(IReadOnlyDictionary<string, JsonElement> rawData)
     {

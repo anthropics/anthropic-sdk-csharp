@@ -46,8 +46,11 @@ public sealed record class BetaInputTokensTrigger : JsonModel
         this.Type = JsonSerializer.SerializeToElement("input_tokens");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaInputTokensTrigger(BetaInputTokensTrigger betaInputTokensTrigger)
         : base(betaInputTokensTrigger) { }
+#pragma warning restore CS8618
 
     public BetaInputTokensTrigger(IReadOnlyDictionary<string, JsonElement> rawData)
     {

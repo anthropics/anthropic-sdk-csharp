@@ -137,10 +137,13 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
         this.Type = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaClearToolUses20250919Edit(
         BetaClearToolUses20250919Edit betaClearToolUses20250919Edit
     )
         : base(betaClearToolUses20250919Edit) { }
+#pragma warning restore CS8618
 
     public BetaClearToolUses20250919Edit(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -349,10 +352,10 @@ public record class ClearToolInputs : ModelBase
         }
     }
 
-    public virtual bool Equals(ClearToolInputs? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(ClearToolInputs? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -361,6 +364,16 @@ public record class ClearToolInputs : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            bool _ => 0,
+            IReadOnlyList<string> _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
@@ -374,7 +387,7 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
         var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            return new(JsonSerializer.Deserialize<bool>(element, options));
+            return new(JsonSerializer.Deserialize<bool>(element, options), element);
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
@@ -599,10 +612,10 @@ public record class Trigger : ModelBase
         );
     }
 
-    public virtual bool Equals(Trigger? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(Trigger? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -611,6 +624,16 @@ public record class Trigger : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaInputTokensTrigger _ => 0,
+            BetaToolUsesTrigger _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class TriggerConverter : JsonConverter<Trigger>

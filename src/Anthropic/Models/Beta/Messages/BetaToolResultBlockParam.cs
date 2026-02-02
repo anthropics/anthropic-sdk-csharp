@@ -102,8 +102,11 @@ public sealed record class BetaToolResultBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("tool_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolResultBlockParam(BetaToolResultBlockParam betaToolResultBlockParam)
         : base(betaToolResultBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -316,10 +319,10 @@ public record class BetaToolResultBlockParamContent : ModelBase
         }
     }
 
-    public virtual bool Equals(BetaToolResultBlockParamContent? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaToolResultBlockParamContent? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -328,6 +331,16 @@ public record class BetaToolResultBlockParamContent : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            string _ => 0,
+            IReadOnlyList<Block> _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaToolResultBlockParamContentConverter
@@ -717,10 +730,10 @@ public record class Block : ModelBase
         );
     }
 
-    public virtual bool Equals(Block? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(Block? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -729,6 +742,19 @@ public record class Block : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaTextBlockParam _ => 0,
+            BetaImageBlockParam _ => 1,
+            BetaSearchResultBlockParam _ => 2,
+            BetaRequestDocumentBlock _ => 3,
+            BetaToolReferenceBlockParam _ => 4,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BlockConverter : JsonConverter<Block>

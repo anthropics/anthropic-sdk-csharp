@@ -96,4 +96,14 @@ public class BetaCitationsConfigParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaCitationsConfigParam { Enabled = true };
+
+        BetaCitationsConfigParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -171,4 +171,26 @@ public class BetaContainerParamsTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaContainerParams
+        {
+            ID = "id",
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "x",
+                    Type = BetaSkillParamsType.Anthropic,
+                    Version = "x",
+                },
+            ],
+        };
+
+        BetaContainerParams copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

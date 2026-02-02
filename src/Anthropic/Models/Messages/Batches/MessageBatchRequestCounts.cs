@@ -97,8 +97,11 @@ public sealed record class MessageBatchRequestCounts : JsonModel
 
     public MessageBatchRequestCounts() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public MessageBatchRequestCounts(MessageBatchRequestCounts messageBatchRequestCounts)
         : base(messageBatchRequestCounts) { }
+#pragma warning restore CS8618
 
     public MessageBatchRequestCounts(IReadOnlyDictionary<string, JsonElement> rawData)
     {

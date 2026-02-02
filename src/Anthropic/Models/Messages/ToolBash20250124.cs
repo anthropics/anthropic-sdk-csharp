@@ -49,6 +49,27 @@ public sealed record class ToolBash20250124 : JsonModel
         init { this._rawData.Set("cache_control", value); }
     }
 
+    /// <summary>
+    /// When true, guarantees schema validation on tool names and inputs
+    /// </summary>
+    public bool? Strict
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("strict");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("strict", value);
+        }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -61,6 +82,7 @@ public sealed record class ToolBash20250124 : JsonModel
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         this.CacheControl?.Validate();
+        _ = this.Strict;
     }
 
     public ToolBash20250124()
@@ -69,8 +91,11 @@ public sealed record class ToolBash20250124 : JsonModel
         this.Type = JsonSerializer.SerializeToElement("bash_20250124");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ToolBash20250124(ToolBash20250124 toolBash20250124)
         : base(toolBash20250124) { }
+#pragma warning restore CS8618
 
     public ToolBash20250124(IReadOnlyDictionary<string, JsonElement> rawData)
     {

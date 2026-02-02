@@ -142,4 +142,27 @@ public class BetaContainerTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Messages::BetaContainer
+        {
+            ID = "id",
+            ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "x",
+                    Type = Messages::Type.Anthropic,
+                    Version = "x",
+                },
+            ],
+        };
+
+        Messages::BetaContainer copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

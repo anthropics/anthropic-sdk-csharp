@@ -49,8 +49,11 @@ public sealed record class BetaCitationsDelta : JsonModel
         this.Type = JsonSerializer.SerializeToElement("citations_delta");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaCitationsDelta(BetaCitationsDelta betaCitationsDelta)
         : base(betaCitationsDelta) { }
+#pragma warning restore CS8618
 
     public BetaCitationsDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -509,10 +512,10 @@ public record class Citation : ModelBase
         );
     }
 
-    public virtual bool Equals(Citation? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(Citation? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -521,6 +524,19 @@ public record class Citation : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaCitationCharLocation _ => 0,
+            BetaCitationPageLocation _ => 1,
+            BetaCitationContentBlockLocation _ => 2,
+            BetaCitationsWebSearchResultLocation _ => 3,
+            BetaCitationSearchResultLocation _ => 4,
+            _ => -1,
+        };
+    }
 }
 
 sealed class CitationConverter : JsonConverter<Citation>

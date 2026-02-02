@@ -58,4 +58,14 @@ public class BetaFileDocumentSourceTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaFileDocumentSource { FileID = "file_id" };
+
+        BetaFileDocumentSource copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

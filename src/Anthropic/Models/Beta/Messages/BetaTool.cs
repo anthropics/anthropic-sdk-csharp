@@ -159,6 +159,9 @@ public sealed record class BetaTool : JsonModel
         }
     }
 
+    /// <summary>
+    /// When true, guarantees schema validation on tool names and inputs
+    /// </summary>
     public bool? Strict
     {
         get
@@ -206,8 +209,11 @@ public sealed record class BetaTool : JsonModel
 
     public BetaTool() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaTool(BetaTool betaTool)
         : base(betaTool) { }
+#pragma warning restore CS8618
 
     public BetaTool(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -305,8 +311,11 @@ public sealed record class InputSchema : JsonModel
         this.Type = JsonSerializer.SerializeToElement("object");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public InputSchema(InputSchema inputSchema)
         : base(inputSchema) { }
+#pragma warning restore CS8618
 
     public InputSchema(IReadOnlyDictionary<string, JsonElement> rawData)
     {

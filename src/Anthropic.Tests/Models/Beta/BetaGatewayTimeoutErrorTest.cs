@@ -58,4 +58,14 @@ public class BetaGatewayTimeoutErrorTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaGatewayTimeoutError { Message = "message" };
+
+        BetaGatewayTimeoutError copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

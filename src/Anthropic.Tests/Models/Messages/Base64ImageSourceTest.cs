@@ -79,6 +79,20 @@ public class Base64ImageSourceTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Base64ImageSource
+        {
+            Data = "U3RhaW5sZXNzIHJvY2tz",
+            MediaType = MediaType.ImageJpeg,
+        };
+
+        Base64ImageSource copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class MediaTypeTest : TestBase

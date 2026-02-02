@@ -149,6 +149,9 @@ public sealed record class BetaWebSearchTool20250305 : JsonModel
         init { this._rawData.Set("max_uses", value); }
     }
 
+    /// <summary>
+    /// When true, guarantees schema validation on tool names and inputs
+    /// </summary>
     public bool? Strict
     {
         get
@@ -215,8 +218,11 @@ public sealed record class BetaWebSearchTool20250305 : JsonModel
         this.Type = JsonSerializer.SerializeToElement("web_search_20250305");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaWebSearchTool20250305(BetaWebSearchTool20250305 betaWebSearchTool20250305)
         : base(betaWebSearchTool20250305) { }
+#pragma warning restore CS8618
 
     public BetaWebSearchTool20250305(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -385,8 +391,11 @@ public sealed record class UserLocation : JsonModel
         this.Type = JsonSerializer.SerializeToElement("approximate");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public UserLocation(UserLocation userLocation)
         : base(userLocation) { }
+#pragma warning restore CS8618
 
     public UserLocation(IReadOnlyDictionary<string, JsonElement> rawData)
     {

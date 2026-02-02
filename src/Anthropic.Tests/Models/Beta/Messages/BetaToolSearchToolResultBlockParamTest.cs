@@ -162,6 +162,23 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolSearchToolResultBlockParam
+        {
+            Content = new BetaToolSearchToolResultErrorParam(
+                BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        BetaToolSearchToolResultBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaToolSearchToolResultBlockParamContentTest : TestBase

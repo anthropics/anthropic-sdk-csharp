@@ -72,4 +72,17 @@ public class BetaWebFetchToolResultErrorBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaWebFetchToolResultErrorBlock
+        {
+            ErrorCode = BetaWebFetchToolResultErrorCode.InvalidToolInput,
+        };
+
+        BetaWebFetchToolResultErrorBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

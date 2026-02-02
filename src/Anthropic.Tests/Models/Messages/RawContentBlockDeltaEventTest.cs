@@ -62,4 +62,14 @@ public class RawContentBlockDeltaEventTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new RawContentBlockDeltaEvent { Delta = new TextDelta("text"), Index = 0 };
+
+        RawContentBlockDeltaEvent copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -32,6 +32,16 @@ public class BatchServiceTest
                             ],
                             Model = modelName,
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                            OutputConfig = new()
+                            {
+                                Format = new()
+                                {
+                                    Schema = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                },
+                            },
                             ServiceTier = ServiceTier.Auto,
                             StopSequences = ["string"],
                             Stream = true,
@@ -80,6 +90,7 @@ public class BatchServiceTest
                                     Name = "name",
                                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                                     Description = "Get the current weather in a given location",
+                                    Strict = true,
                                     Type = Messages::Type.Custom,
                                 },
                             ],

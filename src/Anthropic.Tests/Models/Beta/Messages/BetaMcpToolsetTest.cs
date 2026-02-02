@@ -297,4 +297,26 @@ public class BetaMcpToolsetTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMcpToolset
+        {
+            McpServerName = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Configs = new Dictionary<string, BetaMcpToolConfig>()
+            {
+                {
+                    "foo",
+                    new() { DeferLoading = true, Enabled = true }
+                },
+            },
+            DefaultConfig = new() { DeferLoading = true, Enabled = true },
+        };
+
+        BetaMcpToolset copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

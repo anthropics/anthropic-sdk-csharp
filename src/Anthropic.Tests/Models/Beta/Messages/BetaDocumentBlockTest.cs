@@ -86,6 +86,21 @@ public class BetaDocumentBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaDocumentBlock
+        {
+            Citations = new(true),
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            Title = "title",
+        };
+
+        BetaDocumentBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class SourceTest : TestBase

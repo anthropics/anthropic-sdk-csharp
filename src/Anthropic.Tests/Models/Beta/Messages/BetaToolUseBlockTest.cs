@@ -197,6 +197,25 @@ public class BetaToolUseBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolUseBlock
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+            Caller = new BetaDirectCaller(),
+        };
+
+        BetaToolUseBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaToolUseBlockCallerTest : TestBase

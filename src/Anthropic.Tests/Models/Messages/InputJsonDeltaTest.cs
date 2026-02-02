@@ -58,4 +58,14 @@ public class InputJsonDeltaTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new InputJsonDelta { PartialJson = "partial_json" };
+
+        InputJsonDelta copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

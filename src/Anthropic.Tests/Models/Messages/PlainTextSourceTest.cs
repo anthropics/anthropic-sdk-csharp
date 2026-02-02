@@ -62,4 +62,14 @@ public class PlainTextSourceTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new PlainTextSource { Data = "data" };
+
+        PlainTextSource copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

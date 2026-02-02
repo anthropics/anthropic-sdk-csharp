@@ -109,10 +109,13 @@ public sealed record class BetaRequestMcpToolResultBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("mcp_tool_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaRequestMcpToolResultBlockParam(
         BetaRequestMcpToolResultBlockParam betaRequestMcpToolResultBlockParam
     )
         : base(betaRequestMcpToolResultBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaRequestMcpToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -338,10 +341,10 @@ public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
         }
     }
 
-    public virtual bool Equals(BetaRequestMcpToolResultBlockParamContent? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaRequestMcpToolResultBlockParamContent? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -350,6 +353,16 @@ public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            string _ => 0,
+            IReadOnlyList<BetaTextBlockParam> _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaRequestMcpToolResultBlockParamContentConverter

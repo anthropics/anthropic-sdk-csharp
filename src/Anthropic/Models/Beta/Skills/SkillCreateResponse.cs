@@ -127,8 +127,11 @@ public sealed record class SkillCreateResponse : JsonModel
 
     public SkillCreateResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public SkillCreateResponse(SkillCreateResponse skillCreateResponse)
         : base(skillCreateResponse) { }
+#pragma warning restore CS8618
 
     public SkillCreateResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

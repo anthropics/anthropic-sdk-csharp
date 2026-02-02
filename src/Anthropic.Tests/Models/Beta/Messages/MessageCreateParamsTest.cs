@@ -58,7 +58,17 @@ public class MessageCreateParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -122,7 +132,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         long expectedMaxTokens = 1024;
@@ -169,7 +179,17 @@ public class MessageCreateParamsTest : TestBase
             },
         ];
         BetaMetadata expectedMetadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" };
-        BetaOutputConfig expectedOutputConfig = new() { Effort = Effort.Low };
+        BetaOutputConfig expectedOutputConfig = new()
+        {
+            Effort = Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
         BetaJsonOutputFormat expectedOutputFormat = new()
         {
             Schema = new Dictionary<string, JsonElement>()
@@ -236,7 +256,10 @@ public class MessageCreateParamsTest : TestBase
         ];
         long expectedTopK = 5;
         double expectedTopP = 0.7;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedMaxTokens, parameters.MaxTokens);
         Assert.Equal(expectedMessages.Count, parameters.Messages.Count);
@@ -461,7 +484,17 @@ public class MessageCreateParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             System = new(
@@ -518,7 +551,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         Assert.Null(parameters.Container);
@@ -548,7 +581,17 @@ public class MessageCreateParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             System = new(
@@ -605,7 +648,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
             Container = null,
             ContextManagement = null,
@@ -644,12 +687,143 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
             Model = Messages::Model.ClaudeSonnet4_5_20250929,
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(["string"], requestMessage.Headers.GetValues("anthropic-beta"));
+        Assert.Equal(
+            ["message-batches-2024-09-24"],
+            requestMessage.Headers.GetValues("anthropic-beta")
+        );
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new MessageCreateParams
+        {
+            MaxTokens = 1024,
+            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Model = Messages::Model.ClaudeSonnet4_5_20250929,
+            Container = new BetaContainerParams()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "x",
+                        Type = BetaSkillParamsType.Anthropic,
+                        Version = "x",
+                    },
+                ],
+            },
+            ContextManagement = new()
+            {
+                Edits =
+                [
+                    new BetaClearToolUses20250919Edit()
+                    {
+                        ClearAtLeast = new(0),
+                        ClearToolInputs = true,
+                        ExcludeTools = ["string"],
+                        Keep = new(0),
+                        Trigger = new BetaInputTokensTrigger(1),
+                    },
+                ],
+            },
+            McpServers =
+            [
+                new()
+                {
+                    Name = "name",
+                    Url = "url",
+                    AuthorizationToken = "authorization_token",
+                    ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
+                },
+            ],
+            Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            OutputFormat = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+            ServiceTier = ServiceTier.Auto,
+            StopSequences = ["string"],
+            System = new(
+                [
+                    new BetaTextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Temperature = 1,
+            Thinking = new BetaThinkingConfigEnabled(1024),
+            ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new BetaTool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = BetaToolType.Custom,
+                },
+            ],
+            TopK = 5,
+            TopP = 0.7,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
+
+        MessageCreateParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
     }
 }
 

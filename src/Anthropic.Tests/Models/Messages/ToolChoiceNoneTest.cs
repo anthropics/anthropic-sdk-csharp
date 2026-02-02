@@ -54,4 +54,14 @@ public class ToolChoiceNoneTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ToolChoiceNone { };
+
+        ToolChoiceNone copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -72,8 +72,11 @@ public sealed record class BetaSkillParams : JsonModel
 
     public BetaSkillParams() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaSkillParams(BetaSkillParams betaSkillParams)
         : base(betaSkillParams) { }
+#pragma warning restore CS8618
 
     public BetaSkillParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {

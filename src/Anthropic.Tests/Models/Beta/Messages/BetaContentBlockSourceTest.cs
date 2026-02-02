@@ -58,6 +58,16 @@ public class BetaContentBlockSourceTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaContentBlockSource { Content = "string" };
+
+        BetaContentBlockSource copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaContentBlockSourceContentTest : TestBase

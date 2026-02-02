@@ -46,8 +46,11 @@ public sealed record class GatewayTimeoutError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("timeout_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public GatewayTimeoutError(GatewayTimeoutError gatewayTimeoutError)
         : base(gatewayTimeoutError) { }
+#pragma warning restore CS8618
 
     public GatewayTimeoutError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

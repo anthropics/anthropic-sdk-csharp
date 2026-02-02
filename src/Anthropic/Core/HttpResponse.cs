@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -32,12 +33,40 @@ public class HttpResponse : IDisposable
 
     public Threading::CancellationToken CancellationToken { get; init; } = default;
 
+    /// <summary>
+    /// Returns the value of the <c>request-id</c> header, or null if there's no
+    /// such header in the response.
+    /// </summary>
+    public string? RequestID
+    {
+        get
+        {
+            return RawMessage.Headers.TryGetValues("request-id", out var value)
+                ? Enumerable.FirstOrDefault(value)
+                : null;
+        }
+    }
+
     public IEnumerable<string> GetHeaderValues(string name) => RawMessage.Headers.GetValues(name);
 
     public bool TryGetHeaderValues(
         string name,
         [NotNullWhen(true)] out IEnumerable<string>? values
     ) => RawMessage.Headers.TryGetValues(name, out values);
+
+    public sealed override string ToString() => this.RawMessage.ToString();
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not HttpResponse other)
+        {
+            return false;
+        }
+
+        return this.RawMessage.Equals(other.RawMessage);
+    }
+
+    public override int GetHashCode() => this.RawMessage.GetHashCode();
 
     public async Task<T> Deserialize<T>(Threading::CancellationToken cancellationToken = default)
     {
@@ -95,7 +124,7 @@ public class HttpResponse : IDisposable
     }
 }
 
-public sealed class HttpResponse<T> : global::Anthropic.Core.HttpResponse
+public sealed class HttpResponse<T> : HttpResponse
 {
     readonly Func<Threading::CancellationToken, Task<T>> _deserialize;
 
@@ -106,7 +135,7 @@ public sealed class HttpResponse<T> : global::Anthropic.Core.HttpResponse
 
     [SetsRequiredMembers]
     internal HttpResponse(
-        global::Anthropic.Core.HttpResponse response,
+        HttpResponse response,
         Func<Threading::CancellationToken, Task<T>> deserialize
     )
         : this(deserialize)
@@ -125,7 +154,7 @@ public sealed class HttpResponse<T> : global::Anthropic.Core.HttpResponse
     }
 }
 
-public sealed class StreamingHttpResponse<T> : global::Anthropic.Core.HttpResponse
+public sealed class StreamingHttpResponse<T> : HttpResponse
 {
     readonly Func<Threading::CancellationToken, IAsyncEnumerable<T>> _enumerate;
 
@@ -138,7 +167,7 @@ public sealed class StreamingHttpResponse<T> : global::Anthropic.Core.HttpRespon
 
     [SetsRequiredMembers]
     internal StreamingHttpResponse(
-        global::Anthropic.Core.HttpResponse response,
+        HttpResponse response,
         Func<Threading::CancellationToken, IAsyncEnumerable<T>> enumerate
     )
         : this(enumerate)

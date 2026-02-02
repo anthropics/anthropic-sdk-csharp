@@ -25,6 +25,7 @@ public class ToolTest : TestBase
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
+            Strict = true,
             Type = Type.Custom,
         };
 
@@ -40,12 +41,14 @@ public class ToolTest : TestBase
         string expectedName = "name";
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         string expectedDescription = "Get the current weather in a given location";
+        bool expectedStrict = true;
         ApiEnum<string, Type> expectedType = Type.Custom;
 
         Assert.Equal(expectedInputSchema, model.InputSchema);
         Assert.Equal(expectedName, model.Name);
         Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedDescription, model.Description);
+        Assert.Equal(expectedStrict, model.Strict);
         Assert.Equal(expectedType, model.Type);
     }
 
@@ -66,6 +69,7 @@ public class ToolTest : TestBase
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
+            Strict = true,
             Type = Type.Custom,
         };
 
@@ -92,6 +96,7 @@ public class ToolTest : TestBase
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
+            Strict = true,
             Type = Type.Custom,
         };
 
@@ -111,12 +116,14 @@ public class ToolTest : TestBase
         string expectedName = "name";
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         string expectedDescription = "Get the current weather in a given location";
+        bool expectedStrict = true;
         ApiEnum<string, Type> expectedType = Type.Custom;
 
         Assert.Equal(expectedInputSchema, deserialized.InputSchema);
         Assert.Equal(expectedName, deserialized.Name);
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedDescription, deserialized.Description);
+        Assert.Equal(expectedStrict, deserialized.Strict);
         Assert.Equal(expectedType, deserialized.Type);
     }
 
@@ -137,6 +144,7 @@ public class ToolTest : TestBase
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
+            Strict = true,
             Type = Type.Custom,
         };
 
@@ -164,6 +172,8 @@ public class ToolTest : TestBase
 
         Assert.Null(model.Description);
         Assert.False(model.RawData.ContainsKey("description"));
+        Assert.Null(model.Strict);
+        Assert.False(model.RawData.ContainsKey("strict"));
     }
 
     [Fact]
@@ -208,10 +218,13 @@ public class ToolTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             Description = null,
+            Strict = null,
         };
 
         Assert.Null(model.Description);
         Assert.False(model.RawData.ContainsKey("description"));
+        Assert.Null(model.Strict);
+        Assert.False(model.RawData.ContainsKey("strict"));
     }
 
     [Fact]
@@ -234,6 +247,7 @@ public class ToolTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             Description = null,
+            Strict = null,
         };
 
         model.Validate();
@@ -255,6 +269,7 @@ public class ToolTest : TestBase
             },
             Name = "name",
             Description = "Get the current weather in a given location",
+            Strict = true,
         };
 
         Assert.Null(model.CacheControl);
@@ -279,6 +294,7 @@ public class ToolTest : TestBase
             },
             Name = "name",
             Description = "Get the current weather in a given location",
+            Strict = true,
         };
 
         model.Validate();
@@ -300,6 +316,7 @@ public class ToolTest : TestBase
             },
             Name = "name",
             Description = "Get the current weather in a given location",
+            Strict = true,
 
             CacheControl = null,
             Type = null,
@@ -327,12 +344,39 @@ public class ToolTest : TestBase
             },
             Name = "name",
             Description = "Get the current weather in a given location",
+            Strict = true,
 
             CacheControl = null,
             Type = null,
         };
 
         model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Tool
+        {
+            InputSchema = new()
+            {
+                Properties = new Dictionary<string, JsonElement>()
+                {
+                    { "location", JsonSerializer.SerializeToElement("bar") },
+                    { "unit", JsonSerializer.SerializeToElement("bar") },
+                },
+                Required = ["location"],
+            },
+            Name = "name",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Description = "Get the current weather in a given location",
+            Strict = true,
+            Type = Type.Custom,
+        };
+
+        Tool copied = new(model);
+
+        Assert.Equal(model, copied);
     }
 }
 
@@ -495,6 +539,24 @@ public class InputSchemaTest : TestBase
         var model = new InputSchema { Properties = null, Required = null };
 
         model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new InputSchema
+        {
+            Properties = new Dictionary<string, JsonElement>()
+            {
+                { "location", JsonSerializer.SerializeToElement("bar") },
+                { "unit", JsonSerializer.SerializeToElement("bar") },
+            },
+            Required = ["location"],
+        };
+
+        InputSchema copied = new(model);
+
+        Assert.Equal(model, copied);
     }
 }
 

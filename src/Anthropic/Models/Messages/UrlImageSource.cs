@@ -46,8 +46,11 @@ public sealed record class UrlImageSource : JsonModel
         this.Type = JsonSerializer.SerializeToElement("url");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public UrlImageSource(UrlImageSource urlImageSource)
         : base(urlImageSource) { }
+#pragma warning restore CS8618
 
     public UrlImageSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {

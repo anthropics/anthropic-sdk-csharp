@@ -40,6 +40,21 @@ public record class MessageCountTokensTool : ModelBase
         }
     }
 
+    public bool? Strict
+    {
+        get
+        {
+            return Match<bool?>(
+                tool: (x) => x.Strict,
+                toolBash20250124: (x) => x.Strict,
+                toolTextEditor20250124: (x) => x.Strict,
+                toolTextEditor20250429: (x) => x.Strict,
+                toolTextEditor20250728: (x) => x.Strict,
+                webSearchTool20250305: (x) => x.Strict
+            );
+        }
+    }
+
     public MessageCountTokensTool(Tool value, JsonElement? element = null)
     {
         this.Value = value;
@@ -359,10 +374,10 @@ public record class MessageCountTokensTool : ModelBase
         );
     }
 
-    public virtual bool Equals(MessageCountTokensTool? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(MessageCountTokensTool? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -371,6 +386,20 @@ public record class MessageCountTokensTool : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            Tool _ => 0,
+            ToolBash20250124 _ => 1,
+            ToolTextEditor20250124 _ => 2,
+            ToolTextEditor20250429 _ => 3,
+            ToolTextEditor20250728 _ => 4,
+            WebSearchTool20250305 _ => 5,
+            _ => -1,
+        };
+    }
 }
 
 sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensTool>

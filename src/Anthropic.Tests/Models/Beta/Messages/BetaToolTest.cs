@@ -507,6 +507,41 @@ public class BetaToolTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaTool
+        {
+            InputSchema = new()
+            {
+                Properties = new Dictionary<string, JsonElement>()
+                {
+                    { "location", JsonSerializer.SerializeToElement("bar") },
+                    { "unit", JsonSerializer.SerializeToElement("bar") },
+                },
+                Required = ["location"],
+            },
+            Name = "name",
+            AllowedCallers = [BetaToolAllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Description = "Get the current weather in a given location",
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+            Type = BetaToolType.Custom,
+        };
+
+        BetaTool copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class InputSchemaTest : TestBase
@@ -668,6 +703,24 @@ public class InputSchemaTest : TestBase
         var model = new InputSchema { Properties = null, Required = null };
 
         model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new InputSchema
+        {
+            Properties = new Dictionary<string, JsonElement>()
+            {
+                { "location", JsonSerializer.SerializeToElement("bar") },
+                { "unit", JsonSerializer.SerializeToElement("bar") },
+            },
+            Required = ["location"],
+        };
+
+        InputSchema copied = new(model);
+
+        Assert.Equal(model, copied);
     }
 }
 

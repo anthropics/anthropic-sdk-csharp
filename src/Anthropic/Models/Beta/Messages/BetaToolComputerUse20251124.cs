@@ -188,6 +188,9 @@ public sealed record class BetaToolComputerUse20251124 : JsonModel
         }
     }
 
+    /// <summary>
+    /// When true, guarantees schema validation on tool names and inputs
+    /// </summary>
     public bool? Strict
     {
         get
@@ -242,8 +245,11 @@ public sealed record class BetaToolComputerUse20251124 : JsonModel
         this.Type = JsonSerializer.SerializeToElement("computer_20251124");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolComputerUse20251124(BetaToolComputerUse20251124 betaToolComputerUse20251124)
         : base(betaToolComputerUse20251124) { }
+#pragma warning restore CS8618
 
     public BetaToolComputerUse20251124(IReadOnlyDictionary<string, JsonElement> rawData)
     {

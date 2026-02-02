@@ -66,8 +66,11 @@ public sealed record class Base64PdfSource : JsonModel
         this.Type = JsonSerializer.SerializeToElement("base64");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public Base64PdfSource(Base64PdfSource base64PdfSource)
         : base(base64PdfSource) { }
+#pragma warning restore CS8618
 
     public Base64PdfSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {

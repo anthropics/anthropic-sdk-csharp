@@ -13,6 +13,7 @@ public enum BetaWebSearchToolResultErrorCode
     MaxUsesExceeded,
     TooManyRequests,
     QueryTooLong,
+    RequestTooLarge,
 }
 
 sealed class BetaWebSearchToolResultErrorCodeConverter
@@ -31,6 +32,7 @@ sealed class BetaWebSearchToolResultErrorCodeConverter
             "max_uses_exceeded" => BetaWebSearchToolResultErrorCode.MaxUsesExceeded,
             "too_many_requests" => BetaWebSearchToolResultErrorCode.TooManyRequests,
             "query_too_long" => BetaWebSearchToolResultErrorCode.QueryTooLong,
+            "request_too_large" => BetaWebSearchToolResultErrorCode.RequestTooLarge,
             _ => (BetaWebSearchToolResultErrorCode)(-1),
         };
     }
@@ -50,6 +52,7 @@ sealed class BetaWebSearchToolResultErrorCodeConverter
                 BetaWebSearchToolResultErrorCode.MaxUsesExceeded => "max_uses_exceeded",
                 BetaWebSearchToolResultErrorCode.TooManyRequests => "too_many_requests",
                 BetaWebSearchToolResultErrorCode.QueryTooLong => "query_too_long",
+                BetaWebSearchToolResultErrorCode.RequestTooLarge => "request_too_large",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

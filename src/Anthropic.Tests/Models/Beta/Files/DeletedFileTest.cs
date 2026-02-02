@@ -105,6 +105,16 @@ public class DeletedFileTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new DeletedFile { ID = "id", Type = Type.FileDeleted };
+
+        DeletedFile copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class TypeTest : TestBase

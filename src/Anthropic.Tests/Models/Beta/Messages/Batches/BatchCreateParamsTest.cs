@@ -70,7 +70,17 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
                         OutputFormat = new()
                         {
                             Schema = new Dictionary<string, JsonElement>()
@@ -141,7 +151,7 @@ public class BatchCreateParamsTest : TestBase
                     },
                 },
             ],
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         List<Request> expectedRequests =
@@ -192,7 +202,17 @@ public class BatchCreateParamsTest : TestBase
                         },
                     ],
                     Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                    OutputConfig = new() { Effort = Messages::Effort.Low },
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                    },
                     OutputFormat = new()
                     {
                         Schema = new Dictionary<string, JsonElement>()
@@ -263,7 +283,10 @@ public class BatchCreateParamsTest : TestBase
                 },
             },
         ];
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
 
         Assert.Equal(expectedRequests.Count, parameters.Requests.Count);
         for (int i = 0; i < expectedRequests.Count; i++)
@@ -335,7 +358,17 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
                         OutputFormat = new()
                         {
                             Schema = new Dictionary<string, JsonElement>()
@@ -469,7 +502,17 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
                         OutputFormat = new()
                         {
                             Schema = new Dictionary<string, JsonElement>()
@@ -606,7 +649,17 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
                         OutputFormat = new()
                         {
                             Schema = new Dictionary<string, JsonElement>()
@@ -742,7 +795,17 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
                         OutputFormat = new()
                         {
                             Schema = new Dictionary<string, JsonElement>()
@@ -813,15 +876,161 @@ public class BatchCreateParamsTest : TestBase
                     },
                 },
             ],
-            Betas = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24", "string"],
+            ["message-batches-2024-09-24", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new BatchCreateParams
+        {
+            Requests =
+            [
+                new()
+                {
+                    CustomID = "my-custom-id-1",
+                    Params = new()
+                    {
+                        MaxTokens = 1024,
+                        Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                        Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                        Container = new Messages::BetaContainerParams()
+                        {
+                            ID = "id",
+                            Skills =
+                            [
+                                new()
+                                {
+                                    SkillID = "x",
+                                    Type = Messages::BetaSkillParamsType.Anthropic,
+                                    Version = "x",
+                                },
+                            ],
+                        },
+                        ContextManagement = new()
+                        {
+                            Edits =
+                            [
+                                new Messages::BetaClearToolUses20250919Edit()
+                                {
+                                    ClearAtLeast = new(0),
+                                    ClearToolInputs = true,
+                                    ExcludeTools = ["string"],
+                                    Keep = new(0),
+                                    Trigger = new Messages::BetaInputTokensTrigger(1),
+                                },
+                            ],
+                        },
+                        McpServers =
+                        [
+                            new()
+                            {
+                                Name = "name",
+                                Url = "url",
+                                AuthorizationToken = "authorization_token",
+                                ToolConfiguration = new()
+                                {
+                                    AllowedTools = ["string"],
+                                    Enabled = true,
+                                },
+                            },
+                        ],
+                        Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
+                        OutputFormat = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        ServiceTier = ServiceTier.Auto,
+                        StopSequences = ["string"],
+                        Stream = true,
+                        System = new(
+                            [
+                                new Messages::BetaTextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::BetaCitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ]
+                        ),
+                        Temperature = 1,
+                        Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+                        ToolChoice = new Messages::BetaToolChoiceAuto()
+                        {
+                            DisableParallelToolUse = true,
+                        },
+                        Tools =
+                        [
+                            new Messages::BetaTool()
+                            {
+                                InputSchema = new()
+                                {
+                                    Properties = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "location", JsonSerializer.SerializeToElement("bar") },
+                                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                    Required = ["location"],
+                                },
+                                Name = "name",
+                                AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                DeferLoading = true,
+                                Description = "Get the current weather in a given location",
+                                InputExamples =
+                                [
+                                    new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                ],
+                                Strict = true,
+                                Type = Messages::BetaToolType.Custom,
+                            },
+                        ],
+                        TopK = 5,
+                        TopP = 0.7,
+                    },
+                },
+            ],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
+
+        BatchCreateParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
     }
 }
 
@@ -876,7 +1085,17 @@ public class RequestTest : TestBase
                     },
                 ],
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                OutputConfig = new() { Effort = Messages::Effort.Low },
+                OutputConfig = new()
+                {
+                    Effort = Messages::Effort.Low,
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
                 OutputFormat = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -988,7 +1207,17 @@ public class RequestTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -1108,7 +1337,17 @@ public class RequestTest : TestBase
                     },
                 ],
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                OutputConfig = new() { Effort = Messages::Effort.Low },
+                OutputConfig = new()
+                {
+                    Effort = Messages::Effort.Low,
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
                 OutputFormat = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -1231,7 +1470,17 @@ public class RequestTest : TestBase
                     },
                 ],
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                OutputConfig = new() { Effort = Messages::Effort.Low },
+                OutputConfig = new()
+                {
+                    Effort = Messages::Effort.Low,
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
                 OutputFormat = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -1350,7 +1599,17 @@ public class RequestTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -1470,7 +1729,17 @@ public class RequestTest : TestBase
                     },
                 ],
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                OutputConfig = new() { Effort = Messages::Effort.Low },
+                OutputConfig = new()
+                {
+                    Effort = Messages::Effort.Low,
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
                 OutputFormat = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -1540,6 +1809,138 @@ public class RequestTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Request
+        {
+            CustomID = "my-custom-id-1",
+            Params = new()
+            {
+                MaxTokens = 1024,
+                Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                Container = new Messages::BetaContainerParams()
+                {
+                    ID = "id",
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "x",
+                            Type = Messages::BetaSkillParamsType.Anthropic,
+                            Version = "x",
+                        },
+                    ],
+                },
+                ContextManagement = new()
+                {
+                    Edits =
+                    [
+                        new Messages::BetaClearToolUses20250919Edit()
+                        {
+                            ClearAtLeast = new(0),
+                            ClearToolInputs = true,
+                            ExcludeTools = ["string"],
+                            Keep = new(0),
+                            Trigger = new Messages::BetaInputTokensTrigger(1),
+                        },
+                    ],
+                },
+                McpServers =
+                [
+                    new()
+                    {
+                        Name = "name",
+                        Url = "url",
+                        AuthorizationToken = "authorization_token",
+                        ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
+                    },
+                ],
+                Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                OutputConfig = new()
+                {
+                    Effort = Messages::Effort.Low,
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
+                OutputFormat = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+                ServiceTier = ServiceTier.Auto,
+                StopSequences = ["string"],
+                Stream = true,
+                System = new(
+                    [
+                        new Messages::BetaTextBlockParam()
+                        {
+                            Text = "Today's date is 2024-06-01.",
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new Messages::BetaCitationCharLocationParam()
+                                {
+                                    CitedText = "cited_text",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        },
+                    ]
+                ),
+                Temperature = 1,
+                Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+                ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
+                Tools =
+                [
+                    new Messages::BetaTool()
+                    {
+                        InputSchema = new()
+                        {
+                            Properties = new Dictionary<string, JsonElement>()
+                            {
+                                { "location", JsonSerializer.SerializeToElement("bar") },
+                                { "unit", JsonSerializer.SerializeToElement("bar") },
+                            },
+                            Required = ["location"],
+                        },
+                        Name = "name",
+                        AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        DeferLoading = true,
+                        Description = "Get the current weather in a given location",
+                        InputExamples =
+                        [
+                            new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        ],
+                        Strict = true,
+                        Type = Messages::BetaToolType.Custom,
+                    },
+                ],
+                TopK = 5,
+                TopP = 0.7,
+            },
+        };
+
+        Request copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class ParamsTest : TestBase
@@ -1590,7 +1991,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -1705,7 +2116,17 @@ public class ParamsTest : TestBase
         {
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
         };
-        Messages::BetaOutputConfig expectedOutputConfig = new() { Effort = Messages::Effort.Low };
+        Messages::BetaOutputConfig expectedOutputConfig = new()
+        {
+            Effort = Messages::Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
         Messages::BetaJsonOutputFormat expectedOutputFormat = new()
         {
             Schema = new Dictionary<string, JsonElement>()
@@ -1861,7 +2282,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -1980,7 +2411,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -2099,7 +2540,17 @@ public class ParamsTest : TestBase
         {
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
         };
-        Messages::BetaOutputConfig expectedOutputConfig = new() { Effort = Messages::Effort.Low };
+        Messages::BetaOutputConfig expectedOutputConfig = new()
+        {
+            Effort = Messages::Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
         Messages::BetaJsonOutputFormat expectedOutputFormat = new()
         {
             Schema = new Dictionary<string, JsonElement>()
@@ -2255,7 +2706,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -2612,7 +3073,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -2699,7 +3170,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -2781,7 +3262,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -2872,7 +3363,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -2937,6 +3438,134 @@ public class ParamsTest : TestBase
         };
 
         model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Params
+        {
+            MaxTokens = 1024,
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Container = new Messages::BetaContainerParams()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "x",
+                        Type = Messages::BetaSkillParamsType.Anthropic,
+                        Version = "x",
+                    },
+                ],
+            },
+            ContextManagement = new()
+            {
+                Edits =
+                [
+                    new Messages::BetaClearToolUses20250919Edit()
+                    {
+                        ClearAtLeast = new(0),
+                        ClearToolInputs = true,
+                        ExcludeTools = ["string"],
+                        Keep = new(0),
+                        Trigger = new Messages::BetaInputTokensTrigger(1),
+                    },
+                ],
+            },
+            McpServers =
+            [
+                new()
+                {
+                    Name = "name",
+                    Url = "url",
+                    AuthorizationToken = "authorization_token",
+                    ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
+                },
+            ],
+            Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            OutputFormat = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+            ServiceTier = ServiceTier.Auto,
+            StopSequences = ["string"],
+            Stream = true,
+            System = new(
+                [
+                    new Messages::BetaTextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new Messages::BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Temperature = 1,
+            Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new Messages::BetaTool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = Messages::BetaToolType.Custom,
+                },
+            ],
+            TopK = 5,
+            TopP = 0.7,
+        };
+
+        Params copied = new(model);
+
+        Assert.Equal(model, copied);
     }
 }
 

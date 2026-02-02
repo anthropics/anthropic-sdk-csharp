@@ -214,6 +214,22 @@ public class BetaToolResultBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolResultBlockParam
+        {
+            ToolUseID = "tool_use_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Content = "string",
+            IsError = true,
+        };
+
+        BetaToolResultBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaToolResultBlockParamContentTest : TestBase

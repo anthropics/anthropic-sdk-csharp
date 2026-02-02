@@ -79,4 +79,17 @@ public class MessageBatchErroredResultTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new MessageBatchErroredResult
+        {
+            Error = new() { Error = new InvalidRequestError("message"), RequestID = "request_id" },
+        };
+
+        MessageBatchErroredResult copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

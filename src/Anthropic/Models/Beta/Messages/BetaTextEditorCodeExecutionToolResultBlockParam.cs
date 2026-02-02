@@ -84,10 +84,13 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlockParam : Jso
         this.Type = JsonSerializer.SerializeToElement("text_editor_code_execution_tool_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaTextEditorCodeExecutionToolResultBlockParam(
         BetaTextEditorCodeExecutionToolResultBlockParam betaTextEditorCodeExecutionToolResultBlockParam
     )
         : base(betaTextEditorCodeExecutionToolResultBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaTextEditorCodeExecutionToolResultBlockParam(
         IReadOnlyDictionary<string, JsonElement> rawData
@@ -442,10 +445,10 @@ public record class BetaTextEditorCodeExecutionToolResultBlockParamContent : Mod
         );
     }
 
-    public virtual bool Equals(BetaTextEditorCodeExecutionToolResultBlockParamContent? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaTextEditorCodeExecutionToolResultBlockParamContent? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -454,6 +457,18 @@ public record class BetaTextEditorCodeExecutionToolResultBlockParamContent : Mod
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaTextEditorCodeExecutionToolResultErrorParam _ => 0,
+            BetaTextEditorCodeExecutionViewResultBlockParam _ => 1,
+            BetaTextEditorCodeExecutionCreateResultBlockParam _ => 2,
+            BetaTextEditorCodeExecutionStrReplaceResultBlockParam _ => 3,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaTextEditorCodeExecutionToolResultBlockParamContentConverter

@@ -72,8 +72,11 @@ public sealed record class BetaMcpToolResultBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("mcp_tool_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMcpToolResultBlock(BetaMcpToolResultBlock betaMcpToolResultBlock)
         : base(betaMcpToolResultBlock) { }
+#pragma warning restore CS8618
 
     public BetaMcpToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -290,10 +293,10 @@ public record class BetaMcpToolResultBlockContent : ModelBase
         }
     }
 
-    public virtual bool Equals(BetaMcpToolResultBlockContent? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaMcpToolResultBlockContent? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -302,6 +305,16 @@ public record class BetaMcpToolResultBlockContent : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            string _ => 0,
+            IReadOnlyList<BetaTextBlock> _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaMcpToolResultBlockContentConverter : JsonConverter<BetaMcpToolResultBlockContent>

@@ -100,4 +100,14 @@ public class ToolChoiceAnyTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ToolChoiceAny { DisableParallelToolUse = true };
+
+        ToolChoiceAny copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

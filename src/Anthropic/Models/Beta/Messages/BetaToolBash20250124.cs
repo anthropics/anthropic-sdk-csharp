@@ -127,6 +127,9 @@ public sealed record class BetaToolBash20250124 : JsonModel
         }
     }
 
+    /// <summary>
+    /// When true, guarantees schema validation on tool names and inputs
+    /// </summary>
     public bool? Strict
     {
         get
@@ -172,8 +175,11 @@ public sealed record class BetaToolBash20250124 : JsonModel
         this.Type = JsonSerializer.SerializeToElement("bash_20250124");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolBash20250124(BetaToolBash20250124 betaToolBash20250124)
         : base(betaToolBash20250124) { }
+#pragma warning restore CS8618
 
     public BetaToolBash20250124(IReadOnlyDictionary<string, JsonElement> rawData)
     {

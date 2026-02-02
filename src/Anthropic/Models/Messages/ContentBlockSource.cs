@@ -48,8 +48,11 @@ public sealed record class ContentBlockSource : JsonModel
         this.Type = JsonSerializer.SerializeToElement("content");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ContentBlockSource(ContentBlockSource contentBlockSource)
         : base(contentBlockSource) { }
+#pragma warning restore CS8618
 
     public ContentBlockSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -267,10 +270,10 @@ public record class Content : ModelBase
         }
     }
 
-    public virtual bool Equals(Content? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(Content? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -279,6 +282,16 @@ public record class Content : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            string _ => 0,
+            IReadOnlyList<ContentBlockSourceContent> _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class ContentConverter : JsonConverter<Content>

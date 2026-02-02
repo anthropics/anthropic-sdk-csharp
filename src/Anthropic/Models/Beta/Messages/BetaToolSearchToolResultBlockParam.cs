@@ -84,10 +84,13 @@ public sealed record class BetaToolSearchToolResultBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("tool_search_tool_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolSearchToolResultBlockParam(
         BetaToolSearchToolResultBlockParam betaToolSearchToolResultBlockParam
     )
         : base(betaToolSearchToolResultBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaToolSearchToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -332,10 +335,10 @@ public record class BetaToolSearchToolResultBlockParamContent : ModelBase
         );
     }
 
-    public virtual bool Equals(BetaToolSearchToolResultBlockParamContent? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaToolSearchToolResultBlockParamContent? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -344,6 +347,16 @@ public record class BetaToolSearchToolResultBlockParamContent : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaToolSearchToolResultErrorParam _ => 0,
+            BetaToolSearchToolSearchResultBlockParam _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaToolSearchToolResultBlockParamContentConverter

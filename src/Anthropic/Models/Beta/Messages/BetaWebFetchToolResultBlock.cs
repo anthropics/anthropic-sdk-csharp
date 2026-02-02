@@ -65,8 +65,11 @@ public sealed record class BetaWebFetchToolResultBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("web_fetch_tool_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaWebFetchToolResultBlock(BetaWebFetchToolResultBlock betaWebFetchToolResultBlock)
         : base(betaWebFetchToolResultBlock) { }
+#pragma warning restore CS8618
 
     public BetaWebFetchToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -300,10 +303,10 @@ public record class BetaWebFetchToolResultBlockContent : ModelBase
         );
     }
 
-    public virtual bool Equals(BetaWebFetchToolResultBlockContent? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(BetaWebFetchToolResultBlockContent? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -312,6 +315,16 @@ public record class BetaWebFetchToolResultBlockContent : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaWebFetchToolResultErrorBlock _ => 0,
+            BetaWebFetchBlock _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class BetaWebFetchToolResultBlockContentConverter

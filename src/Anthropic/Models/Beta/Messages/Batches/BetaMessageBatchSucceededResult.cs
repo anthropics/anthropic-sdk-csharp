@@ -51,10 +51,13 @@ public sealed record class BetaMessageBatchSucceededResult : JsonModel
         this.Type = JsonSerializer.SerializeToElement("succeeded");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMessageBatchSucceededResult(
         BetaMessageBatchSucceededResult betaMessageBatchSucceededResult
     )
         : base(betaMessageBatchSucceededResult) { }
+#pragma warning restore CS8618
 
     public BetaMessageBatchSucceededResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {

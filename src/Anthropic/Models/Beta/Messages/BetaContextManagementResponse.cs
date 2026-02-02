@@ -45,10 +45,13 @@ public sealed record class BetaContextManagementResponse : JsonModel
 
     public BetaContextManagementResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaContextManagementResponse(
         BetaContextManagementResponse betaContextManagementResponse
     )
         : base(betaContextManagementResponse) { }
+#pragma warning restore CS8618
 
     public BetaContextManagementResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -305,10 +308,10 @@ public record class AppliedEdit : ModelBase
         );
     }
 
-    public virtual bool Equals(AppliedEdit? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(AppliedEdit? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -317,6 +320,16 @@ public record class AppliedEdit : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaClearToolUses20250919EditResponse _ => 0,
+            BetaClearThinking20251015EditResponse _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class AppliedEditConverter : JsonConverter<AppliedEdit>

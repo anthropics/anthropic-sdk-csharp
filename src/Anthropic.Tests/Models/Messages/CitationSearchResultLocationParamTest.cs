@@ -110,4 +110,22 @@ public class CitationSearchResultLocationParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new CitationSearchResultLocationParam
+        {
+            CitedText = "cited_text",
+            EndBlockIndex = 0,
+            SearchResultIndex = 0,
+            Source = "source",
+            StartBlockIndex = 0,
+            Title = "title",
+        };
+
+        CitationSearchResultLocationParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -87,8 +87,11 @@ public sealed record class MessageDeltaUsage : JsonModel
 
     public MessageDeltaUsage() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public MessageDeltaUsage(MessageDeltaUsage messageDeltaUsage)
         : base(messageDeltaUsage) { }
+#pragma warning restore CS8618
 
     public MessageDeltaUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {

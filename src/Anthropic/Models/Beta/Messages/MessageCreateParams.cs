@@ -20,8 +20,12 @@ namespace Anthropic.Models.Beta.Messages;
 /// <para>The Messages API can be used for either single queries or stateless multi-turn conversations.</para>
 ///
 /// <para>Learn more about the Messages API in our [user guide](https://docs.claude.com/en/docs/initial-setup)</para>
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
 /// </summary>
-public sealed record class MessageCreateParams : ParamsBase
+public record class MessageCreateParams : ParamsBase
 {
     readonly JsonDictionary _rawBodyData = new();
     public IReadOnlyDictionary<string, JsonElement> RawBodyData
@@ -208,8 +212,7 @@ public sealed record class MessageCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Configuration options for the model's output. Controls aspects like how much
-    /// effort the model puts into its response.
+    /// Configuration options for the model's output, such as the output format.
     /// </summary>
     public BetaOutputConfig? OutputConfig
     {
@@ -230,8 +233,12 @@ public sealed record class MessageCreateParams : ParamsBase
     }
 
     /// <summary>
-    ///  A schema to specify Claude's output format in responses.
+    /// Deprecated: Use `output_config.format` instead. See [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
+    ///
+    /// <para>A schema to specify Claude's output format in responses. This parameter
+    /// will be removed in a future release.</para>
     /// </summary>
+    [System::Obsolete("deprecated")]
     public BetaJsonOutputFormat? OutputFormat
     {
         get
@@ -552,11 +559,14 @@ public sealed record class MessageCreateParams : ParamsBase
 
     public MessageCreateParams() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public MessageCreateParams(MessageCreateParams messageCreateParams)
         : base(messageCreateParams)
     {
         this._rawBodyData = new(messageCreateParams._rawBodyData);
     }
+#pragma warning restore CS8618
 
     public MessageCreateParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -597,6 +607,28 @@ public sealed record class MessageCreateParams : ParamsBase
         );
     }
 
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            new Dictionary<string, object?>()
+            {
+                ["HeaderData"] = this._rawHeaderData.Freeze(),
+                ["QueryData"] = this._rawQueryData.Freeze(),
+                ["BodyData"] = this._rawBodyData.Freeze(),
+            },
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public virtual bool Equals(MessageCreateParams? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        return this._rawHeaderData.Equals(other._rawHeaderData)
+            && this._rawQueryData.Equals(other._rawQueryData)
+            && this._rawBodyData.Equals(other._rawBodyData);
+    }
+
     public override System::Uri Url(ClientOptions options)
     {
         return new System::UriBuilder(
@@ -623,6 +655,11 @@ public sealed record class MessageCreateParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 
@@ -805,10 +842,10 @@ public record class Container : ModelBase
         this.Switch((betaContainerParams) => betaContainerParams.Validate(), (_) => { });
     }
 
-    public virtual bool Equals(Container? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(Container? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -817,6 +854,16 @@ public record class Container : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaContainerParams _ => 0,
+            string _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class ContainerConverter : JsonConverter<Container?>
@@ -1108,10 +1155,10 @@ public record class MessageCreateParamsSystem : ModelBase
         }
     }
 
-    public virtual bool Equals(MessageCreateParamsSystem? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(MessageCreateParamsSystem? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -1120,6 +1167,16 @@ public record class MessageCreateParamsSystem : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            string _ => 0,
+            IReadOnlyList<BetaTextBlockParam> _ => 1,
+            _ => -1,
+        };
+    }
 }
 
 sealed class MessageCreateParamsSystemConverter : JsonConverter<MessageCreateParamsSystem>

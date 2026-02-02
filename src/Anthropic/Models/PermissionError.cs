@@ -51,8 +51,11 @@ public sealed record class PermissionError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("permission_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public PermissionError(PermissionError permissionError)
         : base(permissionError) { }
+#pragma warning restore CS8618
 
     public PermissionError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

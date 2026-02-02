@@ -122,4 +122,18 @@ public class BetaContainerUploadBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaContainerUploadBlockParam
+        {
+            FileID = "file_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        BetaContainerUploadBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

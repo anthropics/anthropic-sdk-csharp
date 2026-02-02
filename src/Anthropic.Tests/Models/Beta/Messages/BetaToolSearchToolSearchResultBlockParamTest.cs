@@ -125,4 +125,24 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolSearchToolSearchResultBlockParam
+        {
+            ToolReferences =
+            [
+                new()
+                {
+                    ToolName = "tool_name",
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                },
+            ],
+        };
+
+        BetaToolSearchToolSearchResultBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

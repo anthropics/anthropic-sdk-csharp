@@ -126,6 +126,9 @@ public sealed record class BetaMemoryTool20250818 : JsonModel
         }
     }
 
+    /// <summary>
+    /// When true, guarantees schema validation on tool names and inputs
+    /// </summary>
     public bool? Strict
     {
         get
@@ -173,8 +176,11 @@ public sealed record class BetaMemoryTool20250818 : JsonModel
         this.Type = JsonSerializer.SerializeToElement("memory_20250818");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMemoryTool20250818(BetaMemoryTool20250818 betaMemoryTool20250818)
         : base(betaMemoryTool20250818) { }
+#pragma warning restore CS8618
 
     public BetaMemoryTool20250818(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -292,10 +292,10 @@ public record class ToolChoice : ModelBase
         );
     }
 
-    public virtual bool Equals(ToolChoice? other)
-    {
-        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
-    }
+    public virtual bool Equals(ToolChoice? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
 
     public override int GetHashCode()
     {
@@ -304,6 +304,18 @@ public record class ToolChoice : ModelBase
 
     public override string ToString() =>
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            ToolChoiceAuto _ => 0,
+            ToolChoiceAny _ => 1,
+            ToolChoiceTool _ => 2,
+            ToolChoiceNone _ => 3,
+            _ => -1,
+        };
+    }
 }
 
 sealed class ToolChoiceConverter : JsonConverter<ToolChoice>

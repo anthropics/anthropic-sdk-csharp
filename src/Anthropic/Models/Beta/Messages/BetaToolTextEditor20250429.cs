@@ -128,6 +128,9 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
         }
     }
 
+    /// <summary>
+    /// When true, guarantees schema validation on tool names and inputs
+    /// </summary>
     public bool? Strict
     {
         get
@@ -183,8 +186,11 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
         this.Type = JsonSerializer.SerializeToElement("text_editor_20250429");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolTextEditor20250429(BetaToolTextEditor20250429 betaToolTextEditor20250429)
         : base(betaToolTextEditor20250429) { }
+#pragma warning restore CS8618
 
     public BetaToolTextEditor20250429(IReadOnlyDictionary<string, JsonElement> rawData)
     {

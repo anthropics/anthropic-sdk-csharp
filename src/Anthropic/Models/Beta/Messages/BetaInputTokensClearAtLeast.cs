@@ -48,8 +48,11 @@ public sealed record class BetaInputTokensClearAtLeast : JsonModel
         this.Type = JsonSerializer.SerializeToElement("input_tokens");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaInputTokensClearAtLeast(BetaInputTokensClearAtLeast betaInputTokensClearAtLeast)
         : base(betaInputTokensClearAtLeast) { }
+#pragma warning restore CS8618
 
     public BetaInputTokensClearAtLeast(IReadOnlyDictionary<string, JsonElement> rawData)
     {
