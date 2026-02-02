@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Anthropic.Helpers;
 using Anthropic.Models.Messages;
 using Anthropic.Services;
 using Anthropic.Tests;
-using Anthropic.Helpers;
 using Moq;
 
 namespace Anthropic.Tests.Services;
@@ -331,7 +331,9 @@ public class MessageServiceTest
 
         // assert
 
-        var exception = Assert.Throws<Exceptions.AnthropicInvalidDataException>(() => aggregator.Message());
+        var exception = Assert.Throws<Exceptions.AnthropicInvalidDataException>(() =>
+            aggregator.Message()
+        );
         Assert.Equal("stop message not yet received", exception.Message);
     }
 

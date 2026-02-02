@@ -21,20 +21,25 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
                 .Select(e => e.Value)
                 .OfType<RawMessageStartEvent>()
                 .FirstOrDefault()
-            ?? throw new AnthropicInvalidDataException(
-                "start message not yet received"
-            );
+            ?? throw new AnthropicInvalidDataException("start message not yet received");
 
-        var endMessage = messages[FilterResult.EndMessage].FirstOrDefault();
-        if (endMessage == null) { throw new AnthropicInvalidDataException("stop message not yet received"); }
+        var endMessageCount = messages[FilterResult.EndMessage].Count;
+        if (endMessageCount == 0)
+        {
+            throw new AnthropicInvalidDataException("stop message not yet received");
+        }
 
-        var content = (messages.GetValueOrDefault(FilterResult.Content) ?? []).GroupBy(e => e.Index);
+        var content = (messages.GetValueOrDefault(FilterResult.Content) ?? []).GroupBy(e =>
+            e.Index
+        );
         var contentBlocks = new List<ContentBlock>();
         foreach (var item in content)
         {
-            var startContent = item.Select(e => e.Value)
-                .OfType<RawContentBlockStartEvent>()
-                .FirstOrDefault() ?? throw new AnthropicInvalidDataException("start content message not yet received");
+            var startContent =
+                item.Select(e => e.Value).OfType<RawContentBlockStartEvent>().FirstOrDefault()
+                ?? throw new AnthropicInvalidDataException(
+                    "start content message not yet received"
+                );
             var blockContent = item.Select(e => e.Value)
                 .OfType<RawContentBlockDeltaEvent>()
                 .ToArray();
@@ -47,7 +52,9 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         var stopReason = startMessage.Message.StopReason;
         var usage = startMessage.Message.Usage;
 
-        var deltas = (messages.GetValueOrDefault(FilterResult.Delta) ?? []).Select(e => e.Value).OfType<RawMessageDeltaEvent>();
+        var deltas = (messages.GetValueOrDefault(FilterResult.Delta) ?? [])
+            .Select(e => e.Value)
+            .OfType<RawMessageDeltaEvent>();
         foreach (var delta in deltas)
         {
             stopReason = delta.Delta.StopReason;
@@ -60,7 +67,10 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             }
             if (delta.Usage.CacheCreationInputTokens != null)
             {
-                usage = usage with { CacheCreationInputTokens = delta.Usage.CacheCreationInputTokens };
+                usage = usage with
+                {
+                    CacheCreationInputTokens = delta.Usage.CacheCreationInputTokens,
+                };
             }
             if (delta.Usage.CacheReadInputTokens != null)
             {
@@ -113,9 +123,11 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
 
         void Single<T>(T item)
         {
-            resultBlock = (
-                blockContents.Select(e => e.Value).OfType<T>().Single() as ContentBlock
-            ) ?? throw new AnthropicInvalidDataException("Could not convert block to content block");
+            resultBlock =
+                (blockContents.Select(e => e.Value).OfType<T>().Single() as ContentBlock)
+                ?? throw new AnthropicInvalidDataException(
+                    "Could not convert block to content block"
+                );
         }
 
         contentBlock.Switch(
@@ -125,7 +137,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
                     Text = StringJoinHelper(textBlock.Text, blocks, e => e.Text),
                     Citations =
                     [
-                    .. (textBlock.Citations ?? []),
+                        .. (textBlock.Citations ?? []),
                         .. Of<CitationsDelta>()
                             .Select(e =>
                                 e.Citation.Match<TextCitation>(
