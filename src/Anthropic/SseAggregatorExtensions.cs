@@ -49,7 +49,7 @@ public static class SseAggregatorExtensions
     )
     {
         await foreach (var _ in aggregator.CollectAsync(source)) { }
-        return aggregator.AggregateAsync();
+        return aggregator.Message();
     }
 
     /// <summary>

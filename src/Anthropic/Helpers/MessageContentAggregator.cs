@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 using Anthropic.Services;
 
@@ -21,17 +22,20 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             messages[FilterResult.StartMessage]
                 .Select(e => e.Value!)
                 .OfType<RawMessageStartEvent>()
-                .SingleOrDefault()
-            ?? throw new InvalidOperationException(
-                $"Expected to find exactly one {nameof(RawMessageStartEvent)} but found either none or more then one."
+                .FirstOrDefault()
+            ?? throw new AnthropicInvalidDataException(
+                "start message not yet received"
             );
+
+        var endMessage = messages[FilterResult.EndMessage].FirstOrDefault();
+        if (endMessage == null) { throw new AnthropicInvalidDataException("stop message not yet received"); }
 
         var contentBlocks = new List<ContentBlock>();
         foreach (var item in content)
         {
             var startContent = item.Select(e => e.Value)
                 .OfType<RawContentBlockStartEvent>()
-                .Single();
+                .FirstOrDefault() ?? throw new AnthropicInvalidDataException("start content message not yet received");
             var blockContent = item.Select(e => e.Value)
                 .OfType<RawContentBlockDeltaEvent>()
                 .ToArray();

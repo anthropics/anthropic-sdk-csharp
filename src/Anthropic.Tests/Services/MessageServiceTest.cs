@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Anthropic.Models.Messages;
 using Anthropic.Services;
 using Anthropic.Tests;
+using Anthropic.Helpers;
 using Moq;
 
 namespace Anthropic.Tests.Services;
@@ -253,6 +254,85 @@ public class MessageServiceTest
         Assert.Single(stream.Content);
         Assert.IsType<TextBlock>(stream.Content[0].Value);
         Assert.Equal("this is a Test", ((TextBlock)stream.Content[0].Value!).Text);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregationPartialAggregation_Throws()
+    {
+        // arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new RawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(new TextBlock() { Citations = [], Text = "This is a " }),
+                }
+            );
+            yield return new(
+                new RawContentBlockDeltaEvent() { Index = 0, Delta = new(new TextDelta("Test")) }
+            );
+            yield return new(
+                new RawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(
+                        new CitationsDelta(
+                            new Anthropic.Models.Messages.Citation(
+                                new CitationsWebSearchResultLocation()
+                                {
+                                    CitedText = "Somewhere",
+                                    EncryptedIndex = "0",
+                                    Title = "Over",
+                                    Url = "the://rainbow",
+                                }
+                            )
+                        )
+                    ),
+                }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(
+                new RawContentBlockStartEvent()
+                {
+                    Index = 1,
+                    ContentBlock = new(
+                        new ThinkingBlock() { Signature = "", Thinking = "Other Test" }
+                    ),
+                }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 1 });
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(
+                    It.IsAny<Anthropic.Models.Messages.MessageCreateParams>(),
+                    It.IsAny<CancellationToken>()
+                )
+            )
+            .Returns(GetTestValues);
+
+        // act
+
+        var aggregator = new MessageContentAggregator();
+        var stream = messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .CollectAsync(aggregator);
+        await foreach (var _ in stream)
+        {
+            // don't iterate entirely
+            break;
+        }
+
+        // assert
+
+        var exception = Assert.Throws<Exceptions.AnthropicInvalidDataException>(() => aggregator.Message());
+        Assert.Equal("stop message not yet received", exception.Message);
     }
 
     [Fact]

@@ -45,18 +45,21 @@ public abstract class SseAggregator<TMessage, TResult>
         FilterResult filterResult = FilterResult.Ignore;
         await foreach (var message in messageStream)
         {
-            if (!startMessageReceived && Filter(message) != FilterResult.StartMessage)
+            if (!_streamEnded)
             {
-                _messages[FilterResult.StartMessage].Add(message);
-                continue;
-            }
+                if (!startMessageReceived && Filter(message) != FilterResult.StartMessage)
+                {
+                    _messages[FilterResult.StartMessage].Add(message);
+                    continue;
+                }
 
-            startMessageReceived = true;
-            filterResult = Filter(message);
-            _messages[filterResult].Add(message);
-            if (filterResult == FilterResult.EndMessage)
-            {
-                break;
+                startMessageReceived = true;
+                filterResult = Filter(message);
+                _messages[filterResult].Add(message);
+                if (filterResult == FilterResult.EndMessage)
+                {
+                    break;
+                }
             }
 
             yield return message;
@@ -76,16 +79,11 @@ public abstract class SseAggregator<TMessage, TResult>
     /// Aggregates all items based on the Anthropic streaming protocol present in the <see cref="IAsyncEnumerable{TMessage}"/> provided on initialization.
     /// </summary>
     /// <returns>The result of the aggregation.</returns>
-    public virtual TResult? AggregateAsync()
+    public virtual TResult? Message()
     {
-        if (_messages is { Count: 0 } or null)
+        if (_messages == null)
         {
-            return default;
-        }
-
-        if (_streamEnded is false)
-        {
-            return default;
+            throw new AnthropicInvalidDataException("Stream was not passed to aggregator");
         }
 
         return _message ??= GetResult(

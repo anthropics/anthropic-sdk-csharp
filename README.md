@@ -157,7 +157,7 @@ await foreach (var message in client.Messages.CreateStreaming(parameters))
 
 ### Aggregators
 
-Both the Messages and BetaMessages streaming endpoints have build-in aggregators that can produce the same object as its non-streaming counterparts.  
+Both the [Messages](src/Anthropic/Models/Messages/Message.cs) and [BetaMessages](src/Anthropic/Models/Beta/Messages/BetaMessage.cs) streaming endpoints have build-in aggregators that can produce the same object as its non-streaming counterparts.
 This can be useful when progress should be reported during the generation but then also handle the full result as a single object.
 
 It is possible to either only get the full result object via the `.Aggregate()` extension on the `IAsyncEnumerable` returned by the `CreateStreaming` method or insert an external aggregator into a linq tree:

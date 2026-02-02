@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Anthropic.Models.Beta.Messages;
+using Anthropic.Exceptions;
 
 namespace Anthropic.Helpers;
 
@@ -19,17 +20,17 @@ public sealed class BetaMessageContentAggregator
 
         var startMessage = messages[FilterResult.StartMessage]
             .Select(e => (BetaRawMessageStartEvent)e.Value!)
-            .Single();
+            .FirstOrDefault() ?? throw new AnthropicInvalidDataException("start message not yet received");
         var endMessage = messages[FilterResult.EndMessage]
             .Select(e => (BetaRawMessageStopEvent)e.Value!)
-            .Single();
+            .FirstOrDefault() ?? throw new AnthropicInvalidDataException("stop message not yet received");
 
         var contentBlocks = new List<BetaContentBlock>();
         foreach (var item in content)
         {
             var startContent = item.Select(e => e.Value)
                 .OfType<BetaRawContentBlockStartEvent>()
-                .Single();
+                .FirstOrDefault() ?? throw new AnthropicInvalidDataException("start content message not yet received");
             var blockContent = item.Select(e => e.Value)
                 .OfType<BetaRawContentBlockDeltaEvent>()
                 .ToArray();

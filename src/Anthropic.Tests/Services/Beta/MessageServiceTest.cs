@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Models.Beta.Messages;
 using Anthropic.Services.Beta;
+using Anthropic.Helpers;
+using Anthropic;
 using Moq;
 using Messages = Anthropic.Models.Messages;
 
@@ -259,6 +261,86 @@ public class MessageServiceTest
         Assert.Single(stream.Content);
         Assert.IsType<BetaTextBlock>(stream.Content[0].Value);
         Assert.Equal("this is a Test", ((BetaTextBlock)stream.Content[0].Value!).Text);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregationPartialAggregation_Throws()
+    {
+        // arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<BetaRawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new BetaRawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new BetaRawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(new BetaTextBlock() { Citations = [], Text = "This is a " }),
+                }
+            );
+            yield return new(
+                new BetaRawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new BetaTextDelta("Test")),
+                }
+            );
+            yield return new(
+                new BetaRawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(
+                        new BetaCitationsDelta(
+                            new Citation(
+                                new BetaCitationsWebSearchResultLocation()
+                                {
+                                    CitedText = "Somewhere",
+                                    EncryptedIndex = "0",
+                                    Title = "Over",
+                                    Url = "the://rainbow",
+                                }
+                            )
+                        )
+                    ),
+                }
+            );
+            yield return new(new BetaRawContentBlockStopEvent() { Index = 0 });
+            yield return new(
+                new BetaRawContentBlockStartEvent()
+                {
+                    Index = 1,
+                    ContentBlock = new(
+                        new BetaThinkingBlock() { Signature = "", Thinking = "Other Test" }
+                    ),
+                }
+            );
+            yield return new(new BetaRawContentBlockStopEvent() { Index = 1 });
+            yield return new(new BetaRawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
+            )
+            .Returns(GetTestValues);
+
+        // act
+
+        var aggregator = new BetaMessageContentAggregator();
+        var stream = messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .CollectAsync(aggregator);
+        await foreach (var _ in stream)
+        {
+            // don't iterate entirely
+            break;
+        }
+
+        // assert
+
+        var exception = Assert.Throws<Exceptions.AnthropicInvalidDataException>(() => aggregator.Message());
+        Assert.Equal("stop message not yet received", exception.Message);
     }
 
     [Fact]
