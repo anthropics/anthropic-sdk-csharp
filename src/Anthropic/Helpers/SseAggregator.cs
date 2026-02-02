@@ -45,6 +45,7 @@ public abstract class SseAggregator<TMessage, TResult>
         FilterResult filterResult = FilterResult.Ignore;
         await foreach (var message in messageStream)
         {
+            Console.WriteLine(message);
             if (!_streamEnded)
             {
                 if (!startMessageReceived && Filter(message) != FilterResult.StartMessage)
@@ -107,29 +108,12 @@ public abstract class SseAggregator<TMessage, TResult>
         IReadOnlyDictionary<FilterResult, IList<TMessage>> messages
     );
 
-    /// <summary>
-    /// Defines the filter result types.
-    /// </summary>
-    public enum FilterResult
+    protected enum FilterResult
     {
-        /// <summary>
-        /// The filtered message should be ignored.
-        /// </summary>
         Ignore = 0,
-
-        /// <summary>
-        /// The message defines the start of a package.
-        /// </summary>
         StartMessage = 1,
-
-        /// <summary>
-        /// The message contains aggregate content.
-        /// </summary>
-        Content = 2,
-
-        /// <summary>
-        /// The message defines the end of the message stream.
-        /// </summary>
-        EndMessage = 3,
+        Delta = 2,
+        Content = 3,
+        EndMessage = 4,
     }
 }

@@ -190,7 +190,7 @@ await foreach (RawMessageStreamEvent rawEvent in responseUpdates.CollectAsync(ag
 }
 
 // and then get the full aggregated message as the aggregator will cache the messages internally you can call this method multiple times
-var fullMessage = await responseUpdates.Aggregate().ConfigureAwait(false);
+var fullMessage = await aggregator.Message();
 
 ```
 

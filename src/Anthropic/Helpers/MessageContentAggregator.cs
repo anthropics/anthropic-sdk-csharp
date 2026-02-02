@@ -16,11 +16,9 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         IReadOnlyDictionary<FilterResult, IList<RawMessageStreamEvent>> messages
     )
     {
-        var content = messages[FilterResult.Content].GroupBy(e => e.Index);
-
         var startMessage =
             messages[FilterResult.StartMessage]
-                .Select(e => e.Value!)
+                .Select(e => e.Value)
                 .OfType<RawMessageStartEvent>()
                 .FirstOrDefault()
             ?? throw new AnthropicInvalidDataException(
@@ -30,6 +28,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         var endMessage = messages[FilterResult.EndMessage].FirstOrDefault();
         if (endMessage == null) { throw new AnthropicInvalidDataException("stop message not yet received"); }
 
+        var content = (messages.GetValueOrDefault(FilterResult.Content) ?? []).GroupBy(e => e.Index);
         var contentBlocks = new List<ContentBlock>();
         foreach (var item in content)
         {
@@ -44,14 +43,43 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             contentBlocks.Add(MergeBlock(contentBlock, [.. blockContent.Select(e => e.Delta)]));
         }
 
+        var stopSequence = startMessage.Message.StopSequence;
+        var stopReason = startMessage.Message.StopReason;
+        var usage = startMessage.Message.Usage;
+
+        var deltas = (messages.GetValueOrDefault(FilterResult.Delta) ?? []).Select(e => e.Value).OfType<RawMessageDeltaEvent>();
+        foreach (var delta in deltas)
+        {
+            stopReason = delta.Delta.StopReason;
+            stopSequence = delta.Delta.StopSequence;
+
+            usage = usage with { OutputTokens = delta.Usage.OutputTokens };
+            if (delta.Usage.InputTokens != null)
+            {
+                usage = usage with { InputTokens = delta.Usage.InputTokens.Value };
+            }
+            if (delta.Usage.CacheCreationInputTokens != null)
+            {
+                usage = usage with { CacheCreationInputTokens = delta.Usage.CacheCreationInputTokens };
+            }
+            if (delta.Usage.CacheReadInputTokens != null)
+            {
+                usage = usage with { CacheReadInputTokens = delta.Usage.CacheReadInputTokens };
+            }
+            if (delta.Usage.ServerToolUse != null)
+            {
+                usage = usage with { ServerToolUse = delta.Usage.ServerToolUse };
+            }
+        }
+
         return new()
         {
             Content = [.. contentBlocks],
             ID = startMessage.Message.ID,
             Model = startMessage.Message.Model,
-            StopReason = startMessage.Message.StopReason,
-            StopSequence = startMessage.Message.StopSequence,
-            Usage = startMessage.Message.Usage,
+            StopReason = stopReason,
+            StopSequence = stopSequence,
+            Usage = usage,
         };
     }
 
@@ -60,7 +88,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         IEnumerable<RawContentBlockDelta> blockContents
     )
     {
-        ContentBlock resultBlock = null!;
+        ContentBlock? resultBlock = null;
 
         string StringJoinHelper<T>(
             string source,
@@ -87,7 +115,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         {
             resultBlock = (
                 blockContents.Select(e => e.Value).OfType<T>().Single() as ContentBlock
-            )!;
+            ) ?? throw new AnthropicInvalidDataException("Could not convert block to content block");
         }
 
         contentBlock.Switch(
@@ -97,7 +125,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
                     Text = StringJoinHelper(textBlock.Text, blocks, e => e.Text),
                     Citations =
                     [
-                        .. textBlock.Citations!,
+                    .. (textBlock.Citations ?? []),
                         .. Of<CitationsDelta>()
                             .Select(e =>
                                 e.Citation.Match<TextCitation>(
@@ -126,7 +154,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             e => Single(e)
         );
 
-        return resultBlock;
+        return resultBlock ?? throw new AnthropicInvalidDataException("Missing result block");
     }
 
     protected override FilterResult Filter(RawMessageStreamEvent message) =>
@@ -135,7 +163,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             RawContentBlockStartEvent _ => FilterResult.Content,
             RawContentBlockStopEvent _ => FilterResult.Content,
             RawContentBlockDeltaEvent _ => FilterResult.Content,
-            RawMessageDeltaEvent => FilterResult.Content,
+            RawMessageDeltaEvent => FilterResult.Delta,
             RawMessageStartEvent => FilterResult.StartMessage,
             RawMessageStopEvent _ => FilterResult.EndMessage,
             _ => FilterResult.Ignore,
