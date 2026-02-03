@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Anthropic;
 using Anthropic.Helpers;
 using Anthropic.Models.Beta.Messages;
 using Anthropic.Services.Beta;
@@ -50,14 +49,7 @@ public class MessageServiceTest
             new()
             {
                 MaxTokens = 1024,
-                Messages =
-                [
-                    new()
-                    {
-                        Content = "Hello, world",
-                        Role = Anthropic.Models.Beta.Messages.Role.User,
-                    },
-                ],
+                Messages = [new() { Content = "Hello, world", Role = Role.User }],
                 Model = Messages::Model.ClaudeSonnet4_5_20250929,
             },
             TestContext.Current.CancellationToken
@@ -73,14 +65,7 @@ public class MessageServiceTest
             new()
             {
                 MaxTokens = 1024,
-                Messages =
-                [
-                    new()
-                    {
-                        Content = "Hello, world",
-                        Role = Anthropic.Models.Beta.Messages.Role.User,
-                    },
-                ],
+                Messages = [new() { Content = "Hello, world", Role = Role.User }],
                 Model = Messages::Model.ClaudeSonnet4_5_20250929,
             },
             TestContext.Current.CancellationToken
@@ -99,10 +84,7 @@ public class MessageServiceTest
         var betaMessageTokensCount = await client.Beta.Messages.CountTokens(
             new()
             {
-                Messages =
-                [
-                    new() { Content = "string", Role = Anthropic.Models.Beta.Messages.Role.User },
-                ],
+                Messages = [new() { Content = "string", Role = Role.User }],
                 Model = Messages::Model.ClaudeOpus4_5_20251101,
             },
             TestContext.Current.CancellationToken
