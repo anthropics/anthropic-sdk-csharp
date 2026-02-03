@@ -22,8 +22,8 @@ var response = await client.Messages.Create(parameters);
 var message = string.Join(
     "",
     response
-        .Content.Where(message => message.Value is TextBlock)
-        .Select(message => message.Value as TextBlock)
+        .Content.Select(message => message.Value)
+        .OfType<TextBlock>()
         .Select((textBlock) => textBlock.Text)
 );
 
