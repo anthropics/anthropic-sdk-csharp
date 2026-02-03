@@ -33,9 +33,7 @@ public class DefaultAnthropicFoundryCredentials
     /// </remarks>
     /// <param name="resourceName">The resource name or if null loaded from the environment variable <c>ANTHROPIC_FOUNDRY_RESOURCE</c></param>
     /// <returns></returns>
-    public static IAnthropicFoundryCredentials? FromEnv(
-        string? resourceName = null
-    )
+    public static IAnthropicFoundryCredentials? FromEnv(string? resourceName = null)
     {
         if (
             Environment.GetEnvironmentVariable("ANTHROPIC_FOUNDRY_RESOURCE")
