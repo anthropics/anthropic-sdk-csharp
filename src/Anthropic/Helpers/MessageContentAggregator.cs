@@ -16,10 +16,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         IReadOnlyDictionary<FilterResult, IList<RawMessageStreamEvent>> messages
     )
     {
-
-        var content = messages[FilterResult.Content].GroupBy(e =>
-            e.Index
-        );
+        var content = messages[FilterResult.Content].GroupBy(e => e.Index);
 
         var startMessage =
             messages[FilterResult.StartMessage]
@@ -56,9 +53,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
 
         if (messages.TryGetValue(FilterResult.Delta, out var deltaEvents))
         {
-            var deltas = deltaEvents
-                .Select(e => e.Value)
-                .OfType<RawMessageDeltaEvent>();
+            var deltas = deltaEvents.Select(e => e.Value).OfType<RawMessageDeltaEvent>();
             foreach (var delta in deltas)
             {
                 stopReason = delta.Delta.StopReason;

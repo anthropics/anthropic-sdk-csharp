@@ -52,11 +52,9 @@ public sealed class BetaMessageContentAggregator
         var container = startMessage.Message.Container;
         var usage = startMessage.Message.Usage;
 
-
         if (messages.TryGetValue(FilterResult.Delta, out var deltaEvents))
         {
-            var deltas = deltaEvents.Select(e => e.Value)
-                .OfType<BetaRawMessageDeltaEvent>();
+            var deltas = deltaEvents.Select(e => e.Value).OfType<BetaRawMessageDeltaEvent>();
 
             foreach (var delta in deltas ?? [])
             {

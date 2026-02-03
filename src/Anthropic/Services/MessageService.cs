@@ -124,7 +124,13 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
             ._client.WithOptions(options =>
                 options with
                 {
-                    Timeout = options.Timeout ?? TimeSpan.FromMinutes(10),
+                    Timeout =
+                        options.Timeout
+                        ?? ClientOptions.TimeoutFromMaxTokens(
+                            parameters.MaxTokens,
+                            false,
+                            parameters.Model
+                        ),
                 }
             )
             .Execute(request, cancellationToken)
@@ -170,7 +176,13 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
             ._client.WithOptions(options =>
                 options with
                 {
-                    Timeout = options.Timeout ?? TimeSpan.FromMinutes(10),
+                    Timeout =
+                        options.Timeout
+                        ?? ClientOptions.TimeoutFromMaxTokens(
+                            parameters.MaxTokens,
+                            true,
+                            parameters.Model
+                        ),
                 }
             )
             .Execute(request, cancellationToken)
