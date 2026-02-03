@@ -14,7 +14,8 @@ using Anthropic.Models.Messages;
 //      if both of those are not set, it uses the Azure SDK to load system configuration as described here: https://learn.microsoft.com/en-us/dotnet/api/azure.identity.defaultazurecredential?view=azure-dotnet
 // - Any custom type that implements IAnthropicBedrockCredentials — implement Region and Apply(HttpRequestMessage) for custom auth.
 AnthropicBedrockClient client = new(
-    await AnthropicBedrockCredentialsHelper.FromEnv().ConfigureAwait(false) ?? throw new InvalidOperationException("Your system is not properly configured.")
+    await AnthropicBedrockCredentialsHelper.FromEnv().ConfigureAwait(false)
+        ?? throw new InvalidOperationException("Your system is not properly configured.")
 );
 MessageCreateParams parameters = new()
 {
