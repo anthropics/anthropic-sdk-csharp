@@ -16,6 +16,11 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         IReadOnlyDictionary<FilterResult, IList<RawMessageStreamEvent>> messages
     )
     {
+
+        var content = messages[FilterResult.Content].GroupBy(e =>
+            e.Index
+        );
+
         var startMessage =
             messages[FilterResult.StartMessage]
                 .Select(e => e.Value)
@@ -29,9 +34,6 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             throw new AnthropicInvalidDataException("stop message not yet received");
         }
 
-        var content = (messages.GetValueOrDefault(FilterResult.Content) ?? []).GroupBy(e =>
-            e.Index
-        );
         var contentBlocks = new List<ContentBlock>();
         foreach (var item in content)
         {
@@ -52,33 +54,36 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         var stopReason = startMessage.Message.StopReason;
         var usage = startMessage.Message.Usage;
 
-        var deltas = (messages.GetValueOrDefault(FilterResult.Delta) ?? [])
-            .Select(e => e.Value)
-            .OfType<RawMessageDeltaEvent>();
-        foreach (var delta in deltas)
+        if (messages.TryGetValue(FilterResult.Delta, out var deltaEvents))
         {
-            stopReason = delta.Delta.StopReason;
-            stopSequence = delta.Delta.StopSequence;
+            var deltas = deltaEvents
+                .Select(e => e.Value)
+                .OfType<RawMessageDeltaEvent>();
+            foreach (var delta in deltas)
+            {
+                stopReason = delta.Delta.StopReason;
+                stopSequence = delta.Delta.StopSequence;
 
-            usage = usage with { OutputTokens = delta.Usage.OutputTokens };
-            if (delta.Usage.InputTokens != null)
-            {
-                usage = usage with { InputTokens = delta.Usage.InputTokens.Value };
-            }
-            if (delta.Usage.CacheCreationInputTokens != null)
-            {
-                usage = usage with
+                usage = usage with { OutputTokens = delta.Usage.OutputTokens };
+                if (delta.Usage.InputTokens != null)
                 {
-                    CacheCreationInputTokens = delta.Usage.CacheCreationInputTokens,
-                };
-            }
-            if (delta.Usage.CacheReadInputTokens != null)
-            {
-                usage = usage with { CacheReadInputTokens = delta.Usage.CacheReadInputTokens };
-            }
-            if (delta.Usage.ServerToolUse != null)
-            {
-                usage = usage with { ServerToolUse = delta.Usage.ServerToolUse };
+                    usage = usage with { InputTokens = delta.Usage.InputTokens.Value };
+                }
+                if (delta.Usage.CacheCreationInputTokens != null)
+                {
+                    usage = usage with
+                    {
+                        CacheCreationInputTokens = delta.Usage.CacheCreationInputTokens,
+                    };
+                }
+                if (delta.Usage.CacheReadInputTokens != null)
+                {
+                    usage = usage with { CacheReadInputTokens = delta.Usage.CacheReadInputTokens };
+                }
+                if (delta.Usage.ServerToolUse != null)
+                {
+                    usage = usage with { ServerToolUse = delta.Usage.ServerToolUse };
+                }
             }
         }
 

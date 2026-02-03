@@ -52,38 +52,42 @@ public sealed class BetaMessageContentAggregator
         var container = startMessage.Message.Container;
         var usage = startMessage.Message.Usage;
 
-        var deltas = (messages.GetValueOrDefault(FilterResult.Delta) ?? [])
-            .Select(e => e.Value)
-            .OfType<BetaRawMessageDeltaEvent>();
-        foreach (var delta in deltas)
+
+        if (messages.TryGetValue(FilterResult.Delta, out var deltaEvents))
         {
-            stopReason = delta.Delta.StopReason;
-            stopSequence = delta.Delta.StopSequence;
+            var deltas = deltaEvents.Select(e => e.Value)
+                .OfType<BetaRawMessageDeltaEvent>();
 
-            if (delta.Delta.Container != null)
+            foreach (var delta in deltas ?? [])
             {
-                container = delta.Delta.Container;
-            }
+                stopReason = delta.Delta.StopReason;
+                stopSequence = delta.Delta.StopSequence;
 
-            usage = usage with { OutputTokens = delta.Usage.OutputTokens };
-            if (delta.Usage.InputTokens != null)
-            {
-                usage = usage with { InputTokens = delta.Usage.InputTokens.Value };
-            }
-            if (delta.Usage.CacheCreationInputTokens != null)
-            {
-                usage = usage with
+                if (delta.Delta.Container != null)
                 {
-                    CacheCreationInputTokens = delta.Usage.CacheCreationInputTokens,
-                };
-            }
-            if (delta.Usage.CacheReadInputTokens != null)
-            {
-                usage = usage with { CacheReadInputTokens = delta.Usage.CacheReadInputTokens };
-            }
-            if (delta.Usage.ServerToolUse != null)
-            {
-                usage = usage with { ServerToolUse = delta.Usage.ServerToolUse };
+                    container = delta.Delta.Container;
+                }
+
+                usage = usage with { OutputTokens = delta.Usage.OutputTokens };
+                if (delta.Usage.InputTokens != null)
+                {
+                    usage = usage with { InputTokens = delta.Usage.InputTokens.Value };
+                }
+                if (delta.Usage.CacheCreationInputTokens != null)
+                {
+                    usage = usage with
+                    {
+                        CacheCreationInputTokens = delta.Usage.CacheCreationInputTokens,
+                    };
+                }
+                if (delta.Usage.CacheReadInputTokens != null)
+                {
+                    usage = usage with { CacheReadInputTokens = delta.Usage.CacheReadInputTokens };
+                }
+                if (delta.Usage.ServerToolUse != null)
+                {
+                    usage = usage with { ServerToolUse = delta.Usage.ServerToolUse };
+                }
             }
         }
 
