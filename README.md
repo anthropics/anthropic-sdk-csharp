@@ -164,25 +164,24 @@ await foreach (var message in client.Messages.CreateStreaming(parameters))
 
 ### Aggregators
 
-Both the [Messages](src/Anthropic/Models/Messages/Message.cs) and [BetaMessages](src/Anthropic/Models/Beta/Messages/BetaMessage.cs) streaming endpoints have build-in aggregators that can produce the same object as its non-streaming counterparts.
-This can be useful when progress should be reported during the generation but then also handle the full result as a single object.
+Both the [Messages](src/Anthropic/Models/Messages/Message.cs) and [BetaMessages](src/Anthropic/Models/Beta/Messages/BetaMessage.cs) streaming endpoints have built-in aggregators that can produce the same object as its non-streaming counterparts.
 
-It is possible to either only get the full result object via the `.Aggregate()` extension on the `IAsyncEnumerable` returned by the `CreateStreaming` method or insert an external aggregator into a linq tree:
+It is possible to either only get the full result object via the `.Aggregate()` extension on the `IAsyncEnumerable` returned by the `CreateStreaming` method or insert an external aggregator into a LINQ tree:
 
 ```csharp
 IAsyncEnumerable<RawMessageStreamEvent> responseUpdates = client.Messages.CreateStreaming(
     parameters
 );
 
-// this produces a single object based on the streaming output.
+// This produces a single object based on the streaming output.
 var message = await responseUpdates.Aggregate().ConfigureAwait(false);
 
-// you can also add an aggregator as part of your linq chain to get realtime streaming and aggregation
+// You can also add an aggregator as part of your LINQ chain to get realtime streaming and aggregation
 
 var aggregator = new MessageContentAggregator();
 await foreach (RawMessageStreamEvent rawEvent in responseUpdates.CollectAsync(aggregator))
 {
-    // do something with the stream events
+    // Do something with the stream events
     if (rawEvent.TryPickContentBlockDelta(out var delta))
     {
         if (delta.Delta.TryPickThinking(out var thinkingDelta))
@@ -196,7 +195,7 @@ await foreach (RawMessageStreamEvent rawEvent in responseUpdates.CollectAsync(ag
     }
 }
 
-// and then get the full aggregated message as the aggregator will cache the messages internally you can call this method multiple times
+// And then get the full aggregated message.
 var fullMessage = await aggregator.Message();
 
 ```
