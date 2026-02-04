@@ -3,7 +3,7 @@ using System.Buffers;
 using System.Runtime.InteropServices;
 
 /// <summary>
-/// Contains Shims for .NET 8 available methods to compile on an NetStandard2.0 target.
+/// Contains Shims for .NET 8 available methods to compile on a NetStandard2.0 target.
 /// </summary>
 internal static class StreamExtensions
 {
