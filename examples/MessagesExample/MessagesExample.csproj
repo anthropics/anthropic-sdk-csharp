@@ -7,6 +7,5 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Anthropic\Anthropic.csproj" />
-    <ProjectReference Include="..\..\src\Anthropic.Foundry\Anthropic.Foundry.csproj" />
   </ItemGroup>
 </Project>

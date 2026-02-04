@@ -4,9 +4,6 @@ using Anthropic.Models.Messages;
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
 var client = new AnthropicClient();
 
-// For using the Foundry client, use this instead
-// AnthropicFoundryClient client = new(new AnthropicFoundryApiKeyCredentials("API-TOKEN", "RESOURCE-NAME"));
-
 MessageCreateParams parameters = new()
 {
     MaxTokens = 2048,
