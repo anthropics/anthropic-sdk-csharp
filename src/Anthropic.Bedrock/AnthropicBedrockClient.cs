@@ -196,7 +196,7 @@ internal class AnthropicBedrockClientWithRawResponse : AnthropicClientWithRawRes
         if (requestMessage.RequestUri.Segments[1].Trim('/') != "v1")
         {
             throw new AnthropicInvalidDataException(
-                $"Request is missing required path segments. Expected [0] segment to be 'v1' found {requestMessage.RequestUri.Segments[0]}."
+                $"Request is missing required path segments. Expected [0] segment to be 'v1', found {requestMessage.RequestUri.Segments[0]}."
             );
         }
 
