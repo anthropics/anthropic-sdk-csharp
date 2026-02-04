@@ -8,9 +8,9 @@ public interface IAnthropicFoundryCredentials
 
     void Apply(HttpRequestMessage requestMessage);
 #if NET8_0_OR_GREATER
-    public static async ValueTask<IAnthropicFoundryCredentials?> FromEnv()
+    public static IAnthropicFoundryCredentials? FromEnv()
     {
-        return await DefaultAnthropicFoundryCredentials.FromEnv().ConfigureAwait(false);
+        return DefaultAnthropicFoundryCredentials.FromEnv();
     }
 #endif
 }
@@ -33,9 +33,7 @@ public class DefaultAnthropicFoundryCredentials
     /// </remarks>
     /// <param name="resourceName">The resource name or if null loaded from the environment variable <c>ANTHROPIC_FOUNDRY_RESOURCE</c></param>
     /// <returns></returns>
-    public static async ValueTask<IAnthropicFoundryCredentials?> FromEnv(
-        string? resourceName = null
-    )
+    public static IAnthropicFoundryCredentials? FromEnv(string? resourceName = null)
     {
         if (
             Environment.GetEnvironmentVariable("ANTHROPIC_FOUNDRY_RESOURCE")

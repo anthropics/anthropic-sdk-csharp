@@ -10,7 +10,7 @@ namespace Anthropic.Tests.Services.Messages;
 public class BatchServiceTest
 {
     [Theory]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
     [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
     public async Task Create_Works(IAnthropicClient client, string modelName)
@@ -106,7 +106,7 @@ public class BatchServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task Retrieve_Works(IAnthropicClient client)
     {
         var messageBatch = await client.Messages.Batches.Retrieve(
@@ -118,7 +118,7 @@ public class BatchServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task List_Works(IAnthropicClient client)
     {
         var page = await client.Messages.Batches.List(new(), TestContext.Current.CancellationToken);
@@ -126,7 +126,7 @@ public class BatchServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task Delete_Works(IAnthropicClient client)
     {
         var deletedMessageBatch = await client.Messages.Batches.Delete(
@@ -138,7 +138,7 @@ public class BatchServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task Cancel_Works(IAnthropicClient client)
     {
         var messageBatch = await client.Messages.Batches.Cancel(
@@ -150,7 +150,7 @@ public class BatchServiceTest
     }
 
     [Theory(Skip = "Prism doesn't support application/x-jsonl responses")]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task ResultsStreaming_Works(IAnthropicClient client)
     {
         var stream = client.Messages.Batches.ResultsStreaming(

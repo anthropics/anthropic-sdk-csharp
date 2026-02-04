@@ -10,7 +10,7 @@ namespace Anthropic.Tests.Services.Beta.Messages;
 public class BatchServiceTest
 {
     [Theory(Skip = "prism validates based on the non-beta endpoint")]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task Create_Works(IAnthropicClient client)
     {
         var betaMessageBatch = await client.Beta.Messages.Batches.Create(
@@ -156,7 +156,7 @@ public class BatchServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task Retrieve_Works(IAnthropicClient client)
     {
         var betaMessageBatch = await client.Beta.Messages.Batches.Retrieve(
@@ -168,7 +168,7 @@ public class BatchServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task List_Works(IAnthropicClient client)
     {
         var page = await client.Beta.Messages.Batches.List(
@@ -179,7 +179,7 @@ public class BatchServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task Delete_Works(IAnthropicClient client)
     {
         var betaDeletedMessageBatch = await client.Beta.Messages.Batches.Delete(
@@ -191,7 +191,7 @@ public class BatchServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task Cancel_Works(IAnthropicClient client)
     {
         var betaMessageBatch = await client.Beta.Messages.Batches.Cancel(
@@ -203,7 +203,7 @@ public class BatchServiceTest
     }
 
     [Theory(Skip = "Prism doesn't support application/x-jsonl responses")]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task ResultsStreaming_Works(IAnthropicClient client)
     {
         var stream = client.Beta.Messages.Batches.ResultsStreaming(
