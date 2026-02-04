@@ -179,17 +179,11 @@ internal class AnthropicBedrockClientWithRawResponse : AnthropicClientWithRawRes
 
     private static void ValidateRequest(HttpRequestMessage requestMessage)
     {
-        if (requestMessage.RequestUri is null)
+        if (requestMessage.RequestUri is null ||
+            requestMessage.RequestUri.Segments.Length < 1)
         {
             throw new AnthropicInvalidDataException(
-                "Request is missing required path segments. Expected > 1 segments found none."
-            );
-        }
-
-        if (requestMessage.RequestUri.Segments.Length < 1)
-        {
-            throw new AnthropicInvalidDataException(
-                "Request is missing required path segments. Expected at least 1 segment, found none."
+                "Request is missing required path segments. Expected > 1 segments, found none."
             );
         }
 
