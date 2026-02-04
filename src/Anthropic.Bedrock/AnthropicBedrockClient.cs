@@ -189,7 +189,7 @@ internal class AnthropicBedrockClientWithRawResponse : AnthropicClientWithRawRes
         if (requestMessage.RequestUri.Segments.Length < 1)
         {
             throw new AnthropicInvalidDataException(
-                "Request is missing required path segments. Expected > 1 segments found none."
+                "Request is missing required path segments. Expected at least 1 segment, found none."
             );
         }
 
