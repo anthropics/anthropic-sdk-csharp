@@ -4,7 +4,7 @@
     <AssemblyTitle>Anthropic C#</AssemblyTitle>
     <AssemblyName>Anthropic</AssemblyName>
     <PackageId>Anthropic</PackageId>
-    <VersionPrefix>12.3.0</VersionPrefix>
+    <VersionPrefix>12.4.0</VersionPrefix>
     <StainlessMainProject>true</StainlessMainProject>
     <Description>The official .NET library for the Anthropic API.</Description>
     <OutputType>Library</OutputType>
@@ -13,12 +13,12 @@
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Anthropic.Tests,PublicKey=002400000480000094000000060200000024000052534131000400000100010063a3c9395e3d40be5b18dc9c4104236f7a42b63f7fee034f73dcfdb09a677d5bb552f6ffe35d580da1195fd5098ee99affcd842ceeca7973611c3eae10bafa96159ecf8bdd0252ac670b49ffaefd8986a272897cf68b9b1b3e0372dcabff785d5c6c90eab31633416d812ad7f899cc70a2ffc6d869580694017cab7e8c97f4b6"/>
-    <None Include="..\logo.png" Pack="true" PackagePath="\" />
-    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
-    <PackageReference Include="System.Text.Json" Version="10.0.2" />
-    <PackageReference Include="System.Net.ServerSentEvents" Version="10.0.1" />
-    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.2.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+    <None Include="..\logo.png" Pack="true" PackagePath="\"/>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+    <PackageReference Include="System.Text.Json" Version="10.0.2"/>
+    <PackageReference Include="System.Net.ServerSentEvents" Version="10.0.1"/>
+    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.2.0"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="System.Collections.Immutable" Version="8.0.0"/>
