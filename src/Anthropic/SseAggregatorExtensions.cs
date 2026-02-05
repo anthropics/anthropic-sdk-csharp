@@ -16,7 +16,7 @@ public static class SseAggregatorExtensions
     /// </summary>
     /// <param name="source">A enumerable as provided by the <see cref="IMessageService.CreateStreaming(Models.Messages.MessageCreateParams)"/></param>
     /// <returns>A task that completes once all messages have been received or in the event of improper streaming and exception.</returns>
-    public static async Task<Message?> Aggregate(
+    public static async Task<Message> Aggregate(
         this IAsyncEnumerable<RawMessageStreamEvent> source
     )
     {
@@ -28,7 +28,7 @@ public static class SseAggregatorExtensions
     /// </summary>
     /// <param name="source">A enumerable as provided by the <see cref="IBetaService.CreateStreaming(Models.Beta.Messages.MessageCreateParams)"/></param>
     /// <returns>A task that completes once all messages have been received or in the event of improper streaming and exception.</returns>
-    public static async Task<BetaMessage?> Aggregate(
+    public static async Task<BetaMessage> Aggregate(
         this IAsyncEnumerable<BetaRawMessageStreamEvent> source
     )
     {
@@ -43,7 +43,7 @@ public static class SseAggregatorExtensions
     /// <param name="aggregator">The aggregator instance that will collect messages and build the result object.</param>
     /// <param name="source">The source stream of messages.</param>
     /// <returns>A task that completes after all messages from the source have been consumed.</returns>
-    public static async Task<TResult?> Aggregate<TMessage, TResult>(
+    public static async Task<TResult> Aggregate<TMessage, TResult>(
         this SseAggregator<TMessage, TResult> aggregator,
         IAsyncEnumerable<TMessage> source
     )

@@ -128,7 +128,7 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
                         options.Timeout
                         ?? ClientOptions.TimeoutFromMaxTokens(
                             parameters.MaxTokens,
-                            false,
+                            isStreaming: false,
                             parameters.Model
                         ),
                 }
@@ -182,7 +182,7 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
                         options.Timeout
                         ?? ClientOptions.TimeoutFromMaxTokens(
                             parameters.MaxTokens,
-                            true,
+                            isStreaming: true,
                             parameters.Model
                         ),
                 }

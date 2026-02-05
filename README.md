@@ -126,7 +126,7 @@ For example, `client.Messages.Create` should be called with an instance of `Mess
 > [!IMPORTANT]
 > We highly encourage you to use [streaming](#streaming) for longer running requests.
 
-We do not recommend setting a large `maxTokens` value without using streaming. Some networks may drop idle connections after a certain period of time, which can cause the request to fail or [timeout](#timeouts) without receiving a response from Anthropic. We periodically ping the API to keep the connection alive and reduce the impact of these networks.
+We do not recommend setting a large `MaxTokens` value without using streaming. Some networks may drop idle connections after a certain period of time, which can cause the request to fail or [timeout](#timeouts) without receiving a response from Anthropic. We periodically ping the API to keep the connection alive and reduce the impact of these networks.
 
 The SDK throws an error if a non-streaming request is expected to take longer than 10 minutes. Using a [streaming method](#streaming) or [overriding the timeout](#timeouts) at the client or request level disables the error.
 
@@ -197,7 +197,6 @@ await foreach (RawMessageStreamEvent rawEvent in responseUpdates.CollectAsync(ag
 
 // And then get the full aggregated message.
 var fullMessage = await aggregator.Message();
-
 ```
 
 ## `IChatClient`

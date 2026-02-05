@@ -80,7 +80,7 @@ public abstract class SseAggregator<TMessage, TResult>
     /// Aggregates all items based on the Anthropic streaming protocol present in the <see cref="IAsyncEnumerable{TMessage}"/> provided on initialization.
     /// </summary>
     /// <returns>The result of the aggregation.</returns>
-    public virtual TResult? Message()
+    public virtual TResult Message()
     {
         if (_messages == null)
         {
