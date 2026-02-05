@@ -16,9 +16,7 @@ public static class SseAggregatorExtensions
     /// </summary>
     /// <param name="source">A enumerable as provided by the <see cref="IMessageService.CreateStreaming(Models.Messages.MessageCreateParams)"/></param>
     /// <returns>A task that completes once all messages have been received or in the event of improper streaming and exception.</returns>
-    public static async Task<Message> Aggregate(
-        this IAsyncEnumerable<RawMessageStreamEvent> source
-    )
+    public static async Task<Message> Aggregate(this IAsyncEnumerable<RawMessageStreamEvent> source)
     {
         return await new MessageContentAggregator().Aggregate(source).ConfigureAwait(false);
     }
