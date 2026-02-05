@@ -15,6 +15,7 @@ public class UsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            InferenceGeo = "inference_geo",
             InputTokens = 2095,
             OutputTokens = 503,
             ServerToolUse = new(0),
@@ -28,6 +29,7 @@ public class UsageTest : TestBase
         };
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
+        string expectedInferenceGeo = "inference_geo";
         long expectedInputTokens = 2095;
         long expectedOutputTokens = 503;
         ServerToolUsage expectedServerToolUse = new(0);
@@ -36,6 +38,7 @@ public class UsageTest : TestBase
         Assert.Equal(expectedCacheCreation, model.CacheCreation);
         Assert.Equal(expectedCacheCreationInputTokens, model.CacheCreationInputTokens);
         Assert.Equal(expectedCacheReadInputTokens, model.CacheReadInputTokens);
+        Assert.Equal(expectedInferenceGeo, model.InferenceGeo);
         Assert.Equal(expectedInputTokens, model.InputTokens);
         Assert.Equal(expectedOutputTokens, model.OutputTokens);
         Assert.Equal(expectedServerToolUse, model.ServerToolUse);
@@ -50,6 +53,7 @@ public class UsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            InferenceGeo = "inference_geo",
             InputTokens = 2095,
             OutputTokens = 503,
             ServerToolUse = new(0),
@@ -70,6 +74,7 @@ public class UsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            InferenceGeo = "inference_geo",
             InputTokens = 2095,
             OutputTokens = 503,
             ServerToolUse = new(0),
@@ -87,6 +92,7 @@ public class UsageTest : TestBase
         };
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
+        string expectedInferenceGeo = "inference_geo";
         long expectedInputTokens = 2095;
         long expectedOutputTokens = 503;
         ServerToolUsage expectedServerToolUse = new(0);
@@ -95,6 +101,7 @@ public class UsageTest : TestBase
         Assert.Equal(expectedCacheCreation, deserialized.CacheCreation);
         Assert.Equal(expectedCacheCreationInputTokens, deserialized.CacheCreationInputTokens);
         Assert.Equal(expectedCacheReadInputTokens, deserialized.CacheReadInputTokens);
+        Assert.Equal(expectedInferenceGeo, deserialized.InferenceGeo);
         Assert.Equal(expectedInputTokens, deserialized.InputTokens);
         Assert.Equal(expectedOutputTokens, deserialized.OutputTokens);
         Assert.Equal(expectedServerToolUse, deserialized.ServerToolUse);
@@ -109,6 +116,7 @@ public class UsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            InferenceGeo = "inference_geo",
             InputTokens = 2095,
             OutputTokens = 503,
             ServerToolUse = new(0),
@@ -126,6 +134,7 @@ public class UsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            InferenceGeo = "inference_geo",
             InputTokens = 2095,
             OutputTokens = 503,
             ServerToolUse = new(0),

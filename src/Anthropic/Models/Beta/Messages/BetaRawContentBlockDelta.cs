@@ -34,7 +34,8 @@ public record class BetaRawContentBlockDelta : ModelBase
                 inputJson: (x) => x.Type,
                 citations: (x) => x.Type,
                 thinking: (x) => x.Type,
-                signature: (x) => x.Type
+                signature: (x) => x.Type,
+                compaction: (x) => x.Type
             );
         }
     }
@@ -64,6 +65,15 @@ public record class BetaRawContentBlockDelta : ModelBase
     }
 
     public BetaRawContentBlockDelta(BetaSignatureDelta value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaRawContentBlockDelta(
+        BetaCompactionContentBlockDelta value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
@@ -180,6 +190,27 @@ public record class BetaRawContentBlockDelta : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCompactionContentBlockDelta"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCompaction(out var value)) {
+    ///     // `value` is of type `BetaCompactionContentBlockDelta`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickCompaction([NotNullWhen(true)] out BetaCompactionContentBlockDelta? value)
+    {
+        value = this.Value as BetaCompactionContentBlockDelta;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
@@ -197,7 +228,8 @@ public record class BetaRawContentBlockDelta : ModelBase
     ///     (BetaInputJsonDelta value) => {...},
     ///     (BetaCitationsDelta value) => {...},
     ///     (BetaThinkingDelta value) => {...},
-    ///     (BetaSignatureDelta value) => {...}
+    ///     (BetaSignatureDelta value) => {...},
+    ///     (BetaCompactionContentBlockDelta value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -207,7 +239,8 @@ public record class BetaRawContentBlockDelta : ModelBase
         System::Action<BetaInputJsonDelta> inputJson,
         System::Action<BetaCitationsDelta> citations,
         System::Action<BetaThinkingDelta> thinking,
-        System::Action<BetaSignatureDelta> signature
+        System::Action<BetaSignatureDelta> signature,
+        System::Action<BetaCompactionContentBlockDelta> compaction
     )
     {
         switch (this.Value)
@@ -226,6 +259,9 @@ public record class BetaRawContentBlockDelta : ModelBase
                 break;
             case BetaSignatureDelta value:
                 signature(value);
+                break;
+            case BetaCompactionContentBlockDelta value:
+                compaction(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -253,7 +289,8 @@ public record class BetaRawContentBlockDelta : ModelBase
     ///     (BetaInputJsonDelta value) => {...},
     ///     (BetaCitationsDelta value) => {...},
     ///     (BetaThinkingDelta value) => {...},
-    ///     (BetaSignatureDelta value) => {...}
+    ///     (BetaSignatureDelta value) => {...},
+    ///     (BetaCompactionContentBlockDelta value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -263,7 +300,8 @@ public record class BetaRawContentBlockDelta : ModelBase
         System::Func<BetaInputJsonDelta, T> inputJson,
         System::Func<BetaCitationsDelta, T> citations,
         System::Func<BetaThinkingDelta, T> thinking,
-        System::Func<BetaSignatureDelta, T> signature
+        System::Func<BetaSignatureDelta, T> signature,
+        System::Func<BetaCompactionContentBlockDelta, T> compaction
     )
     {
         return this.Value switch
@@ -273,6 +311,7 @@ public record class BetaRawContentBlockDelta : ModelBase
             BetaCitationsDelta value => citations(value),
             BetaThinkingDelta value => thinking(value),
             BetaSignatureDelta value => signature(value),
+            BetaCompactionContentBlockDelta value => compaction(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaRawContentBlockDelta"
             ),
@@ -291,6 +330,10 @@ public record class BetaRawContentBlockDelta : ModelBase
 
     public static implicit operator BetaRawContentBlockDelta(BetaSignatureDelta value) =>
         new(value);
+
+    public static implicit operator BetaRawContentBlockDelta(
+        BetaCompactionContentBlockDelta value
+    ) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -315,7 +358,8 @@ public record class BetaRawContentBlockDelta : ModelBase
             (inputJson) => inputJson.Validate(),
             (citations) => citations.Validate(),
             (thinking) => thinking.Validate(),
-            (signature) => signature.Validate()
+            (signature) => signature.Validate(),
+            (compaction) => compaction.Validate()
         );
     }
 
@@ -341,6 +385,7 @@ public record class BetaRawContentBlockDelta : ModelBase
             BetaCitationsDelta _ => 2,
             BetaThinkingDelta _ => 3,
             BetaSignatureDelta _ => 4,
+            BetaCompactionContentBlockDelta _ => 5,
             _ => -1,
         };
     }
@@ -457,6 +502,28 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaSignatureDelta>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "compaction_delta":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaCompactionContentBlockDelta>(
                         element,
                         options
                     );

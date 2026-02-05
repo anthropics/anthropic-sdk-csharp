@@ -165,6 +165,20 @@ public record class MessageCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// Specifies the geographic region for inference processing. If not specified,
+    /// the workspace's `default_inference_geo` is used.
+    /// </summary>
+    public string? InferenceGeo
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<string>("inference_geo");
+        }
+        init { this._rawBodyData.Set("inference_geo", value); }
+    }
+
+    /// <summary>
     /// MCP servers to be utilized in this request
     /// </summary>
     public IReadOnlyList<BetaRequestMcpServerUrlDefinition>? McpServers

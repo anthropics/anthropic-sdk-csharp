@@ -13,6 +13,7 @@ public enum BetaStopReason
     StopSequence,
     ToolUse,
     PauseTurn,
+    Compaction,
     Refusal,
     ModelContextWindowExceeded,
 }
@@ -32,6 +33,7 @@ sealed class BetaStopReasonConverter : JsonConverter<BetaStopReason>
             "stop_sequence" => BetaStopReason.StopSequence,
             "tool_use" => BetaStopReason.ToolUse,
             "pause_turn" => BetaStopReason.PauseTurn,
+            "compaction" => BetaStopReason.Compaction,
             "refusal" => BetaStopReason.Refusal,
             "model_context_window_exceeded" => BetaStopReason.ModelContextWindowExceeded,
             _ => (BetaStopReason)(-1),
@@ -53,6 +55,7 @@ sealed class BetaStopReasonConverter : JsonConverter<BetaStopReason>
                 BetaStopReason.StopSequence => "stop_sequence",
                 BetaStopReason.ToolUse => "tool_use",
                 BetaStopReason.PauseTurn => "pause_turn",
+                BetaStopReason.Compaction => "compaction",
                 BetaStopReason.Refusal => "refusal",
                 BetaStopReason.ModelContextWindowExceeded => "model_context_window_exceeded",
                 _ => throw new AnthropicInvalidDataException(

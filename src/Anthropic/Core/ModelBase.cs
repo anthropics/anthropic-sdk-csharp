@@ -30,6 +30,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Ttl>(),
             new ApiEnumConverter<string, Role>(),
             new ApiEnumConverter<string, Model>(),
+            new ApiEnumConverter<string, Effort>(),
             new ApiEnumConverter<string, StopReason>(),
             new ApiEnumConverter<string, Type>(),
             new ApiEnumConverter<string, UsageServiceTier>(),

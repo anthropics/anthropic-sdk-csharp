@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
@@ -14,6 +15,21 @@ public class BetaMessageDeltaUsageTest : TestBase
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
+            Iterations =
+            [
+                new BetaMessageIterationUsage()
+                {
+                    CacheCreation = new()
+                    {
+                        Ephemeral1hInputTokens = 0,
+                        Ephemeral5mInputTokens = 0,
+                    },
+                    CacheCreationInputTokens = 0,
+                    CacheReadInputTokens = 0,
+                    InputTokens = 0,
+                    OutputTokens = 0,
+                },
+            ],
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
@@ -21,6 +37,17 @@ public class BetaMessageDeltaUsageTest : TestBase
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
         long expectedInputTokens = 2095;
+        List<UnnamedSchemaWithArrayParent0> expectedIterations =
+        [
+            new BetaMessageIterationUsage()
+            {
+                CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+                CacheCreationInputTokens = 0,
+                CacheReadInputTokens = 0,
+                InputTokens = 0,
+                OutputTokens = 0,
+            },
+        ];
         long expectedOutputTokens = 503;
         BetaServerToolUsage expectedServerToolUse = new()
         {
@@ -31,6 +58,12 @@ public class BetaMessageDeltaUsageTest : TestBase
         Assert.Equal(expectedCacheCreationInputTokens, model.CacheCreationInputTokens);
         Assert.Equal(expectedCacheReadInputTokens, model.CacheReadInputTokens);
         Assert.Equal(expectedInputTokens, model.InputTokens);
+        Assert.NotNull(model.Iterations);
+        Assert.Equal(expectedIterations.Count, model.Iterations.Count);
+        for (int i = 0; i < expectedIterations.Count; i++)
+        {
+            Assert.Equal(expectedIterations[i], model.Iterations[i]);
+        }
         Assert.Equal(expectedOutputTokens, model.OutputTokens);
         Assert.Equal(expectedServerToolUse, model.ServerToolUse);
     }
@@ -43,6 +76,21 @@ public class BetaMessageDeltaUsageTest : TestBase
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
+            Iterations =
+            [
+                new BetaMessageIterationUsage()
+                {
+                    CacheCreation = new()
+                    {
+                        Ephemeral1hInputTokens = 0,
+                        Ephemeral5mInputTokens = 0,
+                    },
+                    CacheCreationInputTokens = 0,
+                    CacheReadInputTokens = 0,
+                    InputTokens = 0,
+                    OutputTokens = 0,
+                },
+            ],
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
@@ -64,6 +112,21 @@ public class BetaMessageDeltaUsageTest : TestBase
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
+            Iterations =
+            [
+                new BetaMessageIterationUsage()
+                {
+                    CacheCreation = new()
+                    {
+                        Ephemeral1hInputTokens = 0,
+                        Ephemeral5mInputTokens = 0,
+                    },
+                    CacheCreationInputTokens = 0,
+                    CacheReadInputTokens = 0,
+                    InputTokens = 0,
+                    OutputTokens = 0,
+                },
+            ],
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
@@ -78,6 +141,17 @@ public class BetaMessageDeltaUsageTest : TestBase
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
         long expectedInputTokens = 2095;
+        List<UnnamedSchemaWithArrayParent0> expectedIterations =
+        [
+            new BetaMessageIterationUsage()
+            {
+                CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+                CacheCreationInputTokens = 0,
+                CacheReadInputTokens = 0,
+                InputTokens = 0,
+                OutputTokens = 0,
+            },
+        ];
         long expectedOutputTokens = 503;
         BetaServerToolUsage expectedServerToolUse = new()
         {
@@ -88,6 +162,12 @@ public class BetaMessageDeltaUsageTest : TestBase
         Assert.Equal(expectedCacheCreationInputTokens, deserialized.CacheCreationInputTokens);
         Assert.Equal(expectedCacheReadInputTokens, deserialized.CacheReadInputTokens);
         Assert.Equal(expectedInputTokens, deserialized.InputTokens);
+        Assert.NotNull(deserialized.Iterations);
+        Assert.Equal(expectedIterations.Count, deserialized.Iterations.Count);
+        for (int i = 0; i < expectedIterations.Count; i++)
+        {
+            Assert.Equal(expectedIterations[i], deserialized.Iterations[i]);
+        }
         Assert.Equal(expectedOutputTokens, deserialized.OutputTokens);
         Assert.Equal(expectedServerToolUse, deserialized.ServerToolUse);
     }
@@ -100,6 +180,21 @@ public class BetaMessageDeltaUsageTest : TestBase
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
+            Iterations =
+            [
+                new BetaMessageIterationUsage()
+                {
+                    CacheCreation = new()
+                    {
+                        Ephemeral1hInputTokens = 0,
+                        Ephemeral5mInputTokens = 0,
+                    },
+                    CacheCreationInputTokens = 0,
+                    CacheReadInputTokens = 0,
+                    InputTokens = 0,
+                    OutputTokens = 0,
+                },
+            ],
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
@@ -115,6 +210,21 @@ public class BetaMessageDeltaUsageTest : TestBase
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
+            Iterations =
+            [
+                new BetaMessageIterationUsage()
+                {
+                    CacheCreation = new()
+                    {
+                        Ephemeral1hInputTokens = 0,
+                        Ephemeral5mInputTokens = 0,
+                    },
+                    CacheCreationInputTokens = 0,
+                    CacheReadInputTokens = 0,
+                    InputTokens = 0,
+                    OutputTokens = 0,
+                },
+            ],
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };

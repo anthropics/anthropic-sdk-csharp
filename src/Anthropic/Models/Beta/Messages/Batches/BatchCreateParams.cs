@@ -406,6 +406,20 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
+    /// Specifies the geographic region for inference processing. If not specified,
+    /// the workspace's `default_inference_geo` is used.
+    /// </summary>
+    public string? InferenceGeo
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("inference_geo");
+        }
+        init { this._rawData.Set("inference_geo", value); }
+    }
+
+    /// <summary>
     /// MCP servers to be utilized in this request
     /// </summary>
     public IReadOnlyList<BetaRequestMcpServerUrlDefinition>? McpServers
@@ -809,6 +823,7 @@ public sealed record class Params : JsonModel
         this.Model.Validate();
         this.Container?.Validate();
         this.ContextManagement?.Validate();
+        _ = this.InferenceGeo;
         foreach (var item in this.McpServers ?? [])
         {
             item.Validate();

@@ -16,10 +16,12 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeSonnet4_5_20250929,
+            Model = Messages::Model.ClaudeOpus4_6,
+            InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
             {
+                Effort = Messages::Effort.Low,
                 Format = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -69,6 +71,7 @@ public class MessageCreateParamsTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     Strict = true,
                     Type = Messages::Type.Custom,
                 },
@@ -82,13 +85,15 @@ public class MessageCreateParamsTest : TestBase
         [
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeSonnet4_5_20250929;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_6;
+        string expectedInferenceGeo = "inference_geo";
         Messages::Metadata expectedMetadata = new()
         {
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
         };
         Messages::OutputConfig expectedOutputConfig = new()
         {
+            Effort = Messages::Effort.Low,
             Format = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -141,6 +146,7 @@ public class MessageCreateParamsTest : TestBase
                 Name = "name",
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Description = "Get the current weather in a given location",
+                EagerInputStreaming = true,
                 Strict = true,
                 Type = Messages::Type.Custom,
             },
@@ -155,6 +161,7 @@ public class MessageCreateParamsTest : TestBase
             Assert.Equal(expectedMessages[i], parameters.Messages[i]);
         }
         Assert.Equal(expectedModel, parameters.Model);
+        Assert.Equal(expectedInferenceGeo, parameters.InferenceGeo);
         Assert.Equal(expectedMetadata, parameters.Metadata);
         Assert.Equal(expectedOutputConfig, parameters.OutputConfig);
         Assert.Equal(expectedServiceTier, parameters.ServiceTier);
@@ -185,7 +192,8 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeSonnet4_5_20250929,
+            Model = Messages::Model.ClaudeOpus4_6,
+            InferenceGeo = "inference_geo",
         };
 
         Assert.Null(parameters.Metadata);
@@ -219,7 +227,8 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeSonnet4_5_20250929,
+            Model = Messages::Model.ClaudeOpus4_6,
+            InferenceGeo = "inference_geo",
 
             // Null should be interpreted as omitted for these properties
             Metadata = null,
@@ -260,31 +269,17 @@ public class MessageCreateParamsTest : TestBase
     }
 
     [Fact]
-    public void Url_Works()
-    {
-        Messages::MessageCreateParams parameters = new()
-        {
-            MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeSonnet4_5_20250929,
-        };
-
-        var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
-
-        Assert.Equal(new Uri("https://api.anthropic.com/v1/messages"), url);
-    }
-
-    [Fact]
-    public void CopyConstructor_Works()
+    public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new Messages::MessageCreateParams
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeSonnet4_5_20250929,
+            Model = Messages::Model.ClaudeOpus4_6,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
             {
+                Effort = Messages::Effort.Low,
                 Format = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -334,6 +329,173 @@ public class MessageCreateParamsTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    Strict = true,
+                    Type = Messages::Type.Custom,
+                },
+            ],
+            TopK = 5,
+            TopP = 0.7,
+        };
+
+        Assert.Null(parameters.InferenceGeo);
+        Assert.False(parameters.RawBodyData.ContainsKey("inference_geo"));
+    }
+
+    [Fact]
+    public void OptionalNullableParamsSetToNullAreSetToNull_Works()
+    {
+        var parameters = new Messages::MessageCreateParams
+        {
+            MaxTokens = 1024,
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus4_6,
+            Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            ServiceTier = Messages::ServiceTier.Auto,
+            StopSequences = ["string"],
+            System = new(
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Temperature = 1,
+            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new Messages::Tool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    Strict = true,
+                    Type = Messages::Type.Custom,
+                },
+            ],
+            TopK = 5,
+            TopP = 0.7,
+
+            InferenceGeo = null,
+        };
+
+        Assert.Null(parameters.InferenceGeo);
+        Assert.True(parameters.RawBodyData.ContainsKey("inference_geo"));
+    }
+
+    [Fact]
+    public void Url_Works()
+    {
+        Messages::MessageCreateParams parameters = new()
+        {
+            MaxTokens = 1024,
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus4_6,
+        };
+
+        var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.Equal(new Uri("https://api.anthropic.com/v1/messages"), url);
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new Messages::MessageCreateParams
+        {
+            MaxTokens = 1024,
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus4_6,
+            InferenceGeo = "inference_geo",
+            Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            ServiceTier = Messages::ServiceTier.Auto,
+            StopSequences = ["string"],
+            System = new(
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Temperature = 1,
+            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new Messages::Tool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     Strict = true,
                     Type = Messages::Type.Custom,
                 },

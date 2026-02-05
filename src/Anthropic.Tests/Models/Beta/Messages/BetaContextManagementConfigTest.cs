@@ -228,6 +228,18 @@ public class EditTest : TestBase
     }
 
     [Fact]
+    public void BetaCompact20260112ValidationWorks()
+    {
+        Edit value = new BetaCompact20260112Edit()
+        {
+            Instructions = "instructions",
+            PauseAfterCompaction = true,
+            Trigger = new(1),
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaClearToolUses20250919SerializationRoundtripWorks()
     {
         Edit value = new BetaClearToolUses20250919Edit()
@@ -248,6 +260,21 @@ public class EditTest : TestBase
     public void BetaClearThinking20251015SerializationRoundtripWorks()
     {
         Edit value = new BetaClearThinking20251015Edit() { Keep = new BetaThinkingTurns(1) };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Edit>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaCompact20260112SerializationRoundtripWorks()
+    {
+        Edit value = new BetaCompact20260112Edit()
+        {
+            Instructions = "instructions",
+            PauseAfterCompaction = true,
+            Trigger = new(1),
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Edit>(element, ModelBase.SerializerOptions);
 

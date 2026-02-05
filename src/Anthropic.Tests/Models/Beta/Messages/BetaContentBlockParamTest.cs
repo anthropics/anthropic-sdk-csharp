@@ -292,6 +292,17 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
+    public void CompactionValidationWorks()
+    {
+        BetaContentBlockParam value = new BetaCompactionBlockParam()
+        {
+            Content = "content",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void TextSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new BetaTextBlockParam()
@@ -672,6 +683,23 @@ public class BetaContentBlockParamTest : TestBase
         BetaContentBlockParam value = new BetaContainerUploadBlockParam()
         {
             FileID = "file_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void CompactionSerializationRoundtripWorks()
+    {
+        BetaContentBlockParam value = new BetaCompactionBlockParam()
+        {
+            Content = "content",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

@@ -27,6 +27,7 @@ public class BetaToolTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             InputExamples =
             [
                 new Dictionary<string, JsonElement>()
@@ -55,6 +56,7 @@ public class BetaToolTest : TestBase
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         string expectedDescription = "Get the current weather in a given location";
+        bool expectedEagerInputStreaming = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
             new Dictionary<string, JsonElement>()
@@ -76,6 +78,7 @@ public class BetaToolTest : TestBase
         Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedDeferLoading, model.DeferLoading);
         Assert.Equal(expectedDescription, model.Description);
+        Assert.Equal(expectedEagerInputStreaming, model.EagerInputStreaming);
         Assert.NotNull(model.InputExamples);
         Assert.Equal(expectedInputExamples.Count, model.InputExamples.Count);
         for (int i = 0; i < expectedInputExamples.Count; i++)
@@ -111,6 +114,7 @@ public class BetaToolTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             InputExamples =
             [
                 new Dictionary<string, JsonElement>()
@@ -147,6 +151,7 @@ public class BetaToolTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             InputExamples =
             [
                 new Dictionary<string, JsonElement>()
@@ -182,6 +187,7 @@ public class BetaToolTest : TestBase
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         string expectedDescription = "Get the current weather in a given location";
+        bool expectedEagerInputStreaming = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
             new Dictionary<string, JsonElement>()
@@ -203,6 +209,7 @@ public class BetaToolTest : TestBase
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedDeferLoading, deserialized.DeferLoading);
         Assert.Equal(expectedDescription, deserialized.Description);
+        Assert.Equal(expectedEagerInputStreaming, deserialized.EagerInputStreaming);
         Assert.NotNull(deserialized.InputExamples);
         Assert.Equal(expectedInputExamples.Count, deserialized.InputExamples.Count);
         for (int i = 0; i < expectedInputExamples.Count; i++)
@@ -238,6 +245,7 @@ public class BetaToolTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             InputExamples =
             [
                 new Dictionary<string, JsonElement>()
@@ -268,6 +276,7 @@ public class BetaToolTest : TestBase
             },
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            EagerInputStreaming = true,
             Type = BetaToolType.Custom,
         };
 
@@ -299,6 +308,7 @@ public class BetaToolTest : TestBase
             },
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            EagerInputStreaming = true,
             Type = BetaToolType.Custom,
         };
 
@@ -321,6 +331,7 @@ public class BetaToolTest : TestBase
             },
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            EagerInputStreaming = true,
             Type = BetaToolType.Custom,
 
             // Null should be interpreted as omitted for these properties
@@ -359,6 +370,7 @@ public class BetaToolTest : TestBase
             },
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            EagerInputStreaming = true,
             Type = BetaToolType.Custom,
 
             // Null should be interpreted as omitted for these properties
@@ -402,6 +414,8 @@ public class BetaToolTest : TestBase
 
         Assert.Null(model.CacheControl);
         Assert.False(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.EagerInputStreaming);
+        Assert.False(model.RawData.ContainsKey("eager_input_streaming"));
         Assert.Null(model.Type);
         Assert.False(model.RawData.ContainsKey("type"));
     }
@@ -465,11 +479,14 @@ public class BetaToolTest : TestBase
             Strict = true,
 
             CacheControl = null,
+            EagerInputStreaming = null,
             Type = null,
         };
 
         Assert.Null(model.CacheControl);
         Assert.True(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.EagerInputStreaming);
+        Assert.True(model.RawData.ContainsKey("eager_input_streaming"));
         Assert.Null(model.Type);
         Assert.True(model.RawData.ContainsKey("type"));
     }
@@ -502,6 +519,7 @@ public class BetaToolTest : TestBase
             Strict = true,
 
             CacheControl = null,
+            EagerInputStreaming = null,
             Type = null,
         };
 
@@ -527,6 +545,7 @@ public class BetaToolTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             InputExamples =
             [
                 new Dictionary<string, JsonElement>()

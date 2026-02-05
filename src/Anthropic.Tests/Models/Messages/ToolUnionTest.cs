@@ -24,6 +24,7 @@ public class ToolUnionTest : TestBase
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             Strict = true,
             Type = Type.Custom,
         };
@@ -113,6 +114,7 @@ public class ToolUnionTest : TestBase
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             Strict = true,
             Type = Type.Custom,
         };

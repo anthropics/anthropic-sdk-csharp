@@ -26,6 +26,7 @@ public class BetaToolUnionTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             InputExamples =
             [
                 new Dictionary<string, JsonElement>()
@@ -383,6 +384,7 @@ public class BetaToolUnionTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             InputExamples =
             [
                 new Dictionary<string, JsonElement>()

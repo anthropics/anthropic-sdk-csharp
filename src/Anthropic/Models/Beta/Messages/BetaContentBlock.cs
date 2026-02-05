@@ -46,7 +46,8 @@ public record class BetaContentBlock : ModelBase
                 toolSearchToolResult: (x) => x.Type,
                 mcpToolUse: (x) => x.Type,
                 mcpToolResult: (x) => x.Type,
-                containerUpload: (x) => x.Type
+                containerUpload: (x) => x.Type,
+                compaction: (x) => x.Type
             );
         }
     }
@@ -69,7 +70,8 @@ public record class BetaContentBlock : ModelBase
                 toolSearchToolResult: (_) => null,
                 mcpToolUse: (x) => x.ID,
                 mcpToolResult: (_) => null,
-                containerUpload: (_) => null
+                containerUpload: (_) => null,
+                compaction: (_) => null
             );
         }
     }
@@ -92,7 +94,8 @@ public record class BetaContentBlock : ModelBase
                 toolSearchToolResult: (x) => x.ToolUseID,
                 mcpToolUse: (_) => null,
                 mcpToolResult: (x) => x.ToolUseID,
-                containerUpload: (_) => null
+                containerUpload: (_) => null,
+                compaction: (_) => null
             );
         }
     }
@@ -179,6 +182,12 @@ public record class BetaContentBlock : ModelBase
     }
 
     public BetaContentBlock(BetaContainerUploadBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaContentBlock(BetaCompactionBlock value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -496,6 +505,27 @@ public record class BetaContentBlock : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCompactionBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCompaction(out var value)) {
+    ///     // `value` is of type `BetaCompactionBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickCompaction([NotNullWhen(true)] out BetaCompactionBlock? value)
+    {
+        value = this.Value as BetaCompactionBlock;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
@@ -522,7 +552,8 @@ public record class BetaContentBlock : ModelBase
     ///     (BetaToolSearchToolResultBlock value) => {...},
     ///     (BetaMcpToolUseBlock value) => {...},
     ///     (BetaMcpToolResultBlock value) => {...},
-    ///     (BetaContainerUploadBlock value) => {...}
+    ///     (BetaContainerUploadBlock value) => {...},
+    ///     (BetaCompactionBlock value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -541,7 +572,8 @@ public record class BetaContentBlock : ModelBase
         System::Action<BetaToolSearchToolResultBlock> toolSearchToolResult,
         System::Action<BetaMcpToolUseBlock> mcpToolUse,
         System::Action<BetaMcpToolResultBlock> mcpToolResult,
-        System::Action<BetaContainerUploadBlock> containerUpload
+        System::Action<BetaContainerUploadBlock> containerUpload,
+        System::Action<BetaCompactionBlock> compaction
     )
     {
         switch (this.Value)
@@ -588,6 +620,9 @@ public record class BetaContentBlock : ModelBase
             case BetaContainerUploadBlock value:
                 containerUpload(value);
                 break;
+            case BetaCompactionBlock value:
+                compaction(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of BetaContentBlock"
@@ -623,7 +658,8 @@ public record class BetaContentBlock : ModelBase
     ///     (BetaToolSearchToolResultBlock value) => {...},
     ///     (BetaMcpToolUseBlock value) => {...},
     ///     (BetaMcpToolResultBlock value) => {...},
-    ///     (BetaContainerUploadBlock value) => {...}
+    ///     (BetaContainerUploadBlock value) => {...},
+    ///     (BetaCompactionBlock value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -645,7 +681,8 @@ public record class BetaContentBlock : ModelBase
         System::Func<BetaToolSearchToolResultBlock, T> toolSearchToolResult,
         System::Func<BetaMcpToolUseBlock, T> mcpToolUse,
         System::Func<BetaMcpToolResultBlock, T> mcpToolResult,
-        System::Func<BetaContainerUploadBlock, T> containerUpload
+        System::Func<BetaContainerUploadBlock, T> containerUpload,
+        System::Func<BetaCompactionBlock, T> compaction
     )
     {
         return this.Value switch
@@ -666,6 +703,7 @@ public record class BetaContentBlock : ModelBase
             BetaMcpToolUseBlock value => mcpToolUse(value),
             BetaMcpToolResultBlock value => mcpToolResult(value),
             BetaContainerUploadBlock value => containerUpload(value),
+            BetaCompactionBlock value => compaction(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaContentBlock"
             ),
@@ -707,6 +745,8 @@ public record class BetaContentBlock : ModelBase
 
     public static implicit operator BetaContentBlock(BetaContainerUploadBlock value) => new(value);
 
+    public static implicit operator BetaContentBlock(BetaCompactionBlock value) => new(value);
+
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -739,7 +779,8 @@ public record class BetaContentBlock : ModelBase
             (toolSearchToolResult) => toolSearchToolResult.Validate(),
             (mcpToolUse) => mcpToolUse.Validate(),
             (mcpToolResult) => mcpToolResult.Validate(),
-            (containerUpload) => containerUpload.Validate()
+            (containerUpload) => containerUpload.Validate(),
+            (compaction) => compaction.Validate()
         );
     }
 
@@ -774,6 +815,7 @@ public record class BetaContentBlock : ModelBase
             BetaMcpToolUseBlock _ => 11,
             BetaMcpToolResultBlock _ => 12,
             BetaContainerUploadBlock _ => 13,
+            BetaCompactionBlock _ => 14,
             _ => -1,
         };
     }
@@ -1090,6 +1132,28 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaContainerUploadBlock>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "compaction":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaCompactionBlock>(
                         element,
                         options
                     );

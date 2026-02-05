@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -52,6 +53,19 @@ public sealed record class BetaUsage : JsonModel
     }
 
     /// <summary>
+    /// The geographic region where inference was performed for this request.
+    /// </summary>
+    public required string? InferenceGeo
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("inference_geo");
+        }
+        init { this._rawData.Set("inference_geo", value); }
+    }
+
+    /// <summary>
     /// The number of input tokens which were used.
     /// </summary>
     public required long InputTokens
@@ -62,6 +76,33 @@ public sealed record class BetaUsage : JsonModel
             return this._rawData.GetNotNullStruct<long>("input_tokens");
         }
         init { this._rawData.Set("input_tokens", value); }
+    }
+
+    /// <summary>
+    /// Per-iteration token usage breakdown.
+    ///
+    /// <para>Each entry represents one sampling iteration, with its own input/output
+    /// token counts and cache statistics. This allows you to: - Determine which
+    /// iterations exceeded long context thresholds (>=200k tokens) - Calculate the
+    /// true context window size from the last iteration - Understand token accumulation
+    /// across server-side tool use loops</para>
+    /// </summary>
+    public required IReadOnlyList<UnnamedSchemaWithArrayParent0>? Iterations
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<UnnamedSchemaWithArrayParent0>>(
+                "iterations"
+            );
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<UnnamedSchemaWithArrayParent0>?>(
+                "iterations",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -111,7 +152,12 @@ public sealed record class BetaUsage : JsonModel
         this.CacheCreation?.Validate();
         _ = this.CacheCreationInputTokens;
         _ = this.CacheReadInputTokens;
+        _ = this.InferenceGeo;
         _ = this.InputTokens;
+        foreach (var item in this.Iterations ?? [])
+        {
+            item.Validate();
+        }
         _ = this.OutputTokens;
         this.ServerToolUse?.Validate();
         this.ServiceTier?.Validate();

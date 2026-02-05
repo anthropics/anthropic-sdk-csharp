@@ -346,6 +346,20 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
+    /// Specifies the geographic region for inference processing. If not specified,
+    /// the workspace's `default_inference_geo` is used.
+    /// </summary>
+    public string? InferenceGeo
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("inference_geo");
+        }
+        init { this._rawData.Set("inference_geo", value); }
+    }
+
+    /// <summary>
     /// An object describing metadata about the request.
     /// </summary>
     public Metadata? Metadata
@@ -702,6 +716,7 @@ public sealed record class Params : JsonModel
             item.Validate();
         }
         this.Model.Validate();
+        _ = this.InferenceGeo;
         this.Metadata?.Validate();
         this.OutputConfig?.Validate();
         this.ServiceTier?.Validate();

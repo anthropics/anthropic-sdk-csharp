@@ -45,6 +45,21 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
+                Iterations =
+                [
+                    new Messages::BetaMessageIterationUsage()
+                    {
+                        CacheCreation = new()
+                        {
+                            Ephemeral1hInputTokens = 0,
+                            Ephemeral5mInputTokens = 0,
+                        },
+                        CacheCreationInputTokens = 0,
+                        CacheReadInputTokens = 0,
+                        InputTokens = 0,
+                        OutputTokens = 0,
+                    },
+                ],
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
@@ -84,6 +99,21 @@ public class BetaRawMessageDeltaEventTest : TestBase
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
+            Iterations =
+            [
+                new Messages::BetaMessageIterationUsage()
+                {
+                    CacheCreation = new()
+                    {
+                        Ephemeral1hInputTokens = 0,
+                        Ephemeral5mInputTokens = 0,
+                    },
+                    CacheCreationInputTokens = 0,
+                    CacheReadInputTokens = 0,
+                    InputTokens = 0,
+                    OutputTokens = 0,
+                },
+            ],
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
@@ -132,6 +162,21 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
+                Iterations =
+                [
+                    new Messages::BetaMessageIterationUsage()
+                    {
+                        CacheCreation = new()
+                        {
+                            Ephemeral1hInputTokens = 0,
+                            Ephemeral5mInputTokens = 0,
+                        },
+                        CacheCreationInputTokens = 0,
+                        CacheReadInputTokens = 0,
+                        InputTokens = 0,
+                        OutputTokens = 0,
+                    },
+                ],
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
@@ -184,6 +229,21 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
+                Iterations =
+                [
+                    new Messages::BetaMessageIterationUsage()
+                    {
+                        CacheCreation = new()
+                        {
+                            Ephemeral1hInputTokens = 0,
+                            Ephemeral5mInputTokens = 0,
+                        },
+                        CacheCreationInputTokens = 0,
+                        CacheReadInputTokens = 0,
+                        InputTokens = 0,
+                        OutputTokens = 0,
+                    },
+                ],
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
@@ -230,6 +290,21 @@ public class BetaRawMessageDeltaEventTest : TestBase
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
+            Iterations =
+            [
+                new Messages::BetaMessageIterationUsage()
+                {
+                    CacheCreation = new()
+                    {
+                        Ephemeral1hInputTokens = 0,
+                        Ephemeral5mInputTokens = 0,
+                    },
+                    CacheCreationInputTokens = 0,
+                    CacheReadInputTokens = 0,
+                    InputTokens = 0,
+                    OutputTokens = 0,
+                },
+            ],
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
@@ -278,6 +353,21 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
+                Iterations =
+                [
+                    new Messages::BetaMessageIterationUsage()
+                    {
+                        CacheCreation = new()
+                        {
+                            Ephemeral1hInputTokens = 0,
+                            Ephemeral5mInputTokens = 0,
+                        },
+                        CacheCreationInputTokens = 0,
+                        CacheReadInputTokens = 0,
+                        InputTokens = 0,
+                        OutputTokens = 0,
+                    },
+                ],
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
@@ -324,6 +414,21 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
+                Iterations =
+                [
+                    new Messages::BetaMessageIterationUsage()
+                    {
+                        CacheCreation = new()
+                        {
+                            Ephemeral1hInputTokens = 0,
+                            Ephemeral5mInputTokens = 0,
+                        },
+                        CacheCreationInputTokens = 0,
+                        CacheReadInputTokens = 0,
+                        InputTokens = 0,
+                        OutputTokens = 0,
+                    },
+                ],
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },

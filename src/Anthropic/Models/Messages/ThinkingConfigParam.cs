@@ -37,7 +37,10 @@ public record class ThinkingConfigParam : ModelBase
 
     public JsonElement Type
     {
-        get { return Match(enabled: (x) => x.Type, disabled: (x) => x.Type); }
+        get
+        {
+            return Match(enabled: (x) => x.Type, disabled: (x) => x.Type, adaptive: (x) => x.Type);
+        }
     }
 
     public ThinkingConfigParam(ThinkingConfigEnabled value, JsonElement? element = null)
@@ -47,6 +50,12 @@ public record class ThinkingConfigParam : ModelBase
     }
 
     public ThinkingConfigParam(ThinkingConfigDisabled value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ThinkingConfigParam(ThinkingConfigAdaptive value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -100,6 +109,27 @@ public record class ThinkingConfigParam : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ThinkingConfigAdaptive"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickAdaptive(out var value)) {
+    ///     // `value` is of type `ThinkingConfigAdaptive`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickAdaptive([NotNullWhen(true)] out ThinkingConfigAdaptive? value)
+    {
+        value = this.Value as ThinkingConfigAdaptive;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
@@ -114,14 +144,16 @@ public record class ThinkingConfigParam : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (ThinkingConfigEnabled value) => {...},
-    ///     (ThinkingConfigDisabled value) => {...}
+    ///     (ThinkingConfigDisabled value) => {...},
+    ///     (ThinkingConfigAdaptive value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<ThinkingConfigEnabled> enabled,
-        System::Action<ThinkingConfigDisabled> disabled
+        System::Action<ThinkingConfigDisabled> disabled,
+        System::Action<ThinkingConfigAdaptive> adaptive
     )
     {
         switch (this.Value)
@@ -131,6 +163,9 @@ public record class ThinkingConfigParam : ModelBase
                 break;
             case ThinkingConfigDisabled value:
                 disabled(value);
+                break;
+            case ThinkingConfigAdaptive value:
+                adaptive(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -155,20 +190,23 @@ public record class ThinkingConfigParam : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (ThinkingConfigEnabled value) => {...},
-    ///     (ThinkingConfigDisabled value) => {...}
+    ///     (ThinkingConfigDisabled value) => {...},
+    ///     (ThinkingConfigAdaptive value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
         System::Func<ThinkingConfigEnabled, T> enabled,
-        System::Func<ThinkingConfigDisabled, T> disabled
+        System::Func<ThinkingConfigDisabled, T> disabled,
+        System::Func<ThinkingConfigAdaptive, T> adaptive
     )
     {
         return this.Value switch
         {
             ThinkingConfigEnabled value => enabled(value),
             ThinkingConfigDisabled value => disabled(value),
+            ThinkingConfigAdaptive value => adaptive(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ThinkingConfigParam"
             ),
@@ -178,6 +216,8 @@ public record class ThinkingConfigParam : ModelBase
     public static implicit operator ThinkingConfigParam(ThinkingConfigEnabled value) => new(value);
 
     public static implicit operator ThinkingConfigParam(ThinkingConfigDisabled value) => new(value);
+
+    public static implicit operator ThinkingConfigParam(ThinkingConfigAdaptive value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -197,7 +237,11 @@ public record class ThinkingConfigParam : ModelBase
                 "Data did not match any variant of ThinkingConfigParam"
             );
         }
-        this.Switch((enabled) => enabled.Validate(), (disabled) => disabled.Validate());
+        this.Switch(
+            (enabled) => enabled.Validate(),
+            (disabled) => disabled.Validate(),
+            (adaptive) => adaptive.Validate()
+        );
     }
 
     public virtual bool Equals(ThinkingConfigParam? other) =>
@@ -219,6 +263,7 @@ public record class ThinkingConfigParam : ModelBase
         {
             ThinkingConfigEnabled _ => 0,
             ThinkingConfigDisabled _ => 1,
+            ThinkingConfigAdaptive _ => 2,
             _ => -1,
         };
     }
@@ -272,6 +317,28 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ThinkingConfigDisabled>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "adaptive":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ThinkingConfigAdaptive>(
                         element,
                         options
                     );

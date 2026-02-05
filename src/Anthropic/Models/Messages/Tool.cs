@@ -84,6 +84,23 @@ public sealed record class Tool : JsonModel
     }
 
     /// <summary>
+    /// Enable eager input streaming for this tool. When true, tool input parameters
+    /// will be streamed incrementally as they are generated, and types will be inferred
+    /// on-the-fly rather than buffering the full JSON output. When false, streaming
+    /// is disabled for this tool even if the fine-grained-tool-streaming beta is
+    /// active. When null (default), uses the default behavior based on beta headers.
+    /// </summary>
+    public bool? EagerInputStreaming
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("eager_input_streaming");
+        }
+        init { this._rawData.Set("eager_input_streaming", value); }
+    }
+
+    /// <summary>
     /// When true, guarantees schema validation on tool names and inputs
     /// </summary>
     public bool? Strict
@@ -123,6 +140,7 @@ public sealed record class Tool : JsonModel
         _ = this.Name;
         this.CacheControl?.Validate();
         _ = this.Description;
+        _ = this.EagerInputStreaming;
         _ = this.Strict;
         this.Type?.Validate();
     }

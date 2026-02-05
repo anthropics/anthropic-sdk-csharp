@@ -37,7 +37,10 @@ public record class BetaThinkingConfigParam : ModelBase
 
     public JsonElement Type
     {
-        get { return Match(enabled: (x) => x.Type, disabled: (x) => x.Type); }
+        get
+        {
+            return Match(enabled: (x) => x.Type, disabled: (x) => x.Type, adaptive: (x) => x.Type);
+        }
     }
 
     public BetaThinkingConfigParam(BetaThinkingConfigEnabled value, JsonElement? element = null)
@@ -47,6 +50,12 @@ public record class BetaThinkingConfigParam : ModelBase
     }
 
     public BetaThinkingConfigParam(BetaThinkingConfigDisabled value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaThinkingConfigParam(BetaThinkingConfigAdaptive value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -100,6 +109,27 @@ public record class BetaThinkingConfigParam : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaThinkingConfigAdaptive"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickAdaptive(out var value)) {
+    ///     // `value` is of type `BetaThinkingConfigAdaptive`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickAdaptive([NotNullWhen(true)] out BetaThinkingConfigAdaptive? value)
+    {
+        value = this.Value as BetaThinkingConfigAdaptive;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
@@ -114,14 +144,16 @@ public record class BetaThinkingConfigParam : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (BetaThinkingConfigEnabled value) => {...},
-    ///     (BetaThinkingConfigDisabled value) => {...}
+    ///     (BetaThinkingConfigDisabled value) => {...},
+    ///     (BetaThinkingConfigAdaptive value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<BetaThinkingConfigEnabled> enabled,
-        System::Action<BetaThinkingConfigDisabled> disabled
+        System::Action<BetaThinkingConfigDisabled> disabled,
+        System::Action<BetaThinkingConfigAdaptive> adaptive
     )
     {
         switch (this.Value)
@@ -131,6 +163,9 @@ public record class BetaThinkingConfigParam : ModelBase
                 break;
             case BetaThinkingConfigDisabled value:
                 disabled(value);
+                break;
+            case BetaThinkingConfigAdaptive value:
+                adaptive(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -155,20 +190,23 @@ public record class BetaThinkingConfigParam : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (BetaThinkingConfigEnabled value) => {...},
-    ///     (BetaThinkingConfigDisabled value) => {...}
+    ///     (BetaThinkingConfigDisabled value) => {...},
+    ///     (BetaThinkingConfigAdaptive value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
         System::Func<BetaThinkingConfigEnabled, T> enabled,
-        System::Func<BetaThinkingConfigDisabled, T> disabled
+        System::Func<BetaThinkingConfigDisabled, T> disabled,
+        System::Func<BetaThinkingConfigAdaptive, T> adaptive
     )
     {
         return this.Value switch
         {
             BetaThinkingConfigEnabled value => enabled(value),
             BetaThinkingConfigDisabled value => disabled(value),
+            BetaThinkingConfigAdaptive value => adaptive(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaThinkingConfigParam"
             ),
@@ -179,6 +217,9 @@ public record class BetaThinkingConfigParam : ModelBase
         new(value);
 
     public static implicit operator BetaThinkingConfigParam(BetaThinkingConfigDisabled value) =>
+        new(value);
+
+    public static implicit operator BetaThinkingConfigParam(BetaThinkingConfigAdaptive value) =>
         new(value);
 
     /// <summary>
@@ -199,7 +240,11 @@ public record class BetaThinkingConfigParam : ModelBase
                 "Data did not match any variant of BetaThinkingConfigParam"
             );
         }
-        this.Switch((enabled) => enabled.Validate(), (disabled) => disabled.Validate());
+        this.Switch(
+            (enabled) => enabled.Validate(),
+            (disabled) => disabled.Validate(),
+            (adaptive) => adaptive.Validate()
+        );
     }
 
     public virtual bool Equals(BetaThinkingConfigParam? other) =>
@@ -221,6 +266,7 @@ public record class BetaThinkingConfigParam : ModelBase
         {
             BetaThinkingConfigEnabled _ => 0,
             BetaThinkingConfigDisabled _ => 1,
+            BetaThinkingConfigAdaptive _ => 2,
             _ => -1,
         };
     }
@@ -274,6 +320,28 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigDisabled>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "adaptive":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigAdaptive>(
                         element,
                         options
                     );

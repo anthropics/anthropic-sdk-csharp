@@ -52,6 +52,19 @@ public sealed record class Usage : JsonModel
     }
 
     /// <summary>
+    /// The geographic region where inference was performed for this request.
+    /// </summary>
+    public required string? InferenceGeo
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("inference_geo");
+        }
+        init { this._rawData.Set("inference_geo", value); }
+    }
+
+    /// <summary>
     /// The number of input tokens which were used.
     /// </summary>
     public required long InputTokens
@@ -111,6 +124,7 @@ public sealed record class Usage : JsonModel
         this.CacheCreation?.Validate();
         _ = this.CacheCreationInputTokens;
         _ = this.CacheReadInputTokens;
+        _ = this.InferenceGeo;
         _ = this.InputTokens;
         _ = this.OutputTokens;
         this.ServerToolUse?.Validate();
