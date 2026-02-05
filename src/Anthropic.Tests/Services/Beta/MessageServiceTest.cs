@@ -28,6 +28,22 @@ public class MessageServiceTest
                 OutputTokens = 25,
                 ServerToolUse = null,
                 ServiceTier = BetaUsageServiceTier.Standard,
+                InferenceGeo = "inference_geo",
+                Iterations =
+                [
+                    new BetaMessageIterationUsage()
+                    {
+                        CacheCreation = new()
+                        {
+                            Ephemeral1hInputTokens = 0,
+                            Ephemeral5mInputTokens = 0,
+                        },
+                        CacheCreationInputTokens = 0,
+                        CacheReadInputTokens = 0,
+                        InputTokens = 0,
+                        OutputTokens = 0,
+                    },
+                ],
             },
             Container = null,
             ContextManagement = null,

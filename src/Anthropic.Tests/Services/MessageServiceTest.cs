@@ -30,6 +30,7 @@ public class MessageServiceTest
                 OutputTokens = 25,
                 ServerToolUse = null,
                 ServiceTier = UsageServiceTier.Standard,
+                InferenceGeo = "inference_geo",
             },
         };
 
