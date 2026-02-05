@@ -12,14 +12,14 @@ public class BetaModelInfoTest : TestBase
     {
         var model = new BetaModelInfo
         {
-            ID = "claude-sonnet-4-20250514",
-            CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
-            DisplayName = "Claude Sonnet 4",
+            ID = "claude-opus-4-6",
+            CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
+            DisplayName = "Claude Opus 4.6",
         };
 
-        string expectedID = "claude-sonnet-4-20250514";
-        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z");
-        string expectedDisplayName = "Claude Sonnet 4";
+        string expectedID = "claude-opus-4-6";
+        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z");
+        string expectedDisplayName = "Claude Opus 4.6";
         JsonElement expectedType = JsonSerializer.SerializeToElement("model");
 
         Assert.Equal(expectedID, model.ID);
@@ -33,9 +33,9 @@ public class BetaModelInfoTest : TestBase
     {
         var model = new BetaModelInfo
         {
-            ID = "claude-sonnet-4-20250514",
-            CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
-            DisplayName = "Claude Sonnet 4",
+            ID = "claude-opus-4-6",
+            CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
+            DisplayName = "Claude Opus 4.6",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -52,9 +52,9 @@ public class BetaModelInfoTest : TestBase
     {
         var model = new BetaModelInfo
         {
-            ID = "claude-sonnet-4-20250514",
-            CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
-            DisplayName = "Claude Sonnet 4",
+            ID = "claude-opus-4-6",
+            CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
+            DisplayName = "Claude Opus 4.6",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -64,9 +64,9 @@ public class BetaModelInfoTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "claude-sonnet-4-20250514";
-        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z");
-        string expectedDisplayName = "Claude Sonnet 4";
+        string expectedID = "claude-opus-4-6";
+        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z");
+        string expectedDisplayName = "Claude Opus 4.6";
         JsonElement expectedType = JsonSerializer.SerializeToElement("model");
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -80,9 +80,9 @@ public class BetaModelInfoTest : TestBase
     {
         var model = new BetaModelInfo
         {
-            ID = "claude-sonnet-4-20250514",
-            CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
-            DisplayName = "Claude Sonnet 4",
+            ID = "claude-opus-4-6",
+            CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
+            DisplayName = "Claude Opus 4.6",
         };
 
         model.Validate();
@@ -93,9 +93,9 @@ public class BetaModelInfoTest : TestBase
     {
         var model = new BetaModelInfo
         {
-            ID = "claude-sonnet-4-20250514",
-            CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
-            DisplayName = "Claude Sonnet 4",
+            ID = "claude-opus-4-6",
+            CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
+            DisplayName = "Claude Opus 4.6",
         };
 
         BetaModelInfo copied = new(model);

@@ -13,6 +13,7 @@ public class BetaStopReasonTest : TestBase
     [InlineData(BetaStopReason.StopSequence)]
     [InlineData(BetaStopReason.ToolUse)]
     [InlineData(BetaStopReason.PauseTurn)]
+    [InlineData(BetaStopReason.Compaction)]
     [InlineData(BetaStopReason.Refusal)]
     [InlineData(BetaStopReason.ModelContextWindowExceeded)]
     public void Validation_Works(BetaStopReason rawValue)
@@ -40,6 +41,7 @@ public class BetaStopReasonTest : TestBase
     [InlineData(BetaStopReason.StopSequence)]
     [InlineData(BetaStopReason.ToolUse)]
     [InlineData(BetaStopReason.PauseTurn)]
+    [InlineData(BetaStopReason.Compaction)]
     [InlineData(BetaStopReason.Refusal)]
     [InlineData(BetaStopReason.ModelContextWindowExceeded)]
     public void SerializationRoundtrip_Works(BetaStopReason rawValue)

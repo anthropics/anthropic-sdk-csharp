@@ -25,7 +25,7 @@ public class BatchServiceTest
                         {
                             MaxTokens = 1024,
                             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                            Model = Messages::Model.ClaudeSonnet4_5_20250929,
+                            Model = Messages::Model.ClaudeOpus4_6,
                             Container = new BetaContainerParams()
                             {
                                 ID = "id",
@@ -53,6 +53,7 @@ public class BatchServiceTest
                                     },
                                 ],
                             },
+                            InferenceGeo = "inference_geo",
                             McpServers =
                             [
                                 new()
@@ -133,6 +134,7 @@ public class BatchServiceTest
                                     CacheControl = new() { Ttl = Ttl.Ttl5m },
                                     DeferLoading = true,
                                     Description = "Get the current weather in a given location",
+                                    EagerInputStreaming = true,
                                     InputExamples =
                                     [
                                         new Dictionary<string, JsonElement>()

@@ -25,6 +25,7 @@ public class ToolTest : TestBase
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             Strict = true,
             Type = Type.Custom,
         };
@@ -41,6 +42,7 @@ public class ToolTest : TestBase
         string expectedName = "name";
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         string expectedDescription = "Get the current weather in a given location";
+        bool expectedEagerInputStreaming = true;
         bool expectedStrict = true;
         ApiEnum<string, Type> expectedType = Type.Custom;
 
@@ -48,6 +50,7 @@ public class ToolTest : TestBase
         Assert.Equal(expectedName, model.Name);
         Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedDescription, model.Description);
+        Assert.Equal(expectedEagerInputStreaming, model.EagerInputStreaming);
         Assert.Equal(expectedStrict, model.Strict);
         Assert.Equal(expectedType, model.Type);
     }
@@ -69,6 +72,7 @@ public class ToolTest : TestBase
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             Strict = true,
             Type = Type.Custom,
         };
@@ -96,6 +100,7 @@ public class ToolTest : TestBase
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             Strict = true,
             Type = Type.Custom,
         };
@@ -116,6 +121,7 @@ public class ToolTest : TestBase
         string expectedName = "name";
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         string expectedDescription = "Get the current weather in a given location";
+        bool expectedEagerInputStreaming = true;
         bool expectedStrict = true;
         ApiEnum<string, Type> expectedType = Type.Custom;
 
@@ -123,6 +129,7 @@ public class ToolTest : TestBase
         Assert.Equal(expectedName, deserialized.Name);
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedDescription, deserialized.Description);
+        Assert.Equal(expectedEagerInputStreaming, deserialized.EagerInputStreaming);
         Assert.Equal(expectedStrict, deserialized.Strict);
         Assert.Equal(expectedType, deserialized.Type);
     }
@@ -144,6 +151,7 @@ public class ToolTest : TestBase
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             Strict = true,
             Type = Type.Custom,
         };
@@ -167,6 +175,7 @@ public class ToolTest : TestBase
             },
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            EagerInputStreaming = true,
             Type = Type.Custom,
         };
 
@@ -192,6 +201,7 @@ public class ToolTest : TestBase
             },
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            EagerInputStreaming = true,
             Type = Type.Custom,
         };
 
@@ -214,6 +224,7 @@ public class ToolTest : TestBase
             },
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            EagerInputStreaming = true,
             Type = Type.Custom,
 
             // Null should be interpreted as omitted for these properties
@@ -243,6 +254,7 @@ public class ToolTest : TestBase
             },
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            EagerInputStreaming = true,
             Type = Type.Custom,
 
             // Null should be interpreted as omitted for these properties
@@ -274,6 +286,8 @@ public class ToolTest : TestBase
 
         Assert.Null(model.CacheControl);
         Assert.False(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.EagerInputStreaming);
+        Assert.False(model.RawData.ContainsKey("eager_input_streaming"));
         Assert.Null(model.Type);
         Assert.False(model.RawData.ContainsKey("type"));
     }
@@ -319,11 +333,14 @@ public class ToolTest : TestBase
             Strict = true,
 
             CacheControl = null,
+            EagerInputStreaming = null,
             Type = null,
         };
 
         Assert.Null(model.CacheControl);
         Assert.True(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.EagerInputStreaming);
+        Assert.True(model.RawData.ContainsKey("eager_input_streaming"));
         Assert.Null(model.Type);
         Assert.True(model.RawData.ContainsKey("type"));
     }
@@ -347,6 +364,7 @@ public class ToolTest : TestBase
             Strict = true,
 
             CacheControl = null,
+            EagerInputStreaming = null,
             Type = null,
         };
 
@@ -370,6 +388,7 @@ public class ToolTest : TestBase
             Name = "name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             Strict = true,
             Type = Type.Custom,
         };

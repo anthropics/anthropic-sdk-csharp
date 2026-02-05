@@ -34,7 +34,7 @@ public class MessageBatchResultTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeSonnet4_5_20250929,
+                Model = Model.ClaudeOpus4_6,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -46,6 +46,7 @@ public class MessageBatchResultTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
+                    InferenceGeo = "inference_geo",
                     InputTokens = 2095,
                     OutputTokens = 503,
                     ServerToolUse = new(0),
@@ -109,7 +110,7 @@ public class MessageBatchResultTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeSonnet4_5_20250929,
+                Model = Model.ClaudeOpus4_6,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -121,6 +122,7 @@ public class MessageBatchResultTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
+                    InferenceGeo = "inference_geo",
                     InputTokens = 2095,
                     OutputTokens = 503,
                     ServerToolUse = new(0),

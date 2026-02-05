@@ -61,7 +61,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Model = Model.ClaudeSonnet4_5_20250929,
+                    Model = Model.ClaudeOpus4_6,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -73,7 +73,23 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                         CacheCreationInputTokens = 2051,
                         CacheReadInputTokens = 2051,
+                        InferenceGeo = "inference_geo",
                         InputTokens = 2095,
+                        Iterations =
+                        [
+                            new Messages::BetaMessageIterationUsage()
+                            {
+                                CacheCreation = new()
+                                {
+                                    Ephemeral1hInputTokens = 0,
+                                    Ephemeral5mInputTokens = 0,
+                                },
+                                CacheCreationInputTokens = 0,
+                                CacheReadInputTokens = 0,
+                                InputTokens = 0,
+                                OutputTokens = 0,
+                            },
+                        ],
                         OutputTokens = 503,
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = Messages::BetaUsageServiceTier.Standard,
@@ -129,7 +145,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                     ]
                 ),
-                Model = Model.ClaudeSonnet4_5_20250929,
+                Model = Model.ClaudeOpus4_6,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -141,7 +157,23 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
+                    InferenceGeo = "inference_geo",
                     InputTokens = 2095,
+                    Iterations =
+                    [
+                        new Messages::BetaMessageIterationUsage()
+                        {
+                            CacheCreation = new()
+                            {
+                                Ephemeral1hInputTokens = 0,
+                                Ephemeral5mInputTokens = 0,
+                            },
+                            CacheCreationInputTokens = 0,
+                            CacheReadInputTokens = 0,
+                            InputTokens = 0,
+                            OutputTokens = 0,
+                        },
+                    ],
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
@@ -205,7 +237,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Model = Model.ClaudeSonnet4_5_20250929,
+                    Model = Model.ClaudeOpus4_6,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -217,7 +249,23 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                         CacheCreationInputTokens = 2051,
                         CacheReadInputTokens = 2051,
+                        InferenceGeo = "inference_geo",
                         InputTokens = 2095,
+                        Iterations =
+                        [
+                            new Messages::BetaMessageIterationUsage()
+                            {
+                                CacheCreation = new()
+                                {
+                                    Ephemeral1hInputTokens = 0,
+                                    Ephemeral5mInputTokens = 0,
+                                },
+                                CacheCreationInputTokens = 0,
+                                CacheReadInputTokens = 0,
+                                InputTokens = 0,
+                                OutputTokens = 0,
+                            },
+                        ],
                         OutputTokens = 503,
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = Messages::BetaUsageServiceTier.Standard,
@@ -287,7 +335,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Model = Model.ClaudeSonnet4_5_20250929,
+                    Model = Model.ClaudeOpus4_6,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -299,7 +347,23 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                         CacheCreationInputTokens = 2051,
                         CacheReadInputTokens = 2051,
+                        InferenceGeo = "inference_geo",
                         InputTokens = 2095,
+                        Iterations =
+                        [
+                            new Messages::BetaMessageIterationUsage()
+                            {
+                                CacheCreation = new()
+                                {
+                                    Ephemeral1hInputTokens = 0,
+                                    Ephemeral5mInputTokens = 0,
+                                },
+                                CacheCreationInputTokens = 0,
+                                CacheReadInputTokens = 0,
+                                InputTokens = 0,
+                                OutputTokens = 0,
+                            },
+                        ],
                         OutputTokens = 503,
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = Messages::BetaUsageServiceTier.Standard,
@@ -362,7 +426,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                     ]
                 ),
-                Model = Model.ClaudeSonnet4_5_20250929,
+                Model = Model.ClaudeOpus4_6,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -374,7 +438,23 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
+                    InferenceGeo = "inference_geo",
                     InputTokens = 2095,
+                    Iterations =
+                    [
+                        new Messages::BetaMessageIterationUsage()
+                        {
+                            CacheCreation = new()
+                            {
+                                Ephemeral1hInputTokens = 0,
+                                Ephemeral5mInputTokens = 0,
+                            },
+                            CacheCreationInputTokens = 0,
+                            CacheReadInputTokens = 0,
+                            InputTokens = 0,
+                            OutputTokens = 0,
+                        },
+                    ],
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
@@ -438,7 +518,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Model = Model.ClaudeSonnet4_5_20250929,
+                    Model = Model.ClaudeOpus4_6,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -450,7 +530,23 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                         CacheCreationInputTokens = 2051,
                         CacheReadInputTokens = 2051,
+                        InferenceGeo = "inference_geo",
                         InputTokens = 2095,
+                        Iterations =
+                        [
+                            new Messages::BetaMessageIterationUsage()
+                            {
+                                CacheCreation = new()
+                                {
+                                    Ephemeral1hInputTokens = 0,
+                                    Ephemeral5mInputTokens = 0,
+                                },
+                                CacheCreationInputTokens = 0,
+                                CacheReadInputTokens = 0,
+                                InputTokens = 0,
+                                OutputTokens = 0,
+                            },
+                        ],
                         OutputTokens = 503,
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = Messages::BetaUsageServiceTier.Standard,
@@ -514,7 +610,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Model = Model.ClaudeSonnet4_5_20250929,
+                    Model = Model.ClaudeOpus4_6,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -526,7 +622,23 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                         CacheCreationInputTokens = 2051,
                         CacheReadInputTokens = 2051,
+                        InferenceGeo = "inference_geo",
                         InputTokens = 2095,
+                        Iterations =
+                        [
+                            new Messages::BetaMessageIterationUsage()
+                            {
+                                CacheCreation = new()
+                                {
+                                    Ephemeral1hInputTokens = 0,
+                                    Ephemeral5mInputTokens = 0,
+                                },
+                                CacheCreationInputTokens = 0,
+                                CacheReadInputTokens = 0,
+                                InputTokens = 0,
+                                OutputTokens = 0,
+                            },
+                        ],
                         OutputTokens = 503,
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = Messages::BetaUsageServiceTier.Standard,

@@ -178,6 +178,7 @@ public class EffortTest : TestBase
     [InlineData(Effort.Low)]
     [InlineData(Effort.Medium)]
     [InlineData(Effort.High)]
+    [InlineData(Effort.Max)]
     public void Validation_Works(Effort rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -201,6 +202,7 @@ public class EffortTest : TestBase
     [InlineData(Effort.Low)]
     [InlineData(Effort.Medium)]
     [InlineData(Effort.High)]
+    [InlineData(Effort.Max)]
     public void SerializationRoundtrip_Works(Effort rawValue)
     {
         // force implicit conversion because Theory can't do that for us

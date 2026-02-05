@@ -390,6 +390,13 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
+    public void BetaCompactionValidationWorks()
+    {
+        ContentBlock value = new BetaCompactionBlock("content");
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaTextSerializationRoundtripWorks()
     {
         ContentBlock value = new BetaTextBlock()
@@ -651,6 +658,19 @@ public class ContentBlockTest : TestBase
     public void BetaContainerUploadSerializationRoundtripWorks()
     {
         ContentBlock value = new BetaContainerUploadBlock("file_id");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaCompactionSerializationRoundtripWorks()
+    {
+        ContentBlock value = new BetaCompactionBlock("content");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
             element,

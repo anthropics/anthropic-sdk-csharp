@@ -13,10 +13,7 @@ namespace Anthropic.Models.Beta.Messages;
 public sealed record class BetaOutputConfig : JsonModel
 {
     /// <summary>
-    /// How much effort the model should put into its response. Higher effort levels
-    /// may result in more thorough analysis but take longer.
-    ///
-    /// <para>Valid values are `low`, `medium`, or `high`.</para>
+    /// All possible effort levels.
     /// </summary>
     public ApiEnum<string, Effort>? Effort
     {
@@ -86,10 +83,7 @@ class BetaOutputConfigFromRaw : IFromRawJson<BetaOutputConfig>
 }
 
 /// <summary>
-/// How much effort the model should put into its response. Higher effort levels may
-/// result in more thorough analysis but take longer.
-///
-/// <para>Valid values are `low`, `medium`, or `high`.</para>
+/// All possible effort levels.
 /// </summary>
 [JsonConverter(typeof(EffortConverter))]
 public enum Effort
@@ -97,6 +91,7 @@ public enum Effort
     Low,
     Medium,
     High,
+    Max,
 }
 
 sealed class EffortConverter : JsonConverter<Effort>
@@ -112,6 +107,7 @@ sealed class EffortConverter : JsonConverter<Effort>
             "low" => Effort.Low,
             "medium" => Effort.Medium,
             "high" => Effort.High,
+            "max" => Effort.Max,
             _ => (Effort)(-1),
         };
     }
@@ -125,6 +121,7 @@ sealed class EffortConverter : JsonConverter<Effort>
                 Effort.Low => "low",
                 Effort.Medium => "medium",
                 Effort.High => "high",
+                Effort.Max => "max",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

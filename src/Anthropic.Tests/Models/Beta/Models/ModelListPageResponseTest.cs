@@ -17,9 +17,9 @@ public class ModelListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "claude-sonnet-4-20250514",
-                    CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
-                    DisplayName = "Claude Sonnet 4",
+                    ID = "claude-opus-4-6",
+                    CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
+                    DisplayName = "Claude Opus 4.6",
                 },
             ],
             FirstID = "first_id",
@@ -31,9 +31,9 @@ public class ModelListPageResponseTest : TestBase
         [
             new()
             {
-                ID = "claude-sonnet-4-20250514",
-                CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
-                DisplayName = "Claude Sonnet 4",
+                ID = "claude-opus-4-6",
+                CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
+                DisplayName = "Claude Opus 4.6",
             },
         ];
         string expectedFirstID = "first_id";
@@ -59,9 +59,9 @@ public class ModelListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "claude-sonnet-4-20250514",
-                    CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
-                    DisplayName = "Claude Sonnet 4",
+                    ID = "claude-opus-4-6",
+                    CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
+                    DisplayName = "Claude Opus 4.6",
                 },
             ],
             FirstID = "first_id",
@@ -87,9 +87,9 @@ public class ModelListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "claude-sonnet-4-20250514",
-                    CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
-                    DisplayName = "Claude Sonnet 4",
+                    ID = "claude-opus-4-6",
+                    CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
+                    DisplayName = "Claude Opus 4.6",
                 },
             ],
             FirstID = "first_id",
@@ -108,9 +108,9 @@ public class ModelListPageResponseTest : TestBase
         [
             new()
             {
-                ID = "claude-sonnet-4-20250514",
-                CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
-                DisplayName = "Claude Sonnet 4",
+                ID = "claude-opus-4-6",
+                CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
+                DisplayName = "Claude Opus 4.6",
             },
         ];
         string expectedFirstID = "first_id";
@@ -136,9 +136,9 @@ public class ModelListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "claude-sonnet-4-20250514",
-                    CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
-                    DisplayName = "Claude Sonnet 4",
+                    ID = "claude-opus-4-6",
+                    CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
+                    DisplayName = "Claude Opus 4.6",
                 },
             ],
             FirstID = "first_id",
@@ -158,9 +158,9 @@ public class ModelListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "claude-sonnet-4-20250514",
-                    CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
-                    DisplayName = "Claude Sonnet 4",
+                    ID = "claude-opus-4-6",
+                    CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
+                    DisplayName = "Claude Opus 4.6",
                 },
             ],
             FirstID = "first_id",

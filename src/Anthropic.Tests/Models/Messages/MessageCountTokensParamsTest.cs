@@ -14,9 +14,10 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new Messages::MessageCountTokensParams
         {
             Messages = [new() { Content = "string", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeOpus4_6,
             OutputConfig = new()
             {
+                Effort = Messages::Effort.Low,
                 Format = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -63,6 +64,7 @@ public class MessageCountTokensParamsTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     Strict = true,
                     Type = Messages::Type.Custom,
                 },
@@ -73,9 +75,10 @@ public class MessageCountTokensParamsTest : TestBase
         [
             new() { Content = "string", Role = Messages::Role.User },
         ];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_5_20251101;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_6;
         Messages::OutputConfig expectedOutputConfig = new()
         {
+            Effort = Messages::Effort.Low,
             Format = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -125,6 +128,7 @@ public class MessageCountTokensParamsTest : TestBase
                 Name = "name",
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Description = "Get the current weather in a given location",
+                EagerInputStreaming = true,
                 Strict = true,
                 Type = Messages::Type.Custom,
             },
@@ -154,7 +158,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new Messages::MessageCountTokensParams
         {
             Messages = [new() { Content = "string", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeOpus4_6,
         };
 
         Assert.Null(parameters.OutputConfig);
@@ -175,7 +179,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new Messages::MessageCountTokensParams
         {
             Messages = [new() { Content = "string", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeOpus4_6,
 
             // Null should be interpreted as omitted for these properties
             OutputConfig = null,
@@ -203,7 +207,7 @@ public class MessageCountTokensParamsTest : TestBase
         Messages::MessageCountTokensParams parameters = new()
         {
             Messages = [new() { Content = "string", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeOpus4_6,
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -217,9 +221,10 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new Messages::MessageCountTokensParams
         {
             Messages = [new() { Content = "string", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeOpus4_6,
             OutputConfig = new()
             {
+                Effort = Messages::Effort.Low,
                 Format = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -266,6 +271,7 @@ public class MessageCountTokensParamsTest : TestBase
                     Name = "name",
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     Strict = true,
                     Type = Messages::Type.Custom,
                 },

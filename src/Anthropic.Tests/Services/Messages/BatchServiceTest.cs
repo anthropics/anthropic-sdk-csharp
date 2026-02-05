@@ -26,14 +26,13 @@ public class BatchServiceTest
                         Params = new()
                         {
                             MaxTokens = 1024,
-                            Messages =
-                            [
-                                new() { Content = "Hello, world", Role = Messages::Role.User },
-                            ],
+                            Messages = [new() { Content = "Hello, world", Role = Role.User }],
                             Model = modelName,
+                            InferenceGeo = "inference_geo",
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                             OutputConfig = new()
                             {
+                                Effort = Effort.Low,
                                 Format = new()
                                 {
                                     Schema = new Dictionary<string, JsonElement>()
@@ -90,6 +89,7 @@ public class BatchServiceTest
                                     Name = "name",
                                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                                     Description = "Get the current weather in a given location",
+                                    EagerInputStreaming = true,
                                     Strict = true,
                                     Type = Messages::Type.Custom,
                                 },

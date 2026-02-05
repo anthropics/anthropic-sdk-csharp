@@ -32,7 +32,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeSonnet4_5_20250929,
+            Model = Model.ClaudeOpus4_6,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -40,6 +40,7 @@ public class MessageTest : TestBase
                 CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
+                InferenceGeo = "inference_geo",
                 InputTokens = 2095,
                 OutputTokens = 503,
                 ServerToolUse = new(0),
@@ -67,7 +68,7 @@ public class MessageTest : TestBase
                 Text = "Hi! My name is Claude.",
             },
         ];
-        ApiEnum<string, Model> expectedModel = Model.ClaudeSonnet4_5_20250929;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_6;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         JsonElement expectedType = JsonSerializer.SerializeToElement("message");
@@ -76,6 +77,7 @@ public class MessageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            InferenceGeo = "inference_geo",
             InputTokens = 2095,
             OutputTokens = 503,
             ServerToolUse = new(0),
@@ -121,7 +123,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeSonnet4_5_20250929,
+            Model = Model.ClaudeOpus4_6,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -129,6 +131,7 @@ public class MessageTest : TestBase
                 CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
+                InferenceGeo = "inference_geo",
                 InputTokens = 2095,
                 OutputTokens = 503,
                 ServerToolUse = new(0),
@@ -167,7 +170,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeSonnet4_5_20250929,
+            Model = Model.ClaudeOpus4_6,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -175,6 +178,7 @@ public class MessageTest : TestBase
                 CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
+                InferenceGeo = "inference_geo",
                 InputTokens = 2095,
                 OutputTokens = 503,
                 ServerToolUse = new(0),
@@ -209,7 +213,7 @@ public class MessageTest : TestBase
                 Text = "Hi! My name is Claude.",
             },
         ];
-        ApiEnum<string, Model> expectedModel = Model.ClaudeSonnet4_5_20250929;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_6;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         JsonElement expectedType = JsonSerializer.SerializeToElement("message");
@@ -218,6 +222,7 @@ public class MessageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            InferenceGeo = "inference_geo",
             InputTokens = 2095,
             OutputTokens = 503,
             ServerToolUse = new(0),
@@ -263,7 +268,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeSonnet4_5_20250929,
+            Model = Model.ClaudeOpus4_6,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -271,6 +276,7 @@ public class MessageTest : TestBase
                 CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
+                InferenceGeo = "inference_geo",
                 InputTokens = 2095,
                 OutputTokens = 503,
                 ServerToolUse = new(0),
@@ -306,7 +312,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeSonnet4_5_20250929,
+            Model = Model.ClaudeOpus4_6,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -314,6 +320,7 @@ public class MessageTest : TestBase
                 CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
+                InferenceGeo = "inference_geo",
                 InputTokens = 2095,
                 OutputTokens = 503,
                 ServerToolUse = new(0),

@@ -86,6 +86,9 @@ class BetaContextManagementConfigFromRaw : IFromRawJson<BetaContextManagementCon
     ) => BetaContextManagementConfig.FromRawUnchecked(rawData);
 }
 
+/// <summary>
+/// Automatically compact older context when reaching the configured trigger threshold.
+/// </summary>
 [JsonConverter(typeof(EditConverter))]
 public record class Edit : ModelBase
 {
@@ -110,7 +113,8 @@ public record class Edit : ModelBase
         {
             return Match(
                 betaClearToolUses20250919: (x) => x.Type,
-                betaClearThinking20251015: (x) => x.Type
+                betaClearThinking20251015: (x) => x.Type,
+                betaCompact20260112: (x) => x.Type
             );
         }
     }
@@ -122,6 +126,12 @@ public record class Edit : ModelBase
     }
 
     public Edit(BetaClearThinking20251015Edit value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Edit(BetaCompact20260112Edit value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -179,6 +189,27 @@ public record class Edit : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCompact20260112Edit"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCompact20260112(out var value)) {
+    ///     // `value` is of type `BetaCompact20260112Edit`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaCompact20260112([NotNullWhen(true)] out BetaCompact20260112Edit? value)
+    {
+        value = this.Value as BetaCompact20260112Edit;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
@@ -193,14 +224,16 @@ public record class Edit : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (BetaClearToolUses20250919Edit value) => {...},
-    ///     (BetaClearThinking20251015Edit value) => {...}
+    ///     (BetaClearThinking20251015Edit value) => {...},
+    ///     (BetaCompact20260112Edit value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<BetaClearToolUses20250919Edit> betaClearToolUses20250919,
-        System::Action<BetaClearThinking20251015Edit> betaClearThinking20251015
+        System::Action<BetaClearThinking20251015Edit> betaClearThinking20251015,
+        System::Action<BetaCompact20260112Edit> betaCompact20260112
     )
     {
         switch (this.Value)
@@ -210,6 +243,9 @@ public record class Edit : ModelBase
                 break;
             case BetaClearThinking20251015Edit value:
                 betaClearThinking20251015(value);
+                break;
+            case BetaCompact20260112Edit value:
+                betaCompact20260112(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Edit");
@@ -232,20 +268,23 @@ public record class Edit : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (BetaClearToolUses20250919Edit value) => {...},
-    ///     (BetaClearThinking20251015Edit value) => {...}
+    ///     (BetaClearThinking20251015Edit value) => {...},
+    ///     (BetaCompact20260112Edit value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
         System::Func<BetaClearToolUses20250919Edit, T> betaClearToolUses20250919,
-        System::Func<BetaClearThinking20251015Edit, T> betaClearThinking20251015
+        System::Func<BetaClearThinking20251015Edit, T> betaClearThinking20251015,
+        System::Func<BetaCompact20260112Edit, T> betaCompact20260112
     )
     {
         return this.Value switch
         {
             BetaClearToolUses20250919Edit value => betaClearToolUses20250919(value),
             BetaClearThinking20251015Edit value => betaClearThinking20251015(value),
+            BetaCompact20260112Edit value => betaCompact20260112(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Edit"),
         };
     }
@@ -253,6 +292,8 @@ public record class Edit : ModelBase
     public static implicit operator Edit(BetaClearToolUses20250919Edit value) => new(value);
 
     public static implicit operator Edit(BetaClearThinking20251015Edit value) => new(value);
+
+    public static implicit operator Edit(BetaCompact20260112Edit value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -272,7 +313,8 @@ public record class Edit : ModelBase
         }
         this.Switch(
             (betaClearToolUses20250919) => betaClearToolUses20250919.Validate(),
-            (betaClearThinking20251015) => betaClearThinking20251015.Validate()
+            (betaClearThinking20251015) => betaClearThinking20251015.Validate(),
+            (betaCompact20260112) => betaCompact20260112.Validate()
         );
     }
 
@@ -295,6 +337,7 @@ public record class Edit : ModelBase
         {
             BetaClearToolUses20250919Edit _ => 0,
             BetaClearThinking20251015Edit _ => 1,
+            BetaCompact20260112Edit _ => 2,
             _ => -1,
         };
     }
@@ -348,6 +391,28 @@ sealed class EditConverter : JsonConverter<Edit>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaClearThinking20251015Edit>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "compact_20260112":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaCompact20260112Edit>(
                         element,
                         options
                     );

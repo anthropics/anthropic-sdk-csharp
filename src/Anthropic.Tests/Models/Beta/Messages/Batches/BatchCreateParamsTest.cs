@@ -27,7 +27,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                        Model = ModelsMessages::Model.ClaudeOpus4_6,
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -55,6 +55,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        InferenceGeo = "inference_geo",
                         McpServers =
                         [
                             new()
@@ -135,6 +136,7 @@ public class BatchCreateParamsTest : TestBase
                                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                                 DeferLoading = true,
                                 Description = "Get the current weather in a given location",
+                                EagerInputStreaming = true,
                                 InputExamples =
                                 [
                                     new Dictionary<string, JsonElement>()
@@ -163,7 +165,7 @@ public class BatchCreateParamsTest : TestBase
                 {
                     MaxTokens = 1024,
                     Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                    Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                    Model = ModelsMessages::Model.ClaudeOpus4_6,
                     Container = new Messages::BetaContainerParams()
                     {
                         ID = "id",
@@ -191,6 +193,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                     },
+                    InferenceGeo = "inference_geo",
                     McpServers =
                     [
                         new()
@@ -267,6 +270,7 @@ public class BatchCreateParamsTest : TestBase
                             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                             DeferLoading = true,
                             Description = "Get the current weather in a given location",
+                            EagerInputStreaming = true,
                             InputExamples =
                             [
                                 new Dictionary<string, JsonElement>()
@@ -315,7 +319,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                        Model = ModelsMessages::Model.ClaudeOpus4_6,
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -343,6 +347,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        InferenceGeo = "inference_geo",
                         McpServers =
                         [
                             new()
@@ -423,6 +428,7 @@ public class BatchCreateParamsTest : TestBase
                                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                                 DeferLoading = true,
                                 Description = "Get the current weather in a given location",
+                                EagerInputStreaming = true,
                                 InputExamples =
                                 [
                                     new Dictionary<string, JsonElement>()
@@ -459,7 +465,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                        Model = ModelsMessages::Model.ClaudeOpus4_6,
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -487,6 +493,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        InferenceGeo = "inference_geo",
                         McpServers =
                         [
                             new()
@@ -567,6 +574,7 @@ public class BatchCreateParamsTest : TestBase
                                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                                 DeferLoading = true,
                                 Description = "Get the current weather in a given location",
+                                EagerInputStreaming = true,
                                 InputExamples =
                                 [
                                     new Dictionary<string, JsonElement>()
@@ -606,7 +614,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                        Model = ModelsMessages::Model.ClaudeOpus4_6,
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -634,6 +642,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        InferenceGeo = "inference_geo",
                         McpServers =
                         [
                             new()
@@ -714,6 +723,7 @@ public class BatchCreateParamsTest : TestBase
                                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                                 DeferLoading = true,
                                 Description = "Get the current weather in a given location",
+                                EagerInputStreaming = true,
                                 InputExamples =
                                 [
                                     new Dictionary<string, JsonElement>()
@@ -752,7 +762,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                        Model = ModelsMessages::Model.ClaudeOpus4_6,
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -780,6 +790,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        InferenceGeo = "inference_geo",
                         McpServers =
                         [
                             new()
@@ -860,6 +871,7 @@ public class BatchCreateParamsTest : TestBase
                                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                                 DeferLoading = true,
                                 Description = "Get the current weather in a given location",
+                                EagerInputStreaming = true,
                                 InputExamples =
                                 [
                                     new Dictionary<string, JsonElement>()
@@ -901,7 +913,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                        Model = ModelsMessages::Model.ClaudeOpus4_6,
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -929,6 +941,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        InferenceGeo = "inference_geo",
                         McpServers =
                         [
                             new()
@@ -1009,6 +1022,7 @@ public class BatchCreateParamsTest : TestBase
                                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                                 DeferLoading = true,
                                 Description = "Get the current weather in a given location",
+                                EagerInputStreaming = true,
                                 InputExamples =
                                 [
                                     new Dictionary<string, JsonElement>()
@@ -1046,7 +1060,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                Model = ModelsMessages::Model.ClaudeOpus4_6,
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -1074,6 +1088,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                InferenceGeo = "inference_geo",
                 McpServers =
                 [
                     new()
@@ -1147,6 +1162,7 @@ public class RequestTest : TestBase
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         DeferLoading = true,
                         Description = "Get the current weather in a given location",
+                        EagerInputStreaming = true,
                         InputExamples =
                         [
                             new Dictionary<string, JsonElement>()
@@ -1168,7 +1184,7 @@ public class RequestTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1196,6 +1212,7 @@ public class RequestTest : TestBase
                     },
                 ],
             },
+            InferenceGeo = "inference_geo",
             McpServers =
             [
                 new()
@@ -1269,6 +1286,7 @@ public class RequestTest : TestBase
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -1298,7 +1316,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                Model = ModelsMessages::Model.ClaudeOpus4_6,
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -1326,6 +1344,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                InferenceGeo = "inference_geo",
                 McpServers =
                 [
                     new()
@@ -1399,6 +1418,7 @@ public class RequestTest : TestBase
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         DeferLoading = true,
                         Description = "Get the current weather in a given location",
+                        EagerInputStreaming = true,
                         InputExamples =
                         [
                             new Dictionary<string, JsonElement>()
@@ -1431,7 +1451,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                Model = ModelsMessages::Model.ClaudeOpus4_6,
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -1459,6 +1479,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                InferenceGeo = "inference_geo",
                 McpServers =
                 [
                     new()
@@ -1532,6 +1553,7 @@ public class RequestTest : TestBase
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         DeferLoading = true,
                         Description = "Get the current weather in a given location",
+                        EagerInputStreaming = true,
                         InputExamples =
                         [
                             new Dictionary<string, JsonElement>()
@@ -1560,7 +1582,7 @@ public class RequestTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1588,6 +1610,7 @@ public class RequestTest : TestBase
                     },
                 ],
             },
+            InferenceGeo = "inference_geo",
             McpServers =
             [
                 new()
@@ -1661,6 +1684,7 @@ public class RequestTest : TestBase
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -1690,7 +1714,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                Model = ModelsMessages::Model.ClaudeOpus4_6,
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -1718,6 +1742,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                InferenceGeo = "inference_geo",
                 McpServers =
                 [
                     new()
@@ -1791,6 +1816,7 @@ public class RequestTest : TestBase
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         DeferLoading = true,
                         Description = "Get the current weather in a given location",
+                        EagerInputStreaming = true,
                         InputExamples =
                         [
                             new Dictionary<string, JsonElement>()
@@ -1820,7 +1846,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+                Model = ModelsMessages::Model.ClaudeOpus4_6,
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -1848,6 +1874,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                InferenceGeo = "inference_geo",
                 McpServers =
                 [
                     new()
@@ -1921,6 +1948,7 @@ public class RequestTest : TestBase
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         DeferLoading = true,
                         Description = "Get the current weather in a given location",
+                        EagerInputStreaming = true,
                         InputExamples =
                         [
                             new Dictionary<string, JsonElement>()
@@ -1952,7 +1980,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1980,6 +2008,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            InferenceGeo = "inference_geo",
             McpServers =
             [
                 new()
@@ -2053,6 +2082,7 @@ public class ParamsTest : TestBase
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -2073,8 +2103,7 @@ public class ParamsTest : TestBase
         [
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
-        ApiEnum<string, ModelsMessages::Model> expectedModel =
-            ModelsMessages::Model.ClaudeSonnet4_5_20250929;
+        ApiEnum<string, ModelsMessages::Model> expectedModel = ModelsMessages::Model.ClaudeOpus4_6;
         Container expectedContainer = new Messages::BetaContainerParams()
         {
             ID = "id",
@@ -2102,6 +2131,7 @@ public class ParamsTest : TestBase
                 },
             ],
         };
+        string expectedInferenceGeo = "inference_geo";
         List<Messages::BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
@@ -2182,6 +2212,7 @@ public class ParamsTest : TestBase
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 DeferLoading = true,
                 Description = "Get the current weather in a given location",
+                EagerInputStreaming = true,
                 InputExamples =
                 [
                     new Dictionary<string, JsonElement>()
@@ -2205,6 +2236,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedModel, model.Model);
         Assert.Equal(expectedContainer, model.Container);
         Assert.Equal(expectedContextManagement, model.ContextManagement);
+        Assert.Equal(expectedInferenceGeo, model.InferenceGeo);
         Assert.NotNull(model.McpServers);
         Assert.Equal(expectedMcpServers.Count, model.McpServers.Count);
         for (int i = 0; i < expectedMcpServers.Count; i++)
@@ -2243,7 +2275,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2271,6 +2303,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            InferenceGeo = "inference_geo",
             McpServers =
             [
                 new()
@@ -2344,6 +2377,7 @@ public class ParamsTest : TestBase
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -2372,7 +2406,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2400,6 +2434,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            InferenceGeo = "inference_geo",
             McpServers =
             [
                 new()
@@ -2473,6 +2508,7 @@ public class ParamsTest : TestBase
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -2497,8 +2533,7 @@ public class ParamsTest : TestBase
         [
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
-        ApiEnum<string, ModelsMessages::Model> expectedModel =
-            ModelsMessages::Model.ClaudeSonnet4_5_20250929;
+        ApiEnum<string, ModelsMessages::Model> expectedModel = ModelsMessages::Model.ClaudeOpus4_6;
         Container expectedContainer = new Messages::BetaContainerParams()
         {
             ID = "id",
@@ -2526,6 +2561,7 @@ public class ParamsTest : TestBase
                 },
             ],
         };
+        string expectedInferenceGeo = "inference_geo";
         List<Messages::BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
@@ -2606,6 +2642,7 @@ public class ParamsTest : TestBase
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 DeferLoading = true,
                 Description = "Get the current weather in a given location",
+                EagerInputStreaming = true,
                 InputExamples =
                 [
                     new Dictionary<string, JsonElement>()
@@ -2629,6 +2666,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.Equal(expectedContainer, deserialized.Container);
         Assert.Equal(expectedContextManagement, deserialized.ContextManagement);
+        Assert.Equal(expectedInferenceGeo, deserialized.InferenceGeo);
         Assert.NotNull(deserialized.McpServers);
         Assert.Equal(expectedMcpServers.Count, deserialized.McpServers.Count);
         for (int i = 0; i < expectedMcpServers.Count; i++)
@@ -2667,7 +2705,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2695,6 +2733,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            InferenceGeo = "inference_geo",
             McpServers =
             [
                 new()
@@ -2768,6 +2807,7 @@ public class ParamsTest : TestBase
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -2793,7 +2833,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2821,6 +2861,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -2865,7 +2906,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2893,6 +2934,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -2912,7 +2954,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2940,6 +2982,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -2999,7 +3042,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -3027,6 +3070,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -3061,7 +3105,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             McpServers =
             [
                 new()
@@ -3128,6 +3172,7 @@ public class ParamsTest : TestBase
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -3147,6 +3192,8 @@ public class ParamsTest : TestBase
         Assert.False(model.RawData.ContainsKey("container"));
         Assert.Null(model.ContextManagement);
         Assert.False(model.RawData.ContainsKey("context_management"));
+        Assert.Null(model.InferenceGeo);
+        Assert.False(model.RawData.ContainsKey("inference_geo"));
         Assert.Null(model.OutputFormat);
         Assert.False(model.RawData.ContainsKey("output_format"));
     }
@@ -3158,7 +3205,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             McpServers =
             [
                 new()
@@ -3225,6 +3272,7 @@ public class ParamsTest : TestBase
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -3250,7 +3298,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             McpServers =
             [
                 new()
@@ -3317,6 +3365,7 @@ public class ParamsTest : TestBase
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -3333,6 +3382,7 @@ public class ParamsTest : TestBase
 
             Container = null,
             ContextManagement = null,
+            InferenceGeo = null,
             OutputFormat = null,
         };
 
@@ -3340,6 +3390,8 @@ public class ParamsTest : TestBase
         Assert.True(model.RawData.ContainsKey("container"));
         Assert.Null(model.ContextManagement);
         Assert.True(model.RawData.ContainsKey("context_management"));
+        Assert.Null(model.InferenceGeo);
+        Assert.True(model.RawData.ContainsKey("inference_geo"));
         Assert.Null(model.OutputFormat);
         Assert.True(model.RawData.ContainsKey("output_format"));
     }
@@ -3351,7 +3403,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             McpServers =
             [
                 new()
@@ -3418,6 +3470,7 @@ public class ParamsTest : TestBase
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -3434,6 +3487,7 @@ public class ParamsTest : TestBase
 
             Container = null,
             ContextManagement = null,
+            InferenceGeo = null,
             OutputFormat = null,
         };
 
@@ -3447,7 +3501,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeOpus4_6,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -3475,6 +3529,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            InferenceGeo = "inference_geo",
             McpServers =
             [
                 new()
@@ -3548,6 +3603,7 @@ public class ParamsTest : TestBase
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()

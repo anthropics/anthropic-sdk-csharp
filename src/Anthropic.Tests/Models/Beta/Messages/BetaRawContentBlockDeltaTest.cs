@@ -54,6 +54,13 @@ public class BetaRawContentBlockDeltaTest : TestBase
     }
 
     [Fact]
+    public void CompactionValidationWorks()
+    {
+        BetaRawContentBlockDelta value = new BetaCompactionContentBlockDelta("content");
+        value.Validate();
+    }
+
+    [Fact]
     public void TextSerializationRoundtripWorks()
     {
         BetaRawContentBlockDelta value = new BetaTextDelta("text");
@@ -121,6 +128,19 @@ public class BetaRawContentBlockDeltaTest : TestBase
     public void SignatureSerializationRoundtripWorks()
     {
         BetaRawContentBlockDelta value = new BetaSignatureDelta("signature");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void CompactionSerializationRoundtripWorks()
+    {
+        BetaRawContentBlockDelta value = new BetaCompactionContentBlockDelta("content");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(
             element,

@@ -17,7 +17,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new MessageCountTokensParams
         {
             Messages = [new() { Content = "string", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeOpus4_6,
             ContextManagement = new()
             {
                 Edits =
@@ -100,6 +100,7 @@ public class MessageCountTokensParamsTest : TestBase
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -115,7 +116,7 @@ public class MessageCountTokensParamsTest : TestBase
         };
 
         List<BetaMessageParam> expectedMessages = [new() { Content = "string", Role = Role.User }];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_5_20251101;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_6;
         BetaContextManagementConfig expectedContextManagement = new()
         {
             Edits =
@@ -201,6 +202,7 @@ public class MessageCountTokensParamsTest : TestBase
                 CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Description = "Get the current weather in a given location",
+                EagerInputStreaming = true,
                 InputExamples =
                 [
                     new Dictionary<string, JsonElement>()
@@ -255,7 +257,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new MessageCountTokensParams
         {
             Messages = [new() { Content = "string", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeOpus4_6,
             ContextManagement = new()
             {
                 Edits =
@@ -301,7 +303,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new MessageCountTokensParams
         {
             Messages = [new() { Content = "string", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeOpus4_6,
             ContextManagement = new()
             {
                 Edits =
@@ -356,7 +358,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new MessageCountTokensParams
         {
             Messages = [new() { Content = "string", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeOpus4_6,
             McpServers =
             [
                 new()
@@ -418,6 +420,7 @@ public class MessageCountTokensParamsTest : TestBase
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -444,7 +447,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new MessageCountTokensParams
         {
             Messages = [new() { Content = "string", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeOpus4_6,
             McpServers =
             [
                 new()
@@ -506,6 +509,7 @@ public class MessageCountTokensParamsTest : TestBase
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -535,7 +539,7 @@ public class MessageCountTokensParamsTest : TestBase
         MessageCountTokensParams parameters = new()
         {
             Messages = [new() { Content = "string", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeOpus4_6,
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -550,7 +554,7 @@ public class MessageCountTokensParamsTest : TestBase
         MessageCountTokensParams parameters = new()
         {
             Messages = [new() { Content = "string", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeOpus4_6,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -568,7 +572,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new MessageCountTokensParams
         {
             Messages = [new() { Content = "string", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Model = Messages::Model.ClaudeOpus4_6,
             ContextManagement = new()
             {
                 Edits =
@@ -651,6 +655,7 @@ public class MessageCountTokensParamsTest : TestBase
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
                     InputExamples =
                     [
                         new Dictionary<string, JsonElement>()
@@ -773,6 +778,7 @@ public class ToolTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             InputExamples =
             [
                 new Dictionary<string, JsonElement>()
@@ -1130,6 +1136,7 @@ public class ToolTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
             InputExamples =
             [
                 new Dictionary<string, JsonElement>()
