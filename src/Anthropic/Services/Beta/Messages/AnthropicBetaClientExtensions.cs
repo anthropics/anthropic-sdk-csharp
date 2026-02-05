@@ -922,14 +922,19 @@ public static class AnthropicBetaClientExtensions
                             {
                                 createParams = createParams with
                                 {
-                                    OutputFormat = new BetaJsonOutputFormat()
+                                    OutputConfig = new BetaOutputConfig()
                                     {
-                                        Schema = new Dictionary<string, JsonElement>
+                                        Format = new BetaJsonOutputFormat()
                                         {
-                                            ["type"] = JsonElement.Parse("\"object\""),
-                                            ["properties"] = properties,
-                                            ["required"] = required,
-                                            ["additionalProperties"] = JsonElement.Parse("false"),
+                                            Schema = new Dictionary<string, JsonElement>
+                                            {
+                                                ["type"] = JsonElement.Parse("\"object\""),
+                                                ["properties"] = properties,
+                                                ["required"] = required,
+                                                ["additionalProperties"] = JsonElement.Parse(
+                                                    "false"
+                                                ),
+                                            },
                                         },
                                     },
                                 };

@@ -532,16 +532,18 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                         "text": "Tell me about Albert Einstein. Respond with his name and age at death."
                     }]
                 }],
-                "output_format": {
-                    "type": "json_schema",
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "name": { "type": "string" },
-                            "age": { "type": "integer" }
-                        },
-                        "required": ["name", "age"],
-                        "additionalProperties": false
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": { "type": "string" },
+                                "age": { "type": "integer" }
+                            },
+                            "required": ["name", "age"],
+                            "additionalProperties": false
+                        }
                     }
                 }
             }
@@ -613,27 +615,29 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                         "text": "Tell me about the book '1984' by George Orwell."
                     }]
                 }],
-                "output_format": {
-                    "type": "json_schema",
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "title": { "type": "string" },
-                            "author": {
-                                "type": "object",
-                                "properties": {
-                                    "name": { "type": "string" },
-                                    "birth_year": { "type": "integer" }
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "title": { "type": "string" },
+                                "author": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": { "type": "string" },
+                                        "birth_year": { "type": "integer" }
+                                    },
+                                    "required": ["name", "birth_year"],
+                                    "additionalProperties": false
                                 },
-                                "required": ["name", "birth_year"],
-                                "additionalProperties": false
+                                "published_year": {
+                                    "type": "integer"
+                                }
                             },
-                            "published_year": {
-                                "type": "integer"
-                            }
-                        },
-                        "required": ["title", "author", "published_year"],
-                        "additionalProperties": false
+                            "required": ["title", "author", "published_year"],
+                            "additionalProperties": false
+                        }
                     }
                 }
             }
@@ -715,27 +719,29 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                         "text": "List 3 common fruits: apple, orange, and banana."
                     }]
                 }],
-                "output_format": {
-                    "type": "json_schema",
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "fruits": {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "name": { "type": "string" },
-                                        "color": { "type": "string" },
-                                        "is_citrus": { "type": "boolean" }
-                                    },
-                                    "required": ["name", "color", "is_citrus"],
-                                    "additionalProperties": false
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "fruits": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": { "type": "string" },
+                                            "color": { "type": "string" },
+                                            "is_citrus": { "type": "boolean" }
+                                        },
+                                        "required": ["name", "color", "is_citrus"],
+                                        "additionalProperties": false
+                                    }
                                 }
-                            }
-                        },
-                        "required": ["fruits"],
-                        "additionalProperties": false
+                            },
+                            "required": ["fruits"],
+                            "additionalProperties": false
+                        }
                     }
                 }
             }
