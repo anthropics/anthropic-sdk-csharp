@@ -9,19 +9,19 @@ public class BetaInputTokensTriggerTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaInputTokensTrigger { Value = 1 };
+        var model = new BetaInputTokensTrigger { ValueValue = 1 };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("input_tokens");
-        long expectedValue = 1;
+        long expectedValueValue = 1;
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
-        Assert.Equal(expectedValue, model.Value);
+        Assert.Equal(expectedValueValue, model.ValueValue);
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaInputTokensTrigger { Value = 1 };
+        var model = new BetaInputTokensTrigger { ValueValue = 1 };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaInputTokensTrigger>(
@@ -35,7 +35,7 @@ public class BetaInputTokensTriggerTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaInputTokensTrigger { Value = 1 };
+        var model = new BetaInputTokensTrigger { ValueValue = 1 };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaInputTokensTrigger>(
@@ -45,16 +45,16 @@ public class BetaInputTokensTriggerTest : TestBase
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("input_tokens");
-        long expectedValue = 1;
+        long expectedValueValue = 1;
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
-        Assert.Equal(expectedValue, deserialized.Value);
+        Assert.Equal(expectedValueValue, deserialized.ValueValue);
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaInputTokensTrigger { Value = 1 };
+        var model = new BetaInputTokensTrigger { ValueValue = 1 };
 
         model.Validate();
     }
@@ -62,7 +62,7 @@ public class BetaInputTokensTriggerTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaInputTokensTrigger { Value = 1 };
+        var model = new BetaInputTokensTrigger { ValueValue = 1 };
 
         BetaInputTokensTrigger copied = new(model);
 
