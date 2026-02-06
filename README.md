@@ -8,7 +8,7 @@
 > [!NOTE]
 > The Anthropic C# API Library is currently in beta. We'd love your feedback — please share suggestions, bug reports, or feature requests by [filing an issue](https://www.github.com/anthropics/anthropic-sdk-csharp/issues/new).
 
-The Anthropic C# library provides access to the [Anthropic API](https://docs.anthropic.com/en/api/) from C# applications.
+The Anthropic C# library provides access to the [Claude API](https://docs.anthropic.com/en/api/) from C# applications.
 
 ## Documentation
 
