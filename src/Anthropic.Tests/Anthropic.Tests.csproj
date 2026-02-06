@@ -23,7 +23,7 @@
     <ProjectReference Include="..\Anthropic\Anthropic.csproj" />
     <ProjectReference Include="..\Anthropic.Foundry\Anthropic.Foundry.csproj" />
     <ProjectReference Include="..\Anthropic.Bedrock\Anthropic.Bedrock.csproj" />
-
+    <ProjectReference Include="..\Anthropic.Vertex\Anthropic.Vertex.csproj" />
     <Using Include="Xunit" />
   </ItemGroup>
 </Project>
