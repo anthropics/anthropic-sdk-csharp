@@ -19,12 +19,12 @@ var client = new AnthropicVertexClient(new AnthropicVertexCredentials(null, "You
 // or you can load the credentials from your system after you set it with the necessary environment variables by calling
 // var client = new AnthropicVertexClient(DefaultAnthropicVertexCredentials.FromEnvAsync());
 
+// The main variables you can set are below. There are more options available; consult the method's documentation for more info.
 // <code>
 // ANTHROPIC_VERTEX_PROJECT_ID=your_project_id
 // CLOUD_ML_REGION=region_name
 // VERTEX_ACCESS_TOKEN=vertex_access_token
 // </code>
-// are the main variables you can set but there are more options. Consult the methods documentation for more info.
 
 var client = new AnthropicVertexClient(new AnthropicVertexCredentials(null, "YourProjectId"));
 
