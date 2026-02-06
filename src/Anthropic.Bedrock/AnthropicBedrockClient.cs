@@ -124,7 +124,11 @@ internal class AnthropicBedrockClientWithRawResponse : AnthropicClientWithRawRes
 
             bodyContent["anthropic_version"] = JsonValue.Create(AnthropicVersion);
 
-            var modelValue = bodyContent["model"]!;
+            var modelValue =
+                bodyContent["model"]
+                ?? throw new AnthropicInvalidDataException(
+                    "Expected to find property model in request json but found none."
+                );
             bodyContent.Root.AsObject().Remove("model");
             var parsedStreamValue = ((bool?)bodyContent["stream"]?.AsValue()) ?? false;
             bodyContent.Root.AsObject().Remove("stream");
