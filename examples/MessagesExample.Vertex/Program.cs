@@ -17,7 +17,7 @@ var client = new AnthropicVertexClient(new AnthropicVertexCredentials(null, "You
 */
 
 // or you can load the credentials from your system after you set it with the necessary environment variables by calling
-// var client = new AnthropicVertexClient(DefaultAnthropicVertexCredentials.FromEnvAsync());
+// var client = new AnthropicVertexClient(await DefaultAnthropicVertexCredentials.FromEnvAsync());
 
 // The main variables you can set are below. There are more options available; consult the method's documentation for more info.
 // <code>
