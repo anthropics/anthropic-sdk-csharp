@@ -90,6 +90,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         },
                         ServiceTier = ServiceTier.Auto,
+                        Speed = Speed.Standard,
                         StopSequences = ["string"],
                         Stream = true,
                         System = new(
@@ -224,6 +225,7 @@ public class BatchCreateParamsTest : TestBase
                         },
                     },
                     ServiceTier = ServiceTier.Auto,
+                    Speed = Speed.Standard,
                     StopSequences = ["string"],
                     Stream = true,
                     System = new(
@@ -382,6 +384,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         },
                         ServiceTier = ServiceTier.Auto,
+                        Speed = Speed.Standard,
                         StopSequences = ["string"],
                         Stream = true,
                         System = new(
@@ -528,6 +531,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         },
                         ServiceTier = ServiceTier.Auto,
+                        Speed = Speed.Standard,
                         StopSequences = ["string"],
                         Stream = true,
                         System = new(
@@ -677,6 +681,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         },
                         ServiceTier = ServiceTier.Auto,
+                        Speed = Speed.Standard,
                         StopSequences = ["string"],
                         Stream = true,
                         System = new(
@@ -825,6 +830,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         },
                         ServiceTier = ServiceTier.Auto,
+                        Speed = Speed.Standard,
                         StopSequences = ["string"],
                         Stream = true,
                         System = new(
@@ -976,6 +982,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         },
                         ServiceTier = ServiceTier.Auto,
+                        Speed = Speed.Standard,
                         StopSequences = ["string"],
                         Stream = true,
                         System = new(
@@ -1119,6 +1126,7 @@ public class RequestTest : TestBase
                     },
                 },
                 ServiceTier = ServiceTier.Auto,
+                Speed = Speed.Standard,
                 StopSequences = ["string"],
                 Stream = true,
                 System = new(
@@ -1243,6 +1251,7 @@ public class RequestTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = true,
             System = new(
@@ -1375,6 +1384,7 @@ public class RequestTest : TestBase
                     },
                 },
                 ServiceTier = ServiceTier.Auto,
+                Speed = Speed.Standard,
                 StopSequences = ["string"],
                 Stream = true,
                 System = new(
@@ -1510,6 +1520,7 @@ public class RequestTest : TestBase
                     },
                 },
                 ServiceTier = ServiceTier.Auto,
+                Speed = Speed.Standard,
                 StopSequences = ["string"],
                 Stream = true,
                 System = new(
@@ -1641,6 +1652,7 @@ public class RequestTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = true,
             System = new(
@@ -1773,6 +1785,7 @@ public class RequestTest : TestBase
                     },
                 },
                 ServiceTier = ServiceTier.Auto,
+                Speed = Speed.Standard,
                 StopSequences = ["string"],
                 Stream = true,
                 System = new(
@@ -1905,6 +1918,7 @@ public class RequestTest : TestBase
                     },
                 },
                 ServiceTier = ServiceTier.Auto,
+                Speed = Speed.Standard,
                 StopSequences = ["string"],
                 Stream = true,
                 System = new(
@@ -2039,6 +2053,7 @@ public class ParamsTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = true,
             System = new(
@@ -2165,6 +2180,7 @@ public class ParamsTest : TestBase
             },
         };
         ApiEnum<string, ServiceTier> expectedServiceTier = ServiceTier.Auto;
+        ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
         List<string> expectedStopSequences = ["string"];
         bool expectedStream = true;
         ParamsSystem expectedSystem = new(
@@ -2247,6 +2263,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedOutputConfig, model.OutputConfig);
         Assert.Equal(expectedOutputFormat, model.OutputFormat);
         Assert.Equal(expectedServiceTier, model.ServiceTier);
+        Assert.Equal(expectedSpeed, model.Speed);
         Assert.NotNull(model.StopSequences);
         Assert.Equal(expectedStopSequences.Count, model.StopSequences.Count);
         for (int i = 0; i < expectedStopSequences.Count; i++)
@@ -2334,6 +2351,7 @@ public class ParamsTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = true,
             System = new(
@@ -2465,6 +2483,7 @@ public class ParamsTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = true,
             System = new(
@@ -2595,6 +2614,7 @@ public class ParamsTest : TestBase
             },
         };
         ApiEnum<string, ServiceTier> expectedServiceTier = ServiceTier.Auto;
+        ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
         List<string> expectedStopSequences = ["string"];
         bool expectedStream = true;
         ParamsSystem expectedSystem = new(
@@ -2677,6 +2697,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedOutputConfig, deserialized.OutputConfig);
         Assert.Equal(expectedOutputFormat, deserialized.OutputFormat);
         Assert.Equal(expectedServiceTier, deserialized.ServiceTier);
+        Assert.Equal(expectedSpeed, deserialized.Speed);
         Assert.NotNull(deserialized.StopSequences);
         Assert.Equal(expectedStopSequences.Count, deserialized.StopSequences.Count);
         for (int i = 0; i < expectedStopSequences.Count; i++)
@@ -2764,6 +2785,7 @@ public class ParamsTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = true,
             System = new(
@@ -2869,6 +2891,7 @@ public class ParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
+            Speed = Speed.Standard,
         };
 
         Assert.Null(model.McpServers);
@@ -2942,6 +2965,7 @@ public class ParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
+            Speed = Speed.Standard,
         };
 
         model.Validate();
@@ -2990,6 +3014,7 @@ public class ParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
+            Speed = Speed.Standard,
 
             // Null should be interpreted as omitted for these properties
             McpServers = null,
@@ -3078,6 +3103,7 @@ public class ParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
+            Speed = Speed.Standard,
 
             // Null should be interpreted as omitted for these properties
             McpServers = null,
@@ -3196,6 +3222,8 @@ public class ParamsTest : TestBase
         Assert.False(model.RawData.ContainsKey("inference_geo"));
         Assert.Null(model.OutputFormat);
         Assert.False(model.RawData.ContainsKey("output_format"));
+        Assert.Null(model.Speed);
+        Assert.False(model.RawData.ContainsKey("speed"));
     }
 
     [Fact]
@@ -3384,6 +3412,7 @@ public class ParamsTest : TestBase
             ContextManagement = null,
             InferenceGeo = null,
             OutputFormat = null,
+            Speed = null,
         };
 
         Assert.Null(model.Container);
@@ -3394,6 +3423,8 @@ public class ParamsTest : TestBase
         Assert.True(model.RawData.ContainsKey("inference_geo"));
         Assert.Null(model.OutputFormat);
         Assert.True(model.RawData.ContainsKey("output_format"));
+        Assert.Null(model.Speed);
+        Assert.True(model.RawData.ContainsKey("speed"));
     }
 
     [Fact]
@@ -3489,6 +3520,7 @@ public class ParamsTest : TestBase
             ContextManagement = null,
             InferenceGeo = null,
             OutputFormat = null,
+            Speed = null,
         };
 
         model.Validate();
@@ -3560,6 +3592,7 @@ public class ParamsTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = true,
             System = new(
@@ -3742,6 +3775,64 @@ public class ServiceTierTest : TestBase
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ServiceTier>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class SpeedTest : TestBase
+{
+    [Theory]
+    [InlineData(Speed.Standard)]
+    [InlineData(Speed.Fast)]
+    public void Validation_Works(Speed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Speed> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(Speed.Standard)]
+    [InlineData(Speed.Fast)]
+    public void SerializationRoundtrip_Works(Speed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Speed> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
             json,
             ModelBase.SerializerOptions
         );

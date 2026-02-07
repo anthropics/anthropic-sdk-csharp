@@ -146,6 +146,19 @@ public sealed record class BetaUsage : JsonModel
         init { this._rawData.Set("service_tier", value); }
     }
 
+    /// <summary>
+    /// The inference speed mode used for this request.
+    /// </summary>
+    public required ApiEnum<string, BetaUsageSpeed>? Speed
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, BetaUsageSpeed>>("speed");
+        }
+        init { this._rawData.Set("speed", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -161,6 +174,7 @@ public sealed record class BetaUsage : JsonModel
         _ = this.OutputTokens;
         this.ServerToolUse?.Validate();
         this.ServiceTier?.Validate();
+        this.Speed?.Validate();
     }
 
     public BetaUsage() { }
@@ -239,6 +253,53 @@ sealed class BetaUsageServiceTierConverter : JsonConverter<BetaUsageServiceTier>
                 BetaUsageServiceTier.Standard => "standard",
                 BetaUsageServiceTier.Priority => "priority",
                 BetaUsageServiceTier.Batch => "batch",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
+/// The inference speed mode used for this request.
+/// </summary>
+[JsonConverter(typeof(BetaUsageSpeedConverter))]
+public enum BetaUsageSpeed
+{
+    Standard,
+    Fast,
+}
+
+sealed class BetaUsageSpeedConverter : JsonConverter<BetaUsageSpeed>
+{
+    public override BetaUsageSpeed Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "standard" => BetaUsageSpeed.Standard,
+            "fast" => BetaUsageSpeed.Fast,
+            _ => (BetaUsageSpeed)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaUsageSpeed value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaUsageSpeed.Standard => "standard",
+                BetaUsageSpeed.Fast => "fast",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

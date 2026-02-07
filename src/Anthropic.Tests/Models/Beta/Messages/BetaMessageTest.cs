@@ -85,6 +85,7 @@ public class BetaMessageTest : TestBase
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                Speed = Messages::BetaUsageSpeed.Standard,
             },
         };
 
@@ -161,6 +162,7 @@ public class BetaMessageTest : TestBase
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = Messages::BetaUsageServiceTier.Standard,
+            Speed = Messages::BetaUsageSpeed.Standard,
         };
 
         Assert.Equal(expectedID, model.ID);
@@ -255,6 +257,7 @@ public class BetaMessageTest : TestBase
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                Speed = Messages::BetaUsageSpeed.Standard,
             },
         };
 
@@ -343,6 +346,7 @@ public class BetaMessageTest : TestBase
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                Speed = Messages::BetaUsageSpeed.Standard,
             },
         };
 
@@ -426,6 +430,7 @@ public class BetaMessageTest : TestBase
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = Messages::BetaUsageServiceTier.Standard,
+            Speed = Messages::BetaUsageSpeed.Standard,
         };
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -520,6 +525,7 @@ public class BetaMessageTest : TestBase
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                Speed = Messages::BetaUsageSpeed.Standard,
             },
         };
 
@@ -602,6 +608,7 @@ public class BetaMessageTest : TestBase
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                Speed = Messages::BetaUsageSpeed.Standard,
             },
         };
 

@@ -90,6 +90,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                    Speed = Messages::BetaUsageSpeed.Standard,
                 },
             },
         };
@@ -167,6 +168,7 @@ public class BetaRawMessageStartEventTest : TestBase
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                Speed = Messages::BetaUsageSpeed.Standard,
             },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("message_start");
@@ -257,6 +259,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                    Speed = Messages::BetaUsageSpeed.Standard,
                 },
             },
         };
@@ -352,6 +355,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                    Speed = Messages::BetaUsageSpeed.Standard,
                 },
             },
         };
@@ -436,6 +440,7 @@ public class BetaRawMessageStartEventTest : TestBase
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                Speed = Messages::BetaUsageSpeed.Standard,
             },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("message_start");
@@ -526,6 +531,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                    Speed = Messages::BetaUsageSpeed.Standard,
                 },
             },
         };
@@ -615,6 +621,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                    Speed = Messages::BetaUsageSpeed.Standard,
                 },
             },
         };

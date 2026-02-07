@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Messages;
 using Messages = Anthropic.Models.Messages;
@@ -60,6 +61,7 @@ public class MessageCountTokensParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
+            Speed = MessageCountTokensParamsSpeed.Standard,
             System = new(
                 [
                     new BetaTextBlockParam()
@@ -159,6 +161,8 @@ public class MessageCountTokensParamsTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
         };
+        ApiEnum<string, MessageCountTokensParamsSpeed> expectedSpeed =
+            MessageCountTokensParamsSpeed.Standard;
         MessageCountTokensParamsSystem expectedSystem = new(
             [
                 new BetaTextBlockParam()
@@ -234,6 +238,7 @@ public class MessageCountTokensParamsTest : TestBase
         }
         Assert.Equal(expectedOutputConfig, parameters.OutputConfig);
         Assert.Equal(expectedOutputFormat, parameters.OutputFormat);
+        Assert.Equal(expectedSpeed, parameters.Speed);
         Assert.Equal(expectedSystem, parameters.System);
         Assert.Equal(expectedThinking, parameters.Thinking);
         Assert.Equal(expectedToolChoice, parameters.ToolChoice);
@@ -279,6 +284,7 @@ public class MessageCountTokensParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
+            Speed = MessageCountTokensParamsSpeed.Standard,
         };
 
         Assert.Null(parameters.McpServers);
@@ -325,6 +331,7 @@ public class MessageCountTokensParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
+            Speed = MessageCountTokensParamsSpeed.Standard,
 
             // Null should be interpreted as omitted for these properties
             McpServers = null,
@@ -439,6 +446,8 @@ public class MessageCountTokensParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("context_management"));
         Assert.Null(parameters.OutputFormat);
         Assert.False(parameters.RawBodyData.ContainsKey("output_format"));
+        Assert.Null(parameters.Speed);
+        Assert.False(parameters.RawBodyData.ContainsKey("speed"));
     }
 
     [Fact]
@@ -525,12 +534,15 @@ public class MessageCountTokensParamsTest : TestBase
 
             ContextManagement = null,
             OutputFormat = null,
+            Speed = null,
         };
 
         Assert.Null(parameters.ContextManagement);
         Assert.True(parameters.RawBodyData.ContainsKey("context_management"));
         Assert.Null(parameters.OutputFormat);
         Assert.True(parameters.RawBodyData.ContainsKey("output_format"));
+        Assert.Null(parameters.Speed);
+        Assert.True(parameters.RawBodyData.ContainsKey("speed"));
     }
 
     [Fact]
@@ -615,6 +627,7 @@ public class MessageCountTokensParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
+            Speed = MessageCountTokensParamsSpeed.Standard,
             System = new(
                 [
                     new BetaTextBlockParam()
@@ -673,6 +686,62 @@ public class MessageCountTokensParamsTest : TestBase
         MessageCountTokensParams copied = new(parameters);
 
         Assert.Equal(parameters, copied);
+    }
+}
+
+public class MessageCountTokensParamsSpeedTest : TestBase
+{
+    [Theory]
+    [InlineData(MessageCountTokensParamsSpeed.Standard)]
+    [InlineData(MessageCountTokensParamsSpeed.Fast)]
+    public void Validation_Works(MessageCountTokensParamsSpeed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, MessageCountTokensParamsSpeed> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, MessageCountTokensParamsSpeed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(MessageCountTokensParamsSpeed.Standard)]
+    [InlineData(MessageCountTokensParamsSpeed.Fast)]
+    public void SerializationRoundtrip_Works(MessageCountTokensParamsSpeed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, MessageCountTokensParamsSpeed> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, MessageCountTokensParamsSpeed>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, MessageCountTokensParamsSpeed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, MessageCountTokensParamsSpeed>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }
 

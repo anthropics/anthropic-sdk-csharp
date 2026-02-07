@@ -27,6 +27,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.ContextManagement2025_06_27)]
     [InlineData(AnthropicBeta.ModelContextWindowExceeded2025_08_26)]
     [InlineData(AnthropicBeta.Skills2025_10_02)]
+    [InlineData(AnthropicBeta.FastMode2026_02_01)]
     public void Validation_Works(AnthropicBeta rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -66,6 +67,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.ContextManagement2025_06_27)]
     [InlineData(AnthropicBeta.ModelContextWindowExceeded2025_08_26)]
     [InlineData(AnthropicBeta.Skills2025_10_02)]
+    [InlineData(AnthropicBeta.FastMode2026_02_01)]
     public void SerializationRoundtrip_Works(AnthropicBeta rawValue)
     {
         // force implicit conversion because Theory can't do that for us
