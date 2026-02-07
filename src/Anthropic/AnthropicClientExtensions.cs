@@ -438,7 +438,8 @@ public static class AnthropicClientExtensions
                     {
                         if (content is TextContent tc)
                         {
-                            (systemMessages ??= []).Add(new() { Text = tc.Text });
+                            var block = new TextBlockParam { Text = tc.Text };
+                            (systemMessages ??= []).Add(WithCacheControlFrom(block, tc));
                         }
                     }
 
@@ -462,43 +463,59 @@ public static class AnthropicClientExtensions
                                 text = text.TrimEnd();
                                 if (!string.IsNullOrWhiteSpace(text))
                                 {
-                                    contents.Add(new TextBlockParam() { Text = text });
+                                    contents.Add(
+                                        WithCacheControlFrom(
+                                            new TextBlockParam() { Text = text },
+                                            tc
+                                        )
+                                    );
                                 }
                             }
                             else if (!string.IsNullOrWhiteSpace(text))
                             {
-                                contents.Add(new TextBlockParam() { Text = text });
+                                contents.Add(
+                                    WithCacheControlFrom(new TextBlockParam() { Text = text }, tc)
+                                );
                             }
                             break;
 
                         case TextReasoningContent trc when !string.IsNullOrEmpty(trc.Text):
                             contents.Add(
-                                new ThinkingBlockParam()
-                                {
-                                    Thinking = trc.Text,
-                                    Signature = trc.ProtectedData ?? string.Empty,
-                                }
+                                WithCacheControlFrom(
+                                    new ThinkingBlockParam()
+                                    {
+                                        Thinking = trc.Text,
+                                        Signature = trc.ProtectedData ?? string.Empty,
+                                    },
+                                    trc
+                                )
                             );
                             break;
 
                         case TextReasoningContent trc when !string.IsNullOrEmpty(trc.ProtectedData):
                             contents.Add(
-                                new RedactedThinkingBlockParam() { Data = trc.ProtectedData! }
+                                WithCacheControlFrom(
+                                    new RedactedThinkingBlockParam() { Data = trc.ProtectedData! },
+                                    trc
+                                )
                             );
                             break;
 
                         case DataContent dc when dc.HasTopLevelMediaType("image"):
                             contents.Add(
-                                new ImageBlockParam()
-                                {
-                                    Source = new(
-                                        new Base64ImageSource()
-                                        {
-                                            Data = dc.Base64Data.ToString(),
-                                            MediaType = dc.MediaType,
-                                        }
-                                    ),
-                                }
+                                WithCacheControlFrom(
+                                    new ImageBlockParam()
+                                    {
+                                        Source = new(
+                                            new Base64ImageSource()
+                                            {
+                                                Data = dc.Base64Data.ToString(),
+                                                MediaType = dc.MediaType,
+                                            }
+                                        ),
+                                    },
+                                    dc
+                                )
                             );
                             break;
 
@@ -509,35 +526,49 @@ public static class AnthropicClientExtensions
                                 StringComparison.OrdinalIgnoreCase
                             ):
                             contents.Add(
-                                new DocumentBlockParam()
-                                {
-                                    Source = new(
-                                        new Base64PdfSource() { Data = dc.Base64Data.ToString() }
-                                    ),
-                                }
+                                WithCacheControlFrom(
+                                    new DocumentBlockParam()
+                                    {
+                                        Source = new(
+                                            new Base64PdfSource()
+                                            {
+                                                Data = dc.Base64Data.ToString(),
+                                            }
+                                        ),
+                                    },
+                                    dc
+                                )
                             );
                             break;
 
                         case DataContent dc when dc.HasTopLevelMediaType("text"):
                             contents.Add(
-                                new DocumentBlockParam()
-                                {
-                                    Source = new(
-                                        new PlainTextSource()
-                                        {
-                                            Data = Encoding.UTF8.GetString(dc.Data.ToArray()),
-                                        }
-                                    ),
-                                }
+                                WithCacheControlFrom(
+                                    new DocumentBlockParam()
+                                    {
+                                        Source = new(
+                                            new PlainTextSource()
+                                            {
+                                                Data = Encoding.UTF8.GetString(dc.Data.ToArray()),
+                                            }
+                                        ),
+                                    },
+                                    dc
+                                )
                             );
                             break;
 
                         case UriContent uc when uc.HasTopLevelMediaType("image"):
                             contents.Add(
-                                new ImageBlockParam()
-                                {
-                                    Source = new(new UrlImageSource() { Url = uc.Uri.AbsoluteUri }),
-                                }
+                                WithCacheControlFrom(
+                                    new ImageBlockParam()
+                                    {
+                                        Source = new(
+                                            new UrlImageSource() { Url = uc.Uri.AbsoluteUri }
+                                        ),
+                                    },
+                                    uc
+                                )
                             );
                             break;
 
@@ -548,33 +579,41 @@ public static class AnthropicClientExtensions
                                 StringComparison.OrdinalIgnoreCase
                             ):
                             contents.Add(
-                                new DocumentBlockParam()
-                                {
-                                    Source = new(new UrlPdfSource() { Url = uc.Uri.AbsoluteUri }),
-                                }
+                                WithCacheControlFrom(
+                                    new DocumentBlockParam()
+                                    {
+                                        Source = new(
+                                            new UrlPdfSource() { Url = uc.Uri.AbsoluteUri }
+                                        ),
+                                    },
+                                    uc
+                                )
                             );
                             break;
 
                         case FunctionCallContent fcc:
                             contents.Add(
-                                new ToolUseBlockParam()
-                                {
-                                    ID = fcc.CallId,
-                                    Name = fcc.Name,
-                                    Input =
-                                        fcc.Arguments?.ToDictionary(
-                                            e => e.Key,
-                                            e =>
-                                                e.Value is JsonElement je
-                                                    ? je
-                                                    : JsonSerializer.SerializeToElement(
-                                                        e.Value,
-                                                        AIJsonUtilities.DefaultOptions.GetTypeInfo(
-                                                            typeof(object)
+                                WithCacheControlFrom(
+                                    new ToolUseBlockParam()
+                                    {
+                                        ID = fcc.CallId,
+                                        Name = fcc.Name,
+                                        Input =
+                                            fcc.Arguments?.ToDictionary(
+                                                e => e.Key,
+                                                e =>
+                                                    e.Value is JsonElement je
+                                                        ? je
+                                                        : JsonSerializer.SerializeToElement(
+                                                            e.Value,
+                                                            AIJsonUtilities.DefaultOptions.GetTypeInfo(
+                                                                typeof(object)
+                                                            )
                                                         )
-                                                    )
-                                        ) ?? [],
-                                }
+                                            ) ?? [],
+                                    },
+                                    fcc
+                                )
                             );
                             break;
 
@@ -716,12 +755,15 @@ public static class AnthropicClientExtensions
                             }
 
                             contents.Add(
-                                new ToolResultBlockParam()
-                                {
-                                    ToolUseID = frc.CallId,
-                                    IsError = frc.Exception is not null,
-                                    Content = result,
-                                }
+                                WithCacheControlFrom(
+                                    new ToolResultBlockParam()
+                                    {
+                                        ToolUseID = frc.CallId,
+                                        IsError = frc.Exception is not null,
+                                        Content = result,
+                                    },
+                                    frc
+                                )
                             );
                             break;
                     }
@@ -747,6 +789,33 @@ public static class AnthropicClientExtensions
             }
 
             return messageParams;
+        }
+
+        /// <summary>
+        /// Applies cache control from an <see cref="AIContent"/> to a content block param if configured.
+        /// </summary>
+        /// <remarks>
+        /// Note: ThinkingBlockParam and RedactedThinkingBlockParam do not support cache control.
+        /// </remarks>
+        private static T WithCacheControlFrom<T>(T block, AIContent content)
+            where T : class
+        {
+            var cacheControl = content.GetCacheControl();
+            if (cacheControl is null)
+            {
+                return block;
+            }
+
+            return block switch
+            {
+                TextBlockParam tb => (tb with { CacheControl = cacheControl }) as T ?? block,
+                ImageBlockParam ib => (ib with { CacheControl = cacheControl }) as T ?? block,
+                DocumentBlockParam db => (db with { CacheControl = cacheControl }) as T ?? block,
+                ToolUseBlockParam tub => (tub with { CacheControl = cacheControl }) as T ?? block,
+                ToolResultBlockParam trb => (trb with { CacheControl = cacheControl }) as T
+                    ?? block,
+                _ => block,
+            };
         }
 
         private MessageCreateParams GetMessageCreateParams(

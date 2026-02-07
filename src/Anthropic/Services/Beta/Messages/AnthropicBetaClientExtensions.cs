@@ -597,7 +597,8 @@ public static class AnthropicBetaClientExtensions
                     {
                         if (content is TextContent tc)
                         {
-                            (systemMessages ??= []).Add(new() { Text = tc.Text });
+                            var block = new BetaTextBlockParam { Text = tc.Text };
+                            (systemMessages ??= []).Add(WithCacheControlFrom(block, tc));
                         }
                     }
 
@@ -622,43 +623,65 @@ public static class AnthropicBetaClientExtensions
                                 text = text.TrimEnd();
                                 if (!string.IsNullOrWhiteSpace(text))
                                 {
-                                    contents.Add(new BetaTextBlockParam() { Text = text });
+                                    contents.Add(
+                                        WithCacheControlFrom(
+                                            new BetaTextBlockParam() { Text = text },
+                                            tc
+                                        )
+                                    );
                                 }
                             }
                             else if (!string.IsNullOrWhiteSpace(text))
                             {
-                                contents.Add(new BetaTextBlockParam() { Text = text });
+                                contents.Add(
+                                    WithCacheControlFrom(
+                                        new BetaTextBlockParam() { Text = text },
+                                        tc
+                                    )
+                                );
                             }
                             break;
 
                         case TextReasoningContent trc when !string.IsNullOrEmpty(trc.Text):
                             contents.Add(
-                                new BetaThinkingBlockParam()
-                                {
-                                    Thinking = trc.Text,
-                                    Signature = trc.ProtectedData ?? string.Empty,
-                                }
+                                WithCacheControlFrom(
+                                    new BetaThinkingBlockParam()
+                                    {
+                                        Thinking = trc.Text,
+                                        Signature = trc.ProtectedData ?? string.Empty,
+                                    },
+                                    trc
+                                )
                             );
                             break;
 
                         case TextReasoningContent trc when !string.IsNullOrEmpty(trc.ProtectedData):
                             contents.Add(
-                                new BetaRedactedThinkingBlockParam() { Data = trc.ProtectedData! }
+                                WithCacheControlFrom(
+                                    new BetaRedactedThinkingBlockParam()
+                                    {
+                                        Data = trc.ProtectedData!,
+                                    },
+                                    trc
+                                )
                             );
                             break;
 
                         case DataContent dc when dc.HasTopLevelMediaType("image"):
                             contents.Add(
-                                new BetaImageBlockParam()
-                                {
-                                    Source = new(
-                                        new BetaBase64ImageSource()
-                                        {
-                                            Data = dc.Base64Data.ToString(),
-                                            MediaType = dc.MediaType,
-                                        }
-                                    ),
-                                }
+                                WithCacheControlFrom(
+                                    new BetaImageBlockParam()
+                                    {
+                                        Source = new(
+                                            new BetaBase64ImageSource()
+                                            {
+                                                Data = dc.Base64Data.ToString(),
+                                                MediaType = dc.MediaType,
+                                            }
+                                        ),
+                                    },
+                                    dc
+                                )
                             );
                             break;
 
@@ -669,44 +692,53 @@ public static class AnthropicBetaClientExtensions
                                 StringComparison.OrdinalIgnoreCase
                             ):
                             contents.Add(
-                                new BetaRequestDocumentBlock()
-                                {
-                                    Source = new(
-                                        new BetaBase64PdfSource()
-                                        {
-                                            Data = dc.Base64Data.ToString(),
-                                        }
-                                    ),
-                                }
+                                WithCacheControlFrom(
+                                    new BetaRequestDocumentBlock()
+                                    {
+                                        Source = new(
+                                            new BetaBase64PdfSource()
+                                            {
+                                                Data = dc.Base64Data.ToString(),
+                                            }
+                                        ),
+                                    },
+                                    dc
+                                )
                             );
                             break;
 
                         case DataContent dc when dc.HasTopLevelMediaType("text"):
                             contents.Add(
-                                new BetaRequestDocumentBlock()
-                                {
-                                    Source = new(
-                                        new BetaPlainTextSource()
-                                        {
+                                WithCacheControlFrom(
+                                    new BetaRequestDocumentBlock()
+                                    {
+                                        Source = new(
+                                            new BetaPlainTextSource()
+                                            {
 #if NET
-                                            Data = Encoding.UTF8.GetString(dc.Data.Span),
+                                                Data = Encoding.UTF8.GetString(dc.Data.Span),
 #else
-                                            Data = Encoding.UTF8.GetString(dc.Data.ToArray()),
+                                                Data = Encoding.UTF8.GetString(dc.Data.ToArray()),
 #endif
-                                        }
-                                    ),
-                                }
+                                            }
+                                        ),
+                                    },
+                                    dc
+                                )
                             );
                             break;
 
                         case UriContent uc when uc.HasTopLevelMediaType("image"):
                             contents.Add(
-                                new BetaImageBlockParam()
-                                {
-                                    Source = new(
-                                        new BetaUrlImageSource() { Url = uc.Uri.AbsoluteUri }
-                                    ),
-                                }
+                                WithCacheControlFrom(
+                                    new BetaImageBlockParam()
+                                    {
+                                        Source = new(
+                                            new BetaUrlImageSource() { Url = uc.Uri.AbsoluteUri }
+                                        ),
+                                    },
+                                    uc
+                                )
                             );
                             break;
 
@@ -717,44 +749,53 @@ public static class AnthropicBetaClientExtensions
                                 StringComparison.OrdinalIgnoreCase
                             ):
                             contents.Add(
-                                new BetaRequestDocumentBlock()
-                                {
-                                    Source = new(
-                                        new BetaUrlPdfSource() { Url = uc.Uri.AbsoluteUri }
-                                    ),
-                                }
+                                WithCacheControlFrom(
+                                    new BetaRequestDocumentBlock()
+                                    {
+                                        Source = new(
+                                            new BetaUrlPdfSource() { Url = uc.Uri.AbsoluteUri }
+                                        ),
+                                    },
+                                    uc
+                                )
                             );
                             break;
 
                         case HostedFileContent fc:
                             contents.Add(
-                                new BetaRequestDocumentBlock()
-                                {
-                                    Source = new(new BetaFileDocumentSource(fc.FileId)),
-                                }
+                                WithCacheControlFrom(
+                                    new BetaRequestDocumentBlock()
+                                    {
+                                        Source = new(new BetaFileDocumentSource(fc.FileId)),
+                                    },
+                                    fc
+                                )
                             );
                             break;
 
                         case FunctionCallContent fcc:
                             contents.Add(
-                                new BetaToolUseBlockParam()
-                                {
-                                    ID = fcc.CallId,
-                                    Name = fcc.Name,
-                                    Input =
-                                        fcc.Arguments?.ToDictionary(
-                                            e => e.Key,
-                                            e =>
-                                                e.Value is JsonElement je
-                                                    ? je
-                                                    : JsonSerializer.SerializeToElement(
-                                                        e.Value,
-                                                        AIJsonUtilities.DefaultOptions.GetTypeInfo(
-                                                            typeof(object)
+                                WithCacheControlFrom(
+                                    new BetaToolUseBlockParam()
+                                    {
+                                        ID = fcc.CallId,
+                                        Name = fcc.Name,
+                                        Input =
+                                            fcc.Arguments?.ToDictionary(
+                                                e => e.Key,
+                                                e =>
+                                                    e.Value is JsonElement je
+                                                        ? je
+                                                        : JsonSerializer.SerializeToElement(
+                                                            e.Value,
+                                                            AIJsonUtilities.DefaultOptions.GetTypeInfo(
+                                                                typeof(object)
+                                                            )
                                                         )
-                                                    )
-                                        ) ?? [],
-                                }
+                                            ) ?? [],
+                                    },
+                                    fcc
+                                )
                             );
                             break;
 
@@ -905,12 +946,15 @@ public static class AnthropicBetaClientExtensions
                             }
 
                             contents.Add(
-                                new BetaToolResultBlockParam()
-                                {
-                                    ToolUseID = frc.CallId,
-                                    IsError = frc.Exception is not null,
-                                    Content = result,
-                                }
+                                WithCacheControlFrom(
+                                    new BetaToolResultBlockParam()
+                                    {
+                                        ToolUseID = frc.CallId,
+                                        IsError = frc.Exception is not null,
+                                        Content = result,
+                                    },
+                                    frc
+                                )
                             );
                             break;
                     }
@@ -936,6 +980,51 @@ public static class AnthropicBetaClientExtensions
             }
 
             return messageParams;
+        }
+
+        /// <summary>
+        /// Applies cache control from an <see cref="AIContent"/> to a beta content block param if configured.
+        /// </summary>
+        /// <remarks>
+        /// Converts from <see cref="Anthropic.Models.Messages.CacheControlEphemeral"/> (used by the extension)
+        /// to <see cref="BetaCacheControlEphemeral"/> (used by the beta API).
+        /// Note: BetaThinkingBlockParam and BetaRedactedThinkingBlockParam do not support cache control.
+        /// </remarks>
+        private static T WithCacheControlFrom<T>(T block, AIContent content)
+            where T : class
+        {
+            var cacheControl = content.GetCacheControl();
+            if (cacheControl is null)
+            {
+                return block;
+            }
+
+            // Convert non-beta CacheControlEphemeral to BetaCacheControlEphemeral
+            // Note: Ttl enum exists in both namespaces, using fully qualified names to disambiguate
+            var betaCacheControl = new BetaCacheControlEphemeral
+            {
+                Ttl = cacheControl.Ttl?.Value() switch
+                {
+                    Anthropic.Models.Messages.Ttl.Ttl5m => Anthropic.Models.Beta.Messages.Ttl.Ttl5m,
+                    Anthropic.Models.Messages.Ttl.Ttl1h => Anthropic.Models.Beta.Messages.Ttl.Ttl1h,
+                    _ => null,
+                },
+            };
+
+            return block switch
+            {
+                BetaTextBlockParam tb => (tb with { CacheControl = betaCacheControl }) as T
+                    ?? block,
+                BetaImageBlockParam ib => (ib with { CacheControl = betaCacheControl }) as T
+                    ?? block,
+                BetaRequestDocumentBlock db => (db with { CacheControl = betaCacheControl }) as T
+                    ?? block,
+                BetaToolUseBlockParam tub => (tub with { CacheControl = betaCacheControl }) as T
+                    ?? block,
+                BetaToolResultBlockParam trb => (trb with { CacheControl = betaCacheControl }) as T
+                    ?? block,
+                _ => block,
+            };
         }
 
         private MessageCreateParams GetMessageCreateParams(
