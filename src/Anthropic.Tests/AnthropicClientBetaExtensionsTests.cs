@@ -2493,4 +2493,172 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
             "Default AnthropicClient user-agent header should be present"
         );
     }
+
+    [Fact]
+    public async Task GetResponseAsync_WithNullableUnionType_TransformsToSimpleType()
+    {
+        // The C# MCP SDK generates schemas with "type": ["integer", "null"], "default": null
+        // for optional nullable parameters. This test verifies the transformation removes
+        // the null from the union type and the default: null for non-required properties.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Call tool with optional param"
+                    }]
+                }],
+                "tools": [{
+                    "name": "tool_with_optional",
+                    "description": "A tool with an optional nullable parameter",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "required_param": {
+                                "type": "string"
+                            },
+                            "optional_number": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": ["required_param"]
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_nullable_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Tool ready"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 30,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        // Create a function with an optional nullable parameter - the schema will have
+        // "type": ["integer", "null"], "default": null which should be transformed
+        var functionWithOptional = AIFunctionFactory.Create(
+            (string required_param, int? optional_number = null) => "result",
+            new AIFunctionFactoryOptions
+            {
+                Name = "tool_with_optional",
+                Description = "A tool with an optional nullable parameter",
+            }
+        );
+
+        ChatOptions options = new() { Tools = [functionWithOptional] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Call tool with optional param",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithRequiredNullableUnionType_PreservesUnionType()
+    {
+        // When a property IS in the required array but has a nullable union type,
+        // we should NOT transform it - let the API fail with a meaningful error
+        // rather than silently misrepresenting the schema.
+        // Using BetaTool.AsAITool() bypasses the schema transformation, so this test
+        // verifies the raw tool passes through unchanged.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Call tool with required nullable"
+                    }]
+                }],
+                "tools": [{
+                    "name": "tool_with_required_nullable",
+                    "description": "A tool with a required nullable parameter",
+                    "input_schema": {
+                        "nullable_number": {
+                            "type": ["integer", "null"],
+                            "description": "A required but nullable number"
+                        },
+                        "type": "object",
+                        "required": ["nullable_number"]
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_required_nullable_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Tool ready"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 30,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        // Create a BetaTool with a required nullable parameter using raw schema
+        // This simulates a schema that came from elsewhere (not C# MCP SDK pattern)
+#pragma warning disable CA1861 // Prefer 'static readonly' fields over constant array arguments - test method only runs once
+        BetaToolUnion rawTool = new BetaTool
+        {
+            Name = "tool_with_required_nullable",
+            Description = "A tool with a required nullable parameter",
+            InputSchema = new InputSchema(
+                new Dictionary<string, JsonElement>
+                {
+                    ["nullable_number"] = JsonSerializer.SerializeToElement(
+                        new
+                        {
+                            type = new[] { "integer", "null" },
+                            description = "A required but nullable number",
+                        }
+                    ),
+                }
+            )
+            {
+                Required = ["nullable_number"],
+            },
+        };
+#pragma warning restore CA1861
+
+        ChatOptions options = new() { Tools = [rawTool.AsAITool()] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Call tool with required nullable",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
 }

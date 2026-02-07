@@ -197,6 +197,87 @@ public static class AnthropicBetaClientExtensions
                         {
                             _ = schemaObj.Remove(propName);
                         }
+
+                        // Handle nullable union types (e.g., "type": ["integer", "null"]) for
+                        // non-required properties. The C# MCP SDK generates these for optional
+                        // parameters, but structured outputs doesn't support union types.
+                        // Only transform non-required properties; required + nullable is an
+                        // incompatible schema that should fail at the API level.
+                        if (
+                            schemaObj.TryGetPropertyValue("properties", out JsonNode? propsNode)
+                            && propsNode is JsonObject propsObj
+                        )
+                        {
+                            HashSet<string> requiredProps = [];
+                            if (
+                                schemaObj.TryGetPropertyValue("required", out JsonNode? reqNode)
+                                && reqNode is JsonArray reqArray
+                            )
+                            {
+                                foreach (JsonNode? req in reqArray)
+                                {
+                                    if (req?.GetValue<string>() is string reqName)
+                                    {
+                                        requiredProps.Add(reqName);
+                                    }
+                                }
+                            }
+
+                            foreach (var prop in propsObj)
+                            {
+                                if (requiredProps.Contains(prop.Key))
+                                {
+                                    continue;
+                                }
+
+                                if (prop.Value is not JsonObject propSchema)
+                                {
+                                    continue;
+                                }
+
+                                if (
+                                    !propSchema.TryGetPropertyValue("type", out JsonNode? typeNode)
+                                    || typeNode is not JsonArray typeArray
+                                )
+                                {
+                                    continue;
+                                }
+
+                                int nullIndex = -1;
+                                for (int i = 0; i < typeArray.Count; i++)
+                                {
+                                    if (typeArray[i]?.GetValue<string>() == "null")
+                                    {
+                                        nullIndex = i;
+                                        break;
+                                    }
+                                }
+
+                                if (nullIndex < 0)
+                                {
+                                    continue;
+                                }
+
+                                typeArray.RemoveAt(nullIndex);
+
+                                if (typeArray.Count == 1)
+                                {
+                                    propSchema["type"] = typeArray[0]?.DeepClone();
+                                }
+
+                                if (
+                                    propSchema.TryGetPropertyValue(
+                                        "default",
+                                        out JsonNode? defaultNode
+                                    )
+                                    && defaultNode is JsonValue defaultValue
+                                    && defaultValue.GetValueKind() == JsonValueKind.Null
+                                )
+                                {
+                                    propSchema.Remove("default");
+                                }
+                            }
+                        }
                     }
 
                     return schemaNode;
@@ -1000,20 +1081,6 @@ public static class AnthropicBetaClientExtensions
                                 {
                                     if (
                                         inputSchema.TryGetProperty(
-                                            "properties",
-                                            out JsonElement propsElement
-                                        )
-                                        && propsElement.ValueKind is JsonValueKind.Object
-                                    )
-                                    {
-                                        foreach (JsonProperty p in propsElement.EnumerateObject())
-                                        {
-                                            properties[p.Name] = p.Value;
-                                        }
-                                    }
-
-                                    if (
-                                        inputSchema.TryGetProperty(
                                             "required",
                                             out JsonElement reqElement
                                         )
@@ -1030,6 +1097,23 @@ public static class AnthropicBetaClientExtensions
                                             {
                                                 required.Add(s);
                                             }
+                                        }
+                                    }
+
+                                    if (
+                                        inputSchema.TryGetProperty(
+                                            "properties",
+                                            out JsonElement propsElement
+                                        )
+                                        && propsElement.ValueKind is JsonValueKind.Object
+                                    )
+                                    {
+                                        foreach (JsonProperty p in propsElement.EnumerateObject())
+                                        {
+                                            // Transform nullable union types for non-required properties
+                                            properties[p.Name] = required.Contains(p.Name)
+                                                ? p.Value
+                                                : TransformNullableUnionType(p.Value);
                                         }
                                     }
                                 }
@@ -1513,6 +1597,77 @@ public static class AnthropicBetaClientExtensions
             }
 
             return annotation;
+        }
+
+        /// <summary>
+        /// Transforms a property schema with nullable union type (e.g., "type": ["integer", "null"])
+        /// to a simple type (e.g., "type": "integer") and removes "default": null.
+        /// This handles schemas generated by the C# MCP SDK for optional nullable parameters.
+        /// </summary>
+        private static JsonElement TransformNullableUnionType(JsonElement propertySchema)
+        {
+            if (propertySchema.ValueKind is not JsonValueKind.Object)
+            {
+                return propertySchema;
+            }
+
+            if (
+                !propertySchema.TryGetProperty("type", out JsonElement typeElement)
+                || typeElement.ValueKind is not JsonValueKind.Array
+            )
+            {
+                return propertySchema;
+            }
+
+            List<JsonElement> nonNullTypes = [];
+            bool hasNull = false;
+            foreach (JsonElement t in typeElement.EnumerateArray())
+            {
+                if (t.ValueKind is JsonValueKind.String && t.GetString() == "null")
+                {
+                    hasNull = true;
+                }
+                else
+                {
+                    nonNullTypes.Add(t);
+                }
+            }
+
+            if (!hasNull || nonNullTypes.Count == 0)
+            {
+                return propertySchema;
+            }
+
+            var transformed = new Dictionary<string, JsonElement>();
+            foreach (JsonProperty prop in propertySchema.EnumerateObject())
+            {
+                if (prop.Name == "type")
+                {
+                    if (nonNullTypes.Count == 1)
+                    {
+                        transformed["type"] = nonNullTypes[0];
+                    }
+                    else
+                    {
+                        transformed["type"] = JsonSerializer.SerializeToElement(
+                            nonNullTypes.Select(t => t.GetString())
+                        );
+                    }
+                }
+                else if (prop.Name == "default")
+                {
+                    if (prop.Value.ValueKind is not JsonValueKind.Null)
+                    {
+                        transformed[prop.Name] = prop.Value;
+                    }
+                }
+                else
+                {
+                    transformed[prop.Name] = prop.Value;
+                }
+            }
+
+            return JsonSerializer.SerializeToElement(transformed);
         }
 
         private sealed class StreamingFunctionData
