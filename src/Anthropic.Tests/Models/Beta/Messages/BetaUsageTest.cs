@@ -36,6 +36,7 @@ public class BetaUsageTest : TestBase
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = BetaUsageServiceTier.Standard,
+            Speed = BetaUsageSpeed.Standard,
         };
 
         BetaCacheCreation expectedCacheCreation = new()
@@ -65,6 +66,7 @@ public class BetaUsageTest : TestBase
             WebSearchRequests = 0,
         };
         ApiEnum<string, BetaUsageServiceTier> expectedServiceTier = BetaUsageServiceTier.Standard;
+        ApiEnum<string, BetaUsageSpeed> expectedSpeed = BetaUsageSpeed.Standard;
 
         Assert.Equal(expectedCacheCreation, model.CacheCreation);
         Assert.Equal(expectedCacheCreationInputTokens, model.CacheCreationInputTokens);
@@ -80,6 +82,7 @@ public class BetaUsageTest : TestBase
         Assert.Equal(expectedOutputTokens, model.OutputTokens);
         Assert.Equal(expectedServerToolUse, model.ServerToolUse);
         Assert.Equal(expectedServiceTier, model.ServiceTier);
+        Assert.Equal(expectedSpeed, model.Speed);
     }
 
     [Fact]
@@ -110,6 +113,7 @@ public class BetaUsageTest : TestBase
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = BetaUsageServiceTier.Standard,
+            Speed = BetaUsageSpeed.Standard,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -146,6 +150,7 @@ public class BetaUsageTest : TestBase
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = BetaUsageServiceTier.Standard,
+            Speed = BetaUsageSpeed.Standard,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -182,6 +187,7 @@ public class BetaUsageTest : TestBase
             WebSearchRequests = 0,
         };
         ApiEnum<string, BetaUsageServiceTier> expectedServiceTier = BetaUsageServiceTier.Standard;
+        ApiEnum<string, BetaUsageSpeed> expectedSpeed = BetaUsageSpeed.Standard;
 
         Assert.Equal(expectedCacheCreation, deserialized.CacheCreation);
         Assert.Equal(expectedCacheCreationInputTokens, deserialized.CacheCreationInputTokens);
@@ -197,6 +203,7 @@ public class BetaUsageTest : TestBase
         Assert.Equal(expectedOutputTokens, deserialized.OutputTokens);
         Assert.Equal(expectedServerToolUse, deserialized.ServerToolUse);
         Assert.Equal(expectedServiceTier, deserialized.ServiceTier);
+        Assert.Equal(expectedSpeed, deserialized.Speed);
     }
 
     [Fact]
@@ -227,6 +234,7 @@ public class BetaUsageTest : TestBase
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = BetaUsageServiceTier.Standard,
+            Speed = BetaUsageSpeed.Standard,
         };
 
         model.Validate();
@@ -260,6 +268,7 @@ public class BetaUsageTest : TestBase
             OutputTokens = 503,
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = BetaUsageServiceTier.Standard,
+            Speed = BetaUsageSpeed.Standard,
         };
 
         BetaUsage copied = new(model);
@@ -320,6 +329,64 @@ public class BetaUsageServiceTierTest : TestBase
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaUsageServiceTier>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class BetaUsageSpeedTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaUsageSpeed.Standard)]
+    [InlineData(BetaUsageSpeed.Fast)]
+    public void Validation_Works(BetaUsageSpeed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaUsageSpeed> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaUsageSpeed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaUsageSpeed.Standard)]
+    [InlineData(BetaUsageSpeed.Fast)]
+    public void SerializationRoundtrip_Works(BetaUsageSpeed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaUsageSpeed> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaUsageSpeed>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaUsageSpeed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaUsageSpeed>>(
             json,
             ModelBase.SerializerOptions
         );
