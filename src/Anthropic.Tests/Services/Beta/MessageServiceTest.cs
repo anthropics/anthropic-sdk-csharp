@@ -28,6 +28,7 @@ public class MessageServiceTest
                 OutputTokens = 25,
                 ServerToolUse = null,
                 ServiceTier = BetaUsageServiceTier.Standard,
+                Speed = null,
                 InferenceGeo = "inference_geo",
                 Iterations =
                 [
