@@ -21,7 +21,7 @@ public sealed record class BetaInputTokensTrigger : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
-    public required long Value
+    public required long ValueValue
     {
         get
         {
@@ -38,7 +38,7 @@ public sealed record class BetaInputTokensTrigger : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        _ = this.Value;
+        _ = this.ValueValue;
     }
 
     public BetaInputTokensTrigger()
@@ -76,10 +76,10 @@ public sealed record class BetaInputTokensTrigger : JsonModel
     }
 
     [SetsRequiredMembers]
-    public BetaInputTokensTrigger(long value)
+    public BetaInputTokensTrigger(long valueValue)
         : this()
     {
-        this.Value = value;
+        this.ValueValue = valueValue;
     }
 }
 

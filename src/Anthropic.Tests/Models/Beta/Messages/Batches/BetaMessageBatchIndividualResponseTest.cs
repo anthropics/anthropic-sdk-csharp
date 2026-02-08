@@ -93,6 +93,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         OutputTokens = 503,
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                        Speed = Messages::BetaUsageSpeed.Standard,
                     },
                 }
             ),
@@ -177,6 +178,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                    Speed = Messages::BetaUsageSpeed.Standard,
                 },
             }
         );
@@ -269,6 +271,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         OutputTokens = 503,
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                        Speed = Messages::BetaUsageSpeed.Standard,
                     },
                 }
             ),
@@ -367,6 +370,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         OutputTokens = 503,
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                        Speed = Messages::BetaUsageSpeed.Standard,
                     },
                 }
             ),
@@ -458,6 +462,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                    Speed = Messages::BetaUsageSpeed.Standard,
                 },
             }
         );
@@ -550,6 +555,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         OutputTokens = 503,
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                        Speed = Messages::BetaUsageSpeed.Standard,
                     },
                 }
             ),
@@ -642,6 +648,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         OutputTokens = 503,
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                        Speed = Messages::BetaUsageSpeed.Standard,
                     },
                 }
             ),

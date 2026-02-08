@@ -4,7 +4,7 @@
     <AssemblyTitle>Anthropic C#</AssemblyTitle>
     <AssemblyName>Anthropic</AssemblyName>
     <PackageId>Anthropic</PackageId>
-    <VersionPrefix>12.4.0</VersionPrefix>
+    <VersionPrefix>12.5.0</VersionPrefix>
     <StainlessMainProject>true</StainlessMainProject>
     <Description>The official .NET library for the Anthropic API.</Description>
     <OutputType>Library</OutputType>

@@ -446,9 +446,9 @@ public record class Trigger : ModelBase
         get { return Match(betaInputTokens: (x) => x.Type, betaToolUses: (x) => x.Type); }
     }
 
-    public long Value1
+    public long ValueValue
     {
-        get { return Match(betaInputTokens: (x) => x.Value, betaToolUses: (x) => x.Value); }
+        get { return Match(betaInputTokens: (x) => x.ValueValue, betaToolUses: (x) => x.Value); }
     }
 
     public Trigger(BetaInputTokensTrigger value, JsonElement? element = null)

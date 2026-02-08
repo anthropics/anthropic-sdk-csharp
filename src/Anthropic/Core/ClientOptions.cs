@@ -97,4 +97,64 @@ public record struct ClientOptions()
         readonly get { return _authToken.Value; }
         set { _authToken = new(() => value); }
     }
+
+    internal static TimeSpan TimeoutFromMaxTokens(
+        long maxTokens,
+        bool isStreaming,
+        string? model = null
+    )
+    {
+        // Check model-specific token limits for non-streaming requests
+        long? maxNonStreamingTokens = null;
+
+        if (model != null)
+        {
+            maxNonStreamingTokens = model switch
+            {
+                "claude-opus-4-20250514" => 8_192,
+                "claude-4-opus-20250514" => 8_192,
+                "claude-opus-4-0" => 8_192,
+                "anthropic.claude-opus-4-20250514-v1:0" => 8_192,
+                "claude-opus-4@20250514" => 8_192,
+                "claude-opus-4-1-20250805" => 8_192,
+                "anthropic.claude-opus-4-1-20250805-v1:0" => 8_192,
+                "claude-opus-4-1@20250805" => 8_192,
+                _ => null,
+            };
+        }
+        var exceedsModelLimit = maxNonStreamingTokens != null && maxTokens > maxNonStreamingTokens;
+
+        long timeoutSeconds;
+        if (isStreaming)
+        {
+            timeoutSeconds = Math.Min(
+                60 * 60, // 1 hour maximum
+                Math.Max(
+                    10 * 60, // 10 minute minimum
+                    60 * 60 * maxTokens / 128_000
+                )
+            );
+        }
+        else
+        {
+            timeoutSeconds = Math.Min(
+                10 * 60, // 10 minute maximum
+                Math.Max(
+                    30, // 30 second minimum
+                    30 * maxTokens / 1000
+                )
+            );
+        }
+
+        if (!isStreaming && (exceedsModelLimit || timeoutSeconds > 10 * 60)) // 10 minutes
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(maxTokens),
+                "Streaming is required for operations that may take longer than 10 minutes. "
+                    + "For more information, see https://github.com/anthropics/anthropic-sdk-csharp#streaming"
+            );
+        }
+
+        return TimeSpan.FromSeconds(timeoutSeconds);
+    }
 }

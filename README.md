@@ -123,6 +123,13 @@ To send a request to the Anthropic API, build an instance of some `Params` class
 
 For example, `client.Messages.Create` should be called with an instance of `MessageCreateParams`, and it will return an instance of `Task<Message>`.
 
+> [!IMPORTANT]
+> We highly encourage you to use [streaming](#streaming) for longer running requests.
+
+We do not recommend setting a large `MaxTokens` value without using streaming. Some networks may drop idle connections after a certain period of time, which can cause the request to fail or [timeout](#timeouts) without receiving a response from Anthropic. We periodically ping the API to keep the connection alive and reduce the impact of these networks.
+
+The SDK throws an error if a non-streaming request is expected to take longer than 10 minutes. Using a [streaming method](#streaming) or [overriding the timeout](#timeouts) at the client or request level disables the error.
+
 ## Streaming
 
 The SDK defines methods that return response "chunk" streams, where each chunk can be individually processed as soon as it arrives instead of waiting on the full response. Streaming methods generally correspond to [SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) or [JSONL](https://jsonlines.org) responses.
@@ -153,6 +160,43 @@ await foreach (var message in client.Messages.CreateStreaming(parameters))
 {
     Console.WriteLine(message);
 }
+```
+
+### Aggregators
+
+Both the [Messages](src/Anthropic/Models/Messages/Message.cs) and [BetaMessages](src/Anthropic/Models/Beta/Messages/BetaMessage.cs) streaming endpoints have built-in aggregators that can produce the same object as its non-streaming counterparts.
+
+It is possible to either only get the full result object via the `.Aggregate()` extension on the `IAsyncEnumerable` returned by the `CreateStreaming` method or insert an external aggregator into a LINQ tree:
+
+```csharp
+IAsyncEnumerable<RawMessageStreamEvent> responseUpdates = client.Messages.CreateStreaming(
+    parameters
+);
+
+// This produces a single object based on the streaming output.
+var message = await responseUpdates.Aggregate().ConfigureAwait(false);
+
+// You can also add an aggregator as part of your LINQ chain to get realtime streaming and aggregation
+
+var aggregator = new MessageContentAggregator();
+await foreach (RawMessageStreamEvent rawEvent in responseUpdates.CollectAsync(aggregator))
+{
+    // Do something with the stream events
+    if (rawEvent.TryPickContentBlockDelta(out var delta))
+    {
+        if (delta.Delta.TryPickThinking(out var thinkingDelta))
+        {
+            Console.Write(thinkingDelta.Thinking);
+        }
+        else if (delta.Delta.TryPickText(out var textDelta))
+        {
+            Console.Write(textDelta.Text);
+        }
+    }
+}
+
+// And then get the full aggregated message.
+var fullMessage = await aggregator.Message();
 ```
 
 ## `IChatClient`

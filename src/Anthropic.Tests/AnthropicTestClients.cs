@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Anthropic.Bedrock;
 using Anthropic.Foundry;
+using Anthropic.Vertex;
 using Xunit.Sdk;
 using Xunit.v3;
 
@@ -91,6 +92,25 @@ public class AnthropicTestClientsAttribute : DataAttribute
                 )
             );
         }
+        if (TestSupportTypes.HasFlag(TestSupportTypes.Vertex))
+        {
+            rows.Add(
+                new TheoryDataRow(
+                    [
+                        new AnthropicVertexClient(
+                            new AnthropicVertexCredentials(Resource, "VertexProject")
+                        )
+                        {
+                            BaseUrl = DataServiceUrl,
+                        },
+                        .. testData
+                            .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Vertex))
+                            .SelectMany(f => f.TestData)
+                            .ToArray(),
+                    ]
+                )
+            );
+        }
 
         return new ValueTask<IReadOnlyCollection<ITheoryDataRow>>(rows);
     }
@@ -116,4 +136,5 @@ public enum TestSupportTypes
     Anthropic = 1 << 1,
     Foundry = 1 << 2,
     Bedrock = 1 << 3,
+    Vertex = 1 << 4,
 }

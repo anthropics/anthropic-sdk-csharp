@@ -78,6 +78,7 @@ public class MessageCreateParamsTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             System = new(
                 [
@@ -201,6 +202,7 @@ public class MessageCreateParamsTest : TestBase
             },
         };
         ApiEnum<string, ServiceTier> expectedServiceTier = ServiceTier.Auto;
+        ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
         List<string> expectedStopSequences = ["string"];
         MessageCreateParamsSystem expectedSystem = new(
             [
@@ -285,6 +287,7 @@ public class MessageCreateParamsTest : TestBase
         Assert.Equal(expectedOutputConfig, parameters.OutputConfig);
         Assert.Equal(expectedOutputFormat, parameters.OutputFormat);
         Assert.Equal(expectedServiceTier, parameters.ServiceTier);
+        Assert.Equal(expectedSpeed, parameters.Speed);
         Assert.NotNull(parameters.StopSequences);
         Assert.Equal(expectedStopSequences.Count, parameters.StopSequences.Count);
         for (int i = 0; i < expectedStopSequences.Count; i++)
@@ -354,6 +357,7 @@ public class MessageCreateParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
+            Speed = Speed.Standard,
         };
 
         Assert.Null(parameters.McpServers);
@@ -427,6 +431,7 @@ public class MessageCreateParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
+            Speed = Speed.Standard,
 
             // Null should be interpreted as omitted for these properties
             McpServers = null,
@@ -570,6 +575,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("inference_geo"));
         Assert.Null(parameters.OutputFormat);
         Assert.False(parameters.RawBodyData.ContainsKey("output_format"));
+        Assert.Null(parameters.Speed);
+        Assert.False(parameters.RawBodyData.ContainsKey("speed"));
     }
 
     [Fact]
@@ -665,6 +672,7 @@ public class MessageCreateParamsTest : TestBase
             ContextManagement = null,
             InferenceGeo = null,
             OutputFormat = null,
+            Speed = null,
         };
 
         Assert.Null(parameters.Container);
@@ -675,6 +683,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.True(parameters.RawBodyData.ContainsKey("inference_geo"));
         Assert.Null(parameters.OutputFormat);
         Assert.True(parameters.RawBodyData.ContainsKey("output_format"));
+        Assert.Null(parameters.Speed);
+        Assert.True(parameters.RawBodyData.ContainsKey("speed"));
     }
 
     [Fact]
@@ -778,6 +788,7 @@ public class MessageCreateParamsTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             System = new(
                 [
@@ -960,6 +971,64 @@ public class ServiceTierTest : TestBase
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ServiceTier>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class SpeedTest : TestBase
+{
+    [Theory]
+    [InlineData(Speed.Standard)]
+    [InlineData(Speed.Fast)]
+    public void Validation_Works(Speed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Speed> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(Speed.Standard)]
+    [InlineData(Speed.Fast)]
+    public void SerializationRoundtrip_Works(Speed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Speed> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
             json,
             ModelBase.SerializerOptions
         );

@@ -532,6 +532,19 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
+    /// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
+    /// </summary>
+    public ApiEnum<string, Speed>? Speed
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, Speed>>("speed");
+        }
+        init { this._rawData.Set("speed", value); }
+    }
+
+    /// <summary>
     /// Custom text sequences that will cause the model to stop generating.
     ///
     /// <para>Our models will normally stop when they have naturally completed their
@@ -832,6 +845,7 @@ public sealed record class Params : JsonModel
         this.OutputConfig?.Validate();
         this.OutputFormat?.Validate();
         this.ServiceTier?.Validate();
+        this.Speed?.Validate();
         _ = this.StopSequences;
         _ = this.Stream;
         this.System?.Validate();
@@ -1183,6 +1197,49 @@ sealed class ServiceTierConverter
                 global::Anthropic.Models.Beta.Messages.Batches.ServiceTier.Auto => "auto",
                 global::Anthropic.Models.Beta.Messages.Batches.ServiceTier.StandardOnly =>
                     "standard_only",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
+/// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
+/// </summary>
+[JsonConverter(typeof(SpeedConverter))]
+public enum Speed
+{
+    Standard,
+    Fast,
+}
+
+sealed class SpeedConverter : JsonConverter<Speed>
+{
+    public override Speed Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "standard" => Speed.Standard,
+            "fast" => Speed.Fast,
+            _ => (Speed)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, Speed value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                Speed.Standard => "standard",
+                Speed.Fast => "fast",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
