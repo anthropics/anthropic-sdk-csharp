@@ -1,5 +1,19 @@
 # Changelog
 
+## 12.5.0 (2026-02-08)
+
+Full Changelog: [Anthropic-v12.4.0...Anthropic-v12.5.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.4.0...Anthropic-v12.5.0)
+
+### Features
+
+* **api:** enabling fast-mode in claude-opus-4-6 ([49302d9](https://github.com/anthropics/anthropic-sdk-csharp/commit/49302d9070be16640b609a92014e178be936bd2c))
+* **client:** streaming aggregators ([#105](https://github.com/anthropics/anthropic-sdk-csharp/issues/105)) ([2f17663](https://github.com/anthropics/anthropic-sdk-csharp/commit/2f17663e760c8cc450b138447b22cc4a1ea6861f))
+
+
+### Bug Fixes
+
+* **client:** handle edge case with renamed variable ([ec8b153](https://github.com/anthropics/anthropic-sdk-csharp/commit/ec8b153d9c59728bdc247909ba73c1196f9c351b))
+
 ## 12.4.0 (2026-02-05)
 
 Full Changelog: [Anthropic-v12.3.0...Anthropic-v12.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.3.0...Anthropic-v12.4.0)
