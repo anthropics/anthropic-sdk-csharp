@@ -197,6 +197,87 @@ public static class AnthropicBetaClientExtensions
                         {
                             _ = schemaObj.Remove(propName);
                         }
+
+                        // Handle nullable union types (e.g., "type": ["integer", "null"]) for
+                        // non-required properties. The C# MCP SDK generates these for optional
+                        // parameters, but structured outputs doesn't support union types.
+                        // Only transform non-required properties; required + nullable is an
+                        // incompatible schema that should fail at the API level.
+                        if (
+                            schemaObj.TryGetPropertyValue("properties", out JsonNode? propsNode)
+                            && propsNode is JsonObject propsObj
+                        )
+                        {
+                            HashSet<string> requiredProps = [];
+                            if (
+                                schemaObj.TryGetPropertyValue("required", out JsonNode? reqNode)
+                                && reqNode is JsonArray reqArray
+                            )
+                            {
+                                foreach (JsonNode? req in reqArray)
+                                {
+                                    if (req?.GetValue<string>() is string reqName)
+                                    {
+                                        requiredProps.Add(reqName);
+                                    }
+                                }
+                            }
+
+                            foreach (var prop in propsObj)
+                            {
+                                if (requiredProps.Contains(prop.Key))
+                                {
+                                    continue;
+                                }
+
+                                if (prop.Value is not JsonObject propSchema)
+                                {
+                                    continue;
+                                }
+
+                                if (
+                                    !propSchema.TryGetPropertyValue("type", out JsonNode? typeNode)
+                                    || typeNode is not JsonArray typeArray
+                                )
+                                {
+                                    continue;
+                                }
+
+                                int nullIndex = -1;
+                                for (int i = 0; i < typeArray.Count; i++)
+                                {
+                                    if (typeArray[i]?.GetValue<string>() == "null")
+                                    {
+                                        nullIndex = i;
+                                        break;
+                                    }
+                                }
+
+                                if (nullIndex < 0)
+                                {
+                                    continue;
+                                }
+
+                                typeArray.RemoveAt(nullIndex);
+
+                                if (typeArray.Count == 1)
+                                {
+                                    propSchema["type"] = typeArray[0]?.DeepClone();
+                                }
+
+                                if (
+                                    propSchema.TryGetPropertyValue(
+                                        "default",
+                                        out JsonNode? defaultNode
+                                    )
+                                    && defaultNode is JsonValue defaultValue
+                                    && defaultValue.GetValueKind() == JsonValueKind.Null
+                                )
+                                {
+                                    propSchema.Remove("default");
+                                }
+                            }
+                        }
                     }
 
                     return schemaNode;
@@ -516,7 +597,8 @@ public static class AnthropicBetaClientExtensions
                     {
                         if (content is TextContent tc)
                         {
-                            (systemMessages ??= []).Add(new() { Text = tc.Text });
+                            var block = new BetaTextBlockParam { Text = tc.Text };
+                            (systemMessages ??= []).Add(WithCacheControlFrom(block, tc));
                         }
                     }
 
@@ -541,43 +623,65 @@ public static class AnthropicBetaClientExtensions
                                 text = text.TrimEnd();
                                 if (!string.IsNullOrWhiteSpace(text))
                                 {
-                                    contents.Add(new BetaTextBlockParam() { Text = text });
+                                    contents.Add(
+                                        WithCacheControlFrom(
+                                            new BetaTextBlockParam() { Text = text },
+                                            tc
+                                        )
+                                    );
                                 }
                             }
                             else if (!string.IsNullOrWhiteSpace(text))
                             {
-                                contents.Add(new BetaTextBlockParam() { Text = text });
+                                contents.Add(
+                                    WithCacheControlFrom(
+                                        new BetaTextBlockParam() { Text = text },
+                                        tc
+                                    )
+                                );
                             }
                             break;
 
                         case TextReasoningContent trc when !string.IsNullOrEmpty(trc.Text):
                             contents.Add(
-                                new BetaThinkingBlockParam()
-                                {
-                                    Thinking = trc.Text,
-                                    Signature = trc.ProtectedData ?? string.Empty,
-                                }
+                                WithCacheControlFrom(
+                                    new BetaThinkingBlockParam()
+                                    {
+                                        Thinking = trc.Text,
+                                        Signature = trc.ProtectedData ?? string.Empty,
+                                    },
+                                    trc
+                                )
                             );
                             break;
 
                         case TextReasoningContent trc when !string.IsNullOrEmpty(trc.ProtectedData):
                             contents.Add(
-                                new BetaRedactedThinkingBlockParam() { Data = trc.ProtectedData! }
+                                WithCacheControlFrom(
+                                    new BetaRedactedThinkingBlockParam()
+                                    {
+                                        Data = trc.ProtectedData!,
+                                    },
+                                    trc
+                                )
                             );
                             break;
 
                         case DataContent dc when dc.HasTopLevelMediaType("image"):
                             contents.Add(
-                                new BetaImageBlockParam()
-                                {
-                                    Source = new(
-                                        new BetaBase64ImageSource()
-                                        {
-                                            Data = dc.Base64Data.ToString(),
-                                            MediaType = dc.MediaType,
-                                        }
-                                    ),
-                                }
+                                WithCacheControlFrom(
+                                    new BetaImageBlockParam()
+                                    {
+                                        Source = new(
+                                            new BetaBase64ImageSource()
+                                            {
+                                                Data = dc.Base64Data.ToString(),
+                                                MediaType = dc.MediaType,
+                                            }
+                                        ),
+                                    },
+                                    dc
+                                )
                             );
                             break;
 
@@ -588,44 +692,53 @@ public static class AnthropicBetaClientExtensions
                                 StringComparison.OrdinalIgnoreCase
                             ):
                             contents.Add(
-                                new BetaRequestDocumentBlock()
-                                {
-                                    Source = new(
-                                        new BetaBase64PdfSource()
-                                        {
-                                            Data = dc.Base64Data.ToString(),
-                                        }
-                                    ),
-                                }
+                                WithCacheControlFrom(
+                                    new BetaRequestDocumentBlock()
+                                    {
+                                        Source = new(
+                                            new BetaBase64PdfSource()
+                                            {
+                                                Data = dc.Base64Data.ToString(),
+                                            }
+                                        ),
+                                    },
+                                    dc
+                                )
                             );
                             break;
 
                         case DataContent dc when dc.HasTopLevelMediaType("text"):
                             contents.Add(
-                                new BetaRequestDocumentBlock()
-                                {
-                                    Source = new(
-                                        new BetaPlainTextSource()
-                                        {
+                                WithCacheControlFrom(
+                                    new BetaRequestDocumentBlock()
+                                    {
+                                        Source = new(
+                                            new BetaPlainTextSource()
+                                            {
 #if NET
-                                            Data = Encoding.UTF8.GetString(dc.Data.Span),
+                                                Data = Encoding.UTF8.GetString(dc.Data.Span),
 #else
-                                            Data = Encoding.UTF8.GetString(dc.Data.ToArray()),
+                                                Data = Encoding.UTF8.GetString(dc.Data.ToArray()),
 #endif
-                                        }
-                                    ),
-                                }
+                                            }
+                                        ),
+                                    },
+                                    dc
+                                )
                             );
                             break;
 
                         case UriContent uc when uc.HasTopLevelMediaType("image"):
                             contents.Add(
-                                new BetaImageBlockParam()
-                                {
-                                    Source = new(
-                                        new BetaUrlImageSource() { Url = uc.Uri.AbsoluteUri }
-                                    ),
-                                }
+                                WithCacheControlFrom(
+                                    new BetaImageBlockParam()
+                                    {
+                                        Source = new(
+                                            new BetaUrlImageSource() { Url = uc.Uri.AbsoluteUri }
+                                        ),
+                                    },
+                                    uc
+                                )
                             );
                             break;
 
@@ -636,44 +749,53 @@ public static class AnthropicBetaClientExtensions
                                 StringComparison.OrdinalIgnoreCase
                             ):
                             contents.Add(
-                                new BetaRequestDocumentBlock()
-                                {
-                                    Source = new(
-                                        new BetaUrlPdfSource() { Url = uc.Uri.AbsoluteUri }
-                                    ),
-                                }
+                                WithCacheControlFrom(
+                                    new BetaRequestDocumentBlock()
+                                    {
+                                        Source = new(
+                                            new BetaUrlPdfSource() { Url = uc.Uri.AbsoluteUri }
+                                        ),
+                                    },
+                                    uc
+                                )
                             );
                             break;
 
                         case HostedFileContent fc:
                             contents.Add(
-                                new BetaRequestDocumentBlock()
-                                {
-                                    Source = new(new BetaFileDocumentSource(fc.FileId)),
-                                }
+                                WithCacheControlFrom(
+                                    new BetaRequestDocumentBlock()
+                                    {
+                                        Source = new(new BetaFileDocumentSource(fc.FileId)),
+                                    },
+                                    fc
+                                )
                             );
                             break;
 
                         case FunctionCallContent fcc:
                             contents.Add(
-                                new BetaToolUseBlockParam()
-                                {
-                                    ID = fcc.CallId,
-                                    Name = fcc.Name,
-                                    Input =
-                                        fcc.Arguments?.ToDictionary(
-                                            e => e.Key,
-                                            e =>
-                                                e.Value is JsonElement je
-                                                    ? je
-                                                    : JsonSerializer.SerializeToElement(
-                                                        e.Value,
-                                                        AIJsonUtilities.DefaultOptions.GetTypeInfo(
-                                                            typeof(object)
+                                WithCacheControlFrom(
+                                    new BetaToolUseBlockParam()
+                                    {
+                                        ID = fcc.CallId,
+                                        Name = fcc.Name,
+                                        Input =
+                                            fcc.Arguments?.ToDictionary(
+                                                e => e.Key,
+                                                e =>
+                                                    e.Value is JsonElement je
+                                                        ? je
+                                                        : JsonSerializer.SerializeToElement(
+                                                            e.Value,
+                                                            AIJsonUtilities.DefaultOptions.GetTypeInfo(
+                                                                typeof(object)
+                                                            )
                                                         )
-                                                    )
-                                        ) ?? [],
-                                }
+                                            ) ?? [],
+                                    },
+                                    fcc
+                                )
                             );
                             break;
 
@@ -824,12 +946,15 @@ public static class AnthropicBetaClientExtensions
                             }
 
                             contents.Add(
-                                new BetaToolResultBlockParam()
-                                {
-                                    ToolUseID = frc.CallId,
-                                    IsError = frc.Exception is not null,
-                                    Content = result,
-                                }
+                                WithCacheControlFrom(
+                                    new BetaToolResultBlockParam()
+                                    {
+                                        ToolUseID = frc.CallId,
+                                        IsError = frc.Exception is not null,
+                                        Content = result,
+                                    },
+                                    frc
+                                )
                             );
                             break;
                     }
@@ -855,6 +980,51 @@ public static class AnthropicBetaClientExtensions
             }
 
             return messageParams;
+        }
+
+        /// <summary>
+        /// Applies cache control from an <see cref="AIContent"/> to a beta content block param if configured.
+        /// </summary>
+        /// <remarks>
+        /// Converts from <see cref="Anthropic.Models.Messages.CacheControlEphemeral"/> (used by the extension)
+        /// to <see cref="BetaCacheControlEphemeral"/> (used by the beta API).
+        /// Note: BetaThinkingBlockParam and BetaRedactedThinkingBlockParam do not support cache control.
+        /// </remarks>
+        private static T WithCacheControlFrom<T>(T block, AIContent content)
+            where T : class
+        {
+            var cacheControl = content.GetCacheControl();
+            if (cacheControl is null)
+            {
+                return block;
+            }
+
+            // Convert non-beta CacheControlEphemeral to BetaCacheControlEphemeral
+            // Note: Ttl enum exists in both namespaces, using fully qualified names to disambiguate
+            var betaCacheControl = new BetaCacheControlEphemeral
+            {
+                Ttl = cacheControl.Ttl?.Value() switch
+                {
+                    Anthropic.Models.Messages.Ttl.Ttl5m => Anthropic.Models.Beta.Messages.Ttl.Ttl5m,
+                    Anthropic.Models.Messages.Ttl.Ttl1h => Anthropic.Models.Beta.Messages.Ttl.Ttl1h,
+                    _ => null,
+                },
+            };
+
+            return block switch
+            {
+                BetaTextBlockParam tb => (tb with { CacheControl = betaCacheControl }) as T
+                    ?? block,
+                BetaImageBlockParam ib => (ib with { CacheControl = betaCacheControl }) as T
+                    ?? block,
+                BetaRequestDocumentBlock db => (db with { CacheControl = betaCacheControl }) as T
+                    ?? block,
+                BetaToolUseBlockParam tub => (tub with { CacheControl = betaCacheControl }) as T
+                    ?? block,
+                BetaToolResultBlockParam trb => (trb with { CacheControl = betaCacheControl }) as T
+                    ?? block,
+                _ => block,
+            };
         }
 
         private MessageCreateParams GetMessageCreateParams(
@@ -1000,20 +1170,6 @@ public static class AnthropicBetaClientExtensions
                                 {
                                     if (
                                         inputSchema.TryGetProperty(
-                                            "properties",
-                                            out JsonElement propsElement
-                                        )
-                                        && propsElement.ValueKind is JsonValueKind.Object
-                                    )
-                                    {
-                                        foreach (JsonProperty p in propsElement.EnumerateObject())
-                                        {
-                                            properties[p.Name] = p.Value;
-                                        }
-                                    }
-
-                                    if (
-                                        inputSchema.TryGetProperty(
                                             "required",
                                             out JsonElement reqElement
                                         )
@@ -1030,6 +1186,23 @@ public static class AnthropicBetaClientExtensions
                                             {
                                                 required.Add(s);
                                             }
+                                        }
+                                    }
+
+                                    if (
+                                        inputSchema.TryGetProperty(
+                                            "properties",
+                                            out JsonElement propsElement
+                                        )
+                                        && propsElement.ValueKind is JsonValueKind.Object
+                                    )
+                                    {
+                                        foreach (JsonProperty p in propsElement.EnumerateObject())
+                                        {
+                                            // Transform nullable union types for non-required properties
+                                            properties[p.Name] = required.Contains(p.Name)
+                                                ? p.Value
+                                                : TransformNullableUnionType(p.Value);
                                         }
                                     }
                                 }
@@ -1513,6 +1686,77 @@ public static class AnthropicBetaClientExtensions
             }
 
             return annotation;
+        }
+
+        /// <summary>
+        /// Transforms a property schema with nullable union type (e.g., "type": ["integer", "null"])
+        /// to a simple type (e.g., "type": "integer") and removes "default": null.
+        /// This handles schemas generated by the C# MCP SDK for optional nullable parameters.
+        /// </summary>
+        private static JsonElement TransformNullableUnionType(JsonElement propertySchema)
+        {
+            if (propertySchema.ValueKind is not JsonValueKind.Object)
+            {
+                return propertySchema;
+            }
+
+            if (
+                !propertySchema.TryGetProperty("type", out JsonElement typeElement)
+                || typeElement.ValueKind is not JsonValueKind.Array
+            )
+            {
+                return propertySchema;
+            }
+
+            List<JsonElement> nonNullTypes = [];
+            bool hasNull = false;
+            foreach (JsonElement t in typeElement.EnumerateArray())
+            {
+                if (t.ValueKind is JsonValueKind.String && t.GetString() == "null")
+                {
+                    hasNull = true;
+                }
+                else
+                {
+                    nonNullTypes.Add(t);
+                }
+            }
+
+            if (!hasNull || nonNullTypes.Count == 0)
+            {
+                return propertySchema;
+            }
+
+            var transformed = new Dictionary<string, JsonElement>();
+            foreach (JsonProperty prop in propertySchema.EnumerateObject())
+            {
+                if (prop.Name == "type")
+                {
+                    if (nonNullTypes.Count == 1)
+                    {
+                        transformed["type"] = nonNullTypes[0];
+                    }
+                    else
+                    {
+                        transformed["type"] = JsonSerializer.SerializeToElement(
+                            nonNullTypes.Select(t => t.GetString())
+                        );
+                    }
+                }
+                else if (prop.Name == "default")
+                {
+                    if (prop.Value.ValueKind is not JsonValueKind.Null)
+                    {
+                        transformed[prop.Name] = prop.Value;
+                    }
+                }
+                else
+                {
+                    transformed[prop.Name] = prop.Value;
+                }
+            }
+
+            return JsonSerializer.SerializeToElement(transformed);
         }
 
         private sealed class StreamingFunctionData
