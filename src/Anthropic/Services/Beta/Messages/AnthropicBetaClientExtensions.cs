@@ -11,7 +11,6 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
-using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Messages;
 using Anthropic.Services.Beta;
 
@@ -1154,6 +1153,56 @@ public static class AnthropicBetaClientExtensions
                     if (toolChoice is not null)
                     {
                         createParams = createParams with { ToolChoice = toolChoice };
+                    }
+                }
+
+                if (createParams.Thinking is null && options.Reasoning is { } reasoning)
+                {
+                    BetaThinkingConfigParam? thinkingConfig = null;
+                    if (reasoning.Effort is ReasoningEffort.None)
+                    {
+                        thinkingConfig = new(new BetaThinkingConfigDisabled());
+                    }
+                    else
+                    {
+                        long? budgetTokens = reasoning.Effort switch
+                        {
+                            ReasoningEffort.Low => 1024,
+                            ReasoningEffort.Medium => 10024,
+                            ReasoningEffort.High => 16000,
+                            ReasoningEffort.ExtraHigh => 32000,
+                            _ => null,
+                        };
+                     
+                        if (budgetTokens is { } budget)
+                        {
+                            // Anthropic requires budget_tokens >= 1024 and budget_tokens < max_tokens.
+                            if (createParams.MaxTokens <= budget)
+                            {
+                                if (options.MaxOutputTokens is not null)
+                                {
+                                    // Caller explicitly set MaxOutputTokens. Clamp the budget to fit,
+                                    // and skip thinking if it can't meet the minimum.
+                                    budget = createParams.MaxTokens - 1;
+                                }
+                                else
+                                {
+                                    // Caller didn't set MaxOutputTokens. Auto-increase max_tokens
+                                    // to accommodate the thinking budget plus room for output.
+                                    createParams = createParams with
+                                    {
+                                        MaxTokens = budget + _defaultMaxTokens,
+                                    };
+                                }
+                            }
+
+                            thinkingConfig = budget >= 1024 ? new(new BetaThinkingConfigEnabled(budget)) : null;
+                        }
+                    }
+
+                    if (thinkingConfig is not null)
+                    {
+                        createParams = createParams with { Thinking = thinkingConfig };
                     }
                 }
             }
