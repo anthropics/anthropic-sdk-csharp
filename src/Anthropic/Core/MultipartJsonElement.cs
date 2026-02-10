@@ -140,7 +140,7 @@ public static class MultipartJsonSerializer
         var multipartElement = MultipartJsonSerializer.SerializeToElement(value, options);
         void SerializeParts(string name, JsonElement element)
         {
-            HttpContent content;
+            HttpContent? content;
             string? fileName = null;
             switch (element.ValueKind)
             {
@@ -181,46 +181,84 @@ public static class MultipartJsonSerializer
                     }
                     return;
                 case JsonValueKind.Array:
-                    content = new StringContent(
-                        string.Join(
-                            ",",
-                            Enumerable.Select(
-                                element.EnumerateArray(),
-                                item =>
-                                    item.ValueKind switch
+                    var items = new List<string>();
+                    foreach (var arrayItem in element.EnumerateArray())
+                    {
+                        switch (arrayItem.ValueKind)
+                        {
+                            case JsonValueKind.Undefined:
+                            case JsonValueKind.Null:
+                                items.Add("");
+                                break;
+                            case JsonValueKind.True:
+                                items.Add("true");
+                                break;
+                            case JsonValueKind.False:
+                                items.Add("false");
+                                break;
+                            case JsonValueKind.String:
+                                if (
+                                    arrayItem.TryGetGuid(out var itemGuid)
+                                    && multipartElement.BinaryContents.TryGetValue(
+                                        itemGuid,
+                                        out var itemBinaryContent
+                                    )
+                                )
+                                {
+                                    var itemContent = new StreamContent(itemBinaryContent.Stream);
+                                    itemContent.Headers.ContentType = itemBinaryContent.ContentType;
+                                    var itemFileName = itemBinaryContent.FileName;
+                                    if (name == "")
                                     {
-                                        JsonValueKind.Undefined or JsonValueKind.Null => "",
-                                        JsonValueKind.Number => item.GetString(),
-                                        JsonValueKind.True => "true",
-                                        JsonValueKind.False => "false",
-                                        JsonValueKind.String => item.TryGetGuid(out var guid1)
-                                        && multipartElement.BinaryContents.TryGetValue(guid1, out _)
-                                            ? throw new InvalidDataException(
-                                                "Unexpected binary content in array"
-                                            )
-                                            : item.GetString(),
-                                        _ => throw new InvalidDataException(
-                                            "Unexpected element type in array"
-                                        ),
+                                        formDataContent.Add(itemContent);
                                     }
-                            )
-                        )
-                    );
+                                    else if (itemFileName == null)
+                                    {
+                                        formDataContent.Add(itemContent, $"{name}[]");
+                                    }
+                                    else
+                                    {
+                                        formDataContent.Add(itemContent, $"{name}[]", itemFileName);
+                                    }
+                                }
+                                else
+                                {
+                                    items.Add(arrayItem.ToString());
+                                }
+                                break;
+                            default:
+                                throw new InvalidDataException("Unexpected element type in array");
+                        }
+                    }
+
+                    if (items.Count > 0)
+                    {
+                        content = new StringContent(string.Join(",", items));
+                    }
+                    else
+                    {
+                        content = null;
+                    }
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(element));
             }
-            if (name == "")
+
+            if (content != null)
             {
-                formDataContent.Add(content);
-            }
-            else if (fileName == null)
-            {
-                formDataContent.Add(content, name);
-            }
-            else
-            {
-                formDataContent.Add(content, name, fileName);
+                if (name == "")
+                {
+                    formDataContent.Add(content);
+                }
+                else if (fileName == null)
+                {
+                    formDataContent.Add(content, name);
+                }
+                else
+                {
+                    formDataContent.Add(content, name, fileName);
+                }
             }
         }
         SerializeParts("", multipartElement.Json);
