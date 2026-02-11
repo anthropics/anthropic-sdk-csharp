@@ -2,21 +2,11 @@
 
 > **📦 Package Versioning Update**
 >
-> As of version 10+, the `Anthropic` package is now the **official Anthropic SDK for C#** (currently in beta).
+> As of version 10+, the `Anthropic` package is now the **official Anthropic SDK for C#**.
 >
 > Package versions 3.X and below were previously used for the tryAGI community-built SDK, which has moved to [`tryAGI.Anthropic`](https://www.nuget.org/packages/tryagi.Anthropic/). If you need to continue using the former client in your project, please update your package reference to `tryAGI.Anthropic`.
 >
 > We're grateful to the maintainers of tryAGI.Anthropic for their work serving the Claude ecosystem and C# community.
-
----
-
-> **ℹ️ Beta Release**
->
-> The Anthropic C# API Library is currently in **beta** and we're excited for you to experiment with it!
->
-> **Important:** While this package is versioned as 10.0+ due to the package transition described above, it should be treated as an early beta release. This library has not yet been exhaustively tested in production environments and may be missing some features you'd expect in a stable release. **There may be breaking changes** as we continue development.
->
-> **We'd love your feedback!** Please share any suggestions, bug reports, feature requests, or general thoughts by [filing an issue](https://www.github.com/anthropics/anthropic-sdk-csharp/issues/new).
 
 The Anthropic C# SDK provides convenient access to the [Anthropic REST API](https://docs.anthropic.com/claude/reference/) from applications written in C#.
 
@@ -463,8 +453,6 @@ Console.WriteLine(message);
 ```
 
 ## Semantic versioning
-
-> **⚠️ Beta Release:** While this package is versioned as 10+, it is currently in beta. During the beta period, breaking changes may occur in minor or patch releases. Once the library reaches stable release, we will follow SemVer conventions more strictly.
 
 This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
 
