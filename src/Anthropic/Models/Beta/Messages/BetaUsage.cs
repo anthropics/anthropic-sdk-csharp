@@ -87,18 +87,18 @@ public sealed record class BetaUsage : JsonModel
     /// true context window size from the last iteration - Understand token accumulation
     /// across server-side tool use loops</para>
     /// </summary>
-    public required IReadOnlyList<UnnamedSchemaWithArrayParent0>? Iterations
+    public required IReadOnlyList<BetaIterationsUsageItems>? Iterations
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<ImmutableArray<UnnamedSchemaWithArrayParent0>>(
+            return this._rawData.GetNullableStruct<ImmutableArray<BetaIterationsUsageItems>>(
                 "iterations"
             );
         }
         init
         {
-            this._rawData.Set<ImmutableArray<UnnamedSchemaWithArrayParent0>?>(
+            this._rawData.Set<ImmutableArray<BetaIterationsUsageItems>?>(
                 "iterations",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );

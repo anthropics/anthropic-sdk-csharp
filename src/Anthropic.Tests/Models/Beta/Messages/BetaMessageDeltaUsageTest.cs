@@ -37,7 +37,7 @@ public class BetaMessageDeltaUsageTest : TestBase
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
         long expectedInputTokens = 2095;
-        List<UnnamedSchemaWithArrayParent0> expectedIterations =
+        List<BetaIterationsUsageItems> expectedIterations =
         [
             new BetaMessageIterationUsage()
             {
@@ -141,7 +141,7 @@ public class BetaMessageDeltaUsageTest : TestBase
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
         long expectedInputTokens = 2095;
-        List<UnnamedSchemaWithArrayParent0> expectedIterations =
+        List<BetaIterationsUsageItems> expectedIterations =
         [
             new BetaMessageIterationUsage()
             {
