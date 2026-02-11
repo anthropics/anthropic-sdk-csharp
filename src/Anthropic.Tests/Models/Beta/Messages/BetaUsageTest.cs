@@ -48,7 +48,7 @@ public class BetaUsageTest : TestBase
         long expectedCacheReadInputTokens = 2051;
         string expectedInferenceGeo = "inference_geo";
         long expectedInputTokens = 2095;
-        List<UnnamedSchemaWithArrayParent0> expectedIterations =
+        List<BetaIterationsUsageItems> expectedIterations =
         [
             new BetaMessageIterationUsage()
             {
@@ -169,7 +169,7 @@ public class BetaUsageTest : TestBase
         long expectedCacheReadInputTokens = 2051;
         string expectedInferenceGeo = "inference_geo";
         long expectedInputTokens = 2095;
-        List<UnnamedSchemaWithArrayParent0> expectedIterations =
+        List<BetaIterationsUsageItems> expectedIterations =
         [
             new BetaMessageIterationUsage()
             {

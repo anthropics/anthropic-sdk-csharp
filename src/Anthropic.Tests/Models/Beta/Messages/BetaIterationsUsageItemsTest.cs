@@ -4,12 +4,12 @@ using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
 
-public class UnnamedSchemaWithArrayParent0Test : TestBase
+public class BetaIterationsUsageItemsTest : TestBase
 {
     [Fact]
-    public void BetaMessageIterationUsageValidationWorks()
+    public void MessageIterationUsageValidationWorks()
     {
-        UnnamedSchemaWithArrayParent0 value = new BetaMessageIterationUsage()
+        BetaIterationsUsageItems value = new BetaMessageIterationUsage()
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 0,
@@ -21,9 +21,9 @@ public class UnnamedSchemaWithArrayParent0Test : TestBase
     }
 
     [Fact]
-    public void BetaCompactionIterationUsageValidationWorks()
+    public void CompactionIterationUsageValidationWorks()
     {
-        UnnamedSchemaWithArrayParent0 value = new BetaCompactionIterationUsage()
+        BetaIterationsUsageItems value = new BetaCompactionIterationUsage()
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 0,
@@ -35,9 +35,9 @@ public class UnnamedSchemaWithArrayParent0Test : TestBase
     }
 
     [Fact]
-    public void BetaMessageIterationUsageSerializationRoundtripWorks()
+    public void MessageIterationUsageSerializationRoundtripWorks()
     {
-        UnnamedSchemaWithArrayParent0 value = new BetaMessageIterationUsage()
+        BetaIterationsUsageItems value = new BetaMessageIterationUsage()
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 0,
@@ -46,7 +46,7 @@ public class UnnamedSchemaWithArrayParent0Test : TestBase
             OutputTokens = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<UnnamedSchemaWithArrayParent0>(
+        var deserialized = JsonSerializer.Deserialize<BetaIterationsUsageItems>(
             element,
             ModelBase.SerializerOptions
         );
@@ -55,9 +55,9 @@ public class UnnamedSchemaWithArrayParent0Test : TestBase
     }
 
     [Fact]
-    public void BetaCompactionIterationUsageSerializationRoundtripWorks()
+    public void CompactionIterationUsageSerializationRoundtripWorks()
     {
-        UnnamedSchemaWithArrayParent0 value = new BetaCompactionIterationUsage()
+        BetaIterationsUsageItems value = new BetaCompactionIterationUsage()
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 0,
@@ -66,7 +66,7 @@ public class UnnamedSchemaWithArrayParent0Test : TestBase
             OutputTokens = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<UnnamedSchemaWithArrayParent0>(
+        var deserialized = JsonSerializer.Deserialize<BetaIterationsUsageItems>(
             element,
             ModelBase.SerializerOptions
         );
