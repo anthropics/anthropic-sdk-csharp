@@ -119,6 +119,18 @@ public sealed class FileService : IFileService
 
         return this.RetrieveMetadata(parameters with { FileID = fileID }, cancellationToken);
     }
+
+    /// <inheritdoc/>
+    public async Task<FileMetadata> Upload(
+        FileUploadParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var response = await this
+            .WithRawResponse.Upload(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
 }
 
 /// <inheritdoc/>
@@ -286,5 +298,33 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
         parameters ??= new();
 
         return this.RetrieveMetadata(parameters with { FileID = fileID }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public async Task<HttpResponse<FileMetadata>> Upload(
+        FileUploadParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        HttpRequest<FileUploadParams> request = new()
+        {
+            Method = HttpMethod.Post,
+            Params = parameters,
+        };
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var fileMetadata = await response
+                    .Deserialize<FileMetadata>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    fileMetadata.Validate();
+                }
+                return fileMetadata;
+            }
+        );
     }
 }
