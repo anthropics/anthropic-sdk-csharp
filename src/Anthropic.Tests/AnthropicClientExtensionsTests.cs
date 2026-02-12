@@ -750,4 +750,69 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
             "Default AnthropicClient user-agent header should be present"
         );
     }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffort_IgnoredWhenThinkingAlreadyConfigured()
+    {
+        // When RawRepresentationFactory pre-configures Thinking, the Reasoning option should be ignored.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 50000,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think carefully"
+                    }]
+                }],
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": 5000
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_preconfigured",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            // RawRepresentationFactory sets Thinking to enabled with 5000 budget.
+            // Reasoning.Effort should be ignored since Thinking is already configured.
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 50000,
+                Model = "claude-haiku-4-5",
+                Messages = [],
+                Thinking = new ThinkingConfigParam(new ThinkingConfigEnabled(5000)),
+            },
+            Reasoning = new() { Effort = ReasoningEffort.ExtraHigh },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think carefully",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
 }

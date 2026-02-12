@@ -2704,6 +2704,468 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Null(response.FinishReason);
     }
 
+    [Theory]
+    [InlineData(ReasoningEffort.Low, 1024)]
+    [InlineData(ReasoningEffort.Medium, 10024)]
+    [InlineData(ReasoningEffort.High, 16000)]
+    [InlineData(ReasoningEffort.ExtraHigh, 32000)]
+    public async Task GetResponseAsync_WithReasoningEffort_SetsThinkingEnabled(
+        ReasoningEffort effort,
+        int expectedBudgetTokens
+    )
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: $$"""
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think carefully"
+                    }]
+                }],
+                "max_tokens": 100000,
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": {{expectedBudgetTokens}}
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Here is my response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 20
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            MaxOutputTokens = 100000,
+            Reasoning = new() { Effort = effort },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think carefully",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffortNone_SetsThinkingDisabled()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Simple question"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "thinking": {
+                    "type": "disabled"
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Quick answer"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            Reasoning = new() { Effort = ReasoningEffort.None },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Simple question",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffort_ClampsBudgetToExplicitMaxTokens()
+    {
+        // High effort maps to 16000, but caller explicitly set max_tokens to 5000,
+        // so budget should clamp to 4999.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think carefully"
+                    }]
+                }],
+                "max_tokens": 5000,
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": 4999
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_03",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            MaxOutputTokens = 5000,
+            Reasoning = new() { Effort = ReasoningEffort.High },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think carefully",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffort_SkipsThinkingWhenExplicitMaxTokensTooSmall()
+    {
+        // Medium effort maps to 10024, but caller explicitly set max_tokens to 1024,
+        // so after clamping budget would be 1023 which is < 1024 minimum. Thinking is skipped.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think carefully"
+                    }]
+                }],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_04",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            MaxOutputTokens = 1024,
+            Reasoning = new() { Effort = ReasoningEffort.Medium },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think carefully",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffort_AutoIncreasesMaxTokensFromDefault()
+    {
+        // Medium effort maps to 10024. Default max_tokens is 1024, so max_tokens should
+        // auto-increase to budget (10024) + default (1024) = 11048.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think carefully"
+                    }]
+                }],
+                "max_tokens": 11048,
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": 10024
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_05",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            Reasoning = new() { Effort = ReasoningEffort.Medium },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think carefully",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffortLow_AutoIncreasesFromDefaultMaxTokens()
+    {
+        // Low effort maps to 1024. Default max_tokens is also 1024, so 1024 <= 1024
+        // triggers auto-increase to budget (1024) + default (1024) = 2048.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think a little"
+                    }]
+                }],
+                "max_tokens": 2048,
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": 1024
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_06",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            Reasoning = new() { Effort = ReasoningEffort.Low },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think a little",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffort_ExactFitMaxTokensOneBeyondBudget()
+    {
+        // Low effort maps to 1024. MaxOutputTokens is 1025, so 1025 > 1024 means
+        // no auto-increase needed — budget fits exactly.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think a little"
+                    }]
+                }],
+                "max_tokens": 1025,
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": 1024
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_07",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            MaxOutputTokens = 1025,
+            Reasoning = new() { Effort = ReasoningEffort.Low },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think a little",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffort_NoAutoIncreaseWhenDefaultMaxTokensSufficient()
+    {
+        // Low effort maps to 1024. Custom default max_tokens is 5000, so 5000 > 1024 means
+        // no auto-increase is needed.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think a little"
+                    }]
+                }],
+                "max_tokens": 5000,
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": 1024
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_08",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(
+            handler,
+            "claude-haiku-4-5",
+            defaultMaxOutputTokens: 5000
+        );
+
+        ChatOptions options = new()
+        {
+            Reasoning = new() { Effort = ReasoningEffort.Low },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think a little",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
     [Fact]
     public async Task GetResponseAsync_SendsTextReasoningAsThinkingBlock()
     {
