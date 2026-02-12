@@ -80,6 +80,14 @@ public interface IFileService
         FileRetrieveMetadataParams? parameters = null,
         CancellationToken cancellationToken = default
     );
+
+    /// <summary>
+    /// Upload File
+    /// </summary>
+    Task<FileMetadata> Upload(
+        FileUploadParams parameters,
+        CancellationToken cancellationToken = default
+    );
 }
 
 /// <summary>
@@ -149,6 +157,15 @@ public interface IFileServiceWithRawResponse
     Task<HttpResponse<FileMetadata>> RetrieveMetadata(
         string fileID,
         FileRetrieveMetadataParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for `post /v1/files?beta=true`, but is otherwise the
+    /// same as <see cref="IFileService.Upload(FileUploadParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<FileMetadata>> Upload(
+        FileUploadParams parameters,
         CancellationToken cancellationToken = default
     );
 }

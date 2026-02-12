@@ -1,3 +1,4 @@
+using System.Text;
 using System.Threading.Tasks;
 using Anthropic.Tests;
 
@@ -39,6 +40,16 @@ public class FileServiceTest
         var fileMetadata = await client.Beta.Files.RetrieveMetadata(
             "file_id",
             new(),
+            TestContext.Current.CancellationToken
+        );
+        fileMetadata.Validate();
+    }
+
+    [Fact]
+    public async Task Upload_Works()
+    {
+        var fileMetadata = await this.client.Beta.Files.Upload(
+            new() { File = Encoding.UTF8.GetBytes("text") },
             TestContext.Current.CancellationToken
         );
         fileMetadata.Validate();
