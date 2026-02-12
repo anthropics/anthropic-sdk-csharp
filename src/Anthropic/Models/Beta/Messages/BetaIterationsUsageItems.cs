@@ -10,8 +10,8 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Token usage for a sampling iteration.
 /// </summary>
-[JsonConverter(typeof(UnnamedSchemaWithArrayParent0Converter))]
-public record class UnnamedSchemaWithArrayParent0 : ModelBase
+[JsonConverter(typeof(BetaIterationsUsageItemsConverter))]
+public record class BetaIterationsUsageItems : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -33,8 +33,8 @@ public record class UnnamedSchemaWithArrayParent0 : ModelBase
         get
         {
             return Match<BetaCacheCreation?>(
-                betaMessageIterationUsage: (x) => x.CacheCreation,
-                betaCompactionIterationUsage: (x) => x.CacheCreation
+                messageIterationUsage: (x) => x.CacheCreation,
+                compactionIterationUsage: (x) => x.CacheCreation
             );
         }
     }
@@ -44,8 +44,8 @@ public record class UnnamedSchemaWithArrayParent0 : ModelBase
         get
         {
             return Match(
-                betaMessageIterationUsage: (x) => x.CacheCreationInputTokens,
-                betaCompactionIterationUsage: (x) => x.CacheCreationInputTokens
+                messageIterationUsage: (x) => x.CacheCreationInputTokens,
+                compactionIterationUsage: (x) => x.CacheCreationInputTokens
             );
         }
     }
@@ -55,8 +55,8 @@ public record class UnnamedSchemaWithArrayParent0 : ModelBase
         get
         {
             return Match(
-                betaMessageIterationUsage: (x) => x.CacheReadInputTokens,
-                betaCompactionIterationUsage: (x) => x.CacheReadInputTokens
+                messageIterationUsage: (x) => x.CacheReadInputTokens,
+                compactionIterationUsage: (x) => x.CacheReadInputTokens
             );
         }
     }
@@ -66,8 +66,8 @@ public record class UnnamedSchemaWithArrayParent0 : ModelBase
         get
         {
             return Match(
-                betaMessageIterationUsage: (x) => x.InputTokens,
-                betaCompactionIterationUsage: (x) => x.InputTokens
+                messageIterationUsage: (x) => x.InputTokens,
+                compactionIterationUsage: (x) => x.InputTokens
             );
         }
     }
@@ -77,8 +77,8 @@ public record class UnnamedSchemaWithArrayParent0 : ModelBase
         get
         {
             return Match(
-                betaMessageIterationUsage: (x) => x.OutputTokens,
-                betaCompactionIterationUsage: (x) => x.OutputTokens
+                messageIterationUsage: (x) => x.OutputTokens,
+                compactionIterationUsage: (x) => x.OutputTokens
             );
         }
     }
@@ -88,31 +88,25 @@ public record class UnnamedSchemaWithArrayParent0 : ModelBase
         get
         {
             return Match(
-                betaMessageIterationUsage: (x) => x.Type,
-                betaCompactionIterationUsage: (x) => x.Type
+                messageIterationUsage: (x) => x.Type,
+                compactionIterationUsage: (x) => x.Type
             );
         }
     }
 
-    public UnnamedSchemaWithArrayParent0(
-        BetaMessageIterationUsage value,
-        JsonElement? element = null
-    )
+    public BetaIterationsUsageItems(BetaMessageIterationUsage value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public UnnamedSchemaWithArrayParent0(
-        BetaCompactionIterationUsage value,
-        JsonElement? element = null
-    )
+    public BetaIterationsUsageItems(BetaCompactionIterationUsage value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public UnnamedSchemaWithArrayParent0(JsonElement element)
+    public BetaIterationsUsageItems(JsonElement element)
     {
         this._element = element;
     }
@@ -125,14 +119,14 @@ public record class UnnamedSchemaWithArrayParent0 : ModelBase
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaMessageIterationUsage(out var value)) {
+    /// if (instance.TryPickMessageIterationUsage(out var value)) {
     ///     // `value` is of type `BetaMessageIterationUsage`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaMessageIterationUsage(
+    public bool TryPickMessageIterationUsage(
         [NotNullWhen(true)] out BetaMessageIterationUsage? value
     )
     {
@@ -148,14 +142,14 @@ public record class UnnamedSchemaWithArrayParent0 : ModelBase
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaCompactionIterationUsage(out var value)) {
+    /// if (instance.TryPickCompactionIterationUsage(out var value)) {
     ///     // `value` is of type `BetaCompactionIterationUsage`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaCompactionIterationUsage(
+    public bool TryPickCompactionIterationUsage(
         [NotNullWhen(true)] out BetaCompactionIterationUsage? value
     )
     {
@@ -184,21 +178,21 @@ public record class UnnamedSchemaWithArrayParent0 : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaMessageIterationUsage> betaMessageIterationUsage,
-        System::Action<BetaCompactionIterationUsage> betaCompactionIterationUsage
+        System::Action<BetaMessageIterationUsage> messageIterationUsage,
+        System::Action<BetaCompactionIterationUsage> compactionIterationUsage
     )
     {
         switch (this.Value)
         {
             case BetaMessageIterationUsage value:
-                betaMessageIterationUsage(value);
+                messageIterationUsage(value);
                 break;
             case BetaCompactionIterationUsage value:
-                betaCompactionIterationUsage(value);
+                compactionIterationUsage(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of UnnamedSchemaWithArrayParent0"
+                    "Data did not match any variant of BetaIterationsUsageItems"
                 );
         }
     }
@@ -225,27 +219,25 @@ public record class UnnamedSchemaWithArrayParent0 : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaMessageIterationUsage, T> betaMessageIterationUsage,
-        System::Func<BetaCompactionIterationUsage, T> betaCompactionIterationUsage
+        System::Func<BetaMessageIterationUsage, T> messageIterationUsage,
+        System::Func<BetaCompactionIterationUsage, T> compactionIterationUsage
     )
     {
         return this.Value switch
         {
-            BetaMessageIterationUsage value => betaMessageIterationUsage(value),
-            BetaCompactionIterationUsage value => betaCompactionIterationUsage(value),
+            BetaMessageIterationUsage value => messageIterationUsage(value),
+            BetaCompactionIterationUsage value => compactionIterationUsage(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of UnnamedSchemaWithArrayParent0"
+                "Data did not match any variant of BetaIterationsUsageItems"
             ),
         };
     }
 
-    public static implicit operator UnnamedSchemaWithArrayParent0(
-        BetaMessageIterationUsage value
-    ) => new(value);
+    public static implicit operator BetaIterationsUsageItems(BetaMessageIterationUsage value) =>
+        new(value);
 
-    public static implicit operator UnnamedSchemaWithArrayParent0(
-        BetaCompactionIterationUsage value
-    ) => new(value);
+    public static implicit operator BetaIterationsUsageItems(BetaCompactionIterationUsage value) =>
+        new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -262,16 +254,16 @@ public record class UnnamedSchemaWithArrayParent0 : ModelBase
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of UnnamedSchemaWithArrayParent0"
+                "Data did not match any variant of BetaIterationsUsageItems"
             );
         }
         this.Switch(
-            (betaMessageIterationUsage) => betaMessageIterationUsage.Validate(),
-            (betaCompactionIterationUsage) => betaCompactionIterationUsage.Validate()
+            (messageIterationUsage) => messageIterationUsage.Validate(),
+            (compactionIterationUsage) => compactionIterationUsage.Validate()
         );
     }
 
-    public virtual bool Equals(UnnamedSchemaWithArrayParent0? other) =>
+    public virtual bool Equals(BetaIterationsUsageItems? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -295,9 +287,9 @@ public record class UnnamedSchemaWithArrayParent0 : ModelBase
     }
 }
 
-sealed class UnnamedSchemaWithArrayParent0Converter : JsonConverter<UnnamedSchemaWithArrayParent0>
+sealed class BetaIterationsUsageItemsConverter : JsonConverter<BetaIterationsUsageItems>
 {
-    public override UnnamedSchemaWithArrayParent0? Read(
+    public override BetaIterationsUsageItems? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -343,7 +335,7 @@ sealed class UnnamedSchemaWithArrayParent0Converter : JsonConverter<UnnamedSchem
 
     public override void Write(
         Utf8JsonWriter writer,
-        UnnamedSchemaWithArrayParent0 value,
+        BetaIterationsUsageItems value,
         JsonSerializerOptions options
     )
     {

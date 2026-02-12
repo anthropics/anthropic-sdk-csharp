@@ -91,6 +91,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                    Speed = Messages::BetaUsageSpeed.Standard,
                 },
             },
         };
@@ -168,6 +169,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                Speed = Messages::BetaUsageSpeed.Standard,
             },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("succeeded");
@@ -258,6 +260,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                    Speed = Messages::BetaUsageSpeed.Standard,
                 },
             },
         };
@@ -353,6 +356,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                    Speed = Messages::BetaUsageSpeed.Standard,
                 },
             },
         };
@@ -437,6 +441,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                Speed = Messages::BetaUsageSpeed.Standard,
             },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("succeeded");
@@ -527,6 +532,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                    Speed = Messages::BetaUsageSpeed.Standard,
                 },
             },
         };
@@ -616,6 +622,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                    Speed = Messages::BetaUsageSpeed.Standard,
                 },
             },
         };

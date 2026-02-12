@@ -152,7 +152,7 @@ public record class Keep : ModelBase
         this._element = element;
     }
 
-    public Keep(UnionMember2 value, JsonElement? element = null)
+    public Keep(All value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -207,22 +207,22 @@ public record class Keep : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="UnionMember2"/>.
+    /// type <see cref="All"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickAll(out var value)) {
-    ///     // `value` is of type `UnionMember2`
+    ///     // `value` is of type `All`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickAll([NotNullWhen(true)] out UnionMember2? value)
+    public bool TryPickAll([NotNullWhen(true)] out All? value)
     {
-        value = this.Value as UnionMember2;
+        value = this.Value as All;
         return value != null;
     }
 
@@ -242,7 +242,7 @@ public record class Keep : ModelBase
     /// instance.Switch(
     ///     (BetaThinkingTurns value) => {...},
     ///     (BetaAllThinkingTurns value) => {...},
-    ///     (UnionMember2 value) => {...}
+    ///     (All value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -250,7 +250,7 @@ public record class Keep : ModelBase
     public void Switch(
         System::Action<BetaThinkingTurns> betaThinkingTurns,
         System::Action<BetaAllThinkingTurns> betaAllThinkingTurns,
-        System::Action<UnionMember2> all
+        System::Action<All> all
     )
     {
         switch (this.Value)
@@ -261,7 +261,7 @@ public record class Keep : ModelBase
             case BetaAllThinkingTurns value:
                 betaAllThinkingTurns(value);
                 break;
-            case UnionMember2 value:
+            case All value:
                 all(value);
                 break;
             default:
@@ -286,7 +286,7 @@ public record class Keep : ModelBase
     /// var result = instance.Match(
     ///     (BetaThinkingTurns value) => {...},
     ///     (BetaAllThinkingTurns value) => {...},
-    ///     (UnionMember2 value) => {...}
+    ///     (All value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -294,14 +294,14 @@ public record class Keep : ModelBase
     public T Match<T>(
         System::Func<BetaThinkingTurns, T> betaThinkingTurns,
         System::Func<BetaAllThinkingTurns, T> betaAllThinkingTurns,
-        System::Func<UnionMember2, T> all
+        System::Func<All, T> all
     )
     {
         return this.Value switch
         {
             BetaThinkingTurns value => betaThinkingTurns(value),
             BetaAllThinkingTurns value => betaAllThinkingTurns(value),
-            UnionMember2 value => all(value),
+            All value => all(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Keep"),
         };
     }
@@ -310,7 +310,7 @@ public record class Keep : ModelBase
 
     public static implicit operator Keep(BetaAllThinkingTurns value) => new(value);
 
-    public static implicit operator Keep(UnionMember2 value) => new(value);
+    public static implicit operator Keep(All value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -354,7 +354,7 @@ public record class Keep : ModelBase
         {
             BetaThinkingTurns _ => 0,
             BetaAllThinkingTurns _ => 1,
-            UnionMember2 _ => 2,
+            All _ => 2,
             _ => -1,
         };
     }
@@ -371,7 +371,7 @@ sealed class KeepConverter : JsonConverter<Keep>
         var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<UnionMember2>(element, options);
+            var deserialized = JsonSerializer.Deserialize<All>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
@@ -420,17 +420,17 @@ sealed class KeepConverter : JsonConverter<Keep>
     }
 }
 
-[JsonConverter(typeof(UnionMember2Converter))]
-public record class UnionMember2
+[JsonConverter(typeof(AllConverter))]
+public record class All
 {
     public JsonElement Element { get; private init; }
 
-    public UnionMember2()
+    public All()
     {
         Element = JsonSerializer.SerializeToElement("all");
     }
 
-    internal UnionMember2(JsonElement element)
+    internal All(JsonElement element)
     {
         Element = element;
     }
@@ -446,9 +446,9 @@ public record class UnionMember2
     /// </summary>
     public void Validate()
     {
-        if (this != new UnionMember2())
+        if (this != new All())
         {
-            throw new AnthropicInvalidDataException("Invalid value given for 'UnionMember2'");
+            throw new AnthropicInvalidDataException("Invalid value given for 'All'");
         }
     }
 
@@ -457,7 +457,7 @@ public record class UnionMember2
         return 0;
     }
 
-    public virtual bool Equals(UnionMember2? other)
+    public virtual bool Equals(All? other)
     {
         if (other == null)
         {
@@ -468,9 +468,9 @@ public record class UnionMember2
     }
 }
 
-class UnionMember2Converter : JsonConverter<UnionMember2>
+class AllConverter : JsonConverter<All>
 {
-    public override UnionMember2? Read(
+    public override All? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -479,11 +479,7 @@ class UnionMember2Converter : JsonConverter<UnionMember2>
         return new(JsonSerializer.Deserialize<JsonElement>(ref reader, options));
     }
 
-    public override void Write(
-        Utf8JsonWriter writer,
-        UnionMember2 value,
-        JsonSerializerOptions options
-    )
+    public override void Write(Utf8JsonWriter writer, All value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Element, options);
     }

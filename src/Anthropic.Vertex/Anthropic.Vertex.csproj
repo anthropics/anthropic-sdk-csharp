@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <PackageId>Anthropic.Vertex</PackageId>
+    <VersionPrefix>0.0.1</VersionPrefix>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Anthropic\Anthropic.csproj"/>
+    
+    <None Include="..\logo.png" Pack="true" PackagePath="\"/>
+    <Compile Include="..\Anthropic\Shims.cs"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Bcl.Memory" Version="10.0.0"/>    
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0"/>
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.3"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.68.0.1869"/>
+  </ItemGroup>
+</Project>
