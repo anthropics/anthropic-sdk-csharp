@@ -5,9 +5,6 @@
 > [!IMPORTANT]
 > As of version 10+, the `Anthropic` package is now the official Anthropic SDK for C#. Package versions 3.X and below were previously used for the tryAGI community-built SDK, which has moved to [`tryAGI.Anthropic`](https://www.nuget.org/packages/tryagi.Anthropic/). If you need to continue using the former client in your project, update your package reference to `tryAGI.Anthropic`.
 
-> [!NOTE]
-> The Anthropic C# API Library is currently in beta. We'd love your feedback — please share suggestions, bug reports, or feature requests by [filing an issue](https://www.github.com/anthropics/anthropic-sdk-csharp/issues/new).
-
 The Anthropic C# library provides access to the [Claude API](https://docs.anthropic.com/en/api/) from C# applications.
 
 ## Documentation
