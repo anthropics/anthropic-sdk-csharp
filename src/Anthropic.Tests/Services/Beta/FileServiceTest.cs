@@ -45,10 +45,11 @@ public class FileServiceTest
         fileMetadata.Validate();
     }
 
-    [Fact]
-    public async Task Upload_Works()
+    [Theory]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
+    public async Task Upload_Works(IAnthropicClient client)
     {
-        var fileMetadata = await this.client.Beta.Files.Upload(
+        var fileMetadata = await client.Beta.Files.Upload(
             new() { File = Encoding.UTF8.GetBytes("text") },
             TestContext.Current.CancellationToken
         );
