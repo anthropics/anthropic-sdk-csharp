@@ -95,7 +95,10 @@ public record class ApiEnum<TRaw, TEnum>(JsonElement Json)
     }
 
     public override string ToString() =>
-        JsonSerializer.Serialize(this.Json, ModelBase.ToStringSerializerOptions);
+        JsonSerializer.Serialize(
+            FriendlyJsonPrinter.PrintValue(this.Json),
+            ModelBase.ToStringSerializerOptions
+        );
 
     public override int GetHashCode()
     {

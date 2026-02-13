@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using Anthropic.Core;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Skills;
 
@@ -9,13 +11,45 @@ namespace Anthropic.Tests.Models.Beta.Skills;
 public class SkillCreateParamsTest : TestBase
 {
     [Fact]
-    public void OptionalNonNullableParamsUnsetAreNotSet_Works()
+    public void FieldRoundtrip_Works()
     {
+        BinaryContent files = Encoding.UTF8.GetBytes("text");
+
         var parameters = new SkillCreateParams
         {
             DisplayTitle = "display_title",
-            Files = [Encoding.UTF8.GetBytes("text")],
+            Files = [files],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
+
+        string expectedDisplayTitle = "display_title";
+        List<BinaryContent> expectedFiles = [files];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
+
+        Assert.Equal(expectedDisplayTitle, parameters.DisplayTitle);
+        Assert.NotNull(parameters.Files);
+        Assert.Equal(expectedFiles.Count, parameters.Files.Count);
+        for (int i = 0; i < expectedFiles.Count; i++)
+        {
+            Assert.Equal(expectedFiles[i], parameters.Files[i]);
+        }
+        Assert.NotNull(parameters.Betas);
+        Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
+        for (int i = 0; i < expectedBetas.Count; i++)
+        {
+            Assert.Equal(expectedBetas[i], parameters.Betas[i]);
+        }
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsUnsetAreNotSet_Works()
+    {
+        BinaryContent files = Encoding.UTF8.GetBytes("text");
+
+        var parameters = new SkillCreateParams { DisplayTitle = "display_title", Files = [files] };
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
@@ -24,10 +58,12 @@ public class SkillCreateParamsTest : TestBase
     [Fact]
     public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
     {
+        BinaryContent files = Encoding.UTF8.GetBytes("text");
+
         var parameters = new SkillCreateParams
         {
             DisplayTitle = "display_title",
-            Files = [Encoding.UTF8.GetBytes("text")],
+            Files = [files],
 
             // Null should be interpreted as omitted for these properties
             Betas = null,
@@ -87,5 +123,20 @@ public class SkillCreateParamsTest : TestBase
             ["skills-2025-10-02", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new SkillCreateParams
+        {
+            DisplayTitle = "display_title",
+            Files = [Encoding.UTF8.GetBytes("text")],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        };
+
+        SkillCreateParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
     }
 }

@@ -19,7 +19,7 @@ namespace Anthropic.Core;
 /// </summary>
 sealed class JsonDictionary
 {
-    IDictionary<string, JsonElement> _rawData;
+    IReadOnlyDictionary<string, JsonElement> _rawData;
 
     readonly ConcurrentDictionary<string, object?> _deserializedData;
 
@@ -198,7 +198,10 @@ sealed class JsonDictionary
     }
 
     public override string ToString() =>
-        JsonSerializer.Serialize(this._rawData, ModelBase.ToStringSerializerOptions);
+        JsonSerializer.Serialize(
+            FriendlyJsonPrinter.PrintValue(this._rawData),
+            ModelBase.ToStringSerializerOptions
+        );
 
     public override bool Equals(object? obj)
     {
