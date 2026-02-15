@@ -1,5 +1,13 @@
 # Changelog
 
+## 12.6.0 (2026-02-15)
+
+Full Changelog: [Anthropic-v12.5.0...Anthropic-v12.6.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.5.0...Anthropic-v12.6.0)
+
+### Features
+
+* **client:** add equality and tostring for multipart data ([eebd5d5](https://github.com/anthropics/anthropic-sdk-csharp/commit/eebd5d557dd87f7a8f41aaac713724dcf0e3f765))
+
 ## 12.5.0 (2026-02-12)
 
 Full Changelog: [Anthropic-v12.4.0...Anthropic-v12.5.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.4.0...Anthropic-v12.5.0)

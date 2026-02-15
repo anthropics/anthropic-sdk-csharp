@@ -31,6 +31,120 @@ public readonly struct MultipartJsonElement()
         FrozenDictionary.ToFrozenDictionary(new Dictionary<Guid, BinaryContent>());
 
     public static implicit operator MultipartJsonElement(JsonElement json) => new() { Json = json };
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            FriendlyJsonPrinter.PrintValue(this),
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public static bool DeepEquals(MultipartJsonElement a, MultipartJsonElement b) =>
+        MultipartJsonElement.DeepEqualsInner(a.Json, a.BinaryContents, b.Json, b.BinaryContents);
+
+    static bool DeepEqualsInner(
+        JsonElement jsonA,
+        IReadOnlyDictionary<Guid, BinaryContent> binaryA,
+        JsonElement jsonB,
+        IReadOnlyDictionary<Guid, BinaryContent> binaryB
+    )
+    {
+        if (jsonA.ValueKind != jsonB.ValueKind)
+        {
+            return false;
+        }
+
+        switch (jsonA.ValueKind)
+        {
+            case JsonValueKind.Undefined:
+            case JsonValueKind.Null:
+            case JsonValueKind.True:
+            case JsonValueKind.False:
+                return true;
+            case JsonValueKind.Number:
+                return JsonElement.DeepEquals(jsonA, jsonB);
+            case JsonValueKind.String:
+                BinaryContent? aContent = null;
+
+                BinaryContent? bContent = null;
+
+                if (jsonA.TryGetGuid(out var guidA) && binaryA.TryGetValue(guidA, out var a))
+                {
+                    aContent = a;
+                }
+
+                if (jsonB.TryGetGuid(out var guidB) && binaryB.TryGetValue(guidB, out var b))
+                {
+                    bContent = b;
+                }
+
+                if (aContent != null && bContent != null)
+                {
+                    return aContent == bContent;
+                }
+                else if (aContent == null && bContent == null)
+                {
+                    return jsonA.GetString() == jsonB.GetString();
+                }
+                else
+                {
+                    return false;
+                }
+            case JsonValueKind.Object:
+                Dictionary<string, JsonElement> propertiesA = new();
+
+                foreach (var item1 in jsonA.EnumerateObject())
+                {
+                    propertiesA[item1.Name] = item1.Value;
+                }
+
+                Dictionary<string, JsonElement> propertiesB = new();
+
+                foreach (var item1 in jsonB.EnumerateObject())
+                {
+                    propertiesB[item1.Name] = item1.Value;
+                }
+
+                if (propertiesA.Count != propertiesB.Count)
+                {
+                    return false;
+                }
+
+                foreach (var property in propertiesA)
+                {
+                    if (!propertiesB.TryGetValue(property.Key, out var b1))
+                    {
+                        return false;
+                    }
+
+                    if (!MultipartJsonElement.DeepEqualsInner(property.Value, binaryA, b1, binaryB))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            case JsonValueKind.Array:
+                if (jsonA.GetArrayLength() != jsonB.GetArrayLength())
+                {
+                    return false;
+                }
+
+                var i = 0;
+                foreach (var item in jsonA.EnumerateArray())
+                {
+                    if (!MultipartJsonElement.DeepEqualsInner(item, binaryA, jsonB[i], binaryB))
+                    {
+                        return false;
+                    }
+
+                    i++;
+                }
+
+                return true;
+            default:
+                throw new InvalidOperationException("Unreachable");
+        }
+    }
 }
 
 /// <summary>

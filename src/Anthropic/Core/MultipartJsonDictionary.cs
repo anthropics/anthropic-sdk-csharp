@@ -19,7 +19,7 @@ namespace Anthropic.Core;
 /// </summary>
 sealed class MultipartJsonDictionary
 {
-    IDictionary<string, MultipartJsonElement> _rawData;
+    IReadOnlyDictionary<string, MultipartJsonElement> _rawData;
 
     readonly ConcurrentDictionary<string, object?> _deserializedData;
 
@@ -204,5 +204,39 @@ sealed class MultipartJsonDictionary
         }
         _deserializedData[key] = deserialized;
         return deserialized;
+    }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            FriendlyJsonPrinter.PrintValue(this._rawData),
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not MultipartJsonDictionary other || _rawData.Count != other._rawData.Count)
+        {
+            return false;
+        }
+
+        foreach (var item in _rawData)
+        {
+            if (!other._rawData.TryGetValue(item.Key, out var otherValue))
+            {
+                return false;
+            }
+
+            if (!MultipartJsonElement.DeepEquals(item.Value, otherValue))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
