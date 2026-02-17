@@ -194,7 +194,16 @@ public record class WebSearchToolResultBlockParamContent : ModelBase
                 "Data did not match any variant of WebSearchToolResultBlockParamContent"
             );
         }
-        this.Switch((_) => { }, (requestError) => requestError.Validate());
+        this.Switch(
+            (webSearchToolResultBlockItem) =>
+            {
+                foreach (var item in webSearchToolResultBlockItem)
+                {
+                    item.Validate();
+                }
+            },
+            (requestError) => requestError.Validate()
+        );
     }
 
     public virtual bool Equals(WebSearchToolResultBlockParamContent? other) =>
@@ -259,6 +268,10 @@ sealed class WebSearchToolResultBlockParamContentConverter
             );
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }

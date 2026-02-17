@@ -258,6 +258,16 @@ public record class BetaMessageParamContent : ModelBase
                 "Data did not match any variant of BetaMessageParamContent"
             );
         }
+        this.Switch(
+            (_) => { },
+            (betaContentBlockParams) =>
+            {
+                foreach (var item in betaContentBlockParams)
+                {
+                    item.Validate();
+                }
+            }
+        );
     }
 
     public virtual bool Equals(BetaMessageParamContent? other) =>
@@ -317,6 +327,10 @@ sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamCo
             );
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }

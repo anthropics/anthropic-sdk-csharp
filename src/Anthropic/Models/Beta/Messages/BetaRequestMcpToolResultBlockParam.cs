@@ -339,6 +339,16 @@ public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
                 "Data did not match any variant of BetaRequestMcpToolResultBlockParamContent"
             );
         }
+        this.Switch(
+            (_) => { },
+            (betaMcpToolResultBlockParamContent) =>
+            {
+                foreach (var item in betaMcpToolResultBlockParamContent)
+                {
+                    item.Validate();
+                }
+            }
+        );
     }
 
     public virtual bool Equals(BetaRequestMcpToolResultBlockParamContent? other) =>
@@ -399,6 +409,10 @@ sealed class BetaRequestMcpToolResultBlockParamContentConverter
             );
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }

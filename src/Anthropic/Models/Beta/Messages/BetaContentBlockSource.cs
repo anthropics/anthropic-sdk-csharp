@@ -281,6 +281,16 @@ public record class BetaContentBlockSourceContent : ModelBase
                 "Data did not match any variant of BetaContentBlockSourceContent"
             );
         }
+        this.Switch(
+            (_) => { },
+            (betaContentBlockSourceContent) =>
+            {
+                foreach (var item in betaContentBlockSourceContent)
+                {
+                    item.Validate();
+                }
+            }
+        );
     }
 
     public virtual bool Equals(BetaContentBlockSourceContent? other) =>
@@ -339,6 +349,10 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
             >(element, options);
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }
