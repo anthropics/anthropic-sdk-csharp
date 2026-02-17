@@ -56,7 +56,6 @@ public class RawMessageStartEventTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
-                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -101,7 +100,6 @@ public class RawMessageStartEventTest : TestBase
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = UsageServiceTier.Standard,
-                Speed = UsageSpeed.Standard,
             },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("message_start");
@@ -159,7 +157,6 @@ public class RawMessageStartEventTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
-                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -222,7 +219,6 @@ public class RawMessageStartEventTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
-                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -274,7 +270,6 @@ public class RawMessageStartEventTest : TestBase
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = UsageServiceTier.Standard,
-                Speed = UsageSpeed.Standard,
             },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("message_start");
@@ -332,7 +327,6 @@ public class RawMessageStartEventTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
-                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -389,7 +383,6 @@ public class RawMessageStartEventTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
-                    Speed = UsageSpeed.Standard,
                 },
             },
         };

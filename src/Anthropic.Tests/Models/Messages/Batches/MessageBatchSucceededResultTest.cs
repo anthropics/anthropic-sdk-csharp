@@ -57,7 +57,6 @@ public class MessageBatchSucceededResultTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
-                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -102,7 +101,6 @@ public class MessageBatchSucceededResultTest : TestBase
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = UsageServiceTier.Standard,
-                Speed = UsageSpeed.Standard,
             },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("succeeded");
@@ -160,7 +158,6 @@ public class MessageBatchSucceededResultTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
-                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -223,7 +220,6 @@ public class MessageBatchSucceededResultTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
-                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -275,7 +271,6 @@ public class MessageBatchSucceededResultTest : TestBase
                 OutputTokens = 503,
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = UsageServiceTier.Standard,
-                Speed = UsageSpeed.Standard,
             },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("succeeded");
@@ -333,7 +328,6 @@ public class MessageBatchSucceededResultTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
-                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -390,7 +384,6 @@ public class MessageBatchSucceededResultTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
-                    Speed = UsageSpeed.Standard,
                 },
             },
         };

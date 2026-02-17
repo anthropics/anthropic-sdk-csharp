@@ -57,7 +57,6 @@ public class MessageBatchResultTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
-                    Speed = UsageSpeed.Standard,
                 },
             }
         );
@@ -139,7 +138,6 @@ public class MessageBatchResultTest : TestBase
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
-                    Speed = UsageSpeed.Standard,
                 },
             }
         );

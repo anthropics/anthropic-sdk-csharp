@@ -39,7 +39,6 @@ public class BatchServiceTest : TestBase
                                 },
                             },
                             ServiceTier = Batches::ServiceTier.Auto,
-                            Speed = Batches::Speed.Standard,
                             StopSequences = ["string"],
                             Stream = true,
                             System = new(
