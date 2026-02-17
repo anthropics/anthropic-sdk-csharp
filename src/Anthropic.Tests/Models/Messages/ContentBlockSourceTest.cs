@@ -11,7 +11,7 @@ public class ContentBlockSourceTest : TestBase
     {
         var model = new ContentBlockSource { Content = "string" };
 
-        Content expectedContent = "string";
+        ContentBlockSourceContent expectedContent = "string";
         JsonElement expectedType = JsonSerializer.SerializeToElement("content");
 
         Assert.Equal(expectedContent, model.Content);
@@ -44,7 +44,7 @@ public class ContentBlockSourceTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        Content expectedContent = "string";
+        ContentBlockSourceContent expectedContent = "string";
         JsonElement expectedType = JsonSerializer.SerializeToElement("content");
 
         Assert.Equal(expectedContent, deserialized.Content);
@@ -70,21 +70,21 @@ public class ContentBlockSourceTest : TestBase
     }
 }
 
-public class ContentTest : TestBase
+public class ContentBlockSourceContentTest : TestBase
 {
     [Fact]
     public void StringValidationWorks()
     {
-        Content value = "string";
+        ContentBlockSourceContent value = "string";
         value.Validate();
     }
 
     [Fact]
     public void BlockSourceValidationWorks()
     {
-        Content value = new(
+        ContentBlockSourceContent value = new(
             [
-                new ContentBlockSourceContent(
+                new MessageContentBlockSourceContent(
                     new TextBlockParam()
                     {
                         Text = "x",
@@ -110,9 +110,9 @@ public class ContentTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        Content value = "string";
+        ContentBlockSourceContent value = "string";
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Content>(
+        var deserialized = JsonSerializer.Deserialize<ContentBlockSourceContent>(
             element,
             ModelBase.SerializerOptions
         );
@@ -123,9 +123,9 @@ public class ContentTest : TestBase
     [Fact]
     public void BlockSourceSerializationRoundtripWorks()
     {
-        Content value = new(
+        ContentBlockSourceContent value = new(
             [
-                new ContentBlockSourceContent(
+                new MessageContentBlockSourceContent(
                     new TextBlockParam()
                     {
                         Text = "x",
@@ -146,7 +146,7 @@ public class ContentTest : TestBase
             ]
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Content>(
+        var deserialized = JsonSerializer.Deserialize<ContentBlockSourceContent>(
             element,
             ModelBase.SerializerOptions
         );

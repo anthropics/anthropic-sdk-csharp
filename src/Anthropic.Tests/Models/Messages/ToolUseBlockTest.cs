@@ -13,6 +13,7 @@ public class ToolUseBlockTest : TestBase
         var model = new ToolUseBlock
         {
             ID = "id",
+            Caller = new DirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -21,6 +22,7 @@ public class ToolUseBlockTest : TestBase
         };
 
         string expectedID = "id";
+        ToolUseBlockCaller expectedCaller = new DirectCaller();
         Dictionary<string, JsonElement> expectedInput = new()
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -29,6 +31,7 @@ public class ToolUseBlockTest : TestBase
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
 
         Assert.Equal(expectedID, model.ID);
+        Assert.Equal(expectedCaller, model.Caller);
         Assert.Equal(expectedInput.Count, model.Input.Count);
         foreach (var item in expectedInput)
         {
@@ -46,6 +49,7 @@ public class ToolUseBlockTest : TestBase
         var model = new ToolUseBlock
         {
             ID = "id",
+            Caller = new DirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -68,6 +72,7 @@ public class ToolUseBlockTest : TestBase
         var model = new ToolUseBlock
         {
             ID = "id",
+            Caller = new DirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -83,6 +88,7 @@ public class ToolUseBlockTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedID = "id";
+        ToolUseBlockCaller expectedCaller = new DirectCaller();
         Dictionary<string, JsonElement> expectedInput = new()
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -91,6 +97,7 @@ public class ToolUseBlockTest : TestBase
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
 
         Assert.Equal(expectedID, deserialized.ID);
+        Assert.Equal(expectedCaller, deserialized.Caller);
         Assert.Equal(expectedInput.Count, deserialized.Input.Count);
         foreach (var item in expectedInput)
         {
@@ -108,6 +115,7 @@ public class ToolUseBlockTest : TestBase
         var model = new ToolUseBlock
         {
             ID = "id",
+            Caller = new DirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -124,6 +132,7 @@ public class ToolUseBlockTest : TestBase
         var model = new ToolUseBlock
         {
             ID = "id",
+            Caller = new DirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -132,6 +141,154 @@ public class ToolUseBlockTest : TestBase
         };
 
         ToolUseBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
+}
+
+public class ToolUseBlockCallerTest : TestBase
+{
+    [Fact]
+    public void DirectValidationWorks()
+    {
+        ToolUseBlockCaller value = new DirectCaller();
+        value.Validate();
+    }
+
+    [Fact]
+    public void ServerToolValidationWorks()
+    {
+        ToolUseBlockCaller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        value.Validate();
+    }
+
+    [Fact]
+    public void CodeExecution20260120ValidationWorks()
+    {
+        ToolUseBlockCaller value = new ToolUseBlockCallerCodeExecution20260120(
+            "srvtoolu_SQfNkl1n_JR_"
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void DirectSerializationRoundtripWorks()
+    {
+        ToolUseBlockCaller value = new DirectCaller();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUseBlockCaller>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ServerToolSerializationRoundtripWorks()
+    {
+        ToolUseBlockCaller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUseBlockCaller>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void CodeExecution20260120SerializationRoundtripWorks()
+    {
+        ToolUseBlockCaller value = new ToolUseBlockCallerCodeExecution20260120(
+            "srvtoolu_SQfNkl1n_JR_"
+        );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUseBlockCaller>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class ToolUseBlockCallerCodeExecution20260120Test : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var model = new ToolUseBlockCallerCodeExecution20260120
+        {
+            ToolID = "srvtoolu_SQfNkl1n_JR_",
+        };
+
+        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20260120");
+
+        Assert.Equal(expectedToolID, model.ToolID);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new ToolUseBlockCallerCodeExecution20260120
+        {
+            ToolID = "srvtoolu_SQfNkl1n_JR_",
+        };
+
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUseBlockCallerCodeExecution20260120>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new ToolUseBlockCallerCodeExecution20260120
+        {
+            ToolID = "srvtoolu_SQfNkl1n_JR_",
+        };
+
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUseBlockCallerCodeExecution20260120>(
+            element,
+            ModelBase.SerializerOptions
+        );
+        Assert.NotNull(deserialized);
+
+        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20260120");
+
+        Assert.Equal(expectedToolID, deserialized.ToolID);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new ToolUseBlockCallerCodeExecution20260120
+        {
+            ToolID = "srvtoolu_SQfNkl1n_JR_",
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ToolUseBlockCallerCodeExecution20260120
+        {
+            ToolID = "srvtoolu_SQfNkl1n_JR_",
+        };
+
+        ToolUseBlockCallerCodeExecution20260120 copied = new(model);
 
         Assert.Equal(model, copied);
     }

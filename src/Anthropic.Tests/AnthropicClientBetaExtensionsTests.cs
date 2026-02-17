@@ -357,7 +357,8 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                         "type": "tool_use",
                         "id": "tool_call_1",
                         "name": "test_tool",
-                        "input": {}
+                        "input": {},
+                        "caller": {"type": "direct"}
                     }
                 ],
                 "stop_reason": "tool_use",

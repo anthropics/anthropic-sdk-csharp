@@ -2,6 +2,7 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
@@ -44,6 +45,29 @@ public sealed record class Tool : JsonModel
         init { this._rawData.Set("name", value); }
     }
 
+    public IReadOnlyList<ApiEnum<string, ToolAllowedCaller>>? AllowedCallers
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, ToolAllowedCaller>>
+            >("allowed_callers");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set<ImmutableArray<ApiEnum<string, ToolAllowedCaller>>?>(
+                "allowed_callers",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
     /// <summary>
     /// Create a cache control breakpoint at this content block.
     /// </summary>
@@ -55,6 +79,28 @@ public sealed record class Tool : JsonModel
             return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
         }
         init { this._rawData.Set("cache_control", value); }
+    }
+
+    /// <summary>
+    /// If true, tool will not be included in initial system prompt. Only loaded when
+    /// returned via tool_reference from tool search.
+    /// </summary>
+    public bool? DeferLoading
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("defer_loading");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("defer_loading", value);
+        }
     }
 
     /// <summary>
@@ -100,6 +146,36 @@ public sealed record class Tool : JsonModel
         init { this._rawData.Set("eager_input_streaming", value); }
     }
 
+    public IReadOnlyList<IReadOnlyDictionary<string, JsonElement>>? InputExamples
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<FrozenDictionary<string, JsonElement>>
+            >("input_examples");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set<ImmutableArray<FrozenDictionary<string, JsonElement>>?>(
+                "input_examples",
+                value == null
+                    ? null
+                    : ImmutableArray.ToImmutableArray(
+                        Enumerable.Select(
+                            value,
+                            (item) => FrozenDictionary.ToFrozenDictionary(item)
+                        )
+                    )
+            );
+        }
+    }
+
     /// <summary>
     /// When true, guarantees schema validation on tool names and inputs
     /// </summary>
@@ -138,9 +214,15 @@ public sealed record class Tool : JsonModel
     {
         this.InputSchema.Validate();
         _ = this.Name;
+        foreach (var item in this.AllowedCallers ?? [])
+        {
+            item.Validate();
+        }
         this.CacheControl?.Validate();
+        _ = this.DeferLoading;
         _ = this.Description;
         _ = this.EagerInputStreaming;
+        _ = this.InputExamples;
         _ = this.Strict;
         this.Type?.Validate();
     }
@@ -282,6 +364,50 @@ class InputSchemaFromRaw : IFromRawJson<InputSchema>
     /// <inheritdoc/>
     public InputSchema FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         InputSchema.FromRawUnchecked(rawData);
+}
+
+[JsonConverter(typeof(ToolAllowedCallerConverter))]
+public enum ToolAllowedCaller
+{
+    Direct,
+    CodeExecution20250825,
+}
+
+sealed class ToolAllowedCallerConverter : JsonConverter<ToolAllowedCaller>
+{
+    public override ToolAllowedCaller Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "direct" => ToolAllowedCaller.Direct,
+            "code_execution_20250825" => ToolAllowedCaller.CodeExecution20250825,
+            _ => (ToolAllowedCaller)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ToolAllowedCaller value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ToolAllowedCaller.Direct => "direct",
+                ToolAllowedCaller.CodeExecution20250825 => "code_execution_20250825",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
 }
 
 [JsonConverter(typeof(TypeConverter))]

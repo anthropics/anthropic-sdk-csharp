@@ -239,7 +239,26 @@ public record class BetaServerToolUseBlockParamCaller : ModelBase
 
     public JsonElement Type
     {
-        get { return Match(betaDirect: (x) => x.Type, betaServerTool: (x) => x.Type); }
+        get
+        {
+            return Match(
+                betaDirect: (x) => x.Type,
+                betaServerTool: (x) => x.Type,
+                betaServerToolCaller20260120: (x) => x.Type
+            );
+        }
+    }
+
+    public string? ToolID
+    {
+        get
+        {
+            return Match<string?>(
+                betaDirect: (_) => null,
+                betaServerTool: (x) => x.ToolID,
+                betaServerToolCaller20260120: (x) => x.ToolID
+            );
+        }
     }
 
     public BetaServerToolUseBlockParamCaller(BetaDirectCaller value, JsonElement? element = null)
@@ -250,6 +269,15 @@ public record class BetaServerToolUseBlockParamCaller : ModelBase
 
     public BetaServerToolUseBlockParamCaller(
         BetaServerToolCaller value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaServerToolUseBlockParamCaller(
+        BetaServerToolCaller20260120 value,
         JsonElement? element = null
     )
     {
@@ -305,6 +333,29 @@ public record class BetaServerToolUseBlockParamCaller : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaServerToolCaller20260120"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaServerToolCaller20260120(out var value)) {
+    ///     // `value` is of type `BetaServerToolCaller20260120`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaServerToolCaller20260120(
+        [NotNullWhen(true)] out BetaServerToolCaller20260120? value
+    )
+    {
+        value = this.Value as BetaServerToolCaller20260120;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
@@ -319,14 +370,16 @@ public record class BetaServerToolUseBlockParamCaller : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (BetaDirectCaller value) => {...},
-    ///     (BetaServerToolCaller value) => {...}
+    ///     (BetaServerToolCaller value) => {...},
+    ///     (BetaServerToolCaller20260120 value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<BetaDirectCaller> betaDirect,
-        System::Action<BetaServerToolCaller> betaServerTool
+        System::Action<BetaServerToolCaller> betaServerTool,
+        System::Action<BetaServerToolCaller20260120> betaServerToolCaller20260120
     )
     {
         switch (this.Value)
@@ -336,6 +389,9 @@ public record class BetaServerToolUseBlockParamCaller : ModelBase
                 break;
             case BetaServerToolCaller value:
                 betaServerTool(value);
+                break;
+            case BetaServerToolCaller20260120 value:
+                betaServerToolCaller20260120(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -360,20 +416,23 @@ public record class BetaServerToolUseBlockParamCaller : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (BetaDirectCaller value) => {...},
-    ///     (BetaServerToolCaller value) => {...}
+    ///     (BetaServerToolCaller value) => {...},
+    ///     (BetaServerToolCaller20260120 value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
         System::Func<BetaDirectCaller, T> betaDirect,
-        System::Func<BetaServerToolCaller, T> betaServerTool
+        System::Func<BetaServerToolCaller, T> betaServerTool,
+        System::Func<BetaServerToolCaller20260120, T> betaServerToolCaller20260120
     )
     {
         return this.Value switch
         {
             BetaDirectCaller value => betaDirect(value),
             BetaServerToolCaller value => betaServerTool(value),
+            BetaServerToolCaller20260120 value => betaServerToolCaller20260120(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaServerToolUseBlockParamCaller"
             ),
@@ -385,6 +444,10 @@ public record class BetaServerToolUseBlockParamCaller : ModelBase
 
     public static implicit operator BetaServerToolUseBlockParamCaller(BetaServerToolCaller value) =>
         new(value);
+
+    public static implicit operator BetaServerToolUseBlockParamCaller(
+        BetaServerToolCaller20260120 value
+    ) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -406,7 +469,8 @@ public record class BetaServerToolUseBlockParamCaller : ModelBase
         }
         this.Switch(
             (betaDirect) => betaDirect.Validate(),
-            (betaServerTool) => betaServerTool.Validate()
+            (betaServerTool) => betaServerTool.Validate(),
+            (betaServerToolCaller20260120) => betaServerToolCaller20260120.Validate()
         );
     }
 
@@ -432,6 +496,7 @@ public record class BetaServerToolUseBlockParamCaller : ModelBase
         {
             BetaDirectCaller _ => 0,
             BetaServerToolCaller _ => 1,
+            BetaServerToolCaller20260120 _ => 2,
             _ => -1,
         };
     }
@@ -486,6 +551,28 @@ sealed class BetaServerToolUseBlockParamCallerConverter
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaServerToolCaller>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "code_execution_20260120":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaServerToolCaller20260120>(
                         element,
                         options
                     );

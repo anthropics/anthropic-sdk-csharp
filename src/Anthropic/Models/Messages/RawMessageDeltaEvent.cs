@@ -115,6 +115,19 @@ class RawMessageDeltaEventFromRaw : IFromRawJson<RawMessageDeltaEvent>
 [JsonConverter(typeof(JsonModelConverter<Delta, DeltaFromRaw>))]
 public sealed record class Delta : JsonModel
 {
+    /// <summary>
+    /// Information about the container used in the request (for the code execution tool)
+    /// </summary>
+    public required Container? Container
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<Container>("container");
+        }
+        init { this._rawData.Set("container", value); }
+    }
+
     public required ApiEnum<string, StopReason>? StopReason
     {
         get
@@ -138,6 +151,7 @@ public sealed record class Delta : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
+        this.Container?.Validate();
         this.StopReason?.Validate();
         _ = this.StopSequence;
     }

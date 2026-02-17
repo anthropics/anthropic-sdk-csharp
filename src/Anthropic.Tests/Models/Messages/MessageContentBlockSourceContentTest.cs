@@ -4,12 +4,12 @@ using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
 
-public class ContentBlockSourceContentTest : TestBase
+public class MessageContentBlockSourceContentTest : TestBase
 {
     [Fact]
     public void TextBlockParamValidationWorks()
     {
-        ContentBlockSourceContent value = new TextBlockParam()
+        MessageContentBlockSourceContent value = new TextBlockParam()
         {
             Text = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -31,7 +31,7 @@ public class ContentBlockSourceContentTest : TestBase
     [Fact]
     public void ImageBlockParamValidationWorks()
     {
-        ContentBlockSourceContent value = new ImageBlockParam()
+        MessageContentBlockSourceContent value = new ImageBlockParam()
         {
             Source = new Base64ImageSource()
             {
@@ -46,7 +46,7 @@ public class ContentBlockSourceContentTest : TestBase
     [Fact]
     public void TextBlockParamSerializationRoundtripWorks()
     {
-        ContentBlockSourceContent value = new TextBlockParam()
+        MessageContentBlockSourceContent value = new TextBlockParam()
         {
             Text = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -63,7 +63,7 @@ public class ContentBlockSourceContentTest : TestBase
             ],
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockSourceContent>(
+        var deserialized = JsonSerializer.Deserialize<MessageContentBlockSourceContent>(
             element,
             ModelBase.SerializerOptions
         );
@@ -74,7 +74,7 @@ public class ContentBlockSourceContentTest : TestBase
     [Fact]
     public void ImageBlockParamSerializationRoundtripWorks()
     {
-        ContentBlockSourceContent value = new ImageBlockParam()
+        MessageContentBlockSourceContent value = new ImageBlockParam()
         {
             Source = new Base64ImageSource()
             {
@@ -84,7 +84,7 @@ public class ContentBlockSourceContentTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockSourceContent>(
+        var deserialized = JsonSerializer.Deserialize<MessageContentBlockSourceContent>(
             element,
             ModelBase.SerializerOptions
         );

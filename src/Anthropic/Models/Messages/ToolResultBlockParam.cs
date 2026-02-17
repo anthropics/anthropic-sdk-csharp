@@ -392,6 +392,9 @@ sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBloc
     }
 }
 
+/// <summary>
+/// Tool reference block that can be included in tool_result content.
+/// </summary>
 [JsonConverter(typeof(BlockConverter))]
 public record class Block : ModelBase
 {
@@ -418,7 +421,8 @@ public record class Block : ModelBase
                 textBlockParam: (x) => x.Type,
                 imageBlockParam: (x) => x.Type,
                 searchResultBlockParam: (x) => x.Type,
-                documentBlockParam: (x) => x.Type
+                documentBlockParam: (x) => x.Type,
+                toolReferenceBlockParam: (x) => x.Type
             );
         }
     }
@@ -431,7 +435,8 @@ public record class Block : ModelBase
                 textBlockParam: (x) => x.CacheControl,
                 imageBlockParam: (x) => x.CacheControl,
                 searchResultBlockParam: (x) => x.CacheControl,
-                documentBlockParam: (x) => x.CacheControl
+                documentBlockParam: (x) => x.CacheControl,
+                toolReferenceBlockParam: (x) => x.CacheControl
             );
         }
     }
@@ -444,7 +449,8 @@ public record class Block : ModelBase
                 textBlockParam: (_) => null,
                 imageBlockParam: (_) => null,
                 searchResultBlockParam: (x) => x.Title,
-                documentBlockParam: (x) => x.Title
+                documentBlockParam: (x) => x.Title,
+                toolReferenceBlockParam: (_) => null
             );
         }
     }
@@ -468,6 +474,12 @@ public record class Block : ModelBase
     }
 
     public Block(DocumentBlockParam value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Block(ToolReferenceBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -563,6 +575,29 @@ public record class Block : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ToolReferenceBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolReferenceBlockParam(out var value)) {
+    ///     // `value` is of type `ToolReferenceBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickToolReferenceBlockParam(
+        [NotNullWhen(true)] out ToolReferenceBlockParam? value
+    )
+    {
+        value = this.Value as ToolReferenceBlockParam;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
@@ -579,7 +614,8 @@ public record class Block : ModelBase
     ///     (TextBlockParam value) => {...},
     ///     (ImageBlockParam value) => {...},
     ///     (SearchResultBlockParam value) => {...},
-    ///     (DocumentBlockParam value) => {...}
+    ///     (DocumentBlockParam value) => {...},
+    ///     (ToolReferenceBlockParam value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -588,7 +624,8 @@ public record class Block : ModelBase
         System::Action<TextBlockParam> textBlockParam,
         System::Action<ImageBlockParam> imageBlockParam,
         System::Action<SearchResultBlockParam> searchResultBlockParam,
-        System::Action<DocumentBlockParam> documentBlockParam
+        System::Action<DocumentBlockParam> documentBlockParam,
+        System::Action<ToolReferenceBlockParam> toolReferenceBlockParam
     )
     {
         switch (this.Value)
@@ -604,6 +641,9 @@ public record class Block : ModelBase
                 break;
             case DocumentBlockParam value:
                 documentBlockParam(value);
+                break;
+            case ToolReferenceBlockParam value:
+                toolReferenceBlockParam(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Block");
@@ -628,7 +668,8 @@ public record class Block : ModelBase
     ///     (TextBlockParam value) => {...},
     ///     (ImageBlockParam value) => {...},
     ///     (SearchResultBlockParam value) => {...},
-    ///     (DocumentBlockParam value) => {...}
+    ///     (DocumentBlockParam value) => {...},
+    ///     (ToolReferenceBlockParam value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -637,7 +678,8 @@ public record class Block : ModelBase
         System::Func<TextBlockParam, T> textBlockParam,
         System::Func<ImageBlockParam, T> imageBlockParam,
         System::Func<SearchResultBlockParam, T> searchResultBlockParam,
-        System::Func<DocumentBlockParam, T> documentBlockParam
+        System::Func<DocumentBlockParam, T> documentBlockParam,
+        System::Func<ToolReferenceBlockParam, T> toolReferenceBlockParam
     )
     {
         return this.Value switch
@@ -646,6 +688,7 @@ public record class Block : ModelBase
             ImageBlockParam value => imageBlockParam(value),
             SearchResultBlockParam value => searchResultBlockParam(value),
             DocumentBlockParam value => documentBlockParam(value),
+            ToolReferenceBlockParam value => toolReferenceBlockParam(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Block"),
         };
     }
@@ -657,6 +700,8 @@ public record class Block : ModelBase
     public static implicit operator Block(SearchResultBlockParam value) => new(value);
 
     public static implicit operator Block(DocumentBlockParam value) => new(value);
+
+    public static implicit operator Block(ToolReferenceBlockParam value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -678,7 +723,8 @@ public record class Block : ModelBase
             (textBlockParam) => textBlockParam.Validate(),
             (imageBlockParam) => imageBlockParam.Validate(),
             (searchResultBlockParam) => searchResultBlockParam.Validate(),
-            (documentBlockParam) => documentBlockParam.Validate()
+            (documentBlockParam) => documentBlockParam.Validate(),
+            (toolReferenceBlockParam) => toolReferenceBlockParam.Validate()
         );
     }
 
@@ -706,6 +752,7 @@ public record class Block : ModelBase
             ImageBlockParam _ => 1,
             SearchResultBlockParam _ => 2,
             DocumentBlockParam _ => 3,
+            ToolReferenceBlockParam _ => 4,
             _ => -1,
         };
     }
@@ -800,6 +847,28 @@ sealed class BlockConverter : JsonConverter<Block>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<DocumentBlockParam>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "tool_reference":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ToolReferenceBlockParam>(
                         element,
                         options
                     );

@@ -16,6 +16,7 @@ public class MessageServiceTest
     private static Message GenerateStartMessage =>
         new()
         {
+            Container = null,
             ID = "Test",
             Content = [],
             Model = Model.Claude3OpusLatest,
@@ -30,6 +31,7 @@ public class MessageServiceTest
                 OutputTokens = 25,
                 ServerToolUse = null,
                 ServiceTier = UsageServiceTier.Standard,
+                Speed = null,
                 InferenceGeo = "inference_geo",
             },
         };

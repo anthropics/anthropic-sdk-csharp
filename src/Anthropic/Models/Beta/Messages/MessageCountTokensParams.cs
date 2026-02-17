@@ -807,10 +807,7 @@ sealed class MessageCountTokensParamsSystemConverter : JsonConverter<MessageCoun
 }
 
 /// <summary>
-/// Configuration for a group of tools from an MCP server.
-///
-/// <para>Allows configuring enabled status and defer_loading for all tools from
-/// an MCP server, with optional per-tool overrides.</para>
+/// Code execution tool with REPL state persistence (daemon mode + gVisor checkpoint).
 /// </summary>
 [JsonConverter(typeof(ToolConverter))]
 public record class Tool : ModelBase
@@ -840,6 +837,7 @@ public record class Tool : ModelBase
                 betaToolBash20250124: (x) => x.CacheControl,
                 betaCodeExecutionTool20250522: (x) => x.CacheControl,
                 betaCodeExecutionTool20250825: (x) => x.CacheControl,
+                betaCodeExecutionTool20260120: (x) => x.CacheControl,
                 betaToolComputerUse20241022: (x) => x.CacheControl,
                 betaMemoryTool20250818: (x) => x.CacheControl,
                 betaToolComputerUse20250124: (x) => x.CacheControl,
@@ -850,6 +848,8 @@ public record class Tool : ModelBase
                 betaToolTextEditor20250728: (x) => x.CacheControl,
                 betaWebSearchTool20250305: (x) => x.CacheControl,
                 betaWebFetchTool20250910: (x) => x.CacheControl,
+                betaWebSearchTool20260209: (x) => x.CacheControl,
+                betaWebFetchTool20260209: (x) => x.CacheControl,
                 betaToolSearchToolBm25_20251119: (x) => x.CacheControl,
                 betaToolSearchToolRegex20251119: (x) => x.CacheControl,
                 betaMcpToolset: (x) => x.CacheControl
@@ -867,6 +867,7 @@ public record class Tool : ModelBase
                 betaToolBash20250124: (x) => x.DeferLoading,
                 betaCodeExecutionTool20250522: (x) => x.DeferLoading,
                 betaCodeExecutionTool20250825: (x) => x.DeferLoading,
+                betaCodeExecutionTool20260120: (x) => x.DeferLoading,
                 betaToolComputerUse20241022: (x) => x.DeferLoading,
                 betaMemoryTool20250818: (x) => x.DeferLoading,
                 betaToolComputerUse20250124: (x) => x.DeferLoading,
@@ -877,6 +878,8 @@ public record class Tool : ModelBase
                 betaToolTextEditor20250728: (x) => x.DeferLoading,
                 betaWebSearchTool20250305: (x) => x.DeferLoading,
                 betaWebFetchTool20250910: (x) => x.DeferLoading,
+                betaWebSearchTool20260209: (x) => x.DeferLoading,
+                betaWebFetchTool20260209: (x) => x.DeferLoading,
                 betaToolSearchToolBm25_20251119: (x) => x.DeferLoading,
                 betaToolSearchToolRegex20251119: (x) => x.DeferLoading,
                 betaMcpToolset: (_) => null
@@ -894,6 +897,7 @@ public record class Tool : ModelBase
                 betaToolBash20250124: (x) => x.Strict,
                 betaCodeExecutionTool20250522: (x) => x.Strict,
                 betaCodeExecutionTool20250825: (x) => x.Strict,
+                betaCodeExecutionTool20260120: (x) => x.Strict,
                 betaToolComputerUse20241022: (x) => x.Strict,
                 betaMemoryTool20250818: (x) => x.Strict,
                 betaToolComputerUse20250124: (x) => x.Strict,
@@ -904,6 +908,8 @@ public record class Tool : ModelBase
                 betaToolTextEditor20250728: (x) => x.Strict,
                 betaWebSearchTool20250305: (x) => x.Strict,
                 betaWebFetchTool20250910: (x) => x.Strict,
+                betaWebSearchTool20260209: (x) => x.Strict,
+                betaWebFetchTool20260209: (x) => x.Strict,
                 betaToolSearchToolBm25_20251119: (x) => x.Strict,
                 betaToolSearchToolRegex20251119: (x) => x.Strict,
                 betaMcpToolset: (_) => null
@@ -921,6 +927,7 @@ public record class Tool : ModelBase
                 betaToolBash20250124: (_) => null,
                 betaCodeExecutionTool20250522: (_) => null,
                 betaCodeExecutionTool20250825: (_) => null,
+                betaCodeExecutionTool20260120: (_) => null,
                 betaToolComputerUse20241022: (x) => x.DisplayHeightPx,
                 betaMemoryTool20250818: (_) => null,
                 betaToolComputerUse20250124: (x) => x.DisplayHeightPx,
@@ -931,6 +938,8 @@ public record class Tool : ModelBase
                 betaToolTextEditor20250728: (_) => null,
                 betaWebSearchTool20250305: (_) => null,
                 betaWebFetchTool20250910: (_) => null,
+                betaWebSearchTool20260209: (_) => null,
+                betaWebFetchTool20260209: (_) => null,
                 betaToolSearchToolBm25_20251119: (_) => null,
                 betaToolSearchToolRegex20251119: (_) => null,
                 betaMcpToolset: (_) => null
@@ -948,6 +957,7 @@ public record class Tool : ModelBase
                 betaToolBash20250124: (_) => null,
                 betaCodeExecutionTool20250522: (_) => null,
                 betaCodeExecutionTool20250825: (_) => null,
+                betaCodeExecutionTool20260120: (_) => null,
                 betaToolComputerUse20241022: (x) => x.DisplayWidthPx,
                 betaMemoryTool20250818: (_) => null,
                 betaToolComputerUse20250124: (x) => x.DisplayWidthPx,
@@ -958,6 +968,8 @@ public record class Tool : ModelBase
                 betaToolTextEditor20250728: (_) => null,
                 betaWebSearchTool20250305: (_) => null,
                 betaWebFetchTool20250910: (_) => null,
+                betaWebSearchTool20260209: (_) => null,
+                betaWebFetchTool20260209: (_) => null,
                 betaToolSearchToolBm25_20251119: (_) => null,
                 betaToolSearchToolRegex20251119: (_) => null,
                 betaMcpToolset: (_) => null
@@ -975,6 +987,7 @@ public record class Tool : ModelBase
                 betaToolBash20250124: (_) => null,
                 betaCodeExecutionTool20250522: (_) => null,
                 betaCodeExecutionTool20250825: (_) => null,
+                betaCodeExecutionTool20260120: (_) => null,
                 betaToolComputerUse20241022: (x) => x.DisplayNumber,
                 betaMemoryTool20250818: (_) => null,
                 betaToolComputerUse20250124: (x) => x.DisplayNumber,
@@ -985,6 +998,8 @@ public record class Tool : ModelBase
                 betaToolTextEditor20250728: (_) => null,
                 betaWebSearchTool20250305: (_) => null,
                 betaWebFetchTool20250910: (_) => null,
+                betaWebSearchTool20260209: (_) => null,
+                betaWebFetchTool20260209: (_) => null,
                 betaToolSearchToolBm25_20251119: (_) => null,
                 betaToolSearchToolRegex20251119: (_) => null,
                 betaMcpToolset: (_) => null
@@ -1002,6 +1017,7 @@ public record class Tool : ModelBase
                 betaToolBash20250124: (_) => null,
                 betaCodeExecutionTool20250522: (_) => null,
                 betaCodeExecutionTool20250825: (_) => null,
+                betaCodeExecutionTool20260120: (_) => null,
                 betaToolComputerUse20241022: (_) => null,
                 betaMemoryTool20250818: (_) => null,
                 betaToolComputerUse20250124: (_) => null,
@@ -1012,6 +1028,98 @@ public record class Tool : ModelBase
                 betaToolTextEditor20250728: (_) => null,
                 betaWebSearchTool20250305: (x) => x.MaxUses,
                 betaWebFetchTool20250910: (x) => x.MaxUses,
+                betaWebSearchTool20260209: (x) => x.MaxUses,
+                betaWebFetchTool20260209: (x) => x.MaxUses,
+                betaToolSearchToolBm25_20251119: (_) => null,
+                betaToolSearchToolRegex20251119: (_) => null,
+                betaMcpToolset: (_) => null
+            );
+        }
+    }
+
+    public BetaUserLocation? UserLocation
+    {
+        get
+        {
+            return Match<BetaUserLocation?>(
+                beta: (_) => null,
+                betaToolBash20241022: (_) => null,
+                betaToolBash20250124: (_) => null,
+                betaCodeExecutionTool20250522: (_) => null,
+                betaCodeExecutionTool20250825: (_) => null,
+                betaCodeExecutionTool20260120: (_) => null,
+                betaToolComputerUse20241022: (_) => null,
+                betaMemoryTool20250818: (_) => null,
+                betaToolComputerUse20250124: (_) => null,
+                betaToolTextEditor20241022: (_) => null,
+                betaToolComputerUse20251124: (_) => null,
+                betaToolTextEditor20250124: (_) => null,
+                betaToolTextEditor20250429: (_) => null,
+                betaToolTextEditor20250728: (_) => null,
+                betaWebSearchTool20250305: (x) => x.UserLocation,
+                betaWebFetchTool20250910: (_) => null,
+                betaWebSearchTool20260209: (x) => x.UserLocation,
+                betaWebFetchTool20260209: (_) => null,
+                betaToolSearchToolBm25_20251119: (_) => null,
+                betaToolSearchToolRegex20251119: (_) => null,
+                betaMcpToolset: (_) => null
+            );
+        }
+    }
+
+    public BetaCitationsConfigParam? Citations
+    {
+        get
+        {
+            return Match<BetaCitationsConfigParam?>(
+                beta: (_) => null,
+                betaToolBash20241022: (_) => null,
+                betaToolBash20250124: (_) => null,
+                betaCodeExecutionTool20250522: (_) => null,
+                betaCodeExecutionTool20250825: (_) => null,
+                betaCodeExecutionTool20260120: (_) => null,
+                betaToolComputerUse20241022: (_) => null,
+                betaMemoryTool20250818: (_) => null,
+                betaToolComputerUse20250124: (_) => null,
+                betaToolTextEditor20241022: (_) => null,
+                betaToolComputerUse20251124: (_) => null,
+                betaToolTextEditor20250124: (_) => null,
+                betaToolTextEditor20250429: (_) => null,
+                betaToolTextEditor20250728: (_) => null,
+                betaWebSearchTool20250305: (_) => null,
+                betaWebFetchTool20250910: (x) => x.Citations,
+                betaWebSearchTool20260209: (_) => null,
+                betaWebFetchTool20260209: (x) => x.Citations,
+                betaToolSearchToolBm25_20251119: (_) => null,
+                betaToolSearchToolRegex20251119: (_) => null,
+                betaMcpToolset: (_) => null
+            );
+        }
+    }
+
+    public long? MaxContentTokens
+    {
+        get
+        {
+            return Match<long?>(
+                beta: (_) => null,
+                betaToolBash20241022: (_) => null,
+                betaToolBash20250124: (_) => null,
+                betaCodeExecutionTool20250522: (_) => null,
+                betaCodeExecutionTool20250825: (_) => null,
+                betaCodeExecutionTool20260120: (_) => null,
+                betaToolComputerUse20241022: (_) => null,
+                betaMemoryTool20250818: (_) => null,
+                betaToolComputerUse20250124: (_) => null,
+                betaToolTextEditor20241022: (_) => null,
+                betaToolComputerUse20251124: (_) => null,
+                betaToolTextEditor20250124: (_) => null,
+                betaToolTextEditor20250429: (_) => null,
+                betaToolTextEditor20250728: (_) => null,
+                betaWebSearchTool20250305: (_) => null,
+                betaWebFetchTool20250910: (x) => x.MaxContentTokens,
+                betaWebSearchTool20260209: (_) => null,
+                betaWebFetchTool20260209: (x) => x.MaxContentTokens,
                 betaToolSearchToolBm25_20251119: (_) => null,
                 betaToolSearchToolRegex20251119: (_) => null,
                 betaMcpToolset: (_) => null
@@ -1044,6 +1152,12 @@ public record class Tool : ModelBase
     }
 
     public Tool(BetaCodeExecutionTool20250825 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Tool(BetaCodeExecutionTool20260120 value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -1104,6 +1218,18 @@ public record class Tool : ModelBase
     }
 
     public Tool(BetaWebFetchTool20250910 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Tool(BetaWebSearchTool20260209 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Tool(BetaWebFetchTool20260209 value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -1238,6 +1364,29 @@ public record class Tool : ModelBase
     )
     {
         value = this.Value as BetaCodeExecutionTool20250825;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCodeExecutionTool20260120"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCodeExecutionTool20260120(out var value)) {
+    ///     // `value` is of type `BetaCodeExecutionTool20260120`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaCodeExecutionTool20260120(
+        [NotNullWhen(true)] out BetaCodeExecutionTool20260120? value
+    )
+    {
+        value = this.Value as BetaCodeExecutionTool20260120;
         return value != null;
     }
 
@@ -1471,6 +1620,52 @@ public record class Tool : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebSearchTool20260209"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaWebSearchTool20260209(out var value)) {
+    ///     // `value` is of type `BetaWebSearchTool20260209`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaWebSearchTool20260209(
+        [NotNullWhen(true)] out BetaWebSearchTool20260209? value
+    )
+    {
+        value = this.Value as BetaWebSearchTool20260209;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebFetchTool20260209"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaWebFetchTool20260209(out var value)) {
+    ///     // `value` is of type `BetaWebFetchTool20260209`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaWebFetchTool20260209(
+        [NotNullWhen(true)] out BetaWebFetchTool20260209? value
+    )
+    {
+        value = this.Value as BetaWebFetchTool20260209;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolSearchToolBm25_20251119"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
@@ -1555,6 +1750,7 @@ public record class Tool : ModelBase
     ///     (BetaToolBash20250124 value) => {...},
     ///     (BetaCodeExecutionTool20250522 value) => {...},
     ///     (BetaCodeExecutionTool20250825 value) => {...},
+    ///     (BetaCodeExecutionTool20260120 value) => {...},
     ///     (BetaToolComputerUse20241022 value) => {...},
     ///     (BetaMemoryTool20250818 value) => {...},
     ///     (BetaToolComputerUse20250124 value) => {...},
@@ -1565,6 +1761,8 @@ public record class Tool : ModelBase
     ///     (BetaToolTextEditor20250728 value) => {...},
     ///     (BetaWebSearchTool20250305 value) => {...},
     ///     (BetaWebFetchTool20250910 value) => {...},
+    ///     (BetaWebSearchTool20260209 value) => {...},
+    ///     (BetaWebFetchTool20260209 value) => {...},
     ///     (BetaToolSearchToolBm25_20251119 value) => {...},
     ///     (BetaToolSearchToolRegex20251119 value) => {...},
     ///     (BetaMcpToolset value) => {...}
@@ -1578,6 +1776,7 @@ public record class Tool : ModelBase
         System::Action<BetaToolBash20250124> betaToolBash20250124,
         System::Action<BetaCodeExecutionTool20250522> betaCodeExecutionTool20250522,
         System::Action<BetaCodeExecutionTool20250825> betaCodeExecutionTool20250825,
+        System::Action<BetaCodeExecutionTool20260120> betaCodeExecutionTool20260120,
         System::Action<BetaToolComputerUse20241022> betaToolComputerUse20241022,
         System::Action<BetaMemoryTool20250818> betaMemoryTool20250818,
         System::Action<BetaToolComputerUse20250124> betaToolComputerUse20250124,
@@ -1588,6 +1787,8 @@ public record class Tool : ModelBase
         System::Action<BetaToolTextEditor20250728> betaToolTextEditor20250728,
         System::Action<BetaWebSearchTool20250305> betaWebSearchTool20250305,
         System::Action<BetaWebFetchTool20250910> betaWebFetchTool20250910,
+        System::Action<BetaWebSearchTool20260209> betaWebSearchTool20260209,
+        System::Action<BetaWebFetchTool20260209> betaWebFetchTool20260209,
         System::Action<BetaToolSearchToolBm25_20251119> betaToolSearchToolBm25_20251119,
         System::Action<BetaToolSearchToolRegex20251119> betaToolSearchToolRegex20251119,
         System::Action<BetaMcpToolset> betaMcpToolset
@@ -1609,6 +1810,9 @@ public record class Tool : ModelBase
                 break;
             case BetaCodeExecutionTool20250825 value:
                 betaCodeExecutionTool20250825(value);
+                break;
+            case BetaCodeExecutionTool20260120 value:
+                betaCodeExecutionTool20260120(value);
                 break;
             case BetaToolComputerUse20241022 value:
                 betaToolComputerUse20241022(value);
@@ -1639,6 +1843,12 @@ public record class Tool : ModelBase
                 break;
             case BetaWebFetchTool20250910 value:
                 betaWebFetchTool20250910(value);
+                break;
+            case BetaWebSearchTool20260209 value:
+                betaWebSearchTool20260209(value);
+                break;
+            case BetaWebFetchTool20260209 value:
+                betaWebFetchTool20260209(value);
                 break;
             case BetaToolSearchToolBm25_20251119 value:
                 betaToolSearchToolBm25_20251119(value);
@@ -1674,6 +1884,7 @@ public record class Tool : ModelBase
     ///     (BetaToolBash20250124 value) => {...},
     ///     (BetaCodeExecutionTool20250522 value) => {...},
     ///     (BetaCodeExecutionTool20250825 value) => {...},
+    ///     (BetaCodeExecutionTool20260120 value) => {...},
     ///     (BetaToolComputerUse20241022 value) => {...},
     ///     (BetaMemoryTool20250818 value) => {...},
     ///     (BetaToolComputerUse20250124 value) => {...},
@@ -1684,6 +1895,8 @@ public record class Tool : ModelBase
     ///     (BetaToolTextEditor20250728 value) => {...},
     ///     (BetaWebSearchTool20250305 value) => {...},
     ///     (BetaWebFetchTool20250910 value) => {...},
+    ///     (BetaWebSearchTool20260209 value) => {...},
+    ///     (BetaWebFetchTool20260209 value) => {...},
     ///     (BetaToolSearchToolBm25_20251119 value) => {...},
     ///     (BetaToolSearchToolRegex20251119 value) => {...},
     ///     (BetaMcpToolset value) => {...}
@@ -1697,6 +1910,7 @@ public record class Tool : ModelBase
         System::Func<BetaToolBash20250124, T> betaToolBash20250124,
         System::Func<BetaCodeExecutionTool20250522, T> betaCodeExecutionTool20250522,
         System::Func<BetaCodeExecutionTool20250825, T> betaCodeExecutionTool20250825,
+        System::Func<BetaCodeExecutionTool20260120, T> betaCodeExecutionTool20260120,
         System::Func<BetaToolComputerUse20241022, T> betaToolComputerUse20241022,
         System::Func<BetaMemoryTool20250818, T> betaMemoryTool20250818,
         System::Func<BetaToolComputerUse20250124, T> betaToolComputerUse20250124,
@@ -1707,6 +1921,8 @@ public record class Tool : ModelBase
         System::Func<BetaToolTextEditor20250728, T> betaToolTextEditor20250728,
         System::Func<BetaWebSearchTool20250305, T> betaWebSearchTool20250305,
         System::Func<BetaWebFetchTool20250910, T> betaWebFetchTool20250910,
+        System::Func<BetaWebSearchTool20260209, T> betaWebSearchTool20260209,
+        System::Func<BetaWebFetchTool20260209, T> betaWebFetchTool20260209,
         System::Func<BetaToolSearchToolBm25_20251119, T> betaToolSearchToolBm25_20251119,
         System::Func<BetaToolSearchToolRegex20251119, T> betaToolSearchToolRegex20251119,
         System::Func<BetaMcpToolset, T> betaMcpToolset
@@ -1719,6 +1935,7 @@ public record class Tool : ModelBase
             BetaToolBash20250124 value => betaToolBash20250124(value),
             BetaCodeExecutionTool20250522 value => betaCodeExecutionTool20250522(value),
             BetaCodeExecutionTool20250825 value => betaCodeExecutionTool20250825(value),
+            BetaCodeExecutionTool20260120 value => betaCodeExecutionTool20260120(value),
             BetaToolComputerUse20241022 value => betaToolComputerUse20241022(value),
             BetaMemoryTool20250818 value => betaMemoryTool20250818(value),
             BetaToolComputerUse20250124 value => betaToolComputerUse20250124(value),
@@ -1729,6 +1946,8 @@ public record class Tool : ModelBase
             BetaToolTextEditor20250728 value => betaToolTextEditor20250728(value),
             BetaWebSearchTool20250305 value => betaWebSearchTool20250305(value),
             BetaWebFetchTool20250910 value => betaWebFetchTool20250910(value),
+            BetaWebSearchTool20260209 value => betaWebSearchTool20260209(value),
+            BetaWebFetchTool20260209 value => betaWebFetchTool20260209(value),
             BetaToolSearchToolBm25_20251119 value => betaToolSearchToolBm25_20251119(value),
             BetaToolSearchToolRegex20251119 value => betaToolSearchToolRegex20251119(value),
             BetaMcpToolset value => betaMcpToolset(value),
@@ -1745,6 +1964,8 @@ public record class Tool : ModelBase
     public static implicit operator Tool(BetaCodeExecutionTool20250522 value) => new(value);
 
     public static implicit operator Tool(BetaCodeExecutionTool20250825 value) => new(value);
+
+    public static implicit operator Tool(BetaCodeExecutionTool20260120 value) => new(value);
 
     public static implicit operator Tool(BetaToolComputerUse20241022 value) => new(value);
 
@@ -1765,6 +1986,10 @@ public record class Tool : ModelBase
     public static implicit operator Tool(BetaWebSearchTool20250305 value) => new(value);
 
     public static implicit operator Tool(BetaWebFetchTool20250910 value) => new(value);
+
+    public static implicit operator Tool(BetaWebSearchTool20260209 value) => new(value);
+
+    public static implicit operator Tool(BetaWebFetchTool20260209 value) => new(value);
 
     public static implicit operator Tool(BetaToolSearchToolBm25_20251119 value) => new(value);
 
@@ -1794,6 +2019,7 @@ public record class Tool : ModelBase
             (betaToolBash20250124) => betaToolBash20250124.Validate(),
             (betaCodeExecutionTool20250522) => betaCodeExecutionTool20250522.Validate(),
             (betaCodeExecutionTool20250825) => betaCodeExecutionTool20250825.Validate(),
+            (betaCodeExecutionTool20260120) => betaCodeExecutionTool20260120.Validate(),
             (betaToolComputerUse20241022) => betaToolComputerUse20241022.Validate(),
             (betaMemoryTool20250818) => betaMemoryTool20250818.Validate(),
             (betaToolComputerUse20250124) => betaToolComputerUse20250124.Validate(),
@@ -1804,6 +2030,8 @@ public record class Tool : ModelBase
             (betaToolTextEditor20250728) => betaToolTextEditor20250728.Validate(),
             (betaWebSearchTool20250305) => betaWebSearchTool20250305.Validate(),
             (betaWebFetchTool20250910) => betaWebFetchTool20250910.Validate(),
+            (betaWebSearchTool20260209) => betaWebSearchTool20260209.Validate(),
+            (betaWebFetchTool20260209) => betaWebFetchTool20260209.Validate(),
             (betaToolSearchToolBm25_20251119) => betaToolSearchToolBm25_20251119.Validate(),
             (betaToolSearchToolRegex20251119) => betaToolSearchToolRegex20251119.Validate(),
             (betaMcpToolset) => betaMcpToolset.Validate()
@@ -1835,19 +2063,22 @@ public record class Tool : ModelBase
             BetaToolBash20250124 _ => 2,
             BetaCodeExecutionTool20250522 _ => 3,
             BetaCodeExecutionTool20250825 _ => 4,
-            BetaToolComputerUse20241022 _ => 5,
-            BetaMemoryTool20250818 _ => 6,
-            BetaToolComputerUse20250124 _ => 7,
-            BetaToolTextEditor20241022 _ => 8,
-            BetaToolComputerUse20251124 _ => 9,
-            BetaToolTextEditor20250124 _ => 10,
-            BetaToolTextEditor20250429 _ => 11,
-            BetaToolTextEditor20250728 _ => 12,
-            BetaWebSearchTool20250305 _ => 13,
-            BetaWebFetchTool20250910 _ => 14,
-            BetaToolSearchToolBm25_20251119 _ => 15,
-            BetaToolSearchToolRegex20251119 _ => 16,
-            BetaMcpToolset _ => 17,
+            BetaCodeExecutionTool20260120 _ => 5,
+            BetaToolComputerUse20241022 _ => 6,
+            BetaMemoryTool20250818 _ => 7,
+            BetaToolComputerUse20250124 _ => 8,
+            BetaToolTextEditor20241022 _ => 9,
+            BetaToolComputerUse20251124 _ => 10,
+            BetaToolTextEditor20250124 _ => 11,
+            BetaToolTextEditor20250429 _ => 12,
+            BetaToolTextEditor20250728 _ => 13,
+            BetaWebSearchTool20250305 _ => 14,
+            BetaWebFetchTool20250910 _ => 15,
+            BetaWebSearchTool20260209 _ => 16,
+            BetaWebFetchTool20260209 _ => 17,
+            BetaToolSearchToolBm25_20251119 _ => 18,
+            BetaToolSearchToolRegex20251119 _ => 19,
+            BetaMcpToolset _ => 20,
             _ => -1,
         };
     }
@@ -1924,6 +2155,23 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250825>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20260120>(
                 element,
                 options
             );
@@ -2091,6 +2339,40 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20260209>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20260209>(
                 element,
                 options
             );

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -26,6 +27,7 @@ public class MessageCountTokensParamsTest : TestBase
                     },
                 },
             },
+            Speed = Messages::MessageCountTokensParamsSpeed.Standard,
             System = new(
                 [
                     new Messages::TextBlockParam()
@@ -62,9 +64,18 @@ public class MessageCountTokensParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
                     Strict = true,
                     Type = Messages::Type.Custom,
                 },
@@ -87,6 +98,8 @@ public class MessageCountTokensParamsTest : TestBase
                 },
             },
         };
+        ApiEnum<string, Messages::MessageCountTokensParamsSpeed> expectedSpeed =
+            Messages::MessageCountTokensParamsSpeed.Standard;
         Messages::MessageCountTokensParamsSystem expectedSystem = new(
             [
                 new Messages::TextBlockParam()
@@ -126,9 +139,18 @@ public class MessageCountTokensParamsTest : TestBase
                     Required = ["location"],
                 },
                 Name = "name",
+                AllowedCallers = [Messages::ToolAllowedCaller.Direct],
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                DeferLoading = true,
                 Description = "Get the current weather in a given location",
                 EagerInputStreaming = true,
+                InputExamples =
+                [
+                    new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                ],
                 Strict = true,
                 Type = Messages::Type.Custom,
             },
@@ -141,6 +163,7 @@ public class MessageCountTokensParamsTest : TestBase
         }
         Assert.Equal(expectedModel, parameters.Model);
         Assert.Equal(expectedOutputConfig, parameters.OutputConfig);
+        Assert.Equal(expectedSpeed, parameters.Speed);
         Assert.Equal(expectedSystem, parameters.System);
         Assert.Equal(expectedThinking, parameters.Thinking);
         Assert.Equal(expectedToolChoice, parameters.ToolChoice);
@@ -159,6 +182,7 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            Speed = Messages::MessageCountTokensParamsSpeed.Standard,
         };
 
         Assert.Null(parameters.OutputConfig);
@@ -180,6 +204,7 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            Speed = Messages::MessageCountTokensParamsSpeed.Standard,
 
             // Null should be interpreted as omitted for these properties
             OutputConfig = null,
@@ -202,21 +227,7 @@ public class MessageCountTokensParamsTest : TestBase
     }
 
     [Fact]
-    public void Url_Works()
-    {
-        Messages::MessageCountTokensParams parameters = new()
-        {
-            Messages = [new() { Content = "string", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
-        };
-
-        var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
-
-        Assert.Equal(new Uri("https://api.anthropic.com/v1/messages/count_tokens"), url);
-    }
-
-    [Fact]
-    public void CopyConstructor_Works()
+    public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new Messages::MessageCountTokensParams
         {
@@ -269,9 +280,187 @@ public class MessageCountTokensParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = Messages::Type.Custom,
+                },
+            ],
+        };
+
+        Assert.Null(parameters.Speed);
+        Assert.False(parameters.RawBodyData.ContainsKey("speed"));
+    }
+
+    [Fact]
+    public void OptionalNullableParamsSetToNullAreSetToNull_Works()
+    {
+        var parameters = new Messages::MessageCountTokensParams
+        {
+            Messages = [new() { Content = "string", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus4_6,
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            System = new(
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new Messages::Tool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = Messages::Type.Custom,
+                },
+            ],
+
+            Speed = null,
+        };
+
+        Assert.Null(parameters.Speed);
+        Assert.True(parameters.RawBodyData.ContainsKey("speed"));
+    }
+
+    [Fact]
+    public void Url_Works()
+    {
+        Messages::MessageCountTokensParams parameters = new()
+        {
+            Messages = [new() { Content = "string", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus4_6,
+        };
+
+        var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.Equal(new Uri("https://api.anthropic.com/v1/messages/count_tokens"), url);
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new Messages::MessageCountTokensParams
+        {
+            Messages = [new() { Content = "string", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus4_6,
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            Speed = Messages::MessageCountTokensParamsSpeed.Standard,
+            System = new(
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new Messages::Tool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
                     Strict = true,
                     Type = Messages::Type.Custom,
                 },
@@ -281,6 +470,60 @@ public class MessageCountTokensParamsTest : TestBase
         Messages::MessageCountTokensParams copied = new(parameters);
 
         Assert.Equal(parameters, copied);
+    }
+}
+
+public class MessageCountTokensParamsSpeedTest : TestBase
+{
+    [Theory]
+    [InlineData(Messages::MessageCountTokensParamsSpeed.Standard)]
+    [InlineData(Messages::MessageCountTokensParamsSpeed.Fast)]
+    public void Validation_Works(Messages::MessageCountTokensParamsSpeed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Messages::MessageCountTokensParamsSpeed> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, Messages::MessageCountTokensParamsSpeed>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(Messages::MessageCountTokensParamsSpeed.Standard)]
+    [InlineData(Messages::MessageCountTokensParamsSpeed.Fast)]
+    public void SerializationRoundtrip_Works(Messages::MessageCountTokensParamsSpeed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Messages::MessageCountTokensParamsSpeed> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, Messages::MessageCountTokensParamsSpeed>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, Messages::MessageCountTokensParamsSpeed>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, Messages::MessageCountTokensParamsSpeed>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }
 

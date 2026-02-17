@@ -84,6 +84,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
 
         return new()
         {
+            Container = null,
             Content = [.. contentBlocks],
             ID = startMessage.Message.ID,
             Model = startMessage.Message.Model,
@@ -160,6 +161,12 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
                     ),
                     Thinking = StringJoinHelper(thinkingBlock.Thinking, blocks, e => e.Thinking),
                 }),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e),
             e => Single(e),
             e => Single(e),
             e => Single(e),

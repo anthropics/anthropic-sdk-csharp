@@ -304,6 +304,13 @@ public class CallerTest : TestBase
     }
 
     [Fact]
+    public void BetaServerToolCaller20260120ValidationWorks()
+    {
+        Caller value = new BetaServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaDirectSerializationRoundtripWorks()
     {
         Caller value = new BetaDirectCaller();
@@ -317,6 +324,16 @@ public class CallerTest : TestBase
     public void BetaServerToolSerializationRoundtripWorks()
     {
         Caller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Caller>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaServerToolCaller20260120SerializationRoundtripWorks()
+    {
+        Caller value = new BetaServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Caller>(element, ModelBase.SerializerOptions);
 

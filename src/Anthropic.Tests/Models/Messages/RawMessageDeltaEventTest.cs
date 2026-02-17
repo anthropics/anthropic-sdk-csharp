@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Messages;
@@ -11,19 +12,33 @@ public class RawMessageDeltaEventTest : TestBase
     {
         var model = new RawMessageDeltaEvent
         {
-            Delta = new() { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" },
+            Delta = new()
+            {
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                },
+                StopReason = StopReason.EndTurn,
+                StopSequence = "stop_sequence",
+            },
             Usage = new()
             {
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
                 OutputTokens = 503,
-                ServerToolUse = new(0),
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
 
         Delta expectedDelta = new()
         {
+            Container = new()
+            {
+                ID = "id",
+                ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -34,7 +49,7 @@ public class RawMessageDeltaEventTest : TestBase
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
             OutputTokens = 503,
-            ServerToolUse = new(0),
+            ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
         Assert.Equal(expectedDelta, model.Delta);
@@ -47,14 +62,23 @@ public class RawMessageDeltaEventTest : TestBase
     {
         var model = new RawMessageDeltaEvent
         {
-            Delta = new() { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" },
+            Delta = new()
+            {
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                },
+                StopReason = StopReason.EndTurn,
+                StopSequence = "stop_sequence",
+            },
             Usage = new()
             {
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
                 OutputTokens = 503,
-                ServerToolUse = new(0),
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
 
@@ -72,14 +96,23 @@ public class RawMessageDeltaEventTest : TestBase
     {
         var model = new RawMessageDeltaEvent
         {
-            Delta = new() { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" },
+            Delta = new()
+            {
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                },
+                StopReason = StopReason.EndTurn,
+                StopSequence = "stop_sequence",
+            },
             Usage = new()
             {
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
                 OutputTokens = 503,
-                ServerToolUse = new(0),
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
 
@@ -92,6 +125,11 @@ public class RawMessageDeltaEventTest : TestBase
 
         Delta expectedDelta = new()
         {
+            Container = new()
+            {
+                ID = "id",
+                ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -102,7 +140,7 @@ public class RawMessageDeltaEventTest : TestBase
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
             OutputTokens = 503,
-            ServerToolUse = new(0),
+            ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
         Assert.Equal(expectedDelta, deserialized.Delta);
@@ -115,14 +153,23 @@ public class RawMessageDeltaEventTest : TestBase
     {
         var model = new RawMessageDeltaEvent
         {
-            Delta = new() { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" },
+            Delta = new()
+            {
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                },
+                StopReason = StopReason.EndTurn,
+                StopSequence = "stop_sequence",
+            },
             Usage = new()
             {
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
                 OutputTokens = 503,
-                ServerToolUse = new(0),
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
 
@@ -134,14 +181,23 @@ public class RawMessageDeltaEventTest : TestBase
     {
         var model = new RawMessageDeltaEvent
         {
-            Delta = new() { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" },
+            Delta = new()
+            {
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                },
+                StopReason = StopReason.EndTurn,
+                StopSequence = "stop_sequence",
+            },
             Usage = new()
             {
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
                 OutputTokens = 503,
-                ServerToolUse = new(0),
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
 
@@ -156,11 +212,26 @@ public class DeltaTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new Delta { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" };
+        var model = new Delta
+        {
+            Container = new()
+            {
+                ID = "id",
+                ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            },
+            StopReason = StopReason.EndTurn,
+            StopSequence = "stop_sequence",
+        };
 
+        Container expectedContainer = new()
+        {
+            ID = "id",
+            ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+        };
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         string expectedStopSequence = "stop_sequence";
 
+        Assert.Equal(expectedContainer, model.Container);
         Assert.Equal(expectedStopReason, model.StopReason);
         Assert.Equal(expectedStopSequence, model.StopSequence);
     }
@@ -168,7 +239,16 @@ public class DeltaTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new Delta { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" };
+        var model = new Delta
+        {
+            Container = new()
+            {
+                ID = "id",
+                ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            },
+            StopReason = StopReason.EndTurn,
+            StopSequence = "stop_sequence",
+        };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Delta>(json, ModelBase.SerializerOptions);
@@ -179,15 +259,30 @@ public class DeltaTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new Delta { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" };
+        var model = new Delta
+        {
+            Container = new()
+            {
+                ID = "id",
+                ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            },
+            StopReason = StopReason.EndTurn,
+            StopSequence = "stop_sequence",
+        };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Delta>(element, ModelBase.SerializerOptions);
         Assert.NotNull(deserialized);
 
+        Container expectedContainer = new()
+        {
+            ID = "id",
+            ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+        };
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         string expectedStopSequence = "stop_sequence";
 
+        Assert.Equal(expectedContainer, deserialized.Container);
         Assert.Equal(expectedStopReason, deserialized.StopReason);
         Assert.Equal(expectedStopSequence, deserialized.StopSequence);
     }
@@ -195,7 +290,16 @@ public class DeltaTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new Delta { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" };
+        var model = new Delta
+        {
+            Container = new()
+            {
+                ID = "id",
+                ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            },
+            StopReason = StopReason.EndTurn,
+            StopSequence = "stop_sequence",
+        };
 
         model.Validate();
     }
@@ -203,7 +307,16 @@ public class DeltaTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new Delta { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" };
+        var model = new Delta
+        {
+            Container = new()
+            {
+                ID = "id",
+                ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            },
+            StopReason = StopReason.EndTurn,
+            StopSequence = "stop_sequence",
+        };
 
         Delta copied = new(model);
 

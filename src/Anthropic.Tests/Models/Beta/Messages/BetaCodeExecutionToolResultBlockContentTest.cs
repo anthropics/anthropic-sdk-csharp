@@ -29,6 +29,19 @@ public class BetaCodeExecutionToolResultBlockContentTest : TestBase
     }
 
     [Fact]
+    public void EncryptedCodeExecutionResultBlockValidationWorks()
+    {
+        BetaCodeExecutionToolResultBlockContent value = new BetaEncryptedCodeExecutionResultBlock()
+        {
+            Content = [new("file_id")],
+            EncryptedStdout = "encrypted_stdout",
+            ReturnCode = 0,
+            Stderr = "stderr",
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void ErrorSerializationRoundtripWorks()
     {
         BetaCodeExecutionToolResultBlockContent value = new BetaCodeExecutionToolResultError(
@@ -52,6 +65,25 @@ public class BetaCodeExecutionToolResultBlockContentTest : TestBase
             ReturnCode = 0,
             Stderr = "stderr",
             Stdout = "stdout",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void EncryptedCodeExecutionResultBlockSerializationRoundtripWorks()
+    {
+        BetaCodeExecutionToolResultBlockContent value = new BetaEncryptedCodeExecutionResultBlock()
+        {
+            Content = [new("file_id")],
+            EncryptedStdout = "encrypted_stdout",
+            ReturnCode = 0,
+            Stderr = "stderr",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockContent>(

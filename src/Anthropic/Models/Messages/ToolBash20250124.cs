@@ -1,10 +1,13 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using System = System;
 
 namespace Anthropic.Models.Messages;
 
@@ -36,6 +39,29 @@ public sealed record class ToolBash20250124 : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
+    public IReadOnlyList<ApiEnum<string, ToolBash20250124AllowedCaller>>? AllowedCallers
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, ToolBash20250124AllowedCaller>>
+            >("allowed_callers");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set<ImmutableArray<ApiEnum<string, ToolBash20250124AllowedCaller>>?>(
+                "allowed_callers",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
     /// <summary>
     /// Create a cache control breakpoint at this content block.
     /// </summary>
@@ -47,6 +73,58 @@ public sealed record class ToolBash20250124 : JsonModel
             return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
         }
         init { this._rawData.Set("cache_control", value); }
+    }
+
+    /// <summary>
+    /// If true, tool will not be included in initial system prompt. Only loaded when
+    /// returned via tool_reference from tool search.
+    /// </summary>
+    public bool? DeferLoading
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("defer_loading");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("defer_loading", value);
+        }
+    }
+
+    public IReadOnlyList<IReadOnlyDictionary<string, JsonElement>>? InputExamples
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<FrozenDictionary<string, JsonElement>>
+            >("input_examples");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set<ImmutableArray<FrozenDictionary<string, JsonElement>>?>(
+                "input_examples",
+                value == null
+                    ? null
+                    : ImmutableArray.ToImmutableArray(
+                        Enumerable.Select(
+                            value,
+                            (item) => FrozenDictionary.ToFrozenDictionary(item)
+                        )
+                    )
+            );
+        }
     }
 
     /// <summary>
@@ -81,7 +159,13 @@ public sealed record class ToolBash20250124 : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
+        foreach (var item in this.AllowedCallers ?? [])
+        {
+            item.Validate();
+        }
         this.CacheControl?.Validate();
+        _ = this.DeferLoading;
+        _ = this.InputExamples;
         _ = this.Strict;
     }
 
@@ -127,4 +211,48 @@ class ToolBash20250124FromRaw : IFromRawJson<ToolBash20250124>
     /// <inheritdoc/>
     public ToolBash20250124 FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ToolBash20250124.FromRawUnchecked(rawData);
+}
+
+[JsonConverter(typeof(ToolBash20250124AllowedCallerConverter))]
+public enum ToolBash20250124AllowedCaller
+{
+    Direct,
+    CodeExecution20250825,
+}
+
+sealed class ToolBash20250124AllowedCallerConverter : JsonConverter<ToolBash20250124AllowedCaller>
+{
+    public override ToolBash20250124AllowedCaller Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "direct" => ToolBash20250124AllowedCaller.Direct,
+            "code_execution_20250825" => ToolBash20250124AllowedCaller.CodeExecution20250825,
+            _ => (ToolBash20250124AllowedCaller)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ToolBash20250124AllowedCaller value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ToolBash20250124AllowedCaller.Direct => "direct",
+                ToolBash20250124AllowedCaller.CodeExecution20250825 => "code_execution_20250825",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
 }

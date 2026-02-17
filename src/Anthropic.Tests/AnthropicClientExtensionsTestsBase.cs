@@ -921,7 +921,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "input": {
                         "location": "San Francisco",
                         "unit": "celsius"
-                    }
+                    },
+                    "caller": {"type": "direct"}
                 }],
                 "stop_reason": "tool_use",
                 "usage": {
@@ -1010,7 +1011,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "type": "tool_use",
                     "id": "toolu_paramless_1",
                     "name": "get_current_time",
-                    "input": {}
+                    "input": {},
+                    "caller": {"type": "direct"}
                 }],
                 "stop_reason": "tool_use",
                 "usage": {
@@ -1543,7 +1545,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "type": "tool_use",
                     "id": "toolu_abc",
                     "name": "get_weather",
-                    "input": {"location": "Paris"}
+                    "input": {"location": "Paris"},
+                    "caller": {"type": "direct"}
                 }],
                 "stop_reason": "tool_use",
                 "usage": {
@@ -1702,12 +1705,14 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "type": "tool_use",
                     "id": "toolu_1",
                     "name": "get_weather",
-                    "input": {"location": "Paris"}
+                    "input": {"location": "Paris"},
+                    "caller": {"type": "direct"}
                 }, {
                     "type": "tool_use",
                     "id": "toolu_2",
                     "name": "get_weather",
-                    "input": {"location": "London"}
+                    "input": {"location": "London"},
+                    "caller": {"type": "direct"}
                 }],
                 "stop_reason": "tool_use",
                 "usage": {
@@ -2153,7 +2158,7 @@ public abstract class AnthropicClientExtensionsTestsBase
             data: {"type":"message_start","message":{"id":"msg_tool_stream_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
 
             event: content_block_start
-            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_stream_1","name":"test_tool","input":{}}}
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_stream_1","name":"test_tool","input":{},"caller":{"type":"direct"}}}
 
             event: content_block_delta
             data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"arg\":"}}
@@ -2228,7 +2233,7 @@ public abstract class AnthropicClientExtensionsTestsBase
             data: {"type":"message_start","message":{"id":"msg_stream_paramless_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
 
             event: content_block_start
-            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_stream_paramless_1","name":"get_time","input":{}}}
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_stream_paramless_1","name":"get_time","input":{},"caller":{"type":"direct"}}}
 
             event: content_block_stop
             data: {"type":"content_block_stop","index":0}
@@ -2294,7 +2299,7 @@ public abstract class AnthropicClientExtensionsTestsBase
             data: {"type":"message_start","message":{"id":"msg_multi_tool_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
 
             event: content_block_start
-            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_1","name":"tool_a","input":{}}}
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_1","name":"tool_a","input":{},"caller":{"type":"direct"}}}
 
             event: content_block_delta
             data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"arg\":\"a\"}"}}
@@ -2303,7 +2308,7 @@ public abstract class AnthropicClientExtensionsTestsBase
             data: {"type":"content_block_stop","index":0}
 
             event: content_block_start
-            data: {"type":"content_block_start","index":1,"content_block":{"type":"tool_use","id":"toolu_2","name":"tool_b","input":{}}}
+            data: {"type":"content_block_start","index":1,"content_block":{"type":"tool_use","id":"toolu_2","name":"tool_b","input":{},"caller":{"type":"direct"}}}
 
             event: content_block_delta
             data: {"type":"content_block_delta","index":1,"delta":{"type":"input_json_delta","partial_json":"{\"arg\":\"b\"}"}}
@@ -2312,7 +2317,7 @@ public abstract class AnthropicClientExtensionsTestsBase
             data: {"type":"content_block_stop","index":1}
 
             event: content_block_start
-            data: {"type":"content_block_start","index":2,"content_block":{"type":"tool_use","id":"toolu_3","name":"tool_c","input":{}}}
+            data: {"type":"content_block_start","index":2,"content_block":{"type":"tool_use","id":"toolu_3","name":"tool_c","input":{},"caller":{"type":"direct"}}}
 
             event: content_block_delta
             data: {"type":"content_block_delta","index":2,"delta":{"type":"input_json_delta","partial_json":"{\"arg\":\"c\"}"}}
@@ -2385,7 +2390,7 @@ public abstract class AnthropicClientExtensionsTestsBase
             // Start the tool use block
             responseBuilder.AppendLine(
                 $"event: content_block_start\n"
-                    + $"data: {{\"type\":\"content_block_start\",\"index\":{toolIndex},\"content_block\":{{\"type\":\"tool_use\",\"id\":\"{toolId}\",\"name\":\"{toolName}\",\"input\":{{}}}}}}\n"
+                    + $"data: {{\"type\":\"content_block_start\",\"index\":{toolIndex},\"content_block\":{{\"type\":\"tool_use\",\"id\":\"{toolId}\",\"name\":\"{toolName}\",\"input\":{{}},\"caller\":{{\"type\":\"direct\"}}}}}}\n"
             );
 
             // Build the JSON argument piece by piece
@@ -2507,13 +2512,13 @@ public abstract class AnthropicClientExtensionsTestsBase
             data: {"type":"message_start","message":{"id":"msg_interleaved_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
 
             event: content_block_start
-            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_alpha","name":"tool_alpha","input":{}}}
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_alpha","name":"tool_alpha","input":{},"caller":{"type":"direct"}}}
 
             event: content_block_start
-            data: {"type":"content_block_start","index":1,"content_block":{"type":"tool_use","id":"toolu_beta","name":"tool_beta","input":{}}}
+            data: {"type":"content_block_start","index":1,"content_block":{"type":"tool_use","id":"toolu_beta","name":"tool_beta","input":{},"caller":{"type":"direct"}}}
 
             event: content_block_start
-            data: {"type":"content_block_start","index":2,"content_block":{"type":"tool_use","id":"toolu_gamma","name":"tool_gamma","input":{}}}
+            data: {"type":"content_block_start","index":2,"content_block":{"type":"tool_use","id":"toolu_gamma","name":"tool_gamma","input":{},"caller":{"type":"direct"}}}
 
             event: content_block_delta
             data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"city\":"}}
@@ -3290,7 +3295,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "operation": "multiply",
                         "a": 6,
                         "b": 7
-                    }
+                    },
+                    "caller": {"type": "direct"}
                 }],
                 "stop_reason": "tool_use",
                 "usage": {

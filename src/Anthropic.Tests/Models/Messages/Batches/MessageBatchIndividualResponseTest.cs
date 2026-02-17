@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Messages;
@@ -17,6 +18,11 @@ public class MessageBatchIndividualResponseTest : TestBase
                 new Message()
                 {
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                    Container = new()
+                    {
+                        ID = "id",
+                        ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    },
                     Content =
                     [
                         new TextBlock()
@@ -51,8 +57,9 @@ public class MessageBatchIndividualResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         InputTokens = 2095,
                         OutputTokens = 503,
-                        ServerToolUse = new(0),
+                        ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = UsageServiceTier.Standard,
+                        Speed = UsageSpeed.Standard,
                     },
                 }
             ),
@@ -63,6 +70,11 @@ public class MessageBatchIndividualResponseTest : TestBase
             new Message()
             {
                 ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                },
                 Content =
                 [
                     new TextBlock()
@@ -97,8 +109,9 @@ public class MessageBatchIndividualResponseTest : TestBase
                     InferenceGeo = "inference_geo",
                     InputTokens = 2095,
                     OutputTokens = 503,
-                    ServerToolUse = new(0),
+                    ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             }
         );
@@ -117,6 +130,11 @@ public class MessageBatchIndividualResponseTest : TestBase
                 new Message()
                 {
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                    Container = new()
+                    {
+                        ID = "id",
+                        ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    },
                     Content =
                     [
                         new TextBlock()
@@ -151,8 +169,9 @@ public class MessageBatchIndividualResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         InputTokens = 2095,
                         OutputTokens = 503,
-                        ServerToolUse = new(0),
+                        ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = UsageServiceTier.Standard,
+                        Speed = UsageSpeed.Standard,
                     },
                 }
             ),
@@ -177,6 +196,11 @@ public class MessageBatchIndividualResponseTest : TestBase
                 new Message()
                 {
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                    Container = new()
+                    {
+                        ID = "id",
+                        ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    },
                     Content =
                     [
                         new TextBlock()
@@ -211,8 +235,9 @@ public class MessageBatchIndividualResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         InputTokens = 2095,
                         OutputTokens = 503,
-                        ServerToolUse = new(0),
+                        ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = UsageServiceTier.Standard,
+                        Speed = UsageSpeed.Standard,
                     },
                 }
             ),
@@ -230,6 +255,11 @@ public class MessageBatchIndividualResponseTest : TestBase
             new Message()
             {
                 ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                },
                 Content =
                 [
                     new TextBlock()
@@ -264,8 +294,9 @@ public class MessageBatchIndividualResponseTest : TestBase
                     InferenceGeo = "inference_geo",
                     InputTokens = 2095,
                     OutputTokens = 503,
-                    ServerToolUse = new(0),
+                    ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             }
         );
@@ -284,6 +315,11 @@ public class MessageBatchIndividualResponseTest : TestBase
                 new Message()
                 {
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                    Container = new()
+                    {
+                        ID = "id",
+                        ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    },
                     Content =
                     [
                         new TextBlock()
@@ -318,8 +354,9 @@ public class MessageBatchIndividualResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         InputTokens = 2095,
                         OutputTokens = 503,
-                        ServerToolUse = new(0),
+                        ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = UsageServiceTier.Standard,
+                        Speed = UsageSpeed.Standard,
                     },
                 }
             ),
@@ -338,6 +375,11 @@ public class MessageBatchIndividualResponseTest : TestBase
                 new Message()
                 {
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                    Container = new()
+                    {
+                        ID = "id",
+                        ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    },
                     Content =
                     [
                         new TextBlock()
@@ -372,8 +414,9 @@ public class MessageBatchIndividualResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         InputTokens = 2095,
                         OutputTokens = 503,
-                        ServerToolUse = new(0),
+                        ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = UsageServiceTier.Standard,
+                        Speed = UsageSpeed.Standard,
                     },
                 }
             ),

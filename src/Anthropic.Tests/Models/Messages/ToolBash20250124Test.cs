@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -11,18 +13,58 @@ public class ToolBash20250124Test : TestBase
     {
         var model = new ToolBash20250124
         {
+            AllowedCallers = [ToolBash20250124AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
         };
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
         JsonElement expectedType = JsonSerializer.SerializeToElement("bash_20250124");
+        List<ApiEnum<string, ToolBash20250124AllowedCaller>> expectedAllowedCallers =
+        [
+            ToolBash20250124AllowedCaller.Direct,
+        ];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        bool expectedDeferLoading = true;
+        List<Dictionary<string, JsonElement>> expectedInputExamples =
+        [
+            new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        ];
         bool expectedStrict = true;
 
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.NotNull(model.AllowedCallers);
+        Assert.Equal(expectedAllowedCallers.Count, model.AllowedCallers.Count);
+        for (int i = 0; i < expectedAllowedCallers.Count; i++)
+        {
+            Assert.Equal(expectedAllowedCallers[i], model.AllowedCallers[i]);
+        }
         Assert.Equal(expectedCacheControl, model.CacheControl);
+        Assert.Equal(expectedDeferLoading, model.DeferLoading);
+        Assert.NotNull(model.InputExamples);
+        Assert.Equal(expectedInputExamples.Count, model.InputExamples.Count);
+        for (int i = 0; i < expectedInputExamples.Count; i++)
+        {
+            Assert.Equal(expectedInputExamples[i].Count, model.InputExamples[i].Count);
+            foreach (var item in expectedInputExamples[i])
+            {
+                Assert.True(model.InputExamples[i].TryGetValue(item.Key, out var value));
+
+                Assert.True(JsonElement.DeepEquals(value, model.InputExamples[i][item.Key]));
+            }
+        }
         Assert.Equal(expectedStrict, model.Strict);
     }
 
@@ -31,7 +73,16 @@ public class ToolBash20250124Test : TestBase
     {
         var model = new ToolBash20250124
         {
+            AllowedCallers = [ToolBash20250124AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
         };
 
@@ -49,7 +100,16 @@ public class ToolBash20250124Test : TestBase
     {
         var model = new ToolBash20250124
         {
+            AllowedCallers = [ToolBash20250124AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
         };
 
@@ -62,12 +122,43 @@ public class ToolBash20250124Test : TestBase
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
         JsonElement expectedType = JsonSerializer.SerializeToElement("bash_20250124");
+        List<ApiEnum<string, ToolBash20250124AllowedCaller>> expectedAllowedCallers =
+        [
+            ToolBash20250124AllowedCaller.Direct,
+        ];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        bool expectedDeferLoading = true;
+        List<Dictionary<string, JsonElement>> expectedInputExamples =
+        [
+            new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        ];
         bool expectedStrict = true;
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.NotNull(deserialized.AllowedCallers);
+        Assert.Equal(expectedAllowedCallers.Count, deserialized.AllowedCallers.Count);
+        for (int i = 0; i < expectedAllowedCallers.Count; i++)
+        {
+            Assert.Equal(expectedAllowedCallers[i], deserialized.AllowedCallers[i]);
+        }
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
+        Assert.Equal(expectedDeferLoading, deserialized.DeferLoading);
+        Assert.NotNull(deserialized.InputExamples);
+        Assert.Equal(expectedInputExamples.Count, deserialized.InputExamples.Count);
+        for (int i = 0; i < expectedInputExamples.Count; i++)
+        {
+            Assert.Equal(expectedInputExamples[i].Count, deserialized.InputExamples[i].Count);
+            foreach (var item in expectedInputExamples[i])
+            {
+                Assert.True(deserialized.InputExamples[i].TryGetValue(item.Key, out var value));
+
+                Assert.True(JsonElement.DeepEquals(value, deserialized.InputExamples[i][item.Key]));
+            }
+        }
         Assert.Equal(expectedStrict, deserialized.Strict);
     }
 
@@ -76,7 +167,16 @@ public class ToolBash20250124Test : TestBase
     {
         var model = new ToolBash20250124
         {
+            AllowedCallers = [ToolBash20250124AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
         };
 
@@ -88,6 +188,12 @@ public class ToolBash20250124Test : TestBase
     {
         var model = new ToolBash20250124 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
+        Assert.Null(model.InputExamples);
+        Assert.False(model.RawData.ContainsKey("input_examples"));
         Assert.Null(model.Strict);
         Assert.False(model.RawData.ContainsKey("strict"));
     }
@@ -108,9 +214,18 @@ public class ToolBash20250124Test : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
+            InputExamples = null,
             Strict = null,
         };
 
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
+        Assert.Null(model.InputExamples);
+        Assert.False(model.RawData.ContainsKey("input_examples"));
         Assert.Null(model.Strict);
         Assert.False(model.RawData.ContainsKey("strict"));
     }
@@ -123,6 +238,9 @@ public class ToolBash20250124Test : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
+            InputExamples = null,
             Strict = null,
         };
 
@@ -132,7 +250,19 @@ public class ToolBash20250124Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new ToolBash20250124 { Strict = true };
+        var model = new ToolBash20250124
+        {
+            AllowedCallers = [ToolBash20250124AllowedCaller.Direct],
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
 
         Assert.Null(model.CacheControl);
         Assert.False(model.RawData.ContainsKey("cache_control"));
@@ -141,7 +271,19 @@ public class ToolBash20250124Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new ToolBash20250124 { Strict = true };
+        var model = new ToolBash20250124
+        {
+            AllowedCallers = [ToolBash20250124AllowedCaller.Direct],
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
 
         model.Validate();
     }
@@ -151,6 +293,15 @@ public class ToolBash20250124Test : TestBase
     {
         var model = new ToolBash20250124
         {
+            AllowedCallers = [ToolBash20250124AllowedCaller.Direct],
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
 
             CacheControl = null,
@@ -165,6 +316,15 @@ public class ToolBash20250124Test : TestBase
     {
         var model = new ToolBash20250124
         {
+            AllowedCallers = [ToolBash20250124AllowedCaller.Direct],
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
 
             CacheControl = null,
@@ -178,12 +338,77 @@ public class ToolBash20250124Test : TestBase
     {
         var model = new ToolBash20250124
         {
+            AllowedCallers = [ToolBash20250124AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
         };
 
         ToolBash20250124 copied = new(model);
 
         Assert.Equal(model, copied);
+    }
+}
+
+public class ToolBash20250124AllowedCallerTest : TestBase
+{
+    [Theory]
+    [InlineData(ToolBash20250124AllowedCaller.Direct)]
+    [InlineData(ToolBash20250124AllowedCaller.CodeExecution20250825)]
+    public void Validation_Works(ToolBash20250124AllowedCaller rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolBash20250124AllowedCaller> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolBash20250124AllowedCaller>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ToolBash20250124AllowedCaller.Direct)]
+    [InlineData(ToolBash20250124AllowedCaller.CodeExecution20250825)]
+    public void SerializationRoundtrip_Works(ToolBash20250124AllowedCaller rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolBash20250124AllowedCaller> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, ToolBash20250124AllowedCaller>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolBash20250124AllowedCaller>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, ToolBash20250124AllowedCaller>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

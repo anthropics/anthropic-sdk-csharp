@@ -18,7 +18,7 @@ public class DocumentBlockParamTest : TestBase
             Title = "x",
         };
 
-        Source expectedSource = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
+        DocumentBlockParamSource expectedSource = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         JsonElement expectedType = JsonSerializer.SerializeToElement("document");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         CitationsConfigParam expectedCitations = new() { Enabled = true };
@@ -73,7 +73,7 @@ public class DocumentBlockParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        Source expectedSource = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
+        DocumentBlockParamSource expectedSource = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         JsonElement expectedType = JsonSerializer.SerializeToElement("document");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         CitationsConfigParam expectedCitations = new() { Enabled = true };
@@ -183,42 +183,47 @@ public class DocumentBlockParamTest : TestBase
     }
 }
 
-public class SourceTest : TestBase
+public class DocumentBlockParamSourceTest : TestBase
 {
     [Fact]
     public void Base64PdfValidationWorks()
     {
-        Source value = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
+        DocumentBlockParamSource value = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         value.Validate();
     }
 
     [Fact]
     public void PlainTextValidationWorks()
     {
-        Source value = new PlainTextSource("data");
+        DocumentBlockParamSource value = new PlainTextSource("data");
         value.Validate();
     }
 
     [Fact]
     public void ContentBlockValidationWorks()
     {
-        Source value = new ContentBlockSource(new Content("string"));
+        DocumentBlockParamSource value = new ContentBlockSource(
+            new ContentBlockSourceContent("string")
+        );
         value.Validate();
     }
 
     [Fact]
     public void UrlPdfValidationWorks()
     {
-        Source value = new UrlPdfSource("url");
+        DocumentBlockParamSource value = new UrlPdfSource("url");
         value.Validate();
     }
 
     [Fact]
     public void Base64PdfSerializationRoundtripWorks()
     {
-        Source value = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
+        DocumentBlockParamSource value = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<DocumentBlockParamSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -226,9 +231,12 @@ public class SourceTest : TestBase
     [Fact]
     public void PlainTextSerializationRoundtripWorks()
     {
-        Source value = new PlainTextSource("data");
+        DocumentBlockParamSource value = new PlainTextSource("data");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<DocumentBlockParamSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -236,9 +244,14 @@ public class SourceTest : TestBase
     [Fact]
     public void ContentBlockSerializationRoundtripWorks()
     {
-        Source value = new ContentBlockSource(new Content("string"));
+        DocumentBlockParamSource value = new ContentBlockSource(
+            new ContentBlockSourceContent("string")
+        );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<DocumentBlockParamSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -246,9 +259,12 @@ public class SourceTest : TestBase
     [Fact]
     public void UrlPdfSerializationRoundtripWorks()
     {
-        Source value = new UrlPdfSource("url");
+        DocumentBlockParamSource value = new UrlPdfSource("url");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<DocumentBlockParamSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

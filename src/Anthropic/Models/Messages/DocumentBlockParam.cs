@@ -12,12 +12,12 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(JsonModelConverter<DocumentBlockParam, DocumentBlockParamFromRaw>))]
 public sealed record class DocumentBlockParam : JsonModel
 {
-    public required Source Source
+    public required DocumentBlockParamSource Source
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<Source>("source");
+            return this._rawData.GetNotNullClass<DocumentBlockParamSource>("source");
         }
         init { this._rawData.Set("source", value); }
     }
@@ -124,7 +124,7 @@ public sealed record class DocumentBlockParam : JsonModel
     }
 
     [SetsRequiredMembers]
-    public DocumentBlockParam(Source source)
+    public DocumentBlockParam(DocumentBlockParamSource source)
         : this()
     {
         this.Source = source;
@@ -138,8 +138,8 @@ class DocumentBlockParamFromRaw : IFromRawJson<DocumentBlockParam>
         DocumentBlockParam.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(SourceConverter))]
-public record class Source : ModelBase
+[JsonConverter(typeof(DocumentBlockParamSourceConverter))]
+public record class DocumentBlockParamSource : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -195,31 +195,31 @@ public record class Source : ModelBase
         }
     }
 
-    public Source(Base64PdfSource value, JsonElement? element = null)
+    public DocumentBlockParamSource(Base64PdfSource value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Source(PlainTextSource value, JsonElement? element = null)
+    public DocumentBlockParamSource(PlainTextSource value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Source(ContentBlockSource value, JsonElement? element = null)
+    public DocumentBlockParamSource(ContentBlockSource value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Source(UrlPdfSource value, JsonElement? element = null)
+    public DocumentBlockParamSource(UrlPdfSource value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Source(JsonElement element)
+    public DocumentBlockParamSource(JsonElement element)
     {
         this._element = element;
     }
@@ -352,7 +352,9 @@ public record class Source : ModelBase
                 urlPdf(value);
                 break;
             default:
-                throw new AnthropicInvalidDataException("Data did not match any variant of Source");
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of DocumentBlockParamSource"
+                );
         }
     }
 
@@ -393,18 +395,19 @@ public record class Source : ModelBase
             ContentBlockSource value => contentBlock(value),
             UrlPdfSource value => urlPdf(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Source"
+                "Data did not match any variant of DocumentBlockParamSource"
             ),
         };
     }
 
-    public static implicit operator Source(Base64PdfSource value) => new(value);
+    public static implicit operator DocumentBlockParamSource(Base64PdfSource value) => new(value);
 
-    public static implicit operator Source(PlainTextSource value) => new(value);
+    public static implicit operator DocumentBlockParamSource(PlainTextSource value) => new(value);
 
-    public static implicit operator Source(ContentBlockSource value) => new(value);
+    public static implicit operator DocumentBlockParamSource(ContentBlockSource value) =>
+        new(value);
 
-    public static implicit operator Source(UrlPdfSource value) => new(value);
+    public static implicit operator DocumentBlockParamSource(UrlPdfSource value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -420,7 +423,9 @@ public record class Source : ModelBase
     {
         if (this.Value == null)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Source");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of DocumentBlockParamSource"
+            );
         }
         this.Switch(
             (base64Pdf) => base64Pdf.Validate(),
@@ -430,7 +435,7 @@ public record class Source : ModelBase
         );
     }
 
-    public virtual bool Equals(Source? other) =>
+    public virtual bool Equals(DocumentBlockParamSource? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -459,9 +464,9 @@ public record class Source : ModelBase
     }
 }
 
-sealed class SourceConverter : JsonConverter<Source>
+sealed class DocumentBlockParamSourceConverter : JsonConverter<DocumentBlockParamSource>
 {
-    public override Source? Read(
+    public override DocumentBlockParamSource? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -567,12 +572,16 @@ sealed class SourceConverter : JsonConverter<Source>
             }
             default:
             {
-                return new Source(element);
+                return new DocumentBlockParamSource(element);
             }
         }
     }
 
-    public override void Write(Utf8JsonWriter writer, Source value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        DocumentBlockParamSource value,
+        JsonSerializerOptions options
+    )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
     }

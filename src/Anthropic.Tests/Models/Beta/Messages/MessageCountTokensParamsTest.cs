@@ -928,6 +928,19 @@ public class ToolTest : TestBase
     }
 
     [Fact]
+    public void BetaCodeExecutionTool20260120ValidationWorks()
+    {
+        Tool value = new BetaCodeExecutionTool20260120()
+        {
+            AllowedCallers = [BetaCodeExecutionTool20260120AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaToolComputerUse20241022ValidationWorks()
     {
         Tool value = new BetaToolComputerUse20241022()
@@ -1140,6 +1153,47 @@ public class ToolTest : TestBase
     }
 
     [Fact]
+    public void BetaWebSearchTool20260209ValidationWorks()
+    {
+        Tool value = new BetaWebSearchTool20260209()
+        {
+            AllowedCallers = [BetaWebSearchTool20260209AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxUses = 1,
+            Strict = true,
+            UserLocation = new()
+            {
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaWebFetchTool20260209ValidationWorks()
+    {
+        Tool value = new BetaWebFetchTool20260209()
+        {
+            AllowedCallers = [BetaWebFetchTool20260209AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            DeferLoading = true,
+            MaxContentTokens = 1,
+            MaxUses = 1,
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaToolSearchToolBm25_20251119ValidationWorks()
     {
         Tool value = new BetaToolSearchToolBm25_20251119()
@@ -1290,6 +1344,22 @@ public class ToolTest : TestBase
         Tool value = new BetaCodeExecutionTool20250825()
         {
             AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaCodeExecutionTool20260120SerializationRoundtripWorks()
+    {
+        Tool value = new BetaCodeExecutionTool20260120()
+        {
+            AllowedCallers = [BetaCodeExecutionTool20260120AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
@@ -1527,6 +1597,53 @@ public class ToolTest : TestBase
         Tool value = new BetaWebFetchTool20250910()
         {
             AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            DeferLoading = true,
+            MaxContentTokens = 1,
+            MaxUses = 1,
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaWebSearchTool20260209SerializationRoundtripWorks()
+    {
+        Tool value = new BetaWebSearchTool20260209()
+        {
+            AllowedCallers = [BetaWebSearchTool20260209AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxUses = 1,
+            Strict = true,
+            UserLocation = new()
+            {
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaWebFetchTool20260209SerializationRoundtripWorks()
+    {
+        Tool value = new BetaWebFetchTool20260209()
+        {
+            AllowedCallers = [BetaWebFetchTool20260209AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },

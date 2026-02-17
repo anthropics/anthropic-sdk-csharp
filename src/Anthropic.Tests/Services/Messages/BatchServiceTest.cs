@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic.Models.Messages.Batches;
 using Anthropic.Tests;
+using Batches = Anthropic.Models.Messages.Batches;
 using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Services.Messages;
@@ -44,7 +45,8 @@ public class BatchServiceTest
                                     },
                                 },
                             },
-                            ServiceTier = ServiceTier.Auto,
+                            ServiceTier = Batches::ServiceTier.Auto,
+                            Speed = Batches::Speed.Standard,
                             StopSequences = ["string"],
                             Stream = true,
                             System = new(
@@ -90,9 +92,18 @@ public class BatchServiceTest
                                         Required = ["location"],
                                     },
                                     Name = "name",
+                                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
                                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    DeferLoading = true,
                                     Description = "Get the current weather in a given location",
                                     EagerInputStreaming = true,
+                                    InputExamples =
+                                    [
+                                        new Dictionary<string, JsonElement>()
+                                        {
+                                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                                        },
+                                    ],
                                     Strict = true,
                                     Type = Messages::Type.Custom,
                                 },
