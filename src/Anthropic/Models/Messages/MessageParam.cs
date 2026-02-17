@@ -253,6 +253,16 @@ public record class MessageParamContent : ModelBase
                 "Data did not match any variant of MessageParamContent"
             );
         }
+        this.Switch(
+            (_) => { },
+            (contentBlockParams) =>
+            {
+                foreach (var item in contentBlockParams)
+                {
+                    item.Validate();
+                }
+            }
+        );
     }
 
     public virtual bool Equals(MessageParamContent? other) =>
@@ -312,6 +322,10 @@ sealed class MessageParamContentConverter : JsonConverter<MessageParamContent>
             );
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }

@@ -276,6 +276,16 @@ public record class ContentBlockSourceContent : ModelBase
                 "Data did not match any variant of ContentBlockSourceContent"
             );
         }
+        this.Switch(
+            (_) => { },
+            (contentBlockSourceContent) =>
+            {
+                foreach (var item in contentBlockSourceContent)
+                {
+                    item.Validate();
+                }
+            }
+        );
     }
 
     public virtual bool Equals(ContentBlockSourceContent? other) =>
@@ -335,6 +345,10 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
             );
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }

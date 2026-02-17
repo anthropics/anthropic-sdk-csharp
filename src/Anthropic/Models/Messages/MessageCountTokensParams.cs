@@ -575,6 +575,16 @@ public record class MessageCountTokensParamsSystem : ModelBase
                 "Data did not match any variant of MessageCountTokensParamsSystem"
             );
         }
+        this.Switch(
+            (_) => { },
+            (textBlockParams) =>
+            {
+                foreach (var item in textBlockParams)
+                {
+                    item.Validate();
+                }
+            }
+        );
     }
 
     public virtual bool Equals(MessageCountTokensParamsSystem? other) =>
@@ -631,6 +641,10 @@ sealed class MessageCountTokensParamsSystemConverter : JsonConverter<MessageCoun
             var deserialized = JsonSerializer.Deserialize<List<TextBlockParam>>(element, options);
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }

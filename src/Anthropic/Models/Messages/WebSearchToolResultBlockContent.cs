@@ -196,7 +196,16 @@ public record class WebSearchToolResultBlockContent : ModelBase
                 "Data did not match any variant of WebSearchToolResultBlockContent"
             );
         }
-        this.Switch((error) => error.Validate(), (_) => { });
+        this.Switch(
+            (error) => error.Validate(),
+            (webSearchResultBlocks) =>
+            {
+                foreach (var item in webSearchResultBlocks)
+                {
+                    item.Validate();
+                }
+            }
+        );
     }
 
     public virtual bool Equals(WebSearchToolResultBlockContent? other) =>
@@ -261,6 +270,10 @@ sealed class WebSearchToolResultBlockContentConverter
             );
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }

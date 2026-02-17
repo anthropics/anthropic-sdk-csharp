@@ -198,7 +198,7 @@ public sealed record class Message : JsonModel
         {
             item.Validate();
         }
-        this.Model.Validate();
+        this.Model.Raw();
         if (!JsonElement.DeepEquals(this.Role, JsonSerializer.SerializeToElement("assistant")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");

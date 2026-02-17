@@ -291,6 +291,16 @@ public record class BetaMcpToolResultBlockContent : ModelBase
                 "Data did not match any variant of BetaMcpToolResultBlockContent"
             );
         }
+        this.Switch(
+            (_) => { },
+            (betaMcpToolResultBlockContent) =>
+            {
+                foreach (var item in betaMcpToolResultBlockContent)
+                {
+                    item.Validate();
+                }
+            }
+        );
     }
 
     public virtual bool Equals(BetaMcpToolResultBlockContent? other) =>
@@ -347,6 +357,10 @@ sealed class BetaMcpToolResultBlockContentConverter : JsonConverter<BetaMcpToolR
             var deserialized = JsonSerializer.Deserialize<List<BetaTextBlock>>(element, options);
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }

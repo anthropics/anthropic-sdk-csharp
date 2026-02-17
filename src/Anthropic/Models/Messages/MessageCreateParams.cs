@@ -829,6 +829,16 @@ public record class MessageCreateParamsSystem : ModelBase
                 "Data did not match any variant of MessageCreateParamsSystem"
             );
         }
+        this.Switch(
+            (_) => { },
+            (textBlockParams) =>
+            {
+                foreach (var item in textBlockParams)
+                {
+                    item.Validate();
+                }
+            }
+        );
     }
 
     public virtual bool Equals(MessageCreateParamsSystem? other) =>
@@ -885,6 +895,10 @@ sealed class MessageCreateParamsSystemConverter : JsonConverter<MessageCreatePar
             var deserialized = JsonSerializer.Deserialize<List<TextBlockParam>>(element, options);
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }

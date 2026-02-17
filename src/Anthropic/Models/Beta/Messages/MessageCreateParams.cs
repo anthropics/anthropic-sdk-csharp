@@ -1232,6 +1232,16 @@ public record class MessageCreateParamsSystem : ModelBase
                 "Data did not match any variant of MessageCreateParamsSystem"
             );
         }
+        this.Switch(
+            (_) => { },
+            (betaTextBlockParams) =>
+            {
+                foreach (var item in betaTextBlockParams)
+                {
+                    item.Validate();
+                }
+            }
+        );
     }
 
     public virtual bool Equals(MessageCreateParamsSystem? other) =>
@@ -1291,6 +1301,10 @@ sealed class MessageCreateParamsSystemConverter : JsonConverter<MessageCreatePar
             );
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }

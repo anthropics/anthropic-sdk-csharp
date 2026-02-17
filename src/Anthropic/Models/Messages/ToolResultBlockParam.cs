@@ -315,6 +315,16 @@ public record class ToolResultBlockParamContent : ModelBase
                 "Data did not match any variant of ToolResultBlockParamContent"
             );
         }
+        this.Switch(
+            (_) => { },
+            (blocks) =>
+            {
+                foreach (var item in blocks)
+                {
+                    item.Validate();
+                }
+            }
+        );
     }
 
     public virtual bool Equals(ToolResultBlockParamContent? other) =>
@@ -371,6 +381,10 @@ sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBloc
             var deserialized = JsonSerializer.Deserialize<List<Block>>(element, options);
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }

@@ -841,7 +841,7 @@ public sealed record class Params : JsonModel
         {
             item.Validate();
         }
-        this.Model.Validate();
+        this.Model.Raw();
         this.Container?.Validate();
         this.ContextManagement?.Validate();
         _ = this.InferenceGeo;
@@ -1449,6 +1449,16 @@ public record class ParamsSystem : ModelBase
                 "Data did not match any variant of ParamsSystem"
             );
         }
+        this.Switch(
+            (_) => { },
+            (betaTextBlockParams) =>
+            {
+                foreach (var item in betaTextBlockParams)
+                {
+                    item.Validate();
+                }
+            }
+        );
     }
 
     public virtual bool Equals(ParamsSystem? other) =>
@@ -1508,6 +1518,10 @@ sealed class ParamsSystemConverter : JsonConverter<ParamsSystem>
             );
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }
