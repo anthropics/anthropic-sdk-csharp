@@ -542,14 +542,12 @@ public sealed record class Params : JsonModel
     /// <summary>
     /// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
     /// </summary>
-    public ApiEnum<string, global::Anthropic.Models.Beta.Messages.Batches.Speed>? Speed
+    public ApiEnum<string, Speed>? Speed
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<
-                ApiEnum<string, global::Anthropic.Models.Beta.Messages.Batches.Speed>
-            >("speed");
+            return this._rawData.GetNullableClass<ApiEnum<string, Speed>>("speed");
         }
         init { this._rawData.Set("speed", value); }
     }
@@ -1227,16 +1225,16 @@ sealed class ServiceTierConverter
 /// <summary>
 /// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
 /// </summary>
-[JsonConverter(typeof(global::Anthropic.Models.Beta.Messages.Batches.SpeedConverter))]
+[JsonConverter(typeof(SpeedConverter))]
 public enum Speed
 {
     Standard,
     Fast,
 }
 
-sealed class SpeedConverter : JsonConverter<global::Anthropic.Models.Beta.Messages.Batches.Speed>
+sealed class SpeedConverter : JsonConverter<Speed>
 {
-    public override global::Anthropic.Models.Beta.Messages.Batches.Speed Read(
+    public override Speed Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -1244,24 +1242,20 @@ sealed class SpeedConverter : JsonConverter<global::Anthropic.Models.Beta.Messag
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "standard" => global::Anthropic.Models.Beta.Messages.Batches.Speed.Standard,
-            "fast" => global::Anthropic.Models.Beta.Messages.Batches.Speed.Fast,
-            _ => (global::Anthropic.Models.Beta.Messages.Batches.Speed)(-1),
+            "standard" => Speed.Standard,
+            "fast" => Speed.Fast,
+            _ => (Speed)(-1),
         };
     }
 
-    public override void Write(
-        Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Messages.Batches.Speed value,
-        JsonSerializerOptions options
-    )
+    public override void Write(Utf8JsonWriter writer, Speed value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(
             writer,
             value switch
             {
-                global::Anthropic.Models.Beta.Messages.Batches.Speed.Standard => "standard",
-                global::Anthropic.Models.Beta.Messages.Batches.Speed.Fast => "fast",
+                Speed.Standard => "standard",
+                Speed.Fast => "fast",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
