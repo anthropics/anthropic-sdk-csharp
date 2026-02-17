@@ -115,6 +115,8 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
         CancellationToken cancellationToken = default
     )
     {
+        MessageServiceHelpers.WarnIfDeprecatedThinkingConfig(parameters);
+
         HttpRequest<MessageCreateParams> request = new()
         {
             Method = HttpMethod.Post,
@@ -157,6 +159,8 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
         CancellationToken cancellationToken = default
     )
     {
+        MessageServiceHelpers.WarnIfDeprecatedThinkingConfig(parameters);
+
         var rawBodyData = Enumerable.ToDictionary(
             parameters.RawBodyData,
             (e) => e.Key,
@@ -217,6 +221,8 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
         CancellationToken cancellationToken = default
     )
     {
+        MessageServiceHelpers.WarnIfDeprecatedThinkingConfig(parameters);
+
         HttpRequest<MessageCountTokensParams> request = new()
         {
             Method = HttpMethod.Post,
