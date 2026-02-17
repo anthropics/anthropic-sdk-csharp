@@ -24,6 +24,7 @@ public class BatchServiceTest : TestBase
                             MaxTokens = 1024,
                             Messages = [new() { Content = "Hello, world", Role = Role.User }],
                             Model = Model.ClaudeOpus4_6,
+                            Container = "container",
                             InferenceGeo = "inference_geo",
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                             OutputConfig = new()
@@ -38,6 +39,7 @@ public class BatchServiceTest : TestBase
                                 },
                             },
                             ServiceTier = Batches::ServiceTier.Auto,
+                            Speed = Batches::Speed.Standard,
                             StopSequences = ["string"],
                             Stream = true,
                             System = new(
@@ -80,9 +82,18 @@ public class BatchServiceTest : TestBase
                                         Required = ["location"],
                                     },
                                     Name = "name",
+                                    AllowedCallers = [ToolAllowedCaller.Direct],
                                     CacheControl = new() { Ttl = Ttl.Ttl5m },
+                                    DeferLoading = true,
                                     Description = "Get the current weather in a given location",
                                     EagerInputStreaming = true,
+                                    InputExamples =
+                                    [
+                                        new Dictionary<string, JsonElement>()
+                                        {
+                                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                                        },
+                                    ],
                                     Strict = true,
                                     Type = Type.Custom,
                                 },

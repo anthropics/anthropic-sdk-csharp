@@ -1,0 +1,879 @@
+using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Anthropic.Core;
+using Anthropic.Exceptions;
+using System = System;
+
+namespace Anthropic.Models.Messages;
+
+[JsonConverter(typeof(JsonModelConverter<WebFetchToolResultBlock, WebFetchToolResultBlockFromRaw>))]
+public sealed record class WebFetchToolResultBlock : JsonModel
+{
+    /// <summary>
+    /// Tool invocation directly from the model.
+    /// </summary>
+    public required WebFetchToolResultBlockCaller Caller
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<WebFetchToolResultBlockCaller>("caller");
+        }
+        init { this._rawData.Set("caller", value); }
+    }
+
+    public required WebFetchToolResultBlockContent Content
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<WebFetchToolResultBlockContent>("content");
+        }
+        init { this._rawData.Set("content", value); }
+    }
+
+    public required string ToolUseID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_use_id");
+        }
+        init { this._rawData.Set("tool_use_id", value); }
+    }
+
+    public JsonElement Type
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
+    }
+
+    /// <inheritdoc/>
+    public override void Validate()
+    {
+        this.Caller.Validate();
+        this.Content.Validate();
+        _ = this.ToolUseID;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("web_fetch_tool_result")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
+    }
+
+    public WebFetchToolResultBlock()
+    {
+        this.Type = JsonSerializer.SerializeToElement("web_fetch_tool_result");
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    public WebFetchToolResultBlock(WebFetchToolResultBlock webFetchToolResultBlock)
+        : base(webFetchToolResultBlock) { }
+#pragma warning restore CS8618
+
+    public WebFetchToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("web_fetch_tool_result");
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    WebFetchToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = new(rawData);
+    }
+#pragma warning restore CS8618
+
+    /// <inheritdoc cref="WebFetchToolResultBlockFromRaw.FromRawUnchecked"/>
+    public static WebFetchToolResultBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
+    {
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+}
+
+class WebFetchToolResultBlockFromRaw : IFromRawJson<WebFetchToolResultBlock>
+{
+    /// <inheritdoc/>
+    public WebFetchToolResultBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => WebFetchToolResultBlock.FromRawUnchecked(rawData);
+}
+
+/// <summary>
+/// Tool invocation directly from the model.
+/// </summary>
+[JsonConverter(typeof(WebFetchToolResultBlockCallerConverter))]
+public record class WebFetchToolResultBlockCaller : ModelBase
+{
+    public object? Value { get; } = null;
+
+    JsonElement? _element = null;
+
+    public JsonElement Json
+    {
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                direct: (x) => x.Type,
+                serverTool: (x) => x.Type,
+                codeExecution20260120: (x) => x.Type
+            );
+        }
+    }
+
+    public string? ToolID
+    {
+        get
+        {
+            return Match<string?>(
+                direct: (_) => null,
+                serverTool: (x) => x.ToolID,
+                codeExecution20260120: (x) => x.ToolID
+            );
+        }
+    }
+
+    public WebFetchToolResultBlockCaller(DirectCaller value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public WebFetchToolResultBlockCaller(ServerToolCaller value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public WebFetchToolResultBlockCaller(
+        WebFetchToolResultBlockCallerCodeExecution20260120 value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public WebFetchToolResultBlockCaller(JsonElement element)
+    {
+        this._element = element;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="DirectCaller"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickDirect(out var value)) {
+    ///     // `value` is of type `DirectCaller`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickDirect([NotNullWhen(true)] out DirectCaller? value)
+    {
+        value = this.Value as DirectCaller;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ServerToolCaller"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickServerTool(out var value)) {
+    ///     // `value` is of type `ServerToolCaller`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickServerTool([NotNullWhen(true)] out ServerToolCaller? value)
+    {
+        value = this.Value as ServerToolCaller;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="WebFetchToolResultBlockCallerCodeExecution20260120"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCodeExecution20260120(out var value)) {
+    ///     // `value` is of type `WebFetchToolResultBlockCallerCodeExecution20260120`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickCodeExecution20260120(
+        [NotNullWhen(true)] out WebFetchToolResultBlockCallerCodeExecution20260120? value
+    )
+    {
+        value = this.Value as WebFetchToolResultBlockCallerCodeExecution20260120;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (DirectCaller value) => {...},
+    ///     (ServerToolCaller value) => {...},
+    ///     (WebFetchToolResultBlockCallerCodeExecution20260120 value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
+    public void Switch(
+        System::Action<DirectCaller> direct,
+        System::Action<ServerToolCaller> serverTool,
+        System::Action<WebFetchToolResultBlockCallerCodeExecution20260120> codeExecution20260120
+    )
+    {
+        switch (this.Value)
+        {
+            case DirectCaller value:
+                direct(value);
+                break;
+            case ServerToolCaller value:
+                serverTool(value);
+                break;
+            case WebFetchToolResultBlockCallerCodeExecution20260120 value:
+                codeExecution20260120(value);
+                break;
+            default:
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of WebFetchToolResultBlockCaller"
+                );
+        }
+    }
+
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (DirectCaller value) => {...},
+    ///     (ServerToolCaller value) => {...},
+    ///     (WebFetchToolResultBlockCallerCodeExecution20260120 value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
+    public T Match<T>(
+        System::Func<DirectCaller, T> direct,
+        System::Func<ServerToolCaller, T> serverTool,
+        System::Func<WebFetchToolResultBlockCallerCodeExecution20260120, T> codeExecution20260120
+    )
+    {
+        return this.Value switch
+        {
+            DirectCaller value => direct(value),
+            ServerToolCaller value => serverTool(value),
+            WebFetchToolResultBlockCallerCodeExecution20260120 value => codeExecution20260120(
+                value
+            ),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of WebFetchToolResultBlockCaller"
+            ),
+        };
+    }
+
+    public static implicit operator WebFetchToolResultBlockCaller(DirectCaller value) => new(value);
+
+    public static implicit operator WebFetchToolResultBlockCaller(ServerToolCaller value) =>
+        new(value);
+
+    public static implicit operator WebFetchToolResultBlockCaller(
+        WebFetchToolResultBlockCallerCodeExecution20260120 value
+    ) => new(value);
+
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
+    public override void Validate()
+    {
+        if (this.Value == null)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of WebFetchToolResultBlockCaller"
+            );
+        }
+        this.Switch(
+            (direct) => direct.Validate(),
+            (serverTool) => serverTool.Validate(),
+            (codeExecution20260120) => codeExecution20260120.Validate()
+        );
+    }
+
+    public virtual bool Equals(WebFetchToolResultBlockCaller? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            FriendlyJsonPrinter.PrintValue(this.Json),
+            ModelBase.ToStringSerializerOptions
+        );
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            DirectCaller _ => 0,
+            ServerToolCaller _ => 1,
+            WebFetchToolResultBlockCallerCodeExecution20260120 _ => 2,
+            _ => -1,
+        };
+    }
+}
+
+sealed class WebFetchToolResultBlockCallerConverter : JsonConverter<WebFetchToolResultBlockCaller>
+{
+    public override WebFetchToolResultBlockCaller? Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
+        try
+        {
+            type = element.GetProperty("type").GetString();
+        }
+        catch
+        {
+            type = null;
+        }
+
+        switch (type)
+        {
+            case "direct":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<DirectCaller>(element, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "code_execution_20250825":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ServerToolCaller>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "code_execution_20260120":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<WebFetchToolResultBlockCallerCodeExecution20260120>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            default:
+            {
+                return new WebFetchToolResultBlockCaller(element);
+            }
+        }
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        WebFetchToolResultBlockCaller value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(
+    typeof(JsonModelConverter<
+        WebFetchToolResultBlockCallerCodeExecution20260120,
+        WebFetchToolResultBlockCallerCodeExecution20260120FromRaw
+    >)
+)]
+public sealed record class WebFetchToolResultBlockCallerCodeExecution20260120 : JsonModel
+{
+    public required string ToolID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_id");
+        }
+        init { this._rawData.Set("tool_id", value); }
+    }
+
+    public JsonElement Type
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
+    }
+
+    /// <inheritdoc/>
+    public override void Validate()
+    {
+        _ = this.ToolID;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("code_execution_20260120")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
+    }
+
+    public WebFetchToolResultBlockCallerCodeExecution20260120()
+    {
+        this.Type = JsonSerializer.SerializeToElement("code_execution_20260120");
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    public WebFetchToolResultBlockCallerCodeExecution20260120(
+        WebFetchToolResultBlockCallerCodeExecution20260120 webFetchToolResultBlockCallerCodeExecution20260120
+    )
+        : base(webFetchToolResultBlockCallerCodeExecution20260120) { }
+#pragma warning restore CS8618
+
+    public WebFetchToolResultBlockCallerCodeExecution20260120(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
+    {
+        this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("code_execution_20260120");
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    WebFetchToolResultBlockCallerCodeExecution20260120(
+        FrozenDictionary<string, JsonElement> rawData
+    )
+    {
+        this._rawData = new(rawData);
+    }
+#pragma warning restore CS8618
+
+    /// <inheritdoc cref="WebFetchToolResultBlockCallerCodeExecution20260120FromRaw.FromRawUnchecked"/>
+    public static WebFetchToolResultBlockCallerCodeExecution20260120 FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
+    {
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+
+    [SetsRequiredMembers]
+    public WebFetchToolResultBlockCallerCodeExecution20260120(string toolID)
+        : this()
+    {
+        this.ToolID = toolID;
+    }
+}
+
+class WebFetchToolResultBlockCallerCodeExecution20260120FromRaw
+    : IFromRawJson<WebFetchToolResultBlockCallerCodeExecution20260120>
+{
+    /// <inheritdoc/>
+    public WebFetchToolResultBlockCallerCodeExecution20260120 FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => WebFetchToolResultBlockCallerCodeExecution20260120.FromRawUnchecked(rawData);
+}
+
+[JsonConverter(typeof(WebFetchToolResultBlockContentConverter))]
+public record class WebFetchToolResultBlockContent : ModelBase
+{
+    public object? Value { get; } = null;
+
+    JsonElement? _element = null;
+
+    public JsonElement Json
+    {
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(webFetchToolResultErrorBlock: (x) => x.Type, webFetchBlock: (x) => x.Type);
+        }
+    }
+
+    public WebFetchToolResultBlockContent(
+        WebFetchToolResultErrorBlock value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public WebFetchToolResultBlockContent(WebFetchBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public WebFetchToolResultBlockContent(JsonElement element)
+    {
+        this._element = element;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="WebFetchToolResultErrorBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebFetchToolResultErrorBlock(out var value)) {
+    ///     // `value` is of type `WebFetchToolResultErrorBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebFetchToolResultErrorBlock(
+        [NotNullWhen(true)] out WebFetchToolResultErrorBlock? value
+    )
+    {
+        value = this.Value as WebFetchToolResultErrorBlock;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="WebFetchBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebFetchBlock(out var value)) {
+    ///     // `value` is of type `WebFetchBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebFetchBlock([NotNullWhen(true)] out WebFetchBlock? value)
+    {
+        value = this.Value as WebFetchBlock;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (WebFetchToolResultErrorBlock value) => {...},
+    ///     (WebFetchBlock value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
+    public void Switch(
+        System::Action<WebFetchToolResultErrorBlock> webFetchToolResultErrorBlock,
+        System::Action<WebFetchBlock> webFetchBlock
+    )
+    {
+        switch (this.Value)
+        {
+            case WebFetchToolResultErrorBlock value:
+                webFetchToolResultErrorBlock(value);
+                break;
+            case WebFetchBlock value:
+                webFetchBlock(value);
+                break;
+            default:
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of WebFetchToolResultBlockContent"
+                );
+        }
+    }
+
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (WebFetchToolResultErrorBlock value) => {...},
+    ///     (WebFetchBlock value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
+    public T Match<T>(
+        System::Func<WebFetchToolResultErrorBlock, T> webFetchToolResultErrorBlock,
+        System::Func<WebFetchBlock, T> webFetchBlock
+    )
+    {
+        return this.Value switch
+        {
+            WebFetchToolResultErrorBlock value => webFetchToolResultErrorBlock(value),
+            WebFetchBlock value => webFetchBlock(value),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of WebFetchToolResultBlockContent"
+            ),
+        };
+    }
+
+    public static implicit operator WebFetchToolResultBlockContent(
+        WebFetchToolResultErrorBlock value
+    ) => new(value);
+
+    public static implicit operator WebFetchToolResultBlockContent(WebFetchBlock value) =>
+        new(value);
+
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
+    public override void Validate()
+    {
+        if (this.Value == null)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of WebFetchToolResultBlockContent"
+            );
+        }
+        this.Switch(
+            (webFetchToolResultErrorBlock) => webFetchToolResultErrorBlock.Validate(),
+            (webFetchBlock) => webFetchBlock.Validate()
+        );
+    }
+
+    public virtual bool Equals(WebFetchToolResultBlockContent? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            FriendlyJsonPrinter.PrintValue(this.Json),
+            ModelBase.ToStringSerializerOptions
+        );
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            WebFetchToolResultErrorBlock _ => 0,
+            WebFetchBlock _ => 1,
+            _ => -1,
+        };
+    }
+}
+
+sealed class WebFetchToolResultBlockContentConverter : JsonConverter<WebFetchToolResultBlockContent>
+{
+    public override WebFetchToolResultBlockContent? Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<WebFetchToolResultErrorBlock>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<WebFetchBlock>(element, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        return new(element);
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        WebFetchToolResultBlockContent value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}

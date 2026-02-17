@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Messages;
@@ -15,6 +16,11 @@ public class MessageBatchSucceededResultTest : TestBase
             Message = new()
             {
                 ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                },
                 Content =
                 [
                     new TextBlock()
@@ -49,8 +55,9 @@ public class MessageBatchSucceededResultTest : TestBase
                     InferenceGeo = "inference_geo",
                     InputTokens = 2095,
                     OutputTokens = 503,
-                    ServerToolUse = new(0),
+                    ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -58,6 +65,11 @@ public class MessageBatchSucceededResultTest : TestBase
         Message expectedMessage = new()
         {
             ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+            Container = new()
+            {
+                ID = "id",
+                ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            },
             Content =
             [
                 new TextBlock()
@@ -88,8 +100,9 @@ public class MessageBatchSucceededResultTest : TestBase
                 InferenceGeo = "inference_geo",
                 InputTokens = 2095,
                 OutputTokens = 503,
-                ServerToolUse = new(0),
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = UsageServiceTier.Standard,
+                Speed = UsageSpeed.Standard,
             },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("succeeded");
@@ -106,6 +119,11 @@ public class MessageBatchSucceededResultTest : TestBase
             Message = new()
             {
                 ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                },
                 Content =
                 [
                     new TextBlock()
@@ -140,8 +158,9 @@ public class MessageBatchSucceededResultTest : TestBase
                     InferenceGeo = "inference_geo",
                     InputTokens = 2095,
                     OutputTokens = 503,
-                    ServerToolUse = new(0),
+                    ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -163,6 +182,11 @@ public class MessageBatchSucceededResultTest : TestBase
             Message = new()
             {
                 ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                },
                 Content =
                 [
                     new TextBlock()
@@ -197,8 +221,9 @@ public class MessageBatchSucceededResultTest : TestBase
                     InferenceGeo = "inference_geo",
                     InputTokens = 2095,
                     OutputTokens = 503,
-                    ServerToolUse = new(0),
+                    ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -213,6 +238,11 @@ public class MessageBatchSucceededResultTest : TestBase
         Message expectedMessage = new()
         {
             ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+            Container = new()
+            {
+                ID = "id",
+                ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            },
             Content =
             [
                 new TextBlock()
@@ -243,8 +273,9 @@ public class MessageBatchSucceededResultTest : TestBase
                 InferenceGeo = "inference_geo",
                 InputTokens = 2095,
                 OutputTokens = 503,
-                ServerToolUse = new(0),
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = UsageServiceTier.Standard,
+                Speed = UsageSpeed.Standard,
             },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("succeeded");
@@ -261,6 +292,11 @@ public class MessageBatchSucceededResultTest : TestBase
             Message = new()
             {
                 ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                },
                 Content =
                 [
                     new TextBlock()
@@ -295,8 +331,9 @@ public class MessageBatchSucceededResultTest : TestBase
                     InferenceGeo = "inference_geo",
                     InputTokens = 2095,
                     OutputTokens = 503,
-                    ServerToolUse = new(0),
+                    ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -312,6 +349,11 @@ public class MessageBatchSucceededResultTest : TestBase
             Message = new()
             {
                 ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                },
                 Content =
                 [
                     new TextBlock()
@@ -346,8 +388,9 @@ public class MessageBatchSucceededResultTest : TestBase
                     InferenceGeo = "inference_geo",
                     InputTokens = 2095,
                     OutputTokens = 503,
-                    ServerToolUse = new(0),
+                    ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             },
         };

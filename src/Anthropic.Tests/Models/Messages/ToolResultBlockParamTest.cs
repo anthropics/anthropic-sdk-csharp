@@ -403,6 +403,17 @@ public class BlockTest : TestBase
     }
 
     [Fact]
+    public void ToolReferenceBlockParamValidationWorks()
+    {
+        Block value = new ToolReferenceBlockParam()
+        {
+            ToolName = "tool_name",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void TextBlockParamSerializationRoundtripWorks()
     {
         Block value = new TextBlockParam()
@@ -490,6 +501,20 @@ public class BlockTest : TestBase
             Citations = new() { Enabled = true },
             Context = "x",
             Title = "x",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Block>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ToolReferenceBlockParamSerializationRoundtripWorks()
+    {
+        Block value = new ToolReferenceBlockParam()
+        {
+            ToolName = "tool_name",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Block>(element, ModelBase.SerializerOptions);

@@ -7,6 +7,9 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
+/// <summary>
+/// Response model for a file uploaded to the container.
+/// </summary>
 [JsonConverter(typeof(ContentBlockConverter))]
 public record class ContentBlock : ModelBase
 {
@@ -35,7 +38,13 @@ public record class ContentBlock : ModelBase
                 redactedThinking: (x) => x.Type,
                 toolUse: (x) => x.Type,
                 serverToolUse: (x) => x.Type,
-                webSearchToolResult: (x) => x.Type
+                webSearchToolResult: (x) => x.Type,
+                webFetchToolResult: (x) => x.Type,
+                codeExecutionToolResult: (x) => x.Type,
+                bashCodeExecutionToolResult: (x) => x.Type,
+                textEditorCodeExecutionToolResult: (x) => x.Type,
+                toolSearchToolResult: (x) => x.Type,
+                containerUpload: (x) => x.Type
             );
         }
     }
@@ -50,7 +59,34 @@ public record class ContentBlock : ModelBase
                 redactedThinking: (_) => null,
                 toolUse: (x) => x.ID,
                 serverToolUse: (x) => x.ID,
-                webSearchToolResult: (_) => null
+                webSearchToolResult: (_) => null,
+                webFetchToolResult: (_) => null,
+                codeExecutionToolResult: (_) => null,
+                bashCodeExecutionToolResult: (_) => null,
+                textEditorCodeExecutionToolResult: (_) => null,
+                toolSearchToolResult: (_) => null,
+                containerUpload: (_) => null
+            );
+        }
+    }
+
+    public string? ToolUseID
+    {
+        get
+        {
+            return Match<string?>(
+                text: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (_) => null,
+                serverToolUse: (_) => null,
+                webSearchToolResult: (x) => x.ToolUseID,
+                webFetchToolResult: (x) => x.ToolUseID,
+                codeExecutionToolResult: (x) => x.ToolUseID,
+                bashCodeExecutionToolResult: (x) => x.ToolUseID,
+                textEditorCodeExecutionToolResult: (x) => x.ToolUseID,
+                toolSearchToolResult: (x) => x.ToolUseID,
+                containerUpload: (_) => null
             );
         }
     }
@@ -86,6 +122,42 @@ public record class ContentBlock : ModelBase
     }
 
     public ContentBlock(WebSearchToolResultBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ContentBlock(WebFetchToolResultBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ContentBlock(CodeExecutionToolResultBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ContentBlock(BashCodeExecutionToolResultBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ContentBlock(TextEditorCodeExecutionToolResultBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ContentBlock(ToolSearchToolResultBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ContentBlock(ContainerUploadBlock value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -223,6 +295,140 @@ public record class ContentBlock : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="WebFetchToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebFetchToolResult(out var value)) {
+    ///     // `value` is of type `WebFetchToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebFetchToolResult([NotNullWhen(true)] out WebFetchToolResultBlock? value)
+    {
+        value = this.Value as WebFetchToolResultBlock;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="CodeExecutionToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCodeExecutionToolResult(out var value)) {
+    ///     // `value` is of type `CodeExecutionToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickCodeExecutionToolResult(
+        [NotNullWhen(true)] out CodeExecutionToolResultBlock? value
+    )
+    {
+        value = this.Value as CodeExecutionToolResultBlock;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BashCodeExecutionToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBashCodeExecutionToolResult(out var value)) {
+    ///     // `value` is of type `BashCodeExecutionToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBashCodeExecutionToolResult(
+        [NotNullWhen(true)] out BashCodeExecutionToolResultBlock? value
+    )
+    {
+        value = this.Value as BashCodeExecutionToolResultBlock;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="TextEditorCodeExecutionToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTextEditorCodeExecutionToolResult(out var value)) {
+    ///     // `value` is of type `TextEditorCodeExecutionToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickTextEditorCodeExecutionToolResult(
+        [NotNullWhen(true)] out TextEditorCodeExecutionToolResultBlock? value
+    )
+    {
+        value = this.Value as TextEditorCodeExecutionToolResultBlock;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ToolSearchToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolSearchToolResult(out var value)) {
+    ///     // `value` is of type `ToolSearchToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickToolSearchToolResult(
+        [NotNullWhen(true)] out ToolSearchToolResultBlock? value
+    )
+    {
+        value = this.Value as ToolSearchToolResultBlock;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ContainerUploadBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickContainerUpload(out var value)) {
+    ///     // `value` is of type `ContainerUploadBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickContainerUpload([NotNullWhen(true)] out ContainerUploadBlock? value)
+    {
+        value = this.Value as ContainerUploadBlock;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
@@ -241,7 +447,13 @@ public record class ContentBlock : ModelBase
     ///     (RedactedThinkingBlock value) => {...},
     ///     (ToolUseBlock value) => {...},
     ///     (ServerToolUseBlock value) => {...},
-    ///     (WebSearchToolResultBlock value) => {...}
+    ///     (WebSearchToolResultBlock value) => {...},
+    ///     (WebFetchToolResultBlock value) => {...},
+    ///     (CodeExecutionToolResultBlock value) => {...},
+    ///     (BashCodeExecutionToolResultBlock value) => {...},
+    ///     (TextEditorCodeExecutionToolResultBlock value) => {...},
+    ///     (ToolSearchToolResultBlock value) => {...},
+    ///     (ContainerUploadBlock value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -252,7 +464,13 @@ public record class ContentBlock : ModelBase
         System::Action<RedactedThinkingBlock> redactedThinking,
         System::Action<ToolUseBlock> toolUse,
         System::Action<ServerToolUseBlock> serverToolUse,
-        System::Action<WebSearchToolResultBlock> webSearchToolResult
+        System::Action<WebSearchToolResultBlock> webSearchToolResult,
+        System::Action<WebFetchToolResultBlock> webFetchToolResult,
+        System::Action<CodeExecutionToolResultBlock> codeExecutionToolResult,
+        System::Action<BashCodeExecutionToolResultBlock> bashCodeExecutionToolResult,
+        System::Action<TextEditorCodeExecutionToolResultBlock> textEditorCodeExecutionToolResult,
+        System::Action<ToolSearchToolResultBlock> toolSearchToolResult,
+        System::Action<ContainerUploadBlock> containerUpload
     )
     {
         switch (this.Value)
@@ -274,6 +492,24 @@ public record class ContentBlock : ModelBase
                 break;
             case WebSearchToolResultBlock value:
                 webSearchToolResult(value);
+                break;
+            case WebFetchToolResultBlock value:
+                webFetchToolResult(value);
+                break;
+            case CodeExecutionToolResultBlock value:
+                codeExecutionToolResult(value);
+                break;
+            case BashCodeExecutionToolResultBlock value:
+                bashCodeExecutionToolResult(value);
+                break;
+            case TextEditorCodeExecutionToolResultBlock value:
+                textEditorCodeExecutionToolResult(value);
+                break;
+            case ToolSearchToolResultBlock value:
+                toolSearchToolResult(value);
+                break;
+            case ContainerUploadBlock value:
+                containerUpload(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -302,7 +538,13 @@ public record class ContentBlock : ModelBase
     ///     (RedactedThinkingBlock value) => {...},
     ///     (ToolUseBlock value) => {...},
     ///     (ServerToolUseBlock value) => {...},
-    ///     (WebSearchToolResultBlock value) => {...}
+    ///     (WebSearchToolResultBlock value) => {...},
+    ///     (WebFetchToolResultBlock value) => {...},
+    ///     (CodeExecutionToolResultBlock value) => {...},
+    ///     (BashCodeExecutionToolResultBlock value) => {...},
+    ///     (TextEditorCodeExecutionToolResultBlock value) => {...},
+    ///     (ToolSearchToolResultBlock value) => {...},
+    ///     (ContainerUploadBlock value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -313,7 +555,13 @@ public record class ContentBlock : ModelBase
         System::Func<RedactedThinkingBlock, T> redactedThinking,
         System::Func<ToolUseBlock, T> toolUse,
         System::Func<ServerToolUseBlock, T> serverToolUse,
-        System::Func<WebSearchToolResultBlock, T> webSearchToolResult
+        System::Func<WebSearchToolResultBlock, T> webSearchToolResult,
+        System::Func<WebFetchToolResultBlock, T> webFetchToolResult,
+        System::Func<CodeExecutionToolResultBlock, T> codeExecutionToolResult,
+        System::Func<BashCodeExecutionToolResultBlock, T> bashCodeExecutionToolResult,
+        System::Func<TextEditorCodeExecutionToolResultBlock, T> textEditorCodeExecutionToolResult,
+        System::Func<ToolSearchToolResultBlock, T> toolSearchToolResult,
+        System::Func<ContainerUploadBlock, T> containerUpload
     )
     {
         return this.Value switch
@@ -324,6 +572,14 @@ public record class ContentBlock : ModelBase
             ToolUseBlock value => toolUse(value),
             ServerToolUseBlock value => serverToolUse(value),
             WebSearchToolResultBlock value => webSearchToolResult(value),
+            WebFetchToolResultBlock value => webFetchToolResult(value),
+            CodeExecutionToolResultBlock value => codeExecutionToolResult(value),
+            BashCodeExecutionToolResultBlock value => bashCodeExecutionToolResult(value),
+            TextEditorCodeExecutionToolResultBlock value => textEditorCodeExecutionToolResult(
+                value
+            ),
+            ToolSearchToolResultBlock value => toolSearchToolResult(value),
+            ContainerUploadBlock value => containerUpload(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ContentBlock"
             ),
@@ -341,6 +597,20 @@ public record class ContentBlock : ModelBase
     public static implicit operator ContentBlock(ServerToolUseBlock value) => new(value);
 
     public static implicit operator ContentBlock(WebSearchToolResultBlock value) => new(value);
+
+    public static implicit operator ContentBlock(WebFetchToolResultBlock value) => new(value);
+
+    public static implicit operator ContentBlock(CodeExecutionToolResultBlock value) => new(value);
+
+    public static implicit operator ContentBlock(BashCodeExecutionToolResultBlock value) =>
+        new(value);
+
+    public static implicit operator ContentBlock(TextEditorCodeExecutionToolResultBlock value) =>
+        new(value);
+
+    public static implicit operator ContentBlock(ToolSearchToolResultBlock value) => new(value);
+
+    public static implicit operator ContentBlock(ContainerUploadBlock value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -366,7 +636,13 @@ public record class ContentBlock : ModelBase
             (redactedThinking) => redactedThinking.Validate(),
             (toolUse) => toolUse.Validate(),
             (serverToolUse) => serverToolUse.Validate(),
-            (webSearchToolResult) => webSearchToolResult.Validate()
+            (webSearchToolResult) => webSearchToolResult.Validate(),
+            (webFetchToolResult) => webFetchToolResult.Validate(),
+            (codeExecutionToolResult) => codeExecutionToolResult.Validate(),
+            (bashCodeExecutionToolResult) => bashCodeExecutionToolResult.Validate(),
+            (textEditorCodeExecutionToolResult) => textEditorCodeExecutionToolResult.Validate(),
+            (toolSearchToolResult) => toolSearchToolResult.Validate(),
+            (containerUpload) => containerUpload.Validate()
         );
     }
 
@@ -396,6 +672,12 @@ public record class ContentBlock : ModelBase
             ToolUseBlock _ => 3,
             ServerToolUseBlock _ => 4,
             WebSearchToolResultBlock _ => 5,
+            WebFetchToolResultBlock _ => 6,
+            CodeExecutionToolResultBlock _ => 7,
+            BashCodeExecutionToolResultBlock _ => 8,
+            TextEditorCodeExecutionToolResultBlock _ => 9,
+            ToolSearchToolResultBlock _ => 10,
+            ContainerUploadBlock _ => 11,
             _ => -1,
         };
     }
@@ -528,6 +810,139 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlock>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "web_fetch_tool_result":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<WebFetchToolResultBlock>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "code_execution_tool_result":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<CodeExecutionToolResultBlock>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "bash_code_execution_tool_result":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BashCodeExecutionToolResultBlock>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "text_editor_code_execution_tool_result":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<TextEditorCodeExecutionToolResultBlock>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "tool_search_tool_result":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ToolSearchToolResultBlock>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "container_upload":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ContainerUploadBlock>(
                         element,
                         options
                     );

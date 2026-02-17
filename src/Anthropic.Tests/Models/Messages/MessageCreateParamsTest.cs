@@ -17,6 +17,7 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            Container = "container",
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -31,6 +32,7 @@ public class MessageCreateParamsTest : TestBase
                 },
             },
             ServiceTier = Messages::ServiceTier.Auto,
+            Speed = Messages::Speed.Standard,
             StopSequences = ["string"],
             System = new(
                 [
@@ -69,9 +71,18 @@ public class MessageCreateParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
                     Strict = true,
                     Type = Messages::Type.Custom,
                 },
@@ -86,6 +97,7 @@ public class MessageCreateParamsTest : TestBase
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_6;
+        string expectedContainer = "container";
         string expectedInferenceGeo = "inference_geo";
         Messages::Metadata expectedMetadata = new()
         {
@@ -103,6 +115,7 @@ public class MessageCreateParamsTest : TestBase
             },
         };
         ApiEnum<string, Messages::ServiceTier> expectedServiceTier = Messages::ServiceTier.Auto;
+        ApiEnum<string, Messages::Speed> expectedSpeed = Messages::Speed.Standard;
         List<string> expectedStopSequences = ["string"];
         Messages::MessageCreateParamsSystem expectedSystem = new(
             [
@@ -144,9 +157,18 @@ public class MessageCreateParamsTest : TestBase
                     Required = ["location"],
                 },
                 Name = "name",
+                AllowedCallers = [Messages::ToolAllowedCaller.Direct],
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                DeferLoading = true,
                 Description = "Get the current weather in a given location",
                 EagerInputStreaming = true,
+                InputExamples =
+                [
+                    new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                ],
                 Strict = true,
                 Type = Messages::Type.Custom,
             },
@@ -161,10 +183,12 @@ public class MessageCreateParamsTest : TestBase
             Assert.Equal(expectedMessages[i], parameters.Messages[i]);
         }
         Assert.Equal(expectedModel, parameters.Model);
+        Assert.Equal(expectedContainer, parameters.Container);
         Assert.Equal(expectedInferenceGeo, parameters.InferenceGeo);
         Assert.Equal(expectedMetadata, parameters.Metadata);
         Assert.Equal(expectedOutputConfig, parameters.OutputConfig);
         Assert.Equal(expectedServiceTier, parameters.ServiceTier);
+        Assert.Equal(expectedSpeed, parameters.Speed);
         Assert.NotNull(parameters.StopSequences);
         Assert.Equal(expectedStopSequences.Count, parameters.StopSequences.Count);
         for (int i = 0; i < expectedStopSequences.Count; i++)
@@ -193,7 +217,9 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            Container = "container",
             InferenceGeo = "inference_geo",
+            Speed = Messages::Speed.Standard,
         };
 
         Assert.Null(parameters.Metadata);
@@ -228,7 +254,9 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            Container = "container",
             InferenceGeo = "inference_geo",
+            Speed = Messages::Speed.Standard,
 
             // Null should be interpreted as omitted for these properties
             Metadata = null,
@@ -327,9 +355,18 @@ public class MessageCreateParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
                     Strict = true,
                     Type = Messages::Type.Custom,
                 },
@@ -338,8 +375,12 @@ public class MessageCreateParamsTest : TestBase
             TopP = 0.7,
         };
 
+        Assert.Null(parameters.Container);
+        Assert.False(parameters.RawBodyData.ContainsKey("container"));
         Assert.Null(parameters.InferenceGeo);
         Assert.False(parameters.RawBodyData.ContainsKey("inference_geo"));
+        Assert.Null(parameters.Speed);
+        Assert.False(parameters.RawBodyData.ContainsKey("speed"));
     }
 
     [Fact]
@@ -401,9 +442,18 @@ public class MessageCreateParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
                     Strict = true,
                     Type = Messages::Type.Custom,
                 },
@@ -411,11 +461,17 @@ public class MessageCreateParamsTest : TestBase
             TopK = 5,
             TopP = 0.7,
 
+            Container = null,
             InferenceGeo = null,
+            Speed = null,
         };
 
+        Assert.Null(parameters.Container);
+        Assert.True(parameters.RawBodyData.ContainsKey("container"));
         Assert.Null(parameters.InferenceGeo);
         Assert.True(parameters.RawBodyData.ContainsKey("inference_geo"));
+        Assert.Null(parameters.Speed);
+        Assert.True(parameters.RawBodyData.ContainsKey("speed"));
     }
 
     [Fact]
@@ -441,6 +497,7 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            Container = "container",
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -455,6 +512,7 @@ public class MessageCreateParamsTest : TestBase
                 },
             },
             ServiceTier = Messages::ServiceTier.Auto,
+            Speed = Messages::Speed.Standard,
             StopSequences = ["string"],
             System = new(
                 [
@@ -493,9 +551,18 @@ public class MessageCreateParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
                     Strict = true,
                     Type = Messages::Type.Custom,
                 },
@@ -560,6 +627,64 @@ public class ServiceTierTest : TestBase
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Messages::ServiceTier>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class SpeedTest : TestBase
+{
+    [Theory]
+    [InlineData(Messages::Speed.Standard)]
+    [InlineData(Messages::Speed.Fast)]
+    public void Validation_Works(Messages::Speed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Messages::Speed> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Messages::Speed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(Messages::Speed.Standard)]
+    [InlineData(Messages::Speed.Fast)]
+    public void SerializationRoundtrip_Works(Messages::Speed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Messages::Speed> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Messages::Speed>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Messages::Speed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Messages::Speed>>(
             json,
             ModelBase.SerializerOptions
         );

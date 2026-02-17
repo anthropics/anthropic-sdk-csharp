@@ -283,6 +283,7 @@ public class ContentBlockTest : TestBase
                 BetaWebSearchToolResultErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            Caller = new BetaDirectCaller(),
         };
         value.Validate();
     }
@@ -296,6 +297,7 @@ public class ContentBlockTest : TestBase
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            Caller = new BetaDirectCaller(),
         };
         value.Validate();
     }
@@ -507,6 +509,7 @@ public class ContentBlockTest : TestBase
                 BetaWebSearchToolResultErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            Caller = new BetaDirectCaller(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
@@ -526,6 +529,7 @@ public class ContentBlockTest : TestBase
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            Caller = new BetaDirectCaller(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(

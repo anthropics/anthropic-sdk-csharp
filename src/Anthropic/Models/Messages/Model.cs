@@ -18,6 +18,11 @@ public enum Model
     ClaudeOpus4_6,
 
     /// <summary>
+    /// Frontier intelligence at scale — built for coding, agents, and enterprise workflows
+    /// </summary>
+    ClaudeSonnet4_6,
+
+    /// <summary>
     /// Premium model combining maximum intelligence with practical performance
     /// </summary>
     ClaudeOpus4_5_20251101,
@@ -147,6 +152,7 @@ sealed class ModelConverter : JsonConverter<Model>
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
             "claude-opus-4-6" => Model.ClaudeOpus4_6,
+            "claude-sonnet-4-6" => Model.ClaudeSonnet4_6,
             "claude-opus-4-5-20251101" => Model.ClaudeOpus4_5_20251101,
             "claude-opus-4-5" => Model.ClaudeOpus4_5,
             "claude-3-7-sonnet-latest" => Model.Claude3_7SonnetLatest,
@@ -178,6 +184,7 @@ sealed class ModelConverter : JsonConverter<Model>
             value switch
             {
                 Model.ClaudeOpus4_6 => "claude-opus-4-6",
+                Model.ClaudeSonnet4_6 => "claude-sonnet-4-6",
                 Model.ClaudeOpus4_5_20251101 => "claude-opus-4-5-20251101",
                 Model.ClaudeOpus4_5 => "claude-opus-4-5",
                 Model.Claude3_7SonnetLatest => "claude-3-7-sonnet-latest",

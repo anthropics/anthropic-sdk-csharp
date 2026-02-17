@@ -7,6 +7,9 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
+/// <summary>
+/// Code execution result with encrypted stdout for PFC + web_search results.
+/// </summary>
 [JsonConverter(typeof(BetaCodeExecutionToolResultBlockParamContentConverter))]
 public record class BetaCodeExecutionToolResultBlockParamContent : ModelBase
 {
@@ -27,7 +30,38 @@ public record class BetaCodeExecutionToolResultBlockParamContent : ModelBase
 
     public JsonElement Type
     {
-        get { return Match(errorParam: (x) => x.Type, resultBlockParam: (x) => x.Type); }
+        get
+        {
+            return Match(
+                errorParam: (x) => x.Type,
+                resultBlockParam: (x) => x.Type,
+                encryptedCodeExecutionResultBlockParam: (x) => x.Type
+            );
+        }
+    }
+
+    public long? ReturnCode
+    {
+        get
+        {
+            return Match<long?>(
+                errorParam: (_) => null,
+                resultBlockParam: (x) => x.ReturnCode,
+                encryptedCodeExecutionResultBlockParam: (x) => x.ReturnCode
+            );
+        }
+    }
+
+    public string? Stderr
+    {
+        get
+        {
+            return Match<string?>(
+                errorParam: (_) => null,
+                resultBlockParam: (x) => x.Stderr,
+                encryptedCodeExecutionResultBlockParam: (x) => x.Stderr
+            );
+        }
     }
 
     public BetaCodeExecutionToolResultBlockParamContent(
@@ -41,6 +75,15 @@ public record class BetaCodeExecutionToolResultBlockParamContent : ModelBase
 
     public BetaCodeExecutionToolResultBlockParamContent(
         BetaCodeExecutionResultBlockParam value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaCodeExecutionToolResultBlockParamContent(
+        BetaEncryptedCodeExecutionResultBlockParam value,
         JsonElement? element = null
     )
     {
@@ -100,6 +143,29 @@ public record class BetaCodeExecutionToolResultBlockParamContent : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaEncryptedCodeExecutionResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickEncryptedCodeExecutionResultBlockParam(out var value)) {
+    ///     // `value` is of type `BetaEncryptedCodeExecutionResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickEncryptedCodeExecutionResultBlockParam(
+        [NotNullWhen(true)] out BetaEncryptedCodeExecutionResultBlockParam? value
+    )
+    {
+        value = this.Value as BetaEncryptedCodeExecutionResultBlockParam;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
@@ -114,14 +180,16 @@ public record class BetaCodeExecutionToolResultBlockParamContent : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (BetaCodeExecutionToolResultErrorParam value) => {...},
-    ///     (BetaCodeExecutionResultBlockParam value) => {...}
+    ///     (BetaCodeExecutionResultBlockParam value) => {...},
+    ///     (BetaEncryptedCodeExecutionResultBlockParam value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<BetaCodeExecutionToolResultErrorParam> errorParam,
-        System::Action<BetaCodeExecutionResultBlockParam> resultBlockParam
+        System::Action<BetaCodeExecutionResultBlockParam> resultBlockParam,
+        System::Action<BetaEncryptedCodeExecutionResultBlockParam> encryptedCodeExecutionResultBlockParam
     )
     {
         switch (this.Value)
@@ -131,6 +199,9 @@ public record class BetaCodeExecutionToolResultBlockParamContent : ModelBase
                 break;
             case BetaCodeExecutionResultBlockParam value:
                 resultBlockParam(value);
+                break;
+            case BetaEncryptedCodeExecutionResultBlockParam value:
+                encryptedCodeExecutionResultBlockParam(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -155,20 +226,27 @@ public record class BetaCodeExecutionToolResultBlockParamContent : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (BetaCodeExecutionToolResultErrorParam value) => {...},
-    ///     (BetaCodeExecutionResultBlockParam value) => {...}
+    ///     (BetaCodeExecutionResultBlockParam value) => {...},
+    ///     (BetaEncryptedCodeExecutionResultBlockParam value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
         System::Func<BetaCodeExecutionToolResultErrorParam, T> errorParam,
-        System::Func<BetaCodeExecutionResultBlockParam, T> resultBlockParam
+        System::Func<BetaCodeExecutionResultBlockParam, T> resultBlockParam,
+        System::Func<
+            BetaEncryptedCodeExecutionResultBlockParam,
+            T
+        > encryptedCodeExecutionResultBlockParam
     )
     {
         return this.Value switch
         {
             BetaCodeExecutionToolResultErrorParam value => errorParam(value),
             BetaCodeExecutionResultBlockParam value => resultBlockParam(value),
+            BetaEncryptedCodeExecutionResultBlockParam value =>
+                encryptedCodeExecutionResultBlockParam(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaCodeExecutionToolResultBlockParamContent"
             ),
@@ -181,6 +259,10 @@ public record class BetaCodeExecutionToolResultBlockParamContent : ModelBase
 
     public static implicit operator BetaCodeExecutionToolResultBlockParamContent(
         BetaCodeExecutionResultBlockParam value
+    ) => new(value);
+
+    public static implicit operator BetaCodeExecutionToolResultBlockParamContent(
+        BetaEncryptedCodeExecutionResultBlockParam value
     ) => new(value);
 
     /// <summary>
@@ -203,7 +285,9 @@ public record class BetaCodeExecutionToolResultBlockParamContent : ModelBase
         }
         this.Switch(
             (errorParam) => errorParam.Validate(),
-            (resultBlockParam) => resultBlockParam.Validate()
+            (resultBlockParam) => resultBlockParam.Validate(),
+            (encryptedCodeExecutionResultBlockParam) =>
+                encryptedCodeExecutionResultBlockParam.Validate()
         );
     }
 
@@ -229,6 +313,7 @@ public record class BetaCodeExecutionToolResultBlockParamContent : ModelBase
         {
             BetaCodeExecutionToolResultErrorParam _ => 0,
             BetaCodeExecutionResultBlockParam _ => 1,
+            BetaEncryptedCodeExecutionResultBlockParam _ => 2,
             _ => -1,
         };
     }
@@ -267,6 +352,24 @@ sealed class BetaCodeExecutionToolResultBlockParamContentConverter
                 element,
                 options
             );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized =
+                JsonSerializer.Deserialize<BetaEncryptedCodeExecutionResultBlockParam>(
+                    element,
+                    options
+                );
             if (deserialized != null)
             {
                 deserialized.Validate();

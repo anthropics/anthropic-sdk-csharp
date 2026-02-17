@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -12,9 +13,11 @@ public class WebSearchTool20250305Test : TestBase
     {
         var model = new WebSearchTool20250305
         {
+            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
             MaxUses = 1,
             Strict = true,
             UserLocation = new()
@@ -28,12 +31,17 @@ public class WebSearchTool20250305Test : TestBase
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
+        List<ApiEnum<string, WebSearchTool20250305AllowedCaller>> expectedAllowedCallers =
+        [
+            WebSearchTool20250305AllowedCaller.Direct,
+        ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        bool expectedDeferLoading = true;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
-        UserLocation expectedUserLocation = new()
+        WebSearchTool20250305UserLocation expectedUserLocation = new()
         {
             City = "New York",
             Country = "US",
@@ -43,6 +51,12 @@ public class WebSearchTool20250305Test : TestBase
 
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.NotNull(model.AllowedCallers);
+        Assert.Equal(expectedAllowedCallers.Count, model.AllowedCallers.Count);
+        for (int i = 0; i < expectedAllowedCallers.Count; i++)
+        {
+            Assert.Equal(expectedAllowedCallers[i], model.AllowedCallers[i]);
+        }
         Assert.NotNull(model.AllowedDomains);
         Assert.Equal(expectedAllowedDomains.Count, model.AllowedDomains.Count);
         for (int i = 0; i < expectedAllowedDomains.Count; i++)
@@ -56,6 +70,7 @@ public class WebSearchTool20250305Test : TestBase
             Assert.Equal(expectedBlockedDomains[i], model.BlockedDomains[i]);
         }
         Assert.Equal(expectedCacheControl, model.CacheControl);
+        Assert.Equal(expectedDeferLoading, model.DeferLoading);
         Assert.Equal(expectedMaxUses, model.MaxUses);
         Assert.Equal(expectedStrict, model.Strict);
         Assert.Equal(expectedUserLocation, model.UserLocation);
@@ -66,9 +81,11 @@ public class WebSearchTool20250305Test : TestBase
     {
         var model = new WebSearchTool20250305
         {
+            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
             MaxUses = 1,
             Strict = true,
             UserLocation = new()
@@ -94,9 +111,11 @@ public class WebSearchTool20250305Test : TestBase
     {
         var model = new WebSearchTool20250305
         {
+            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
             MaxUses = 1,
             Strict = true,
             UserLocation = new()
@@ -117,12 +136,17 @@ public class WebSearchTool20250305Test : TestBase
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
+        List<ApiEnum<string, WebSearchTool20250305AllowedCaller>> expectedAllowedCallers =
+        [
+            WebSearchTool20250305AllowedCaller.Direct,
+        ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        bool expectedDeferLoading = true;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
-        UserLocation expectedUserLocation = new()
+        WebSearchTool20250305UserLocation expectedUserLocation = new()
         {
             City = "New York",
             Country = "US",
@@ -132,6 +156,12 @@ public class WebSearchTool20250305Test : TestBase
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.NotNull(deserialized.AllowedCallers);
+        Assert.Equal(expectedAllowedCallers.Count, deserialized.AllowedCallers.Count);
+        for (int i = 0; i < expectedAllowedCallers.Count; i++)
+        {
+            Assert.Equal(expectedAllowedCallers[i], deserialized.AllowedCallers[i]);
+        }
         Assert.NotNull(deserialized.AllowedDomains);
         Assert.Equal(expectedAllowedDomains.Count, deserialized.AllowedDomains.Count);
         for (int i = 0; i < expectedAllowedDomains.Count; i++)
@@ -145,6 +175,7 @@ public class WebSearchTool20250305Test : TestBase
             Assert.Equal(expectedBlockedDomains[i], deserialized.BlockedDomains[i]);
         }
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
+        Assert.Equal(expectedDeferLoading, deserialized.DeferLoading);
         Assert.Equal(expectedMaxUses, deserialized.MaxUses);
         Assert.Equal(expectedStrict, deserialized.Strict);
         Assert.Equal(expectedUserLocation, deserialized.UserLocation);
@@ -155,9 +186,11 @@ public class WebSearchTool20250305Test : TestBase
     {
         var model = new WebSearchTool20250305
         {
+            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
             MaxUses = 1,
             Strict = true,
             UserLocation = new()
@@ -190,6 +223,10 @@ public class WebSearchTool20250305Test : TestBase
             },
         };
 
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
         Assert.Null(model.Strict);
         Assert.False(model.RawData.ContainsKey("strict"));
     }
@@ -233,9 +270,15 @@ public class WebSearchTool20250305Test : TestBase
             },
 
             // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
             Strict = null,
         };
 
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
         Assert.Null(model.Strict);
         Assert.False(model.RawData.ContainsKey("strict"));
     }
@@ -258,6 +301,8 @@ public class WebSearchTool20250305Test : TestBase
             },
 
             // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
             Strict = null,
         };
 
@@ -267,7 +312,12 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new WebSearchTool20250305 { Strict = true };
+        var model = new WebSearchTool20250305
+        {
+            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
+            DeferLoading = true,
+            Strict = true,
+        };
 
         Assert.Null(model.AllowedDomains);
         Assert.False(model.RawData.ContainsKey("allowed_domains"));
@@ -284,7 +334,12 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new WebSearchTool20250305 { Strict = true };
+        var model = new WebSearchTool20250305
+        {
+            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
+            DeferLoading = true,
+            Strict = true,
+        };
 
         model.Validate();
     }
@@ -294,6 +349,8 @@ public class WebSearchTool20250305Test : TestBase
     {
         var model = new WebSearchTool20250305
         {
+            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
+            DeferLoading = true,
             Strict = true,
 
             AllowedDomains = null,
@@ -320,6 +377,8 @@ public class WebSearchTool20250305Test : TestBase
     {
         var model = new WebSearchTool20250305
         {
+            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
+            DeferLoading = true,
             Strict = true,
 
             AllowedDomains = null,
@@ -337,9 +396,11 @@ public class WebSearchTool20250305Test : TestBase
     {
         var model = new WebSearchTool20250305
         {
+            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
             MaxUses = 1,
             Strict = true,
             UserLocation = new()
@@ -357,12 +418,68 @@ public class WebSearchTool20250305Test : TestBase
     }
 }
 
-public class UserLocationTest : TestBase
+public class WebSearchTool20250305AllowedCallerTest : TestBase
+{
+    [Theory]
+    [InlineData(WebSearchTool20250305AllowedCaller.Direct)]
+    [InlineData(WebSearchTool20250305AllowedCaller.CodeExecution20250825)]
+    public void Validation_Works(WebSearchTool20250305AllowedCaller rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, WebSearchTool20250305AllowedCaller> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, WebSearchTool20250305AllowedCaller>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(WebSearchTool20250305AllowedCaller.Direct)]
+    [InlineData(WebSearchTool20250305AllowedCaller.CodeExecution20250825)]
+    public void SerializationRoundtrip_Works(WebSearchTool20250305AllowedCaller rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, WebSearchTool20250305AllowedCaller> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, WebSearchTool20250305AllowedCaller>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, WebSearchTool20250305AllowedCaller>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, WebSearchTool20250305AllowedCaller>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class WebSearchTool20250305UserLocationTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20250305UserLocation
         {
             City = "New York",
             Country = "US",
@@ -386,7 +503,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20250305UserLocation
         {
             City = "New York",
             Country = "US",
@@ -395,7 +512,7 @@ public class UserLocationTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<UserLocation>(
+        var deserialized = JsonSerializer.Deserialize<WebSearchTool20250305UserLocation>(
             json,
             ModelBase.SerializerOptions
         );
@@ -406,7 +523,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20250305UserLocation
         {
             City = "New York",
             Country = "US",
@@ -415,7 +532,7 @@ public class UserLocationTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<UserLocation>(
+        var deserialized = JsonSerializer.Deserialize<WebSearchTool20250305UserLocation>(
             element,
             ModelBase.SerializerOptions
         );
@@ -437,7 +554,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20250305UserLocation
         {
             City = "New York",
             Country = "US",
@@ -451,7 +568,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new UserLocation { };
+        var model = new WebSearchTool20250305UserLocation { };
 
         Assert.Null(model.City);
         Assert.False(model.RawData.ContainsKey("city"));
@@ -466,7 +583,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new UserLocation { };
+        var model = new WebSearchTool20250305UserLocation { };
 
         model.Validate();
     }
@@ -474,7 +591,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20250305UserLocation
         {
             City = null,
             Country = null,
@@ -495,7 +612,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20250305UserLocation
         {
             City = null,
             Country = null,
@@ -509,7 +626,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20250305UserLocation
         {
             City = "New York",
             Country = "US",
@@ -517,7 +634,7 @@ public class UserLocationTest : TestBase
             Timezone = "America/New_York",
         };
 
-        UserLocation copied = new(model);
+        WebSearchTool20250305UserLocation copied = new(model);
 
         Assert.Equal(model, copied);
     }

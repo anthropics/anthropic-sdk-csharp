@@ -173,6 +173,7 @@ public class BetaContentBlockParamTest : TestBase
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new BetaDirectCaller(),
         };
         value.Validate();
     }
@@ -187,6 +188,7 @@ public class BetaContentBlockParamTest : TestBase
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new BetaDirectCaller(),
         };
         value.Validate();
     }
@@ -522,6 +524,7 @@ public class BetaContentBlockParamTest : TestBase
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new BetaDirectCaller(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(
@@ -542,6 +545,7 @@ public class BetaContentBlockParamTest : TestBase
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new BetaDirectCaller(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(

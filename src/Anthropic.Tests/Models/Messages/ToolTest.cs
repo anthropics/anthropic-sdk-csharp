@@ -23,9 +23,18 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
+            AllowedCallers = [ToolAllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
             Description = "Get the current weather in a given location",
             EagerInputStreaming = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
             Type = Type.Custom,
         };
@@ -40,17 +49,48 @@ public class ToolTest : TestBase
             Required = ["location"],
         };
         string expectedName = "name";
+        List<ApiEnum<string, ToolAllowedCaller>> expectedAllowedCallers =
+        [
+            ToolAllowedCaller.Direct,
+        ];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        bool expectedDeferLoading = true;
         string expectedDescription = "Get the current weather in a given location";
         bool expectedEagerInputStreaming = true;
+        List<Dictionary<string, JsonElement>> expectedInputExamples =
+        [
+            new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        ];
         bool expectedStrict = true;
         ApiEnum<string, Type> expectedType = Type.Custom;
 
         Assert.Equal(expectedInputSchema, model.InputSchema);
         Assert.Equal(expectedName, model.Name);
+        Assert.NotNull(model.AllowedCallers);
+        Assert.Equal(expectedAllowedCallers.Count, model.AllowedCallers.Count);
+        for (int i = 0; i < expectedAllowedCallers.Count; i++)
+        {
+            Assert.Equal(expectedAllowedCallers[i], model.AllowedCallers[i]);
+        }
         Assert.Equal(expectedCacheControl, model.CacheControl);
+        Assert.Equal(expectedDeferLoading, model.DeferLoading);
         Assert.Equal(expectedDescription, model.Description);
         Assert.Equal(expectedEagerInputStreaming, model.EagerInputStreaming);
+        Assert.NotNull(model.InputExamples);
+        Assert.Equal(expectedInputExamples.Count, model.InputExamples.Count);
+        for (int i = 0; i < expectedInputExamples.Count; i++)
+        {
+            Assert.Equal(expectedInputExamples[i].Count, model.InputExamples[i].Count);
+            foreach (var item in expectedInputExamples[i])
+            {
+                Assert.True(model.InputExamples[i].TryGetValue(item.Key, out var value));
+
+                Assert.True(JsonElement.DeepEquals(value, model.InputExamples[i][item.Key]));
+            }
+        }
         Assert.Equal(expectedStrict, model.Strict);
         Assert.Equal(expectedType, model.Type);
     }
@@ -70,9 +110,18 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
+            AllowedCallers = [ToolAllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
             Description = "Get the current weather in a given location",
             EagerInputStreaming = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
             Type = Type.Custom,
         };
@@ -98,9 +147,18 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
+            AllowedCallers = [ToolAllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
             Description = "Get the current weather in a given location",
             EagerInputStreaming = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
             Type = Type.Custom,
         };
@@ -119,17 +177,48 @@ public class ToolTest : TestBase
             Required = ["location"],
         };
         string expectedName = "name";
+        List<ApiEnum<string, ToolAllowedCaller>> expectedAllowedCallers =
+        [
+            ToolAllowedCaller.Direct,
+        ];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        bool expectedDeferLoading = true;
         string expectedDescription = "Get the current weather in a given location";
         bool expectedEagerInputStreaming = true;
+        List<Dictionary<string, JsonElement>> expectedInputExamples =
+        [
+            new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        ];
         bool expectedStrict = true;
         ApiEnum<string, Type> expectedType = Type.Custom;
 
         Assert.Equal(expectedInputSchema, deserialized.InputSchema);
         Assert.Equal(expectedName, deserialized.Name);
+        Assert.NotNull(deserialized.AllowedCallers);
+        Assert.Equal(expectedAllowedCallers.Count, deserialized.AllowedCallers.Count);
+        for (int i = 0; i < expectedAllowedCallers.Count; i++)
+        {
+            Assert.Equal(expectedAllowedCallers[i], deserialized.AllowedCallers[i]);
+        }
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
+        Assert.Equal(expectedDeferLoading, deserialized.DeferLoading);
         Assert.Equal(expectedDescription, deserialized.Description);
         Assert.Equal(expectedEagerInputStreaming, deserialized.EagerInputStreaming);
+        Assert.NotNull(deserialized.InputExamples);
+        Assert.Equal(expectedInputExamples.Count, deserialized.InputExamples.Count);
+        for (int i = 0; i < expectedInputExamples.Count; i++)
+        {
+            Assert.Equal(expectedInputExamples[i].Count, deserialized.InputExamples[i].Count);
+            foreach (var item in expectedInputExamples[i])
+            {
+                Assert.True(deserialized.InputExamples[i].TryGetValue(item.Key, out var value));
+
+                Assert.True(JsonElement.DeepEquals(value, deserialized.InputExamples[i][item.Key]));
+            }
+        }
         Assert.Equal(expectedStrict, deserialized.Strict);
         Assert.Equal(expectedType, deserialized.Type);
     }
@@ -149,9 +238,18 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
+            AllowedCallers = [ToolAllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
             Description = "Get the current weather in a given location",
             EagerInputStreaming = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
             Type = Type.Custom,
         };
@@ -179,8 +277,14 @@ public class ToolTest : TestBase
             Type = Type.Custom,
         };
 
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
         Assert.Null(model.Description);
         Assert.False(model.RawData.ContainsKey("description"));
+        Assert.Null(model.InputExamples);
+        Assert.False(model.RawData.ContainsKey("input_examples"));
         Assert.Null(model.Strict);
         Assert.False(model.RawData.ContainsKey("strict"));
     }
@@ -228,12 +332,21 @@ public class ToolTest : TestBase
             Type = Type.Custom,
 
             // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
             Description = null,
+            InputExamples = null,
             Strict = null,
         };
 
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
         Assert.Null(model.Description);
         Assert.False(model.RawData.ContainsKey("description"));
+        Assert.Null(model.InputExamples);
+        Assert.False(model.RawData.ContainsKey("input_examples"));
         Assert.Null(model.Strict);
         Assert.False(model.RawData.ContainsKey("strict"));
     }
@@ -258,7 +371,10 @@ public class ToolTest : TestBase
             Type = Type.Custom,
 
             // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
             Description = null,
+            InputExamples = null,
             Strict = null,
         };
 
@@ -280,7 +396,16 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
+            AllowedCallers = [ToolAllowedCaller.Direct],
+            DeferLoading = true,
             Description = "Get the current weather in a given location",
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
         };
 
@@ -307,7 +432,16 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
+            AllowedCallers = [ToolAllowedCaller.Direct],
+            DeferLoading = true,
             Description = "Get the current weather in a given location",
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
         };
 
@@ -329,7 +463,16 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
+            AllowedCallers = [ToolAllowedCaller.Direct],
+            DeferLoading = true,
             Description = "Get the current weather in a given location",
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
 
             CacheControl = null,
@@ -360,7 +503,16 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
+            AllowedCallers = [ToolAllowedCaller.Direct],
+            DeferLoading = true,
             Description = "Get the current weather in a given location",
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
 
             CacheControl = null,
@@ -386,9 +538,18 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
+            AllowedCallers = [ToolAllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
             Description = "Get the current weather in a given location",
             EagerInputStreaming = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
             Strict = true,
             Type = Type.Custom,
         };
@@ -576,6 +737,64 @@ public class InputSchemaTest : TestBase
         InputSchema copied = new(model);
 
         Assert.Equal(model, copied);
+    }
+}
+
+public class ToolAllowedCallerTest : TestBase
+{
+    [Theory]
+    [InlineData(ToolAllowedCaller.Direct)]
+    [InlineData(ToolAllowedCaller.CodeExecution20250825)]
+    public void Validation_Works(ToolAllowedCaller rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolAllowedCaller> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolAllowedCaller>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ToolAllowedCaller.Direct)]
+    [InlineData(ToolAllowedCaller.CodeExecution20250825)]
+    public void SerializationRoundtrip_Works(ToolAllowedCaller rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolAllowedCaller> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolAllowedCaller>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolAllowedCaller>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolAllowedCaller>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 

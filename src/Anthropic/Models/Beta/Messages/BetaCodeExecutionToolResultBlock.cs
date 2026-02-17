@@ -16,6 +16,9 @@ namespace Anthropic.Models.Beta.Messages;
 )]
 public sealed record class BetaCodeExecutionToolResultBlock : JsonModel
 {
+    /// <summary>
+    /// Code execution result with encrypted stdout for PFC + web_search results.
+    /// </summary>
     public required BetaCodeExecutionToolResultBlockContent Content
     {
         get

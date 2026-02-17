@@ -7,8 +7,8 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ContentBlockSourceContentConverter))]
-public record class ContentBlockSourceContent : ModelBase
+[JsonConverter(typeof(MessageContentBlockSourceContentConverter))]
+public record class MessageContentBlockSourceContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -41,19 +41,19 @@ public record class ContentBlockSourceContent : ModelBase
         }
     }
 
-    public ContentBlockSourceContent(TextBlockParam value, JsonElement? element = null)
+    public MessageContentBlockSourceContent(TextBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public ContentBlockSourceContent(ImageBlockParam value, JsonElement? element = null)
+    public MessageContentBlockSourceContent(ImageBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public ContentBlockSourceContent(JsonElement element)
+    public MessageContentBlockSourceContent(JsonElement element)
     {
         this._element = element;
     }
@@ -135,7 +135,7 @@ public record class ContentBlockSourceContent : ModelBase
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of ContentBlockSourceContent"
+                    "Data did not match any variant of MessageContentBlockSourceContent"
                 );
         }
     }
@@ -171,14 +171,16 @@ public record class ContentBlockSourceContent : ModelBase
             TextBlockParam value => textBlockParam(value),
             ImageBlockParam value => imageBlockParam(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ContentBlockSourceContent"
+                "Data did not match any variant of MessageContentBlockSourceContent"
             ),
         };
     }
 
-    public static implicit operator ContentBlockSourceContent(TextBlockParam value) => new(value);
+    public static implicit operator MessageContentBlockSourceContent(TextBlockParam value) =>
+        new(value);
 
-    public static implicit operator ContentBlockSourceContent(ImageBlockParam value) => new(value);
+    public static implicit operator MessageContentBlockSourceContent(ImageBlockParam value) =>
+        new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -195,7 +197,7 @@ public record class ContentBlockSourceContent : ModelBase
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ContentBlockSourceContent"
+                "Data did not match any variant of MessageContentBlockSourceContent"
             );
         }
         this.Switch(
@@ -204,7 +206,7 @@ public record class ContentBlockSourceContent : ModelBase
         );
     }
 
-    public virtual bool Equals(ContentBlockSourceContent? other) =>
+    public virtual bool Equals(MessageContentBlockSourceContent? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -231,9 +233,10 @@ public record class ContentBlockSourceContent : ModelBase
     }
 }
 
-sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSourceContent>
+sealed class MessageContentBlockSourceContentConverter
+    : JsonConverter<MessageContentBlockSourceContent>
 {
-    public override ContentBlockSourceContent? Read(
+    public override MessageContentBlockSourceContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -295,14 +298,14 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
             }
             default:
             {
-                return new ContentBlockSourceContent(element);
+                return new MessageContentBlockSourceContent(element);
             }
         }
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        ContentBlockSourceContent value,
+        MessageContentBlockSourceContent value,
         JsonSerializerOptions options
     )
     {

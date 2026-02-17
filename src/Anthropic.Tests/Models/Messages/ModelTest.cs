@@ -9,6 +9,7 @@ public class ModelTest : TestBase
 {
     [Theory]
     [InlineData(Model.ClaudeOpus4_6)]
+    [InlineData(Model.ClaudeSonnet4_6)]
     [InlineData(Model.ClaudeOpus4_5_20251101)]
     [InlineData(Model.ClaudeOpus4_5)]
     [InlineData(Model.Claude3_7SonnetLatest)]
@@ -50,6 +51,7 @@ public class ModelTest : TestBase
 
     [Theory]
     [InlineData(Model.ClaudeOpus4_6)]
+    [InlineData(Model.ClaudeSonnet4_6)]
     [InlineData(Model.ClaudeOpus4_5_20251101)]
     [InlineData(Model.ClaudeOpus4_5)]
     [InlineData(Model.Claude3_7SonnetLatest)]

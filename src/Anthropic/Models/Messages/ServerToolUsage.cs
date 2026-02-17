@@ -11,6 +11,19 @@ namespace Anthropic.Models.Messages;
 public sealed record class ServerToolUsage : JsonModel
 {
     /// <summary>
+    /// The number of web fetch tool requests.
+    /// </summary>
+    public required long WebFetchRequests
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("web_fetch_requests");
+        }
+        init { this._rawData.Set("web_fetch_requests", value); }
+    }
+
+    /// <summary>
     /// The number of web search tool requests.
     /// </summary>
     public required long WebSearchRequests
@@ -26,6 +39,7 @@ public sealed record class ServerToolUsage : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
+        _ = this.WebFetchRequests;
         _ = this.WebSearchRequests;
     }
 
@@ -54,13 +68,6 @@ public sealed record class ServerToolUsage : JsonModel
     public static ServerToolUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-
-    [SetsRequiredMembers]
-    public ServerToolUsage(long webSearchRequests)
-        : this()
-    {
-        this.WebSearchRequests = webSearchRequests;
     }
 }
 

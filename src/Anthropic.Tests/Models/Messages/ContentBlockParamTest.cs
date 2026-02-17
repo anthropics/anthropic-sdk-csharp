@@ -120,6 +120,7 @@ public class ContentBlockParamTest : TestBase
             },
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new DirectCaller(),
         };
         value.Validate();
     }
@@ -147,7 +148,9 @@ public class ContentBlockParamTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
+            Name = ServerToolUseBlockParamName.WebSearch,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new DirectCaller(),
         };
         value.Validate();
     }
@@ -169,6 +172,91 @@ public class ContentBlockParamTest : TestBase
                 ]
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new DirectCaller(),
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void WebFetchToolResultValidationWorks()
+    {
+        ContentBlockParam value = new WebFetchToolResultBlockParam()
+        {
+            Content = new WebFetchToolResultErrorBlockParam(
+                WebFetchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new DirectCaller(),
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void CodeExecutionToolResultValidationWorks()
+    {
+        ContentBlockParam value = new CodeExecutionToolResultBlockParam()
+        {
+            Content = new CodeExecutionToolResultErrorParam(
+                CodeExecutionToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BashCodeExecutionToolResultValidationWorks()
+    {
+        ContentBlockParam value = new BashCodeExecutionToolResultBlockParam()
+        {
+            Content = new BashCodeExecutionToolResultErrorParam(
+                BashCodeExecutionToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void TextEditorCodeExecutionToolResultValidationWorks()
+    {
+        ContentBlockParam value = new TextEditorCodeExecutionToolResultBlockParam()
+        {
+            Content = new TextEditorCodeExecutionToolResultErrorParam()
+            {
+                ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void ToolSearchToolResultValidationWorks()
+    {
+        ContentBlockParam value = new ToolSearchToolResultBlockParam()
+        {
+            Content = new ToolSearchToolResultErrorParam(
+                ToolSearchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void ContainerUploadValidationWorks()
+    {
+        ContentBlockParam value = new ContainerUploadBlockParam()
+        {
+            FileID = "file_id",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         value.Validate();
@@ -323,6 +411,7 @@ public class ContentBlockParamTest : TestBase
             },
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new DirectCaller(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
@@ -362,7 +451,9 @@ public class ContentBlockParamTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
+            Name = ServerToolUseBlockParamName.WebSearch,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new DirectCaller(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
@@ -390,6 +481,127 @@ public class ContentBlockParamTest : TestBase
                 ]
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new DirectCaller(),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WebFetchToolResultSerializationRoundtripWorks()
+    {
+        ContentBlockParam value = new WebFetchToolResultBlockParam()
+        {
+            Content = new WebFetchToolResultErrorBlockParam(
+                WebFetchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new DirectCaller(),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void CodeExecutionToolResultSerializationRoundtripWorks()
+    {
+        ContentBlockParam value = new CodeExecutionToolResultBlockParam()
+        {
+            Content = new CodeExecutionToolResultErrorParam(
+                CodeExecutionToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BashCodeExecutionToolResultSerializationRoundtripWorks()
+    {
+        ContentBlockParam value = new BashCodeExecutionToolResultBlockParam()
+        {
+            Content = new BashCodeExecutionToolResultErrorParam(
+                BashCodeExecutionToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void TextEditorCodeExecutionToolResultSerializationRoundtripWorks()
+    {
+        ContentBlockParam value = new TextEditorCodeExecutionToolResultBlockParam()
+        {
+            Content = new TextEditorCodeExecutionToolResultErrorParam()
+            {
+                ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ToolSearchToolResultSerializationRoundtripWorks()
+    {
+        ContentBlockParam value = new ToolSearchToolResultBlockParam()
+        {
+            Content = new ToolSearchToolResultErrorParam(
+                ToolSearchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ContainerUploadSerializationRoundtripWorks()
+    {
+        ContentBlockParam value = new ContainerUploadBlockParam()
+        {
+            FileID = "file_id",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

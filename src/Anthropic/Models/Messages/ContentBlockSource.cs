@@ -13,12 +13,12 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(JsonModelConverter<ContentBlockSource, ContentBlockSourceFromRaw>))]
 public sealed record class ContentBlockSource : JsonModel
 {
-    public required Content Content
+    public required ContentBlockSourceContent Content
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<Content>("content");
+            return this._rawData.GetNotNullClass<ContentBlockSourceContent>("content");
         }
         init { this._rawData.Set("content", value); }
     }
@@ -78,7 +78,7 @@ public sealed record class ContentBlockSource : JsonModel
     }
 
     [SetsRequiredMembers]
-    public ContentBlockSource(Content content)
+    public ContentBlockSource(ContentBlockSourceContent content)
         : this()
     {
         this.Content = content;
@@ -92,8 +92,8 @@ class ContentBlockSourceFromRaw : IFromRawJson<ContentBlockSource>
         ContentBlockSource.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(ContentConverter))]
-public record class Content : ModelBase
+[JsonConverter(typeof(ContentBlockSourceContentConverter))]
+public record class ContentBlockSourceContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -110,19 +110,22 @@ public record class Content : ModelBase
         }
     }
 
-    public Content(string value, JsonElement? element = null)
+    public ContentBlockSourceContent(string value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Content(IReadOnlyList<ContentBlockSourceContent> value, JsonElement? element = null)
+    public ContentBlockSourceContent(
+        IReadOnlyList<MessageContentBlockSourceContent> value,
+        JsonElement? element = null
+    )
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
         this._element = element;
     }
 
-    public Content(JsonElement element)
+    public ContentBlockSourceContent(JsonElement element)
     {
         this._element = element;
     }
@@ -150,24 +153,24 @@ public record class Content : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="IReadOnlyList<ContentBlockSourceContent>"/>.
+    /// type <see cref="IReadOnlyList<MessageContentBlockSourceContent>"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBlockSource(out var value)) {
-    ///     // `value` is of type `IReadOnlyList<ContentBlockSourceContent>`
+    ///     // `value` is of type `IReadOnlyList<MessageContentBlockSourceContent>`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBlockSource(
-        [NotNullWhen(true)] out IReadOnlyList<ContentBlockSourceContent>? value
+        [NotNullWhen(true)] out IReadOnlyList<MessageContentBlockSourceContent>? value
     )
     {
-        value = this.Value as IReadOnlyList<ContentBlockSourceContent>;
+        value = this.Value as IReadOnlyList<MessageContentBlockSourceContent>;
         return value != null;
     }
 
@@ -186,14 +189,14 @@ public record class Content : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (string value) => {...},
-    ///     (IReadOnlyList<ContentBlockSourceContent> value) => {...}
+    ///     (IReadOnlyList<MessageContentBlockSourceContent> value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<string> @string,
-        System::Action<IReadOnlyList<ContentBlockSourceContent>> contentBlockSourceContent
+        System::Action<IReadOnlyList<MessageContentBlockSourceContent>> contentBlockSourceContent
     )
     {
         switch (this.Value)
@@ -201,12 +204,12 @@ public record class Content : ModelBase
             case string value:
                 @string(value);
                 break;
-            case IReadOnlyList<ContentBlockSourceContent> value:
+            case IReadOnlyList<MessageContentBlockSourceContent> value:
                 contentBlockSourceContent(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of Content"
+                    "Data did not match any variant of ContentBlockSourceContent"
                 );
         }
     }
@@ -227,30 +230,33 @@ public record class Content : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (string value) => {...},
-    ///     (IReadOnlyList<ContentBlockSourceContent> value) => {...}
+    ///     (IReadOnlyList<MessageContentBlockSourceContent> value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
         System::Func<string, T> @string,
-        System::Func<IReadOnlyList<ContentBlockSourceContent>, T> contentBlockSourceContent
+        System::Func<IReadOnlyList<MessageContentBlockSourceContent>, T> contentBlockSourceContent
     )
     {
         return this.Value switch
         {
             string value => @string(value),
-            IReadOnlyList<ContentBlockSourceContent> value => contentBlockSourceContent(value),
+            IReadOnlyList<MessageContentBlockSourceContent> value => contentBlockSourceContent(
+                value
+            ),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Content"
+                "Data did not match any variant of ContentBlockSourceContent"
             ),
         };
     }
 
-    public static implicit operator Content(string value) => new(value);
+    public static implicit operator ContentBlockSourceContent(string value) => new(value);
 
-    public static implicit operator Content(List<ContentBlockSourceContent> value) =>
-        new((IReadOnlyList<ContentBlockSourceContent>)value);
+    public static implicit operator ContentBlockSourceContent(
+        List<MessageContentBlockSourceContent> value
+    ) => new((IReadOnlyList<MessageContentBlockSourceContent>)value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -266,11 +272,13 @@ public record class Content : ModelBase
     {
         if (this.Value == null)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Content");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ContentBlockSourceContent"
+            );
         }
     }
 
-    public virtual bool Equals(Content? other) =>
+    public virtual bool Equals(ContentBlockSourceContent? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -291,15 +299,15 @@ public record class Content : ModelBase
         return this.Value switch
         {
             string _ => 0,
-            IReadOnlyList<ContentBlockSourceContent> _ => 1,
+            IReadOnlyList<MessageContentBlockSourceContent> _ => 1,
             _ => -1,
         };
     }
 }
 
-sealed class ContentConverter : JsonConverter<Content>
+sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSourceContent>
 {
-    public override Content? Read(
+    public override ContentBlockSourceContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -321,7 +329,7 @@ sealed class ContentConverter : JsonConverter<Content>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<ContentBlockSourceContent>>(
+            var deserialized = JsonSerializer.Deserialize<List<MessageContentBlockSourceContent>>(
                 element,
                 options
             );
@@ -338,7 +346,11 @@ sealed class ContentConverter : JsonConverter<Content>
         return new(element);
     }
 
-    public override void Write(Utf8JsonWriter writer, Content value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        ContentBlockSourceContent value,
+        JsonSerializerOptions options
+    )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
     }

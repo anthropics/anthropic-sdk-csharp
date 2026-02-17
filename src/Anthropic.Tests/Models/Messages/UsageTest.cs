@@ -18,8 +18,9 @@ public class UsageTest : TestBase
             InferenceGeo = "inference_geo",
             InputTokens = 2095,
             OutputTokens = 503,
-            ServerToolUse = new(0),
+            ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = UsageServiceTier.Standard,
+            Speed = UsageSpeed.Standard,
         };
 
         CacheCreation expectedCacheCreation = new()
@@ -32,8 +33,13 @@ public class UsageTest : TestBase
         string expectedInferenceGeo = "inference_geo";
         long expectedInputTokens = 2095;
         long expectedOutputTokens = 503;
-        ServerToolUsage expectedServerToolUse = new(0);
+        ServerToolUsage expectedServerToolUse = new()
+        {
+            WebFetchRequests = 2,
+            WebSearchRequests = 0,
+        };
         ApiEnum<string, UsageServiceTier> expectedServiceTier = UsageServiceTier.Standard;
+        ApiEnum<string, UsageSpeed> expectedSpeed = UsageSpeed.Standard;
 
         Assert.Equal(expectedCacheCreation, model.CacheCreation);
         Assert.Equal(expectedCacheCreationInputTokens, model.CacheCreationInputTokens);
@@ -43,6 +49,7 @@ public class UsageTest : TestBase
         Assert.Equal(expectedOutputTokens, model.OutputTokens);
         Assert.Equal(expectedServerToolUse, model.ServerToolUse);
         Assert.Equal(expectedServiceTier, model.ServiceTier);
+        Assert.Equal(expectedSpeed, model.Speed);
     }
 
     [Fact]
@@ -56,8 +63,9 @@ public class UsageTest : TestBase
             InferenceGeo = "inference_geo",
             InputTokens = 2095,
             OutputTokens = 503,
-            ServerToolUse = new(0),
+            ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = UsageServiceTier.Standard,
+            Speed = UsageSpeed.Standard,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -77,8 +85,9 @@ public class UsageTest : TestBase
             InferenceGeo = "inference_geo",
             InputTokens = 2095,
             OutputTokens = 503,
-            ServerToolUse = new(0),
+            ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = UsageServiceTier.Standard,
+            Speed = UsageSpeed.Standard,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -95,8 +104,13 @@ public class UsageTest : TestBase
         string expectedInferenceGeo = "inference_geo";
         long expectedInputTokens = 2095;
         long expectedOutputTokens = 503;
-        ServerToolUsage expectedServerToolUse = new(0);
+        ServerToolUsage expectedServerToolUse = new()
+        {
+            WebFetchRequests = 2,
+            WebSearchRequests = 0,
+        };
         ApiEnum<string, UsageServiceTier> expectedServiceTier = UsageServiceTier.Standard;
+        ApiEnum<string, UsageSpeed> expectedSpeed = UsageSpeed.Standard;
 
         Assert.Equal(expectedCacheCreation, deserialized.CacheCreation);
         Assert.Equal(expectedCacheCreationInputTokens, deserialized.CacheCreationInputTokens);
@@ -106,6 +120,7 @@ public class UsageTest : TestBase
         Assert.Equal(expectedOutputTokens, deserialized.OutputTokens);
         Assert.Equal(expectedServerToolUse, deserialized.ServerToolUse);
         Assert.Equal(expectedServiceTier, deserialized.ServiceTier);
+        Assert.Equal(expectedSpeed, deserialized.Speed);
     }
 
     [Fact]
@@ -119,8 +134,9 @@ public class UsageTest : TestBase
             InferenceGeo = "inference_geo",
             InputTokens = 2095,
             OutputTokens = 503,
-            ServerToolUse = new(0),
+            ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = UsageServiceTier.Standard,
+            Speed = UsageSpeed.Standard,
         };
 
         model.Validate();
@@ -137,8 +153,9 @@ public class UsageTest : TestBase
             InferenceGeo = "inference_geo",
             InputTokens = 2095,
             OutputTokens = 503,
-            ServerToolUse = new(0),
+            ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = UsageServiceTier.Standard,
+            Speed = UsageSpeed.Standard,
         };
 
         Usage copied = new(model);
@@ -199,6 +216,64 @@ public class UsageServiceTierTest : TestBase
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UsageServiceTier>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class UsageSpeedTest : TestBase
+{
+    [Theory]
+    [InlineData(UsageSpeed.Standard)]
+    [InlineData(UsageSpeed.Fast)]
+    public void Validation_Works(UsageSpeed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, UsageSpeed> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, UsageSpeed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(UsageSpeed.Standard)]
+    [InlineData(UsageSpeed.Fast)]
+    public void SerializationRoundtrip_Works(UsageSpeed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, UsageSpeed> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UsageSpeed>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, UsageSpeed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UsageSpeed>>(
             json,
             ModelBase.SerializerOptions
         );

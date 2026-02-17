@@ -1,0 +1,139 @@
+using System.Text.Json;
+using Anthropic.Core;
+using Anthropic.Models.Messages;
+
+namespace Anthropic.Tests.Models.Messages;
+
+public class ContainerUploadBlockParamTest : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var model = new ContainerUploadBlockParam
+        {
+            FileID = "file_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        string expectedFileID = "file_id";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("container_upload");
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+
+        Assert.Equal(expectedFileID, model.FileID);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.Equal(expectedCacheControl, model.CacheControl);
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new ContainerUploadBlockParam
+        {
+            FileID = "file_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContainerUploadBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new ContainerUploadBlockParam
+        {
+            FileID = "file_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContainerUploadBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+        Assert.NotNull(deserialized);
+
+        string expectedFileID = "file_id";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("container_upload");
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+
+        Assert.Equal(expectedFileID, deserialized.FileID);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.Equal(expectedCacheControl, deserialized.CacheControl);
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new ContainerUploadBlockParam
+        {
+            FileID = "file_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new ContainerUploadBlockParam { FileID = "file_id" };
+
+        Assert.Null(model.CacheControl);
+        Assert.False(model.RawData.ContainsKey("cache_control"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new ContainerUploadBlockParam { FileID = "file_id" };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
+    {
+        var model = new ContainerUploadBlockParam
+        {
+            FileID = "file_id",
+
+            CacheControl = null,
+        };
+
+        Assert.Null(model.CacheControl);
+        Assert.True(model.RawData.ContainsKey("cache_control"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new ContainerUploadBlockParam
+        {
+            FileID = "file_id",
+
+            CacheControl = null,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ContainerUploadBlockParam
+        {
+            FileID = "file_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        ContainerUploadBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
+}

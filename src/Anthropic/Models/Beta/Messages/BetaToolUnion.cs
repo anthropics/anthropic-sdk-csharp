@@ -8,10 +8,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 /// <summary>
-/// Configuration for a group of tools from an MCP server.
-///
-/// <para>Allows configuring enabled status and defer_loading for all tools from
-/// an MCP server, with optional per-tool overrides.</para>
+/// Code execution tool with REPL state persistence (daemon mode + gVisor checkpoint).
 /// </summary>
 [JsonConverter(typeof(BetaToolUnionConverter))]
 public record class BetaToolUnion : ModelBase
@@ -41,6 +38,7 @@ public record class BetaToolUnion : ModelBase
                 bash20250124: (x) => x.CacheControl,
                 codeExecutionTool20250522: (x) => x.CacheControl,
                 codeExecutionTool20250825: (x) => x.CacheControl,
+                codeExecutionTool20260120: (x) => x.CacheControl,
                 computerUse20241022: (x) => x.CacheControl,
                 memoryTool20250818: (x) => x.CacheControl,
                 computerUse20250124: (x) => x.CacheControl,
@@ -51,6 +49,8 @@ public record class BetaToolUnion : ModelBase
                 textEditor20250728: (x) => x.CacheControl,
                 webSearchTool20250305: (x) => x.CacheControl,
                 webFetchTool20250910: (x) => x.CacheControl,
+                webSearchTool20260209: (x) => x.CacheControl,
+                webFetchTool20260209: (x) => x.CacheControl,
                 searchToolBm25_20251119: (x) => x.CacheControl,
                 searchToolRegex20251119: (x) => x.CacheControl,
                 mcpToolset: (x) => x.CacheControl
@@ -68,6 +68,7 @@ public record class BetaToolUnion : ModelBase
                 bash20250124: (x) => x.DeferLoading,
                 codeExecutionTool20250522: (x) => x.DeferLoading,
                 codeExecutionTool20250825: (x) => x.DeferLoading,
+                codeExecutionTool20260120: (x) => x.DeferLoading,
                 computerUse20241022: (x) => x.DeferLoading,
                 memoryTool20250818: (x) => x.DeferLoading,
                 computerUse20250124: (x) => x.DeferLoading,
@@ -78,6 +79,8 @@ public record class BetaToolUnion : ModelBase
                 textEditor20250728: (x) => x.DeferLoading,
                 webSearchTool20250305: (x) => x.DeferLoading,
                 webFetchTool20250910: (x) => x.DeferLoading,
+                webSearchTool20260209: (x) => x.DeferLoading,
+                webFetchTool20260209: (x) => x.DeferLoading,
                 searchToolBm25_20251119: (x) => x.DeferLoading,
                 searchToolRegex20251119: (x) => x.DeferLoading,
                 mcpToolset: (_) => null
@@ -95,6 +98,7 @@ public record class BetaToolUnion : ModelBase
                 bash20250124: (x) => x.Strict,
                 codeExecutionTool20250522: (x) => x.Strict,
                 codeExecutionTool20250825: (x) => x.Strict,
+                codeExecutionTool20260120: (x) => x.Strict,
                 computerUse20241022: (x) => x.Strict,
                 memoryTool20250818: (x) => x.Strict,
                 computerUse20250124: (x) => x.Strict,
@@ -105,6 +109,8 @@ public record class BetaToolUnion : ModelBase
                 textEditor20250728: (x) => x.Strict,
                 webSearchTool20250305: (x) => x.Strict,
                 webFetchTool20250910: (x) => x.Strict,
+                webSearchTool20260209: (x) => x.Strict,
+                webFetchTool20260209: (x) => x.Strict,
                 searchToolBm25_20251119: (x) => x.Strict,
                 searchToolRegex20251119: (x) => x.Strict,
                 mcpToolset: (_) => null
@@ -122,6 +128,7 @@ public record class BetaToolUnion : ModelBase
                 bash20250124: (_) => null,
                 codeExecutionTool20250522: (_) => null,
                 codeExecutionTool20250825: (_) => null,
+                codeExecutionTool20260120: (_) => null,
                 computerUse20241022: (x) => x.DisplayHeightPx,
                 memoryTool20250818: (_) => null,
                 computerUse20250124: (x) => x.DisplayHeightPx,
@@ -132,6 +139,8 @@ public record class BetaToolUnion : ModelBase
                 textEditor20250728: (_) => null,
                 webSearchTool20250305: (_) => null,
                 webFetchTool20250910: (_) => null,
+                webSearchTool20260209: (_) => null,
+                webFetchTool20260209: (_) => null,
                 searchToolBm25_20251119: (_) => null,
                 searchToolRegex20251119: (_) => null,
                 mcpToolset: (_) => null
@@ -149,6 +158,7 @@ public record class BetaToolUnion : ModelBase
                 bash20250124: (_) => null,
                 codeExecutionTool20250522: (_) => null,
                 codeExecutionTool20250825: (_) => null,
+                codeExecutionTool20260120: (_) => null,
                 computerUse20241022: (x) => x.DisplayWidthPx,
                 memoryTool20250818: (_) => null,
                 computerUse20250124: (x) => x.DisplayWidthPx,
@@ -159,6 +169,8 @@ public record class BetaToolUnion : ModelBase
                 textEditor20250728: (_) => null,
                 webSearchTool20250305: (_) => null,
                 webFetchTool20250910: (_) => null,
+                webSearchTool20260209: (_) => null,
+                webFetchTool20260209: (_) => null,
                 searchToolBm25_20251119: (_) => null,
                 searchToolRegex20251119: (_) => null,
                 mcpToolset: (_) => null
@@ -176,6 +188,7 @@ public record class BetaToolUnion : ModelBase
                 bash20250124: (_) => null,
                 codeExecutionTool20250522: (_) => null,
                 codeExecutionTool20250825: (_) => null,
+                codeExecutionTool20260120: (_) => null,
                 computerUse20241022: (x) => x.DisplayNumber,
                 memoryTool20250818: (_) => null,
                 computerUse20250124: (x) => x.DisplayNumber,
@@ -186,6 +199,8 @@ public record class BetaToolUnion : ModelBase
                 textEditor20250728: (_) => null,
                 webSearchTool20250305: (_) => null,
                 webFetchTool20250910: (_) => null,
+                webSearchTool20260209: (_) => null,
+                webFetchTool20260209: (_) => null,
                 searchToolBm25_20251119: (_) => null,
                 searchToolRegex20251119: (_) => null,
                 mcpToolset: (_) => null
@@ -203,6 +218,7 @@ public record class BetaToolUnion : ModelBase
                 bash20250124: (_) => null,
                 codeExecutionTool20250522: (_) => null,
                 codeExecutionTool20250825: (_) => null,
+                codeExecutionTool20260120: (_) => null,
                 computerUse20241022: (_) => null,
                 memoryTool20250818: (_) => null,
                 computerUse20250124: (_) => null,
@@ -213,6 +229,98 @@ public record class BetaToolUnion : ModelBase
                 textEditor20250728: (_) => null,
                 webSearchTool20250305: (x) => x.MaxUses,
                 webFetchTool20250910: (x) => x.MaxUses,
+                webSearchTool20260209: (x) => x.MaxUses,
+                webFetchTool20260209: (x) => x.MaxUses,
+                searchToolBm25_20251119: (_) => null,
+                searchToolRegex20251119: (_) => null,
+                mcpToolset: (_) => null
+            );
+        }
+    }
+
+    public BetaUserLocation? UserLocation
+    {
+        get
+        {
+            return Match<BetaUserLocation?>(
+                betaTool: (_) => null,
+                bash20241022: (_) => null,
+                bash20250124: (_) => null,
+                codeExecutionTool20250522: (_) => null,
+                codeExecutionTool20250825: (_) => null,
+                codeExecutionTool20260120: (_) => null,
+                computerUse20241022: (_) => null,
+                memoryTool20250818: (_) => null,
+                computerUse20250124: (_) => null,
+                textEditor20241022: (_) => null,
+                computerUse20251124: (_) => null,
+                textEditor20250124: (_) => null,
+                textEditor20250429: (_) => null,
+                textEditor20250728: (_) => null,
+                webSearchTool20250305: (x) => x.UserLocation,
+                webFetchTool20250910: (_) => null,
+                webSearchTool20260209: (x) => x.UserLocation,
+                webFetchTool20260209: (_) => null,
+                searchToolBm25_20251119: (_) => null,
+                searchToolRegex20251119: (_) => null,
+                mcpToolset: (_) => null
+            );
+        }
+    }
+
+    public BetaCitationsConfigParam? Citations
+    {
+        get
+        {
+            return Match<BetaCitationsConfigParam?>(
+                betaTool: (_) => null,
+                bash20241022: (_) => null,
+                bash20250124: (_) => null,
+                codeExecutionTool20250522: (_) => null,
+                codeExecutionTool20250825: (_) => null,
+                codeExecutionTool20260120: (_) => null,
+                computerUse20241022: (_) => null,
+                memoryTool20250818: (_) => null,
+                computerUse20250124: (_) => null,
+                textEditor20241022: (_) => null,
+                computerUse20251124: (_) => null,
+                textEditor20250124: (_) => null,
+                textEditor20250429: (_) => null,
+                textEditor20250728: (_) => null,
+                webSearchTool20250305: (_) => null,
+                webFetchTool20250910: (x) => x.Citations,
+                webSearchTool20260209: (_) => null,
+                webFetchTool20260209: (x) => x.Citations,
+                searchToolBm25_20251119: (_) => null,
+                searchToolRegex20251119: (_) => null,
+                mcpToolset: (_) => null
+            );
+        }
+    }
+
+    public long? MaxContentTokens
+    {
+        get
+        {
+            return Match<long?>(
+                betaTool: (_) => null,
+                bash20241022: (_) => null,
+                bash20250124: (_) => null,
+                codeExecutionTool20250522: (_) => null,
+                codeExecutionTool20250825: (_) => null,
+                codeExecutionTool20260120: (_) => null,
+                computerUse20241022: (_) => null,
+                memoryTool20250818: (_) => null,
+                computerUse20250124: (_) => null,
+                textEditor20241022: (_) => null,
+                computerUse20251124: (_) => null,
+                textEditor20250124: (_) => null,
+                textEditor20250429: (_) => null,
+                textEditor20250728: (_) => null,
+                webSearchTool20250305: (_) => null,
+                webFetchTool20250910: (x) => x.MaxContentTokens,
+                webSearchTool20260209: (_) => null,
+                webFetchTool20260209: (x) => x.MaxContentTokens,
                 searchToolBm25_20251119: (_) => null,
                 searchToolRegex20251119: (_) => null,
                 mcpToolset: (_) => null
@@ -245,6 +353,12 @@ public record class BetaToolUnion : ModelBase
     }
 
     public BetaToolUnion(BetaCodeExecutionTool20250825 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaToolUnion(BetaCodeExecutionTool20260120 value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -305,6 +419,18 @@ public record class BetaToolUnion : ModelBase
     }
 
     public BetaToolUnion(BetaWebFetchTool20250910 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaToolUnion(BetaWebSearchTool20260209 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaToolUnion(BetaWebFetchTool20260209 value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -439,6 +565,29 @@ public record class BetaToolUnion : ModelBase
     )
     {
         value = this.Value as BetaCodeExecutionTool20250825;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCodeExecutionTool20260120"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCodeExecutionTool20260120(out var value)) {
+    ///     // `value` is of type `BetaCodeExecutionTool20260120`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickCodeExecutionTool20260120(
+        [NotNullWhen(true)] out BetaCodeExecutionTool20260120? value
+    )
+    {
+        value = this.Value as BetaCodeExecutionTool20260120;
         return value != null;
     }
 
@@ -662,6 +811,50 @@ public record class BetaToolUnion : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebSearchTool20260209"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebSearchTool20260209(out var value)) {
+    ///     // `value` is of type `BetaWebSearchTool20260209`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebSearchTool20260209(
+        [NotNullWhen(true)] out BetaWebSearchTool20260209? value
+    )
+    {
+        value = this.Value as BetaWebSearchTool20260209;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebFetchTool20260209"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebFetchTool20260209(out var value)) {
+    ///     // `value` is of type `BetaWebFetchTool20260209`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebFetchTool20260209([NotNullWhen(true)] out BetaWebFetchTool20260209? value)
+    {
+        value = this.Value as BetaWebFetchTool20260209;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolSearchToolBm25_20251119"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
@@ -746,6 +939,7 @@ public record class BetaToolUnion : ModelBase
     ///     (BetaToolBash20250124 value) => {...},
     ///     (BetaCodeExecutionTool20250522 value) => {...},
     ///     (BetaCodeExecutionTool20250825 value) => {...},
+    ///     (BetaCodeExecutionTool20260120 value) => {...},
     ///     (BetaToolComputerUse20241022 value) => {...},
     ///     (BetaMemoryTool20250818 value) => {...},
     ///     (BetaToolComputerUse20250124 value) => {...},
@@ -756,6 +950,8 @@ public record class BetaToolUnion : ModelBase
     ///     (BetaToolTextEditor20250728 value) => {...},
     ///     (BetaWebSearchTool20250305 value) => {...},
     ///     (BetaWebFetchTool20250910 value) => {...},
+    ///     (BetaWebSearchTool20260209 value) => {...},
+    ///     (BetaWebFetchTool20260209 value) => {...},
     ///     (BetaToolSearchToolBm25_20251119 value) => {...},
     ///     (BetaToolSearchToolRegex20251119 value) => {...},
     ///     (BetaMcpToolset value) => {...}
@@ -769,6 +965,7 @@ public record class BetaToolUnion : ModelBase
         System::Action<BetaToolBash20250124> bash20250124,
         System::Action<BetaCodeExecutionTool20250522> codeExecutionTool20250522,
         System::Action<BetaCodeExecutionTool20250825> codeExecutionTool20250825,
+        System::Action<BetaCodeExecutionTool20260120> codeExecutionTool20260120,
         System::Action<BetaToolComputerUse20241022> computerUse20241022,
         System::Action<BetaMemoryTool20250818> memoryTool20250818,
         System::Action<BetaToolComputerUse20250124> computerUse20250124,
@@ -779,6 +976,8 @@ public record class BetaToolUnion : ModelBase
         System::Action<BetaToolTextEditor20250728> textEditor20250728,
         System::Action<BetaWebSearchTool20250305> webSearchTool20250305,
         System::Action<BetaWebFetchTool20250910> webFetchTool20250910,
+        System::Action<BetaWebSearchTool20260209> webSearchTool20260209,
+        System::Action<BetaWebFetchTool20260209> webFetchTool20260209,
         System::Action<BetaToolSearchToolBm25_20251119> searchToolBm25_20251119,
         System::Action<BetaToolSearchToolRegex20251119> searchToolRegex20251119,
         System::Action<BetaMcpToolset> mcpToolset
@@ -800,6 +999,9 @@ public record class BetaToolUnion : ModelBase
                 break;
             case BetaCodeExecutionTool20250825 value:
                 codeExecutionTool20250825(value);
+                break;
+            case BetaCodeExecutionTool20260120 value:
+                codeExecutionTool20260120(value);
                 break;
             case BetaToolComputerUse20241022 value:
                 computerUse20241022(value);
@@ -830,6 +1032,12 @@ public record class BetaToolUnion : ModelBase
                 break;
             case BetaWebFetchTool20250910 value:
                 webFetchTool20250910(value);
+                break;
+            case BetaWebSearchTool20260209 value:
+                webSearchTool20260209(value);
+                break;
+            case BetaWebFetchTool20260209 value:
+                webFetchTool20260209(value);
                 break;
             case BetaToolSearchToolBm25_20251119 value:
                 searchToolBm25_20251119(value);
@@ -867,6 +1075,7 @@ public record class BetaToolUnion : ModelBase
     ///     (BetaToolBash20250124 value) => {...},
     ///     (BetaCodeExecutionTool20250522 value) => {...},
     ///     (BetaCodeExecutionTool20250825 value) => {...},
+    ///     (BetaCodeExecutionTool20260120 value) => {...},
     ///     (BetaToolComputerUse20241022 value) => {...},
     ///     (BetaMemoryTool20250818 value) => {...},
     ///     (BetaToolComputerUse20250124 value) => {...},
@@ -877,6 +1086,8 @@ public record class BetaToolUnion : ModelBase
     ///     (BetaToolTextEditor20250728 value) => {...},
     ///     (BetaWebSearchTool20250305 value) => {...},
     ///     (BetaWebFetchTool20250910 value) => {...},
+    ///     (BetaWebSearchTool20260209 value) => {...},
+    ///     (BetaWebFetchTool20260209 value) => {...},
     ///     (BetaToolSearchToolBm25_20251119 value) => {...},
     ///     (BetaToolSearchToolRegex20251119 value) => {...},
     ///     (BetaMcpToolset value) => {...}
@@ -890,6 +1101,7 @@ public record class BetaToolUnion : ModelBase
         System::Func<BetaToolBash20250124, T> bash20250124,
         System::Func<BetaCodeExecutionTool20250522, T> codeExecutionTool20250522,
         System::Func<BetaCodeExecutionTool20250825, T> codeExecutionTool20250825,
+        System::Func<BetaCodeExecutionTool20260120, T> codeExecutionTool20260120,
         System::Func<BetaToolComputerUse20241022, T> computerUse20241022,
         System::Func<BetaMemoryTool20250818, T> memoryTool20250818,
         System::Func<BetaToolComputerUse20250124, T> computerUse20250124,
@@ -900,6 +1112,8 @@ public record class BetaToolUnion : ModelBase
         System::Func<BetaToolTextEditor20250728, T> textEditor20250728,
         System::Func<BetaWebSearchTool20250305, T> webSearchTool20250305,
         System::Func<BetaWebFetchTool20250910, T> webFetchTool20250910,
+        System::Func<BetaWebSearchTool20260209, T> webSearchTool20260209,
+        System::Func<BetaWebFetchTool20260209, T> webFetchTool20260209,
         System::Func<BetaToolSearchToolBm25_20251119, T> searchToolBm25_20251119,
         System::Func<BetaToolSearchToolRegex20251119, T> searchToolRegex20251119,
         System::Func<BetaMcpToolset, T> mcpToolset
@@ -912,6 +1126,7 @@ public record class BetaToolUnion : ModelBase
             BetaToolBash20250124 value => bash20250124(value),
             BetaCodeExecutionTool20250522 value => codeExecutionTool20250522(value),
             BetaCodeExecutionTool20250825 value => codeExecutionTool20250825(value),
+            BetaCodeExecutionTool20260120 value => codeExecutionTool20260120(value),
             BetaToolComputerUse20241022 value => computerUse20241022(value),
             BetaMemoryTool20250818 value => memoryTool20250818(value),
             BetaToolComputerUse20250124 value => computerUse20250124(value),
@@ -922,6 +1137,8 @@ public record class BetaToolUnion : ModelBase
             BetaToolTextEditor20250728 value => textEditor20250728(value),
             BetaWebSearchTool20250305 value => webSearchTool20250305(value),
             BetaWebFetchTool20250910 value => webFetchTool20250910(value),
+            BetaWebSearchTool20260209 value => webSearchTool20260209(value),
+            BetaWebFetchTool20260209 value => webFetchTool20260209(value),
             BetaToolSearchToolBm25_20251119 value => searchToolBm25_20251119(value),
             BetaToolSearchToolRegex20251119 value => searchToolRegex20251119(value),
             BetaMcpToolset value => mcpToolset(value),
@@ -943,6 +1160,9 @@ public record class BetaToolUnion : ModelBase
     public static implicit operator BetaToolUnion(BetaCodeExecutionTool20250825 value) =>
         new(value);
 
+    public static implicit operator BetaToolUnion(BetaCodeExecutionTool20260120 value) =>
+        new(value);
+
     public static implicit operator BetaToolUnion(BetaToolComputerUse20241022 value) => new(value);
 
     public static implicit operator BetaToolUnion(BetaMemoryTool20250818 value) => new(value);
@@ -962,6 +1182,10 @@ public record class BetaToolUnion : ModelBase
     public static implicit operator BetaToolUnion(BetaWebSearchTool20250305 value) => new(value);
 
     public static implicit operator BetaToolUnion(BetaWebFetchTool20250910 value) => new(value);
+
+    public static implicit operator BetaToolUnion(BetaWebSearchTool20260209 value) => new(value);
+
+    public static implicit operator BetaToolUnion(BetaWebFetchTool20260209 value) => new(value);
 
     public static implicit operator BetaToolUnion(BetaToolSearchToolBm25_20251119 value) =>
         new(value);
@@ -995,6 +1219,7 @@ public record class BetaToolUnion : ModelBase
             (bash20250124) => bash20250124.Validate(),
             (codeExecutionTool20250522) => codeExecutionTool20250522.Validate(),
             (codeExecutionTool20250825) => codeExecutionTool20250825.Validate(),
+            (codeExecutionTool20260120) => codeExecutionTool20260120.Validate(),
             (computerUse20241022) => computerUse20241022.Validate(),
             (memoryTool20250818) => memoryTool20250818.Validate(),
             (computerUse20250124) => computerUse20250124.Validate(),
@@ -1005,6 +1230,8 @@ public record class BetaToolUnion : ModelBase
             (textEditor20250728) => textEditor20250728.Validate(),
             (webSearchTool20250305) => webSearchTool20250305.Validate(),
             (webFetchTool20250910) => webFetchTool20250910.Validate(),
+            (webSearchTool20260209) => webSearchTool20260209.Validate(),
+            (webFetchTool20260209) => webFetchTool20260209.Validate(),
             (searchToolBm25_20251119) => searchToolBm25_20251119.Validate(),
             (searchToolRegex20251119) => searchToolRegex20251119.Validate(),
             (mcpToolset) => mcpToolset.Validate()
@@ -1036,19 +1263,22 @@ public record class BetaToolUnion : ModelBase
             BetaToolBash20250124 _ => 2,
             BetaCodeExecutionTool20250522 _ => 3,
             BetaCodeExecutionTool20250825 _ => 4,
-            BetaToolComputerUse20241022 _ => 5,
-            BetaMemoryTool20250818 _ => 6,
-            BetaToolComputerUse20250124 _ => 7,
-            BetaToolTextEditor20241022 _ => 8,
-            BetaToolComputerUse20251124 _ => 9,
-            BetaToolTextEditor20250124 _ => 10,
-            BetaToolTextEditor20250429 _ => 11,
-            BetaToolTextEditor20250728 _ => 12,
-            BetaWebSearchTool20250305 _ => 13,
-            BetaWebFetchTool20250910 _ => 14,
-            BetaToolSearchToolBm25_20251119 _ => 15,
-            BetaToolSearchToolRegex20251119 _ => 16,
-            BetaMcpToolset _ => 17,
+            BetaCodeExecutionTool20260120 _ => 5,
+            BetaToolComputerUse20241022 _ => 6,
+            BetaMemoryTool20250818 _ => 7,
+            BetaToolComputerUse20250124 _ => 8,
+            BetaToolTextEditor20241022 _ => 9,
+            BetaToolComputerUse20251124 _ => 10,
+            BetaToolTextEditor20250124 _ => 11,
+            BetaToolTextEditor20250429 _ => 12,
+            BetaToolTextEditor20250728 _ => 13,
+            BetaWebSearchTool20250305 _ => 14,
+            BetaWebFetchTool20250910 _ => 15,
+            BetaWebSearchTool20260209 _ => 16,
+            BetaWebFetchTool20260209 _ => 17,
+            BetaToolSearchToolBm25_20251119 _ => 18,
+            BetaToolSearchToolRegex20251119 _ => 19,
+            BetaMcpToolset _ => 20,
             _ => -1,
         };
     }
@@ -1125,6 +1355,23 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250825>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20260120>(
                 element,
                 options
             );
@@ -1292,6 +1539,40 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20260209>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20260209>(
                 element,
                 options
             );
