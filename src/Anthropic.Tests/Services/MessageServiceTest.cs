@@ -31,7 +31,6 @@ public class MessageServiceTest
                 OutputTokens = 25,
                 ServerToolUse = null,
                 ServiceTier = UsageServiceTier.Standard,
-                Speed = null,
                 InferenceGeo = "inference_geo",
             },
         };
