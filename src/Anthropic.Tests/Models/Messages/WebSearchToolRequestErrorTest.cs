@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -10,9 +9,13 @@ public class WebSearchToolRequestErrorTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new WebSearchToolRequestError { ErrorCode = ErrorCode.InvalidToolInput };
+        var model = new WebSearchToolRequestError
+        {
+            ErrorCode = WebSearchToolResultErrorCode.InvalidToolInput,
+        };
 
-        ApiEnum<string, ErrorCode> expectedErrorCode = ErrorCode.InvalidToolInput;
+        ApiEnum<string, WebSearchToolResultErrorCode> expectedErrorCode =
+            WebSearchToolResultErrorCode.InvalidToolInput;
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "web_search_tool_result_error"
         );
@@ -24,7 +27,10 @@ public class WebSearchToolRequestErrorTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new WebSearchToolRequestError { ErrorCode = ErrorCode.InvalidToolInput };
+        var model = new WebSearchToolRequestError
+        {
+            ErrorCode = WebSearchToolResultErrorCode.InvalidToolInput,
+        };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<WebSearchToolRequestError>(
@@ -38,7 +44,10 @@ public class WebSearchToolRequestErrorTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new WebSearchToolRequestError { ErrorCode = ErrorCode.InvalidToolInput };
+        var model = new WebSearchToolRequestError
+        {
+            ErrorCode = WebSearchToolResultErrorCode.InvalidToolInput,
+        };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<WebSearchToolRequestError>(
@@ -47,7 +56,8 @@ public class WebSearchToolRequestErrorTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, ErrorCode> expectedErrorCode = ErrorCode.InvalidToolInput;
+        ApiEnum<string, WebSearchToolResultErrorCode> expectedErrorCode =
+            WebSearchToolResultErrorCode.InvalidToolInput;
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "web_search_tool_result_error"
         );
@@ -59,7 +69,10 @@ public class WebSearchToolRequestErrorTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new WebSearchToolRequestError { ErrorCode = ErrorCode.InvalidToolInput };
+        var model = new WebSearchToolRequestError
+        {
+            ErrorCode = WebSearchToolResultErrorCode.InvalidToolInput,
+        };
 
         model.Validate();
     }
@@ -67,76 +80,13 @@ public class WebSearchToolRequestErrorTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new WebSearchToolRequestError { ErrorCode = ErrorCode.InvalidToolInput };
+        var model = new WebSearchToolRequestError
+        {
+            ErrorCode = WebSearchToolResultErrorCode.InvalidToolInput,
+        };
 
         WebSearchToolRequestError copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class ErrorCodeTest : TestBase
-{
-    [Theory]
-    [InlineData(ErrorCode.InvalidToolInput)]
-    [InlineData(ErrorCode.Unavailable)]
-    [InlineData(ErrorCode.MaxUsesExceeded)]
-    [InlineData(ErrorCode.TooManyRequests)]
-    [InlineData(ErrorCode.QueryTooLong)]
-    [InlineData(ErrorCode.RequestTooLarge)]
-    public void Validation_Works(ErrorCode rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, ErrorCode> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, ErrorCode>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(ErrorCode.InvalidToolInput)]
-    [InlineData(ErrorCode.Unavailable)]
-    [InlineData(ErrorCode.MaxUsesExceeded)]
-    [InlineData(ErrorCode.TooManyRequests)]
-    [InlineData(ErrorCode.QueryTooLong)]
-    [InlineData(ErrorCode.RequestTooLarge)]
-    public void SerializationRoundtrip_Works(ErrorCode rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, ErrorCode> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ErrorCode>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, ErrorCode>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ErrorCode>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
     }
 }

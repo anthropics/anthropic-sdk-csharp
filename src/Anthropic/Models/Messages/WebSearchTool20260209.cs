@@ -172,14 +172,12 @@ public sealed record class WebSearchTool20260209 : JsonModel
     /// <summary>
     /// Parameters for the user's location. Used to provide more relevant search results.
     /// </summary>
-    public WebSearchTool20260209UserLocation? UserLocation
+    public UserLocation? UserLocation
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<WebSearchTool20260209UserLocation>(
-                "user_location"
-            );
+            return this._rawData.GetNullableClass<UserLocation>("user_location");
         }
         init { this._rawData.Set("user_location", value); }
     }
@@ -306,136 +304,4 @@ sealed class WebSearchTool20260209AllowedCallerConverter
             options
         );
     }
-}
-
-/// <summary>
-/// Parameters for the user's location. Used to provide more relevant search results.
-/// </summary>
-[JsonConverter(
-    typeof(JsonModelConverter<
-        WebSearchTool20260209UserLocation,
-        WebSearchTool20260209UserLocationFromRaw
-    >)
-)]
-public sealed record class WebSearchTool20260209UserLocation : JsonModel
-{
-    public JsonElement Type
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<JsonElement>("type");
-        }
-        init { this._rawData.Set("type", value); }
-    }
-
-    /// <summary>
-    /// The city of the user.
-    /// </summary>
-    public string? City
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("city");
-        }
-        init { this._rawData.Set("city", value); }
-    }
-
-    /// <summary>
-    /// The two letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
-    /// of the user.
-    /// </summary>
-    public string? Country
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("country");
-        }
-        init { this._rawData.Set("country", value); }
-    }
-
-    /// <summary>
-    /// The region of the user.
-    /// </summary>
-    public string? Region
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("region");
-        }
-        init { this._rawData.Set("region", value); }
-    }
-
-    /// <summary>
-    /// The [IANA timezone](https://nodatime.org/TimeZones) of the user.
-    /// </summary>
-    public string? Timezone
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("timezone");
-        }
-        init { this._rawData.Set("timezone", value); }
-    }
-
-    /// <inheritdoc/>
-    public override void Validate()
-    {
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("approximate")))
-        {
-            throw new AnthropicInvalidDataException("Invalid value given for constant");
-        }
-        _ = this.City;
-        _ = this.Country;
-        _ = this.Region;
-        _ = this.Timezone;
-    }
-
-    public WebSearchTool20260209UserLocation()
-    {
-        this.Type = JsonSerializer.SerializeToElement("approximate");
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public WebSearchTool20260209UserLocation(
-        WebSearchTool20260209UserLocation webSearchTool20260209UserLocation
-    )
-        : base(webSearchTool20260209UserLocation) { }
-#pragma warning restore CS8618
-
-    public WebSearchTool20260209UserLocation(IReadOnlyDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-
-        this.Type = JsonSerializer.SerializeToElement("approximate");
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    WebSearchTool20260209UserLocation(FrozenDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-#pragma warning restore CS8618
-
-    /// <inheritdoc cref="WebSearchTool20260209UserLocationFromRaw.FromRawUnchecked"/>
-    public static WebSearchTool20260209UserLocation FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-}
-
-class WebSearchTool20260209UserLocationFromRaw : IFromRawJson<WebSearchTool20260209UserLocation>
-{
-    /// <inheritdoc/>
-    public WebSearchTool20260209UserLocation FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    ) => WebSearchTool20260209UserLocation.FromRawUnchecked(rawData);
 }

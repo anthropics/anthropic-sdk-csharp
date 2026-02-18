@@ -12,15 +12,13 @@ public class WebSearchToolResultBlockTest : TestBase
         var model = new WebSearchToolResultBlock
         {
             Caller = new DirectCaller(),
-            Content = new WebSearchToolResultError(
-                WebSearchToolResultErrorErrorCode.InvalidToolInput
-            ),
+            Content = new WebSearchToolResultError(WebSearchToolResultErrorCode.InvalidToolInput),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
         WebSearchToolResultBlockCaller expectedCaller = new DirectCaller();
         WebSearchToolResultBlockContent expectedContent = new WebSearchToolResultError(
-            WebSearchToolResultErrorErrorCode.InvalidToolInput
+            WebSearchToolResultErrorCode.InvalidToolInput
         );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
@@ -37,9 +35,7 @@ public class WebSearchToolResultBlockTest : TestBase
         var model = new WebSearchToolResultBlock
         {
             Caller = new DirectCaller(),
-            Content = new WebSearchToolResultError(
-                WebSearchToolResultErrorErrorCode.InvalidToolInput
-            ),
+            Content = new WebSearchToolResultError(WebSearchToolResultErrorCode.InvalidToolInput),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
@@ -58,9 +54,7 @@ public class WebSearchToolResultBlockTest : TestBase
         var model = new WebSearchToolResultBlock
         {
             Caller = new DirectCaller(),
-            Content = new WebSearchToolResultError(
-                WebSearchToolResultErrorErrorCode.InvalidToolInput
-            ),
+            Content = new WebSearchToolResultError(WebSearchToolResultErrorCode.InvalidToolInput),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
@@ -73,7 +67,7 @@ public class WebSearchToolResultBlockTest : TestBase
 
         WebSearchToolResultBlockCaller expectedCaller = new DirectCaller();
         WebSearchToolResultBlockContent expectedContent = new WebSearchToolResultError(
-            WebSearchToolResultErrorErrorCode.InvalidToolInput
+            WebSearchToolResultErrorCode.InvalidToolInput
         );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
@@ -90,9 +84,7 @@ public class WebSearchToolResultBlockTest : TestBase
         var model = new WebSearchToolResultBlock
         {
             Caller = new DirectCaller(),
-            Content = new WebSearchToolResultError(
-                WebSearchToolResultErrorErrorCode.InvalidToolInput
-            ),
+            Content = new WebSearchToolResultError(WebSearchToolResultErrorCode.InvalidToolInput),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
@@ -105,9 +97,7 @@ public class WebSearchToolResultBlockTest : TestBase
         var model = new WebSearchToolResultBlock
         {
             Caller = new DirectCaller(),
-            Content = new WebSearchToolResultError(
-                WebSearchToolResultErrorErrorCode.InvalidToolInput
-            ),
+            Content = new WebSearchToolResultError(WebSearchToolResultErrorCode.InvalidToolInput),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
