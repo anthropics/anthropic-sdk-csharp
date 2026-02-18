@@ -6,24 +6,24 @@ using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
 
-public class CodeExecutionTool20250825Test : TestBase
+public class CodeExecutionTool20260120Test : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new CodeExecutionTool20250825
+        var model = new CodeExecutionTool20260120
         {
-            AllowedCallers = [CodeExecutionTool20250825AllowedCaller.Direct],
+            AllowedCallers = [CodeExecutionTool20260120AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("code_execution");
-        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20250825");
-        List<ApiEnum<string, CodeExecutionTool20250825AllowedCaller>> expectedAllowedCallers =
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20260120");
+        List<ApiEnum<string, CodeExecutionTool20260120AllowedCaller>> expectedAllowedCallers =
         [
-            CodeExecutionTool20250825AllowedCaller.Direct,
+            CodeExecutionTool20260120AllowedCaller.Direct,
         ];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
@@ -45,16 +45,16 @@ public class CodeExecutionTool20250825Test : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new CodeExecutionTool20250825
+        var model = new CodeExecutionTool20260120
         {
-            AllowedCallers = [CodeExecutionTool20250825AllowedCaller.Direct],
+            AllowedCallers = [CodeExecutionTool20260120AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<CodeExecutionTool20250825>(
+        var deserialized = JsonSerializer.Deserialize<CodeExecutionTool20260120>(
             json,
             ModelBase.SerializerOptions
         );
@@ -65,26 +65,26 @@ public class CodeExecutionTool20250825Test : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new CodeExecutionTool20250825
+        var model = new CodeExecutionTool20260120
         {
-            AllowedCallers = [CodeExecutionTool20250825AllowedCaller.Direct],
+            AllowedCallers = [CodeExecutionTool20260120AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<CodeExecutionTool20250825>(
+        var deserialized = JsonSerializer.Deserialize<CodeExecutionTool20260120>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("code_execution");
-        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20250825");
-        List<ApiEnum<string, CodeExecutionTool20250825AllowedCaller>> expectedAllowedCallers =
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20260120");
+        List<ApiEnum<string, CodeExecutionTool20260120AllowedCaller>> expectedAllowedCallers =
         [
-            CodeExecutionTool20250825AllowedCaller.Direct,
+            CodeExecutionTool20260120AllowedCaller.Direct,
         ];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
@@ -106,9 +106,9 @@ public class CodeExecutionTool20250825Test : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new CodeExecutionTool20250825
+        var model = new CodeExecutionTool20260120
         {
-            AllowedCallers = [CodeExecutionTool20250825AllowedCaller.Direct],
+            AllowedCallers = [CodeExecutionTool20260120AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
@@ -120,7 +120,7 @@ public class CodeExecutionTool20250825Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new CodeExecutionTool20250825 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
+        var model = new CodeExecutionTool20260120 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         Assert.Null(model.AllowedCallers);
         Assert.False(model.RawData.ContainsKey("allowed_callers"));
@@ -133,7 +133,7 @@ public class CodeExecutionTool20250825Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new CodeExecutionTool20250825 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
+        var model = new CodeExecutionTool20260120 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         model.Validate();
     }
@@ -141,7 +141,7 @@ public class CodeExecutionTool20250825Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
     {
-        var model = new CodeExecutionTool20250825
+        var model = new CodeExecutionTool20260120
         {
             CacheControl = new() { Ttl = Ttl.Ttl5m },
 
@@ -162,7 +162,7 @@ public class CodeExecutionTool20250825Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new CodeExecutionTool20250825
+        var model = new CodeExecutionTool20260120
         {
             CacheControl = new() { Ttl = Ttl.Ttl5m },
 
@@ -178,9 +178,9 @@ public class CodeExecutionTool20250825Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new CodeExecutionTool20250825
+        var model = new CodeExecutionTool20260120
         {
-            AllowedCallers = [CodeExecutionTool20250825AllowedCaller.Direct],
+            AllowedCallers = [CodeExecutionTool20260120AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -192,9 +192,9 @@ public class CodeExecutionTool20250825Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new CodeExecutionTool20250825
+        var model = new CodeExecutionTool20260120
         {
-            AllowedCallers = [CodeExecutionTool20250825AllowedCaller.Direct],
+            AllowedCallers = [CodeExecutionTool20260120AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -205,9 +205,9 @@ public class CodeExecutionTool20250825Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new CodeExecutionTool20250825
+        var model = new CodeExecutionTool20260120
         {
-            AllowedCallers = [CodeExecutionTool20250825AllowedCaller.Direct],
+            AllowedCallers = [CodeExecutionTool20260120AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 
@@ -221,9 +221,9 @@ public class CodeExecutionTool20250825Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new CodeExecutionTool20250825
+        var model = new CodeExecutionTool20260120
         {
-            AllowedCallers = [CodeExecutionTool20250825AllowedCaller.Direct],
+            AllowedCallers = [CodeExecutionTool20260120AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 
@@ -236,30 +236,30 @@ public class CodeExecutionTool20250825Test : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new CodeExecutionTool20250825
+        var model = new CodeExecutionTool20260120
         {
-            AllowedCallers = [CodeExecutionTool20250825AllowedCaller.Direct],
+            AllowedCallers = [CodeExecutionTool20260120AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
 
-        CodeExecutionTool20250825 copied = new(model);
+        CodeExecutionTool20260120 copied = new(model);
 
         Assert.Equal(model, copied);
     }
 }
 
-public class CodeExecutionTool20250825AllowedCallerTest : TestBase
+public class CodeExecutionTool20260120AllowedCallerTest : TestBase
 {
     [Theory]
-    [InlineData(CodeExecutionTool20250825AllowedCaller.Direct)]
-    [InlineData(CodeExecutionTool20250825AllowedCaller.CodeExecution20250825)]
-    [InlineData(CodeExecutionTool20250825AllowedCaller.CodeExecution20260120)]
-    public void Validation_Works(CodeExecutionTool20250825AllowedCaller rawValue)
+    [InlineData(CodeExecutionTool20260120AllowedCaller.Direct)]
+    [InlineData(CodeExecutionTool20260120AllowedCaller.CodeExecution20250825)]
+    [InlineData(CodeExecutionTool20260120AllowedCaller.CodeExecution20260120)]
+    public void Validation_Works(CodeExecutionTool20260120AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, CodeExecutionTool20250825AllowedCaller> value = rawValue;
+        ApiEnum<string, CodeExecutionTool20260120AllowedCaller> value = rawValue;
         value.Validate();
     }
 
@@ -267,7 +267,7 @@ public class CodeExecutionTool20250825AllowedCallerTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, CodeExecutionTool20250825AllowedCaller>
+            ApiEnum<string, CodeExecutionTool20260120AllowedCaller>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
@@ -275,17 +275,17 @@ public class CodeExecutionTool20250825AllowedCallerTest : TestBase
     }
 
     [Theory]
-    [InlineData(CodeExecutionTool20250825AllowedCaller.Direct)]
-    [InlineData(CodeExecutionTool20250825AllowedCaller.CodeExecution20250825)]
-    [InlineData(CodeExecutionTool20250825AllowedCaller.CodeExecution20260120)]
-    public void SerializationRoundtrip_Works(CodeExecutionTool20250825AllowedCaller rawValue)
+    [InlineData(CodeExecutionTool20260120AllowedCaller.Direct)]
+    [InlineData(CodeExecutionTool20260120AllowedCaller.CodeExecution20250825)]
+    [InlineData(CodeExecutionTool20260120AllowedCaller.CodeExecution20260120)]
+    public void SerializationRoundtrip_Works(CodeExecutionTool20260120AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, CodeExecutionTool20250825AllowedCaller> value = rawValue;
+        ApiEnum<string, CodeExecutionTool20260120AllowedCaller> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, CodeExecutionTool20250825AllowedCaller>
+            ApiEnum<string, CodeExecutionTool20260120AllowedCaller>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
@@ -295,11 +295,11 @@ public class CodeExecutionTool20250825AllowedCallerTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, CodeExecutionTool20250825AllowedCaller>
+            ApiEnum<string, CodeExecutionTool20260120AllowedCaller>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, CodeExecutionTool20250825AllowedCaller>
+            ApiEnum<string, CodeExecutionTool20260120AllowedCaller>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);

@@ -371,6 +371,7 @@ public enum ToolAllowedCaller
 {
     Direct,
     CodeExecution20250825,
+    CodeExecution20260120,
 }
 
 sealed class ToolAllowedCallerConverter : JsonConverter<ToolAllowedCaller>
@@ -385,6 +386,7 @@ sealed class ToolAllowedCallerConverter : JsonConverter<ToolAllowedCaller>
         {
             "direct" => ToolAllowedCaller.Direct,
             "code_execution_20250825" => ToolAllowedCaller.CodeExecution20250825,
+            "code_execution_20260120" => ToolAllowedCaller.CodeExecution20260120,
             _ => (ToolAllowedCaller)(-1),
         };
     }
@@ -401,6 +403,7 @@ sealed class ToolAllowedCallerConverter : JsonConverter<ToolAllowedCaller>
             {
                 ToolAllowedCaller.Direct => "direct",
                 ToolAllowedCaller.CodeExecution20250825 => "code_execution_20250825",
+                ToolAllowedCaller.CodeExecution20260120 => "code_execution_20260120",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

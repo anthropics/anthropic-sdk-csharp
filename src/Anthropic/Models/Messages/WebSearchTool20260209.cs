@@ -10,8 +10,8 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(JsonModelConverter<WebSearchTool20250305, WebSearchTool20250305FromRaw>))]
-public sealed record class WebSearchTool20250305 : JsonModel
+[JsonConverter(typeof(JsonModelConverter<WebSearchTool20260209, WebSearchTool20260209FromRaw>))]
+public sealed record class WebSearchTool20260209 : JsonModel
 {
     /// <summary>
     /// Name of the tool.
@@ -38,13 +38,13 @@ public sealed record class WebSearchTool20250305 : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
-    public IReadOnlyList<ApiEnum<string, WebSearchTool20250305AllowedCaller>>? AllowedCallers
+    public IReadOnlyList<ApiEnum<string, WebSearchTool20260209AllowedCaller>>? AllowedCallers
     {
         get
         {
             this._rawData.Freeze();
             return this._rawData.GetNullableStruct<
-                ImmutableArray<ApiEnum<string, WebSearchTool20250305AllowedCaller>>
+                ImmutableArray<ApiEnum<string, WebSearchTool20260209AllowedCaller>>
             >("allowed_callers");
         }
         init
@@ -54,7 +54,7 @@ public sealed record class WebSearchTool20250305 : JsonModel
                 return;
             }
 
-            this._rawData.Set<ImmutableArray<ApiEnum<string, WebSearchTool20250305AllowedCaller>>?>(
+            this._rawData.Set<ImmutableArray<ApiEnum<string, WebSearchTool20260209AllowedCaller>>?>(
                 "allowed_callers",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
@@ -172,12 +172,14 @@ public sealed record class WebSearchTool20250305 : JsonModel
     /// <summary>
     /// Parameters for the user's location. Used to provide more relevant search results.
     /// </summary>
-    public UserLocation? UserLocation
+    public WebSearchTool20260209UserLocation? UserLocation
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<UserLocation>("user_location");
+            return this._rawData.GetNullableClass<WebSearchTool20260209UserLocation>(
+                "user_location"
+            );
         }
         init { this._rawData.Set("user_location", value); }
     }
@@ -192,7 +194,7 @@ public sealed record class WebSearchTool20250305 : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.SerializeToElement("web_search_20250305")
+                JsonSerializer.SerializeToElement("web_search_20260209")
             )
         )
         {
@@ -211,36 +213,36 @@ public sealed record class WebSearchTool20250305 : JsonModel
         this.UserLocation?.Validate();
     }
 
-    public WebSearchTool20250305()
+    public WebSearchTool20260209()
     {
         this.Name = JsonSerializer.SerializeToElement("web_search");
-        this.Type = JsonSerializer.SerializeToElement("web_search_20250305");
+        this.Type = JsonSerializer.SerializeToElement("web_search_20260209");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    public WebSearchTool20250305(WebSearchTool20250305 webSearchTool20250305)
-        : base(webSearchTool20250305) { }
+    public WebSearchTool20260209(WebSearchTool20260209 webSearchTool20260209)
+        : base(webSearchTool20260209) { }
 #pragma warning restore CS8618
 
-    public WebSearchTool20250305(IReadOnlyDictionary<string, JsonElement> rawData)
+    public WebSearchTool20260209(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
 
         this.Name = JsonSerializer.SerializeToElement("web_search");
-        this.Type = JsonSerializer.SerializeToElement("web_search_20250305");
+        this.Type = JsonSerializer.SerializeToElement("web_search_20260209");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    WebSearchTool20250305(FrozenDictionary<string, JsonElement> rawData)
+    WebSearchTool20260209(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="WebSearchTool20250305FromRaw.FromRawUnchecked"/>
-    public static WebSearchTool20250305 FromRawUnchecked(
+    /// <inheritdoc cref="WebSearchTool20260209FromRaw.FromRawUnchecked"/>
+    public static WebSearchTool20260209 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -248,26 +250,26 @@ public sealed record class WebSearchTool20250305 : JsonModel
     }
 }
 
-class WebSearchTool20250305FromRaw : IFromRawJson<WebSearchTool20250305>
+class WebSearchTool20260209FromRaw : IFromRawJson<WebSearchTool20260209>
 {
     /// <inheritdoc/>
-    public WebSearchTool20250305 FromRawUnchecked(
+    public WebSearchTool20260209 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
-    ) => WebSearchTool20250305.FromRawUnchecked(rawData);
+    ) => WebSearchTool20260209.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(WebSearchTool20250305AllowedCallerConverter))]
-public enum WebSearchTool20250305AllowedCaller
+[JsonConverter(typeof(WebSearchTool20260209AllowedCallerConverter))]
+public enum WebSearchTool20260209AllowedCaller
 {
     Direct,
     CodeExecution20250825,
     CodeExecution20260120,
 }
 
-sealed class WebSearchTool20250305AllowedCallerConverter
-    : JsonConverter<WebSearchTool20250305AllowedCaller>
+sealed class WebSearchTool20260209AllowedCallerConverter
+    : JsonConverter<WebSearchTool20260209AllowedCaller>
 {
-    public override WebSearchTool20250305AllowedCaller Read(
+    public override WebSearchTool20260209AllowedCaller Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -275,16 +277,16 @@ sealed class WebSearchTool20250305AllowedCallerConverter
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "direct" => WebSearchTool20250305AllowedCaller.Direct,
-            "code_execution_20250825" => WebSearchTool20250305AllowedCaller.CodeExecution20250825,
-            "code_execution_20260120" => WebSearchTool20250305AllowedCaller.CodeExecution20260120,
-            _ => (WebSearchTool20250305AllowedCaller)(-1),
+            "direct" => WebSearchTool20260209AllowedCaller.Direct,
+            "code_execution_20250825" => WebSearchTool20260209AllowedCaller.CodeExecution20250825,
+            "code_execution_20260120" => WebSearchTool20260209AllowedCaller.CodeExecution20260120,
+            _ => (WebSearchTool20260209AllowedCaller)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        WebSearchTool20250305AllowedCaller value,
+        WebSearchTool20260209AllowedCaller value,
         JsonSerializerOptions options
     )
     {
@@ -292,10 +294,10 @@ sealed class WebSearchTool20250305AllowedCallerConverter
             writer,
             value switch
             {
-                WebSearchTool20250305AllowedCaller.Direct => "direct",
-                WebSearchTool20250305AllowedCaller.CodeExecution20250825 =>
+                WebSearchTool20260209AllowedCaller.Direct => "direct",
+                WebSearchTool20260209AllowedCaller.CodeExecution20250825 =>
                     "code_execution_20250825",
-                WebSearchTool20250305AllowedCaller.CodeExecution20260120 =>
+                WebSearchTool20260209AllowedCaller.CodeExecution20260120 =>
                     "code_execution_20260120",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
@@ -309,8 +311,13 @@ sealed class WebSearchTool20250305AllowedCallerConverter
 /// <summary>
 /// Parameters for the user's location. Used to provide more relevant search results.
 /// </summary>
-[JsonConverter(typeof(JsonModelConverter<UserLocation, UserLocationFromRaw>))]
-public sealed record class UserLocation : JsonModel
+[JsonConverter(
+    typeof(JsonModelConverter<
+        WebSearchTool20260209UserLocation,
+        WebSearchTool20260209UserLocationFromRaw
+    >)
+)]
+public sealed record class WebSearchTool20260209UserLocation : JsonModel
 {
     public JsonElement Type
     {
@@ -388,18 +395,20 @@ public sealed record class UserLocation : JsonModel
         _ = this.Timezone;
     }
 
-    public UserLocation()
+    public WebSearchTool20260209UserLocation()
     {
         this.Type = JsonSerializer.SerializeToElement("approximate");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    public UserLocation(UserLocation userLocation)
-        : base(userLocation) { }
+    public WebSearchTool20260209UserLocation(
+        WebSearchTool20260209UserLocation webSearchTool20260209UserLocation
+    )
+        : base(webSearchTool20260209UserLocation) { }
 #pragma warning restore CS8618
 
-    public UserLocation(IReadOnlyDictionary<string, JsonElement> rawData)
+    public WebSearchTool20260209UserLocation(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
 
@@ -408,22 +417,25 @@ public sealed record class UserLocation : JsonModel
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    UserLocation(FrozenDictionary<string, JsonElement> rawData)
+    WebSearchTool20260209UserLocation(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="UserLocationFromRaw.FromRawUnchecked"/>
-    public static UserLocation FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
+    /// <inheritdoc cref="WebSearchTool20260209UserLocationFromRaw.FromRawUnchecked"/>
+    public static WebSearchTool20260209UserLocation FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 
-class UserLocationFromRaw : IFromRawJson<UserLocation>
+class WebSearchTool20260209UserLocationFromRaw : IFromRawJson<WebSearchTool20260209UserLocation>
 {
     /// <inheritdoc/>
-    public UserLocation FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
-        UserLocation.FromRawUnchecked(rawData);
+    public WebSearchTool20260209UserLocation FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => WebSearchTool20260209UserLocation.FromRawUnchecked(rawData);
 }

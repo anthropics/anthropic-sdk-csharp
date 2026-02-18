@@ -6,14 +6,14 @@ using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
 
-public class WebSearchTool20250305Test : TestBase
+public class WebSearchTool20260209Test : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new WebSearchTool20250305
+        var model = new WebSearchTool20260209
         {
-            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebSearchTool20260209AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -30,10 +30,10 @@ public class WebSearchTool20250305Test : TestBase
         };
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
-        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
-        List<ApiEnum<string, WebSearchTool20250305AllowedCaller>> expectedAllowedCallers =
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20260209");
+        List<ApiEnum<string, WebSearchTool20260209AllowedCaller>> expectedAllowedCallers =
         [
-            WebSearchTool20250305AllowedCaller.Direct,
+            WebSearchTool20260209AllowedCaller.Direct,
         ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
@@ -41,7 +41,7 @@ public class WebSearchTool20250305Test : TestBase
         bool expectedDeferLoading = true;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
-        UserLocation expectedUserLocation = new()
+        WebSearchTool20260209UserLocation expectedUserLocation = new()
         {
             City = "New York",
             Country = "US",
@@ -79,9 +79,9 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new WebSearchTool20250305
+        var model = new WebSearchTool20260209
         {
-            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebSearchTool20260209AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -98,7 +98,7 @@ public class WebSearchTool20250305Test : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<WebSearchTool20250305>(
+        var deserialized = JsonSerializer.Deserialize<WebSearchTool20260209>(
             json,
             ModelBase.SerializerOptions
         );
@@ -109,9 +109,9 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new WebSearchTool20250305
+        var model = new WebSearchTool20260209
         {
-            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebSearchTool20260209AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -128,17 +128,17 @@ public class WebSearchTool20250305Test : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<WebSearchTool20250305>(
+        var deserialized = JsonSerializer.Deserialize<WebSearchTool20260209>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
-        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
-        List<ApiEnum<string, WebSearchTool20250305AllowedCaller>> expectedAllowedCallers =
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20260209");
+        List<ApiEnum<string, WebSearchTool20260209AllowedCaller>> expectedAllowedCallers =
         [
-            WebSearchTool20250305AllowedCaller.Direct,
+            WebSearchTool20260209AllowedCaller.Direct,
         ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
@@ -146,7 +146,7 @@ public class WebSearchTool20250305Test : TestBase
         bool expectedDeferLoading = true;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
-        UserLocation expectedUserLocation = new()
+        WebSearchTool20260209UserLocation expectedUserLocation = new()
         {
             City = "New York",
             Country = "US",
@@ -184,9 +184,9 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new WebSearchTool20250305
+        var model = new WebSearchTool20260209
         {
-            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebSearchTool20260209AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -208,7 +208,7 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new WebSearchTool20250305
+        var model = new WebSearchTool20260209
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
@@ -234,7 +234,7 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new WebSearchTool20250305
+        var model = new WebSearchTool20260209
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
@@ -255,7 +255,7 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
     {
-        var model = new WebSearchTool20250305
+        var model = new WebSearchTool20260209
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
@@ -286,7 +286,7 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new WebSearchTool20250305
+        var model = new WebSearchTool20260209
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
@@ -312,9 +312,9 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new WebSearchTool20250305
+        var model = new WebSearchTool20260209
         {
-            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebSearchTool20260209AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -334,9 +334,9 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new WebSearchTool20250305
+        var model = new WebSearchTool20260209
         {
-            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebSearchTool20260209AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -347,9 +347,9 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new WebSearchTool20250305
+        var model = new WebSearchTool20260209
         {
-            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebSearchTool20260209AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 
@@ -375,9 +375,9 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new WebSearchTool20250305
+        var model = new WebSearchTool20260209
         {
-            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebSearchTool20260209AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 
@@ -394,9 +394,9 @@ public class WebSearchTool20250305Test : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new WebSearchTool20250305
+        var model = new WebSearchTool20260209
         {
-            AllowedCallers = [WebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebSearchTool20260209AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -412,29 +412,29 @@ public class WebSearchTool20250305Test : TestBase
             },
         };
 
-        WebSearchTool20250305 copied = new(model);
+        WebSearchTool20260209 copied = new(model);
 
         Assert.Equal(model, copied);
     }
 }
 
-public class WebSearchTool20250305AllowedCallerTest : TestBase
+public class WebSearchTool20260209AllowedCallerTest : TestBase
 {
     [Theory]
-    [InlineData(WebSearchTool20250305AllowedCaller.Direct)]
-    [InlineData(WebSearchTool20250305AllowedCaller.CodeExecution20250825)]
-    [InlineData(WebSearchTool20250305AllowedCaller.CodeExecution20260120)]
-    public void Validation_Works(WebSearchTool20250305AllowedCaller rawValue)
+    [InlineData(WebSearchTool20260209AllowedCaller.Direct)]
+    [InlineData(WebSearchTool20260209AllowedCaller.CodeExecution20250825)]
+    [InlineData(WebSearchTool20260209AllowedCaller.CodeExecution20260120)]
+    public void Validation_Works(WebSearchTool20260209AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, WebSearchTool20250305AllowedCaller> value = rawValue;
+        ApiEnum<string, WebSearchTool20260209AllowedCaller> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, WebSearchTool20250305AllowedCaller>>(
+        var value = JsonSerializer.Deserialize<ApiEnum<string, WebSearchTool20260209AllowedCaller>>(
             JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
@@ -444,17 +444,17 @@ public class WebSearchTool20250305AllowedCallerTest : TestBase
     }
 
     [Theory]
-    [InlineData(WebSearchTool20250305AllowedCaller.Direct)]
-    [InlineData(WebSearchTool20250305AllowedCaller.CodeExecution20250825)]
-    [InlineData(WebSearchTool20250305AllowedCaller.CodeExecution20260120)]
-    public void SerializationRoundtrip_Works(WebSearchTool20250305AllowedCaller rawValue)
+    [InlineData(WebSearchTool20260209AllowedCaller.Direct)]
+    [InlineData(WebSearchTool20260209AllowedCaller.CodeExecution20250825)]
+    [InlineData(WebSearchTool20260209AllowedCaller.CodeExecution20260120)]
+    public void SerializationRoundtrip_Works(WebSearchTool20260209AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, WebSearchTool20250305AllowedCaller> value = rawValue;
+        ApiEnum<string, WebSearchTool20260209AllowedCaller> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, WebSearchTool20250305AllowedCaller>
+            ApiEnum<string, WebSearchTool20260209AllowedCaller>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
@@ -463,25 +463,25 @@ public class WebSearchTool20250305AllowedCallerTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, WebSearchTool20250305AllowedCaller>>(
+        var value = JsonSerializer.Deserialize<ApiEnum<string, WebSearchTool20260209AllowedCaller>>(
             JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, WebSearchTool20250305AllowedCaller>
+            ApiEnum<string, WebSearchTool20260209AllowedCaller>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
 }
 
-public class UserLocationTest : TestBase
+public class WebSearchTool20260209UserLocationTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20260209UserLocation
         {
             City = "New York",
             Country = "US",
@@ -505,7 +505,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20260209UserLocation
         {
             City = "New York",
             Country = "US",
@@ -514,7 +514,7 @@ public class UserLocationTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<UserLocation>(
+        var deserialized = JsonSerializer.Deserialize<WebSearchTool20260209UserLocation>(
             json,
             ModelBase.SerializerOptions
         );
@@ -525,7 +525,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20260209UserLocation
         {
             City = "New York",
             Country = "US",
@@ -534,7 +534,7 @@ public class UserLocationTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<UserLocation>(
+        var deserialized = JsonSerializer.Deserialize<WebSearchTool20260209UserLocation>(
             element,
             ModelBase.SerializerOptions
         );
@@ -556,7 +556,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20260209UserLocation
         {
             City = "New York",
             Country = "US",
@@ -570,7 +570,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new UserLocation { };
+        var model = new WebSearchTool20260209UserLocation { };
 
         Assert.Null(model.City);
         Assert.False(model.RawData.ContainsKey("city"));
@@ -585,7 +585,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new UserLocation { };
+        var model = new WebSearchTool20260209UserLocation { };
 
         model.Validate();
     }
@@ -593,7 +593,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20260209UserLocation
         {
             City = null,
             Country = null,
@@ -614,7 +614,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20260209UserLocation
         {
             City = null,
             Country = null,
@@ -628,7 +628,7 @@ public class UserLocationTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new UserLocation
+        var model = new WebSearchTool20260209UserLocation
         {
             City = "New York",
             Country = "US",
@@ -636,7 +636,7 @@ public class UserLocationTest : TestBase
             Timezone = "America/New_York",
         };
 
-        UserLocation copied = new(model);
+        WebSearchTool20260209UserLocation copied = new(model);
 
         Assert.Equal(model, copied);
     }

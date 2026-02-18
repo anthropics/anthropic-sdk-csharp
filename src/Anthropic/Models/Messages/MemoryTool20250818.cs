@@ -220,6 +220,7 @@ public enum MemoryTool20250818AllowedCaller
 {
     Direct,
     CodeExecution20250825,
+    CodeExecution20260120,
 }
 
 sealed class MemoryTool20250818AllowedCallerConverter
@@ -235,6 +236,7 @@ sealed class MemoryTool20250818AllowedCallerConverter
         {
             "direct" => MemoryTool20250818AllowedCaller.Direct,
             "code_execution_20250825" => MemoryTool20250818AllowedCaller.CodeExecution20250825,
+            "code_execution_20260120" => MemoryTool20250818AllowedCaller.CodeExecution20260120,
             _ => (MemoryTool20250818AllowedCaller)(-1),
         };
     }
@@ -251,6 +253,7 @@ sealed class MemoryTool20250818AllowedCallerConverter
             {
                 MemoryTool20250818AllowedCaller.Direct => "direct",
                 MemoryTool20250818AllowedCaller.CodeExecution20250825 => "code_execution_20250825",
+                MemoryTool20250818AllowedCaller.CodeExecution20260120 => "code_execution_20260120",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

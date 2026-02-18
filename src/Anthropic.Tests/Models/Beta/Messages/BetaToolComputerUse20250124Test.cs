@@ -421,6 +421,7 @@ public class BetaToolComputerUse20250124AllowedCallerTest : TestBase
     [Theory]
     [InlineData(BetaToolComputerUse20250124AllowedCaller.Direct)]
     [InlineData(BetaToolComputerUse20250124AllowedCaller.CodeExecution20250825)]
+    [InlineData(BetaToolComputerUse20250124AllowedCaller.CodeExecution20260120)]
     public void Validation_Works(BetaToolComputerUse20250124AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -442,6 +443,7 @@ public class BetaToolComputerUse20250124AllowedCallerTest : TestBase
     [Theory]
     [InlineData(BetaToolComputerUse20250124AllowedCaller.Direct)]
     [InlineData(BetaToolComputerUse20250124AllowedCaller.CodeExecution20250825)]
+    [InlineData(BetaToolComputerUse20250124AllowedCaller.CodeExecution20260120)]
     public void SerializationRoundtrip_Works(BetaToolComputerUse20250124AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us

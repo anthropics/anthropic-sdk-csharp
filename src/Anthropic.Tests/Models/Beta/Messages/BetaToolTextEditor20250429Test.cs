@@ -362,6 +362,7 @@ public class BetaToolTextEditor20250429AllowedCallerTest : TestBase
     [Theory]
     [InlineData(BetaToolTextEditor20250429AllowedCaller.Direct)]
     [InlineData(BetaToolTextEditor20250429AllowedCaller.CodeExecution20250825)]
+    [InlineData(BetaToolTextEditor20250429AllowedCaller.CodeExecution20260120)]
     public void Validation_Works(BetaToolTextEditor20250429AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -383,6 +384,7 @@ public class BetaToolTextEditor20250429AllowedCallerTest : TestBase
     [Theory]
     [InlineData(BetaToolTextEditor20250429AllowedCaller.Direct)]
     [InlineData(BetaToolTextEditor20250429AllowedCaller.CodeExecution20250825)]
+    [InlineData(BetaToolTextEditor20250429AllowedCaller.CodeExecution20260120)]
     public void SerializationRoundtrip_Works(BetaToolTextEditor20250429AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us

@@ -230,6 +230,7 @@ public enum BetaToolTextEditor20241022AllowedCaller
 {
     Direct,
     CodeExecution20250825,
+    CodeExecution20260120,
 }
 
 sealed class BetaToolTextEditor20241022AllowedCallerConverter
@@ -246,6 +247,8 @@ sealed class BetaToolTextEditor20241022AllowedCallerConverter
             "direct" => BetaToolTextEditor20241022AllowedCaller.Direct,
             "code_execution_20250825" =>
                 BetaToolTextEditor20241022AllowedCaller.CodeExecution20250825,
+            "code_execution_20260120" =>
+                BetaToolTextEditor20241022AllowedCaller.CodeExecution20260120,
             _ => (BetaToolTextEditor20241022AllowedCaller)(-1),
         };
     }
@@ -263,6 +266,8 @@ sealed class BetaToolTextEditor20241022AllowedCallerConverter
                 BetaToolTextEditor20241022AllowedCaller.Direct => "direct",
                 BetaToolTextEditor20241022AllowedCaller.CodeExecution20250825 =>
                     "code_execution_20250825",
+                BetaToolTextEditor20241022AllowedCaller.CodeExecution20260120 =>
+                    "code_execution_20260120",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

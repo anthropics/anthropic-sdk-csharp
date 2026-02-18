@@ -275,6 +275,7 @@ public enum WebFetchTool20250910AllowedCaller
 {
     Direct,
     CodeExecution20250825,
+    CodeExecution20260120,
 }
 
 sealed class WebFetchTool20250910AllowedCallerConverter
@@ -290,6 +291,7 @@ sealed class WebFetchTool20250910AllowedCallerConverter
         {
             "direct" => WebFetchTool20250910AllowedCaller.Direct,
             "code_execution_20250825" => WebFetchTool20250910AllowedCaller.CodeExecution20250825,
+            "code_execution_20260120" => WebFetchTool20250910AllowedCaller.CodeExecution20260120,
             _ => (WebFetchTool20250910AllowedCaller)(-1),
         };
     }
@@ -307,6 +309,8 @@ sealed class WebFetchTool20250910AllowedCallerConverter
                 WebFetchTool20250910AllowedCaller.Direct => "direct",
                 WebFetchTool20250910AllowedCaller.CodeExecution20250825 =>
                     "code_execution_20250825",
+                WebFetchTool20250910AllowedCaller.CodeExecution20260120 =>
+                    "code_execution_20260120",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

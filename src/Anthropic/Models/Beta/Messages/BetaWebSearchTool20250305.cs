@@ -262,6 +262,7 @@ public enum BetaWebSearchTool20250305AllowedCaller
 {
     Direct,
     CodeExecution20250825,
+    CodeExecution20260120,
 }
 
 sealed class BetaWebSearchTool20250305AllowedCallerConverter
@@ -278,6 +279,8 @@ sealed class BetaWebSearchTool20250305AllowedCallerConverter
             "direct" => BetaWebSearchTool20250305AllowedCaller.Direct,
             "code_execution_20250825" =>
                 BetaWebSearchTool20250305AllowedCaller.CodeExecution20250825,
+            "code_execution_20260120" =>
+                BetaWebSearchTool20250305AllowedCaller.CodeExecution20260120,
             _ => (BetaWebSearchTool20250305AllowedCaller)(-1),
         };
     }
@@ -295,6 +298,8 @@ sealed class BetaWebSearchTool20250305AllowedCallerConverter
                 BetaWebSearchTool20250305AllowedCaller.Direct => "direct",
                 BetaWebSearchTool20250305AllowedCaller.CodeExecution20250825 =>
                     "code_execution_20250825",
+                BetaWebSearchTool20250305AllowedCaller.CodeExecution20260120 =>
+                    "code_execution_20260120",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
