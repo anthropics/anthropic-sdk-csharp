@@ -2,52 +2,42 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Anthropic.Models.Beta.Messages;
+using Anthropic.Models.Messages;
 
-namespace Anthropic.Tests.Models.Beta.Messages;
+namespace Anthropic.Tests.Models.Messages;
 
-public class BetaWebSearchTool20250305Test : TestBase
+public class WebFetchTool20260209Test : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaWebSearchTool20250305
+        var model = new WebFetchTool20260209
         {
-            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebFetchTool20260209AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
             DeferLoading = true,
+            MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
-            UserLocation = new()
-            {
-                City = "New York",
-                Country = "US",
-                Region = "California",
-                Timezone = "America/New_York",
-            },
         };
 
-        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
-        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
-        List<ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>> expectedAllowedCallers =
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_fetch");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_20260209");
+        List<ApiEnum<string, WebFetchTool20260209AllowedCaller>> expectedAllowedCallers =
         [
-            BetaWebSearchTool20250305AllowedCaller.Direct,
+            WebFetchTool20260209AllowedCaller.Direct,
         ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        CitationsConfigParam expectedCitations = new() { Enabled = true };
         bool expectedDeferLoading = true;
+        long expectedMaxContentTokens = 1;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
-        BetaUserLocation expectedUserLocation = new()
-        {
-            City = "New York",
-            Country = "US",
-            Region = "California",
-            Timezone = "America/New_York",
-        };
 
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -70,35 +60,31 @@ public class BetaWebSearchTool20250305Test : TestBase
             Assert.Equal(expectedBlockedDomains[i], model.BlockedDomains[i]);
         }
         Assert.Equal(expectedCacheControl, model.CacheControl);
+        Assert.Equal(expectedCitations, model.Citations);
         Assert.Equal(expectedDeferLoading, model.DeferLoading);
+        Assert.Equal(expectedMaxContentTokens, model.MaxContentTokens);
         Assert.Equal(expectedMaxUses, model.MaxUses);
         Assert.Equal(expectedStrict, model.Strict);
-        Assert.Equal(expectedUserLocation, model.UserLocation);
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaWebSearchTool20250305
+        var model = new WebFetchTool20260209
         {
-            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebFetchTool20260209AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
             DeferLoading = true,
+            MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
-            UserLocation = new()
-            {
-                City = "New York",
-                Country = "US",
-                Region = "California",
-                Timezone = "America/New_York",
-            },
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(
+        var deserialized = JsonSerializer.Deserialize<WebFetchTool20260209>(
             json,
             ModelBase.SerializerOptions
         );
@@ -109,50 +95,40 @@ public class BetaWebSearchTool20250305Test : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaWebSearchTool20250305
+        var model = new WebFetchTool20260209
         {
-            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebFetchTool20260209AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
             DeferLoading = true,
+            MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
-            UserLocation = new()
-            {
-                City = "New York",
-                Country = "US",
-                Region = "California",
-                Timezone = "America/New_York",
-            },
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(
+        var deserialized = JsonSerializer.Deserialize<WebFetchTool20260209>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
-        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
-        List<ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>> expectedAllowedCallers =
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_fetch");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_20260209");
+        List<ApiEnum<string, WebFetchTool20260209AllowedCaller>> expectedAllowedCallers =
         [
-            BetaWebSearchTool20250305AllowedCaller.Direct,
+            WebFetchTool20260209AllowedCaller.Direct,
         ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        CitationsConfigParam expectedCitations = new() { Enabled = true };
         bool expectedDeferLoading = true;
+        long expectedMaxContentTokens = 1;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
-        BetaUserLocation expectedUserLocation = new()
-        {
-            City = "New York",
-            Country = "US",
-            Region = "California",
-            Timezone = "America/New_York",
-        };
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -175,31 +151,27 @@ public class BetaWebSearchTool20250305Test : TestBase
             Assert.Equal(expectedBlockedDomains[i], deserialized.BlockedDomains[i]);
         }
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
+        Assert.Equal(expectedCitations, deserialized.Citations);
         Assert.Equal(expectedDeferLoading, deserialized.DeferLoading);
+        Assert.Equal(expectedMaxContentTokens, deserialized.MaxContentTokens);
         Assert.Equal(expectedMaxUses, deserialized.MaxUses);
         Assert.Equal(expectedStrict, deserialized.Strict);
-        Assert.Equal(expectedUserLocation, deserialized.UserLocation);
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaWebSearchTool20250305
+        var model = new WebFetchTool20260209
         {
-            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebFetchTool20260209AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
             DeferLoading = true,
+            MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
-            UserLocation = new()
-            {
-                City = "New York",
-                Country = "US",
-                Region = "California",
-                Timezone = "America/New_York",
-            },
         };
 
         model.Validate();
@@ -208,19 +180,14 @@ public class BetaWebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaWebSearchTool20250305
+        var model = new WebFetchTool20260209
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            MaxContentTokens = 1,
             MaxUses = 1,
-            UserLocation = new()
-            {
-                City = "New York",
-                Country = "US",
-                Region = "California",
-                Timezone = "America/New_York",
-            },
         };
 
         Assert.Null(model.AllowedCallers);
@@ -234,19 +201,14 @@ public class BetaWebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaWebSearchTool20250305
+        var model = new WebFetchTool20260209
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            MaxContentTokens = 1,
             MaxUses = 1,
-            UserLocation = new()
-            {
-                City = "New York",
-                Country = "US",
-                Region = "California",
-                Timezone = "America/New_York",
-            },
         };
 
         model.Validate();
@@ -255,19 +217,14 @@ public class BetaWebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
     {
-        var model = new BetaWebSearchTool20250305
+        var model = new WebFetchTool20260209
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            MaxContentTokens = 1,
             MaxUses = 1,
-            UserLocation = new()
-            {
-                City = "New York",
-                Country = "US",
-                Region = "California",
-                Timezone = "America/New_York",
-            },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -286,19 +243,14 @@ public class BetaWebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new BetaWebSearchTool20250305
+        var model = new WebFetchTool20260209
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            MaxContentTokens = 1,
             MaxUses = 1,
-            UserLocation = new()
-            {
-                City = "New York",
-                Country = "US",
-                Region = "California",
-                Timezone = "America/New_York",
-            },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -312,9 +264,9 @@ public class BetaWebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaWebSearchTool20250305
+        var model = new WebFetchTool20260209
         {
-            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebFetchTool20260209AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -325,18 +277,20 @@ public class BetaWebSearchTool20250305Test : TestBase
         Assert.False(model.RawData.ContainsKey("blocked_domains"));
         Assert.Null(model.CacheControl);
         Assert.False(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.Citations);
+        Assert.False(model.RawData.ContainsKey("citations"));
+        Assert.Null(model.MaxContentTokens);
+        Assert.False(model.RawData.ContainsKey("max_content_tokens"));
         Assert.Null(model.MaxUses);
         Assert.False(model.RawData.ContainsKey("max_uses"));
-        Assert.Null(model.UserLocation);
-        Assert.False(model.RawData.ContainsKey("user_location"));
     }
 
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaWebSearchTool20250305
+        var model = new WebFetchTool20260209
         {
-            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebFetchTool20260209AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -347,17 +301,18 @@ public class BetaWebSearchTool20250305Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new BetaWebSearchTool20250305
+        var model = new WebFetchTool20260209
         {
-            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebFetchTool20260209AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 
             AllowedDomains = null,
             BlockedDomains = null,
             CacheControl = null,
+            Citations = null,
+            MaxContentTokens = null,
             MaxUses = null,
-            UserLocation = null,
         };
 
         Assert.Null(model.AllowedDomains);
@@ -366,26 +321,29 @@ public class BetaWebSearchTool20250305Test : TestBase
         Assert.True(model.RawData.ContainsKey("blocked_domains"));
         Assert.Null(model.CacheControl);
         Assert.True(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.Citations);
+        Assert.True(model.RawData.ContainsKey("citations"));
+        Assert.Null(model.MaxContentTokens);
+        Assert.True(model.RawData.ContainsKey("max_content_tokens"));
         Assert.Null(model.MaxUses);
         Assert.True(model.RawData.ContainsKey("max_uses"));
-        Assert.Null(model.UserLocation);
-        Assert.True(model.RawData.ContainsKey("user_location"));
     }
 
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new BetaWebSearchTool20250305
+        var model = new WebFetchTool20260209
         {
-            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebFetchTool20260209AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 
             AllowedDomains = null,
             BlockedDomains = null,
             CacheControl = null,
+            Citations = null,
+            MaxContentTokens = null,
             MaxUses = null,
-            UserLocation = null,
         };
 
         model.Validate();
@@ -394,66 +352,62 @@ public class BetaWebSearchTool20250305Test : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaWebSearchTool20250305
+        var model = new WebFetchTool20260209
         {
-            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
+            AllowedCallers = [WebFetchTool20260209AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
             DeferLoading = true,
+            MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
-            UserLocation = new()
-            {
-                City = "New York",
-                Country = "US",
-                Region = "California",
-                Timezone = "America/New_York",
-            },
         };
 
-        BetaWebSearchTool20250305 copied = new(model);
+        WebFetchTool20260209 copied = new(model);
 
         Assert.Equal(model, copied);
     }
 }
 
-public class BetaWebSearchTool20250305AllowedCallerTest : TestBase
+public class WebFetchTool20260209AllowedCallerTest : TestBase
 {
     [Theory]
-    [InlineData(BetaWebSearchTool20250305AllowedCaller.Direct)]
-    [InlineData(BetaWebSearchTool20250305AllowedCaller.CodeExecution20250825)]
-    [InlineData(BetaWebSearchTool20250305AllowedCaller.CodeExecution20260120)]
-    public void Validation_Works(BetaWebSearchTool20250305AllowedCaller rawValue)
+    [InlineData(WebFetchTool20260209AllowedCaller.Direct)]
+    [InlineData(WebFetchTool20260209AllowedCaller.CodeExecution20250825)]
+    [InlineData(WebFetchTool20260209AllowedCaller.CodeExecution20260120)]
+    public void Validation_Works(WebFetchTool20260209AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaWebSearchTool20250305AllowedCaller> value = rawValue;
+        ApiEnum<string, WebFetchTool20260209AllowedCaller> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, WebFetchTool20260209AllowedCaller>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
     [Theory]
-    [InlineData(BetaWebSearchTool20250305AllowedCaller.Direct)]
-    [InlineData(BetaWebSearchTool20250305AllowedCaller.CodeExecution20250825)]
-    [InlineData(BetaWebSearchTool20250305AllowedCaller.CodeExecution20260120)]
-    public void SerializationRoundtrip_Works(BetaWebSearchTool20250305AllowedCaller rawValue)
+    [InlineData(WebFetchTool20260209AllowedCaller.Direct)]
+    [InlineData(WebFetchTool20260209AllowedCaller.CodeExecution20250825)]
+    [InlineData(WebFetchTool20260209AllowedCaller.CodeExecution20260120)]
+    public void SerializationRoundtrip_Works(WebFetchTool20260209AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaWebSearchTool20250305AllowedCaller> value = rawValue;
+        ApiEnum<string, WebFetchTool20260209AllowedCaller> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>
+            ApiEnum<string, WebFetchTool20260209AllowedCaller>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
@@ -462,12 +416,13 @@ public class BetaWebSearchTool20250305AllowedCallerTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, WebFetchTool20260209AllowedCaller>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>
+            ApiEnum<string, WebFetchTool20260209AllowedCaller>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);

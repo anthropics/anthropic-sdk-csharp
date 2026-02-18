@@ -244,6 +244,7 @@ public enum ToolSearchToolBm25_20251119AllowedCaller
 {
     Direct,
     CodeExecution20250825,
+    CodeExecution20260120,
 }
 
 sealed class ToolSearchToolBm25_20251119AllowedCallerConverter
@@ -260,6 +261,8 @@ sealed class ToolSearchToolBm25_20251119AllowedCallerConverter
             "direct" => ToolSearchToolBm25_20251119AllowedCaller.Direct,
             "code_execution_20250825" =>
                 ToolSearchToolBm25_20251119AllowedCaller.CodeExecution20250825,
+            "code_execution_20260120" =>
+                ToolSearchToolBm25_20251119AllowedCaller.CodeExecution20260120,
             _ => (ToolSearchToolBm25_20251119AllowedCaller)(-1),
         };
     }
@@ -277,6 +280,8 @@ sealed class ToolSearchToolBm25_20251119AllowedCallerConverter
                 ToolSearchToolBm25_20251119AllowedCaller.Direct => "direct",
                 ToolSearchToolBm25_20251119AllowedCaller.CodeExecution20250825 =>
                     "code_execution_20250825",
+                ToolSearchToolBm25_20251119AllowedCaller.CodeExecution20260120 =>
+                    "code_execution_20260120",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

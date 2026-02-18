@@ -240,7 +240,7 @@ public record class ServerToolUseBlockParamCaller : ModelBase
             return Match(
                 direct: (x) => x.Type,
                 serverTool: (x) => x.Type,
-                codeExecution20260120: (x) => x.Type
+                serverToolCaller20260120: (x) => x.Type
             );
         }
     }
@@ -252,7 +252,7 @@ public record class ServerToolUseBlockParamCaller : ModelBase
             return Match<string?>(
                 direct: (_) => null,
                 serverTool: (x) => x.ToolID,
-                codeExecution20260120: (x) => x.ToolID
+                serverToolCaller20260120: (x) => x.ToolID
             );
         }
     }
@@ -270,7 +270,7 @@ public record class ServerToolUseBlockParamCaller : ModelBase
     }
 
     public ServerToolUseBlockParamCaller(
-        ServerToolUseBlockParamCallerCodeExecution20260120 value,
+        ServerToolCaller20260120 value,
         JsonElement? element = null
     )
     {
@@ -327,24 +327,24 @@ public record class ServerToolUseBlockParamCaller : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="ServerToolUseBlockParamCallerCodeExecution20260120"/>.
+    /// type <see cref="ServerToolCaller20260120"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickCodeExecution20260120(out var value)) {
-    ///     // `value` is of type `ServerToolUseBlockParamCallerCodeExecution20260120`
+    /// if (instance.TryPickServerToolCaller20260120(out var value)) {
+    ///     // `value` is of type `ServerToolCaller20260120`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickCodeExecution20260120(
-        [NotNullWhen(true)] out ServerToolUseBlockParamCallerCodeExecution20260120? value
+    public bool TryPickServerToolCaller20260120(
+        [NotNullWhen(true)] out ServerToolCaller20260120? value
     )
     {
-        value = this.Value as ServerToolUseBlockParamCallerCodeExecution20260120;
+        value = this.Value as ServerToolCaller20260120;
         return value != null;
     }
 
@@ -364,7 +364,7 @@ public record class ServerToolUseBlockParamCaller : ModelBase
     /// instance.Switch(
     ///     (DirectCaller value) => {...},
     ///     (ServerToolCaller value) => {...},
-    ///     (ServerToolUseBlockParamCallerCodeExecution20260120 value) => {...}
+    ///     (ServerToolCaller20260120 value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -372,7 +372,7 @@ public record class ServerToolUseBlockParamCaller : ModelBase
     public void Switch(
         System::Action<DirectCaller> direct,
         System::Action<ServerToolCaller> serverTool,
-        System::Action<ServerToolUseBlockParamCallerCodeExecution20260120> codeExecution20260120
+        System::Action<ServerToolCaller20260120> serverToolCaller20260120
     )
     {
         switch (this.Value)
@@ -383,8 +383,8 @@ public record class ServerToolUseBlockParamCaller : ModelBase
             case ServerToolCaller value:
                 serverTool(value);
                 break;
-            case ServerToolUseBlockParamCallerCodeExecution20260120 value:
-                codeExecution20260120(value);
+            case ServerToolCaller20260120 value:
+                serverToolCaller20260120(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -410,7 +410,7 @@ public record class ServerToolUseBlockParamCaller : ModelBase
     /// var result = instance.Match(
     ///     (DirectCaller value) => {...},
     ///     (ServerToolCaller value) => {...},
-    ///     (ServerToolUseBlockParamCallerCodeExecution20260120 value) => {...}
+    ///     (ServerToolCaller20260120 value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -418,16 +418,14 @@ public record class ServerToolUseBlockParamCaller : ModelBase
     public T Match<T>(
         System::Func<DirectCaller, T> direct,
         System::Func<ServerToolCaller, T> serverTool,
-        System::Func<ServerToolUseBlockParamCallerCodeExecution20260120, T> codeExecution20260120
+        System::Func<ServerToolCaller20260120, T> serverToolCaller20260120
     )
     {
         return this.Value switch
         {
             DirectCaller value => direct(value),
             ServerToolCaller value => serverTool(value),
-            ServerToolUseBlockParamCallerCodeExecution20260120 value => codeExecution20260120(
-                value
-            ),
+            ServerToolCaller20260120 value => serverToolCaller20260120(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ServerToolUseBlockParamCaller"
             ),
@@ -439,9 +437,8 @@ public record class ServerToolUseBlockParamCaller : ModelBase
     public static implicit operator ServerToolUseBlockParamCaller(ServerToolCaller value) =>
         new(value);
 
-    public static implicit operator ServerToolUseBlockParamCaller(
-        ServerToolUseBlockParamCallerCodeExecution20260120 value
-    ) => new(value);
+    public static implicit operator ServerToolUseBlockParamCaller(ServerToolCaller20260120 value) =>
+        new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -464,7 +461,7 @@ public record class ServerToolUseBlockParamCaller : ModelBase
         this.Switch(
             (direct) => direct.Validate(),
             (serverTool) => serverTool.Validate(),
-            (codeExecution20260120) => codeExecution20260120.Validate()
+            (serverToolCaller20260120) => serverToolCaller20260120.Validate()
         );
     }
 
@@ -490,7 +487,7 @@ public record class ServerToolUseBlockParamCaller : ModelBase
         {
             DirectCaller _ => 0,
             ServerToolCaller _ => 1,
-            ServerToolUseBlockParamCallerCodeExecution20260120 _ => 2,
+            ServerToolCaller20260120 _ => 2,
             _ => -1,
         };
     }
@@ -562,11 +559,10 @@ sealed class ServerToolUseBlockParamCallerConverter : JsonConverter<ServerToolUs
             {
                 try
                 {
-                    var deserialized =
-                        JsonSerializer.Deserialize<ServerToolUseBlockParamCallerCodeExecution20260120>(
-                            element,
-                            options
-                        );
+                    var deserialized = JsonSerializer.Deserialize<ServerToolCaller20260120>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
@@ -596,104 +592,4 @@ sealed class ServerToolUseBlockParamCallerConverter : JsonConverter<ServerToolUs
     {
         JsonSerializer.Serialize(writer, value.Json, options);
     }
-}
-
-[JsonConverter(
-    typeof(JsonModelConverter<
-        ServerToolUseBlockParamCallerCodeExecution20260120,
-        ServerToolUseBlockParamCallerCodeExecution20260120FromRaw
-    >)
-)]
-public sealed record class ServerToolUseBlockParamCallerCodeExecution20260120 : JsonModel
-{
-    public required string ToolID
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<string>("tool_id");
-        }
-        init { this._rawData.Set("tool_id", value); }
-    }
-
-    public JsonElement Type
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<JsonElement>("type");
-        }
-        init { this._rawData.Set("type", value); }
-    }
-
-    /// <inheritdoc/>
-    public override void Validate()
-    {
-        _ = this.ToolID;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.SerializeToElement("code_execution_20260120")
-            )
-        )
-        {
-            throw new AnthropicInvalidDataException("Invalid value given for constant");
-        }
-    }
-
-    public ServerToolUseBlockParamCallerCodeExecution20260120()
-    {
-        this.Type = JsonSerializer.SerializeToElement("code_execution_20260120");
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public ServerToolUseBlockParamCallerCodeExecution20260120(
-        ServerToolUseBlockParamCallerCodeExecution20260120 serverToolUseBlockParamCallerCodeExecution20260120
-    )
-        : base(serverToolUseBlockParamCallerCodeExecution20260120) { }
-#pragma warning restore CS8618
-
-    public ServerToolUseBlockParamCallerCodeExecution20260120(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        this._rawData = new(rawData);
-
-        this.Type = JsonSerializer.SerializeToElement("code_execution_20260120");
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    ServerToolUseBlockParamCallerCodeExecution20260120(
-        FrozenDictionary<string, JsonElement> rawData
-    )
-    {
-        this._rawData = new(rawData);
-    }
-#pragma warning restore CS8618
-
-    /// <inheritdoc cref="ServerToolUseBlockParamCallerCodeExecution20260120FromRaw.FromRawUnchecked"/>
-    public static ServerToolUseBlockParamCallerCodeExecution20260120 FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-
-    [SetsRequiredMembers]
-    public ServerToolUseBlockParamCallerCodeExecution20260120(string toolID)
-        : this()
-    {
-        this.ToolID = toolID;
-    }
-}
-
-class ServerToolUseBlockParamCallerCodeExecution20260120FromRaw
-    : IFromRawJson<ServerToolUseBlockParamCallerCodeExecution20260120>
-{
-    /// <inheritdoc/>
-    public ServerToolUseBlockParamCallerCodeExecution20260120 FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    ) => ServerToolUseBlockParamCallerCodeExecution20260120.FromRawUnchecked(rawData);
 }

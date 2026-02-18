@@ -193,6 +193,7 @@ public enum CodeExecutionTool20250825AllowedCaller
 {
     Direct,
     CodeExecution20250825,
+    CodeExecution20260120,
 }
 
 sealed class CodeExecutionTool20250825AllowedCallerConverter
@@ -209,6 +210,8 @@ sealed class CodeExecutionTool20250825AllowedCallerConverter
             "direct" => CodeExecutionTool20250825AllowedCaller.Direct,
             "code_execution_20250825" =>
                 CodeExecutionTool20250825AllowedCaller.CodeExecution20250825,
+            "code_execution_20260120" =>
+                CodeExecutionTool20250825AllowedCaller.CodeExecution20260120,
             _ => (CodeExecutionTool20250825AllowedCaller)(-1),
         };
     }
@@ -226,6 +229,8 @@ sealed class CodeExecutionTool20250825AllowedCallerConverter
                 CodeExecutionTool20250825AllowedCaller.Direct => "direct",
                 CodeExecutionTool20250825AllowedCaller.CodeExecution20250825 =>
                     "code_execution_20250825",
+                CodeExecutionTool20250825AllowedCaller.CodeExecution20260120 =>
+                    "code_execution_20260120",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

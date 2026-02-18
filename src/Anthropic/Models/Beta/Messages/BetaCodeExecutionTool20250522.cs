@@ -196,6 +196,7 @@ public enum AllowedCaller
 {
     Direct,
     CodeExecution20250825,
+    CodeExecution20260120,
 }
 
 sealed class AllowedCallerConverter : JsonConverter<AllowedCaller>
@@ -210,6 +211,7 @@ sealed class AllowedCallerConverter : JsonConverter<AllowedCaller>
         {
             "direct" => AllowedCaller.Direct,
             "code_execution_20250825" => AllowedCaller.CodeExecution20250825,
+            "code_execution_20260120" => AllowedCaller.CodeExecution20260120,
             _ => (AllowedCaller)(-1),
         };
     }
@@ -226,6 +228,7 @@ sealed class AllowedCallerConverter : JsonConverter<AllowedCaller>
             {
                 AllowedCaller.Direct => "direct",
                 AllowedCaller.CodeExecution20250825 => "code_execution_20250825",
+                AllowedCaller.CodeExecution20260120 => "code_execution_20260120",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

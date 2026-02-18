@@ -369,6 +369,7 @@ public enum BetaToolAllowedCaller
 {
     Direct,
     CodeExecution20250825,
+    CodeExecution20260120,
 }
 
 sealed class BetaToolAllowedCallerConverter : JsonConverter<BetaToolAllowedCaller>
@@ -383,6 +384,7 @@ sealed class BetaToolAllowedCallerConverter : JsonConverter<BetaToolAllowedCalle
         {
             "direct" => BetaToolAllowedCaller.Direct,
             "code_execution_20250825" => BetaToolAllowedCaller.CodeExecution20250825,
+            "code_execution_20260120" => BetaToolAllowedCaller.CodeExecution20260120,
             _ => (BetaToolAllowedCaller)(-1),
         };
     }
@@ -399,6 +401,7 @@ sealed class BetaToolAllowedCallerConverter : JsonConverter<BetaToolAllowedCalle
             {
                 BetaToolAllowedCaller.Direct => "direct",
                 BetaToolAllowedCaller.CodeExecution20250825 => "code_execution_20250825",
+                BetaToolAllowedCaller.CodeExecution20260120 => "code_execution_20260120",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

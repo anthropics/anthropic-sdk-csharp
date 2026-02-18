@@ -134,10 +134,11 @@ public class WebSearchToolResultBlockCallerTest : TestBase
     }
 
     [Fact]
-    public void CodeExecution20260120ValidationWorks()
+    public void ServerToolCaller20260120ValidationWorks()
     {
-        WebSearchToolResultBlockCaller value =
-            new WebSearchToolResultBlockCallerCodeExecution20260120("srvtoolu_SQfNkl1n_JR_");
+        WebSearchToolResultBlockCaller value = new ServerToolCaller20260120(
+            "srvtoolu_SQfNkl1n_JR_"
+        );
         value.Validate();
     }
 
@@ -168,10 +169,11 @@ public class WebSearchToolResultBlockCallerTest : TestBase
     }
 
     [Fact]
-    public void CodeExecution20260120SerializationRoundtripWorks()
+    public void ServerToolCaller20260120SerializationRoundtripWorks()
     {
-        WebSearchToolResultBlockCaller value =
-            new WebSearchToolResultBlockCallerCodeExecution20260120("srvtoolu_SQfNkl1n_JR_");
+        WebSearchToolResultBlockCaller value = new ServerToolCaller20260120(
+            "srvtoolu_SQfNkl1n_JR_"
+        );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockCaller>(
             element,
@@ -179,88 +181,5 @@ public class WebSearchToolResultBlockCallerTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
-    }
-}
-
-public class WebSearchToolResultBlockCallerCodeExecution20260120Test : TestBase
-{
-    [Fact]
-    public void FieldRoundtrip_Works()
-    {
-        var model = new WebSearchToolResultBlockCallerCodeExecution20260120
-        {
-            ToolID = "srvtoolu_SQfNkl1n_JR_",
-        };
-
-        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20260120");
-
-        Assert.Equal(expectedToolID, model.ToolID);
-        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
-    }
-
-    [Fact]
-    public void SerializationRoundtrip_Works()
-    {
-        var model = new WebSearchToolResultBlockCallerCodeExecution20260120
-        {
-            ToolID = "srvtoolu_SQfNkl1n_JR_",
-        };
-
-        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<WebSearchToolResultBlockCallerCodeExecution20260120>(
-                json,
-                ModelBase.SerializerOptions
-            );
-
-        Assert.Equal(model, deserialized);
-    }
-
-    [Fact]
-    public void FieldRoundtripThroughSerialization_Works()
-    {
-        var model = new WebSearchToolResultBlockCallerCodeExecution20260120
-        {
-            ToolID = "srvtoolu_SQfNkl1n_JR_",
-        };
-
-        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<WebSearchToolResultBlockCallerCodeExecution20260120>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        Assert.NotNull(deserialized);
-
-        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20260120");
-
-        Assert.Equal(expectedToolID, deserialized.ToolID);
-        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
-    }
-
-    [Fact]
-    public void Validation_Works()
-    {
-        var model = new WebSearchToolResultBlockCallerCodeExecution20260120
-        {
-            ToolID = "srvtoolu_SQfNkl1n_JR_",
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void CopyConstructor_Works()
-    {
-        var model = new WebSearchToolResultBlockCallerCodeExecution20260120
-        {
-            ToolID = "srvtoolu_SQfNkl1n_JR_",
-        };
-
-        WebSearchToolResultBlockCallerCodeExecution20260120 copied = new(model);
-
-        Assert.Equal(model, copied);
     }
 }

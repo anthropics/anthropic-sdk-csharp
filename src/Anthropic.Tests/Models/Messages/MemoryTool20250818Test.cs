@@ -362,6 +362,7 @@ public class MemoryTool20250818AllowedCallerTest : TestBase
     [Theory]
     [InlineData(MemoryTool20250818AllowedCaller.Direct)]
     [InlineData(MemoryTool20250818AllowedCaller.CodeExecution20250825)]
+    [InlineData(MemoryTool20250818AllowedCaller.CodeExecution20260120)]
     public void Validation_Works(MemoryTool20250818AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -384,6 +385,7 @@ public class MemoryTool20250818AllowedCallerTest : TestBase
     [Theory]
     [InlineData(MemoryTool20250818AllowedCaller.Direct)]
     [InlineData(MemoryTool20250818AllowedCaller.CodeExecution20250825)]
+    [InlineData(MemoryTool20250818AllowedCaller.CodeExecution20260120)]
     public void SerializationRoundtrip_Works(MemoryTool20250818AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
