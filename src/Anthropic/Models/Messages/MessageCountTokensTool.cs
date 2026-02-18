@@ -124,6 +124,30 @@ public record class MessageCountTokensTool : ModelBase
         }
     }
 
+    public UserLocation? UserLocation
+    {
+        get
+        {
+            return Match<UserLocation?>(
+                tool: (_) => null,
+                toolBash20250124: (_) => null,
+                codeExecutionTool20250522: (_) => null,
+                codeExecutionTool20250825: (_) => null,
+                codeExecutionTool20260120: (_) => null,
+                memoryTool20250818: (_) => null,
+                toolTextEditor20250124: (_) => null,
+                toolTextEditor20250429: (_) => null,
+                toolTextEditor20250728: (_) => null,
+                webSearchTool20250305: (x) => x.UserLocation,
+                webFetchTool20250910: (_) => null,
+                webSearchTool20260209: (x) => x.UserLocation,
+                webFetchTool20260209: (_) => null,
+                toolSearchToolBm25_20251119: (_) => null,
+                toolSearchToolRegex20251119: (_) => null
+            );
+        }
+    }
+
     public CitationsConfigParam? Citations
     {
         get

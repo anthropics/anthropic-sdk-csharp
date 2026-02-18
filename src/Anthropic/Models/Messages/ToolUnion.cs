@@ -124,6 +124,30 @@ public record class ToolUnion : ModelBase
         }
     }
 
+    public UserLocation? UserLocation
+    {
+        get
+        {
+            return Match<UserLocation?>(
+                tool: (_) => null,
+                bash20250124: (_) => null,
+                codeExecutionTool20250522: (_) => null,
+                codeExecutionTool20250825: (_) => null,
+                codeExecutionTool20260120: (_) => null,
+                memoryTool20250818: (_) => null,
+                textEditor20250124: (_) => null,
+                textEditor20250429: (_) => null,
+                textEditor20250728: (_) => null,
+                webSearchTool20250305: (x) => x.UserLocation,
+                webFetchTool20250910: (_) => null,
+                webSearchTool20260209: (x) => x.UserLocation,
+                webFetchTool20260209: (_) => null,
+                searchToolBm25_20251119: (_) => null,
+                searchToolRegex20251119: (_) => null
+            );
+        }
+    }
+
     public CitationsConfigParam? Citations
     {
         get

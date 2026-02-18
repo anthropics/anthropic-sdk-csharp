@@ -81,9 +81,7 @@ public class ContentBlockTest : TestBase
         ContentBlock value = new WebSearchToolResultBlock()
         {
             Caller = new DirectCaller(),
-            Content = new WebSearchToolResultError(
-                WebSearchToolResultErrorErrorCode.InvalidToolInput
-            ),
+            Content = new WebSearchToolResultError(WebSearchToolResultErrorCode.InvalidToolInput),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
         value.Validate();
@@ -270,9 +268,7 @@ public class ContentBlockTest : TestBase
         ContentBlock value = new WebSearchToolResultBlock()
         {
             Caller = new DirectCaller(),
-            Content = new WebSearchToolResultError(
-                WebSearchToolResultErrorErrorCode.InvalidToolInput
-            ),
+            Content = new WebSearchToolResultError(WebSearchToolResultErrorCode.InvalidToolInput),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

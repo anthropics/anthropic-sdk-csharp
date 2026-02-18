@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Messages;
 
@@ -14,12 +13,14 @@ namespace Anthropic.Models.Messages;
 )]
 public sealed record class WebSearchToolRequestError : JsonModel
 {
-    public required ApiEnum<string, ErrorCode> ErrorCode
+    public required ApiEnum<string, WebSearchToolResultErrorCode> ErrorCode
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, ErrorCode>>("error_code");
+            return this._rawData.GetNotNullClass<ApiEnum<string, WebSearchToolResultErrorCode>>(
+                "error_code"
+            );
         }
         init { this._rawData.Set("error_code", value); }
     }
@@ -84,7 +85,7 @@ public sealed record class WebSearchToolRequestError : JsonModel
     }
 
     [SetsRequiredMembers]
-    public WebSearchToolRequestError(ApiEnum<string, ErrorCode> errorCode)
+    public WebSearchToolRequestError(ApiEnum<string, WebSearchToolResultErrorCode> errorCode)
         : this()
     {
         this.ErrorCode = errorCode;
@@ -97,60 +98,4 @@ class WebSearchToolRequestErrorFromRaw : IFromRawJson<WebSearchToolRequestError>
     public WebSearchToolRequestError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => WebSearchToolRequestError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(ErrorCodeConverter))]
-public enum ErrorCode
-{
-    InvalidToolInput,
-    Unavailable,
-    MaxUsesExceeded,
-    TooManyRequests,
-    QueryTooLong,
-    RequestTooLarge,
-}
-
-sealed class ErrorCodeConverter : JsonConverter<ErrorCode>
-{
-    public override ErrorCode Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "invalid_tool_input" => ErrorCode.InvalidToolInput,
-            "unavailable" => ErrorCode.Unavailable,
-            "max_uses_exceeded" => ErrorCode.MaxUsesExceeded,
-            "too_many_requests" => ErrorCode.TooManyRequests,
-            "query_too_long" => ErrorCode.QueryTooLong,
-            "request_too_large" => ErrorCode.RequestTooLarge,
-            _ => (ErrorCode)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        ErrorCode value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                ErrorCode.InvalidToolInput => "invalid_tool_input",
-                ErrorCode.Unavailable => "unavailable",
-                ErrorCode.MaxUsesExceeded => "max_uses_exceeded",
-                ErrorCode.TooManyRequests => "too_many_requests",
-                ErrorCode.QueryTooLong => "query_too_long",
-                ErrorCode.RequestTooLarge => "request_too_large",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Messages;
 
@@ -14,14 +13,14 @@ namespace Anthropic.Models.Messages;
 )]
 public sealed record class WebSearchToolResultError : JsonModel
 {
-    public required ApiEnum<string, WebSearchToolResultErrorErrorCode> ErrorCode
+    public required ApiEnum<string, WebSearchToolResultErrorCode> ErrorCode
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, WebSearchToolResultErrorErrorCode>
-            >("error_code");
+            return this._rawData.GetNotNullClass<ApiEnum<string, WebSearchToolResultErrorCode>>(
+                "error_code"
+            );
         }
         init { this._rawData.Set("error_code", value); }
     }
@@ -86,7 +85,7 @@ public sealed record class WebSearchToolResultError : JsonModel
     }
 
     [SetsRequiredMembers]
-    public WebSearchToolResultError(ApiEnum<string, WebSearchToolResultErrorErrorCode> errorCode)
+    public WebSearchToolResultError(ApiEnum<string, WebSearchToolResultErrorCode> errorCode)
         : this()
     {
         this.ErrorCode = errorCode;
@@ -99,61 +98,4 @@ class WebSearchToolResultErrorFromRaw : IFromRawJson<WebSearchToolResultError>
     public WebSearchToolResultError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => WebSearchToolResultError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(WebSearchToolResultErrorErrorCodeConverter))]
-public enum WebSearchToolResultErrorErrorCode
-{
-    InvalidToolInput,
-    Unavailable,
-    MaxUsesExceeded,
-    TooManyRequests,
-    QueryTooLong,
-    RequestTooLarge,
-}
-
-sealed class WebSearchToolResultErrorErrorCodeConverter
-    : JsonConverter<WebSearchToolResultErrorErrorCode>
-{
-    public override WebSearchToolResultErrorErrorCode Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "invalid_tool_input" => WebSearchToolResultErrorErrorCode.InvalidToolInput,
-            "unavailable" => WebSearchToolResultErrorErrorCode.Unavailable,
-            "max_uses_exceeded" => WebSearchToolResultErrorErrorCode.MaxUsesExceeded,
-            "too_many_requests" => WebSearchToolResultErrorErrorCode.TooManyRequests,
-            "query_too_long" => WebSearchToolResultErrorErrorCode.QueryTooLong,
-            "request_too_large" => WebSearchToolResultErrorErrorCode.RequestTooLarge,
-            _ => (WebSearchToolResultErrorErrorCode)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        WebSearchToolResultErrorErrorCode value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                WebSearchToolResultErrorErrorCode.InvalidToolInput => "invalid_tool_input",
-                WebSearchToolResultErrorErrorCode.Unavailable => "unavailable",
-                WebSearchToolResultErrorErrorCode.MaxUsesExceeded => "max_uses_exceeded",
-                WebSearchToolResultErrorErrorCode.TooManyRequests => "too_many_requests",
-                WebSearchToolResultErrorErrorCode.QueryTooLong => "query_too_long",
-                WebSearchToolResultErrorErrorCode.RequestTooLarge => "request_too_large",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }
