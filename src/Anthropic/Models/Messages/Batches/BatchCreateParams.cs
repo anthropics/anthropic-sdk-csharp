@@ -352,6 +352,20 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
+    /// Top-level cache control automatically applies a cache_control marker to the
+    /// last cacheable block in the request.
+    /// </summary>
+    public CacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
+        }
+        init { this._rawData.Set("cache_control", value); }
+    }
+
+    /// <summary>
     /// Container identifier for reuse across requests.
     /// </summary>
     public string? Container
@@ -735,6 +749,7 @@ public sealed record class Params : JsonModel
             item.Validate();
         }
         this.Model.Raw();
+        this.CacheControl?.Validate();
         _ = this.Container;
         _ = this.InferenceGeo;
         this.Metadata?.Validate();

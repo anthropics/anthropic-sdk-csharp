@@ -25,6 +25,7 @@ public class BatchCreateParamsTest : TestBase
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                         Model = Messages::Model.ClaudeOpus4_6,
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Container = "container",
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -115,6 +116,7 @@ public class BatchCreateParamsTest : TestBase
                     MaxTokens = 1024,
                     Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                     Model = Messages::Model.ClaudeOpus4_6,
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Container = "container",
                     InferenceGeo = "inference_geo",
                     Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -213,6 +215,7 @@ public class BatchCreateParamsTest : TestBase
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                         Model = Messages::Model.ClaudeOpus4_6,
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Container = "container",
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -313,6 +316,7 @@ public class BatchCreateParamsTest : TestBase
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                         Model = Messages::Model.ClaudeOpus4_6,
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Container = "container",
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -412,6 +416,7 @@ public class RequestTest : TestBase
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                 Model = Messages::Model.ClaudeOpus4_6,
+                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Container = "container",
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -493,6 +498,7 @@ public class RequestTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -582,6 +588,7 @@ public class RequestTest : TestBase
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                 Model = Messages::Model.ClaudeOpus4_6,
+                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Container = "container",
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -674,6 +681,7 @@ public class RequestTest : TestBase
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                 Model = Messages::Model.ClaudeOpus4_6,
+                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Container = "container",
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -762,6 +770,7 @@ public class RequestTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -851,6 +860,7 @@ public class RequestTest : TestBase
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                 Model = Messages::Model.ClaudeOpus4_6,
+                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Container = "container",
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -940,6 +950,7 @@ public class RequestTest : TestBase
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
                 Model = Messages::Model.ClaudeOpus4_6,
+                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Container = "container",
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -1031,6 +1042,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -1111,6 +1123,7 @@ public class ParamsTest : TestBase
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_6;
+        Messages::CacheControlEphemeral expectedCacheControl = new() { Ttl = Messages::Ttl.Ttl5m };
         string expectedContainer = "container";
         string expectedInferenceGeo = "inference_geo";
         Messages::Metadata expectedMetadata = new()
@@ -1197,6 +1210,7 @@ public class ParamsTest : TestBase
             Assert.Equal(expectedMessages[i], model.Messages[i]);
         }
         Assert.Equal(expectedModel, model.Model);
+        Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedContainer, model.Container);
         Assert.Equal(expectedInferenceGeo, model.InferenceGeo);
         Assert.Equal(expectedMetadata, model.Metadata);
@@ -1231,6 +1245,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -1319,6 +1334,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -1403,6 +1419,7 @@ public class ParamsTest : TestBase
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_6;
+        Messages::CacheControlEphemeral expectedCacheControl = new() { Ttl = Messages::Ttl.Ttl5m };
         string expectedContainer = "container";
         string expectedInferenceGeo = "inference_geo";
         Messages::Metadata expectedMetadata = new()
@@ -1489,6 +1506,7 @@ public class ParamsTest : TestBase
             Assert.Equal(expectedMessages[i], deserialized.Messages[i]);
         }
         Assert.Equal(expectedModel, deserialized.Model);
+        Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedContainer, deserialized.Container);
         Assert.Equal(expectedInferenceGeo, deserialized.InferenceGeo);
         Assert.Equal(expectedMetadata, deserialized.Metadata);
@@ -1523,6 +1541,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -1608,6 +1627,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
         };
@@ -1646,6 +1666,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
         };
@@ -1661,6 +1682,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
 
@@ -1713,6 +1735,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
 
@@ -1814,6 +1837,8 @@ public class ParamsTest : TestBase
             TopP = 0.7,
         };
 
+        Assert.Null(model.CacheControl);
+        Assert.False(model.RawData.ContainsKey("cache_control"));
         Assert.Null(model.Container);
         Assert.False(model.RawData.ContainsKey("container"));
         Assert.Null(model.InferenceGeo);
@@ -1982,10 +2007,13 @@ public class ParamsTest : TestBase
             TopK = 5,
             TopP = 0.7,
 
+            CacheControl = null,
             Container = null,
             InferenceGeo = null,
         };
 
+        Assert.Null(model.CacheControl);
+        Assert.True(model.RawData.ContainsKey("cache_control"));
         Assert.Null(model.Container);
         Assert.True(model.RawData.ContainsKey("container"));
         Assert.Null(model.InferenceGeo);
@@ -2071,6 +2099,7 @@ public class ParamsTest : TestBase
             TopK = 5,
             TopP = 0.7,
 
+            CacheControl = null,
             Container = null,
             InferenceGeo = null,
         };
@@ -2086,6 +2115,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },

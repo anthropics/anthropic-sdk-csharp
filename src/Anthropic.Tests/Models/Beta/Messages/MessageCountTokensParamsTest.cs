@@ -19,6 +19,7 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             ContextManagement = new()
             {
                 Edits =
@@ -119,6 +120,7 @@ public class MessageCountTokensParamsTest : TestBase
 
         List<BetaMessageParam> expectedMessages = [new() { Content = "string", Role = Role.User }];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_6;
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaContextManagementConfig expectedContextManagement = new()
         {
             Edits =
@@ -229,6 +231,7 @@ public class MessageCountTokensParamsTest : TestBase
             Assert.Equal(expectedMessages[i], parameters.Messages[i]);
         }
         Assert.Equal(expectedModel, parameters.Model);
+        Assert.Equal(expectedCacheControl, parameters.CacheControl);
         Assert.Equal(expectedContextManagement, parameters.ContextManagement);
         Assert.NotNull(parameters.McpServers);
         Assert.Equal(expectedMcpServers.Count, parameters.McpServers.Count);
@@ -263,6 +266,7 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             ContextManagement = new()
             {
                 Edits =
@@ -310,6 +314,7 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             ContextManagement = new()
             {
                 Edits =
@@ -442,6 +447,8 @@ public class MessageCountTokensParamsTest : TestBase
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
+        Assert.Null(parameters.CacheControl);
+        Assert.False(parameters.RawBodyData.ContainsKey("cache_control"));
         Assert.Null(parameters.ContextManagement);
         Assert.False(parameters.RawBodyData.ContainsKey("context_management"));
         Assert.Null(parameters.OutputFormat);
@@ -532,11 +539,14 @@ public class MessageCountTokensParamsTest : TestBase
             ],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
+            CacheControl = null,
             ContextManagement = null,
             OutputFormat = null,
             Speed = null,
         };
 
+        Assert.Null(parameters.CacheControl);
+        Assert.True(parameters.RawBodyData.ContainsKey("cache_control"));
         Assert.Null(parameters.ContextManagement);
         Assert.True(parameters.RawBodyData.ContainsKey("context_management"));
         Assert.Null(parameters.OutputFormat);
@@ -585,6 +595,7 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             ContextManagement = new()
             {
                 Edits =

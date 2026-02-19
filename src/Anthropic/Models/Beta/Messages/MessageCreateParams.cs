@@ -134,6 +134,20 @@ public record class MessageCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// Top-level cache control automatically applies a cache_control marker to the
+    /// last cacheable block in the request.
+    /// </summary>
+    public BetaCacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
+        }
+        init { this._rawBodyData.Set("cache_control", value); }
+    }
+
+    /// <summary>
     /// Container identifier for reuse across requests.
     /// </summary>
     public Container? Container
