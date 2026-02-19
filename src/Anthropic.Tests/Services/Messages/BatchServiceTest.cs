@@ -27,7 +27,7 @@ public class BatchServiceTest
                         Params = new()
                         {
                             MaxTokens = 1024,
-                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                             Container = "container",
                             Messages =
                             [
