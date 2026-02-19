@@ -25,6 +25,7 @@ public class BatchServiceTest : TestBase
                             MaxTokens = 1024,
                             Messages = [new() { Content = "Hello, world", Role = Role.User }],
                             Model = Messages::Model.ClaudeOpus4_6,
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
                             Container = new BetaContainerParams()
                             {
                                 ID = "id",

@@ -15,6 +15,7 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             OutputConfig = new()
             {
                 Effort = Messages::Effort.Low,
@@ -85,6 +86,7 @@ public class MessageCountTokensParamsTest : TestBase
             new() { Content = "string", Role = Messages::Role.User },
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_6;
+        Messages::CacheControlEphemeral expectedCacheControl = new() { Ttl = Messages::Ttl.Ttl5m };
         Messages::OutputConfig expectedOutputConfig = new()
         {
             Effort = Messages::Effort.Low,
@@ -158,6 +160,7 @@ public class MessageCountTokensParamsTest : TestBase
             Assert.Equal(expectedMessages[i], parameters.Messages[i]);
         }
         Assert.Equal(expectedModel, parameters.Model);
+        Assert.Equal(expectedCacheControl, parameters.CacheControl);
         Assert.Equal(expectedOutputConfig, parameters.OutputConfig);
         Assert.Equal(expectedSystem, parameters.System);
         Assert.Equal(expectedThinking, parameters.Thinking);
@@ -177,6 +180,7 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
         };
 
         Assert.Null(parameters.OutputConfig);
@@ -198,6 +202,7 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             OutputConfig = null,
@@ -217,6 +222,160 @@ public class MessageCountTokensParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("tool_choice"));
         Assert.Null(parameters.Tools);
         Assert.False(parameters.RawBodyData.ContainsKey("tools"));
+    }
+
+    [Fact]
+    public void OptionalNullableParamsUnsetAreNotSet_Works()
+    {
+        var parameters = new Messages::MessageCountTokensParams
+        {
+            Messages = [new() { Content = "string", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus4_6,
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            System = new(
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new Messages::Tool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = Messages::Type.Custom,
+                },
+            ],
+        };
+
+        Assert.Null(parameters.CacheControl);
+        Assert.False(parameters.RawBodyData.ContainsKey("cache_control"));
+    }
+
+    [Fact]
+    public void OptionalNullableParamsSetToNullAreSetToNull_Works()
+    {
+        var parameters = new Messages::MessageCountTokensParams
+        {
+            Messages = [new() { Content = "string", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus4_6,
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            System = new(
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new Messages::Tool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = Messages::Type.Custom,
+                },
+            ],
+
+            CacheControl = null,
+        };
+
+        Assert.Null(parameters.CacheControl);
+        Assert.True(parameters.RawBodyData.ContainsKey("cache_control"));
     }
 
     [Fact]
@@ -240,6 +399,7 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Messages = [new() { Content = "string", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             OutputConfig = new()
             {
                 Effort = Messages::Effort.Low,

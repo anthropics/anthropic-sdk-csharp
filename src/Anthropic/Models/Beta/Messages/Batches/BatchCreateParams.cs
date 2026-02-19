@@ -381,6 +381,20 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
+    /// Top-level cache control automatically applies a cache_control marker to the
+    /// last cacheable block in the request.
+    /// </summary>
+    public BetaCacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
+        }
+        init { this._rawData.Set("cache_control", value); }
+    }
+
+    /// <summary>
     /// Container identifier for reuse across requests.
     /// </summary>
     public global::Anthropic.Models.Beta.Messages.Batches.Container? Container
@@ -842,6 +856,7 @@ public sealed record class Params : JsonModel
             item.Validate();
         }
         this.Model.Raw();
+        this.CacheControl?.Validate();
         this.Container?.Validate();
         this.ContextManagement?.Validate();
         _ = this.InferenceGeo;

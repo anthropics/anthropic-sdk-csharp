@@ -20,6 +20,7 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Container = new BetaContainerParams()
             {
                 ID = "id",
@@ -144,6 +145,7 @@ public class MessageCreateParamsTest : TestBase
             new() { Content = "Hello, world", Role = Role.User },
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_6;
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         Container expectedContainer = new BetaContainerParams()
         {
             ID = "id",
@@ -274,6 +276,7 @@ public class MessageCreateParamsTest : TestBase
             Assert.Equal(expectedMessages[i], parameters.Messages[i]);
         }
         Assert.Equal(expectedModel, parameters.Model);
+        Assert.Equal(expectedCacheControl, parameters.CacheControl);
         Assert.Equal(expectedContainer, parameters.Container);
         Assert.Equal(expectedContextManagement, parameters.ContextManagement);
         Assert.Equal(expectedInferenceGeo, parameters.InferenceGeo);
@@ -322,6 +325,7 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Container = new BetaContainerParams()
             {
                 ID = "id",
@@ -396,6 +400,7 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Container = new BetaContainerParams()
             {
                 ID = "id",
@@ -567,6 +572,8 @@ public class MessageCreateParamsTest : TestBase
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
+        Assert.Null(parameters.CacheControl);
+        Assert.False(parameters.RawBodyData.ContainsKey("cache_control"));
         Assert.Null(parameters.Container);
         Assert.False(parameters.RawBodyData.ContainsKey("container"));
         Assert.Null(parameters.ContextManagement);
@@ -668,6 +675,7 @@ public class MessageCreateParamsTest : TestBase
             TopP = 0.7,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
+            CacheControl = null,
             Container = null,
             ContextManagement = null,
             InferenceGeo = null,
@@ -675,6 +683,8 @@ public class MessageCreateParamsTest : TestBase
             Speed = null,
         };
 
+        Assert.Null(parameters.CacheControl);
+        Assert.True(parameters.RawBodyData.ContainsKey("cache_control"));
         Assert.Null(parameters.Container);
         Assert.True(parameters.RawBodyData.ContainsKey("container"));
         Assert.Null(parameters.ContextManagement);
@@ -730,6 +740,7 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Container = new BetaContainerParams()
             {
                 ID = "id",
