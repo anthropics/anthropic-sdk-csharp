@@ -23,7 +23,7 @@ public class FileServiceTest : TestBase
         deletedFile.Validate();
     }
 
-    [Fact(Skip = "Prism doesn't support application/binary responses")]
+    [Fact(Skip = "Mock server doesn't support application/binary responses")]
     public async Task Download_Works()
     {
         await this.client.Beta.Files.Download(
