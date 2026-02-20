@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -85,19 +86,23 @@ public abstract record class ParamsBase
                 }
                 break;
             case JsonValueKind.Array:
-                foreach (var item in element.EnumerateArray())
-                {
-                    collection.Add(
-                        string.Format("{0}[]", key),
-                        item.ValueKind switch
-                        {
-                            JsonValueKind.Null => "",
-                            JsonValueKind.True => "true",
-                            JsonValueKind.False => "false",
-                            _ => item.GetString(),
-                        }
-                    );
-                }
+                collection.Add(
+                    key,
+                    string.Join(
+                        ",",
+                        Enumerable.Select(
+                            element.EnumerateArray(),
+                            x =>
+                                x.ValueKind switch
+                                {
+                                    JsonValueKind.Null => "",
+                                    JsonValueKind.True => "true",
+                                    JsonValueKind.False => "false",
+                                    _ => x.GetString(),
+                                }
+                        )
+                    )
+                );
                 break;
         }
     }
