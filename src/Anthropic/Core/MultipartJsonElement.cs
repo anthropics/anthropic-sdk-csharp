@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
@@ -294,11 +295,66 @@ public static class MultipartJsonSerializer
                     }
                     return;
                 case JsonValueKind.Array:
-                    foreach (var item in element.EnumerateArray())
+                    var items = new List<string>();
+                    foreach (var arrayItem in element.EnumerateArray())
                     {
-                        SerializeParts(string.Format("{0}[]", name), item);
+                        switch (arrayItem.ValueKind)
+                        {
+                            case JsonValueKind.Undefined:
+                            case JsonValueKind.Null:
+                                items.Add("");
+                                break;
+                            case JsonValueKind.True:
+                                items.Add("true");
+                                break;
+                            case JsonValueKind.False:
+                                items.Add("false");
+                                break;
+                            case JsonValueKind.String:
+                                if (
+                                    arrayItem.TryGetGuid(out var itemGuid)
+                                    && multipartElement.BinaryContents.TryGetValue(
+                                        itemGuid,
+                                        out var itemBinaryContent
+                                    )
+                                )
+                                {
+                                    var itemContent = new StreamContent(itemBinaryContent.Stream);
+                                    itemContent.Headers.ContentType = itemBinaryContent.ContentType;
+                                    var itemFileName = itemBinaryContent.FileName;
+                                    if (name == "")
+                                    {
+                                        formDataContent.Add(itemContent);
+                                    }
+                                    else if (itemFileName == null)
+                                    {
+                                        formDataContent.Add(itemContent, $"{name}[]");
+                                    }
+                                    else
+                                    {
+                                        formDataContent.Add(itemContent, $"{name}[]", itemFileName);
+                                    }
+                                }
+                                else
+                                {
+                                    items.Add(arrayItem.ToString());
+                                }
+                                break;
+                            default:
+                                throw new InvalidDataException("Unexpected element type in array");
+                        }
                     }
-                    return;
+
+                    if (items.Count > 0)
+                    {
+                        content = new StringContent(string.Join(",", items));
+                    }
+                    else
+                    {
+                        content = null;
+                    }
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(element));
             }
