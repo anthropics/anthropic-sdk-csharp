@@ -1,5 +1,19 @@
 # Changelog
 
+## 12.9.0 (2026-02-22)
+
+Full Changelog: [Anthropic-v12.8.0...Anthropic-v12.9.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.8.0...Anthropic-v12.9.0)
+
+### Features
+
+* **api:** change array_format to brackets ([4e216d2](https://github.com/anthropics/anthropic-sdk-csharp/commit/4e216d2851348627da6023c4647fdcecca0b06b5))
+* **api:** remove publishing section from cli target ([b7194a2](https://github.com/anthropics/anthropic-sdk-csharp/commit/b7194a2918c9ccaac1762df1b229a344cb6e62a7))
+
+
+### Refactors
+
+* **internal:** default headers ([cca4f5a](https://github.com/anthropics/anthropic-sdk-csharp/commit/cca4f5a996d7eed7925cf995e4920995a7bcc469))
+
 ## 12.8.0 (2026-02-19)
 
 Full Changelog: [Anthropic-v12.7.0...Anthropic-v12.8.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.7.0...Anthropic-v12.8.0)
