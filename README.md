@@ -358,6 +358,119 @@ AnthropicClient client = new() { HttpClient = httpClient };
 
 The SDK is typed for convenient usage of the documented API. However, it also supports working with undocumented or not yet supported parts of the API.
 
+### Parameters
+
+To set undocumented parameters, a constructor exists that accepts dictionaries for additional header, query, and body values. If the method type doesn't support request bodies (e.g. `GET` requests), the constructor will only accept a header and query dictionary.
+
+```csharp
+using System.Collections.Generic;
+using System.Text.Json;
+using Anthropic.Models.Messages;
+
+MessageCreateParams parameters = new
+(
+    rawHeaderData: new Dictionary<string, JsonElement>()
+    {
+        { "Custom-Header", JsonSerializer.SerializeToElement(42) }
+    },
+
+    rawQueryData: new Dictionary<string, JsonElement>()
+    {
+        { "custom_query_param", JsonSerializer.SerializeToElement(42) }
+    },
+
+    rawBodyData: new Dictionary<string, JsonElement>()
+    {
+        { "custom_body_param", JsonSerializer.SerializeToElement(42) }
+    }
+)
+{
+    // Documented properties can still be added here.
+    // In case of conflict, these parameters take precedence over the custom parameters.
+    MaxTokens = 1024
+};
+```
+
+The raw parameters can also be accessed through the `RawHeaderData`, `RawQueryData`, and `RawBodyData` (if available) properties.
+
+This can also be used to set a documented parameter to an undocumented or not yet supported _value_, as long as the parameter is optional. If the parameter is required, omitting its `init` property will result in a compile-time error. To work around this, the `FromRawUnchecked` method can be used:
+
+```csharp
+using System.Collections.Generic;
+using System.Text.Json;
+using Anthropic.Models.Messages;
+
+var parameters = MessageCreateParams.FromRawUnchecked
+(
+
+    rawHeaderData: new Dictionary<string, JsonElement>(),
+    rawQueryData: new Dictionary<string, JsonElement>(),
+    rawBodyData: new Dictionary<string, JsonElement>
+    {
+        {
+            "max_tokens",
+            JsonSerializer.SerializeToElement("custom value")
+        }
+    }
+);
+```
+
+### Nested Parameters
+
+Undocumented properties, or undocumented values of documented properties, on nested parameters can be set similarly, using a dictionary in the constructor of the nested parameter.
+
+```csharp
+using System.Collections.Generic;
+using System.Text.Json;
+using Anthropic.Models.Messages;
+
+MessageCreateParams parameters = new()
+{
+    CacheControl = new
+    (
+        new Dictionary<string, JsonElement>
+        {
+            { "custom_nested_param", JsonSerializer.SerializeToElement(42) }
+        }
+    )
+};
+```
+
+Required properties on the nested parameter can also be changed or omitted using the `FromRawUnchecked` method:
+
+```csharp
+using System.Collections.Generic;
+using System.Text.Json;
+using Anthropic.Models.Messages;
+
+MessageCreateParams parameters = new()
+{
+    CacheControl = CacheControlEphemeral.FromRawUnchecked
+    (
+        new Dictionary<string, JsonElement>
+        {
+            { "required_property", JsonSerializer.SerializeToElement("custom value") }
+        }
+    )
+};
+```
+
+### Response properties
+
+To access undocumented response properties, the `RawData` property can be used:
+
+```csharp
+using System.Text.Json;
+
+var response = client.Messages.Create(parameters)
+if (response.RawData.TryGetValue("my_custom_key", out JsonElement value))
+{
+    // Do something with `value`
+}
+```
+
+`RawData` is a `IReadonlyDictionary<string, JsonElement>`. It holds the full data received from the API server.
+
 ### Response validation
 
 In rare cases, the API may return a response that doesn't match the expected type. For example, the SDK may expect a property to contain a `string`, but the API could return something else.
