@@ -482,6 +482,71 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetResponseAsync_SystemMessageRawRepresentationPreserved()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test"
+                    }]
+                }],
+                "system": [{
+                    "type": "text",
+                    "text": "Cached system message",
+                    "cache_control": {
+                        "type": "ephemeral"
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_sys_cache_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 15,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var systemContent = new TextContent("Cached system message")
+        {
+            RawRepresentation = new TextBlockParam()
+            {
+                Text = "Cached system message",
+                CacheControl = new CacheControlEphemeral(),
+            },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [
+                new ChatMessage(ChatRole.System, [systemContent]),
+                new ChatMessage(ChatRole.User, "Test"),
+            ],
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_IncludesMeaiUserAgentHeader()
     {
         string[]? capturedUserAgentValues = null;
