@@ -201,7 +201,7 @@ public class BatchServiceTest : TestBase
         betaMessageBatch.Validate();
     }
 
-    [Fact(Skip = "Mock server doesn't support application/x-jsonl responses")]
+    [Fact]
     public async Task ResultsStreaming_Works()
     {
         var stream = this.client.Beta.Messages.Batches.ResultsStreaming(
