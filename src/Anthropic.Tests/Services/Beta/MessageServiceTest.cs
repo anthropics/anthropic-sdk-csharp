@@ -6,7 +6,7 @@ namespace Anthropic.Tests.Services.Beta;
 
 public class MessageServiceTest : TestBase
 {
-    [Fact(Skip = "prism validates based on the non-beta endpoint")]
+    [Fact]
     public async Task Create_Works()
     {
         var betaMessage = await this.client.Beta.Messages.Create(
@@ -21,7 +21,7 @@ public class MessageServiceTest : TestBase
         betaMessage.Validate();
     }
 
-    [Fact(Skip = "prism validates based on the non-beta endpoint")]
+    [Fact]
     public async Task CreateStreaming_Works()
     {
         var stream = this.client.Beta.Messages.CreateStreaming(
@@ -40,7 +40,7 @@ public class MessageServiceTest : TestBase
         }
     }
 
-    [Fact(Skip = "prism validates based on the non-beta endpoint")]
+    [Fact]
     public async Task CountTokens_Works()
     {
         var betaMessageTokensCount = await this.client.Beta.Messages.CountTokens(

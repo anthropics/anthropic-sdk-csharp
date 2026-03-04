@@ -4,7 +4,7 @@ namespace Anthropic.Tests.Services.Beta.Skills;
 
 public class VersionServiceTest : TestBase
 {
-    [Fact(Skip = "prism binary unsupported")]
+    [Fact]
     public async Task Create_Works()
     {
         var version = await this.client.Beta.Skills.Versions.Create(
