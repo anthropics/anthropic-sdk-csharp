@@ -18,14 +18,19 @@ public enum Model
     ClaudeOpus4_6,
 
     /// <summary>
-    /// Frontier intelligence at scale — built for coding, agents, and enterprise workflows
+    /// Best combination of speed and intelligence
     /// </summary>
     ClaudeSonnet4_6,
 
     /// <summary>
-    /// Premium model combining maximum intelligence with practical performance
+    /// Fastest model with near-frontier intelligence
     /// </summary>
-    ClaudeOpus4_5_20251101,
+    ClaudeHaiku4_5,
+
+    /// <summary>
+    /// Fastest model with near-frontier intelligence
+    /// </summary>
+    ClaudeHaiku4_5_20251001,
 
     /// <summary>
     /// Premium model combining maximum intelligence with practical performance
@@ -33,51 +38,39 @@ public enum Model
     ClaudeOpus4_5,
 
     /// <summary>
-    /// High-performance model with early extended thinking
+    /// Premium model combining maximum intelligence with practical performance
     /// </summary>
-    [System::Obsolete(
-        "Will reach end-of-life on February 19th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
-    )]
-    Claude3_7SonnetLatest,
+    ClaudeOpus4_5_20251101,
 
     /// <summary>
-    /// High-performance model with early extended thinking
+    /// High-performance model for agents and coding
     /// </summary>
-    [System::Obsolete(
-        "Will reach end-of-life on February 19th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
-    )]
-    Claude3_7Sonnet20250219,
+    ClaudeSonnet4_5,
 
     /// <summary>
-    /// Fastest and most compact model for near-instant responsiveness
+    /// High-performance model for agents and coding
     /// </summary>
-    [System::Obsolete(
-        "Will reach end-of-life on February 19th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
-    )]
-    Claude3_5HaikuLatest,
+    ClaudeSonnet4_5_20250929,
 
     /// <summary>
-    /// Our fastest model
+    /// Exceptional model for specialized complex tasks
     /// </summary>
-    [System::Obsolete(
-        "Will reach end-of-life on February 19th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
-    )]
-    Claude3_5Haiku20241022,
+    ClaudeOpus4_1,
 
     /// <summary>
-    /// Hybrid model, capable of near-instant responses and extended thinking
+    /// Exceptional model for specialized complex tasks
     /// </summary>
-    ClaudeHaiku4_5,
+    ClaudeOpus4_1_20250805,
 
     /// <summary>
-    /// Hybrid model, capable of near-instant responses and extended thinking
+    /// Powerful model for complex tasks
     /// </summary>
-    ClaudeHaiku4_5_20251001,
+    ClaudeOpus4_0,
 
     /// <summary>
-    /// High-performance model with extended thinking
+    /// Powerful model for complex tasks
     /// </summary>
-    ClaudeSonnet4_20250514,
+    ClaudeOpus4_20250514,
 
     /// <summary>
     /// High-performance model with extended thinking
@@ -87,57 +80,14 @@ public enum Model
     /// <summary>
     /// High-performance model with extended thinking
     /// </summary>
-    Claude4Sonnet20250514,
+    ClaudeSonnet4_20250514,
 
     /// <summary>
-    /// Our best model for real-world agents and coding
-    /// </summary>
-    ClaudeSonnet4_5,
-
-    /// <summary>
-    /// Our best model for real-world agents and coding
-    /// </summary>
-    ClaudeSonnet4_5_20250929,
-
-    /// <summary>
-    /// Our most capable model
-    /// </summary>
-    ClaudeOpus4_0,
-
-    /// <summary>
-    /// Our most capable model
-    /// </summary>
-    ClaudeOpus4_20250514,
-
-    /// <summary>
-    /// Our most capable model
-    /// </summary>
-    Claude4Opus20250514,
-
-    /// <summary>
-    /// Our most capable model
-    /// </summary>
-    ClaudeOpus4_1_20250805,
-
-    /// <summary>
-    /// Excels at writing and complex tasks
+    /// Fast and cost-effective model
     /// </summary>
     [System::Obsolete(
-        "Will reach end-of-life on January 5th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+        "Will reach end-of-life on April 20th, 2026. Please migrate to claude-haiku-4-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
     )]
-    Claude3OpusLatest,
-
-    /// <summary>
-    /// Excels at writing and complex tasks
-    /// </summary>
-    [System::Obsolete(
-        "Will reach end-of-life on January 5th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
-    )]
-    Claude_3_Opus_20240229,
-
-    /// <summary>
-    /// Our previous most fast and cost-effective
-    /// </summary>
     Claude_3_Haiku_20240307,
 }
 
@@ -153,25 +103,18 @@ sealed class ModelConverter : JsonConverter<Model>
         {
             "claude-opus-4-6" => Model.ClaudeOpus4_6,
             "claude-sonnet-4-6" => Model.ClaudeSonnet4_6,
-            "claude-opus-4-5-20251101" => Model.ClaudeOpus4_5_20251101,
-            "claude-opus-4-5" => Model.ClaudeOpus4_5,
-            "claude-3-7-sonnet-latest" => Model.Claude3_7SonnetLatest,
-            "claude-3-7-sonnet-20250219" => Model.Claude3_7Sonnet20250219,
-            "claude-3-5-haiku-latest" => Model.Claude3_5HaikuLatest,
-            "claude-3-5-haiku-20241022" => Model.Claude3_5Haiku20241022,
             "claude-haiku-4-5" => Model.ClaudeHaiku4_5,
             "claude-haiku-4-5-20251001" => Model.ClaudeHaiku4_5_20251001,
-            "claude-sonnet-4-20250514" => Model.ClaudeSonnet4_20250514,
-            "claude-sonnet-4-0" => Model.ClaudeSonnet4_0,
-            "claude-4-sonnet-20250514" => Model.Claude4Sonnet20250514,
+            "claude-opus-4-5" => Model.ClaudeOpus4_5,
+            "claude-opus-4-5-20251101" => Model.ClaudeOpus4_5_20251101,
             "claude-sonnet-4-5" => Model.ClaudeSonnet4_5,
             "claude-sonnet-4-5-20250929" => Model.ClaudeSonnet4_5_20250929,
+            "claude-opus-4-1" => Model.ClaudeOpus4_1,
+            "claude-opus-4-1-20250805" => Model.ClaudeOpus4_1_20250805,
             "claude-opus-4-0" => Model.ClaudeOpus4_0,
             "claude-opus-4-20250514" => Model.ClaudeOpus4_20250514,
-            "claude-4-opus-20250514" => Model.Claude4Opus20250514,
-            "claude-opus-4-1-20250805" => Model.ClaudeOpus4_1_20250805,
-            "claude-3-opus-latest" => Model.Claude3OpusLatest,
-            "claude-3-opus-20240229" => Model.Claude_3_Opus_20240229,
+            "claude-sonnet-4-0" => Model.ClaudeSonnet4_0,
+            "claude-sonnet-4-20250514" => Model.ClaudeSonnet4_20250514,
             "claude-3-haiku-20240307" => Model.Claude_3_Haiku_20240307,
             _ => (Model)(-1),
         };
@@ -185,25 +128,18 @@ sealed class ModelConverter : JsonConverter<Model>
             {
                 Model.ClaudeOpus4_6 => "claude-opus-4-6",
                 Model.ClaudeSonnet4_6 => "claude-sonnet-4-6",
-                Model.ClaudeOpus4_5_20251101 => "claude-opus-4-5-20251101",
-                Model.ClaudeOpus4_5 => "claude-opus-4-5",
-                Model.Claude3_7SonnetLatest => "claude-3-7-sonnet-latest",
-                Model.Claude3_7Sonnet20250219 => "claude-3-7-sonnet-20250219",
-                Model.Claude3_5HaikuLatest => "claude-3-5-haiku-latest",
-                Model.Claude3_5Haiku20241022 => "claude-3-5-haiku-20241022",
                 Model.ClaudeHaiku4_5 => "claude-haiku-4-5",
                 Model.ClaudeHaiku4_5_20251001 => "claude-haiku-4-5-20251001",
-                Model.ClaudeSonnet4_20250514 => "claude-sonnet-4-20250514",
-                Model.ClaudeSonnet4_0 => "claude-sonnet-4-0",
-                Model.Claude4Sonnet20250514 => "claude-4-sonnet-20250514",
+                Model.ClaudeOpus4_5 => "claude-opus-4-5",
+                Model.ClaudeOpus4_5_20251101 => "claude-opus-4-5-20251101",
                 Model.ClaudeSonnet4_5 => "claude-sonnet-4-5",
                 Model.ClaudeSonnet4_5_20250929 => "claude-sonnet-4-5-20250929",
+                Model.ClaudeOpus4_1 => "claude-opus-4-1",
+                Model.ClaudeOpus4_1_20250805 => "claude-opus-4-1-20250805",
                 Model.ClaudeOpus4_0 => "claude-opus-4-0",
                 Model.ClaudeOpus4_20250514 => "claude-opus-4-20250514",
-                Model.Claude4Opus20250514 => "claude-4-opus-20250514",
-                Model.ClaudeOpus4_1_20250805 => "claude-opus-4-1-20250805",
-                Model.Claude3OpusLatest => "claude-3-opus-latest",
-                Model.Claude_3_Opus_20240229 => "claude-3-opus-20240229",
+                Model.ClaudeSonnet4_0 => "claude-sonnet-4-0",
+                Model.ClaudeSonnet4_20250514 => "claude-sonnet-4-20250514",
                 Model.Claude_3_Haiku_20240307 => "claude-3-haiku-20240307",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
