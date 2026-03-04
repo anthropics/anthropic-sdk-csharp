@@ -58,7 +58,9 @@ public class MessageServiceTest
             Model = Messages::Model.Claude3OpusLatest,
         };
 
-    [Theory(Skip = "prism validates based on the non-beta endpoint")]
+    [Theory(
+        Skip = "UriBuilder.Query overwrites ?beta=true — beta batch create hits non-beta endpoint; needs codegen fix"
+    )]
     [AnthropicTestClients]
     public async Task Create_Works(IAnthropicClient client)
     {
@@ -74,7 +76,9 @@ public class MessageServiceTest
         betaMessage.Validate();
     }
 
-    [Theory(Skip = "prism validates based on the non-beta endpoint")]
+    [Theory(
+        Skip = "UriBuilder.Query overwrites ?beta=true — beta batch create hits non-beta endpoint; needs codegen fix"
+    )]
     [AnthropicTestClients]
     public async Task CreateStreaming_Works(IAnthropicClient client)
     {
@@ -94,7 +98,9 @@ public class MessageServiceTest
         }
     }
 
-    [Theory(Skip = "prism validates based on the non-beta endpoint")]
+    [Theory(
+        Skip = "UriBuilder.Query overwrites ?beta=true — beta batch create hits non-beta endpoint; needs codegen fix"
+    )]
     [AnthropicTestClients]
     public async Task CountTokens_Works(IAnthropicClient client)
     {

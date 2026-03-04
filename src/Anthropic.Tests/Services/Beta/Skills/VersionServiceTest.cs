@@ -5,7 +5,7 @@ namespace Anthropic.Tests.Services.Beta.Skills;
 
 public class VersionServiceTest
 {
-    [Theory(Skip = "prism binary unsupported")]
+    [Theory]
     [AnthropicTestClients]
     public async Task Create_Works(IAnthropicClient client)
     {

@@ -9,7 +9,9 @@ namespace Anthropic.Tests.Services.Beta.Messages;
 
 public class BatchServiceTest
 {
-    [Theory(Skip = "prism validates based on the non-beta endpoint")]
+    [Theory(
+        Skip = "UriBuilder.Query overwrites ?beta=true — beta batch create hits non-beta endpoint; needs codegen fix"
+    )]
     [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     public async Task Create_Works(IAnthropicClient client)
     {
