@@ -19,7 +19,7 @@ public class MessageServiceTest
             Container = null,
             ID = "Test",
             Content = [],
-            Model = Model.Claude3OpusLatest,
+            Model = Model.ClaudeOpus4_6,
             StopReason = StopReason.ToolUse,
             StopSequence = "",
             Usage = new()
@@ -40,12 +40,12 @@ public class MessageServiceTest
         {
             MaxTokens = 1024,
             Messages = [new() { Content = new(""), Role = Anthropic.Models.Messages.Role.User }],
-            Model = Model.Claude3_7SonnetLatest,
+            Model = Model.ClaudeSonnet4_5,
         };
 
     [Theory]
     [AnthropicTestClients]
-    [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
+    [AnthropicTestData(TestSupportTypes.Anthropic, "ClaudeSonnet4_5")]
     [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
     [AnthropicTestData(TestSupportTypes.Bedrock, "global.anthropic.claude-haiku-4-5-20251001-v1:0")]
     [AnthropicTestData(TestSupportTypes.Vertex, "claude-3-7-sonnet@20250219")]
@@ -65,7 +65,7 @@ public class MessageServiceTest
 
     [Theory]
     [AnthropicTestClients]
-    [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
+    [AnthropicTestData(TestSupportTypes.Anthropic, "ClaudeSonnet4_5")]
     [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
     [AnthropicTestData(TestSupportTypes.Bedrock, "global.anthropic.claude-haiku-4-5-20251001-v1:0")]
     public async Task CreateStreaming_Works(IAnthropicClient client, string modelName)
@@ -88,7 +88,7 @@ public class MessageServiceTest
 
     [Theory]
     [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
+    [AnthropicTestData(TestSupportTypes.Anthropic, "ClaudeSonnet4_5")]
     [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
     public async Task CountTokens_Works(IAnthropicClient client, string modelName)
     {

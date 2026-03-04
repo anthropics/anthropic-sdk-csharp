@@ -16,7 +16,7 @@ public class MessageServiceTest
         {
             ID = "Test",
             Content = [],
-            Model = Messages::Model.Claude3OpusLatest,
+            Model = Messages::Model.ClaudeOpus4_6,
             StopReason = BetaStopReason.ToolUse,
             StopSequence = "",
             Usage = new()
@@ -55,7 +55,7 @@ public class MessageServiceTest
         {
             MaxTokens = 1024,
             Messages = [new() { Content = new(""), Role = Role.User }],
-            Model = Messages::Model.Claude3OpusLatest,
+            Model = Messages::Model.ClaudeOpus4_6,
         };
 
     [Theory(

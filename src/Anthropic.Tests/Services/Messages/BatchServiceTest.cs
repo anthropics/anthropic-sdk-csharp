@@ -12,7 +12,7 @@ public class BatchServiceTest
 {
     [Theory]
     [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
+    [AnthropicTestData(TestSupportTypes.Anthropic, "ClaudeSonnet4_5")]
     [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
     public async Task Create_Works(IAnthropicClient client, string modelName)
     {

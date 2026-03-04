@@ -15,7 +15,7 @@ var responseUpdates = client.Beta.Messages.CreateStreaming(
         [
             new() { Content = "Tell me a story about building the best SDK!", Role = Role.User },
         ],
-        Model = Messages::Model.Claude4Sonnet20250514,
+        Model = Messages::Model.ClaudeSonnet4_5,
     }
 );
 
