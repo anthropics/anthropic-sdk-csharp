@@ -90,7 +90,7 @@ public class FileListParamsTest : TestBase
 
         Assert.Equal(
             new Uri(
-                "https://api.anthropic.com/v1/files?after_id=after_id&before_id=before_id&limit=1"
+                "https://api.anthropic.com/v1/files?beta=true&after_id=after_id&before_id=before_id&limit=1"
             ),
             url
         );

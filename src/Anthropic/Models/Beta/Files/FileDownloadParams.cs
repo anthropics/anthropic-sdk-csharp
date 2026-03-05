@@ -121,18 +121,20 @@ public record class FileDownloadParams : ParamsBase
 
     public override Uri Url(ClientOptions options)
     {
+        var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/files/{0}/content?beta=true", this.FileID)
+                + string.Format("/v1/files/{0}/content", this.FileID)
         )
         {
-            Query = this.QueryString(options),
+            Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
+        request.Headers.Add("Accept", "application/binary");
         FileService.AddDefaultHeaders(request);
         foreach (var item in this.RawHeaderData)
         {
