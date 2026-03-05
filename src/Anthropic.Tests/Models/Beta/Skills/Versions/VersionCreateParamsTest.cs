@@ -109,7 +109,7 @@ public class VersionCreateParamsTest : TestBase
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            new Uri("https://api.anthropic.com/v1/skills/skill_id/versions?beta=true&"),
+            new Uri("https://api.anthropic.com/v1/skills/skill_id/versions?beta=true"),
             url
         );
     }

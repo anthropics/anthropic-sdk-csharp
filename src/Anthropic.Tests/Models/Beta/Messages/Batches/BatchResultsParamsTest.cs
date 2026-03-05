@@ -66,7 +66,7 @@ public class BatchResultsParamsTest : TestBase
 
         Assert.Equal(
             new Uri(
-                "https://api.anthropic.com/v1/messages/batches/message_batch_id/results?beta=true&"
+                "https://api.anthropic.com/v1/messages/batches/message_batch_id/results?beta=true"
             ),
             url
         );
