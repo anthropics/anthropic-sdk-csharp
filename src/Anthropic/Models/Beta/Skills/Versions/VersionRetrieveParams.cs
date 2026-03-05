@@ -126,12 +126,13 @@ public record class VersionRetrieveParams : ParamsBase
 
     public override Uri Url(ClientOptions options)
     {
+        var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/skills/{0}/versions/{1}?beta=true", this.SkillID, this.Version)
+                + string.Format("/v1/skills/{0}/versions/{1}", this.SkillID, this.Version)
         )
         {
-            Query = this.QueryString(options),
+            Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
 

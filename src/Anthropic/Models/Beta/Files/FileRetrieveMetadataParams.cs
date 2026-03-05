@@ -121,12 +121,12 @@ public record class FileRetrieveMetadataParams : ParamsBase
 
     public override Uri Url(ClientOptions options)
     {
+        var queryString = this.QueryString(options);
         return new UriBuilder(
-            options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/files/{0}?beta=true", this.FileID)
+            options.BaseUrl.ToString().TrimEnd('/') + string.Format("/v1/files/{0}", this.FileID)
         )
         {
-            Query = this.QueryString(options),
+            Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
 

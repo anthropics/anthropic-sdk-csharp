@@ -123,12 +123,12 @@ public record class ModelRetrieveParams : ParamsBase
 
     public override Uri Url(ClientOptions options)
     {
+        var queryString = this.QueryString(options);
         return new UriBuilder(
-            options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/models/{0}?beta=true", this.ModelID)
+            options.BaseUrl.ToString().TrimEnd('/') + string.Format("/v1/models/{0}", this.ModelID)
         )
         {
-            Query = this.QueryString(options),
+            Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
 
