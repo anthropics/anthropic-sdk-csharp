@@ -439,7 +439,7 @@ public static class AnthropicClientExtensions
                         switch (content)
                         {
                             case AIContent ac when ac.RawRepresentation is TextBlockParam raw:
-                                 (systemMessages ??= []).Add(raw);
+                                (systemMessages ??= []).Add(raw);
                                 break;
 
                             case TextContent tc:
