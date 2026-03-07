@@ -43,7 +43,7 @@ public class FileServiceTest : TestBase
     public async Task Upload_Works()
     {
         var fileMetadata = await this.client.Beta.Files.Upload(
-            new() { File = Encoding.UTF8.GetBytes("text") },
+            new() { File = Encoding.UTF8.GetBytes("Example data") },
             TestContext.Current.CancellationToken
         );
         fileMetadata.Validate();
