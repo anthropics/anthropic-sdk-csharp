@@ -1,5 +1,28 @@
 # Changelog
 
+## 12.9.0 (2026-03-08)
+
+Full Changelog: [Anthropic-v12.8.0...Anthropic-v12.9.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.8.0...Anthropic-v12.9.0)
+
+### Features
+
+* **api:** change array_format to brackets ([4e216d2](https://github.com/anthropics/anthropic-sdk-csharp/commit/4e216d2851348627da6023c4647fdcecca0b06b5))
+* **api:** chore(config): clean up model enum list ([#31](https://github.com/anthropics/anthropic-sdk-csharp/issues/31)) ([62852b4](https://github.com/anthropics/anthropic-sdk-csharp/commit/62852b48db86aefdd739b450b1d8c28575d06cf0))
+* **api:** remove publishing section from cli target ([b7194a2](https://github.com/anthropics/anthropic-sdk-csharp/commit/b7194a2918c9ccaac1762df1b229a344cb6e62a7))
+* **tests:** update mock server ([775f7d1](https://github.com/anthropics/anthropic-sdk-csharp/commit/775f7d174fe5729675c7fe91d1c7bd9749e7c053))
+
+
+### Chores
+
+* **docs:** add undocumented parameters to readme ([1d996bb](https://github.com/anthropics/anthropic-sdk-csharp/commit/1d996bb26dc18826832dc56ed44fb82669f1ee68))
+* **internal:** codegen related update ([be001d7](https://github.com/anthropics/anthropic-sdk-csharp/commit/be001d73a7998111129f2c3ad529d9f39dd85083))
+* **internal:** codegen related update ([55f00a1](https://github.com/anthropics/anthropic-sdk-csharp/commit/55f00a1b684ef39f00a026b8679eb405884492d0))
+
+
+### Refactors
+
+* **internal:** default headers ([cca4f5a](https://github.com/anthropics/anthropic-sdk-csharp/commit/cca4f5a996d7eed7925cf995e4920995a7bcc469))
+
 ## 12.8.0 (2026-02-19)
 
 Full Changelog: [Anthropic-v12.7.0...Anthropic-v12.8.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.7.0...Anthropic-v12.8.0)
