@@ -1,23 +1,21 @@
 using System.Threading.Tasks;
-using Anthropic.Tests;
 
 namespace Anthropic.Tests.Services.Beta;
 
-public class SkillServiceTest
+public class SkillServiceTest : TestBase
 {
-    [Theory(Skip = "prism binary unsupported")]
-    [AnthropicTestClients]
-    public async Task Create_Works(IAnthropicClient client)
+    public async Task Create_Works()
     {
-        var skill = await client.Beta.Skills.Create(new(), TestContext.Current.CancellationToken);
+        var skill = await this.client.Beta.Skills.Create(
+            new(),
+            TestContext.Current.CancellationToken
+        );
         skill.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients]
-    public async Task Retrieve_Works(IAnthropicClient client)
+    public async Task Retrieve_Works()
     {
-        var skill = await client.Beta.Skills.Retrieve(
+        var skill = await this.client.Beta.Skills.Retrieve(
             "skill_id",
             new(),
             TestContext.Current.CancellationToken
@@ -25,19 +23,15 @@ public class SkillServiceTest
         skill.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients]
-    public async Task List_Works(IAnthropicClient client)
+    public async Task List_Works()
     {
-        var page = await client.Beta.Skills.List(new(), TestContext.Current.CancellationToken);
+        var page = await this.client.Beta.Skills.List(new(), TestContext.Current.CancellationToken);
         page.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients]
-    public async Task Delete_Works(IAnthropicClient client)
+    public async Task Delete_Works()
     {
-        var skill = await client.Beta.Skills.Delete(
+        var skill = await this.client.Beta.Skills.Delete(
             "skill_id",
             new(),
             TestContext.Current.CancellationToken

@@ -436,9 +436,15 @@ public static class AnthropicClientExtensions
                 {
                     foreach (AIContent content in message.Contents)
                     {
-                        if (content is TextContent tc)
+                        switch (content)
                         {
-                            (systemMessages ??= []).Add(new() { Text = tc.Text });
+                            case AIContent ac when ac.RawRepresentation is TextBlockParam raw:
+                                (systemMessages ??= []).Add(raw);
+                                break;
+
+                            case TextContent tc:
+                                (systemMessages ??= []).Add(new() { Text = tc.Text });
+                                break;
                         }
                     }
 

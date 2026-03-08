@@ -678,11 +678,10 @@ public record class MessageCreateParams : ParamsBase
 
     public override System::Uri Url(ClientOptions options)
     {
-        return new System::UriBuilder(
-            options.BaseUrl.ToString().TrimEnd('/') + "/v1/messages?beta=true"
-        )
+        var queryString = this.QueryString(options);
+        return new System::UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/messages")
         {
-            Query = this.QueryString(options),
+            Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
 
