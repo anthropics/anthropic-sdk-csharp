@@ -45,7 +45,6 @@ public abstract class SseAggregator<TMessage, TResult>
         FilterResult filterResult = FilterResult.Ignore;
         await foreach (var message in messageStream)
         {
-            Console.WriteLine(message);
             if (!_streamEnded)
             {
                 if (!startMessageReceived && Filter(message) != FilterResult.StartMessage)
