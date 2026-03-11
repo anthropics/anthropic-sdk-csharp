@@ -10,55 +10,60 @@ namespace Anthropic.Tests;
 
 public class SseTest : TestBase
 {
-    public static TheoryData<string, string[]> Data() =>
-        new()
+    static readonly TheoryData<string, string[]> _data = new()
+    {
+        // event and data
+        { "event: completion\n" + "data: {\"foo\":true}\n\n", new[] { "{\"foo\": true}" } },
+        // event missing data
+        { "event: completion\n" + "\n", [] },
+        // multiple events and data
         {
-            // event and data
-            { "event: completion\n" + "data: {\"foo\":true}\n\n", ["{\"foo\": true}"] },
-            // event missing data
-            { "event: completion\n" + "\n", [] },
-            // multiple events and data
+            "event: completion\n"
+                + "data: {\"foo\":true}\n\n"
+                + "event: message_start\n"
+                + "data: {\"bar\": false}\n\n",
+            new[] { "{\"foo\": true}", "{\"bar\": false}" }
+        },
+        // multiple events missing data
+        { "event: completion\n" + "\n" + "event: message_start\n" + "\n", [] },
+        // json-escaped double newline
+        {
+            "event: completion\n" + "data: {\ndata: \"foo\":\ndata: true }\n\n\n",
+            new[] { "{ \"foo\":\ntrue }" }
+        },
+        // multiple data lines
+        {
+            "event: completion\n" + "data: { \ndata: \"foo\":\ndata: true }\n\n\n",
+            new[] { "{ \"foo\":\ntrue }" }
+        },
+        // special newline character
+        {
+            "event: completion\n"
+                + "data: {\"content\": \" culpa\"}\n\n"
+                + "event: message_start\n"
+                + "data: {\"content\": \" \u2028\"}\n\n"
+                + "event: completion\n"
+                + "data: {\"content\": \"foo\"}\n\n",
+            new[]
             {
-                "event: completion\n"
-                    + "data: {\"foo\":true}\n\n"
-                    + "event: message_start\n"
-                    + "data: {\"bar\": false}\n\n",
-                ["{\"foo\": true}", "{\"bar\": false}"]
-            },
-            // multiple events missing data
-            { "event: completion\n" + "\n" + "event: message_start\n" + "\n", [] },
-            // json-escaped double newline
-            {
-                "event: completion\n" + "data: {\ndata: \"foo\":\ndata: true }\n\n\n",
-                ["{ \"foo\":\ntrue }"]
-            },
-            // multiple data lines
-            {
-                "event: completion\n" + "data: { \ndata: \"foo\":\ndata: true }\n\n\n",
-                ["{ \"foo\":\ntrue }"]
-            },
-            // special newline character
-            {
-                "event: completion\n"
-                    + "data: {\"content\": \" culpa\"}\n\n"
-                    + "event: message_start\n"
-                    + "data: {\"content\": \" \u2028\"}\n\n"
-                    + "event: completion\n"
-                    + "data: {\"content\": \"foo\"}\n\n",
-                [
-                    "{\"content\": \" culpa\"}",
-                    "{\"content\": \" \u2028\"}",
-                    "{\"content\": \"foo\"}",
-                ]
-            },
-            // multi-byte character
-            {
-                "event: completion\n"
-                    + "data: {\"content\": "
-                    + "\"\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u0438\"}\n\n}",
-                ["{\"content\":\"известни\"}"]
-            },
-        };
+                "{\"content\": \" culpa\"}",
+                "{\"content\": \" \u2028\"}",
+                "{\"content\": \"foo\"}",
+            }
+        },
+        // multi-byte character
+        {
+            "event: completion\n"
+                + "data: {\"content\": "
+                + "\"\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u0438\"}\n\n}",
+            new[] { "{\"content\":\"известни\"}" }
+        },
+    };
+
+    public static TheoryData<string, string[]> Data
+    {
+        get { return _data; }
+    }
 
     [Theory]
     [MemberData(nameof(Data))]
