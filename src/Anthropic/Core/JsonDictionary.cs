@@ -38,19 +38,19 @@ sealed class JsonDictionary
     public JsonDictionary()
     {
         _rawData = new Dictionary<string, JsonElement>();
-        _deserializedData = [];
+        _deserializedData = new();
     }
 
     public JsonDictionary(IReadOnlyDictionary<string, JsonElement> dictionary)
     {
         _rawData = Enumerable.ToDictionary(dictionary, (e) => e.Key, (e) => e.Value);
-        _deserializedData = [];
+        _deserializedData = new();
     }
 
     public JsonDictionary(FrozenDictionary<string, JsonElement> dictionary)
     {
         _rawData = dictionary;
-        _deserializedData = [];
+        _deserializedData = new();
     }
 
     public JsonDictionary(JsonDictionary dictionary)

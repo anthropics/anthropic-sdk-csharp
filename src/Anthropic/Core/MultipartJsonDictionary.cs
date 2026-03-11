@@ -38,19 +38,19 @@ sealed class MultipartJsonDictionary
     public MultipartJsonDictionary()
     {
         _rawData = new Dictionary<string, MultipartJsonElement>();
-        _deserializedData = [];
+        _deserializedData = new();
     }
 
     public MultipartJsonDictionary(IReadOnlyDictionary<string, MultipartJsonElement> dictionary)
     {
         _rawData = Enumerable.ToDictionary(dictionary, (e) => e.Key, (e) => e.Value);
-        _deserializedData = [];
+        _deserializedData = new();
     }
 
     public MultipartJsonDictionary(FrozenDictionary<string, MultipartJsonElement> dictionary)
     {
         _rawData = dictionary;
-        _deserializedData = [];
+        _deserializedData = new();
     }
 
     public MultipartJsonDictionary(MultipartJsonDictionary dictionary)
