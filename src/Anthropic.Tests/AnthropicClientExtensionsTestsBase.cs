@@ -2712,8 +2712,8 @@ public abstract class AnthropicClientExtensionsTestsBase
     [Theory]
     [InlineData(ReasoningEffort.Low, 1024)]
     [InlineData(ReasoningEffort.Medium, 8192)]
-    [InlineData(ReasoningEffort.High, 16000)]
-    [InlineData(ReasoningEffort.ExtraHigh, 32000)]
+    [InlineData(ReasoningEffort.High, 16384)]
+    [InlineData(ReasoningEffort.ExtraHigh, 32768)]
     public async Task GetResponseAsync_WithReasoningEffort_SetsThinkingEnabled(
         ReasoningEffort effort,
         int expectedBudgetTokens
