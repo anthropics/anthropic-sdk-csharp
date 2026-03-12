@@ -208,10 +208,7 @@ public static class AnthropicClientExtensions
                 );
             }
 
-            var createResult = await messageService.Create(
-                createParams,
-                cancellationToken
-            );
+            var createResult = await messageService.Create(createParams, cancellationToken);
 
             ChatMessage m = new(ChatRole.Assistant, [.. createResult.Content.Select(ToAIContent)])
             {

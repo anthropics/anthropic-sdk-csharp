@@ -450,7 +450,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         );
         Assert.NotNull(mcpToolCall);
         Assert.Equal("mcp_call_123", mcpToolCall.CallId);
-        Assert.Equal("search", mcpToolCall.ToolName);
+        Assert.Equal("search", mcpToolCall.Name);
         Assert.Equal("my-mcp-server", mcpToolCall.ServerName);
         Assert.NotNull(mcpToolCall.Arguments);
         Assert.True(mcpToolCall.Arguments.ContainsKey("query"));
@@ -511,9 +511,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         );
         Assert.NotNull(mcpResult);
         Assert.Equal("mcp_call_456", mcpResult.CallId);
-        Assert.NotNull(mcpResult.Output);
-        Assert.Single(mcpResult.Output);
-        Assert.Equal("Result from MCP tool", ((TextContent)mcpResult.Output[0]).Text);
+        Assert.NotNull(mcpResult.Outputs);
+        Assert.Single(mcpResult.Outputs);
+        Assert.Equal("Result from MCP tool", ((TextContent)mcpResult.Outputs[0]).Text);
         Assert.NotNull(mcpResult.RawRepresentation);
         Assert.IsType<BetaMcpToolResultBlock>(mcpResult.RawRepresentation);
     }
@@ -954,10 +954,10 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         );
         Assert.NotNull(mcpResult);
         Assert.Equal("mcp_call_error_1", mcpResult.CallId);
-        Assert.NotNull(mcpResult.Output);
-        Assert.Single(mcpResult.Output);
+        Assert.NotNull(mcpResult.Outputs);
+        Assert.Single(mcpResult.Outputs);
 
-        ErrorContent errorContent = Assert.IsType<ErrorContent>(mcpResult.Output[0]);
+        ErrorContent errorContent = Assert.IsType<ErrorContent>(mcpResult.Outputs[0]);
         Assert.Equal("Connection timeout", errorContent.Message);
     }
 
@@ -1748,10 +1748,10 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         );
         Assert.NotNull(mcpResult);
         Assert.Equal("mcp_call_789", mcpResult.CallId);
-        Assert.NotNull(mcpResult.Output);
-        Assert.Equal(2, mcpResult.Output.Count);
-        Assert.Equal("First result", ((TextContent)mcpResult.Output[0]).Text);
-        Assert.Equal("Second result", ((TextContent)mcpResult.Output[1]).Text);
+        Assert.NotNull(mcpResult.Outputs);
+        Assert.Equal(2, mcpResult.Outputs.Count);
+        Assert.Equal("First result", ((TextContent)mcpResult.Outputs[0]).Text);
+        Assert.Equal("Second result", ((TextContent)mcpResult.Outputs[1]).Text);
     }
 
     [Fact]

@@ -275,8 +275,10 @@ public static class AnthropicBetaClientExtensions
             // bypass that check while still providing appropriate timeout behavior.
             var messageService = _betaService.Messages;
             if (
-                createParams.Thinking
-                is BetaThinkingConfigParam { Value: BetaThinkingConfigEnabled }
+                createParams.Thinking is BetaThinkingConfigParam
+                {
+                    Value: BetaThinkingConfigEnabled
+                }
             )
             {
                 messageService = messageService.WithOptions(opts =>
@@ -1445,7 +1447,7 @@ public static class AnthropicBetaClientExtensions
                 case BetaMcpToolResultBlock mcpToolResult:
                     return new McpServerToolResultContent(mcpToolResult.ToolUseID)
                     {
-                        Output = mcpToolResult.IsError
+                        Outputs = mcpToolResult.IsError
                             ? [new ErrorContent(mcpToolResult.Content.Value?.ToString())]
                             : mcpToolResult.Content.Value switch
                             {
@@ -1460,9 +1462,8 @@ public static class AnthropicBetaClientExtensions
 
                 case BetaCodeExecutionToolResultBlock ce:
                 {
-                    CodeInterpreterToolResultContent c = new()
+                    CodeInterpreterToolResultContent c = new(ce.ToolUseID)
                     {
-                        CallId = ce.ToolUseID,
                         RawRepresentation = ce,
                     };
 
@@ -1513,9 +1514,8 @@ public static class AnthropicBetaClientExtensions
                 // This is the same as BetaCodeExecutionToolResultBlock but with a different type names.
                 // Keep both of them in sync.
                 {
-                    CodeInterpreterToolResultContent c = new()
+                    CodeInterpreterToolResultContent c = new(ce.ToolUseID)
                     {
-                        CallId = ce.ToolUseID,
                         RawRepresentation = ce,
                     };
 
