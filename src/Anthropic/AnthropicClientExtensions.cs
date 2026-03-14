@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
@@ -85,31 +86,191 @@ public static class AnthropicClientExtensions
         return new ToolUnionAITool(tool);
     }
 
+    /// <summary>Serializer options using relaxed encoding for description augmentation.</summary>
+    /// <remarks>
+    /// Matches the behavior of JavaScript's <c>JSON.stringify()</c> and Python's <c>json.dumps()</c>,
+    /// which do not escape characters like <c>+</c>, <c>'</c>, or <c>&amp;</c>. The default
+    /// <see cref="JavaScriptEncoder"/> would escape these (e.g., <c>+</c> → <c>\u002B</c>),
+    /// producing less readable descriptions for the model.
+    /// </remarks>
+    private static readonly JsonSerializerOptions s_relaxedJsonOptions =
+        new() { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
+
+    /// <summary>Supported string formats for Anthropic structured outputs.</summary>
+    /// <remarks>
+    /// Matches the TypeScript and Python SDK transform behavior:
+    /// <list type="bullet">
+    /// <item><see href="https://github.com/anthropics/anthropic-sdk-typescript/blob/main/src/lib/transform-json-schema.ts"/></item>
+    /// <item><see href="https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/lib/_parse/_transform.py"/></item>
+    /// </list>
+    /// </remarks>
+    private static readonly HashSet<string> s_supportedStringFormats =
+        new(StringComparer.Ordinal)
+        {
+            "date-time",
+            "time",
+            "date",
+            "duration",
+            "email",
+            "hostname",
+            "uri",
+            "ipv4",
+            "ipv6",
+            "uuid",
+        };
+
+    /// <summary>Properties supported across all JSON Schema types.</summary>
+    /// <remarks>
+    /// <c>enum</c> and <c>const</c> are included here but are NOT in the TypeScript/Python SDK whitelists.
+    /// They are deliberately preserved because MEAI generates <c>enum</c> for .NET enum types and both
+    /// keywords are natively supported by the Anthropic API.
+    /// </remarks>
+    private static readonly HashSet<string> s_supportedBaseSchemaProperties =
+        new(StringComparer.Ordinal)
+        {
+            "type",
+            "description",
+            "title",
+            "$ref",
+            "$defs",
+            "anyOf",
+            "allOf",
+            "enum",
+            "const",
+        };
+
+    /// <summary>Properties supported for object schemas.</summary>
+    private static readonly HashSet<string> s_supportedObjectSchemaProperties =
+        new(s_supportedBaseSchemaProperties, StringComparer.Ordinal)
+        {
+            "properties",
+            "required",
+            "additionalProperties",
+        };
+
+    /// <summary>Properties supported for string schemas.</summary>
+    private static readonly HashSet<string> s_supportedStringSchemaProperties =
+        new(s_supportedBaseSchemaProperties, StringComparer.Ordinal) { "format" };
+
+    /// <summary>Properties supported for array schemas.</summary>
+    private static readonly HashSet<string> s_supportedArraySchemaProperties =
+        new(s_supportedBaseSchemaProperties, StringComparer.Ordinal) { "items", "minItems" };
+
     /// <summary>
     /// Gets a shared cache for JSON schema transformations for Anthropic's structured output features.
     /// </summary>
+    /// <remarks>
+    /// Transforms schemas using the same whitelist approach as the TypeScript and Python SDKs:
+    /// unsupported constraints are removed and appended to the description so the model
+    /// might still follow them. See:
+    /// <list type="bullet">
+    /// <item><see href="https://github.com/anthropics/anthropic-sdk-typescript/blob/main/src/lib/transform-json-schema.ts"/></item>
+    /// <item><see href="https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/lib/_parse/_transform.py"/></item>
+    /// </list>
+    /// </remarks>
     internal static AIJsonSchemaTransformCache JsonSchemaTransformCache { get; } = new(
         new AIJsonSchemaTransformOptions
         {
             DisallowAdditionalProperties = true,
-            TransformSchemaNode = (ctx, schemaNode) =>
+            TransformSchemaNode = static (ctx, schemaNode) =>
             {
-                if (schemaNode is JsonObject schemaObj)
+                if (schemaNode is not JsonObject schemaObj)
                 {
-                    // From https://platform.claude.com/docs/en/build-with-claude/structured-outputs
-                    ReadOnlySpan<string> unsupportedProperties =
-                    [
-                        "minimum",
-                        "maximum",
-                        "multipleOf",
-                        "minLength",
-                        "maxLength",
-                    ];
+                    return schemaNode;
+                }
 
-                    foreach (string propName in unsupportedProperties)
+                // Convert oneOf to anyOf, matching TS/Python SDK behavior.
+                // The Anthropic API documents anyOf but not oneOf for union types.
+                if (
+                    schemaObj.TryGetPropertyValue("oneOf", out JsonNode? oneOfNode)
+                    && oneOfNode is not null
+                )
+                {
+                    schemaObj.Remove("oneOf");
+                    schemaObj["anyOf"] = oneOfNode;
+                }
+
+                // Determine the schema type for type-specific handling.
+                string? type =
+                    schemaObj.TryGetPropertyValue("type", out JsonNode? typeNode)
+                    && typeNode is JsonValue
+                        ? typeNode.GetValue<string>()
+                        : null;
+
+                List<KeyValuePair<string, string>>? removed = null;
+
+                // String format: only supported formats are kept.
+                if (
+                    type == "string"
+                    && schemaObj.TryGetPropertyValue("format", out JsonNode? formatNode)
+                    && formatNode?.GetValue<string>() is string format
+                    && !s_supportedStringFormats.Contains(format)
+                )
+                {
+                    string serialized = formatNode!.ToJsonString(s_relaxedJsonOptions);
+                    schemaObj.Remove("format");
+                    (removed ??= []).Add(new("format", serialized));
+                }
+
+                // Array minItems: only 0 and 1 are directly supported.
+                if (
+                    type == "array"
+                    && schemaObj.TryGetPropertyValue("minItems", out JsonNode? minItemsNode)
+                    && minItemsNode is JsonValue minItemsJsonValue
+                    && minItemsJsonValue.TryGetValue(out int minItems)
+                    && minItems is not (0 or 1)
+                )
+                {
+                    string serialized = minItemsNode.ToJsonString(s_relaxedJsonOptions);
+                    schemaObj.Remove("minItems");
+                    (removed ??= []).Add(new("minItems", serialized));
+                }
+
+                // Remove all properties not in the supported set for this schema type.
+                HashSet<string> supported = type switch
+                {
+                    "object" => s_supportedObjectSchemaProperties,
+                    "string" => s_supportedStringSchemaProperties,
+                    "array" => s_supportedArraySchemaProperties,
+                    _ => s_supportedBaseSchemaProperties,
+                };
+
+                foreach (
+                    KeyValuePair<string, JsonNode?> prop in schemaObj.ToArray()
+                )
+                {
+                    if (!supported.Contains(prop.Key))
                     {
-                        _ = schemaObj.Remove(propName);
+                        string serialized =
+                            prop.Value?.ToJsonString(s_relaxedJsonOptions) ?? "null";
+                        schemaObj.Remove(prop.Key);
+                        (removed ??= []).Add(new(prop.Key, serialized));
                     }
+                }
+
+                // Append removed constraints to description so the model might
+                // still follow them.
+                if (removed is { Count: > 0 })
+                {
+                    string? existing =
+                        schemaObj.TryGetPropertyValue(
+                            "description",
+                            out JsonNode? descNode
+                        )
+                            ? descNode?.GetValue<string>()
+                            : null;
+
+                    string constraintInfo =
+                        "{"
+                        + string.Join(
+                            ", ",
+                            removed.Select(c => $"{c.Key}: {c.Value}")
+                        )
+                        + "}";
+
+                    schemaObj["description"] = existing is not null
+                        ? $"{existing}\n\n{constraintInfo}"
+                        : constraintInfo;
                 }
 
                 return schemaNode;
@@ -927,44 +1088,17 @@ public static class AnthropicClientExtensions
                                 break;
 
                             case AIFunctionDeclaration af:
-                                Dictionary<string, JsonElement> properties = [];
-                                List<string> required = [];
-                                JsonElement inputSchema = af.JsonSchema;
+                                JsonElement inputSchema =
+                                    JsonSchemaTransformCache
+                                        .GetOrCreateTransformedSchema(af);
+                                Dictionary<string, JsonElement> schemaData = [];
                                 if (inputSchema.ValueKind is JsonValueKind.Object)
                                 {
-                                    if (
-                                        inputSchema.TryGetProperty(
-                                            "properties",
-                                            out JsonElement propsElement
-                                        )
-                                        && propsElement.ValueKind is JsonValueKind.Object
+                                    foreach (
+                                        JsonProperty p in inputSchema.EnumerateObject()
                                     )
                                     {
-                                        foreach (JsonProperty p in propsElement.EnumerateObject())
-                                        {
-                                            properties[p.Name] = p.Value;
-                                        }
-                                    }
-
-                                    if (
-                                        inputSchema.TryGetProperty(
-                                            "required",
-                                            out JsonElement reqElement
-                                        )
-                                        && reqElement.ValueKind is JsonValueKind.Array
-                                    )
-                                    {
-                                        foreach (JsonElement r in reqElement.EnumerateArray())
-                                        {
-                                            if (
-                                                r.ValueKind is JsonValueKind.String
-                                                && r.GetString() is { } s
-                                                && !string.IsNullOrWhiteSpace(s)
-                                            )
-                                            {
-                                                required.Add(s);
-                                            }
-                                        }
+                                        schemaData[p.Name] = p.Value;
                                     }
                                 }
 
@@ -973,11 +1107,7 @@ public static class AnthropicClientExtensions
                                     {
                                         Name = af.Name,
                                         Description = af.Description,
-                                        InputSchema = new InputSchema()
-                                        {
-                                            Properties = properties,
-                                            Required = required,
-                                        },
+                                        InputSchema = new InputSchema(schemaData),
                                         DeferLoading = GetValue<bool?>(
                                             af,
                                             nameof(Tool.DeferLoading)

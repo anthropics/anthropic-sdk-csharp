@@ -1694,7 +1694,8 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                                 "type": "integer"
                             }
                         },
-                        "required": ["value"]
+                        "required": ["value"],
+                        "additionalProperties": false
                     },
                     "allowed_callers": [
                         "direct"

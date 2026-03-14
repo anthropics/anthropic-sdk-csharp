@@ -906,7 +906,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                             "location": { "type": "string", "description": "The city and state" },
                             "unit": { "type": "string", "description": "Temperature unit" }
                         },
-                        "required": ["location", "unit"]
+                        "required": ["location", "unit"],
+                        "additionalProperties": false
                     }
                 }]
             }
@@ -999,7 +1000,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "input_schema": {
                         "type": "object",
                         "properties": {},
-                        "required": []
+                        "additionalProperties": false
                     }
                 }]
             }
@@ -1455,7 +1456,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "properties": {
                             "location": { "type": "string", "description": "The location" }
                         },
-                        "required": ["location"]
+                        "required": ["location"],
+                        "additionalProperties": false
                     }
                 }]
             }
@@ -1533,7 +1535,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "properties": {
                             "location": { "type": "string", "description": "The location" }
                         },
-                        "required": ["location"]
+                        "required": ["location"],
+                        "additionalProperties": false
                     }
                 }]
             }
@@ -1618,7 +1621,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "properties": {
                             "location": { "type": "string", "description": "The location" }
                         },
-                        "required": ["location"]
+                        "required": ["location"],
+                        "additionalProperties": false
                     }
                 }]
             }
@@ -1693,7 +1697,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "properties": {
                             "location": { "type": "string" }
                         },
-                        "required": ["location"]
+                        "required": ["location"],
+                        "additionalProperties": false
                     }
                 }]
             }
@@ -5883,7 +5888,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                                 "type": "string"
                             }
                         },
-                        "required": ["query"]
+                        "required": ["query"],
+                        "additionalProperties": false
                     },
                     "defer_loading": true,
                     "strict": true,
@@ -5969,7 +5975,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                                 "type": "integer"
                             }
                         },
-                        "required": ["value"]
+                        "required": ["value"],
+                        "additionalProperties": false
                     },
                     "strict": true
                 }]
@@ -6013,6 +6020,431 @@ public abstract class AnthropicClientExtensionsTestsBase
 
         ChatResponse response = await chatClient.GetResponseAsync(
             "Use strict tool",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    /// <summary>
+    /// Validates that all JSON schema transformations are applied correctly when using
+    /// ChatResponseFormat.ForJsonSchema. Tests:
+    /// <list type="bullet">
+    /// <item>Numeric constraints (minimum, maximum, multipleOf) → description</item>
+    /// <item>String constraints (minLength, maxLength, pattern) → description</item>
+    /// <item>Unsupported string format → description</item>
+    /// <item>Supported string format (email) preserved</item>
+    /// <item>Array minItems &gt; 1 → description</item>
+    /// <item>Array minItems ≤ 1 preserved</item>
+    /// <item>oneOf → anyOf conversion (with nested object getting additionalProperties: false)</item>
+    /// <item>enum preserved</item>
+    /// <item>const preserved</item>
+    /// <item>title preserved</item>
+    /// <item>Unsupported properties (default) → description</item>
+    /// <item>Nested object gets additionalProperties: false</item>
+    /// <item>Root object gets additionalProperties: false</item>
+    /// </list>
+    /// </summary>
+    [Fact]
+    public async Task GetResponseAsync_ResponseFormatSchema_AllTransformationsApplied()
+    {
+        string inputSchema = """
+            {
+                "type": "object",
+                "properties": {
+                    "score": {
+                        "type": "integer",
+                        "description": "A score",
+                        "minimum": 0,
+                        "maximum": 100,
+                        "multipleOf": 5
+                    },
+                    "code": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 10,
+                        "pattern": "^[A-Z]+$"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "format": "phone"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "minItems": 3
+                    },
+                    "ids": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "minItems": 1
+                    },
+                    "value": {
+                        "oneOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "properties": { "x": { "type": "integer" } },
+                                "required": ["x"]
+                            }
+                        ]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": ["active", "inactive"]
+                    },
+                    "level": {
+                        "type": "string",
+                        "const": "admin"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Full Name"
+                    },
+                    "note": {
+                        "type": "string",
+                        "default": "N/A"
+                    },
+                    "nested": {
+                        "type": "object",
+                        "properties": {
+                            "inner": { "type": "string" }
+                        },
+                        "required": ["inner"]
+                    }
+                },
+                "required": ["score", "code", "phone", "email", "tags", "ids", "value", "status", "level", "name", "note", "nested"]
+            }
+            """;
+
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "test"
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "score": {
+                                    "type": "integer",
+                                    "description": "A score\n\n{minimum: 0, maximum: 100, multipleOf: 5}"
+                                },
+                                "code": {
+                                    "type": "string",
+                                    "description": "{minLength: 3, maxLength: 10, pattern: \"^[A-Z]+$\"}"
+                                },
+                                "phone": {
+                                    "type": "string",
+                                    "description": "{format: \"phone\"}"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                },
+                                "tags": {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "description": "{minItems: 3}"
+                                },
+                                "ids": {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "minItems": 1
+                                },
+                                "value": {
+                                    "anyOf": [
+                                        { "type": "string" },
+                                        {
+                                            "type": "object",
+                                            "properties": { "x": { "type": "integer" } },
+                                            "required": ["x"],
+                                            "additionalProperties": false
+                                        }
+                                    ]
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "enum": ["active", "inactive"]
+                                },
+                                "level": {
+                                    "type": "string",
+                                    "const": "admin"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "title": "Full Name"
+                                },
+                                "note": {
+                                    "type": "string",
+                                    "description": "{default: \"N/A\"}"
+                                },
+                                "nested": {
+                                    "type": "object",
+                                    "properties": {
+                                        "inner": { "type": "string" }
+                                    },
+                                    "required": ["inner"],
+                                    "additionalProperties": false
+                                }
+                            },
+                            "required": ["score", "code", "phone", "email", "tags", "ids", "value", "status", "level", "name", "note", "nested"],
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_transform_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "{}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 25,
+                    "output_tokens": 10
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema(
+                JsonElement.Parse(inputSchema),
+                "test_schema"
+            ),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "test",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    /// <summary>
+    /// Validates the same schema transformations as
+    /// <see cref="GetResponseAsync_ResponseFormatSchema_AllTransformationsApplied"/> but through
+    /// the <see cref="AIFunctionDeclaration"/> tool path, ensuring both code paths apply the same
+    /// transform pipeline.
+    /// </summary>
+    [Fact]
+    public async Task GetResponseAsync_ToolDeclarationSchema_AllTransformationsApplied()
+    {
+        string inputSchema = """
+            {
+                "type": "object",
+                "properties": {
+                    "score": {
+                        "type": "integer",
+                        "description": "A score",
+                        "minimum": 0,
+                        "maximum": 100,
+                        "multipleOf": 5
+                    },
+                    "code": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 10,
+                        "pattern": "^[A-Z]+$"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "format": "phone"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "minItems": 3
+                    },
+                    "ids": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "minItems": 1
+                    },
+                    "value": {
+                        "oneOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "properties": { "x": { "type": "integer" } },
+                                "required": ["x"]
+                            }
+                        ]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": ["active", "inactive"]
+                    },
+                    "level": {
+                        "type": "string",
+                        "const": "admin"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Full Name"
+                    },
+                    "note": {
+                        "type": "string",
+                        "default": "N/A"
+                    },
+                    "nested": {
+                        "type": "object",
+                        "properties": {
+                            "inner": { "type": "string" }
+                        },
+                        "required": ["inner"]
+                    }
+                },
+                "required": ["score", "code", "phone", "email", "tags", "ids", "value", "status", "level", "name", "note", "nested"]
+            }
+            """;
+
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "test"
+                    }]
+                }],
+                "tools": [{
+                    "name": "test_tool",
+                    "description": "A test tool",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "score": {
+                                "type": "integer",
+                                "description": "A score\n\n{minimum: 0, maximum: 100, multipleOf: 5}"
+                            },
+                            "code": {
+                                "type": "string",
+                                "description": "{minLength: 3, maxLength: 10, pattern: \"^[A-Z]+$\"}"
+                            },
+                            "phone": {
+                                "type": "string",
+                                "description": "{format: \"phone\"}"
+                            },
+                            "email": {
+                                "type": "string",
+                                "format": "email"
+                            },
+                            "tags": {
+                                "type": "array",
+                                "items": { "type": "string" },
+                                "description": "{minItems: 3}"
+                            },
+                            "ids": {
+                                "type": "array",
+                                "items": { "type": "string" },
+                                "minItems": 1
+                            },
+                            "value": {
+                                "anyOf": [
+                                    { "type": "string" },
+                                    {
+                                        "type": "object",
+                                        "properties": { "x": { "type": "integer" } },
+                                        "required": ["x"],
+                                        "additionalProperties": false
+                                    }
+                                ]
+                            },
+                            "status": {
+                                "type": "string",
+                                "enum": ["active", "inactive"]
+                            },
+                            "level": {
+                                "type": "string",
+                                "const": "admin"
+                            },
+                            "name": {
+                                "type": "string",
+                                "title": "Full Name"
+                            },
+                            "note": {
+                                "type": "string",
+                                "description": "{default: \"N/A\"}"
+                            },
+                            "nested": {
+                                "type": "object",
+                                "properties": {
+                                    "inner": { "type": "string" }
+                                },
+                                "required": ["inner"],
+                                "additionalProperties": false
+                            }
+                        },
+                        "required": ["score", "code", "phone", "email", "tags", "ids", "value", "status", "level", "name", "note", "nested"],
+                        "additionalProperties": false
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_transform_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "ok"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 25,
+                    "output_tokens": 10
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        var declaration = AIFunctionFactory.CreateDeclaration(
+            "test_tool",
+            "A test tool",
+            JsonElement.Parse(inputSchema),
+            null
+        );
+
+        ChatOptions options = new() { Tools = [declaration] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "test",
             options,
             TestContext.Current.CancellationToken
         );
