@@ -1,17 +1,20 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic;
 using Anthropic.Core;
 using Anthropic.Models.Messages;
 
+#pragma warning disable MEAI001 // [Experimental] APIs in Microsoft.Extensions.AI
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 
 namespace Microsoft.Extensions.AI;
@@ -82,6 +85,73 @@ public static class AnthropicClientExtensions
         return new ToolUnionAITool(tool);
     }
 
+    /// <summary>
+    /// Gets a shared cache for JSON schema transformations for Anthropic's structured output features.
+    /// </summary>
+    internal static AIJsonSchemaTransformCache JsonSchemaTransformCache { get; } = new(
+        new AIJsonSchemaTransformOptions
+        {
+            DisallowAdditionalProperties = true,
+            TransformSchemaNode = (ctx, schemaNode) =>
+            {
+                if (schemaNode is JsonObject schemaObj)
+                {
+                    // From https://platform.claude.com/docs/en/build-with-claude/structured-outputs
+                    ReadOnlySpan<string> unsupportedProperties =
+                    [
+                        "minimum",
+                        "maximum",
+                        "multipleOf",
+                        "minLength",
+                        "maxLength",
+                    ];
+
+                    foreach (string propName in unsupportedProperties)
+                    {
+                        _ = schemaObj.Remove(propName);
+                    }
+                }
+
+                return schemaNode;
+            },
+        }
+    );
+
+    /// <summary>
+    /// Gets a shared set of header data to include in requests from the <see cref="IChatClient"/> implementation for Anthropic.
+    /// </summary>
+    internal static Dictionary<string, JsonElement> MeaiHeaderData { get; } =
+        new()
+        {
+            ["User-Agent"] = JsonSerializer.SerializeToElement(CreateMeaiUserAgentValue()),
+        };
+
+    private static string CreateMeaiUserAgentValue()
+    {
+        const string Name = "MEAI";
+
+        if (
+            typeof(IChatClient)
+                .Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                ?.InformationalVersion
+            is string version
+        )
+        {
+            int pos = version.IndexOf('+');
+            if (pos >= 0)
+            {
+                version = version.Substring(0, pos);
+            }
+
+            if (version.Length > 0)
+            {
+                return $"{Name}/{version}";
+            }
+        }
+
+        return Name;
+    }
+
     private sealed class AnthropicChatClient(
         IAnthropicClient anthropicClient,
         string? defaultModelId,
@@ -89,46 +159,11 @@ public static class AnthropicClientExtensions
     ) : IChatClient
     {
         private const int DefaultMaxTokens = 1024;
-        private const string MeaiUserAgentHeaderKey = "User-Agent";
-
-        private static readonly FrozenDictionary<string, JsonElement> s_meaiHeaderData =
-            new Dictionary<string, JsonElement>
-            {
-                [MeaiUserAgentHeaderKey] = JsonSerializer.SerializeToElement(
-                    CreateMeaiUserAgentValue()
-                ),
-            }.ToFrozenDictionary();
 
         private readonly IAnthropicClient _anthropicClient = anthropicClient;
         private readonly string? _defaultModelId = defaultModelId;
         private readonly int _defaultMaxTokens = defaultMaxTokens ?? DefaultMaxTokens;
         private ChatClientMetadata? _metadata;
-
-        private static string CreateMeaiUserAgentValue()
-        {
-            const string Name = "MEAI";
-
-            if (
-                typeof(IChatClient)
-                    .Assembly.GetCustomAttribute<System.Reflection.AssemblyInformationalVersionAttribute>()
-                    ?.InformationalVersion
-                is string version
-            )
-            {
-                int pos = version.IndexOf('+');
-                if (pos >= 0)
-                {
-                    version = version.Substring(0, pos);
-                }
-
-                if (version.Length > 0)
-                {
-                    return $"{Name}/{version}";
-                }
-            }
-
-            return Name;
-        }
 
         /// <inheritdoc />
         void IDisposable.Dispose() { }
@@ -811,6 +846,47 @@ public static class AnthropicClientExtensions
                     (systemMessages ??= []).Add(new TextBlockParam() { Text = instructions });
                 }
 
+                if (
+                    createParams.OutputConfig is null
+                    && options.ResponseFormat is { } responseFormat
+                )
+                {
+                    switch (responseFormat)
+                    {
+                        case ChatResponseFormatJson formatJson when formatJson.Schema is not null:
+                            JsonElement schema = JsonSchemaTransformCache
+                                .GetOrCreateTransformedSchema(formatJson)
+                                .GetValueOrDefault();
+                            if (
+                                schema.TryGetProperty("properties", out JsonElement properties)
+                                && properties.ValueKind is JsonValueKind.Object
+                                && schema.TryGetProperty("required", out JsonElement required)
+                                && required.ValueKind is JsonValueKind.Array
+                            )
+                            {
+                                createParams = createParams with
+                                {
+                                    OutputConfig = new OutputConfig()
+                                    {
+                                        Format = new JsonOutputFormat()
+                                        {
+                                            Schema = new Dictionary<string, JsonElement>
+                                            {
+                                                ["type"] = JsonElement.Parse("\"object\""),
+                                                ["properties"] = properties,
+                                                ["required"] = required,
+                                                ["additionalProperties"] = JsonElement.Parse(
+                                                    "false"
+                                                ),
+                                            },
+                                        },
+                                    },
+                                };
+                            }
+                            break;
+                    }
+                }
+
                 if (options.StopSequences is { Count: > 0 } stopSequences)
                 {
                     createParams = createParams.StopSequences is { } existingSequences
@@ -902,12 +978,34 @@ public static class AnthropicClientExtensions
                                             Properties = properties,
                                             Required = required,
                                         },
+                                        DeferLoading = GetValue<bool?>(
+                                            af,
+                                            nameof(Tool.DeferLoading)
+                                        ),
+                                        Strict = GetValue<bool?>(af, nameof(Tool.Strict)),
+                                        InputExamples = GetValue<
+                                            List<Dictionary<string, JsonElement>>
+                                        >(af, nameof(Tool.InputExamples)),
+                                        AllowedCallers = GetValue<
+                                            List<ApiEnum<string, ToolAllowedCaller>>
+                                        >(af, nameof(Tool.AllowedCallers)),
                                     }
                                 );
+
+                                static T? GetValue<T>(AIFunctionDeclaration af, string name) =>
+                                    af.AdditionalProperties?.TryGetValue(name, out var value)
+                                        is true
+                                    && value is T tValue
+                                        ? tValue
+                                        : default;
                                 break;
 
                             case HostedWebSearchTool:
                                 (createdTools ??= []).Add(new WebSearchTool20250305());
+                                break;
+
+                            case HostedCodeInterpreterTool:
+                                (createdTools ??= []).Add(new CodeExecutionTool20250825());
                                 break;
                         }
                     }
@@ -1022,7 +1120,7 @@ public static class AnthropicClientExtensions
 
         private static MessageCreateParams AddMeaiHeaders(MessageCreateParams createParams)
         {
-            Dictionary<string, JsonElement> mergedHeaders = new(s_meaiHeaderData);
+            Dictionary<string, JsonElement> mergedHeaders = new(MeaiHeaderData);
 
             foreach (var header in createParams.RawHeaderData)
             {
@@ -1086,6 +1184,13 @@ public static class AnthropicClientExtensions
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(Usage.CacheCreationInputTokens)] =
                     cacheCreationInputTokens.Value;
+            }
+
+            if (serverToolUsage?.WebFetchRequests is > 0)
+            {
+                (usageDetails.AdditionalCounts ??= [])[
+                    nameof(ServerToolUsage.WebFetchRequests)
+                ] = serverToolUsage.WebFetchRequests;
             }
 
             if (serverToolUsage?.WebSearchRequests is > 0)
@@ -1158,6 +1263,106 @@ public static class AnthropicClientExtensions
                     {
                         RawRepresentation = toolUse,
                     };
+
+                case CodeExecutionToolResultBlock ce:
+                {
+                    CodeInterpreterToolResultContent c = new(ce.ToolUseID)
+                    {
+                        RawRepresentation = ce,
+                    };
+
+                    if (ce.Content.TryPickError(out var ceError))
+                    {
+                        (c.Outputs ??= []).Add(
+                            new ErrorContent(null)
+                            {
+                                ErrorCode = ceError.ErrorCode.Value().ToString(),
+                            }
+                        );
+                    }
+
+                    if (ce.Content.TryPickResultBlock(out var ceOutput))
+                    {
+                        if (!string.IsNullOrWhiteSpace(ceOutput.Stdout))
+                        {
+                            (c.Outputs ??= []).Add(new TextContent(ceOutput.Stdout));
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(ceOutput.Stderr) || ceOutput.ReturnCode != 0)
+                        {
+                            (c.Outputs ??= []).Add(
+                                new ErrorContent(ceOutput.Stderr)
+                                {
+                                    ErrorCode = ceOutput.ReturnCode.ToString(
+                                        CultureInfo.InvariantCulture
+                                    ),
+                                }
+                            );
+                        }
+
+                        if (ceOutput.Content is { Count: > 0 })
+                        {
+                            foreach (var ceOutputContent in ceOutput.Content)
+                            {
+                                (c.Outputs ??= []).Add(
+                                    new HostedFileContent(ceOutputContent.FileID)
+                                );
+                            }
+                        }
+                    }
+
+                    return c;
+                }
+
+                case BashCodeExecutionToolResultBlock ce:
+                {
+                    CodeInterpreterToolResultContent c = new(ce.ToolUseID)
+                    {
+                        RawRepresentation = ce,
+                    };
+
+                    if (ce.Content.TryPickBashCodeExecutionToolResultError(out var ceError))
+                    {
+                        (c.Outputs ??= []).Add(
+                            new ErrorContent(null)
+                            {
+                                ErrorCode = ceError.ErrorCode.Value().ToString(),
+                            }
+                        );
+                    }
+
+                    if (ce.Content.TryPickBashCodeExecutionResultBlock(out var ceOutput))
+                    {
+                        if (!string.IsNullOrWhiteSpace(ceOutput.Stdout))
+                        {
+                            (c.Outputs ??= []).Add(new TextContent(ceOutput.Stdout));
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(ceOutput.Stderr) || ceOutput.ReturnCode != 0)
+                        {
+                            (c.Outputs ??= []).Add(
+                                new ErrorContent(ceOutput.Stderr)
+                                {
+                                    ErrorCode = ceOutput.ReturnCode.ToString(
+                                        CultureInfo.InvariantCulture
+                                    ),
+                                }
+                            );
+                        }
+
+                        if (ceOutput.Content is { Count: > 0 })
+                        {
+                            foreach (var ceOutputContent in ceOutput.Content)
+                            {
+                                (c.Outputs ??= []).Add(
+                                    new HostedFileContent(ceOutputContent.FileID)
+                                );
+                            }
+                        }
+                    }
+
+                    return c;
+                }
 
                 default:
                     return new AIContent() { RawRepresentation = block.Value };

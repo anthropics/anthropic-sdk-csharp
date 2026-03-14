@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
@@ -138,70 +136,6 @@ public static class AnthropicBetaClientExtensions
     ) : IChatClient
     {
         private const int DefaultMaxTokens = 1024;
-        private const string MeaiUserAgentHeaderKey = "User-Agent";
-
-        private static readonly FrozenDictionary<string, JsonElement> s_meaiHeaderData =
-            new Dictionary<string, JsonElement>
-            {
-                [MeaiUserAgentHeaderKey] = JsonSerializer.SerializeToElement(
-                    CreateMeaiUserAgentValue()
-                ),
-            }.ToFrozenDictionary();
-
-        private static string CreateMeaiUserAgentValue()
-        {
-            const string Name = "MEAI";
-
-            if (
-                typeof(IChatClient)
-                    .Assembly.GetCustomAttribute<System.Reflection.AssemblyInformationalVersionAttribute>()
-                    ?.InformationalVersion
-                is string version
-            )
-            {
-                int pos = version.IndexOf('+');
-                if (pos >= 0)
-                {
-                    version = version.Substring(0, pos);
-                }
-
-                if (version.Length > 0)
-                {
-                    return $"{Name}/{version}";
-                }
-            }
-
-            return Name;
-        }
-
-        private static readonly AIJsonSchemaTransformCache s_transformCache = new(
-            new AIJsonSchemaTransformOptions
-            {
-                DisallowAdditionalProperties = true,
-                TransformSchemaNode = (ctx, schemaNode) =>
-                {
-                    if (schemaNode is JsonObject schemaObj)
-                    {
-                        // From https://platform.claude.com/docs/en/build-with-claude/structured-outputs
-                        ReadOnlySpan<string> unsupportedProperties =
-                        [
-                            "minimum",
-                            "maximum",
-                            "multipleOf",
-                            "minLength",
-                            "maxLength",
-                        ];
-
-                        foreach (string propName in unsupportedProperties)
-                        {
-                            _ = schemaObj.Remove(propName);
-                        }
-                    }
-
-                    return schemaNode;
-                },
-            }
-        );
 
         private readonly Anthropic.Services.IBetaService _betaService = betaService;
         private readonly string? _defaultModelId = defaultModelId;
@@ -938,7 +872,7 @@ public static class AnthropicBetaClientExtensions
                     switch (responseFormat)
                     {
                         case ChatResponseFormatJson formatJson when formatJson.Schema is not null:
-                            JsonElement schema = s_transformCache
+                            JsonElement schema = AnthropicClientExtensions.JsonSchemaTransformCache
                                 .GetOrCreateTransformedSchema(formatJson)
                                 .GetValueOrDefault();
                             if (
@@ -1278,7 +1212,7 @@ public static class AnthropicBetaClientExtensions
 
         private static MessageCreateParams AddMeaiHeaders(MessageCreateParams createParams)
         {
-            Dictionary<string, JsonElement> mergedHeaders = new(s_meaiHeaderData);
+            Dictionary<string, JsonElement> mergedHeaders = new(AnthropicClientExtensions.MeaiHeaderData);
 
             foreach (var header in createParams.RawHeaderData)
             {
