@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
@@ -876,6 +878,86 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
 
         ChatResponse response = await chatClient.GetResponseAsync(
             "Think carefully",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithAIFunctionTool_AllowedCallers_FlowsThrough()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Use tool"
+                    }]
+                }],
+                "tools": [{
+                    "name": "callers_tool",
+                    "description": "A tool with allowed callers",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "value": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": ["value"]
+                    },
+                    "allowed_callers": [
+                        "direct"
+                    ]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_callers_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Done"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 30,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var function = AIFunctionFactory.Create(
+            (int value) => value,
+            new AIFunctionFactoryOptions
+            {
+                Name = "callers_tool",
+                Description = "A tool with allowed callers",
+                AdditionalProperties = new Dictionary<string, object?>
+                {
+                    [nameof(Tool.AllowedCallers)] = new List<ApiEnum<string, ToolAllowedCaller>>
+                    {
+                        new(JsonSerializer.SerializeToElement("direct")),
+                    },
+                },
+            }
+        );
+
+        ChatOptions options = new() { Tools = [function] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Use tool",
             options,
             TestContext.Current.CancellationToken
         );
