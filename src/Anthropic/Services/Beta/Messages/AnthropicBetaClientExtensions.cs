@@ -955,44 +955,18 @@ public static class AnthropicBetaClientExtensions
                                 break;
 
                             case AIFunctionDeclaration af:
-                                Dictionary<string, JsonElement> properties = [];
-                                List<string> required = [];
-                                JsonElement inputSchema = af.JsonSchema;
+                                JsonElement inputSchema =
+                                    AnthropicClientExtensions
+                                        .JsonSchemaTransformCache
+                                        .GetOrCreateTransformedSchema(af);
+                                Dictionary<string, JsonElement> schemaData = [];
                                 if (inputSchema.ValueKind is JsonValueKind.Object)
                                 {
-                                    if (
-                                        inputSchema.TryGetProperty(
-                                            "properties",
-                                            out JsonElement propsElement
-                                        )
-                                        && propsElement.ValueKind is JsonValueKind.Object
+                                    foreach (
+                                        JsonProperty p in inputSchema.EnumerateObject()
                                     )
                                     {
-                                        foreach (JsonProperty p in propsElement.EnumerateObject())
-                                        {
-                                            properties[p.Name] = p.Value;
-                                        }
-                                    }
-
-                                    if (
-                                        inputSchema.TryGetProperty(
-                                            "required",
-                                            out JsonElement reqElement
-                                        )
-                                        && reqElement.ValueKind is JsonValueKind.Array
-                                    )
-                                    {
-                                        foreach (JsonElement r in reqElement.EnumerateArray())
-                                        {
-                                            if (
-                                                r.ValueKind is JsonValueKind.String
-                                                && r.GetString() is { } s
-                                                && !string.IsNullOrWhiteSpace(s)
-                                            )
-                                            {
-                                                required.Add(s);
-                                            }
-                                        }
+                                        schemaData[p.Name] = p.Value;
                                     }
                                 }
 
@@ -1001,11 +975,7 @@ public static class AnthropicBetaClientExtensions
                                     {
                                         Name = af.Name,
                                         Description = af.Description,
-                                        InputSchema = new InputSchema()
-                                        {
-                                            Properties = properties,
-                                            Required = required,
-                                        },
+                                        InputSchema = new InputSchema(schemaData),
                                         DeferLoading = GetValue<bool?>(
                                             af,
                                             nameof(BetaTool.DeferLoading)

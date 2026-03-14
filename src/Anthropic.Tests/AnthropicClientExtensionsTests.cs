@@ -909,7 +909,8 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
                                 "type": "integer"
                             }
                         },
-                        "required": ["value"]
+                        "required": ["value"],
+                        "additionalProperties": false
                     },
                     "allowed_callers": [
                         "direct"
