@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.0 (2026-03-15)
+
+Full Changelog: [Foundry-v0.4.2...Foundry-v0.5.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Foundry-v0.4.2...Foundry-v0.5.0)
+
+### Features
+
+* **tests:** update mock server ([775f7d1](https://github.com/anthropics/anthropic-sdk-csharp/commit/775f7d174fe5729675c7fe91d1c7bd9749e7c053))
+
+
+### Chores
+
+* **docs:** add undocumented parameters to readme ([1d996bb](https://github.com/anthropics/anthropic-sdk-csharp/commit/1d996bb26dc18826832dc56ed44fb82669f1ee68))
+
 ## 0.4.2 (2026-02-05)
 
 Full Changelog: [Foundry-v0.4.1...Foundry-v0.4.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/Foundry-v0.4.1...Foundry-v0.4.2)
