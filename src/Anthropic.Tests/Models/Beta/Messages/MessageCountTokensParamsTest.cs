@@ -566,7 +566,7 @@ public class MessageCountTokensParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(new Uri("https://api.anthropic.com/v1/messages/count_tokens"), url);
+        Assert.Equal(new Uri("https://api.anthropic.com/v1/messages/count_tokens?beta=true"), url);
     }
 
     [Fact]

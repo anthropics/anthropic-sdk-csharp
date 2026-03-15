@@ -159,7 +159,7 @@ public abstract record class ParamsBase
 
     internal string QueryString(ClientOptions options)
     {
-        NameValueCollection collection = [];
+        NameValueCollection collection = new();
         foreach (var item in this.RawQueryData)
         {
             ParamsBase.AddQueryElementToCollection(collection, item.Key, item.Value);
@@ -213,6 +213,13 @@ public abstract record class ParamsBase
 
     static string GetUserAgent() => $"{typeof(AnthropicClient).Name}/C# {GetPackageVersion()}";
 
+    static string GetPackageVersion() =>
+        Assembly
+            .GetExecutingAssembly()
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+            ?.InformationalVersion
+        ?? "unknown";
+
     static string GetOSArch() =>
         RuntimeInformation.OSArchitecture switch
         {
@@ -247,13 +254,6 @@ public abstract record class ParamsBase
         return $"Other:{RuntimeInformation.OSDescription}";
     }
 
-    static string GetPackageVersion() =>
-        Assembly
-            .GetExecutingAssembly()
-            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-            ?.InformationalVersion
-        ?? "unknown";
-
     static Runtime GetRuntime()
     {
         var runtimeDescription = RuntimeInformation.FrameworkDescription;
@@ -272,5 +272,10 @@ public abstract record class ParamsBase
         };
     }
 
-    readonly record struct Runtime(string Name, string Version);
+    readonly record struct Runtime
+    {
+        public string Name { get; init; }
+
+        public string Version { get; init; }
+    }
 }

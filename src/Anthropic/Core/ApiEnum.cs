@@ -11,19 +11,26 @@ namespace Anthropic.Core;
 ///
 /// <para>In most cases you don't have to worry about this type and can rely on its implicit operators to
 /// wrap and unwrap enum values.</para>
-///
-/// <param name="Json">
-/// Returns this instance's raw value.
-///
-/// <para>This is usually only useful if this instance was deserialized from data that doesn't match the
-/// expected type (<typeparamref name="TRaw"/>), and you want to know that value. For example, if the
-/// SDK is on an older version than the API, then the API may respond with new data types that the SDK is
-/// unaware of.</para>
-/// </param>
 /// </summary>
-public record class ApiEnum<TRaw, TEnum>(JsonElement Json)
+public record class ApiEnum<TRaw, TEnum>
     where TEnum : struct, Enum
 {
+    /// <summary>
+    /// Returns this instance's raw value.
+    ///
+    /// <para>This is usually only useful if this instance was deserialized from data that doesn't match the
+    /// expected type (<typeparamref name="TRaw"/>), and you want to know that value. For example, if the
+    /// SDK is on an older version than the API, then the API may respond with new data types that the SDK is
+    /// unaware of.
+    /// </para>
+    /// </summary>
+    public JsonElement Json;
+
+    public ApiEnum(JsonElement json)
+    {
+        Json = json;
+    }
+
     /// <summary>
     /// Returns this instance's raw <typeparamref name="TRaw"/> value.
     ///

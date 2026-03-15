@@ -1,15 +1,12 @@
 using System.Threading.Tasks;
-using Anthropic.Tests;
 
 namespace Anthropic.Tests.Services.Beta.Skills;
 
-public class VersionServiceTest
+public class VersionServiceTest : TestBase
 {
-    [Theory(Skip = "prism binary unsupported")]
-    [AnthropicTestClients]
-    public async Task Create_Works(IAnthropicClient client)
+    public async Task Create_Works()
     {
-        var version = await client.Beta.Skills.Versions.Create(
+        var version = await this.client.Beta.Skills.Versions.Create(
             "skill_id",
             new(),
             TestContext.Current.CancellationToken
@@ -17,11 +14,9 @@ public class VersionServiceTest
         version.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients]
-    public async Task Retrieve_Works(IAnthropicClient client)
+    public async Task Retrieve_Works()
     {
-        var version = await client.Beta.Skills.Versions.Retrieve(
+        var version = await this.client.Beta.Skills.Versions.Retrieve(
             "version",
             new() { SkillID = "skill_id" },
             TestContext.Current.CancellationToken
@@ -29,11 +24,9 @@ public class VersionServiceTest
         version.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients]
-    public async Task List_Works(IAnthropicClient client)
+    public async Task List_Works()
     {
-        var page = await client.Beta.Skills.Versions.List(
+        var page = await this.client.Beta.Skills.Versions.List(
             "skill_id",
             new(),
             TestContext.Current.CancellationToken
@@ -41,11 +34,9 @@ public class VersionServiceTest
         page.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients]
-    public async Task Delete_Works(IAnthropicClient client)
+    public async Task Delete_Works()
     {
-        var version = await client.Beta.Skills.Versions.Delete(
+        var version = await this.client.Beta.Skills.Versions.Delete(
             "version",
             new() { SkillID = "skill_id" },
             TestContext.Current.CancellationToken

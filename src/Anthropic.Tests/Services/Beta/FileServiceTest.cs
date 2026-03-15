@@ -1,24 +1,19 @@
 using System.Text;
 using System.Threading.Tasks;
-using Anthropic.Tests;
 
 namespace Anthropic.Tests.Services.Beta;
 
-public class FileServiceTest
+public class FileServiceTest : TestBase
 {
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task List_Works(IAnthropicClient client)
+    public async Task List_Works()
     {
-        var page = await client.Beta.Files.List(new(), TestContext.Current.CancellationToken);
+        var page = await this.client.Beta.Files.List(new(), TestContext.Current.CancellationToken);
         page.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task Delete_Works(IAnthropicClient client)
+    public async Task Delete_Works()
     {
-        var deletedFile = await client.Beta.Files.Delete(
+        var deletedFile = await this.client.Beta.Files.Delete(
             "file_id",
             new(),
             TestContext.Current.CancellationToken
@@ -26,18 +21,18 @@ public class FileServiceTest
         deletedFile.Validate();
     }
 
-    [Theory(Skip = "Prism doesn't support application/binary responses")]
-    [AnthropicTestClients]
-    public async Task Download_Works(IAnthropicClient client)
+    public async Task Download_Works()
     {
-        await client.Beta.Files.Download("file_id", new(), TestContext.Current.CancellationToken);
+        await this.client.Beta.Files.Download(
+            "file_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
     }
 
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task RetrieveMetadata_Works(IAnthropicClient client)
+    public async Task RetrieveMetadata_Works()
     {
-        var fileMetadata = await client.Beta.Files.RetrieveMetadata(
+        var fileMetadata = await this.client.Beta.Files.RetrieveMetadata(
             "file_id",
             new(),
             TestContext.Current.CancellationToken
@@ -45,12 +40,10 @@ public class FileServiceTest
         fileMetadata.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task Upload_Works(IAnthropicClient client)
+    public async Task Upload_Works()
     {
-        var fileMetadata = await client.Beta.Files.Upload(
-            new() { File = Encoding.UTF8.GetBytes("text") },
+        var fileMetadata = await this.client.Beta.Files.Upload(
+            new() { File = Encoding.UTF8.GetBytes("Example data") },
             TestContext.Current.CancellationToken
         );
         fileMetadata.Validate();

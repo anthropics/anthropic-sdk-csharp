@@ -13,7 +13,7 @@ public class FileUploadParamsTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        BinaryContent file = Encoding.UTF8.GetBytes("text");
+        BinaryContent file = Encoding.UTF8.GetBytes("Example data");
 
         var parameters = new FileUploadParams
         {
@@ -39,7 +39,7 @@ public class FileUploadParamsTest : TestBase
     [Fact]
     public void OptionalNonNullableParamsUnsetAreNotSet_Works()
     {
-        BinaryContent file = Encoding.UTF8.GetBytes("text");
+        BinaryContent file = Encoding.UTF8.GetBytes("Example data");
 
         var parameters = new FileUploadParams { File = file };
 
@@ -50,7 +50,7 @@ public class FileUploadParamsTest : TestBase
     [Fact]
     public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
     {
-        BinaryContent file = Encoding.UTF8.GetBytes("text");
+        BinaryContent file = Encoding.UTF8.GetBytes("Example data");
 
         var parameters = new FileUploadParams
         {
@@ -67,11 +67,11 @@ public class FileUploadParamsTest : TestBase
     [Fact]
     public void Url_Works()
     {
-        FileUploadParams parameters = new() { File = Encoding.UTF8.GetBytes("text") };
+        FileUploadParams parameters = new() { File = Encoding.UTF8.GetBytes("Example data") };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(new Uri("https://api.anthropic.com/v1/files"), url);
+        Assert.Equal(new Uri("https://api.anthropic.com/v1/files?beta=true"), url);
     }
 
     [Fact]
@@ -80,7 +80,7 @@ public class FileUploadParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         FileUploadParams parameters = new()
         {
-            File = Encoding.UTF8.GetBytes("text"),
+            File = Encoding.UTF8.GetBytes("Example data"),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -97,7 +97,7 @@ public class FileUploadParamsTest : TestBase
     {
         var parameters = new FileUploadParams
         {
-            File = Encoding.UTF8.GetBytes("text"),
+            File = Encoding.UTF8.GetBytes("Example data"),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 

@@ -754,7 +754,7 @@ public class BatchCreateParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(new Uri("https://api.anthropic.com/v1/messages/batches"), url);
+        Assert.Equal(new Uri("https://api.anthropic.com/v1/messages/batches?beta=true"), url);
     }
 
     [Fact]

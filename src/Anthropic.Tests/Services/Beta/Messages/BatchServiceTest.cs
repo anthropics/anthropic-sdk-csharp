@@ -7,13 +7,11 @@ using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Services.Beta.Messages;
 
-public class BatchServiceTest
+public class BatchServiceTest : TestBase
 {
-    [Theory(Skip = "prism validates based on the non-beta endpoint")]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task Create_Works(IAnthropicClient client)
+    public async Task Create_Works()
     {
-        var betaMessageBatch = await client.Beta.Messages.Batches.Create(
+        var betaMessageBatch = await this.client.Beta.Messages.Batches.Create(
             new()
             {
                 Requests =
@@ -159,11 +157,9 @@ public class BatchServiceTest
         betaMessageBatch.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task Retrieve_Works(IAnthropicClient client)
+    public async Task Retrieve_Works()
     {
-        var betaMessageBatch = await client.Beta.Messages.Batches.Retrieve(
+        var betaMessageBatch = await this.client.Beta.Messages.Batches.Retrieve(
             "message_batch_id",
             new(),
             TestContext.Current.CancellationToken
@@ -171,22 +167,18 @@ public class BatchServiceTest
         betaMessageBatch.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task List_Works(IAnthropicClient client)
+    public async Task List_Works()
     {
-        var page = await client.Beta.Messages.Batches.List(
+        var page = await this.client.Beta.Messages.Batches.List(
             new(),
             TestContext.Current.CancellationToken
         );
         page.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task Delete_Works(IAnthropicClient client)
+    public async Task Delete_Works()
     {
-        var betaDeletedMessageBatch = await client.Beta.Messages.Batches.Delete(
+        var betaDeletedMessageBatch = await this.client.Beta.Messages.Batches.Delete(
             "message_batch_id",
             new(),
             TestContext.Current.CancellationToken
@@ -194,11 +186,9 @@ public class BatchServiceTest
         betaDeletedMessageBatch.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task Cancel_Works(IAnthropicClient client)
+    public async Task Cancel_Works()
     {
-        var betaMessageBatch = await client.Beta.Messages.Batches.Cancel(
+        var betaMessageBatch = await this.client.Beta.Messages.Batches.Cancel(
             "message_batch_id",
             new(),
             TestContext.Current.CancellationToken
@@ -206,11 +196,9 @@ public class BatchServiceTest
         betaMessageBatch.Validate();
     }
 
-    [Theory(Skip = "Prism doesn't support application/x-jsonl responses")]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task ResultsStreaming_Works(IAnthropicClient client)
+    public async Task ResultsStreaming_Works()
     {
-        var stream = client.Beta.Messages.Batches.ResultsStreaming(
+        var stream = this.client.Beta.Messages.Batches.ResultsStreaming(
             "message_batch_id",
             new(),
             TestContext.Current.CancellationToken

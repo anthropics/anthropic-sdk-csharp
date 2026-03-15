@@ -1,22 +1,16 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Anthropic.Models.Messages.Batches;
-using Anthropic.Tests;
+using Anthropic.Models.Messages;
 using Batches = Anthropic.Models.Messages.Batches;
-using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Services.Messages;
 
-public class BatchServiceTest
+public class BatchServiceTest : TestBase
 {
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
-    [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
-    public async Task Create_Works(IAnthropicClient client, string modelName)
+    public async Task Create_Works()
     {
-        var messageBatch = await client.Messages.Batches.Create(
+        var messageBatch = await this.client.Messages.Batches.Create(
             new()
             {
                 Requests =
@@ -27,18 +21,15 @@ public class BatchServiceTest
                         Params = new()
                         {
                             MaxTokens = 1024,
-                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                            Model = Model.ClaudeOpus4_6,
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
                             Container = "container",
-                            Messages =
-                            [
-                                new() { Content = "Hello, world", Role = Messages::Role.User },
-                            ],
-                            Model = modelName,
                             InferenceGeo = "inference_geo",
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                             OutputConfig = new()
                             {
-                                Effort = Messages::Effort.Low,
+                                Effort = Effort.Low,
                                 Format = new()
                                 {
                                     Schema = new Dictionary<string, JsonElement>()
@@ -52,13 +43,13 @@ public class BatchServiceTest
                             Stream = true,
                             System = new(
                                 [
-                                    new Messages::TextBlockParam()
+                                    new TextBlockParam()
                                     {
                                         Text = "Today's date is 2024-06-01.",
-                                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                                         Citations =
                                         [
-                                            new Messages::CitationCharLocationParam()
+                                            new CitationCharLocationParam()
                                             {
                                                 CitedText = "cited_text",
                                                 DocumentIndex = 0,
@@ -71,14 +62,11 @@ public class BatchServiceTest
                                 ]
                             ),
                             Temperature = 1,
-                            Thinking = new Messages::ThinkingConfigEnabled(1024),
-                            ToolChoice = new Messages::ToolChoiceAuto()
-                            {
-                                DisableParallelToolUse = true,
-                            },
+                            Thinking = new ThinkingConfigEnabled(1024),
+                            ToolChoice = new ToolChoiceAuto() { DisableParallelToolUse = true },
                             Tools =
                             [
-                                new Messages::Tool()
+                                new Tool()
                                 {
                                     InputSchema = new()
                                     {
@@ -93,8 +81,8 @@ public class BatchServiceTest
                                         Required = ["location"],
                                     },
                                     Name = "name",
-                                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
-                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    AllowedCallers = [ToolAllowedCaller.Direct],
+                                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                                     DeferLoading = true,
                                     Description = "Get the current weather in a given location",
                                     EagerInputStreaming = true,
@@ -106,7 +94,7 @@ public class BatchServiceTest
                                         },
                                     ],
                                     Strict = true,
-                                    Type = Messages::Type.Custom,
+                                    Type = Type.Custom,
                                 },
                             ],
                             TopK = 5,
@@ -120,11 +108,9 @@ public class BatchServiceTest
         messageBatch.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task Retrieve_Works(IAnthropicClient client)
+    public async Task Retrieve_Works()
     {
-        var messageBatch = await client.Messages.Batches.Retrieve(
+        var messageBatch = await this.client.Messages.Batches.Retrieve(
             "message_batch_id",
             new(),
             TestContext.Current.CancellationToken
@@ -132,19 +118,18 @@ public class BatchServiceTest
         messageBatch.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task List_Works(IAnthropicClient client)
+    public async Task List_Works()
     {
-        var page = await client.Messages.Batches.List(new(), TestContext.Current.CancellationToken);
+        var page = await this.client.Messages.Batches.List(
+            new(),
+            TestContext.Current.CancellationToken
+        );
         page.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task Delete_Works(IAnthropicClient client)
+    public async Task Delete_Works()
     {
-        var deletedMessageBatch = await client.Messages.Batches.Delete(
+        var deletedMessageBatch = await this.client.Messages.Batches.Delete(
             "message_batch_id",
             new(),
             TestContext.Current.CancellationToken
@@ -152,11 +137,9 @@ public class BatchServiceTest
         deletedMessageBatch.Validate();
     }
 
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task Cancel_Works(IAnthropicClient client)
+    public async Task Cancel_Works()
     {
-        var messageBatch = await client.Messages.Batches.Cancel(
+        var messageBatch = await this.client.Messages.Batches.Cancel(
             "message_batch_id",
             new(),
             TestContext.Current.CancellationToken
@@ -164,11 +147,9 @@ public class BatchServiceTest
         messageBatch.Validate();
     }
 
-    [Theory(Skip = "Prism doesn't support application/x-jsonl responses")]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
-    public async Task ResultsStreaming_Works(IAnthropicClient client)
+    public async Task ResultsStreaming_Works()
     {
-        var stream = client.Messages.Batches.ResultsStreaming(
+        var stream = this.client.Messages.Batches.ResultsStreaming(
             "message_batch_id",
             new(),
             TestContext.Current.CancellationToken

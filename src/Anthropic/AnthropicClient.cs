@@ -335,7 +335,11 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
     static TimeSpan ComputeRetryBackoff(int retries, HttpResponse? response)
     {
         TimeSpan? apiBackoff = ParseRetryAfterMsHeader(response) ?? ParseRetryAfterHeader(response);
-        if (apiBackoff != null && apiBackoff < TimeSpan.FromMinutes(1))
+        if (
+            apiBackoff != null
+            && apiBackoff > TimeSpan.Zero
+            && apiBackoff < TimeSpan.FromMinutes(1)
+        )
         {
             // If the API asks us to wait a certain amount of time (and it's a reasonable amount), then just
             // do what it says.

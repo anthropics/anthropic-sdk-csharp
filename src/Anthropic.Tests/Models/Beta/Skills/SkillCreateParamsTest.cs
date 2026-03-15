@@ -13,7 +13,7 @@ public class SkillCreateParamsTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        BinaryContent files = Encoding.UTF8.GetBytes("text");
+        BinaryContent files = Encoding.UTF8.GetBytes("Example data");
 
         var parameters = new SkillCreateParams
         {
@@ -47,7 +47,7 @@ public class SkillCreateParamsTest : TestBase
     [Fact]
     public void OptionalNonNullableParamsUnsetAreNotSet_Works()
     {
-        BinaryContent files = Encoding.UTF8.GetBytes("text");
+        BinaryContent files = Encoding.UTF8.GetBytes("Example data");
 
         var parameters = new SkillCreateParams { DisplayTitle = "display_title", Files = [files] };
 
@@ -58,7 +58,7 @@ public class SkillCreateParamsTest : TestBase
     [Fact]
     public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
     {
-        BinaryContent files = Encoding.UTF8.GetBytes("text");
+        BinaryContent files = Encoding.UTF8.GetBytes("Example data");
 
         var parameters = new SkillCreateParams
         {
@@ -108,7 +108,7 @@ public class SkillCreateParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(new Uri("https://api.anthropic.com/v1/skills"), url);
+        Assert.Equal(new Uri("https://api.anthropic.com/v1/skills?beta=true"), url);
     }
 
     [Fact]
@@ -131,7 +131,7 @@ public class SkillCreateParamsTest : TestBase
         var parameters = new SkillCreateParams
         {
             DisplayTitle = "display_title",
-            Files = [Encoding.UTF8.GetBytes("text")],
+            Files = [Encoding.UTF8.GetBytes("Example data")],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
