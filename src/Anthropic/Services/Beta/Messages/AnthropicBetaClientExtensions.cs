@@ -405,6 +405,10 @@ public static class AnthropicBetaClientExtensions
                             case BetaCodeExecutionToolResultBlock:
                             case BetaBashCodeExecutionToolResultBlock:
                             case BetaTextEditorCodeExecutionToolResultBlock:
+                            case BetaMcpToolUseBlock:
+                            case BetaMcpToolResultBlock:
+                            case BetaToolSearchToolResultBlock:
+                            case BetaContainerUploadBlock:
                                 contents.Add(
                                     ContentBlockValueToAIContent(
                                         contentBlockStart.ContentBlock.Value
@@ -456,6 +460,19 @@ public static class AnthropicBetaClientExtensions
                                         RawRepresentation = signatureDelta,
                                     }
                                 );
+                                break;
+
+                            case BetaCitationsDelta citationsDelta:
+                                if (ToAIAnnotation(citationsDelta.Citation) is { } streamAnnotation)
+                                {
+                                    contents.Add(
+                                        new TextContent(string.Empty)
+                                        {
+                                            RawRepresentation = citationsDelta,
+                                            Annotations = [streamAnnotation],
+                                        }
+                                    );
+                                }
                                 break;
                         }
                         break;
@@ -1472,6 +1489,33 @@ public static class AnthropicBetaClientExtensions
                         }
                     }
 
+                    if (ce.Content.TryPickEncryptedCodeExecutionResultBlock(out var ceEncrypted))
+                    {
+                        // Unlike with the non-encrypted case above, we skip Stdout, as here it's encrypted.
+
+                        if (!string.IsNullOrWhiteSpace(ceEncrypted.Stderr) || ceEncrypted.ReturnCode != 0)
+                        {
+                            (c.Outputs ??= []).Add(
+                                new ErrorContent(ceEncrypted.Stderr)
+                                {
+                                    ErrorCode = ceEncrypted.ReturnCode.ToString(
+                                        CultureInfo.InvariantCulture
+                                    ),
+                                }
+                            );
+                        }
+
+                        if (ceEncrypted.Content is { Count: > 0 })
+                        {
+                            foreach (var ceOutputContent in ceEncrypted.Content)
+                            {
+                                (c.Outputs ??= []).Add(
+                                    new HostedFileContent(ceOutputContent.FileID)
+                                );
+                            }
+                        }
+                    }
+
                     return c;
                 }
 
@@ -1749,6 +1793,12 @@ public static class AnthropicBetaClientExtensions
                         RawRepresentation = ts,
                     };
 
+                case BetaContainerUploadBlock containerUpload:
+                    return new HostedFileContent(containerUpload.FileID)
+                    {
+                        RawRepresentation = containerUpload,
+                    };
+
                 default:
                     return new AIContent() { RawRepresentation = blockValue };
             }
@@ -1774,6 +1824,39 @@ public static class AnthropicBetaClientExtensions
                     : null;
             }
             else if (citation.TryPickCitationSearchResultLocation(out var searchLocation))
+            {
+                annotation.Url = Uri.TryCreate(
+                    searchLocation.Source,
+                    UriKind.Absolute,
+                    out Uri? url
+                )
+                    ? url
+                    : null;
+            }
+
+            return annotation;
+        }
+
+        private static AIAnnotation? ToAIAnnotation(Anthropic.Models.Beta.Messages.Citation citation)
+        {
+            CitationAnnotation annotation = new()
+            {
+                Title = citation.Title ?? citation.DocumentTitle,
+                Snippet = citation.CitedText,
+                FileId = citation.FileID,
+            };
+
+            if (citation.TryPickBetaCitationsWebSearchResultLocation(out var webSearchLocation))
+            {
+                annotation.Url = Uri.TryCreate(
+                    webSearchLocation.Url,
+                    UriKind.Absolute,
+                    out Uri? url
+                )
+                    ? url
+                    : null;
+            }
+            else if (citation.TryPickBetaCitationSearchResultLocation(out var searchLocation))
             {
                 annotation.Url = Uri.TryCreate(
                     searchLocation.Source,

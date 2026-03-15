@@ -7141,6 +7141,290 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Equal(new Uri("https://example.com/stream"), uriContent.Uri);
     }
 
+    [Fact]
+    public async Task GetResponseAsync_EncryptedCodeExecutionResult_MapsStderrAndFiles()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Run code"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [{
+                    "type": "code_execution_20250825",
+                    "name": "code_execution"
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_enc_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "server_tool_use",
+                        "id": "srvtoolu_enc_01",
+                        "name": "code_execution",
+                        "caller": { "type": "direct" },
+                        "input": { "code": "print('hello')" }
+                    },
+                    {
+                        "type": "code_execution_tool_result",
+                        "tool_use_id": "srvtoolu_enc_01",
+                        "content": {
+                            "type": "encrypted_code_execution_result",
+                            "encrypted_stdout": "base64encryptedstuff",
+                            "stderr": "warning: something",
+                            "return_code": 1,
+                            "content": [
+                                { "type": "code_execution_output", "file_id": "file_out_01" },
+                                { "type": "code_execution_output", "file_id": "file_out_02" }
+                            ]
+                        }
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 25,
+                    "output_tokens": 20
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Run code",
+            new() { Tools = [new HostedCodeInterpreterTool()] },
+            TestContext.Current.CancellationToken
+        );
+
+        var contents = response.Messages[0].Contents;
+        var ciResult = Assert.IsType<CodeInterpreterToolResultContent>(contents[1]);
+        Assert.Equal("srvtoolu_enc_01", ciResult.CallId);
+        Assert.NotNull(ciResult.Outputs);
+
+        // Encrypted stdout is not surfaced, but stderr and files are
+        var errorOutput = Assert.IsType<ErrorContent>(ciResult.Outputs[0]);
+        Assert.Equal("warning: something", errorOutput.Message);
+        Assert.Equal("1", errorOutput.ErrorCode);
+
+        var file1 = Assert.IsType<HostedFileContent>(ciResult.Outputs[1]);
+        Assert.Equal("file_out_01", file1.FileId);
+
+        var file2 = Assert.IsType<HostedFileContent>(ciResult.Outputs[2]);
+        Assert.Equal("file_out_02", file2.FileId);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ContainerUploadBlock_MapsToHostedFileContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Upload a file"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [{
+                    "type": "code_execution_20250825",
+                    "name": "code_execution"
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_cu_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "container_upload",
+                        "file_id": "file_container_01"
+                    },
+                    {
+                        "type": "text",
+                        "text": "File uploaded."
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Upload a file",
+            new() { Tools = [new HostedCodeInterpreterTool()] },
+            TestContext.Current.CancellationToken
+        );
+
+        var contents = response.Messages[0].Contents;
+
+        var hostedFile = Assert.IsType<HostedFileContent>(contents[0]);
+        Assert.Equal("file_container_01", hostedFile.FileId);
+        Assert.NotNull(hostedFile.RawRepresentation);
+
+        var text = Assert.IsType<TextContent>(contents[1]);
+        Assert.Equal("File uploaded.", text.Text);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_ContainerUploadBlock_MapsToHostedFileContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Upload a file"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_stream_cu_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"container_upload","file_id":"file_stream_container_01"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":5}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Upload a file",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+        Assert.NotEmpty(updates);
+
+        var hostedFiles = updates
+            .SelectMany(u => u.Contents.OfType<HostedFileContent>())
+            .ToList();
+        Assert.Single(hostedFiles);
+        Assert.Equal("file_stream_container_01", hostedFiles[0].FileId);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_CitationsDelta_MapsToAnnotation()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search and cite"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_stream_cite_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"The Eiffel Tower is 330m tall."}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"citations_delta","citation":{"type":"web_search_result_location","cited_text":"330 meters tall","encrypted_index":"enc","title":"Eiffel Tower Facts","url":"https://example.com/eiffel"}}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":15}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Search and cite",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+        Assert.NotEmpty(updates);
+
+        // Verify text came through
+        var allText = string.Concat(
+            updates.SelectMany(u => u.Contents.OfType<TextContent>()).Select(c => c.Text)
+        );
+        Assert.Contains("Eiffel Tower", allText);
+
+        // Verify citation annotation came through
+        var annotatedContents = updates
+            .SelectMany(u => u.Contents.OfType<TextContent>())
+            .Where(t => t.Annotations is { Count: > 0 })
+            .ToList();
+        Assert.Single(annotatedContents);
+
+        var annotation = Assert.IsType<CitationAnnotation>(annotatedContents[0].Annotations![0]);
+        Assert.Equal("Eiffel Tower Facts", annotation.Title);
+        Assert.Equal("330 meters tall", annotation.Snippet);
+        Assert.Equal(new Uri("https://example.com/eiffel"), annotation.Url);
+    }
+
     protected sealed class VerbatimHttpHandler(string expectedRequest, string actualResponse)
         : HttpMessageHandler
     {

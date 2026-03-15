@@ -671,6 +671,8 @@ public static class AnthropicClientExtensions
                             case CodeExecutionToolResultBlock:
                             case BashCodeExecutionToolResultBlock:
                             case TextEditorCodeExecutionToolResultBlock:
+                            case ToolSearchToolResultBlock:
+                            case ContainerUploadBlock:
                                 contents.Add(
                                     ContentBlockValueToAIContent(
                                         contentBlockStart.ContentBlock.Value
@@ -722,6 +724,19 @@ public static class AnthropicClientExtensions
                                         RawRepresentation = signatureDelta,
                                     }
                                 );
+                                break;
+
+                            case CitationsDelta citationsDelta:
+                                if (ToAIAnnotation(citationsDelta.Citation) is { } streamAnnotation)
+                                {
+                                    contents.Add(
+                                        new TextContent(string.Empty)
+                                        {
+                                            RawRepresentation = citationsDelta,
+                                            Annotations = [streamAnnotation],
+                                        }
+                                    );
+                                }
                                 break;
                         }
                         break;
@@ -1585,6 +1600,33 @@ public static class AnthropicClientExtensions
                         }
                     }
 
+                    if (ce.Content.TryPickEncryptedCodeExecutionResultBlock(out var ceEncrypted))
+                    {
+                        // Unlike with the non-encrypted case above, we skip Stdout, as here it's encrypted.
+
+                        if (!string.IsNullOrWhiteSpace(ceEncrypted.Stderr) || ceEncrypted.ReturnCode != 0)
+                        {
+                            (c.Outputs ??= []).Add(
+                                new ErrorContent(ceEncrypted.Stderr)
+                                {
+                                    ErrorCode = ceEncrypted.ReturnCode.ToString(
+                                        CultureInfo.InvariantCulture
+                                    ),
+                                }
+                            );
+                        }
+
+                        if (ceEncrypted.Content is { Count: > 0 })
+                        {
+                            foreach (var ceOutputContent in ceEncrypted.Content)
+                            {
+                                (c.Outputs ??= []).Add(
+                                    new HostedFileContent(ceOutputContent.FileID)
+                                );
+                            }
+                        }
+                    }
+
                     return c;
                 }
 
@@ -1853,12 +1895,51 @@ public static class AnthropicClientExtensions
                         RawRepresentation = ts,
                     };
 
+                case ContainerUploadBlock containerUpload:
+                    return new HostedFileContent(containerUpload.FileID)
+                    {
+                        RawRepresentation = containerUpload,
+                    };
+
                 default:
                     return new AIContent() { RawRepresentation = blockValue };
             }
         }
 
         private static AIAnnotation? ToAIAnnotation(TextCitation citation)
+        {
+            CitationAnnotation annotation = new()
+            {
+                Title = citation.Title ?? citation.DocumentTitle,
+                Snippet = citation.CitedText,
+                FileId = citation.FileID,
+            };
+
+            if (citation.TryPickCitationsWebSearchResultLocation(out var webSearchLocation))
+            {
+                annotation.Url = Uri.TryCreate(
+                    webSearchLocation.Url,
+                    UriKind.Absolute,
+                    out Uri? url
+                )
+                    ? url
+                    : null;
+            }
+            else if (citation.TryPickCitationsSearchResultLocation(out var searchLocation))
+            {
+                annotation.Url = Uri.TryCreate(
+                    searchLocation.Source,
+                    UriKind.Absolute,
+                    out Uri? url
+                )
+                    ? url
+                    : null;
+            }
+
+            return annotation;
+        }
+
+        private static AIAnnotation? ToAIAnnotation(Anthropic.Models.Messages.Citation citation)
         {
             CitationAnnotation annotation = new()
             {
