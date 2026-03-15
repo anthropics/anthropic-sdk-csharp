@@ -1733,7 +1733,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 Description = "A tool with allowed callers",
                 AdditionalProperties = new Dictionary<string, object?>
                 {
-                    [nameof(BetaTool.AllowedCallers)] = new List<ApiEnum<string, BetaToolAllowedCaller>>
+                    [nameof(BetaTool.AllowedCallers)] = new List<
+                        ApiEnum<string, BetaToolAllowedCaller>
+                    >
                     {
                         new(JsonSerializer.SerializeToElement("direct")),
                     },
@@ -1782,9 +1784,18 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public async Task IHostedFileClient_UploadAsync_NullContent_Throws()
     {
-        using IHostedFileClient fileClient = new AnthropicClient { ApiKey = "test-key" }.Beta.AsIHostedFileClient();
-        await Assert.ThrowsAsync<ArgumentNullException>("content", () =>
-            fileClient.UploadAsync(null!, cancellationToken: TestContext.Current.CancellationToken));
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.Beta.AsIHostedFileClient();
+        await Assert.ThrowsAsync<ArgumentNullException>(
+            "content",
+            () =>
+                fileClient.UploadAsync(
+                    null!,
+                    cancellationToken: TestContext.Current.CancellationToken
+                )
+        );
     }
 
     [Theory]
@@ -1792,9 +1803,16 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [InlineData("")]
     public async Task IHostedFileClient_DownloadAsync_InvalidFileId_Throws(string? fileId)
     {
-        using IHostedFileClient fileClient = new AnthropicClient { ApiKey = "test-key" }.Beta.AsIHostedFileClient();
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.Beta.AsIHostedFileClient();
         ArgumentException ex = await Assert.ThrowsAnyAsync<ArgumentException>(() =>
-            fileClient.DownloadAsync(fileId!, cancellationToken: TestContext.Current.CancellationToken));
+            fileClient.DownloadAsync(
+                fileId!,
+                cancellationToken: TestContext.Current.CancellationToken
+            )
+        );
         Assert.Equal("fileId", ex.ParamName);
     }
 
@@ -1803,9 +1821,16 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [InlineData("")]
     public async Task IHostedFileClient_GetFileInfoAsync_InvalidFileId_Throws(string? fileId)
     {
-        using IHostedFileClient fileClient = new AnthropicClient { ApiKey = "test-key" }.Beta.AsIHostedFileClient();
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.Beta.AsIHostedFileClient();
         ArgumentException ex = await Assert.ThrowsAnyAsync<ArgumentException>(() =>
-            fileClient.GetFileInfoAsync(fileId!, cancellationToken: TestContext.Current.CancellationToken));
+            fileClient.GetFileInfoAsync(
+                fileId!,
+                cancellationToken: TestContext.Current.CancellationToken
+            )
+        );
         Assert.Equal("fileId", ex.ParamName);
     }
 
@@ -1814,44 +1839,66 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [InlineData("")]
     public async Task IHostedFileClient_DeleteAsync_InvalidFileId_Throws(string? fileId)
     {
-        using IHostedFileClient fileClient = new AnthropicClient { ApiKey = "test-key" }.Beta.AsIHostedFileClient();
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.Beta.AsIHostedFileClient();
         ArgumentException ex = await Assert.ThrowsAnyAsync<ArgumentException>(() =>
-            fileClient.DeleteAsync(fileId!, cancellationToken: TestContext.Current.CancellationToken));
+            fileClient.DeleteAsync(
+                fileId!,
+                cancellationToken: TestContext.Current.CancellationToken
+            )
+        );
         Assert.Equal("fileId", ex.ParamName);
     }
 
     [Fact]
     public void IHostedFileClient_GetService_NullServiceType_Throws()
     {
-        using IHostedFileClient fileClient = new AnthropicClient { ApiKey = "test-key" }.Beta.AsIHostedFileClient();
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.Beta.AsIHostedFileClient();
         Assert.Throws<ArgumentNullException>("serviceType", () => fileClient.GetService(null!));
     }
 
     [Fact]
     public void IHostedFileClient_GetService_NonNullServiceKey_ReturnsNull()
     {
-        using IHostedFileClient fileClient = new AnthropicClient { ApiKey = "test-key" }.Beta.AsIHostedFileClient();
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.Beta.AsIHostedFileClient();
         Assert.Null(fileClient.GetService(typeof(HostedFileClientMetadata), "key"));
     }
 
     [Fact]
     public void IHostedFileClient_GetService_ReturnsSelf()
     {
-        using IHostedFileClient fileClient = new AnthropicClient { ApiKey = "test-key" }.Beta.AsIHostedFileClient();
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.Beta.AsIHostedFileClient();
         Assert.Same(fileClient, fileClient.GetService<IHostedFileClient>());
     }
 
     [Fact]
     public void IHostedFileClient_GetService_UnknownType_ReturnsNull()
     {
-        using IHostedFileClient fileClient = new AnthropicClient { ApiKey = "test-key" }.Beta.AsIHostedFileClient();
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.Beta.AsIHostedFileClient();
         Assert.Null(fileClient.GetService(typeof(string)));
     }
 
     [Fact]
     public void IHostedFileClient_GetService_Metadata_HasProviderUri()
     {
-        using IHostedFileClient fileClient = new AnthropicClient { ApiKey = "test-key" }.Beta.AsIHostedFileClient();
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.Beta.AsIHostedFileClient();
         var metadata = fileClient.GetService<HostedFileClientMetadata>();
         Assert.NotNull(metadata);
         Assert.NotNull(metadata.ProviderUri);
@@ -1860,7 +1907,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public async Task IHostedFileClient_GetFileInfoAsync_ReturnsHostedFileContent()
     {
-        VerbatimHttpHandler handler = new("", """
+        VerbatimHttpHandler handler = new(
+            "",
+            """
             {
                 "id": "file_abc123",
                 "created_at": "2024-01-01T00:00:00+00:00",
@@ -1869,11 +1918,15 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 "size_bytes": 100,
                 "type": "file"
             }
-            """);
+            """
+        );
 
-        using IHostedFileClient fileClient = CreateAnthropicClient(handler).Beta.AsIHostedFileClient();
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler)
+            .Beta.AsIHostedFileClient();
         HostedFileContent? result = await fileClient.GetFileInfoAsync(
-            "file_abc123", cancellationToken: TestContext.Current.CancellationToken);
+            "file_abc123",
+            cancellationToken: TestContext.Current.CancellationToken
+        );
 
         Assert.NotNull(result);
         Assert.Equal("file_abc123", result.FileId);
@@ -1887,16 +1940,22 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public async Task IHostedFileClient_DeleteAsync_ReturnsTrue()
     {
-        VerbatimHttpHandler handler = new("", """
+        VerbatimHttpHandler handler = new(
+            "",
+            """
             {
                 "id": "file_abc123",
                 "type": "file_deleted"
             }
-            """);
+            """
+        );
 
-        using IHostedFileClient fileClient = CreateAnthropicClient(handler).Beta.AsIHostedFileClient();
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler)
+            .Beta.AsIHostedFileClient();
         bool result = await fileClient.DeleteAsync(
-            "file_abc123", cancellationToken: TestContext.Current.CancellationToken);
+            "file_abc123",
+            cancellationToken: TestContext.Current.CancellationToken
+        );
 
         Assert.True(result);
     }
@@ -1904,7 +1963,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public async Task IHostedFileClient_UploadAsync_ReturnsHostedFileContent()
     {
-        VerbatimHttpHandler handler = new("", """
+        VerbatimHttpHandler handler = new(
+            "",
+            """
             {
                 "id": "file_new123",
                 "created_at": "2024-06-15T10:30:00+00:00",
@@ -1913,14 +1974,19 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 "size_bytes": 5000,
                 "type": "file"
             }
-            """);
+            """
+        );
 
-        using IHostedFileClient fileClient = CreateAnthropicClient(handler).Beta.AsIHostedFileClient();
-        using var stream = new MemoryStream(new byte[] { 1, 2, 3 });
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler)
+            .Beta.AsIHostedFileClient();
+        using var stream = new MemoryStream([1, 2, 3]);
 
         HostedFileContent result = await fileClient.UploadAsync(
-            stream, "application/pdf", "report.pdf",
-            cancellationToken: TestContext.Current.CancellationToken);
+            stream,
+            "application/pdf",
+            "report.pdf",
+            cancellationToken: TestContext.Current.CancellationToken
+        );
 
         Assert.Equal("file_new123", result.FileId);
         Assert.Equal("application/pdf", result.MediaType);
@@ -1931,7 +1997,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public async Task IHostedFileClient_UploadAsync_NullMediaType_InfersFromFileName()
     {
-        VerbatimHttpHandler handler = new("", """
+        VerbatimHttpHandler handler = new(
+            "",
+            """
             {
                 "id": "file_inferred",
                 "created_at": "2024-06-15T10:30:00+00:00",
@@ -1940,14 +2008,19 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 "size_bytes": 500,
                 "type": "file"
             }
-            """);
+            """
+        );
 
-        using IHostedFileClient fileClient = CreateAnthropicClient(handler).Beta.AsIHostedFileClient();
-        using var stream = new MemoryStream(new byte[] { 1, 2, 3 });
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler)
+            .Beta.AsIHostedFileClient();
+        using var stream = new MemoryStream([1, 2, 3]);
 
         HostedFileContent result = await fileClient.UploadAsync(
-            stream, null, "data.csv",
-            cancellationToken: TestContext.Current.CancellationToken);
+            stream,
+            null,
+            "data.csv",
+            cancellationToken: TestContext.Current.CancellationToken
+        );
 
         Assert.Equal("file_inferred", result.FileId);
     }
@@ -1955,7 +2028,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public async Task IHostedFileClient_UploadAsync_NullFileName_GeneratesFromMediaType()
     {
-        VerbatimHttpHandler handler = new("", """
+        VerbatimHttpHandler handler = new(
+            "",
+            """
             {
                 "id": "file_gen",
                 "created_at": "2024-06-15T10:30:00+00:00",
@@ -1964,14 +2039,19 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 "size_bytes": 100,
                 "type": "file"
             }
-            """);
+            """
+        );
 
-        using IHostedFileClient fileClient = CreateAnthropicClient(handler).Beta.AsIHostedFileClient();
-        using var stream = new MemoryStream(new byte[] { 1, 2, 3 });
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler)
+            .Beta.AsIHostedFileClient();
+        using var stream = new MemoryStream([1, 2, 3]);
 
         HostedFileContent result = await fileClient.UploadAsync(
-            stream, "application/pdf", null,
-            cancellationToken: TestContext.Current.CancellationToken);
+            stream,
+            "application/pdf",
+            null,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
 
         Assert.Equal("file_gen", result.FileId);
     }
@@ -1981,9 +2061,12 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     {
         VerbatimHttpHandler handler = new("", "test file content");
 
-        using IHostedFileClient fileClient = CreateAnthropicClient(handler).Beta.AsIHostedFileClient();
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler)
+            .Beta.AsIHostedFileClient();
         using HostedFileDownloadStream downloadStream = await fileClient.DownloadAsync(
-            "file_abc123", cancellationToken: TestContext.Current.CancellationToken);
+            "file_abc123",
+            cancellationToken: TestContext.Current.CancellationToken
+        );
 
         Assert.NotNull(downloadStream);
         Assert.True(downloadStream.CanRead);
@@ -2003,9 +2086,12 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     {
         VerbatimHttpHandler handler = new("", "content");
 
-        using IHostedFileClient fileClient = CreateAnthropicClient(handler).Beta.AsIHostedFileClient();
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler)
+            .Beta.AsIHostedFileClient();
         using HostedFileDownloadStream stream = await fileClient.DownloadAsync(
-            "file_abc123", cancellationToken: TestContext.Current.CancellationToken);
+            "file_abc123",
+            cancellationToken: TestContext.Current.CancellationToken
+        );
 
         Assert.Throws<NotSupportedException>(() => stream.Write(new byte[1], 0, 1));
         Assert.Throws<NotSupportedException>(() => stream.SetLength(0));
@@ -2014,7 +2100,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public async Task IHostedFileClient_ListFilesAsync_ReturnsFiles()
     {
-        VerbatimHttpHandler handler = new("", """
+        VerbatimHttpHandler handler = new(
+            "",
+            """
             {
                 "data": [
                     {
@@ -2038,13 +2126,18 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 "has_more": false,
                 "last_id": null
             }
-            """);
+            """
+        );
 
-        using IHostedFileClient fileClient = CreateAnthropicClient(handler).Beta.AsIHostedFileClient();
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler)
+            .Beta.AsIHostedFileClient();
 
         List<HostedFileContent> files = new();
-        await foreach (HostedFileContent file in fileClient.ListFilesAsync(
-            cancellationToken: TestContext.Current.CancellationToken))
+        await foreach (
+            HostedFileContent file in fileClient.ListFilesAsync(
+                cancellationToken: TestContext.Current.CancellationToken
+            )
+        )
         {
             files.Add(file);
         }

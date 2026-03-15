@@ -108,9 +108,7 @@ public static class AnthropicBetaClientExtensions
     /// <param name="fileService">The file service to use.</param>
     /// <returns>An <see cref="IHostedFileClient"/> that can be used to manage files via the <see cref="IFileService"/>.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="fileService"/> is <see langword="null"/>.</exception>
-    public static IHostedFileClient AsIHostedFileClient(
-        this IFileService fileService
-    )
+    public static IHostedFileClient AsIHostedFileClient(this IFileService fileService)
     {
         if (fileService is null)
         {
@@ -236,7 +234,10 @@ public static class AnthropicBetaClientExtensions
                 messages,
                 out List<BetaTextBlockParam>? systemMessages
             );
-            bool hasHostedFiles = messages.SelectMany(m => m.Contents).OfType<HostedFileContent>().Any();
+            bool hasHostedFiles = messages
+                .SelectMany(m => m.Contents)
+                .OfType<HostedFileContent>()
+                .Any();
             MessageCreateParams createParams = GetMessageCreateParams(
                 messageParams,
                 systemMessages,
@@ -269,7 +270,10 @@ public static class AnthropicBetaClientExtensions
 
             var createResult = await messageService.Create(createParams, cancellationToken);
 
-            ChatMessage m = new(ChatRole.Assistant, [.. createResult.Content.Select(b => ContentBlockValueToAIContent(b.Value))])
+            ChatMessage m = new(
+                ChatRole.Assistant,
+                [.. createResult.Content.Select(b => ContentBlockValueToAIContent(b.Value))]
+            )
             {
                 CreatedAt = DateTimeOffset.UtcNow,
                 MessageId = createResult.ID,
@@ -302,7 +306,10 @@ public static class AnthropicBetaClientExtensions
                 messages,
                 out List<BetaTextBlockParam>? systemMessages
             );
-            bool hasHostedFiles = messages.SelectMany(m => m.Contents).OfType<HostedFileContent>().Any();
+            bool hasHostedFiles = messages
+                .SelectMany(m => m.Contents)
+                .OfType<HostedFileContent>()
+                .Any();
             MessageCreateParams createParams = GetMessageCreateParams(
                 messageParams,
                 systemMessages,
@@ -950,8 +957,8 @@ public static class AnthropicBetaClientExtensions
                     switch (responseFormat)
                     {
                         case ChatResponseFormatJson formatJson when formatJson.Schema is not null:
-                            JsonElement schema = AnthropicClientExtensions.JsonSchemaTransformCache
-                                .GetOrCreateTransformedSchema(formatJson)
+                            JsonElement schema = AnthropicClientExtensions
+                                .JsonSchemaTransformCache.GetOrCreateTransformedSchema(formatJson)
                                 .GetValueOrDefault();
                             if (
                                 schema.TryGetProperty("properties", out JsonElement properties)
@@ -1034,15 +1041,13 @@ public static class AnthropicBetaClientExtensions
 
                             case AIFunctionDeclaration af:
                                 JsonElement inputSchema =
-                                    AnthropicClientExtensions
-                                        .JsonSchemaTransformCache
-                                        .GetOrCreateTransformedSchema(af);
+                                    AnthropicClientExtensions.JsonSchemaTransformCache.GetOrCreateTransformedSchema(
+                                        af
+                                    );
                                 Dictionary<string, JsonElement> schemaData = [];
                                 if (inputSchema.ValueKind is JsonValueKind.Object)
                                 {
-                                    foreach (
-                                        JsonProperty p in inputSchema.EnumerateObject()
-                                    )
+                                    foreach (JsonProperty p in inputSchema.EnumerateObject())
                                     {
                                         schemaData[p.Name] = p.Value;
                                     }
@@ -1260,7 +1265,9 @@ public static class AnthropicBetaClientExtensions
 
         private static MessageCreateParams AddMeaiHeaders(MessageCreateParams createParams)
         {
-            Dictionary<string, JsonElement> mergedHeaders = new(AnthropicClientExtensions.MeaiHeaderData);
+            Dictionary<string, JsonElement> mergedHeaders = new(
+                AnthropicClientExtensions.MeaiHeaderData
+            );
 
             foreach (var header in createParams.RawHeaderData)
             {
@@ -1493,7 +1500,10 @@ public static class AnthropicBetaClientExtensions
                     {
                         // Unlike with the non-encrypted case above, we skip Stdout, as here it's encrypted.
 
-                        if (!string.IsNullOrWhiteSpace(ceEncrypted.Stderr) || ceEncrypted.ReturnCode != 0)
+                        if (
+                            !string.IsNullOrWhiteSpace(ceEncrypted.Stderr)
+                            || ceEncrypted.ReturnCode != 0
+                        )
                         {
                             (c.Outputs ??= []).Add(
                                 new ErrorContent(ceEncrypted.Stderr)
@@ -1610,26 +1620,19 @@ public static class AnthropicBetaClientExtensions
                                         "code",
                                         out JsonElement codeElement
                                     ) == true
-                                    || serverToolUse.Input?.TryGetValue(
-                                        "command",
-                                        out codeElement
-                                    ) == true
+                                    || serverToolUse.Input?.TryGetValue("command", out codeElement)
+                                        == true
                                 )
                                 && codeElement.ValueKind == JsonValueKind.String
                             )
                             {
                                 string code = codeElement.GetString()!;
                                 string mediaType =
-                                    nameValue == Name.CodeExecution
-                                        ? "text/x-python"
-                                        : nameValue == Name.BashCodeExecution
-                                            ? "application/x-sh"
-                                            : "text/plain";
+                                    nameValue == Name.CodeExecution ? "text/x-python"
+                                    : nameValue == Name.BashCodeExecution ? "application/x-sh"
+                                    : "text/plain";
                                 (cic.Inputs ??= []).Add(
-                                    new DataContent(
-                                        Encoding.UTF8.GetBytes(code),
-                                        mediaType
-                                    )
+                                    new DataContent(Encoding.UTF8.GetBytes(code), mediaType)
                                 );
                             }
 
@@ -1650,16 +1653,17 @@ public static class AnthropicBetaClientExtensions
                         RawRepresentation = wsResult,
                     };
 
-                    if (
-                        wsResult.Content.TryPickBetaWebSearchResultBlocks(
-                            out var searchResults
-                        )
-                    )
+                    if (wsResult.Content.TryPickBetaWebSearchResultBlocks(out var searchResults))
                     {
                         foreach (var result in searchResults)
                         {
                             (wsrc.Results ??= []).Add(
-                                new UriContent(result.Url, AnthropicClientExtensions.InferMediaTypeFromExtension(result.Url))
+                                new UriContent(
+                                    result.Url,
+                                    AnthropicClientExtensions.InferMediaTypeFromExtension(
+                                        result.Url
+                                    )
+                                )
                                 {
                                     RawRepresentation = result,
                                 }
@@ -1692,7 +1696,9 @@ public static class AnthropicBetaClientExtensions
                         (wfrc.Results ??= []).Add(
                             new UriContent(
                                 fetchBlock.Url,
-                                AnthropicClientExtensions.InferMediaTypeFromExtension(fetchBlock.Url)
+                                AnthropicClientExtensions.InferMediaTypeFromExtension(
+                                    fetchBlock.Url
+                                )
                             )
                             {
                                 RawRepresentation = fetchBlock,
@@ -1700,9 +1706,7 @@ public static class AnthropicBetaClientExtensions
                         );
                     }
                     else if (
-                        wfResult.Content.TryPickBetaWebFetchToolResultErrorBlock(
-                            out var wfError
-                        )
+                        wfResult.Content.TryPickBetaWebFetchToolResultErrorBlock(out var wfError)
                     )
                     {
                         (wfrc.Results ??= []).Add(
@@ -1745,10 +1749,7 @@ public static class AnthropicBetaClientExtensions
                     )
                     {
                         (c.Outputs ??= []).Add(
-                            new TextContent(viewResult.Content)
-                            {
-                                RawRepresentation = viewResult,
-                            }
+                            new TextContent(viewResult.Content) { RawRepresentation = viewResult }
                         );
                     }
                     else if (
@@ -1788,10 +1789,7 @@ public static class AnthropicBetaClientExtensions
                 }
 
                 case BetaToolSearchToolResultBlock ts:
-                    return new ToolResultContent(ts.ToolUseID)
-                    {
-                        RawRepresentation = ts,
-                    };
+                    return new ToolResultContent(ts.ToolUseID) { RawRepresentation = ts };
 
                 case BetaContainerUploadBlock containerUpload:
                     return new HostedFileContent(containerUpload.FileID)
@@ -1837,7 +1835,7 @@ public static class AnthropicBetaClientExtensions
             return annotation;
         }
 
-        private static AIAnnotation? ToAIAnnotation(Anthropic.Models.Beta.Messages.Citation citation)
+        private static CitationAnnotation? ToAIAnnotation(Citation citation)
         {
             CitationAnnotation annotation = new()
             {
@@ -1878,9 +1876,7 @@ public static class AnthropicBetaClientExtensions
         }
     }
 
-    private sealed class AnthropicHostedFileClient(
-        IFileService fileService
-    ) : IHostedFileClient
+    private sealed class AnthropicHostedFileClient(IFileService fileService) : IHostedFileClient
     {
         private HostedFileClientMetadata? _metadata;
 
@@ -1940,13 +1936,10 @@ public static class AnthropicBetaClientExtensions
                     System.IO.Path.GetExtension(fileName)
                 )
                 : null;
-            fileName ??= $"{Guid.NewGuid():N}{AnthropicClientExtensions.InferExtensionFromMediaType(mediaType)}";
+            fileName ??=
+                $"{Guid.NewGuid():N}{AnthropicClientExtensions.InferExtensionFromMediaType(mediaType)}";
 
-            var binaryContent = new BinaryContent
-            {
-                Stream = content,
-                FileName = fileName,
-            };
+            var binaryContent = new BinaryContent { Stream = content, FileName = fileName };
 
             if (mediaType is not null)
             {
@@ -1970,8 +1963,10 @@ public static class AnthropicBetaClientExtensions
         {
             ThrowIfFileIdInvalid(fileId);
 
-            HttpResponse response = await fileService
-                .Download(fileId, cancellationToken: cancellationToken);
+            HttpResponse response = await fileService.Download(
+                fileId,
+                cancellationToken: cancellationToken
+            );
 
             Stream stream = await response.ReadAsStream(cancellationToken);
 
@@ -1989,8 +1984,10 @@ public static class AnthropicBetaClientExtensions
         {
             ThrowIfFileIdInvalid(fileId);
 
-            FileMetadata result = await fileService
-                .RetrieveMetadata(fileId, cancellationToken: cancellationToken);
+            FileMetadata result = await fileService.RetrieveMetadata(
+                fileId,
+                cancellationToken: cancellationToken
+            );
 
             return ToHostedFileContent(result);
         }
@@ -2001,9 +1998,7 @@ public static class AnthropicBetaClientExtensions
             [EnumeratorCancellation] CancellationToken cancellationToken
         )
         {
-            FileListPage page = await fileService.List(
-                cancellationToken: cancellationToken
-            );
+            FileListPage page = await fileService.List(cancellationToken: cancellationToken);
 
             while (true)
             {
@@ -2095,26 +2090,32 @@ public static class AnthropicBetaClientExtensions
                 CancellationToken cancellationToken
             ) => innerStream.ReadAsync(buffer, offset, count, cancellationToken);
 
-            public override Task FlushAsync(CancellationToken cancellationToken)
-                => innerStream.FlushAsync(cancellationToken);
+            public override Task FlushAsync(CancellationToken cancellationToken) =>
+                innerStream.FlushAsync(cancellationToken);
 
-            public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback? callback, object? state)
-                => innerStream.BeginRead(buffer, offset, count, callback, state);
+            public override IAsyncResult BeginRead(
+                byte[] buffer,
+                int offset,
+                int count,
+                AsyncCallback? callback,
+                object? state
+            ) => innerStream.BeginRead(buffer, offset, count, callback, state);
 
-            public override int EndRead(IAsyncResult asyncResult)
-                => innerStream.EndRead(asyncResult);
+            public override int EndRead(IAsyncResult asyncResult) =>
+                innerStream.EndRead(asyncResult);
 
-            public override Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellationToken)
-                => innerStream.CopyToAsync(destination, bufferSize, cancellationToken);
+            public override Task CopyToAsync(
+                Stream destination,
+                int bufferSize,
+                CancellationToken cancellationToken
+            ) => innerStream.CopyToAsync(destination, bufferSize, cancellationToken);
 
-            public override int ReadByte()
-                => innerStream.ReadByte();
+            public override int ReadByte() => innerStream.ReadByte();
 
             public override long Seek(long offset, SeekOrigin origin) =>
                 innerStream.Seek(offset, origin);
 
-            public override void SetLength(long value) => 
-                throw new NotSupportedException();
+            public override void SetLength(long value) => throw new NotSupportedException();
 
             public override void Write(byte[] buffer, int offset, int count) =>
                 throw new NotSupportedException();
@@ -2133,14 +2134,15 @@ public static class AnthropicBetaClientExtensions
             }
 
 #if NET
-            public override int Read(Span<byte> buffer)
-                => innerStream.Read(buffer);
+            public override int Read(Span<byte> buffer) => innerStream.Read(buffer);
 
-            public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
-                => innerStream.ReadAsync(buffer, cancellationToken);
+            public override ValueTask<int> ReadAsync(
+                Memory<byte> buffer,
+                CancellationToken cancellationToken = default
+            ) => innerStream.ReadAsync(buffer, cancellationToken);
 
-            public override void CopyTo(Stream destination, int bufferSize)
-                => innerStream.CopyTo(destination, bufferSize);
+            public override void CopyTo(Stream destination, int bufferSize) =>
+                innerStream.CopyTo(destination, bufferSize);
 #endif
         }
     }

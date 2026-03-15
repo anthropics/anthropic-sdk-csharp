@@ -5878,7 +5878,10 @@ public abstract class AnthropicClientExtensionsTestsBase
 
         ErrorContent errorOutput = Assert.IsType<ErrorContent>(codeResult.Outputs[0]);
         Assert.Equal(stderrMessage, errorOutput.Message);
-        Assert.Equal(returnCode.ToString(System.Globalization.CultureInfo.InvariantCulture), errorOutput.ErrorCode);
+        Assert.Equal(
+            returnCode.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            errorOutput.ErrorCode
+        );
     }
 
     [Theory]
@@ -7341,9 +7344,7 @@ public abstract class AnthropicClientExtensionsTestsBase
         }
         Assert.NotEmpty(updates);
 
-        var hostedFiles = updates
-            .SelectMany(u => u.Contents.OfType<HostedFileContent>())
-            .ToList();
+        var hostedFiles = updates.SelectMany(u => u.Contents.OfType<HostedFileContent>()).ToList();
         Assert.Single(hostedFiles);
         Assert.Equal("file_stream_container_01", hostedFiles[0].FileId);
     }
@@ -7474,9 +7475,15 @@ public abstract class AnthropicClientExtensionsTestsBase
     [InlineData(".PY", "text/x-python")]
     [InlineData(".PNG", "image/png")]
     [InlineData(".unknown", "application/octet-stream")]
-    public void InferMediaTypeFromExtension_ReturnsExpectedType(string urlOrPath, string expectedMediaType)
+    public void InferMediaTypeFromExtension_ReturnsExpectedType(
+        string urlOrPath,
+        string expectedMediaType
+    )
     {
-        Assert.Equal(expectedMediaType, AnthropicClientExtensions.InferMediaTypeFromExtension(urlOrPath));
+        Assert.Equal(
+            expectedMediaType,
+            AnthropicClientExtensions.InferMediaTypeFromExtension(urlOrPath)
+        );
     }
 
     [Theory]
@@ -7488,8 +7495,14 @@ public abstract class AnthropicClientExtensionsTestsBase
     [InlineData("text/javascript", ".js")]
     [InlineData("text/typescript", ".ts")]
     [InlineData("application/x-custom-unknown", "")]
-    public void InferExtensionFromMediaType_ReturnsExpectedExtension(string? mediaType, string expectedExtension)
+    public void InferExtensionFromMediaType_ReturnsExpectedExtension(
+        string? mediaType,
+        string expectedExtension
+    )
     {
-        Assert.Equal(expectedExtension, AnthropicClientExtensions.InferExtensionFromMediaType(mediaType));
+        Assert.Equal(
+            expectedExtension,
+            AnthropicClientExtensions.InferExtensionFromMediaType(mediaType)
+        );
     }
 }

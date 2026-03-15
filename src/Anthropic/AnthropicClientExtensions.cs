@@ -1,6 +1,3 @@
-using Anthropic;
-using Anthropic.Core;
-using Anthropic.Models.Messages;
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
@@ -15,6 +12,9 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
+using Anthropic;
+using Anthropic.Core;
+using Anthropic.Models.Messages;
 
 #pragma warning disable MEAI001 // [Experimental] APIs in Microsoft.Extensions.AI
 #pragma warning disable IDE0130 // Namespace does not match folder structure
@@ -94,8 +94,10 @@ public static class AnthropicClientExtensions
     /// <see cref="JavaScriptEncoder"/> would escape these (e.g., <c>+</c> → <c>\u002B</c>),
     /// producing less readable descriptions for the model.
     /// </remarks>
-    private static readonly JsonSerializerOptions s_relaxedJsonOptions =
-        new() { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
+    private static readonly JsonSerializerOptions s_relaxedJsonOptions = new()
+    {
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+    };
 
     /// <summary>Supported string formats for Anthropic structured outputs.</summary>
     /// <remarks>
@@ -105,20 +107,19 @@ public static class AnthropicClientExtensions
     /// <item><see href="https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/lib/_parse/_transform.py"/></item>
     /// </list>
     /// </remarks>
-    private static readonly HashSet<string> s_supportedStringFormats =
-        new(StringComparer.Ordinal)
-        {
-            "date-time",
-            "time",
-            "date",
-            "duration",
-            "email",
-            "hostname",
-            "uri",
-            "ipv4",
-            "ipv6",
-            "uuid",
-        };
+    private static readonly HashSet<string> s_supportedStringFormats = new(StringComparer.Ordinal)
+    {
+        "date-time",
+        "time",
+        "date",
+        "duration",
+        "email",
+        "hostname",
+        "uri",
+        "ipv4",
+        "ipv6",
+        "uuid",
+    };
 
     /// <summary>Properties supported across all JSON Schema types.</summary>
     /// <remarks>
@@ -126,36 +127,50 @@ public static class AnthropicClientExtensions
     /// They are deliberately preserved because MEAI generates <c>enum</c> for .NET enum types and both
     /// keywords are natively supported by the Anthropic API.
     /// </remarks>
-    private static readonly HashSet<string> s_supportedBaseSchemaProperties =
-        new(StringComparer.Ordinal)
-        {
-            "type",
-            "description",
-            "title",
-            "$ref",
-            "$defs",
-            "anyOf",
-            "allOf",
-            "enum",
-            "const",
-        };
+    private static readonly HashSet<string> s_supportedBaseSchemaProperties = new(
+        StringComparer.Ordinal
+    )
+    {
+        "type",
+        "description",
+        "title",
+        "$ref",
+        "$defs",
+        "anyOf",
+        "allOf",
+        "enum",
+        "const",
+    };
 
     /// <summary>Properties supported for object schemas.</summary>
-    private static readonly HashSet<string> s_supportedObjectSchemaProperties =
-        new(s_supportedBaseSchemaProperties, StringComparer.Ordinal)
-        {
-            "properties",
-            "required",
-            "additionalProperties",
-        };
+    private static readonly HashSet<string> s_supportedObjectSchemaProperties = new(
+        s_supportedBaseSchemaProperties,
+        StringComparer.Ordinal
+    )
+    {
+        "properties",
+        "required",
+        "additionalProperties",
+    };
 
     /// <summary>Properties supported for string schemas.</summary>
-    private static readonly HashSet<string> s_supportedStringSchemaProperties =
-        new(s_supportedBaseSchemaProperties, StringComparer.Ordinal) { "format" };
+    private static readonly HashSet<string> s_supportedStringSchemaProperties = new(
+        s_supportedBaseSchemaProperties,
+        StringComparer.Ordinal
+    )
+    {
+        "format",
+    };
 
     /// <summary>Properties supported for array schemas.</summary>
-    private static readonly HashSet<string> s_supportedArraySchemaProperties =
-        new(s_supportedBaseSchemaProperties, StringComparer.Ordinal) { "items", "minItems" };
+    private static readonly HashSet<string> s_supportedArraySchemaProperties = new(
+        s_supportedBaseSchemaProperties,
+        StringComparer.Ordinal
+    )
+    {
+        "items",
+        "minItems",
+    };
 
     /// <summary>
     /// Gets a shared cache for JSON schema transformations for Anthropic's structured output features.
@@ -169,123 +184,116 @@ public static class AnthropicClientExtensions
     /// <item><see href="https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/lib/_parse/_transform.py"/></item>
     /// </list>
     /// </remarks>
-    internal static AIJsonSchemaTransformCache JsonSchemaTransformCache { get; } = new(
-        new AIJsonSchemaTransformOptions
-        {
-            DisallowAdditionalProperties = true,
-            TransformSchemaNode = static (ctx, schemaNode) =>
+    internal static AIJsonSchemaTransformCache JsonSchemaTransformCache { get; } =
+        new(
+            new AIJsonSchemaTransformOptions
             {
-                if (schemaNode is not JsonObject schemaObj)
+                DisallowAdditionalProperties = true,
+                TransformSchemaNode = static (ctx, schemaNode) =>
                 {
-                    return schemaNode;
-                }
-
-                // Convert oneOf to anyOf, matching TS/Python SDK behavior.
-                // The Anthropic API documents anyOf but not oneOf for union types.
-                if (
-                    schemaObj.TryGetPropertyValue("oneOf", out JsonNode? oneOfNode)
-                    && oneOfNode is not null
-                )
-                {
-                    schemaObj.Remove("oneOf");
-                    schemaObj["anyOf"] = oneOfNode;
-                }
-
-                // Determine the schema type for type-specific handling.
-                string? type =
-                    schemaObj.TryGetPropertyValue("type", out JsonNode? typeNode)
-                    && typeNode is JsonValue
-                        ? typeNode.GetValue<string>()
-                        : null;
-
-                List<KeyValuePair<string, string>>? removed = null;
-
-                // String format: only supported formats are kept.
-                if (
-                    type == "string"
-                    && schemaObj.TryGetPropertyValue("format", out JsonNode? formatNode)
-                    && formatNode?.GetValue<string>() is string format
-                    && !s_supportedStringFormats.Contains(format)
-                )
-                {
-                    string serialized = formatNode!.ToJsonString(s_relaxedJsonOptions);
-                    schemaObj.Remove("format");
-                    (removed ??= []).Add(new("format", serialized));
-                }
-
-                // Array minItems: only 0 and 1 are directly supported.
-                if (
-                    type == "array"
-                    && schemaObj.TryGetPropertyValue("minItems", out JsonNode? minItemsNode)
-                    && minItemsNode is JsonValue minItemsJsonValue
-                    && minItemsJsonValue.TryGetValue(out int minItems)
-                    && minItems is not (0 or 1)
-                )
-                {
-                    string serialized = minItemsNode.ToJsonString(s_relaxedJsonOptions);
-                    schemaObj.Remove("minItems");
-                    (removed ??= []).Add(new("minItems", serialized));
-                }
-
-                // Remove all properties not in the supported set for this schema type.
-                HashSet<string> supported = type switch
-                {
-                    "object" => s_supportedObjectSchemaProperties,
-                    "string" => s_supportedStringSchemaProperties,
-                    "array" => s_supportedArraySchemaProperties,
-                    _ => s_supportedBaseSchemaProperties,
-                };
-
-                foreach (
-                    KeyValuePair<string, JsonNode?> prop in schemaObj.ToArray()
-                )
-                {
-                    if (!supported.Contains(prop.Key))
+                    if (schemaNode is not JsonObject schemaObj)
                     {
-                        string serialized =
-                            prop.Value?.ToJsonString(s_relaxedJsonOptions) ?? "null";
-                        schemaObj.Remove(prop.Key);
-                        (removed ??= []).Add(new(prop.Key, serialized));
+                        return schemaNode;
                     }
-                }
 
-                // Append removed constraints to description so the model might
-                // still follow them.
-                if (removed is { Count: > 0 })
-                {
-                    string? existing =
-                        schemaObj.TryGetPropertyValue(
+                    // Convert oneOf to anyOf, matching TS/Python SDK behavior.
+                    // The Anthropic API documents anyOf but not oneOf for union types.
+                    if (
+                        schemaObj.TryGetPropertyValue("oneOf", out JsonNode? oneOfNode)
+                        && oneOfNode is not null
+                    )
+                    {
+                        schemaObj.Remove("oneOf");
+                        schemaObj["anyOf"] = oneOfNode;
+                    }
+
+                    // Determine the schema type for type-specific handling.
+                    string? type =
+                        schemaObj.TryGetPropertyValue("type", out JsonNode? typeNode)
+                        && typeNode is JsonValue
+                            ? typeNode.GetValue<string>()
+                            : null;
+
+                    List<KeyValuePair<string, string>>? removed = null;
+
+                    // String format: only supported formats are kept.
+                    if (
+                        type == "string"
+                        && schemaObj.TryGetPropertyValue("format", out JsonNode? formatNode)
+                        && formatNode?.GetValue<string>() is string format
+                        && !s_supportedStringFormats.Contains(format)
+                    )
+                    {
+                        string serialized = formatNode!.ToJsonString(s_relaxedJsonOptions);
+                        schemaObj.Remove("format");
+                        (removed ??= []).Add(new("format", serialized));
+                    }
+
+                    // Array minItems: only 0 and 1 are directly supported.
+                    if (
+                        type == "array"
+                        && schemaObj.TryGetPropertyValue("minItems", out JsonNode? minItemsNode)
+                        && minItemsNode is JsonValue minItemsJsonValue
+                        && minItemsJsonValue.TryGetValue(out int minItems)
+                        && minItems is not (0 or 1)
+                    )
+                    {
+                        string serialized = minItemsNode.ToJsonString(s_relaxedJsonOptions);
+                        schemaObj.Remove("minItems");
+                        (removed ??= []).Add(new("minItems", serialized));
+                    }
+
+                    // Remove all properties not in the supported set for this schema type.
+                    HashSet<string> supported = type switch
+                    {
+                        "object" => s_supportedObjectSchemaProperties,
+                        "string" => s_supportedStringSchemaProperties,
+                        "array" => s_supportedArraySchemaProperties,
+                        _ => s_supportedBaseSchemaProperties,
+                    };
+
+                    foreach (KeyValuePair<string, JsonNode?> prop in schemaObj.ToArray())
+                    {
+                        if (!supported.Contains(prop.Key))
+                        {
+                            string serialized =
+                                prop.Value?.ToJsonString(s_relaxedJsonOptions) ?? "null";
+                            schemaObj.Remove(prop.Key);
+                            (removed ??= []).Add(new(prop.Key, serialized));
+                        }
+                    }
+
+                    // Append removed constraints to description so the model might
+                    // still follow them.
+                    if (removed is { Count: > 0 })
+                    {
+                        string? existing = schemaObj.TryGetPropertyValue(
                             "description",
                             out JsonNode? descNode
                         )
                             ? descNode?.GetValue<string>()
                             : null;
 
-                    string constraintInfo =
-                        "{"
-                        + string.Join(
-                            ", ",
-                            removed.Select(c => $"{c.Key}: {c.Value}")
-                        )
-                        + "}";
+                        string constraintInfo =
+                            "{"
+                            + string.Join(", ", removed.Select(c => $"{c.Key}: {c.Value}"))
+                            + "}";
 
-                    schemaObj["description"] = existing is not null
-                        ? $"{existing}\n\n{constraintInfo}"
-                        : constraintInfo;
-                }
+                        schemaObj["description"] = existing is not null
+                            ? $"{existing}\n\n{constraintInfo}"
+                            : constraintInfo;
+                    }
 
-                return schemaNode;
-            },
-        }
-    );
+                    return schemaNode;
+                },
+            }
+        );
 
     /// <summary>
     /// Gets a shared set of header data to include in requests from the <see cref="IChatClient"/> implementation for Anthropic.
     /// </summary>
-    internal static Dictionary<string, JsonElement> MeaiHeaderData { get; } = new()
-        {
-            ["User-Agent"] = JsonSerializer.SerializeToElement(CreateMeaiUserAgentValue()),
-        };
+    internal static Dictionary<string, JsonElement> MeaiHeaderData { get; } =
+        new() { ["User-Agent"] = JsonSerializer.SerializeToElement(CreateMeaiUserAgentValue()) };
 
     private static string CreateMeaiUserAgentValue()
     {
@@ -320,93 +328,92 @@ public static class AnthropicClientExtensions
     /// Maps file extensions (with leading dot) to MIME types.
     /// Grouped by category, sorted alphabetically by extension within each group.
     /// </summary>
-    private static readonly Dictionary<string, string> s_extensionToMediaType =
-        new(StringComparer.OrdinalIgnoreCase)
-        {
-            // Archives
-            [".7z"] = "application/x-7z-compressed",
-            [".gz"] = "application/gzip",
-            [".rar"] = "application/vnd.rar",
-            [".tar"] = "application/x-tar",
-            [".zip"] = "application/zip",
+    private static readonly Dictionary<string, string> s_extensionToMediaType = new(
+        StringComparer.OrdinalIgnoreCase
+    )
+    {
+        // Archives
+        [".7z"] = "application/x-7z-compressed",
+        [".gz"] = "application/gzip",
+        [".rar"] = "application/vnd.rar",
+        [".tar"] = "application/x-tar",
+        [".zip"] = "application/zip",
 
-            // Audio
-            [".mp3"] = "audio/mpeg",
-            [".ogg"] = "audio/ogg",
-            [".wav"] = "audio/wav",
+        // Audio
+        [".mp3"] = "audio/mpeg",
+        [".ogg"] = "audio/ogg",
+        [".wav"] = "audio/wav",
 
-            // Code
-            [".c"] = "text/x-c",
-            [".cpp"] = "text/x-c++",
-            [".cs"] = "text/x-csharp",
-            [".css"] = "text/css",
-            [".go"] = "text/x-go",
-            [".java"] = "text/x-java-source",
-            [".js"] = "text/javascript",
-            [".jsx"] = "text/javascript",
-            [".py"] = "text/x-python",
-            [".r"] = "text/x-r",
-            [".rb"] = "text/x-ruby",
-            [".rs"] = "text/x-rust",
-            [".sh"] = "application/x-sh",
-            [".sql"] = "application/sql",
-            [".swift"] = "text/x-swift",
-            [".ts"] = "text/typescript",
-            [".tsx"] = "text/typescript",
-            [".wasm"] = "application/wasm",
+        // Code
+        [".c"] = "text/x-c",
+        [".cpp"] = "text/x-c++",
+        [".cs"] = "text/x-csharp",
+        [".css"] = "text/css",
+        [".go"] = "text/x-go",
+        [".java"] = "text/x-java-source",
+        [".js"] = "text/javascript",
+        [".jsx"] = "text/javascript",
+        [".py"] = "text/x-python",
+        [".r"] = "text/x-r",
+        [".rb"] = "text/x-ruby",
+        [".rs"] = "text/x-rust",
+        [".sh"] = "application/x-sh",
+        [".sql"] = "application/sql",
+        [".swift"] = "text/x-swift",
+        [".ts"] = "text/typescript",
+        [".tsx"] = "text/typescript",
+        [".wasm"] = "application/wasm",
 
-            // Data
-            [".csv"] = "text/csv",
-            [".json"] = "application/json",
-            [".jsonl"] = "application/jsonl",
-            [".tsv"] = "text/tab-separated-values",
-            [".xml"] = "application/xml",
-            [".yaml"] = "application/yaml",
-            [".yml"] = "application/yaml",
+        // Data
+        [".csv"] = "text/csv",
+        [".json"] = "application/json",
+        [".jsonl"] = "application/jsonl",
+        [".tsv"] = "text/tab-separated-values",
+        [".xml"] = "application/xml",
+        [".yaml"] = "application/yaml",
+        [".yml"] = "application/yaml",
 
-            // Documents
-            [".doc"] = "application/msword",
-            [".docx"] =
-                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            [".epub"] = "application/epub+zip",
-            [".odt"] = "application/vnd.oasis.opendocument.text",
-            [".pdf"] = "application/pdf",
-            [".pptx"] =
-                "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            [".rtf"] = "application/rtf",
-            [".xls"] = "application/vnd.ms-excel",
-            [".xlsx"] =
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        // Documents
+        [".doc"] = "application/msword",
+        [".docx"] = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        [".epub"] = "application/epub+zip",
+        [".odt"] = "application/vnd.oasis.opendocument.text",
+        [".pdf"] = "application/pdf",
+        [".pptx"] = "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        [".rtf"] = "application/rtf",
+        [".xls"] = "application/vnd.ms-excel",
+        [".xlsx"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 
-            // Images
-            [".bmp"] = "image/bmp",
-            [".gif"] = "image/gif",
-            [".ico"] = "image/x-icon",
-            [".jpeg"] = "image/jpeg",
-            [".jpg"] = "image/jpeg",
-            [".png"] = "image/png",
-            [".svg"] = "image/svg+xml",
-            [".tif"] = "image/tiff",
-            [".tiff"] = "image/tiff",
-            [".webp"] = "image/webp",
+        // Images
+        [".bmp"] = "image/bmp",
+        [".gif"] = "image/gif",
+        [".ico"] = "image/x-icon",
+        [".jpeg"] = "image/jpeg",
+        [".jpg"] = "image/jpeg",
+        [".png"] = "image/png",
+        [".svg"] = "image/svg+xml",
+        [".tif"] = "image/tiff",
+        [".tiff"] = "image/tiff",
+        [".webp"] = "image/webp",
 
-            // Text/Markup
-            [".htm"] = "text/html",
-            [".html"] = "text/html",
-            [".md"] = "text/markdown",
-            [".txt"] = "text/plain",
+        // Text/Markup
+        [".htm"] = "text/html",
+        [".html"] = "text/html",
+        [".md"] = "text/markdown",
+        [".txt"] = "text/plain",
 
-            // Video
-            [".mp4"] = "video/mp4",
-            [".webm"] = "video/webm",
-        };
+        // Video
+        [".mp4"] = "video/mp4",
+        [".webm"] = "video/webm",
+    };
 
     /// <summary>
     /// Reverse mapping from MIME type to a preferred file extension (with leading dot).
     /// Built from <see cref="s_extensionToMediaType"/>, preferring the last extension per media type
     /// (which, given the alphabetical ordering, favors longer canonical forms like .html over .htm).
     /// </summary>
-    private static readonly Dictionary<string, string> s_mediaTypeToExtension = BuildMediaTypeToExtension();
+    private static readonly Dictionary<string, string> s_mediaTypeToExtension =
+        BuildMediaTypeToExtension();
 
     private static Dictionary<string, string> BuildMediaTypeToExtension()
     {
@@ -428,8 +435,10 @@ public static class AnthropicClientExtensions
     /// <summary>Infers a media type from the file extension in a URL or path, defaulting to <c>application/octet-stream</c>.</summary>
     internal static string InferMediaTypeFromExtension(string urlOrPath)
     {
-        if (Path.GetExtension(urlOrPath) is { Length: > 0 } ext &&
-            s_extensionToMediaType.TryGetValue(ext, out string? mediaType))
+        if (
+            Path.GetExtension(urlOrPath) is { Length: > 0 } ext
+            && s_extensionToMediaType.TryGetValue(ext, out string? mediaType)
+        )
         {
             return mediaType;
         }
@@ -537,7 +546,10 @@ public static class AnthropicClientExtensions
 
             var createResult = await messageService.Create(createParams, cancellationToken);
 
-            ChatMessage m = new(ChatRole.Assistant, [.. createResult.Content.Select(c => ContentBlockValueToAIContent(c.Value))])
+            ChatMessage m = new(
+                ChatRole.Assistant,
+                [.. createResult.Content.Select(c => ContentBlockValueToAIContent(c.Value))]
+            )
             {
                 CreatedAt = DateTimeOffset.UtcNow,
                 MessageId = createResult.ID,
@@ -1248,14 +1260,11 @@ public static class AnthropicClientExtensions
 
                             case AIFunctionDeclaration af:
                                 JsonElement inputSchema =
-                                    JsonSchemaTransformCache
-                                        .GetOrCreateTransformedSchema(af);
+                                    JsonSchemaTransformCache.GetOrCreateTransformedSchema(af);
                                 Dictionary<string, JsonElement> schemaData = [];
                                 if (inputSchema.ValueKind is JsonValueKind.Object)
                                 {
-                                    foreach (
-                                        JsonProperty p in inputSchema.EnumerateObject()
-                                    )
+                                    foreach (JsonProperty p in inputSchema.EnumerateObject())
                                     {
                                         schemaData[p.Name] = p.Value;
                                     }
@@ -1477,9 +1486,8 @@ public static class AnthropicClientExtensions
 
             if (serverToolUsage?.WebFetchRequests is > 0)
             {
-                (usageDetails.AdditionalCounts ??= [])[
-                    nameof(ServerToolUsage.WebFetchRequests)
-                ] = serverToolUsage.WebFetchRequests;
+                (usageDetails.AdditionalCounts ??= [])[nameof(ServerToolUsage.WebFetchRequests)] =
+                    serverToolUsage.WebFetchRequests;
             }
 
             if (serverToolUsage?.WebSearchRequests is > 0)
@@ -1604,7 +1612,10 @@ public static class AnthropicClientExtensions
                     {
                         // Unlike with the non-encrypted case above, we skip Stdout, as here it's encrypted.
 
-                        if (!string.IsNullOrWhiteSpace(ceEncrypted.Stderr) || ceEncrypted.ReturnCode != 0)
+                        if (
+                            !string.IsNullOrWhiteSpace(ceEncrypted.Stderr)
+                            || ceEncrypted.ReturnCode != 0
+                        )
                         {
                             (c.Outputs ??= []).Add(
                                 new ErrorContent(ceEncrypted.Stderr)
@@ -1719,26 +1730,19 @@ public static class AnthropicClientExtensions
                                         "code",
                                         out JsonElement codeElement
                                     ) == true
-                                    || serverToolUse.Input?.TryGetValue(
-                                        "command",
-                                        out codeElement
-                                    ) == true
+                                    || serverToolUse.Input?.TryGetValue("command", out codeElement)
+                                        == true
                                 )
                                 && codeElement.ValueKind == JsonValueKind.String
                             )
                             {
                                 string code = codeElement.GetString()!;
                                 string mediaType =
-                                    nameValue == Name.CodeExecution
-                                        ? "text/x-python"
-                                        : nameValue == Name.BashCodeExecution
-                                            ? "application/x-sh"
-                                            : "text/plain";
+                                    nameValue == Name.CodeExecution ? "text/x-python"
+                                    : nameValue == Name.BashCodeExecution ? "application/x-sh"
+                                    : "text/plain";
                                 (cic.Inputs ??= []).Add(
-                                    new DataContent(
-                                        Encoding.UTF8.GetBytes(code),
-                                        mediaType
-                                    )
+                                    new DataContent(Encoding.UTF8.GetBytes(code), mediaType)
                                 );
                             }
 
@@ -1759,11 +1763,7 @@ public static class AnthropicClientExtensions
                         RawRepresentation = wsResult,
                     };
 
-                    if (
-                        wsResult.Content.TryPickWebSearchResultBlocks(
-                            out var searchResults
-                        )
-                    )
+                    if (wsResult.Content.TryPickWebSearchResultBlocks(out var searchResults))
                     {
                         foreach (var result in searchResults)
                         {
@@ -1799,15 +1799,16 @@ public static class AnthropicClientExtensions
                     if (wfResult.Content.TryPickWebFetchBlock(out var fetchBlock))
                     {
                         (wfrc.Results ??= []).Add(
-                            new UriContent(fetchBlock.Url, InferMediaTypeFromExtension(fetchBlock.Url))
+                            new UriContent(
+                                fetchBlock.Url,
+                                InferMediaTypeFromExtension(fetchBlock.Url)
+                            )
                             {
                                 RawRepresentation = fetchBlock,
                             }
                         );
                     }
-                    else if (
-                        wfResult.Content.TryPickWebFetchToolResultErrorBlock(out var wfError)
-                    )
+                    else if (wfResult.Content.TryPickWebFetchToolResultErrorBlock(out var wfError))
                     {
                         (wfrc.Results ??= []).Add(
                             new ErrorContent(null)
@@ -1828,9 +1829,7 @@ public static class AnthropicClientExtensions
                         RawRepresentation = te,
                     };
 
-                    if (
-                        te.Content.TryPickTextEditorCodeExecutionToolResultError(out var teError)
-                    )
+                    if (te.Content.TryPickTextEditorCodeExecutionToolResultError(out var teError))
                     {
                         (c.Outputs ??= []).Add(
                             new ErrorContent(teError.ErrorMessage)
@@ -1841,16 +1840,11 @@ public static class AnthropicClientExtensions
                         );
                     }
                     else if (
-                        te.Content.TryPickTextEditorCodeExecutionViewResultBlock(
-                            out var viewResult
-                        )
+                        te.Content.TryPickTextEditorCodeExecutionViewResultBlock(out var viewResult)
                     )
                     {
                         (c.Outputs ??= []).Add(
-                            new TextContent(viewResult.Content)
-                            {
-                                RawRepresentation = viewResult,
-                            }
+                            new TextContent(viewResult.Content) { RawRepresentation = viewResult }
                         );
                     }
                     else if (
@@ -1890,10 +1884,7 @@ public static class AnthropicClientExtensions
                 }
 
                 case ToolSearchToolResultBlock ts:
-                    return new ToolResultContent(ts.ToolUseID)
-                    {
-                        RawRepresentation = ts,
-                    };
+                    return new ToolResultContent(ts.ToolUseID) { RawRepresentation = ts };
 
                 case ContainerUploadBlock containerUpload:
                     return new HostedFileContent(containerUpload.FileID)
@@ -1906,7 +1897,7 @@ public static class AnthropicClientExtensions
             }
         }
 
-        private static AIAnnotation? ToAIAnnotation(TextCitation citation)
+        private static CitationAnnotation? ToAIAnnotation(TextCitation citation)
         {
             CitationAnnotation annotation = new()
             {
@@ -1939,7 +1930,7 @@ public static class AnthropicClientExtensions
             return annotation;
         }
 
-        private static AIAnnotation? ToAIAnnotation(Anthropic.Models.Messages.Citation citation)
+        private static CitationAnnotation? ToAIAnnotation(Citation citation)
         {
             CitationAnnotation annotation = new()
             {
