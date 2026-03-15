@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
@@ -815,5 +817,151 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
             hasDefaultUserAgent,
             "Default AnthropicClient user-agent header should be present"
         );
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffort_IgnoredWhenThinkingAlreadyConfigured()
+    {
+        // When RawRepresentationFactory pre-configures Thinking, the Reasoning option should be ignored.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 50000,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think carefully"
+                    }]
+                }],
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": 5000
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_preconfigured",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            // RawRepresentationFactory sets Thinking to enabled with 5000 budget.
+            // Reasoning.Effort should be ignored since Thinking is already configured.
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 50000,
+                Model = "claude-haiku-4-5",
+                Messages = [],
+                Thinking = new ThinkingConfigParam(new ThinkingConfigEnabled(5000)),
+            },
+            Reasoning = new() { Effort = ReasoningEffort.ExtraHigh },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think carefully",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithAIFunctionTool_AllowedCallers_FlowsThrough()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Use tool"
+                    }]
+                }],
+                "tools": [{
+                    "name": "callers_tool",
+                    "description": "A tool with allowed callers",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "value": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": ["value"],
+                        "additionalProperties": false
+                    },
+                    "allowed_callers": [
+                        "direct"
+                    ]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_callers_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Done"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 30,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var function = AIFunctionFactory.Create(
+            (int value) => value,
+            new AIFunctionFactoryOptions
+            {
+                Name = "callers_tool",
+                Description = "A tool with allowed callers",
+                AdditionalProperties = new Dictionary<string, object?>
+                {
+                    [nameof(Tool.AllowedCallers)] = new List<ApiEnum<string, ToolAllowedCaller>>
+                    {
+                        new(JsonSerializer.SerializeToElement("direct")),
+                    },
+                },
+            }
+        );
+
+        ChatOptions options = new() { Tools = [function] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Use tool",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
     }
 }

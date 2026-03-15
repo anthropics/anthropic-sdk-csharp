@@ -9,7 +9,10 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic;
+using Anthropic.Core;
+using Anthropic.Models.Messages;
 
+#pragma warning disable MEAI001 // [Experimental] APIs in Microsoft.Extensions.AI
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 
 namespace Microsoft.Extensions.AI.Tests;
@@ -903,7 +906,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                             "location": { "type": "string", "description": "The city and state" },
                             "unit": { "type": "string", "description": "Temperature unit" }
                         },
-                        "required": ["location", "unit"]
+                        "required": ["location", "unit"],
+                        "additionalProperties": false
                     }
                 }]
             }
@@ -996,7 +1000,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "input_schema": {
                         "type": "object",
                         "properties": {},
-                        "required": []
+                        "additionalProperties": false
                     }
                 }]
             }
@@ -1452,7 +1456,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "properties": {
                             "location": { "type": "string", "description": "The location" }
                         },
-                        "required": ["location"]
+                        "required": ["location"],
+                        "additionalProperties": false
                     }
                 }]
             }
@@ -1530,7 +1535,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "properties": {
                             "location": { "type": "string", "description": "The location" }
                         },
-                        "required": ["location"]
+                        "required": ["location"],
+                        "additionalProperties": false
                     }
                 }]
             }
@@ -1615,7 +1621,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "properties": {
                             "location": { "type": "string", "description": "The location" }
                         },
-                        "required": ["location"]
+                        "required": ["location"],
+                        "additionalProperties": false
                     }
                 }]
             }
@@ -1690,7 +1697,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "properties": {
                             "location": { "type": "string" }
                         },
-                        "required": ["location"]
+                        "required": ["location"],
+                        "additionalProperties": false
                     }
                 }]
             }
@@ -2709,6 +2717,456 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Null(response.FinishReason);
     }
 
+    [Theory]
+    [InlineData(ReasoningEffort.Low, 1024)]
+    [InlineData(ReasoningEffort.Medium, 8192)]
+    [InlineData(ReasoningEffort.High, 16384)]
+    [InlineData(ReasoningEffort.ExtraHigh, 32768)]
+    public async Task GetResponseAsync_WithReasoningEffort_SetsThinkingEnabled(
+        ReasoningEffort effort,
+        int expectedBudgetTokens
+    )
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: $$"""
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think carefully"
+                    }]
+                }],
+                "max_tokens": 100000,
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": {{expectedBudgetTokens}}
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Here is my response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 20
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            MaxOutputTokens = 100000,
+            Reasoning = new() { Effort = effort },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think carefully",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffortNone_SetsThinkingDisabled()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Simple question"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "thinking": {
+                    "type": "disabled"
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Quick answer"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new() { Reasoning = new() { Effort = ReasoningEffort.None } };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Simple question",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffort_ClampsBudgetToExplicitMaxTokens()
+    {
+        // High effort maps to 16000, but caller explicitly set max_tokens to 5000,
+        // so budget should clamp to 4999.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think carefully"
+                    }]
+                }],
+                "max_tokens": 5000,
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": 4999
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_03",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            MaxOutputTokens = 5000,
+            Reasoning = new() { Effort = ReasoningEffort.High },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think carefully",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffort_SkipsThinkingWhenExplicitMaxTokensTooSmall()
+    {
+        // Medium effort maps to 10024, but caller explicitly set max_tokens to 1024,
+        // so after clamping budget would be 1023 which is < 1024 minimum. Thinking is skipped.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think carefully"
+                    }]
+                }],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_04",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            MaxOutputTokens = 1024,
+            Reasoning = new() { Effort = ReasoningEffort.Medium },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think carefully",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffort_AutoIncreasesMaxTokensFromDefault()
+    {
+        // Medium effort maps to 8192. Default max_tokens is 1024, so max_tokens should
+        // auto-increase to budget (8192) + default (1024) = 9216.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think carefully"
+                    }]
+                }],
+                "max_tokens": 9216,
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": 8192
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_05",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new() { Reasoning = new() { Effort = ReasoningEffort.Medium } };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think carefully",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffortLow_AutoIncreasesFromDefaultMaxTokens()
+    {
+        // Low effort maps to 1024. Default max_tokens is also 1024, so 1024 <= 1024
+        // triggers auto-increase to budget (1024) + default (1024) = 2048.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think a little"
+                    }]
+                }],
+                "max_tokens": 2048,
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": 1024
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_06",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new() { Reasoning = new() { Effort = ReasoningEffort.Low } };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think a little",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffort_ExactFitMaxTokensOneBeyondBudget()
+    {
+        // Low effort maps to 1024. MaxOutputTokens is 1025, so 1025 > 1024 means
+        // no auto-increase needed — budget fits exactly.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think a little"
+                    }]
+                }],
+                "max_tokens": 1025,
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": 1024
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_07",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            MaxOutputTokens = 1025,
+            Reasoning = new() { Effort = ReasoningEffort.Low },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think a little",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithReasoningEffort_NoAutoIncreaseWhenDefaultMaxTokensSufficient()
+    {
+        // Low effort maps to 1024. Custom default max_tokens is 5000, so 5000 > 1024 means
+        // no auto-increase is needed.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think a little"
+                    }]
+                }],
+                "max_tokens": 5000,
+                "thinking": {
+                    "type": "enabled",
+                    "budget_tokens": 1024
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_reasoning_08",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(
+            handler,
+            "claude-haiku-4-5",
+            defaultMaxOutputTokens: 5000
+        );
+
+        ChatOptions options = new() { Reasoning = new() { Effort = ReasoningEffort.Low } };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think a little",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
     [Fact]
     public async Task GetResponseAsync_SendsTextReasoningAsThinkingBlock()
     {
@@ -3580,6 +4038,280 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Equal("file_abc123", citation.FileId);
         Assert.Null(citation.Url);
         Assert.Null(citation.AnnotatedRegions);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ServerToolUseBlock_WebSearch_MapsToWebSearchToolCallContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search for AI news"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [{
+                    "name": "web_search",
+                    "type": "web_search_20250305"
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_ws_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "server_tool_use",
+                        "id": "srvtoolu_ws_01",
+                        "name": "web_search",
+                        "caller": { "type": "direct" },
+                        "input": { "query": "latest AI news 2026" }
+                    },
+                    {
+                        "type": "web_search_tool_result",
+                        "tool_use_id": "srvtoolu_ws_01",
+                        "caller": { "type": "direct" },
+                        "content": [
+                            {
+                                "type": "web_search_result",
+                                "title": "AI Breakthroughs in 2026",
+                                "url": "https://example.com/ai-news",
+                                "encrypted_content": "enc_abc123",
+                                "page_age": "2 days ago"
+                            },
+                            {
+                                "type": "web_search_result",
+                                "title": "Latest AI Research",
+                                "url": "https://example.com/ai-research",
+                                "encrypted_content": "enc_def456",
+                                "page_age": "1 week ago"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "text",
+                        "text": "Here are some recent AI news articles."
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 30,
+                    "output_tokens": 25
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Search for AI news",
+            new() { Tools = [new HostedWebSearchTool()] },
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        var contents = response.Messages[0].Contents;
+
+        // Verify WebSearchToolCallContent
+        var wsCall = Assert.IsType<WebSearchToolCallContent>(contents[0]);
+        Assert.Equal("srvtoolu_ws_01", wsCall.CallId);
+        Assert.NotNull(wsCall.Queries);
+        Assert.Single(wsCall.Queries);
+        Assert.Equal("latest AI news 2026", wsCall.Queries[0]);
+
+        // Verify WebSearchToolResultContent
+        var wsResult = Assert.IsType<WebSearchToolResultContent>(contents[1]);
+        Assert.Equal("srvtoolu_ws_01", wsResult.CallId);
+        Assert.NotNull(wsResult.Results);
+        Assert.Equal(2, wsResult.Results.Count);
+
+        var firstResult = Assert.IsType<UriContent>(wsResult.Results[0]);
+        Assert.Equal(new Uri("https://example.com/ai-news"), firstResult.Uri);
+
+        var secondResult = Assert.IsType<UriContent>(wsResult.Results[1]);
+        Assert.Equal(new Uri("https://example.com/ai-research"), secondResult.Uri);
+
+        // Verify text content
+        var text = Assert.IsType<TextContent>(contents[2]);
+        Assert.Equal("Here are some recent AI news articles.", text.Text);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ServerToolUseBlock_CodeExecution_MapsToCodeInterpreterToolCallContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Compute 2**10"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [{
+                    "type": "code_execution_20250825",
+                    "name": "code_execution"
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_ce_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "server_tool_use",
+                        "id": "srvtoolu_ce_01",
+                        "name": "code_execution",
+                        "caller": { "type": "direct" },
+                        "input": { "code": "print(2**10)" }
+                    },
+                    {
+                        "type": "code_execution_tool_result",
+                        "tool_use_id": "srvtoolu_ce_01",
+                        "content": {
+                            "type": "code_execution_result",
+                            "content": [],
+                            "stdout": "1024\n",
+                            "stderr": "",
+                            "return_code": 0
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "text": "The result is 1024."
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 25,
+                    "output_tokens": 20
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Compute 2**10",
+            new() { Tools = [new HostedCodeInterpreterTool()] },
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        var contents = response.Messages[0].Contents;
+
+        // Verify CodeInterpreterToolCallContent
+        var ciCall = Assert.IsType<CodeInterpreterToolCallContent>(contents[0]);
+        Assert.Equal("srvtoolu_ce_01", ciCall.CallId);
+        Assert.NotNull(ciCall.Inputs);
+        Assert.Single(ciCall.Inputs);
+        var codeInput = Assert.IsType<DataContent>(ciCall.Inputs[0]);
+        Assert.Equal("text/x-python", codeInput.MediaType);
+        Assert.Equal("print(2**10)", Encoding.UTF8.GetString(codeInput.Data.ToArray()));
+
+        // Verify CodeInterpreterToolResultContent
+        var ciResult = Assert.IsType<CodeInterpreterToolResultContent>(contents[1]);
+        Assert.Equal("srvtoolu_ce_01", ciResult.CallId);
+        Assert.NotNull(ciResult.Outputs);
+        var stdoutOutput = Assert.IsType<TextContent>(ciResult.Outputs[0]);
+        Assert.Equal("1024\n", stdoutOutput.Text);
+
+        // Verify text content
+        var text = Assert.IsType<TextContent>(contents[2]);
+        Assert.Equal("The result is 1024.", text.Text);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WebSearchToolResult_WithError_MapsToErrorContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search for something"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [{
+                    "name": "web_search",
+                    "type": "web_search_20250305"
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_ws_err_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "server_tool_use",
+                        "id": "srvtoolu_ws_err_01",
+                        "name": "web_search",
+                        "caller": { "type": "direct" },
+                        "input": { "query": "test query" }
+                    },
+                    {
+                        "type": "web_search_tool_result",
+                        "tool_use_id": "srvtoolu_ws_err_01",
+                        "caller": { "type": "direct" },
+                        "content": {
+                            "type": "web_search_tool_result_error",
+                            "error_code": "max_uses_exceeded"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "text": "Search encountered an error."
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Search for something",
+            new() { Tools = [new HostedWebSearchTool()] },
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        var contents = response.Messages[0].Contents;
+
+        var wsResult = Assert.IsType<WebSearchToolResultContent>(contents[1]);
+        Assert.Equal("srvtoolu_ws_err_01", wsResult.CallId);
+        Assert.NotNull(wsResult.Results);
+        Assert.Single(wsResult.Results);
+        var errorResult = Assert.IsType<ErrorContent>(wsResult.Results[0]);
+        Assert.Equal("MaxUsesExceeded", errorResult.ErrorCode);
     }
 
     [Fact]
@@ -4619,6 +5351,2081 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.NotNull(response);
     }
 
+    [Fact]
+    public async Task GetResponseAsync_WithSimpleResponseFormat_ReturnsStructuredJSON()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Tell me about Albert Einstein. Respond with his name and age at death."
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": { "type": "string" },
+                                "age": { "type": "integer" }
+                            },
+                            "required": ["name", "age"],
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_format_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "{\"name\":\"Albert Einstein\",\"age\":76}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 25,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema(
+                JsonElement.Parse(
+                    """
+                    {
+                        "type": "object",
+                        "properties": {
+                            "name": { "type": "string" },
+                            "age": { "type": "integer" }
+                        },
+                        "required": ["name", "age"]
+                    }
+                    """
+                ),
+                "person_info"
+            ),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Tell me about Albert Einstein. Respond with his name and age at death.",
+            options,
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(response);
+        TextContent textContent = Assert.IsType<TextContent>(response.Messages[0].Contents[0]);
+        Assert.Contains("Einstein", textContent.Text);
+        Assert.Contains("76", textContent.Text);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithNestedObjectSchema_ReturnsStructuredJSON()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Tell me about the book '1984' by George Orwell."
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "title": { "type": "string" },
+                                "author": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": { "type": "string" },
+                                        "birth_year": { "type": "integer" }
+                                    },
+                                    "required": ["name", "birth_year"],
+                                    "additionalProperties": false
+                                },
+                                "published_year": {
+                                    "type": "integer"
+                                }
+                            },
+                            "required": ["title", "author", "published_year"],
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_format_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "{\"title\":\"1984\",\"author\":{\"name\":\"George Orwell\",\"birth_year\":1903},\"published_year\":1949}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 30,
+                    "output_tokens": 25
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema(
+                JsonElement.Parse(
+                    """
+                    {
+                        "type": "object",
+                        "properties": {
+                            "title": { "type": "string" },
+                            "author": {
+                                "type": "object",
+                                "properties": {
+                                    "name": { "type": "string" },
+                                    "birth_year": { "type": "integer" }
+                                },
+                                "required": ["name", "birth_year"]
+                            },
+                            "published_year": { "type": "integer" }
+                        },
+                        "required": ["title", "author", "published_year"]
+                    }
+                    """
+                ),
+                "book_info"
+            ),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Tell me about the book '1984' by George Orwell.",
+            options,
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(response);
+        TextContent textContent = Assert.IsType<TextContent>(response.Messages[0].Contents[0]);
+        Assert.Contains("1984", textContent.Text);
+        Assert.Contains("Orwell", textContent.Text);
+        Assert.Contains("1903", textContent.Text);
+        Assert.Contains("1949", textContent.Text);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithArraySchema_ReturnsStructuredJSON()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "List 3 common fruits: apple, orange, and banana."
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "fruits": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": { "type": "string" },
+                                            "color": { "type": "string" },
+                                            "is_citrus": { "type": "boolean" }
+                                        },
+                                        "required": ["name", "color", "is_citrus"],
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "required": ["fruits"],
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_format_03",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "{\"fruits\":[{\"name\":\"apple\",\"color\":\"red\",\"is_citrus\":false},{\"name\":\"orange\",\"color\":\"orange\",\"is_citrus\":true},{\"name\":\"banana\",\"color\":\"yellow\",\"is_citrus\":false}]}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 35,
+                    "output_tokens": 40
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema(
+                JsonElement.Parse(
+                    """
+                    {
+                        "type": "object",
+                        "properties": {
+                            "fruits": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": { "type": "string" },
+                                        "color": { "type": "string" },
+                                        "is_citrus": { "type": "boolean" }
+                                    },
+                                    "required": ["name", "color", "is_citrus"]
+                                }
+                            }
+                        },
+                        "required": ["fruits"]
+                    }
+                    """
+                ),
+                "fruit_list"
+            ),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "List 3 common fruits: apple, orange, and banana.",
+            options,
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(response);
+        TextContent textContent = Assert.IsType<TextContent>(response.Messages[0].Contents[0]);
+        Assert.Contains("apple", textContent.Text);
+        Assert.Contains("orange", textContent.Text);
+        Assert.Contains("banana", textContent.Text);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithHostedCodeInterpreterTool()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Execute code"
+                    }]
+                }],
+                "tools": [{
+                    "type": "code_execution_20250825",
+                    "name": "code_execution"
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_code_exec_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "I can execute code."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 15,
+                    "output_tokens": 6
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new() { Tools = [new HostedCodeInterpreterTool()] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Execute code",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_CodeExecutionToolResult_WithError()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test code execution error"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_code_error_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "code_execution_tool_result",
+                    "tool_use_id": "code_exec_error_1",
+                    "content": {
+                        "type": "code_execution_tool_result_error",
+                        "error_code": "execution_time_exceeded"
+                    }
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Test code execution error",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+
+        CodeInterpreterToolResultContent codeResult =
+            Assert.IsType<CodeInterpreterToolResultContent>(response.Messages[0].Contents[0]);
+        Assert.NotNull(codeResult);
+        Assert.Equal("code_exec_error_1", codeResult.CallId);
+        Assert.NotNull(codeResult.Outputs);
+        Assert.Single(codeResult.Outputs);
+
+        ErrorContent errorContent = Assert.IsType<ErrorContent>(codeResult.Outputs[0]);
+        Assert.Equal("ExecutionTimeExceeded", errorContent.ErrorCode);
+    }
+
+    [Theory]
+    [InlineData("code_execution")]
+    [InlineData("bash_code_execution")]
+    public async Task GetResponseAsync_CodeExecutionResult_WithStdout(string executionType)
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Run code"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: $$"""
+            {
+                "id": "msg_stdout_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "{{executionType}}_tool_result",
+                    "tool_use_id": "exec_1",
+                    "content": {
+                        "type": "{{executionType}}_result",
+                        "stdout": "Hello World\n42\n",
+                        "stderr": "",
+                        "return_code": 0,
+                        "content": []
+                    }
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Run code",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+
+        CodeInterpreterToolResultContent codeResult =
+            Assert.IsType<CodeInterpreterToolResultContent>(response.Messages[0].Contents[0]);
+        Assert.Equal("exec_1", codeResult.CallId);
+        Assert.NotNull(codeResult.Outputs);
+        Assert.Single(codeResult.Outputs);
+
+        TextContent textOutput = Assert.IsType<TextContent>(codeResult.Outputs[0]);
+        Assert.Equal("Hello World\n42\n", textOutput.Text);
+    }
+
+    [Theory]
+    [InlineData("code_execution", "Division by zero error", 1)]
+    [InlineData("bash_code_execution", "bash: command not found: nonexistent", 127)]
+    public async Task GetResponseAsync_CodeExecutionResult_WithStderrAndNonZeroReturnCode(
+        string executionType,
+        string stderrMessage,
+        int returnCode
+    )
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Run failing code"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: $$"""
+            {
+                "id": "msg_stderr_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "{{executionType}}_tool_result",
+                    "tool_use_id": "exec_2",
+                    "content": {
+                        "type": "{{executionType}}_result",
+                        "stdout": "",
+                        "stderr": "{{stderrMessage}}",
+                        "return_code": {{returnCode}},
+                        "content": []
+                    }
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Run failing code",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+
+        CodeInterpreterToolResultContent codeResult =
+            Assert.IsType<CodeInterpreterToolResultContent>(response.Messages[0].Contents[0]);
+        Assert.NotNull(codeResult.Outputs);
+        Assert.Single(codeResult.Outputs);
+
+        ErrorContent errorOutput = Assert.IsType<ErrorContent>(codeResult.Outputs[0]);
+        Assert.Equal(stderrMessage, errorOutput.Message);
+        Assert.Equal(
+            returnCode.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            errorOutput.ErrorCode
+        );
+    }
+
+    [Theory]
+    [InlineData("code_execution")]
+    [InlineData("bash_code_execution")]
+    public async Task GetResponseAsync_CodeExecutionResult_WithFileOutputs(string executionType)
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Create file"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: $$"""
+            {
+                "id": "msg_files_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "{{executionType}}_tool_result",
+                    "tool_use_id": "exec_3",
+                    "content": {
+                        "type": "{{executionType}}_result",
+                        "stdout": "File created",
+                        "stderr": "",
+                        "return_code": 0,
+                        "content": [{
+                            "type": "{{executionType}}_output",
+                            "file_id": "file_output_123"
+                        }, {
+                            "type": "{{executionType}}_output",
+                            "file_id": "file_output_456"
+                        }]
+                    }
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Create file",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+
+        CodeInterpreterToolResultContent codeResult =
+            Assert.IsType<CodeInterpreterToolResultContent>(response.Messages[0].Contents[0]);
+        Assert.NotNull(codeResult.Outputs);
+        Assert.Equal(3, codeResult.Outputs.Count);
+
+        TextContent textOutput = Assert.IsType<TextContent>(codeResult.Outputs[0]);
+        Assert.Equal("File created", textOutput.Text);
+
+        HostedFileContent fileOutput1 = Assert.IsType<HostedFileContent>(codeResult.Outputs[1]);
+        Assert.Equal("file_output_123", fileOutput1.FileId);
+
+        HostedFileContent fileOutput2 = Assert.IsType<HostedFileContent>(codeResult.Outputs[2]);
+        Assert.Equal("file_output_456", fileOutput2.FileId);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithAIFunctionTool_AdditionalProperties_FlowsThrough()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Use enhanced tool"
+                    }]
+                }],
+                "tools": [{
+                    "name": "enhanced_tool",
+                    "description": "A tool with additional properties",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "query": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["query"],
+                        "additionalProperties": false
+                    },
+                    "defer_loading": true,
+                    "strict": true,
+                    "input_examples": [
+                        {
+                            "query": "example query"
+                        }
+                    ]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_enhanced_tool_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Tool is ready"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 40,
+                    "output_tokens": 10
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var enhancedFunction = AIFunctionFactory.Create(
+            (string query) => "result",
+            new AIFunctionFactoryOptions
+            {
+                Name = "enhanced_tool",
+                Description = "A tool with additional properties",
+                AdditionalProperties = new Dictionary<string, object?>
+                {
+                    [nameof(Tool.DeferLoading)] = true,
+                    [nameof(Tool.Strict)] = true,
+                    [nameof(Tool.InputExamples)] = new List<Dictionary<string, JsonElement>>
+                    {
+                        new() { ["query"] = JsonSerializer.SerializeToElement("example query") },
+                    },
+                },
+            }
+        );
+
+        ChatOptions options = new() { Tools = [enhancedFunction] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Use enhanced tool",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithAIFunctionTool_PartialAdditionalProperties()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Use strict tool"
+                    }]
+                }],
+                "tools": [{
+                    "name": "strict_tool",
+                    "description": "A tool with only strict property",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "value": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": ["value"],
+                        "additionalProperties": false
+                    },
+                    "strict": true
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_strict_tool_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Strict mode enabled"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 35,
+                    "output_tokens": 8
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var strictFunction = AIFunctionFactory.Create(
+            (int value) => value * 2,
+            new AIFunctionFactoryOptions
+            {
+                Name = "strict_tool",
+                Description = "A tool with only strict property",
+                AdditionalProperties = new Dictionary<string, object?>
+                {
+                    [nameof(Tool.Strict)] = true,
+                },
+            }
+        );
+
+        ChatOptions options = new() { Tools = [strictFunction] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Use strict tool",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    /// <summary>
+    /// Validates that all JSON schema transformations are applied correctly when using
+    /// ChatResponseFormat.ForJsonSchema. Tests:
+    /// <list type="bullet">
+    /// <item>Numeric constraints (minimum, maximum, multipleOf) → description</item>
+    /// <item>String constraints (minLength, maxLength, pattern) → description</item>
+    /// <item>Unsupported string format → description</item>
+    /// <item>Supported string format (email) preserved</item>
+    /// <item>Array minItems &gt; 1 → description</item>
+    /// <item>Array minItems ≤ 1 preserved</item>
+    /// <item>oneOf → anyOf conversion (with nested object getting additionalProperties: false)</item>
+    /// <item>enum preserved</item>
+    /// <item>const preserved</item>
+    /// <item>title preserved</item>
+    /// <item>Unsupported properties (default) → description</item>
+    /// <item>Nested object gets additionalProperties: false</item>
+    /// <item>Root object gets additionalProperties: false</item>
+    /// </list>
+    /// </summary>
+    [Fact]
+    public async Task GetResponseAsync_ResponseFormatSchema_AllTransformationsApplied()
+    {
+        string inputSchema = """
+            {
+                "type": "object",
+                "properties": {
+                    "score": {
+                        "type": "integer",
+                        "description": "A score",
+                        "minimum": 0,
+                        "maximum": 100,
+                        "multipleOf": 5
+                    },
+                    "code": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 10,
+                        "pattern": "^[A-Z]+$"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "format": "phone"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "minItems": 3
+                    },
+                    "ids": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "minItems": 1
+                    },
+                    "value": {
+                        "oneOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "properties": { "x": { "type": "integer" } },
+                                "required": ["x"]
+                            }
+                        ]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": ["active", "inactive"]
+                    },
+                    "level": {
+                        "type": "string",
+                        "const": "admin"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Full Name"
+                    },
+                    "note": {
+                        "type": "string",
+                        "default": "N/A"
+                    },
+                    "nested": {
+                        "type": "object",
+                        "properties": {
+                            "inner": { "type": "string" }
+                        },
+                        "required": ["inner"]
+                    }
+                },
+                "required": ["score", "code", "phone", "email", "tags", "ids", "value", "status", "level", "name", "note", "nested"]
+            }
+            """;
+
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "test"
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "score": {
+                                    "type": "integer",
+                                    "description": "A score\n\n{minimum: 0, maximum: 100, multipleOf: 5}"
+                                },
+                                "code": {
+                                    "type": "string",
+                                    "description": "{minLength: 3, maxLength: 10, pattern: \"^[A-Z]+$\"}"
+                                },
+                                "phone": {
+                                    "type": "string",
+                                    "description": "{format: \"phone\"}"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                },
+                                "tags": {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "description": "{minItems: 3}"
+                                },
+                                "ids": {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "minItems": 1
+                                },
+                                "value": {
+                                    "anyOf": [
+                                        { "type": "string" },
+                                        {
+                                            "type": "object",
+                                            "properties": { "x": { "type": "integer" } },
+                                            "required": ["x"],
+                                            "additionalProperties": false
+                                        }
+                                    ]
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "enum": ["active", "inactive"]
+                                },
+                                "level": {
+                                    "type": "string",
+                                    "const": "admin"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "title": "Full Name"
+                                },
+                                "note": {
+                                    "type": "string",
+                                    "description": "{default: \"N/A\"}"
+                                },
+                                "nested": {
+                                    "type": "object",
+                                    "properties": {
+                                        "inner": { "type": "string" }
+                                    },
+                                    "required": ["inner"],
+                                    "additionalProperties": false
+                                }
+                            },
+                            "required": ["score", "code", "phone", "email", "tags", "ids", "value", "status", "level", "name", "note", "nested"],
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_transform_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "{}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 25,
+                    "output_tokens": 10
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema(
+                JsonElement.Parse(inputSchema),
+                "test_schema"
+            ),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "test",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    /// <summary>
+    /// Validates the same schema transformations as
+    /// <see cref="GetResponseAsync_ResponseFormatSchema_AllTransformationsApplied"/> but through
+    /// the <see cref="AIFunctionDeclaration"/> tool path, ensuring both code paths apply the same
+    /// transform pipeline.
+    /// </summary>
+    [Fact]
+    public async Task GetResponseAsync_ToolDeclarationSchema_AllTransformationsApplied()
+    {
+        string inputSchema = """
+            {
+                "type": "object",
+                "properties": {
+                    "score": {
+                        "type": "integer",
+                        "description": "A score",
+                        "minimum": 0,
+                        "maximum": 100,
+                        "multipleOf": 5
+                    },
+                    "code": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 10,
+                        "pattern": "^[A-Z]+$"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "format": "phone"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "minItems": 3
+                    },
+                    "ids": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "minItems": 1
+                    },
+                    "value": {
+                        "oneOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "properties": { "x": { "type": "integer" } },
+                                "required": ["x"]
+                            }
+                        ]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": ["active", "inactive"]
+                    },
+                    "level": {
+                        "type": "string",
+                        "const": "admin"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Full Name"
+                    },
+                    "note": {
+                        "type": "string",
+                        "default": "N/A"
+                    },
+                    "nested": {
+                        "type": "object",
+                        "properties": {
+                            "inner": { "type": "string" }
+                        },
+                        "required": ["inner"]
+                    }
+                },
+                "required": ["score", "code", "phone", "email", "tags", "ids", "value", "status", "level", "name", "note", "nested"]
+            }
+            """;
+
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "test"
+                    }]
+                }],
+                "tools": [{
+                    "name": "test_tool",
+                    "description": "A test tool",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "score": {
+                                "type": "integer",
+                                "description": "A score\n\n{minimum: 0, maximum: 100, multipleOf: 5}"
+                            },
+                            "code": {
+                                "type": "string",
+                                "description": "{minLength: 3, maxLength: 10, pattern: \"^[A-Z]+$\"}"
+                            },
+                            "phone": {
+                                "type": "string",
+                                "description": "{format: \"phone\"}"
+                            },
+                            "email": {
+                                "type": "string",
+                                "format": "email"
+                            },
+                            "tags": {
+                                "type": "array",
+                                "items": { "type": "string" },
+                                "description": "{minItems: 3}"
+                            },
+                            "ids": {
+                                "type": "array",
+                                "items": { "type": "string" },
+                                "minItems": 1
+                            },
+                            "value": {
+                                "anyOf": [
+                                    { "type": "string" },
+                                    {
+                                        "type": "object",
+                                        "properties": { "x": { "type": "integer" } },
+                                        "required": ["x"],
+                                        "additionalProperties": false
+                                    }
+                                ]
+                            },
+                            "status": {
+                                "type": "string",
+                                "enum": ["active", "inactive"]
+                            },
+                            "level": {
+                                "type": "string",
+                                "const": "admin"
+                            },
+                            "name": {
+                                "type": "string",
+                                "title": "Full Name"
+                            },
+                            "note": {
+                                "type": "string",
+                                "description": "{default: \"N/A\"}"
+                            },
+                            "nested": {
+                                "type": "object",
+                                "properties": {
+                                    "inner": { "type": "string" }
+                                },
+                                "required": ["inner"],
+                                "additionalProperties": false
+                            }
+                        },
+                        "required": ["score", "code", "phone", "email", "tags", "ids", "value", "status", "level", "name", "note", "nested"],
+                        "additionalProperties": false
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_transform_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "ok"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 25,
+                    "output_tokens": 10
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        var declaration = AIFunctionFactory.CreateDeclaration(
+            "test_tool",
+            "A test tool",
+            JsonElement.Parse(inputSchema),
+            null
+        );
+
+        ChatOptions options = new() { Tools = [declaration] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "test",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ServerToolUseBlock_BashCodeExecution_MapsToDataContentWithShMediaType()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Run a bash command"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_bash_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "server_tool_use",
+                        "id": "srvtoolu_bash_01",
+                        "name": "bash_code_execution",
+                        "caller": { "type": "direct" },
+                        "input": { "command": "echo hello" }
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Run a bash command",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        var contents = response.Messages[0].Contents;
+        var ciCall = Assert.IsType<CodeInterpreterToolCallContent>(contents[0]);
+        Assert.Equal("srvtoolu_bash_01", ciCall.CallId);
+        Assert.NotNull(ciCall.Inputs);
+        Assert.Single(ciCall.Inputs);
+        var codeInput = Assert.IsType<DataContent>(ciCall.Inputs[0]);
+        Assert.Equal("application/x-sh", codeInput.MediaType);
+        Assert.Equal("echo hello", Encoding.UTF8.GetString(codeInput.Data.ToArray()));
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ServerToolUseBlock_TextEditorCodeExecution_MapsToDataContentWithTextPlainMediaType()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Create a file"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_te_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "server_tool_use",
+                        "id": "srvtoolu_te_01",
+                        "name": "text_editor_code_execution",
+                        "caller": { "type": "direct" },
+                        "input": { "command": "create" }
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Create a file",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        var contents = response.Messages[0].Contents;
+        var ciCall = Assert.IsType<CodeInterpreterToolCallContent>(contents[0]);
+        Assert.Equal("srvtoolu_te_01", ciCall.CallId);
+        Assert.NotNull(ciCall.Inputs);
+        Assert.Single(ciCall.Inputs);
+        var codeInput = Assert.IsType<DataContent>(ciCall.Inputs[0]);
+        Assert.Equal("text/plain", codeInput.MediaType);
+        Assert.Equal("create", Encoding.UTF8.GetString(codeInput.Data.ToArray()));
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ServerToolUseBlock_CodeExecution_WithMissingCodeKey_InputsNotPopulated()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Execute something"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_nocode_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "server_tool_use",
+                        "id": "srvtoolu_nocode_01",
+                        "name": "code_execution",
+                        "caller": { "type": "direct" },
+                        "input": { "language": "python" }
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Execute something",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        var contents = response.Messages[0].Contents;
+        var ciCall = Assert.IsType<CodeInterpreterToolCallContent>(contents[0]);
+        Assert.Equal("srvtoolu_nocode_01", ciCall.CallId);
+        Assert.Null(ciCall.Inputs);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ServerToolUseBlock_UnknownName_MapsToToolCallContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search tools"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_unknown_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "server_tool_use",
+                        "id": "srvtoolu_ts_01",
+                        "name": "tool_search_tool_regex",
+                        "caller": { "type": "direct" },
+                        "input": {}
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Search tools",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        var contents = response.Messages[0].Contents;
+        var tc = Assert.IsType<ToolCallContent>(contents[0]);
+        Assert.Equal("srvtoolu_ts_01", tc.CallId);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ServerToolUseBlock_WebSearch_WithoutQueryInput_QueriesNotPopulated()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search the web"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_ws_noquery_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "server_tool_use",
+                        "id": "srvtoolu_ws_noq_01",
+                        "name": "web_search",
+                        "caller": { "type": "direct" },
+                        "input": {}
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Search the web",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        var contents = response.Messages[0].Contents;
+        var wsc = Assert.IsType<WebSearchToolCallContent>(contents[0]);
+        Assert.Equal("srvtoolu_ws_noq_01", wsc.CallId);
+        Assert.Null(wsc.Queries);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WebFetchToolResultBlock_MapsToWebSearchToolResultContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Fetch a page"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_wf_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "web_fetch_tool_result",
+                        "tool_use_id": "srvtoolu_wf_01",
+                        "caller": { "type": "direct" },
+                        "content": {
+                            "type": "web_fetch_result",
+                            "url": "https://example.com/article.html",
+                            "retrieved_at": "2025-01-01T00:00:00Z",
+                            "content": {
+                                "type": "document",
+                                "citations": null,
+                                "source": {
+                                    "type": "text",
+                                    "media_type": "text/plain",
+                                    "data": "fetched content"
+                                },
+                                "title": "Article"
+                            }
+                        }
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Fetch a page",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        var contents = response.Messages[0].Contents;
+        var result = Assert.IsType<WebSearchToolResultContent>(contents[0]);
+        Assert.Equal("srvtoolu_wf_01", result.CallId);
+        Assert.NotNull(result.Results);
+        Assert.Single(result.Results);
+        var uriContent = Assert.IsType<UriContent>(result.Results[0]);
+        Assert.Equal(new Uri("https://example.com/article.html"), uriContent.Uri);
+        Assert.Equal("text/html", uriContent.MediaType);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_TextEditorCodeExecutionResult_ViewOperation()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "View a file"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_te_view_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "text_editor_code_execution_tool_result",
+                        "tool_use_id": "srvtoolu_te_01",
+                        "content": {
+                            "type": "text_editor_code_execution_view_result",
+                            "file_type": "text",
+                            "content": "print('hello')",
+                            "num_lines": 1,
+                            "start_line": 1,
+                            "total_lines": 1
+                        }
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "View a file",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        var contents = response.Messages[0].Contents;
+        var ciResult = Assert.IsType<CodeInterpreterToolResultContent>(contents[0]);
+        Assert.Equal("srvtoolu_te_01", ciResult.CallId);
+        Assert.NotNull(ciResult.Outputs);
+        Assert.Single(ciResult.Outputs);
+        var textOutput = Assert.IsType<TextContent>(ciResult.Outputs[0]);
+        Assert.Equal("print('hello')", textOutput.Text);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_TextEditorCodeExecutionResult_WithError()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Edit missing file"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_te_err_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "text_editor_code_execution_tool_result",
+                        "tool_use_id": "srvtoolu_te_02",
+                        "content": {
+                            "type": "text_editor_code_execution_tool_result_error",
+                            "error_code": "file_not_found",
+                            "error_message": "File not found: /tmp/missing.py"
+                        }
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Edit missing file",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        var contents = response.Messages[0].Contents;
+        var ciResult = Assert.IsType<CodeInterpreterToolResultContent>(contents[0]);
+        Assert.Equal("srvtoolu_te_02", ciResult.CallId);
+        Assert.NotNull(ciResult.Outputs);
+        Assert.Single(ciResult.Outputs);
+        var errorContent = Assert.IsType<ErrorContent>(ciResult.Outputs[0]);
+        Assert.Equal("File not found: /tmp/missing.py", errorContent.Message);
+        Assert.Equal("FileNotFound", errorContent.ErrorCode);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ToolSearchToolResultBlock_MapsToToolResultContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Find tools"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_ts_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "tool_search_tool_result",
+                        "tool_use_id": "srvtoolu_ts_01",
+                        "content": {
+                            "type": "tool_search_tool_search_result",
+                            "tool_references": []
+                        }
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Find tools",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        var contents = response.Messages[0].Contents;
+        var result = Assert.IsType<ToolResultContent>(contents[0]);
+        Assert.Equal("srvtoolu_ts_01", result.CallId);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithServerToolResultInContentBlockStart()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search the web"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_stream_ws_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"web_search_tool_result","tool_use_id":"srvtoolu_ws_stream_01","caller":{"type":"direct"},"content":[{"type":"web_search_result","title":"Stream Result","url":"https://example.com/stream","encrypted_content":"enc_stream","page_age":"1 day ago"}]}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":5}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Search the web",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+        Assert.NotEmpty(updates);
+
+        var wsResultUpdates = updates
+            .SelectMany(u => u.Contents.OfType<WebSearchToolResultContent>())
+            .ToList();
+        Assert.Single(wsResultUpdates);
+
+        var wsResult = wsResultUpdates[0];
+        Assert.Equal("srvtoolu_ws_stream_01", wsResult.CallId);
+        Assert.NotNull(wsResult.Results);
+        Assert.Single(wsResult.Results);
+
+        var uriContent = Assert.IsType<UriContent>(wsResult.Results[0]);
+        Assert.Equal(new Uri("https://example.com/stream"), uriContent.Uri);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_EncryptedCodeExecutionResult_MapsStderrAndFiles()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Run code"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [{
+                    "type": "code_execution_20250825",
+                    "name": "code_execution"
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_enc_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "server_tool_use",
+                        "id": "srvtoolu_enc_01",
+                        "name": "code_execution",
+                        "caller": { "type": "direct" },
+                        "input": { "code": "print('hello')" }
+                    },
+                    {
+                        "type": "code_execution_tool_result",
+                        "tool_use_id": "srvtoolu_enc_01",
+                        "content": {
+                            "type": "encrypted_code_execution_result",
+                            "encrypted_stdout": "base64encryptedstuff",
+                            "stderr": "warning: something",
+                            "return_code": 1,
+                            "content": [
+                                { "type": "code_execution_output", "file_id": "file_out_01" },
+                                { "type": "code_execution_output", "file_id": "file_out_02" }
+                            ]
+                        }
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 25,
+                    "output_tokens": 20
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Run code",
+            new() { Tools = [new HostedCodeInterpreterTool()] },
+            TestContext.Current.CancellationToken
+        );
+
+        var contents = response.Messages[0].Contents;
+        var ciResult = Assert.IsType<CodeInterpreterToolResultContent>(contents[1]);
+        Assert.Equal("srvtoolu_enc_01", ciResult.CallId);
+        Assert.NotNull(ciResult.Outputs);
+
+        // Encrypted stdout is not surfaced, but stderr and files are
+        var errorOutput = Assert.IsType<ErrorContent>(ciResult.Outputs[0]);
+        Assert.Equal("warning: something", errorOutput.Message);
+        Assert.Equal("1", errorOutput.ErrorCode);
+
+        var file1 = Assert.IsType<HostedFileContent>(ciResult.Outputs[1]);
+        Assert.Equal("file_out_01", file1.FileId);
+
+        var file2 = Assert.IsType<HostedFileContent>(ciResult.Outputs[2]);
+        Assert.Equal("file_out_02", file2.FileId);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ContainerUploadBlock_MapsToHostedFileContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Upload a file"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [{
+                    "type": "code_execution_20250825",
+                    "name": "code_execution"
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_cu_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "container_upload",
+                        "file_id": "file_container_01"
+                    },
+                    {
+                        "type": "text",
+                        "text": "File uploaded."
+                    }
+                ],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Upload a file",
+            new() { Tools = [new HostedCodeInterpreterTool()] },
+            TestContext.Current.CancellationToken
+        );
+
+        var contents = response.Messages[0].Contents;
+
+        var hostedFile = Assert.IsType<HostedFileContent>(contents[0]);
+        Assert.Equal("file_container_01", hostedFile.FileId);
+        Assert.NotNull(hostedFile.RawRepresentation);
+
+        var text = Assert.IsType<TextContent>(contents[1]);
+        Assert.Equal("File uploaded.", text.Text);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_ContainerUploadBlock_MapsToHostedFileContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Upload a file"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_stream_cu_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"container_upload","file_id":"file_stream_container_01"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":5}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Upload a file",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+        Assert.NotEmpty(updates);
+
+        var hostedFiles = updates.SelectMany(u => u.Contents.OfType<HostedFileContent>()).ToList();
+        Assert.Single(hostedFiles);
+        Assert.Equal("file_stream_container_01", hostedFiles[0].FileId);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_CitationsDelta_MapsToAnnotation()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search and cite"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_stream_cite_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"The Eiffel Tower is 330m tall."}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"citations_delta","citation":{"type":"web_search_result_location","cited_text":"330 meters tall","encrypted_index":"enc","title":"Eiffel Tower Facts","url":"https://example.com/eiffel"}}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":15}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Search and cite",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+        Assert.NotEmpty(updates);
+
+        // Verify text came through
+        var allText = string.Concat(
+            updates.SelectMany(u => u.Contents.OfType<TextContent>()).Select(c => c.Text)
+        );
+        Assert.Contains("Eiffel Tower", allText);
+
+        // Verify citation annotation came through
+        var annotatedContents = updates
+            .SelectMany(u => u.Contents.OfType<TextContent>())
+            .Where(t => t.Annotations is { Count: > 0 })
+            .ToList();
+        Assert.Single(annotatedContents);
+
+        var annotation = Assert.IsType<CitationAnnotation>(annotatedContents[0].Annotations![0]);
+        Assert.Equal("Eiffel Tower Facts", annotation.Title);
+        Assert.Equal("330 meters tall", annotation.Snippet);
+        Assert.Equal(new Uri("https://example.com/eiffel"), annotation.Url);
+    }
+
     protected sealed class VerbatimHttpHandler(string expectedRequest, string actualResponse)
         : HttpMessageHandler
     {
@@ -4653,5 +7460,49 @@ public abstract class AnthropicClientExtensionsTestsBase
                 Content = new StringContent(actualResponse, Encoding.UTF8, "application/json"),
             };
         }
+    }
+
+    [Theory]
+    [InlineData("https://example.com/doc.pdf", "application/pdf")]
+    [InlineData("https://example.com/page.html", "text/html")]
+    [InlineData("https://example.com/path/resource", "application/octet-stream")]
+    [InlineData("https://example.com/Photo.JPG", "image/jpeg")]
+    [InlineData("https://example.com/file.xyz123", "application/octet-stream")]
+    [InlineData(".py", "text/x-python")]
+    [InlineData(".sh", "application/x-sh")]
+    [InlineData(".js", "text/javascript")]
+    [InlineData(".pdf", "application/pdf")]
+    [InlineData(".PY", "text/x-python")]
+    [InlineData(".PNG", "image/png")]
+    [InlineData(".unknown", "application/octet-stream")]
+    public void InferMediaTypeFromExtension_ReturnsExpectedType(
+        string urlOrPath,
+        string expectedMediaType
+    )
+    {
+        Assert.Equal(
+            expectedMediaType,
+            AnthropicClientExtensions.InferMediaTypeFromExtension(urlOrPath)
+        );
+    }
+
+    [Theory]
+    [InlineData(null, "")]
+    [InlineData("image/jpeg", ".jpg")]
+    [InlineData("text/x-python", ".py")]
+    [InlineData("application/pdf", ".pdf")]
+    [InlineData("application/yaml", ".yaml")]
+    [InlineData("text/javascript", ".js")]
+    [InlineData("text/typescript", ".ts")]
+    [InlineData("application/x-custom-unknown", "")]
+    public void InferExtensionFromMediaType_ReturnsExpectedExtension(
+        string? mediaType,
+        string expectedExtension
+    )
+    {
+        Assert.Equal(
+            expectedExtension,
+            AnthropicClientExtensions.InferExtensionFromMediaType(mediaType)
+        );
     }
 }
