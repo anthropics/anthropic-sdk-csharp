@@ -118,7 +118,7 @@ public record class BetaMemoryTool20250818Command : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaMemoryTool20250818ViewCommand"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -141,7 +141,7 @@ public record class BetaMemoryTool20250818Command : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaMemoryTool20250818CreateCommand"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -164,7 +164,7 @@ public record class BetaMemoryTool20250818Command : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaMemoryTool20250818StrReplaceCommand"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -187,7 +187,7 @@ public record class BetaMemoryTool20250818Command : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaMemoryTool20250818InsertCommand"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -210,7 +210,7 @@ public record class BetaMemoryTool20250818Command : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaMemoryTool20250818DeleteCommand"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -233,7 +233,7 @@ public record class BetaMemoryTool20250818Command : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaMemoryTool20250818RenameCommand"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -255,7 +255,7 @@ public record class BetaMemoryTool20250818Command : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -266,12 +266,12 @@ public record class BetaMemoryTool20250818Command : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaMemoryTool20250818ViewCommand value) => {...},
-    ///     (BetaMemoryTool20250818CreateCommand value) => {...},
-    ///     (BetaMemoryTool20250818StrReplaceCommand value) => {...},
-    ///     (BetaMemoryTool20250818InsertCommand value) => {...},
-    ///     (BetaMemoryTool20250818DeleteCommand value) => {...},
-    ///     (BetaMemoryTool20250818RenameCommand value) => {...}
+    ///     (BetaMemoryTool20250818ViewCommand value) =&gt; {...},
+    ///     (BetaMemoryTool20250818CreateCommand value) =&gt; {...},
+    ///     (BetaMemoryTool20250818StrReplaceCommand value) =&gt; {...},
+    ///     (BetaMemoryTool20250818InsertCommand value) =&gt; {...},
+    ///     (BetaMemoryTool20250818DeleteCommand value) =&gt; {...},
+    ///     (BetaMemoryTool20250818RenameCommand value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -316,7 +316,7 @@ public record class BetaMemoryTool20250818Command : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -327,12 +327,12 @@ public record class BetaMemoryTool20250818Command : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaMemoryTool20250818ViewCommand value) => {...},
-    ///     (BetaMemoryTool20250818CreateCommand value) => {...},
-    ///     (BetaMemoryTool20250818StrReplaceCommand value) => {...},
-    ///     (BetaMemoryTool20250818InsertCommand value) => {...},
-    ///     (BetaMemoryTool20250818DeleteCommand value) => {...},
-    ///     (BetaMemoryTool20250818RenameCommand value) => {...}
+    ///     (BetaMemoryTool20250818ViewCommand value) =&gt; {...},
+    ///     (BetaMemoryTool20250818CreateCommand value) =&gt; {...},
+    ///     (BetaMemoryTool20250818StrReplaceCommand value) =&gt; {...},
+    ///     (BetaMemoryTool20250818InsertCommand value) =&gt; {...},
+    ///     (BetaMemoryTool20250818DeleteCommand value) =&gt; {...},
+    ///     (BetaMemoryTool20250818RenameCommand value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

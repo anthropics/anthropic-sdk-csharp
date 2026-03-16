@@ -55,8 +55,8 @@ public sealed record class BetaMessageDeltaUsage : JsonModel
     ///
     /// <para>Each entry represents one sampling iteration, with its own input/output
     /// token counts and cache statistics. This allows you to: - Determine which
-    /// iterations exceeded long context thresholds (>=200k tokens) - Calculate the
-    /// true context window size from the last iteration - Understand token accumulation
+    /// iterations exceeded long context thresholds (&gt;=200k tokens) - Calculate
+    /// the true context window size from the last iteration - Understand token accumulation
     /// across server-side tool use loops</para>
     /// </summary>
     public required IReadOnlyList<BetaIterationsUsageItems>? Iterations

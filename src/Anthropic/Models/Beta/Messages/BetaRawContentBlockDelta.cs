@@ -88,7 +88,7 @@ public record class BetaRawContentBlockDelta : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaTextDelta"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -109,7 +109,7 @@ public record class BetaRawContentBlockDelta : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaInputJsonDelta"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -130,7 +130,7 @@ public record class BetaRawContentBlockDelta : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaCitationsDelta"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -151,7 +151,7 @@ public record class BetaRawContentBlockDelta : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaThinkingDelta"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -172,7 +172,7 @@ public record class BetaRawContentBlockDelta : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaSignatureDelta"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -193,7 +193,7 @@ public record class BetaRawContentBlockDelta : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaCompactionContentBlockDelta"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -213,7 +213,7 @@ public record class BetaRawContentBlockDelta : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -224,12 +224,12 @@ public record class BetaRawContentBlockDelta : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaTextDelta value) => {...},
-    ///     (BetaInputJsonDelta value) => {...},
-    ///     (BetaCitationsDelta value) => {...},
-    ///     (BetaThinkingDelta value) => {...},
-    ///     (BetaSignatureDelta value) => {...},
-    ///     (BetaCompactionContentBlockDelta value) => {...}
+    ///     (BetaTextDelta value) =&gt; {...},
+    ///     (BetaInputJsonDelta value) =&gt; {...},
+    ///     (BetaCitationsDelta value) =&gt; {...},
+    ///     (BetaThinkingDelta value) =&gt; {...},
+    ///     (BetaSignatureDelta value) =&gt; {...},
+    ///     (BetaCompactionContentBlockDelta value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -274,7 +274,7 @@ public record class BetaRawContentBlockDelta : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -285,12 +285,12 @@ public record class BetaRawContentBlockDelta : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaTextDelta value) => {...},
-    ///     (BetaInputJsonDelta value) => {...},
-    ///     (BetaCitationsDelta value) => {...},
-    ///     (BetaThinkingDelta value) => {...},
-    ///     (BetaSignatureDelta value) => {...},
-    ///     (BetaCompactionContentBlockDelta value) => {...}
+    ///     (BetaTextDelta value) =&gt; {...},
+    ///     (BetaInputJsonDelta value) =&gt; {...},
+    ///     (BetaCitationsDelta value) =&gt; {...},
+    ///     (BetaThinkingDelta value) =&gt; {...},
+    ///     (BetaSignatureDelta value) =&gt; {...},
+    ///     (BetaCompactionContentBlockDelta value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

@@ -54,7 +54,7 @@ public record class WebSearchToolResultBlockContent : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="WebSearchToolResultError"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -73,14 +73,14 @@ public record class WebSearchToolResultBlockContent : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="IReadOnlyList<WebSearchResultBlock>"/>.
+    /// type <see cref="List{T}"/> where <c>T</c> is a <c>WebSearchResultBlock</c>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickWebSearchResultBlocks(out var value)) {
-    ///     // `value` is of type `IReadOnlyList<WebSearchResultBlock>`
+    ///     // `value` is of type `IReadOnlyList&lt;WebSearchResultBlock&gt;`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
@@ -97,7 +97,7 @@ public record class WebSearchToolResultBlockContent : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -108,8 +108,8 @@ public record class WebSearchToolResultBlockContent : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (WebSearchToolResultError value) => {...},
-    ///     (IReadOnlyList<WebSearchResultBlock> value) => {...}
+    ///     (WebSearchToolResultError value) =&gt; {...},
+    ///     (IReadOnlyList&lt;WebSearchResultBlock&gt; value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -138,7 +138,7 @@ public record class WebSearchToolResultBlockContent : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -149,8 +149,8 @@ public record class WebSearchToolResultBlockContent : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (WebSearchToolResultError value) => {...},
-    ///     (IReadOnlyList<WebSearchResultBlock> value) => {...}
+    ///     (WebSearchToolResultError value) =&gt; {...},
+    ///     (IReadOnlyList&lt;WebSearchResultBlock&gt; value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

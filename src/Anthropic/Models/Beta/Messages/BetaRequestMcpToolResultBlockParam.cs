@@ -198,7 +198,7 @@ public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="string"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -217,14 +217,14 @@ public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="IReadOnlyList<BetaTextBlockParam>"/>.
+    /// type <see cref="List{T}"/> where <c>T</c> is a <c>BetaTextBlockParam</c>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaMcpToolResultBlockParam(out var value)) {
-    ///     // `value` is of type `IReadOnlyList<BetaTextBlockParam>`
+    ///     // `value` is of type `IReadOnlyList&lt;BetaTextBlockParam&gt;`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
@@ -241,7 +241,7 @@ public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -252,8 +252,8 @@ public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (string value) => {...},
-    ///     (IReadOnlyList<BetaTextBlockParam> value) => {...}
+    ///     (string value) =&gt; {...},
+    ///     (IReadOnlyList&lt;BetaTextBlockParam&gt; value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -282,7 +282,7 @@ public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -293,8 +293,8 @@ public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (string value) => {...},
-    ///     (IReadOnlyList<BetaTextBlockParam> value) => {...}
+    ///     (string value) =&gt; {...},
+    ///     (IReadOnlyList&lt;BetaTextBlockParam&gt; value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

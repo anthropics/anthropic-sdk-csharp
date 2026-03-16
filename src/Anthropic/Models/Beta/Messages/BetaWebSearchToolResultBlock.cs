@@ -203,7 +203,7 @@ public record class BetaWebSearchToolResultBlockCaller : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaDirectCaller"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -224,7 +224,7 @@ public record class BetaWebSearchToolResultBlockCaller : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaServerToolCaller"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -245,7 +245,7 @@ public record class BetaWebSearchToolResultBlockCaller : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaServerToolCaller20260120"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -267,7 +267,7 @@ public record class BetaWebSearchToolResultBlockCaller : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -278,9 +278,9 @@ public record class BetaWebSearchToolResultBlockCaller : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaDirectCaller value) => {...},
-    ///     (BetaServerToolCaller value) => {...},
-    ///     (BetaServerToolCaller20260120 value) => {...}
+    ///     (BetaDirectCaller value) =&gt; {...},
+    ///     (BetaServerToolCaller value) =&gt; {...},
+    ///     (BetaServerToolCaller20260120 value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -313,7 +313,7 @@ public record class BetaWebSearchToolResultBlockCaller : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -324,9 +324,9 @@ public record class BetaWebSearchToolResultBlockCaller : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaDirectCaller value) => {...},
-    ///     (BetaServerToolCaller value) => {...},
-    ///     (BetaServerToolCaller20260120 value) => {...}
+    ///     (BetaDirectCaller value) =&gt; {...},
+    ///     (BetaServerToolCaller value) =&gt; {...},
+    ///     (BetaServerToolCaller20260120 value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

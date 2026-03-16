@@ -78,7 +78,7 @@ public record class MessageBatchResult : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="MessageBatchSucceededResult"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -99,7 +99,7 @@ public record class MessageBatchResult : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="MessageBatchErroredResult"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -120,7 +120,7 @@ public record class MessageBatchResult : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="MessageBatchCanceledResult"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -141,7 +141,7 @@ public record class MessageBatchResult : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="MessageBatchExpiredResult"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -161,7 +161,7 @@ public record class MessageBatchResult : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -172,10 +172,10 @@ public record class MessageBatchResult : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (MessageBatchSucceededResult value) => {...},
-    ///     (MessageBatchErroredResult value) => {...},
-    ///     (MessageBatchCanceledResult value) => {...},
-    ///     (MessageBatchExpiredResult value) => {...}
+    ///     (MessageBatchSucceededResult value) =&gt; {...},
+    ///     (MessageBatchErroredResult value) =&gt; {...},
+    ///     (MessageBatchCanceledResult value) =&gt; {...},
+    ///     (MessageBatchExpiredResult value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -212,7 +212,7 @@ public record class MessageBatchResult : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -223,10 +223,10 @@ public record class MessageBatchResult : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (MessageBatchSucceededResult value) => {...},
-    ///     (MessageBatchErroredResult value) => {...},
-    ///     (MessageBatchCanceledResult value) => {...},
-    ///     (MessageBatchExpiredResult value) => {...}
+    ///     (MessageBatchSucceededResult value) =&gt; {...},
+    ///     (MessageBatchErroredResult value) =&gt; {...},
+    ///     (MessageBatchCanceledResult value) =&gt; {...},
+    ///     (MessageBatchExpiredResult value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

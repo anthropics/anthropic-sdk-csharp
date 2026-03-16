@@ -16,7 +16,7 @@
     <!-- Documentation-->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <!-- Disable missing XML documentation warnings. -->
-    <NoWarn>$(NoWarn),1570,1573,1574,1591</NoWarn>
+    <NoWarn>$(NoWarn),1573,1591</NoWarn>
 
     <!-- Source link -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

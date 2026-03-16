@@ -34,8 +34,8 @@ public class HttpResponse : IDisposable
     public Threading::CancellationToken CancellationToken { get; init; } = default;
 
     /// <summary>
-    /// Returns the value of the <c>request-id</c> header, or null if there's no
-    /// such header in the response.
+    /// Returns the value of the <c>request-id</c> header,
+    /// or null if there's no such header in the response.
     /// </summary>
     public string? RequestID
     {

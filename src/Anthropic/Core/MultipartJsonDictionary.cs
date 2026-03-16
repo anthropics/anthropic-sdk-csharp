@@ -11,9 +11,9 @@ namespace Anthropic.Core;
 /// <summary>
 /// A dictionary that holds mixed JSON and binary content.
 ///
-/// <para>It can be mutated and then frozen once no more mutations are expected. This
-/// is useful for allowing the dictionary to be modified by a class's <c>init</c>
-/// properties, but then preventing it from being modified afterwards.</para>
+/// <para>It can be mutated and then frozen once no more mutations are expected.
+/// This is useful for allowing the dictionary to be modified by a class's
+/// <c>init</c> properties, but then preventing it from being modified afterwards.</para>
 ///
 /// <para>It also caches data deserialization for performance.</para>
 /// </summary>
