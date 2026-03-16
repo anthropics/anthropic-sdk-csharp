@@ -8,7 +8,7 @@ using Anthropic.Services;
 namespace Anthropic.Helpers;
 
 /// <summary>
-/// An implementation of the <see cref="SseAggregator{TMessage, TResult}"/> for aggregating BlockDeltaEvents from the <see cref="IMessageService.CreateStreaming(MessageCreateParams)"/> method.
+/// An implementation of the <see cref="SseAggregator{TMessage, TResult}"/> for aggregating BlockDeltaEvents from the <see cref="IMessageService.CreateStreaming"/> method.
 /// </summary>
 public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEvent, Message>
 {
