@@ -16,6 +16,7 @@ Full Changelog: [Anthropic-v12.8.0...Anthropic-v12.9.0](https://github.com/anthr
 
 * **docs:** make xml comments valid ([#141](https://github.com/anthropics/anthropic-sdk-csharp/issues/141)) ([6251881](https://github.com/anthropics/anthropic-sdk-csharp/commit/62518812ab63e2ef7162e803167e821815160661))
 * **docs:** make xml syntactically correct ([b91c421](https://github.com/anthropics/anthropic-sdk-csharp/commit/b91c4215c1cf103aeff39a4fd08067a4a54f3d67))
+* **client:** preserve RawRepresentation in IChatClient system message mapping ([4a324d7](https://github.com/anthropics/anthropic-sdk-csharp/commit/4a324d74fe8c835b6e1df20bd5b3a69c4a071560))
 
 
 ### Chores
