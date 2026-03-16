@@ -248,6 +248,13 @@ sealed class BetaToolSearchToolBm25_20251119TypeConverter
     }
 }
 
+/// <summary>
+/// Specifies who can invoke a tool.
+///
+/// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
+/// The tool can be called from the code execution environment (v1).     code_execution_20260120:
+/// The tool can be called from the code execution environment (v2 with persistence).</para>
+/// </summary>
 [JsonConverter(typeof(BetaToolSearchToolBm25_20251119AllowedCallerConverter))]
 public enum BetaToolSearchToolBm25_20251119AllowedCaller
 {

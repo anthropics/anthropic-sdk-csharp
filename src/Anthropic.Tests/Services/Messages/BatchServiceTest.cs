@@ -63,7 +63,10 @@ public class BatchServiceTest : TestBase
                                 ]
                             ),
                             Temperature = 1,
-                            Thinking = new ThinkingConfigEnabled(1024),
+                            Thinking = new ThinkingConfigAdaptive()
+                            {
+                                Display = Display.Summarized,
+                            },
                             ToolChoice = new ToolChoiceAuto() { DisableParallelToolUse = true },
                             Tools =
                             [

@@ -9,7 +9,11 @@ public class BetaThinkingConfigParamTest : TestBase
     [Fact]
     public void EnabledValidationWorks()
     {
-        BetaThinkingConfigParam value = new BetaThinkingConfigEnabled(1024);
+        BetaThinkingConfigParam value = new BetaThinkingConfigEnabled()
+        {
+            BudgetTokens = 1024,
+            Display = BetaThinkingConfigEnabledDisplay.Summarized,
+        };
         value.Validate();
     }
 
@@ -23,14 +27,21 @@ public class BetaThinkingConfigParamTest : TestBase
     [Fact]
     public void AdaptiveValidationWorks()
     {
-        BetaThinkingConfigParam value = new BetaThinkingConfigAdaptive();
+        BetaThinkingConfigParam value = new BetaThinkingConfigAdaptive()
+        {
+            Display = Display.Summarized,
+        };
         value.Validate();
     }
 
     [Fact]
     public void EnabledSerializationRoundtripWorks()
     {
-        BetaThinkingConfigParam value = new BetaThinkingConfigEnabled(1024);
+        BetaThinkingConfigParam value = new BetaThinkingConfigEnabled()
+        {
+            BudgetTokens = 1024,
+            Display = BetaThinkingConfigEnabledDisplay.Summarized,
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigParam>(
             element,
@@ -56,7 +67,10 @@ public class BetaThinkingConfigParamTest : TestBase
     [Fact]
     public void AdaptiveSerializationRoundtripWorks()
     {
-        BetaThinkingConfigParam value = new BetaThinkingConfigAdaptive();
+        BetaThinkingConfigParam value = new BetaThinkingConfigAdaptive()
+        {
+            Display = Display.Summarized,
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigParam>(
             element,

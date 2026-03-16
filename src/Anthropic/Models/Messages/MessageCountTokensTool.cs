@@ -46,6 +46,7 @@ public record class MessageCountTokensTool : ModelBase
                 webFetchTool20250910: (x) => x.CacheControl,
                 webSearchTool20260209: (x) => x.CacheControl,
                 webFetchTool20260209: (x) => x.CacheControl,
+                webFetchTool20260309: (x) => x.CacheControl,
                 toolSearchToolBm25_20251119: (x) => x.CacheControl,
                 toolSearchToolRegex20251119: (x) => x.CacheControl
             );
@@ -70,6 +71,7 @@ public record class MessageCountTokensTool : ModelBase
                 webFetchTool20250910: (x) => x.DeferLoading,
                 webSearchTool20260209: (x) => x.DeferLoading,
                 webFetchTool20260209: (x) => x.DeferLoading,
+                webFetchTool20260309: (x) => x.DeferLoading,
                 toolSearchToolBm25_20251119: (x) => x.DeferLoading,
                 toolSearchToolRegex20251119: (x) => x.DeferLoading
             );
@@ -94,6 +96,7 @@ public record class MessageCountTokensTool : ModelBase
                 webFetchTool20250910: (x) => x.Strict,
                 webSearchTool20260209: (x) => x.Strict,
                 webFetchTool20260209: (x) => x.Strict,
+                webFetchTool20260309: (x) => x.Strict,
                 toolSearchToolBm25_20251119: (x) => x.Strict,
                 toolSearchToolRegex20251119: (x) => x.Strict
             );
@@ -118,6 +121,7 @@ public record class MessageCountTokensTool : ModelBase
                 webFetchTool20250910: (x) => x.MaxUses,
                 webSearchTool20260209: (x) => x.MaxUses,
                 webFetchTool20260209: (x) => x.MaxUses,
+                webFetchTool20260309: (x) => x.MaxUses,
                 toolSearchToolBm25_20251119: (_) => null,
                 toolSearchToolRegex20251119: (_) => null
             );
@@ -142,6 +146,7 @@ public record class MessageCountTokensTool : ModelBase
                 webFetchTool20250910: (_) => null,
                 webSearchTool20260209: (x) => x.UserLocation,
                 webFetchTool20260209: (_) => null,
+                webFetchTool20260309: (_) => null,
                 toolSearchToolBm25_20251119: (_) => null,
                 toolSearchToolRegex20251119: (_) => null
             );
@@ -166,6 +171,7 @@ public record class MessageCountTokensTool : ModelBase
                 webFetchTool20250910: (x) => x.Citations,
                 webSearchTool20260209: (_) => null,
                 webFetchTool20260209: (x) => x.Citations,
+                webFetchTool20260309: (x) => x.Citations,
                 toolSearchToolBm25_20251119: (_) => null,
                 toolSearchToolRegex20251119: (_) => null
             );
@@ -190,6 +196,7 @@ public record class MessageCountTokensTool : ModelBase
                 webFetchTool20250910: (x) => x.MaxContentTokens,
                 webSearchTool20260209: (_) => null,
                 webFetchTool20260209: (x) => x.MaxContentTokens,
+                webFetchTool20260309: (x) => x.MaxContentTokens,
                 toolSearchToolBm25_20251119: (_) => null,
                 toolSearchToolRegex20251119: (_) => null
             );
@@ -269,6 +276,12 @@ public record class MessageCountTokensTool : ModelBase
     }
 
     public MessageCountTokensTool(WebFetchTool20260209 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public MessageCountTokensTool(WebFetchTool20260309 value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -572,6 +585,27 @@ public record class MessageCountTokensTool : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="WebFetchTool20260309"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebFetchTool20260309(out var value)) {
+    ///     // `value` is of type `WebFetchTool20260309`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebFetchTool20260309([NotNullWhen(true)] out WebFetchTool20260309? value)
+    {
+        value = this.Value as WebFetchTool20260309;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolSearchToolBm25_20251119"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -643,6 +677,7 @@ public record class MessageCountTokensTool : ModelBase
     ///     (WebFetchTool20250910 value) =&gt; {...},
     ///     (WebSearchTool20260209 value) =&gt; {...},
     ///     (WebFetchTool20260209 value) =&gt; {...},
+    ///     (WebFetchTool20260309 value) =&gt; {...},
     ///     (ToolSearchToolBm25_20251119 value) =&gt; {...},
     ///     (ToolSearchToolRegex20251119 value) =&gt; {...}
     /// );
@@ -663,6 +698,7 @@ public record class MessageCountTokensTool : ModelBase
         System::Action<WebFetchTool20250910> webFetchTool20250910,
         System::Action<WebSearchTool20260209> webSearchTool20260209,
         System::Action<WebFetchTool20260209> webFetchTool20260209,
+        System::Action<WebFetchTool20260309> webFetchTool20260309,
         System::Action<ToolSearchToolBm25_20251119> toolSearchToolBm25_20251119,
         System::Action<ToolSearchToolRegex20251119> toolSearchToolRegex20251119
     )
@@ -708,6 +744,9 @@ public record class MessageCountTokensTool : ModelBase
             case WebFetchTool20260209 value:
                 webFetchTool20260209(value);
                 break;
+            case WebFetchTool20260309 value:
+                webFetchTool20260309(value);
+                break;
             case ToolSearchToolBm25_20251119 value:
                 toolSearchToolBm25_20251119(value);
                 break;
@@ -749,6 +788,7 @@ public record class MessageCountTokensTool : ModelBase
     ///     (WebFetchTool20250910 value) =&gt; {...},
     ///     (WebSearchTool20260209 value) =&gt; {...},
     ///     (WebFetchTool20260209 value) =&gt; {...},
+    ///     (WebFetchTool20260309 value) =&gt; {...},
     ///     (ToolSearchToolBm25_20251119 value) =&gt; {...},
     ///     (ToolSearchToolRegex20251119 value) =&gt; {...}
     /// );
@@ -769,6 +809,7 @@ public record class MessageCountTokensTool : ModelBase
         System::Func<WebFetchTool20250910, T> webFetchTool20250910,
         System::Func<WebSearchTool20260209, T> webSearchTool20260209,
         System::Func<WebFetchTool20260209, T> webFetchTool20260209,
+        System::Func<WebFetchTool20260309, T> webFetchTool20260309,
         System::Func<ToolSearchToolBm25_20251119, T> toolSearchToolBm25_20251119,
         System::Func<ToolSearchToolRegex20251119, T> toolSearchToolRegex20251119
     )
@@ -788,6 +829,7 @@ public record class MessageCountTokensTool : ModelBase
             WebFetchTool20250910 value => webFetchTool20250910(value),
             WebSearchTool20260209 value => webSearchTool20260209(value),
             WebFetchTool20260209 value => webFetchTool20260209(value),
+            WebFetchTool20260309 value => webFetchTool20260309(value),
             ToolSearchToolBm25_20251119 value => toolSearchToolBm25_20251119(value),
             ToolSearchToolRegex20251119 value => toolSearchToolRegex20251119(value),
             _ => throw new AnthropicInvalidDataException(
@@ -832,6 +874,9 @@ public record class MessageCountTokensTool : ModelBase
     public static implicit operator MessageCountTokensTool(WebFetchTool20260209 value) =>
         new(value);
 
+    public static implicit operator MessageCountTokensTool(WebFetchTool20260309 value) =>
+        new(value);
+
     public static implicit operator MessageCountTokensTool(ToolSearchToolBm25_20251119 value) =>
         new(value);
 
@@ -870,6 +915,7 @@ public record class MessageCountTokensTool : ModelBase
             (webFetchTool20250910) => webFetchTool20250910.Validate(),
             (webSearchTool20260209) => webSearchTool20260209.Validate(),
             (webFetchTool20260209) => webFetchTool20260209.Validate(),
+            (webFetchTool20260309) => webFetchTool20260309.Validate(),
             (toolSearchToolBm25_20251119) => toolSearchToolBm25_20251119.Validate(),
             (toolSearchToolRegex20251119) => toolSearchToolRegex20251119.Validate()
         );
@@ -908,8 +954,9 @@ public record class MessageCountTokensTool : ModelBase
             WebFetchTool20250910 _ => 10,
             WebSearchTool20260209 _ => 11,
             WebFetchTool20260209 _ => 12,
-            ToolSearchToolBm25_20251119 _ => 13,
-            ToolSearchToolRegex20251119 _ => 14,
+            WebFetchTool20260309 _ => 13,
+            ToolSearchToolBm25_20251119 _ => 14,
+            ToolSearchToolRegex20251119 _ => 15,
             _ => -1,
         };
     }
@@ -1104,6 +1151,20 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
         try
         {
             var deserialized = JsonSerializer.Deserialize<WebFetchTool20260209>(element, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<WebFetchTool20260309>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();

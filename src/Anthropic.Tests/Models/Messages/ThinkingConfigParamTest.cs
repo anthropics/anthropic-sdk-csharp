@@ -9,7 +9,11 @@ public class ThinkingConfigParamTest : TestBase
     [Fact]
     public void EnabledValidationWorks()
     {
-        ThinkingConfigParam value = new ThinkingConfigEnabled(1024);
+        ThinkingConfigParam value = new ThinkingConfigEnabled()
+        {
+            BudgetTokens = 1024,
+            Display = ThinkingConfigEnabledDisplay.Summarized,
+        };
         value.Validate();
     }
 
@@ -23,14 +27,18 @@ public class ThinkingConfigParamTest : TestBase
     [Fact]
     public void AdaptiveValidationWorks()
     {
-        ThinkingConfigParam value = new ThinkingConfigAdaptive();
+        ThinkingConfigParam value = new ThinkingConfigAdaptive() { Display = Display.Summarized };
         value.Validate();
     }
 
     [Fact]
     public void EnabledSerializationRoundtripWorks()
     {
-        ThinkingConfigParam value = new ThinkingConfigEnabled(1024);
+        ThinkingConfigParam value = new ThinkingConfigEnabled()
+        {
+            BudgetTokens = 1024,
+            Display = ThinkingConfigEnabledDisplay.Summarized,
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(
             element,
@@ -56,7 +64,7 @@ public class ThinkingConfigParamTest : TestBase
     [Fact]
     public void AdaptiveSerializationRoundtripWorks()
     {
-        ThinkingConfigParam value = new ThinkingConfigAdaptive();
+        ThinkingConfigParam value = new ThinkingConfigAdaptive() { Display = Display.Summarized };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(
             element,

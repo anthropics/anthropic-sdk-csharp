@@ -64,7 +64,10 @@ public class BatchCreateParamsTest : TestBase
                             ]
                         ),
                         Temperature = 1,
-                        Thinking = new Messages::ThinkingConfigEnabled(1024),
+                        Thinking = new Messages::ThinkingConfigAdaptive()
+                        {
+                            Display = Messages::Display.Summarized,
+                        },
                         ToolChoice = new Messages::ToolChoiceAuto()
                         {
                             DisableParallelToolUse = true,
@@ -155,7 +158,10 @@ public class BatchCreateParamsTest : TestBase
                         ]
                     ),
                     Temperature = 1,
-                    Thinking = new Messages::ThinkingConfigEnabled(1024),
+                    Thinking = new Messages::ThinkingConfigAdaptive()
+                    {
+                        Display = Messages::Display.Summarized,
+                    },
                     ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
                     Tools =
                     [
@@ -254,7 +260,10 @@ public class BatchCreateParamsTest : TestBase
                             ]
                         ),
                         Temperature = 1,
-                        Thinking = new Messages::ThinkingConfigEnabled(1024),
+                        Thinking = new Messages::ThinkingConfigAdaptive()
+                        {
+                            Display = Messages::Display.Summarized,
+                        },
                         ToolChoice = new Messages::ToolChoiceAuto()
                         {
                             DisableParallelToolUse = true,
@@ -355,7 +364,10 @@ public class BatchCreateParamsTest : TestBase
                             ]
                         ),
                         Temperature = 1,
-                        Thinking = new Messages::ThinkingConfigEnabled(1024),
+                        Thinking = new Messages::ThinkingConfigAdaptive()
+                        {
+                            Display = Messages::Display.Summarized,
+                        },
                         ToolChoice = new Messages::ToolChoiceAuto()
                         {
                             DisableParallelToolUse = true,
@@ -455,7 +467,10 @@ public class RequestTest : TestBase
                     ]
                 ),
                 Temperature = 1,
-                Thinking = new Messages::ThinkingConfigEnabled(1024),
+                Thinking = new Messages::ThinkingConfigAdaptive()
+                {
+                    Display = Messages::Display.Summarized,
+                },
                 ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
@@ -537,7 +552,10 @@ public class RequestTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
             ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -627,7 +645,10 @@ public class RequestTest : TestBase
                     ]
                 ),
                 Temperature = 1,
-                Thinking = new Messages::ThinkingConfigEnabled(1024),
+                Thinking = new Messages::ThinkingConfigAdaptive()
+                {
+                    Display = Messages::Display.Summarized,
+                },
                 ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
@@ -720,7 +741,10 @@ public class RequestTest : TestBase
                     ]
                 ),
                 Temperature = 1,
-                Thinking = new Messages::ThinkingConfigEnabled(1024),
+                Thinking = new Messages::ThinkingConfigAdaptive()
+                {
+                    Display = Messages::Display.Summarized,
+                },
                 ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
@@ -809,7 +833,10 @@ public class RequestTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
             ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -899,7 +926,10 @@ public class RequestTest : TestBase
                     ]
                 ),
                 Temperature = 1,
-                Thinking = new Messages::ThinkingConfigEnabled(1024),
+                Thinking = new Messages::ThinkingConfigAdaptive()
+                {
+                    Display = Messages::Display.Summarized,
+                },
                 ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
@@ -989,7 +1019,10 @@ public class RequestTest : TestBase
                     ]
                 ),
                 Temperature = 1,
-                Thinking = new Messages::ThinkingConfigEnabled(1024),
+                Thinking = new Messages::ThinkingConfigAdaptive()
+                {
+                    Display = Messages::Display.Summarized,
+                },
                 ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
@@ -1081,7 +1114,10 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
             ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -1165,7 +1201,10 @@ public class ParamsTest : TestBase
             ]
         );
         double expectedTemperature = 1;
-        Messages::ThinkingConfigParam expectedThinking = new Messages::ThinkingConfigEnabled(1024);
+        Messages::ThinkingConfigParam expectedThinking = new Messages::ThinkingConfigAdaptive()
+        {
+            Display = Messages::Display.Summarized,
+        };
         Messages::ToolChoice expectedToolChoice = new Messages::ToolChoiceAuto()
         {
             DisableParallelToolUse = true,
@@ -1284,7 +1323,10 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
             ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -1373,7 +1415,10 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
             ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -1461,7 +1506,10 @@ public class ParamsTest : TestBase
             ]
         );
         double expectedTemperature = 1;
-        Messages::ThinkingConfigParam expectedThinking = new Messages::ThinkingConfigEnabled(1024);
+        Messages::ThinkingConfigParam expectedThinking = new Messages::ThinkingConfigAdaptive()
+        {
+            Display = Messages::Display.Summarized,
+        };
         Messages::ToolChoice expectedToolChoice = new Messages::ToolChoiceAuto()
         {
             DisableParallelToolUse = true,
@@ -1580,7 +1628,10 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
             ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -1801,7 +1852,10 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
             ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -1889,7 +1943,10 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
             ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -1972,7 +2029,10 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
             ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -2064,7 +2124,10 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
             ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -2154,7 +2217,10 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new Messages::ThinkingConfigEnabled(1024),
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
             ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [

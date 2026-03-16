@@ -257,6 +257,13 @@ class BetaWebSearchTool20260209FromRaw : IFromRawJson<BetaWebSearchTool20260209>
     ) => BetaWebSearchTool20260209.FromRawUnchecked(rawData);
 }
 
+/// <summary>
+/// Specifies who can invoke a tool.
+///
+/// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
+/// The tool can be called from the code execution environment (v1).     code_execution_20260120:
+/// The tool can be called from the code execution environment (v2 with persistence).</para>
+/// </summary>
 [JsonConverter(typeof(BetaWebSearchTool20260209AllowedCallerConverter))]
 public enum BetaWebSearchTool20260209AllowedCaller
 {

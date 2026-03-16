@@ -102,7 +102,7 @@ public class MessageCreateParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new BetaThinkingConfigEnabled(1024),
+            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -227,7 +227,10 @@ public class MessageCreateParamsTest : TestBase
             ]
         );
         double expectedTemperature = 1;
-        BetaThinkingConfigParam expectedThinking = new BetaThinkingConfigEnabled(1024);
+        BetaThinkingConfigParam expectedThinking = new BetaThinkingConfigAdaptive()
+        {
+            Display = Display.Summarized,
+        };
         BetaToolChoice expectedToolChoice = new BetaToolChoiceAuto()
         {
             DisableParallelToolUse = true,
@@ -535,7 +538,7 @@ public class MessageCreateParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new BetaThinkingConfigEnabled(1024),
+            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -639,7 +642,7 @@ public class MessageCreateParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new BetaThinkingConfigEnabled(1024),
+            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -822,7 +825,7 @@ public class MessageCreateParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new BetaThinkingConfigEnabled(1024),
+            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [

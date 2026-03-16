@@ -188,6 +188,13 @@ class CodeExecutionTool20250825FromRaw : IFromRawJson<CodeExecutionTool20250825>
     ) => CodeExecutionTool20250825.FromRawUnchecked(rawData);
 }
 
+/// <summary>
+/// Specifies who can invoke a tool.
+///
+/// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
+/// The tool can be called from the code execution environment (v1).     code_execution_20260120:
+/// The tool can be called from the code execution environment (v2 with persistence).</para>
+/// </summary>
 [JsonConverter(typeof(CodeExecutionTool20250825AllowedCallerConverter))]
 public enum CodeExecutionTool20250825AllowedCaller
 {
