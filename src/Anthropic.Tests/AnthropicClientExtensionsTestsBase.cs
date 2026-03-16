@@ -2834,7 +2834,7 @@ public abstract class AnthropicClientExtensionsTestsBase
     [Fact]
     public async Task GetResponseAsync_WithReasoningEffort_ClampsBudgetToExplicitMaxTokens()
     {
-        // High effort maps to 16000, but caller explicitly set max_tokens to 5000,
+        // High effort maps to 16384, but caller explicitly set max_tokens to 5000,
         // so budget should clamp to 4999.
         VerbatimHttpHandler handler = new(
             expectedRequest: """
@@ -2892,7 +2892,7 @@ public abstract class AnthropicClientExtensionsTestsBase
     [Fact]
     public async Task GetResponseAsync_WithReasoningEffort_SkipsThinkingWhenExplicitMaxTokensTooSmall()
     {
-        // Medium effort maps to 10024, but caller explicitly set max_tokens to 1024,
+        // Medium effort maps to 8192, but caller explicitly set max_tokens to 1024,
         // so after clamping budget would be 1023 which is < 1024 minimum. Thinking is skipped.
         VerbatimHttpHandler handler = new(
             expectedRequest: """
