@@ -271,6 +271,13 @@ class BetaWebFetchTool20260209FromRaw : IFromRawJson<BetaWebFetchTool20260209>
     ) => BetaWebFetchTool20260209.FromRawUnchecked(rawData);
 }
 
+/// <summary>
+/// Specifies who can invoke a tool.
+///
+/// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
+/// The tool can be called from the code execution environment (v1).     code_execution_20260120:
+/// The tool can be called from the code execution environment (v2 with persistence).</para>
+/// </summary>
 [JsonConverter(typeof(BetaWebFetchTool20260209AllowedCallerConverter))]
 public enum BetaWebFetchTool20260209AllowedCaller
 {

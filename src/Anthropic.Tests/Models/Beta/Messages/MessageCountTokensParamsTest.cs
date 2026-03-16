@@ -83,7 +83,7 @@ public class MessageCountTokensParamsTest : TestBase
                     },
                 ]
             ),
-            Thinking = new BetaThinkingConfigEnabled(1024),
+            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -185,7 +185,10 @@ public class MessageCountTokensParamsTest : TestBase
                 },
             ]
         );
-        BetaThinkingConfigParam expectedThinking = new BetaThinkingConfigEnabled(1024);
+        BetaThinkingConfigParam expectedThinking = new BetaThinkingConfigAdaptive()
+        {
+            Display = Display.Summarized,
+        };
         BetaToolChoice expectedToolChoice = new BetaToolChoiceAuto()
         {
             DisableParallelToolUse = true,
@@ -412,7 +415,7 @@ public class MessageCountTokensParamsTest : TestBase
                     },
                 ]
             ),
-            Thinking = new BetaThinkingConfigEnabled(1024),
+            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -505,7 +508,7 @@ public class MessageCountTokensParamsTest : TestBase
                     },
                 ]
             ),
-            Thinking = new BetaThinkingConfigEnabled(1024),
+            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -659,7 +662,7 @@ public class MessageCountTokensParamsTest : TestBase
                     },
                 ]
             ),
-            Thinking = new BetaThinkingConfigEnabled(1024),
+            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -1205,6 +1208,25 @@ public class ToolTest : TestBase
     }
 
     [Fact]
+    public void BetaWebFetchTool20260309ValidationWorks()
+    {
+        Tool value = new BetaWebFetchTool20260309()
+        {
+            AllowedCallers = [BetaWebFetchTool20260309AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            DeferLoading = true,
+            MaxContentTokens = 1,
+            MaxUses = 1,
+            Strict = true,
+            UseCache = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaToolSearchToolBm25_20251119ValidationWorks()
     {
         Tool value = new BetaToolSearchToolBm25_20251119()
@@ -1663,6 +1685,28 @@ public class ToolTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaWebFetchTool20260309SerializationRoundtripWorks()
+    {
+        Tool value = new BetaWebFetchTool20260309()
+        {
+            AllowedCallers = [BetaWebFetchTool20260309AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            DeferLoading = true,
+            MaxContentTokens = 1,
+            MaxUses = 1,
+            Strict = true,
+            UseCache = true,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);

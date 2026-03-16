@@ -215,6 +215,13 @@ class BetaMemoryTool20250818FromRaw : IFromRawJson<BetaMemoryTool20250818>
     ) => BetaMemoryTool20250818.FromRawUnchecked(rawData);
 }
 
+/// <summary>
+/// Specifies who can invoke a tool.
+///
+/// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
+/// The tool can be called from the code execution environment (v1).     code_execution_20260120:
+/// The tool can be called from the code execution environment (v2 with persistence).</para>
+/// </summary>
 [JsonConverter(typeof(BetaMemoryTool20250818AllowedCallerConverter))]
 public enum BetaMemoryTool20250818AllowedCaller
 {

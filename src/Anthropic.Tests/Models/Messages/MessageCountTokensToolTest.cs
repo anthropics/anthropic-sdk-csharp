@@ -263,6 +263,25 @@ public class MessageCountTokensToolTest : TestBase
     }
 
     [Fact]
+    public void WebFetchTool20260309ValidationWorks()
+    {
+        MessageCountTokensTool value = new WebFetchTool20260309()
+        {
+            AllowedCallers = [WebFetchTool20260309AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            DeferLoading = true,
+            MaxContentTokens = 1,
+            MaxUses = 1,
+            Strict = true,
+            UseCache = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void ToolSearchToolBm25_20251119ValidationWorks()
     {
         MessageCountTokensTool value = new ToolSearchToolBm25_20251119()
@@ -613,6 +632,31 @@ public class MessageCountTokensToolTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WebFetchTool20260309SerializationRoundtripWorks()
+    {
+        MessageCountTokensTool value = new WebFetchTool20260309()
+        {
+            AllowedCallers = [WebFetchTool20260309AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            DeferLoading = true,
+            MaxContentTokens = 1,
+            MaxUses = 1,
+            Strict = true,
+            UseCache = true,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(

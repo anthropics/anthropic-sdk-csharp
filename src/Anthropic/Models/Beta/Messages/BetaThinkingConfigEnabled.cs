@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
@@ -43,6 +44,23 @@ public sealed record class BetaThinkingConfigEnabled : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
+    /// <summary>
+    /// Controls how thinking content appears in the response. When set to `summarized`,
+    /// thinking is returned normally. When set to `omitted`, thinking content is
+    /// redacted but a signature is returned for multi-turn continuity. Defaults to `summarized`.
+    /// </summary>
+    public ApiEnum<string, BetaThinkingConfigEnabledDisplay>? Display
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<
+                ApiEnum<string, BetaThinkingConfigEnabledDisplay>
+            >("display");
+        }
+        init { this._rawData.Set("display", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -51,6 +69,7 @@ public sealed record class BetaThinkingConfigEnabled : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
+        this.Display?.Validate();
     }
 
     public BetaThinkingConfigEnabled()
@@ -101,4 +120,54 @@ class BetaThinkingConfigEnabledFromRaw : IFromRawJson<BetaThinkingConfigEnabled>
     public BetaThinkingConfigEnabled FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaThinkingConfigEnabled.FromRawUnchecked(rawData);
+}
+
+/// <summary>
+/// Controls how thinking content appears in the response. When set to `summarized`,
+/// thinking is returned normally. When set to `omitted`, thinking content is redacted
+/// but a signature is returned for multi-turn continuity. Defaults to `summarized`.
+/// </summary>
+[JsonConverter(typeof(BetaThinkingConfigEnabledDisplayConverter))]
+public enum BetaThinkingConfigEnabledDisplay
+{
+    Summarized,
+    Omitted,
+}
+
+sealed class BetaThinkingConfigEnabledDisplayConverter
+    : JsonConverter<BetaThinkingConfigEnabledDisplay>
+{
+    public override BetaThinkingConfigEnabledDisplay Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "summarized" => BetaThinkingConfigEnabledDisplay.Summarized,
+            "omitted" => BetaThinkingConfigEnabledDisplay.Omitted,
+            _ => (BetaThinkingConfigEnabledDisplay)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaThinkingConfigEnabledDisplay value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaThinkingConfigEnabledDisplay.Summarized => "summarized",
+                BetaThinkingConfigEnabledDisplay.Omitted => "omitted",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
 }

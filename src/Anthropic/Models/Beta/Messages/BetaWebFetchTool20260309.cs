@@ -8,10 +8,15 @@ using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
-namespace Anthropic.Models.Messages;
+namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(JsonModelConverter<WebFetchTool20250910, WebFetchTool20250910FromRaw>))]
-public sealed record class WebFetchTool20250910 : JsonModel
+/// <summary>
+/// Web fetch tool with use_cache parameter for bypassing cached content.
+/// </summary>
+[JsonConverter(
+    typeof(JsonModelConverter<BetaWebFetchTool20260309, BetaWebFetchTool20260309FromRaw>)
+)]
+public sealed record class BetaWebFetchTool20260309 : JsonModel
 {
     /// <summary>
     /// Name of the tool.
@@ -38,13 +43,13 @@ public sealed record class WebFetchTool20250910 : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
-    public IReadOnlyList<ApiEnum<string, WebFetchTool20250910AllowedCaller>>? AllowedCallers
+    public IReadOnlyList<ApiEnum<string, BetaWebFetchTool20260309AllowedCaller>>? AllowedCallers
     {
         get
         {
             this._rawData.Freeze();
             return this._rawData.GetNullableStruct<
-                ImmutableArray<ApiEnum<string, WebFetchTool20250910AllowedCaller>>
+                ImmutableArray<ApiEnum<string, BetaWebFetchTool20260309AllowedCaller>>
             >("allowed_callers");
         }
         init
@@ -54,10 +59,9 @@ public sealed record class WebFetchTool20250910 : JsonModel
                 return;
             }
 
-            this._rawData.Set<ImmutableArray<ApiEnum<string, WebFetchTool20250910AllowedCaller>>?>(
-                "allowed_callers",
-                value == null ? null : ImmutableArray.ToImmutableArray(value)
-            );
+            this._rawData.Set<ImmutableArray<
+                ApiEnum<string, BetaWebFetchTool20260309AllowedCaller>
+            >?>("allowed_callers", value == null ? null : ImmutableArray.ToImmutableArray(value));
         }
     }
 
@@ -102,12 +106,12 @@ public sealed record class WebFetchTool20250910 : JsonModel
     /// <summary>
     /// Create a cache control breakpoint at this content block.
     /// </summary>
-    public CacheControlEphemeral? CacheControl
+    public BetaCacheControlEphemeral? CacheControl
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
         init { this._rawData.Set("cache_control", value); }
     }
@@ -115,12 +119,12 @@ public sealed record class WebFetchTool20250910 : JsonModel
     /// <summary>
     /// Citations configuration for fetched documents. Citations are disabled by default.
     /// </summary>
-    public CitationsConfigParam? Citations
+    public BetaCitationsConfigParam? Citations
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<CitationsConfigParam>("citations");
+            return this._rawData.GetNullableClass<BetaCitationsConfigParam>("citations");
         }
         init { this._rawData.Set("citations", value); }
     }
@@ -195,6 +199,29 @@ public sealed record class WebFetchTool20250910 : JsonModel
         }
     }
 
+    /// <summary>
+    /// Whether to use cached content. Set to false to bypass the cache and fetch
+    /// fresh content. Only set to false when the user explicitly requests fresh
+    /// content or when fetching rapidly-changing sources.
+    /// </summary>
+    public bool? UseCache
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("use_cache");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("use_cache", value);
+        }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -205,7 +232,7 @@ public sealed record class WebFetchTool20250910 : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.SerializeToElement("web_fetch_20250910")
+                JsonSerializer.SerializeToElement("web_fetch_20260309")
             )
         )
         {
@@ -223,38 +250,39 @@ public sealed record class WebFetchTool20250910 : JsonModel
         _ = this.MaxContentTokens;
         _ = this.MaxUses;
         _ = this.Strict;
+        _ = this.UseCache;
     }
 
-    public WebFetchTool20250910()
+    public BetaWebFetchTool20260309()
     {
         this.Name = JsonSerializer.SerializeToElement("web_fetch");
-        this.Type = JsonSerializer.SerializeToElement("web_fetch_20250910");
+        this.Type = JsonSerializer.SerializeToElement("web_fetch_20260309");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    public WebFetchTool20250910(WebFetchTool20250910 webFetchTool20250910)
-        : base(webFetchTool20250910) { }
+    public BetaWebFetchTool20260309(BetaWebFetchTool20260309 betaWebFetchTool20260309)
+        : base(betaWebFetchTool20260309) { }
 #pragma warning restore CS8618
 
-    public WebFetchTool20250910(IReadOnlyDictionary<string, JsonElement> rawData)
+    public BetaWebFetchTool20260309(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
 
         this.Name = JsonSerializer.SerializeToElement("web_fetch");
-        this.Type = JsonSerializer.SerializeToElement("web_fetch_20250910");
+        this.Type = JsonSerializer.SerializeToElement("web_fetch_20260309");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    WebFetchTool20250910(FrozenDictionary<string, JsonElement> rawData)
+    BetaWebFetchTool20260309(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="WebFetchTool20250910FromRaw.FromRawUnchecked"/>
-    public static WebFetchTool20250910 FromRawUnchecked(
+    /// <inheritdoc cref="BetaWebFetchTool20260309FromRaw.FromRawUnchecked"/>
+    public static BetaWebFetchTool20260309 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -262,12 +290,12 @@ public sealed record class WebFetchTool20250910 : JsonModel
     }
 }
 
-class WebFetchTool20250910FromRaw : IFromRawJson<WebFetchTool20250910>
+class BetaWebFetchTool20260309FromRaw : IFromRawJson<BetaWebFetchTool20260309>
 {
     /// <inheritdoc/>
-    public WebFetchTool20250910 FromRawUnchecked(
+    public BetaWebFetchTool20260309 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
-    ) => WebFetchTool20250910.FromRawUnchecked(rawData);
+    ) => BetaWebFetchTool20260309.FromRawUnchecked(rawData);
 }
 
 /// <summary>
@@ -277,18 +305,18 @@ class WebFetchTool20250910FromRaw : IFromRawJson<WebFetchTool20250910>
 /// The tool can be called from the code execution environment (v1).     code_execution_20260120:
 /// The tool can be called from the code execution environment (v2 with persistence).</para>
 /// </summary>
-[JsonConverter(typeof(WebFetchTool20250910AllowedCallerConverter))]
-public enum WebFetchTool20250910AllowedCaller
+[JsonConverter(typeof(BetaWebFetchTool20260309AllowedCallerConverter))]
+public enum BetaWebFetchTool20260309AllowedCaller
 {
     Direct,
     CodeExecution20250825,
     CodeExecution20260120,
 }
 
-sealed class WebFetchTool20250910AllowedCallerConverter
-    : JsonConverter<WebFetchTool20250910AllowedCaller>
+sealed class BetaWebFetchTool20260309AllowedCallerConverter
+    : JsonConverter<BetaWebFetchTool20260309AllowedCaller>
 {
-    public override WebFetchTool20250910AllowedCaller Read(
+    public override BetaWebFetchTool20260309AllowedCaller Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -296,16 +324,18 @@ sealed class WebFetchTool20250910AllowedCallerConverter
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "direct" => WebFetchTool20250910AllowedCaller.Direct,
-            "code_execution_20250825" => WebFetchTool20250910AllowedCaller.CodeExecution20250825,
-            "code_execution_20260120" => WebFetchTool20250910AllowedCaller.CodeExecution20260120,
-            _ => (WebFetchTool20250910AllowedCaller)(-1),
+            "direct" => BetaWebFetchTool20260309AllowedCaller.Direct,
+            "code_execution_20250825" =>
+                BetaWebFetchTool20260309AllowedCaller.CodeExecution20250825,
+            "code_execution_20260120" =>
+                BetaWebFetchTool20260309AllowedCaller.CodeExecution20260120,
+            _ => (BetaWebFetchTool20260309AllowedCaller)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        WebFetchTool20250910AllowedCaller value,
+        BetaWebFetchTool20260309AllowedCaller value,
         JsonSerializerOptions options
     )
     {
@@ -313,10 +343,10 @@ sealed class WebFetchTool20250910AllowedCallerConverter
             writer,
             value switch
             {
-                WebFetchTool20250910AllowedCaller.Direct => "direct",
-                WebFetchTool20250910AllowedCaller.CodeExecution20250825 =>
+                BetaWebFetchTool20260309AllowedCaller.Direct => "direct",
+                BetaWebFetchTool20260309AllowedCaller.CodeExecution20250825 =>
                     "code_execution_20250825",
-                WebFetchTool20250910AllowedCaller.CodeExecution20260120 =>
+                BetaWebFetchTool20260309AllowedCaller.CodeExecution20260120 =>
                     "code_execution_20260120",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
