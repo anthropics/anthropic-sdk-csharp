@@ -7,6 +7,7 @@ public interface IAnthropicFoundryCredentials
     string ResourceName { get; }
 
     void Apply(HttpRequestMessage requestMessage);
+
 #if NET8_0_OR_GREATER
     public static IAnthropicFoundryCredentials? FromEnv()
     {

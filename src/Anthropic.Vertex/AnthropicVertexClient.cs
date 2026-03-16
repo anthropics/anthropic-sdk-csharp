@@ -12,7 +12,7 @@ public class AnthropicVertexClient : AnthropicClient
     private readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
 
     /// <summary>
-    /// Creates a new Instance of the <see cref="AnthropicBedrockClient"/>.
+    /// Creates a new Instance of the <see cref="AnthropicVertexClient"/>.
     /// </summary>
     /// <param name="vertexCredentials">The credential Provider used to authenticate with the AWS Bedrock service.</param>
     public AnthropicVertexClient(IAnthropicVertexCredentials vertexCredentials)

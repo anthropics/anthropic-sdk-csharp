@@ -13,7 +13,7 @@ public class AnthropicFoundryClient : AnthropicClient
     /// <summary>
     /// Creates a new instance of the <see cref="AnthropicFoundryClient"/>.
     /// </summary>
-    /// <param name="azureCredentials">The credential provider. Use the <see cref="IAnthropicFoundryCredentials.FromEnv"/> to generate a set of credentials in supported environments or use another implementation for static assignment of credentials.</param>
+    /// <param name="azureCredentials">The credential provider. Use the <see cref="DefaultAnthropicFoundryCredentials.FromEnv"/> to generate a set of credentials in supported environments or use another implementation for static assignment of credentials.</param>
     /// <exception cref="ArgumentNullException"></exception>
     public AnthropicFoundryClient(IAnthropicFoundryCredentials azureCredentials)
     {

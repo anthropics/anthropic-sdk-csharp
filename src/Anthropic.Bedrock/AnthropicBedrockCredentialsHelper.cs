@@ -3,7 +3,7 @@ using Amazon.Runtime.Credentials;
 
 namespace Anthropic.Bedrock;
 
-//// <summary>
+/// <summary>
 /// Asynchronously creates an <c>IAnthropicBedrockCredentials</c> instance by inspecting environment variables
 /// and falling back to the AWS default credential resolution chain.
 /// </summary>

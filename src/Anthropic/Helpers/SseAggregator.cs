@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Anthropic.Exceptions;
+using Anthropic.Models.Messages;
 
 namespace Anthropic.Helpers;
 
@@ -17,7 +19,7 @@ public abstract class SseAggregator<TMessage, TResult>
     private TResult? _message;
 
     /// <summary>
-    /// Collects and filters the provided <see cref="IAsyncEnumerable{TMessage}"/> for aggregation with the <see cref="AggregateAsync"/> method.
+    /// Collects and filters the provided <see cref="IAsyncEnumerable{TMessage}"/> for aggregation with the <see cref="SseAggregatorExtensions.Aggregate(IAsyncEnumerable{RawMessageStreamEvent})"/> method.
     /// </summary>
     /// <param name="messageStream">An <see cref="IAsyncEnumerable{TMessage}"/> containing the messages to aggregate.</param>
     /// <returns>An <see cref="IAsyncEnumerable{TMessage}"/> of all content messages used to build the aggregation result.</returns>

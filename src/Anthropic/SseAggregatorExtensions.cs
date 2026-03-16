@@ -14,7 +14,7 @@ public static class SseAggregatorExtensions
     /// <summary>
     /// Aggregates all messages received by the streaming event and aggregates them into a single object once the sender indicates a fully delivered stream.
     /// </summary>
-    /// <param name="source">A enumerable as provided by the <see cref="IMessageService.CreateStreaming(Models.Messages.MessageCreateParams)"/></param>
+    /// <param name="source">A enumerable as provided by the <see cref="Services.IMessageService.CreateStreaming(Models.Messages.MessageCreateParams, System.Threading.CancellationToken)"/></param>
     /// <returns>A task that completes once all messages have been received or in the event of improper streaming and exception.</returns>
     public static async Task<Message> Aggregate(this IAsyncEnumerable<RawMessageStreamEvent> source)
     {
@@ -24,7 +24,7 @@ public static class SseAggregatorExtensions
     /// <summary>
     /// Aggregates all messages received by the streaming event and aggregates them into a single object once the sender indicates a fully delivered stream.
     /// </summary>
-    /// <param name="source">A enumerable as provided by the <see cref="IBetaService.CreateStreaming(Models.Beta.Messages.MessageCreateParams)"/></param>
+    /// <param name="source">A enumerable as provided by the <see cref="Services.Beta.IMessageService.CreateStreaming(Models.Beta.Messages.MessageCreateParams, System.Threading.CancellationToken)"/></param>
     /// <returns>A task that completes once all messages have been received or in the event of improper streaming and exception.</returns>
     public static async Task<BetaMessage> Aggregate(
         this IAsyncEnumerable<BetaRawMessageStreamEvent> source
