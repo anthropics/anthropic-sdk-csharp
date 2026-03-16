@@ -219,7 +219,7 @@ public record class ClearToolInputs : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="bool"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -238,14 +238,14 @@ public record class ClearToolInputs : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="IReadOnlyList<string>"/>.
+    /// type <see cref="List{T}"/> where <c>T</c> is a <c>string</c>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickStrings(out var value)) {
-    ///     // `value` is of type `IReadOnlyList<string>`
+    ///     // `value` is of type `IReadOnlyList&lt;string&gt;`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
@@ -260,7 +260,7 @@ public record class ClearToolInputs : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -271,8 +271,8 @@ public record class ClearToolInputs : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (bool value) => {...},
-    ///     (IReadOnlyList<string> value) => {...}
+    ///     (bool value) =&gt; {...},
+    ///     (IReadOnlyList&lt;string&gt; value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -298,7 +298,7 @@ public record class ClearToolInputs : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -309,8 +309,8 @@ public record class ClearToolInputs : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (bool value) => {...},
-    ///     (IReadOnlyList<string> value) => {...}
+    ///     (bool value) =&gt; {...},
+    ///     (IReadOnlyList&lt;string&gt; value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -475,7 +475,7 @@ public record class Trigger : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaInputTokensTrigger"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -496,7 +496,7 @@ public record class Trigger : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolUsesTrigger"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -516,7 +516,7 @@ public record class Trigger : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -527,8 +527,8 @@ public record class Trigger : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaInputTokensTrigger value) => {...},
-    ///     (BetaToolUsesTrigger value) => {...}
+    ///     (BetaInputTokensTrigger value) =&gt; {...},
+    ///     (BetaToolUsesTrigger value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -557,7 +557,7 @@ public record class Trigger : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -568,8 +568,8 @@ public record class Trigger : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaInputTokensTrigger value) => {...},
-    ///     (BetaToolUsesTrigger value) => {...}
+    ///     (BetaInputTokensTrigger value) =&gt; {...},
+    ///     (BetaToolUsesTrigger value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

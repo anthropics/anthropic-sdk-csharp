@@ -165,7 +165,7 @@ public record class TextCitationParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="CitationCharLocationParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -188,7 +188,7 @@ public record class TextCitationParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="CitationPageLocationParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -211,7 +211,7 @@ public record class TextCitationParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="CitationContentBlockLocationParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -234,7 +234,7 @@ public record class TextCitationParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="CitationWebSearchResultLocationParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -257,7 +257,7 @@ public record class TextCitationParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="CitationSearchResultLocationParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -279,7 +279,7 @@ public record class TextCitationParam : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -290,11 +290,11 @@ public record class TextCitationParam : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (CitationCharLocationParam value) => {...},
-    ///     (CitationPageLocationParam value) => {...},
-    ///     (CitationContentBlockLocationParam value) => {...},
-    ///     (CitationWebSearchResultLocationParam value) => {...},
-    ///     (CitationSearchResultLocationParam value) => {...}
+    ///     (CitationCharLocationParam value) =&gt; {...},
+    ///     (CitationPageLocationParam value) =&gt; {...},
+    ///     (CitationContentBlockLocationParam value) =&gt; {...},
+    ///     (CitationWebSearchResultLocationParam value) =&gt; {...},
+    ///     (CitationSearchResultLocationParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -335,7 +335,7 @@ public record class TextCitationParam : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -346,11 +346,11 @@ public record class TextCitationParam : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (CitationCharLocationParam value) => {...},
-    ///     (CitationPageLocationParam value) => {...},
-    ///     (CitationContentBlockLocationParam value) => {...},
-    ///     (CitationWebSearchResultLocationParam value) => {...},
-    ///     (CitationSearchResultLocationParam value) => {...}
+    ///     (CitationCharLocationParam value) =&gt; {...},
+    ///     (CitationPageLocationParam value) =&gt; {...},
+    ///     (CitationContentBlockLocationParam value) =&gt; {...},
+    ///     (CitationWebSearchResultLocationParam value) =&gt; {...},
+    ///     (CitationSearchResultLocationParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

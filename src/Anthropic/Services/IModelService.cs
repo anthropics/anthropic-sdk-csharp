@@ -47,8 +47,8 @@ public interface IModelService
     /// <summary>
     /// List available models.
     ///
-    /// <para>The Models API response can be used to determine which models are available
-    /// for use in the API. More recently released models are listed first.</para>
+    /// <para>The Models API response can be used to determine which models are
+    /// available for use in the API. More recently released models are listed first.</para>
     /// </summary>
     Task<ModelListPage> List(
         ModelListParams? parameters = null,
@@ -70,7 +70,7 @@ public interface IModelServiceWithRawResponse
     IModelServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for `get /v1/models/{model_id}`, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/models/{model_id}</c>, but is otherwise the
     /// same as <see cref="IModelService.Retrieve(ModelRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ModelInfo>> Retrieve(
@@ -86,7 +86,7 @@ public interface IModelServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for `get /v1/models`, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/models</c>, but is otherwise the
     /// same as <see cref="IModelService.List(ModelListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ModelListPage>> List(

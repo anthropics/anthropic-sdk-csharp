@@ -203,7 +203,7 @@ public record class BetaTextEditorCodeExecutionToolResultBlockParamContent : Mod
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaTextEditorCodeExecutionToolResultErrorParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -226,7 +226,7 @@ public record class BetaTextEditorCodeExecutionToolResultBlockParamContent : Mod
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaTextEditorCodeExecutionViewResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -249,7 +249,7 @@ public record class BetaTextEditorCodeExecutionToolResultBlockParamContent : Mod
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaTextEditorCodeExecutionCreateResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -272,7 +272,7 @@ public record class BetaTextEditorCodeExecutionToolResultBlockParamContent : Mod
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaTextEditorCodeExecutionStrReplaceResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -294,7 +294,7 @@ public record class BetaTextEditorCodeExecutionToolResultBlockParamContent : Mod
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -305,10 +305,10 @@ public record class BetaTextEditorCodeExecutionToolResultBlockParamContent : Mod
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaTextEditorCodeExecutionToolResultErrorParam value) => {...},
-    ///     (BetaTextEditorCodeExecutionViewResultBlockParam value) => {...},
-    ///     (BetaTextEditorCodeExecutionCreateResultBlockParam value) => {...},
-    ///     (BetaTextEditorCodeExecutionStrReplaceResultBlockParam value) => {...}
+    ///     (BetaTextEditorCodeExecutionToolResultErrorParam value) =&gt; {...},
+    ///     (BetaTextEditorCodeExecutionViewResultBlockParam value) =&gt; {...},
+    ///     (BetaTextEditorCodeExecutionCreateResultBlockParam value) =&gt; {...},
+    ///     (BetaTextEditorCodeExecutionStrReplaceResultBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -345,7 +345,7 @@ public record class BetaTextEditorCodeExecutionToolResultBlockParamContent : Mod
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -356,10 +356,10 @@ public record class BetaTextEditorCodeExecutionToolResultBlockParamContent : Mod
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaTextEditorCodeExecutionToolResultErrorParam value) => {...},
-    ///     (BetaTextEditorCodeExecutionViewResultBlockParam value) => {...},
-    ///     (BetaTextEditorCodeExecutionCreateResultBlockParam value) => {...},
-    ///     (BetaTextEditorCodeExecutionStrReplaceResultBlockParam value) => {...}
+    ///     (BetaTextEditorCodeExecutionToolResultErrorParam value) =&gt; {...},
+    ///     (BetaTextEditorCodeExecutionViewResultBlockParam value) =&gt; {...},
+    ///     (BetaTextEditorCodeExecutionCreateResultBlockParam value) =&gt; {...},
+    ///     (BetaTextEditorCodeExecutionStrReplaceResultBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

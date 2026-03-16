@@ -104,7 +104,7 @@ public interface IFileServiceWithRawResponse
     IFileServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for `get /v1/files?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/files?beta=true</c>, but is otherwise the
     /// same as <see cref="IFileService.List(FileListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<FileListPage>> List(
@@ -113,7 +113,7 @@ public interface IFileServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for `delete /v1/files/{file_id}?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/files/{file_id}?beta=true</c>, but is otherwise the
     /// same as <see cref="IFileService.Delete(FileDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<DeletedFile>> Delete(
@@ -129,7 +129,7 @@ public interface IFileServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for `get /v1/files/{file_id}/content?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/files/{file_id}/content?beta=true</c>, but is otherwise the
     /// same as <see cref="IFileService.Download(FileDownloadParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse> Download(
@@ -145,7 +145,7 @@ public interface IFileServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for `get /v1/files/{file_id}?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/files/{file_id}?beta=true</c>, but is otherwise the
     /// same as <see cref="IFileService.RetrieveMetadata(FileRetrieveMetadataParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<FileMetadata>> RetrieveMetadata(
@@ -161,7 +161,7 @@ public interface IFileServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for `post /v1/files?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/files?beta=true</c>, but is otherwise the
     /// same as <see cref="IFileService.Upload(FileUploadParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<FileMetadata>> Upload(

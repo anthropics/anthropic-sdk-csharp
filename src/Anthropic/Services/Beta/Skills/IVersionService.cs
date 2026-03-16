@@ -101,7 +101,7 @@ public interface IVersionServiceWithRawResponse
     IVersionServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for `post /v1/skills/{skill_id}/versions?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/skills/{skill_id}/versions?beta=true</c>, but is otherwise the
     /// same as <see cref="IVersionService.Create(VersionCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<VersionCreateResponse>> Create(
@@ -117,7 +117,7 @@ public interface IVersionServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for `get /v1/skills/{skill_id}/versions/{version}?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/skills/{skill_id}/versions/{version}?beta=true</c>, but is otherwise the
     /// same as <see cref="IVersionService.Retrieve(VersionRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<VersionRetrieveResponse>> Retrieve(
@@ -133,7 +133,7 @@ public interface IVersionServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for `get /v1/skills/{skill_id}/versions?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/skills/{skill_id}/versions?beta=true</c>, but is otherwise the
     /// same as <see cref="IVersionService.List(VersionListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<VersionListPage>> List(
@@ -149,7 +149,7 @@ public interface IVersionServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for `delete /v1/skills/{skill_id}/versions/{version}?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/skills/{skill_id}/versions/{version}?beta=true</c>, but is otherwise the
     /// same as <see cref="IVersionService.Delete(VersionDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<VersionDeleteResponse>> Delete(

@@ -92,7 +92,7 @@ public interface ISkillServiceWithRawResponse
     IVersionServiceWithRawResponse Versions { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for `post /v1/skills?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/skills?beta=true</c>, but is otherwise the
     /// same as <see cref="ISkillService.Create(SkillCreateParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<SkillCreateResponse>> Create(
@@ -101,7 +101,7 @@ public interface ISkillServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for `get /v1/skills/{skill_id}?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/skills/{skill_id}?beta=true</c>, but is otherwise the
     /// same as <see cref="ISkillService.Retrieve(SkillRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<SkillRetrieveResponse>> Retrieve(
@@ -117,7 +117,7 @@ public interface ISkillServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for `get /v1/skills?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/skills?beta=true</c>, but is otherwise the
     /// same as <see cref="ISkillService.List(SkillListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<SkillListPage>> List(
@@ -126,7 +126,7 @@ public interface ISkillServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for `delete /v1/skills/{skill_id}?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/skills/{skill_id}?beta=true</c>, but is otherwise the
     /// same as <see cref="ISkillService.Delete(SkillDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<SkillDeleteResponse>> Delete(

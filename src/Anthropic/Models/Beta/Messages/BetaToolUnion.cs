@@ -463,7 +463,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaTool"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -484,7 +484,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolBash20241022"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -505,7 +505,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolBash20250124"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -526,7 +526,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaCodeExecutionTool20250522"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -549,7 +549,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaCodeExecutionTool20250825"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -572,7 +572,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaCodeExecutionTool20260120"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -595,7 +595,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolComputerUse20241022"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -618,7 +618,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaMemoryTool20250818"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -639,7 +639,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolComputerUse20250124"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -662,7 +662,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolTextEditor20241022"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -683,7 +683,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolComputerUse20251124"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -706,7 +706,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolTextEditor20250124"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -727,7 +727,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolTextEditor20250429"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -748,7 +748,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolTextEditor20250728"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -769,7 +769,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaWebSearchTool20250305"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -792,7 +792,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaWebFetchTool20250910"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -813,7 +813,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaWebSearchTool20260209"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -836,7 +836,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaWebFetchTool20260209"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -857,7 +857,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolSearchToolBm25_20251119"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -880,7 +880,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolSearchToolRegex20251119"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -903,7 +903,7 @@ public record class BetaToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaMcpToolset"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -923,7 +923,7 @@ public record class BetaToolUnion : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -934,27 +934,27 @@ public record class BetaToolUnion : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaTool value) => {...},
-    ///     (BetaToolBash20241022 value) => {...},
-    ///     (BetaToolBash20250124 value) => {...},
-    ///     (BetaCodeExecutionTool20250522 value) => {...},
-    ///     (BetaCodeExecutionTool20250825 value) => {...},
-    ///     (BetaCodeExecutionTool20260120 value) => {...},
-    ///     (BetaToolComputerUse20241022 value) => {...},
-    ///     (BetaMemoryTool20250818 value) => {...},
-    ///     (BetaToolComputerUse20250124 value) => {...},
-    ///     (BetaToolTextEditor20241022 value) => {...},
-    ///     (BetaToolComputerUse20251124 value) => {...},
-    ///     (BetaToolTextEditor20250124 value) => {...},
-    ///     (BetaToolTextEditor20250429 value) => {...},
-    ///     (BetaToolTextEditor20250728 value) => {...},
-    ///     (BetaWebSearchTool20250305 value) => {...},
-    ///     (BetaWebFetchTool20250910 value) => {...},
-    ///     (BetaWebSearchTool20260209 value) => {...},
-    ///     (BetaWebFetchTool20260209 value) => {...},
-    ///     (BetaToolSearchToolBm25_20251119 value) => {...},
-    ///     (BetaToolSearchToolRegex20251119 value) => {...},
-    ///     (BetaMcpToolset value) => {...}
+    ///     (BetaTool value) =&gt; {...},
+    ///     (BetaToolBash20241022 value) =&gt; {...},
+    ///     (BetaToolBash20250124 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20250522 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20250825 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20260120 value) =&gt; {...},
+    ///     (BetaToolComputerUse20241022 value) =&gt; {...},
+    ///     (BetaMemoryTool20250818 value) =&gt; {...},
+    ///     (BetaToolComputerUse20250124 value) =&gt; {...},
+    ///     (BetaToolTextEditor20241022 value) =&gt; {...},
+    ///     (BetaToolComputerUse20251124 value) =&gt; {...},
+    ///     (BetaToolTextEditor20250124 value) =&gt; {...},
+    ///     (BetaToolTextEditor20250429 value) =&gt; {...},
+    ///     (BetaToolTextEditor20250728 value) =&gt; {...},
+    ///     (BetaWebSearchTool20250305 value) =&gt; {...},
+    ///     (BetaWebFetchTool20250910 value) =&gt; {...},
+    ///     (BetaWebSearchTool20260209 value) =&gt; {...},
+    ///     (BetaWebFetchTool20260209 value) =&gt; {...},
+    ///     (BetaToolSearchToolBm25_20251119 value) =&gt; {...},
+    ///     (BetaToolSearchToolRegex20251119 value) =&gt; {...},
+    ///     (BetaMcpToolset value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -1059,7 +1059,7 @@ public record class BetaToolUnion : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -1070,27 +1070,27 @@ public record class BetaToolUnion : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaTool value) => {...},
-    ///     (BetaToolBash20241022 value) => {...},
-    ///     (BetaToolBash20250124 value) => {...},
-    ///     (BetaCodeExecutionTool20250522 value) => {...},
-    ///     (BetaCodeExecutionTool20250825 value) => {...},
-    ///     (BetaCodeExecutionTool20260120 value) => {...},
-    ///     (BetaToolComputerUse20241022 value) => {...},
-    ///     (BetaMemoryTool20250818 value) => {...},
-    ///     (BetaToolComputerUse20250124 value) => {...},
-    ///     (BetaToolTextEditor20241022 value) => {...},
-    ///     (BetaToolComputerUse20251124 value) => {...},
-    ///     (BetaToolTextEditor20250124 value) => {...},
-    ///     (BetaToolTextEditor20250429 value) => {...},
-    ///     (BetaToolTextEditor20250728 value) => {...},
-    ///     (BetaWebSearchTool20250305 value) => {...},
-    ///     (BetaWebFetchTool20250910 value) => {...},
-    ///     (BetaWebSearchTool20260209 value) => {...},
-    ///     (BetaWebFetchTool20260209 value) => {...},
-    ///     (BetaToolSearchToolBm25_20251119 value) => {...},
-    ///     (BetaToolSearchToolRegex20251119 value) => {...},
-    ///     (BetaMcpToolset value) => {...}
+    ///     (BetaTool value) =&gt; {...},
+    ///     (BetaToolBash20241022 value) =&gt; {...},
+    ///     (BetaToolBash20250124 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20250522 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20250825 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20260120 value) =&gt; {...},
+    ///     (BetaToolComputerUse20241022 value) =&gt; {...},
+    ///     (BetaMemoryTool20250818 value) =&gt; {...},
+    ///     (BetaToolComputerUse20250124 value) =&gt; {...},
+    ///     (BetaToolTextEditor20241022 value) =&gt; {...},
+    ///     (BetaToolComputerUse20251124 value) =&gt; {...},
+    ///     (BetaToolTextEditor20250124 value) =&gt; {...},
+    ///     (BetaToolTextEditor20250429 value) =&gt; {...},
+    ///     (BetaToolTextEditor20250728 value) =&gt; {...},
+    ///     (BetaWebSearchTool20250305 value) =&gt; {...},
+    ///     (BetaWebFetchTool20250910 value) =&gt; {...},
+    ///     (BetaWebSearchTool20260209 value) =&gt; {...},
+    ///     (BetaWebFetchTool20260209 value) =&gt; {...},
+    ///     (BetaToolSearchToolBm25_20251119 value) =&gt; {...},
+    ///     (BetaToolSearchToolRegex20251119 value) =&gt; {...},
+    ///     (BetaMcpToolset value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

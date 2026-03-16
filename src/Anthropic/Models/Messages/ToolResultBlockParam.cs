@@ -184,7 +184,7 @@ public record class ToolResultBlockParamContent : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="string"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -203,14 +203,14 @@ public record class ToolResultBlockParamContent : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="IReadOnlyList<Block>"/>.
+    /// type <see cref="List{T}"/> where <c>T</c> is a <c>Block</c>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBlocks(out var value)) {
-    ///     // `value` is of type `IReadOnlyList<Block>`
+    ///     // `value` is of type `IReadOnlyList&lt;Block&gt;`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
@@ -225,7 +225,7 @@ public record class ToolResultBlockParamContent : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -236,8 +236,8 @@ public record class ToolResultBlockParamContent : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (string value) => {...},
-    ///     (IReadOnlyList<Block> value) => {...}
+    ///     (string value) =&gt; {...},
+    ///     (IReadOnlyList&lt;Block&gt; value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -263,7 +263,7 @@ public record class ToolResultBlockParamContent : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -274,8 +274,8 @@ public record class ToolResultBlockParamContent : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (string value) => {...},
-    ///     (IReadOnlyList<Block> value) => {...}
+    ///     (string value) =&gt; {...},
+    ///     (IReadOnlyList&lt;Block&gt; value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -508,7 +508,7 @@ public record class Block : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="TextBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -529,7 +529,7 @@ public record class Block : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ImageBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -550,7 +550,7 @@ public record class Block : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="SearchResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -571,7 +571,7 @@ public record class Block : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="DocumentBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -592,7 +592,7 @@ public record class Block : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolReferenceBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -614,7 +614,7 @@ public record class Block : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -625,11 +625,11 @@ public record class Block : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (TextBlockParam value) => {...},
-    ///     (ImageBlockParam value) => {...},
-    ///     (SearchResultBlockParam value) => {...},
-    ///     (DocumentBlockParam value) => {...},
-    ///     (ToolReferenceBlockParam value) => {...}
+    ///     (TextBlockParam value) =&gt; {...},
+    ///     (ImageBlockParam value) =&gt; {...},
+    ///     (SearchResultBlockParam value) =&gt; {...},
+    ///     (DocumentBlockParam value) =&gt; {...},
+    ///     (ToolReferenceBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -668,7 +668,7 @@ public record class Block : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -679,11 +679,11 @@ public record class Block : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (TextBlockParam value) => {...},
-    ///     (ImageBlockParam value) => {...},
-    ///     (SearchResultBlockParam value) => {...},
-    ///     (DocumentBlockParam value) => {...},
-    ///     (ToolReferenceBlockParam value) => {...}
+    ///     (TextBlockParam value) =&gt; {...},
+    ///     (ImageBlockParam value) =&gt; {...},
+    ///     (SearchResultBlockParam value) =&gt; {...},
+    ///     (DocumentBlockParam value) =&gt; {...},
+    ///     (ToolReferenceBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

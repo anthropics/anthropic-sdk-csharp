@@ -300,7 +300,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="TextBlock"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -321,7 +321,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ThinkingBlock"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -342,7 +342,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="RedactedThinkingBlock"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -363,7 +363,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolUseBlock"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -384,7 +384,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ServerToolUseBlock"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -405,7 +405,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="WebSearchToolResultBlock"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -426,7 +426,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="WebFetchToolResultBlock"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -447,7 +447,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="CodeExecutionToolResultBlock"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -470,7 +470,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BashCodeExecutionToolResultBlock"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -493,7 +493,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="TextEditorCodeExecutionToolResultBlock"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -516,7 +516,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolSearchToolResultBlock"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -539,7 +539,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ContainerUploadBlock"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -559,7 +559,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -570,18 +570,18 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (TextBlock value) => {...},
-    ///     (ThinkingBlock value) => {...},
-    ///     (RedactedThinkingBlock value) => {...},
-    ///     (ToolUseBlock value) => {...},
-    ///     (ServerToolUseBlock value) => {...},
-    ///     (WebSearchToolResultBlock value) => {...},
-    ///     (WebFetchToolResultBlock value) => {...},
-    ///     (CodeExecutionToolResultBlock value) => {...},
-    ///     (BashCodeExecutionToolResultBlock value) => {...},
-    ///     (TextEditorCodeExecutionToolResultBlock value) => {...},
-    ///     (ToolSearchToolResultBlock value) => {...},
-    ///     (ContainerUploadBlock value) => {...}
+    ///     (TextBlock value) =&gt; {...},
+    ///     (ThinkingBlock value) =&gt; {...},
+    ///     (RedactedThinkingBlock value) =&gt; {...},
+    ///     (ToolUseBlock value) =&gt; {...},
+    ///     (ServerToolUseBlock value) =&gt; {...},
+    ///     (WebSearchToolResultBlock value) =&gt; {...},
+    ///     (WebFetchToolResultBlock value) =&gt; {...},
+    ///     (CodeExecutionToolResultBlock value) =&gt; {...},
+    ///     (BashCodeExecutionToolResultBlock value) =&gt; {...},
+    ///     (TextEditorCodeExecutionToolResultBlock value) =&gt; {...},
+    ///     (ToolSearchToolResultBlock value) =&gt; {...},
+    ///     (ContainerUploadBlock value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -650,7 +650,7 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -661,18 +661,18 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (TextBlock value) => {...},
-    ///     (ThinkingBlock value) => {...},
-    ///     (RedactedThinkingBlock value) => {...},
-    ///     (ToolUseBlock value) => {...},
-    ///     (ServerToolUseBlock value) => {...},
-    ///     (WebSearchToolResultBlock value) => {...},
-    ///     (WebFetchToolResultBlock value) => {...},
-    ///     (CodeExecutionToolResultBlock value) => {...},
-    ///     (BashCodeExecutionToolResultBlock value) => {...},
-    ///     (TextEditorCodeExecutionToolResultBlock value) => {...},
-    ///     (ToolSearchToolResultBlock value) => {...},
-    ///     (ContainerUploadBlock value) => {...}
+    ///     (TextBlock value) =&gt; {...},
+    ///     (ThinkingBlock value) =&gt; {...},
+    ///     (RedactedThinkingBlock value) =&gt; {...},
+    ///     (ToolUseBlock value) =&gt; {...},
+    ///     (ServerToolUseBlock value) =&gt; {...},
+    ///     (WebSearchToolResultBlock value) =&gt; {...},
+    ///     (WebFetchToolResultBlock value) =&gt; {...},
+    ///     (CodeExecutionToolResultBlock value) =&gt; {...},
+    ///     (BashCodeExecutionToolResultBlock value) =&gt; {...},
+    ///     (TextEditorCodeExecutionToolResultBlock value) =&gt; {...},
+    ///     (ToolSearchToolResultBlock value) =&gt; {...},
+    ///     (ContainerUploadBlock value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

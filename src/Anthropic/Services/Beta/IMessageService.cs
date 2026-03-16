@@ -31,13 +31,14 @@ public interface IMessageService
     IBatchService Batches { get; }
 
     /// <summary>
-    /// Send a structured list of input messages with text and/or image content,
-    /// and the model will generate the next message in the conversation.
+    /// Send a structured list of input messages with text and/or image content, and the
+    /// model will generate the next message in the conversation.
     ///
     /// <para>The Messages API can be used for either single queries or stateless
     /// multi-turn conversations.</para>
     ///
-    /// <para>Learn more about the Messages API in our [user guide](https://docs.claude.com/en/docs/initial-setup)</para>
+    /// <para>Learn more about the Messages API in our [user
+    /// guide](https://docs.claude.com/en/docs/initial-setup)</para>
     /// </summary>
     Task<BetaMessage> Create(
         MessageCreateParams parameters,
@@ -45,13 +46,14 @@ public interface IMessageService
     );
 
     /// <summary>
-    /// Send a structured list of input messages with text and/or image content,
-    /// and the model will generate the next message in the conversation.
+    /// Send a structured list of input messages with text and/or image content, and the
+    /// model will generate the next message in the conversation.
     ///
     /// <para>The Messages API can be used for either single queries or stateless
     /// multi-turn conversations.</para>
     ///
-    /// <para>Learn more about the Messages API in our [user guide](https://docs.claude.com/en/docs/initial-setup)</para>
+    /// <para>Learn more about the Messages API in our [user
+    /// guide](https://docs.claude.com/en/docs/initial-setup)</para>
     /// </summary>
     IAsyncEnumerable<BetaRawMessageStreamEvent> CreateStreaming(
         MessageCreateParams parameters,
@@ -61,10 +63,11 @@ public interface IMessageService
     /// <summary>
     /// Count the number of tokens in a Message.
     ///
-    /// <para>The Token Count API can be used to count the number of tokens in a Message,
-    /// including tools, images, and documents, without creating it.</para>
+    /// <para>The Token Count API can be used to count the number of tokens in a
+    /// Message, including tools, images, and documents, without creating it.</para>
     ///
-    /// <para>Learn more about token counting in our [user guide](https://docs.claude.com/en/docs/build-with-claude/token-counting)</para>
+    /// <para>Learn more about token counting in our [user
+    /// guide](https://docs.claude.com/en/docs/build-with-claude/token-counting)</para>
     /// </summary>
     Task<BetaMessageTokensCount> CountTokens(
         MessageCountTokensParams parameters,
@@ -88,7 +91,7 @@ public interface IMessageServiceWithRawResponse
     IBatchServiceWithRawResponse Batches { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for `post /v1/messages?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/messages?beta=true</c>, but is otherwise the
     /// same as <see cref="IMessageService.Create(MessageCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaMessage>> Create(
@@ -97,7 +100,7 @@ public interface IMessageServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for `post /v1/messages?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/messages?beta=true</c>, but is otherwise the
     /// same as <see cref="IMessageService.CreateStreaming(MessageCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<StreamingHttpResponse<BetaRawMessageStreamEvent>> CreateStreaming(
@@ -106,7 +109,7 @@ public interface IMessageServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for `post /v1/messages/count_tokens?beta=true`, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/messages/count_tokens?beta=true</c>, but is otherwise the
     /// same as <see cref="IMessageService.CountTokens(MessageCountTokensParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaMessageTokensCount>> CountTokens(

@@ -340,7 +340,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaTextBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -361,7 +361,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaImageBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -382,7 +382,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaRequestDocumentBlock"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -403,7 +403,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaSearchResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -424,7 +424,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaThinkingBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -445,7 +445,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaRedactedThinkingBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -468,7 +468,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolUseBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -489,7 +489,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -510,7 +510,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaServerToolUseBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -531,7 +531,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaWebSearchToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -554,7 +554,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaWebFetchToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -577,7 +577,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaCodeExecutionToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -600,7 +600,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaBashCodeExecutionToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -623,7 +623,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaTextEditorCodeExecutionToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -646,7 +646,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaToolSearchToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -669,7 +669,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaMcpToolUseBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -690,7 +690,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaRequestMcpToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -713,7 +713,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaContainerUploadBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -734,7 +734,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaCompactionBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -754,7 +754,7 @@ public record class BetaContentBlockParam : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -765,25 +765,25 @@ public record class BetaContentBlockParam : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaTextBlockParam value) => {...},
-    ///     (BetaImageBlockParam value) => {...},
-    ///     (BetaRequestDocumentBlock value) => {...},
-    ///     (BetaSearchResultBlockParam value) => {...},
-    ///     (BetaThinkingBlockParam value) => {...},
-    ///     (BetaRedactedThinkingBlockParam value) => {...},
-    ///     (BetaToolUseBlockParam value) => {...},
-    ///     (BetaToolResultBlockParam value) => {...},
-    ///     (BetaServerToolUseBlockParam value) => {...},
-    ///     (BetaWebSearchToolResultBlockParam value) => {...},
-    ///     (BetaWebFetchToolResultBlockParam value) => {...},
-    ///     (BetaCodeExecutionToolResultBlockParam value) => {...},
-    ///     (BetaBashCodeExecutionToolResultBlockParam value) => {...},
-    ///     (BetaTextEditorCodeExecutionToolResultBlockParam value) => {...},
-    ///     (BetaToolSearchToolResultBlockParam value) => {...},
-    ///     (BetaMcpToolUseBlockParam value) => {...},
-    ///     (BetaRequestMcpToolResultBlockParam value) => {...},
-    ///     (BetaContainerUploadBlockParam value) => {...},
-    ///     (BetaCompactionBlockParam value) => {...}
+    ///     (BetaTextBlockParam value) =&gt; {...},
+    ///     (BetaImageBlockParam value) =&gt; {...},
+    ///     (BetaRequestDocumentBlock value) =&gt; {...},
+    ///     (BetaSearchResultBlockParam value) =&gt; {...},
+    ///     (BetaThinkingBlockParam value) =&gt; {...},
+    ///     (BetaRedactedThinkingBlockParam value) =&gt; {...},
+    ///     (BetaToolUseBlockParam value) =&gt; {...},
+    ///     (BetaToolResultBlockParam value) =&gt; {...},
+    ///     (BetaServerToolUseBlockParam value) =&gt; {...},
+    ///     (BetaWebSearchToolResultBlockParam value) =&gt; {...},
+    ///     (BetaWebFetchToolResultBlockParam value) =&gt; {...},
+    ///     (BetaCodeExecutionToolResultBlockParam value) =&gt; {...},
+    ///     (BetaBashCodeExecutionToolResultBlockParam value) =&gt; {...},
+    ///     (BetaTextEditorCodeExecutionToolResultBlockParam value) =&gt; {...},
+    ///     (BetaToolSearchToolResultBlockParam value) =&gt; {...},
+    ///     (BetaMcpToolUseBlockParam value) =&gt; {...},
+    ///     (BetaRequestMcpToolResultBlockParam value) =&gt; {...},
+    ///     (BetaContainerUploadBlockParam value) =&gt; {...},
+    ///     (BetaCompactionBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -880,7 +880,7 @@ public record class BetaContentBlockParam : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -891,25 +891,25 @@ public record class BetaContentBlockParam : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaTextBlockParam value) => {...},
-    ///     (BetaImageBlockParam value) => {...},
-    ///     (BetaRequestDocumentBlock value) => {...},
-    ///     (BetaSearchResultBlockParam value) => {...},
-    ///     (BetaThinkingBlockParam value) => {...},
-    ///     (BetaRedactedThinkingBlockParam value) => {...},
-    ///     (BetaToolUseBlockParam value) => {...},
-    ///     (BetaToolResultBlockParam value) => {...},
-    ///     (BetaServerToolUseBlockParam value) => {...},
-    ///     (BetaWebSearchToolResultBlockParam value) => {...},
-    ///     (BetaWebFetchToolResultBlockParam value) => {...},
-    ///     (BetaCodeExecutionToolResultBlockParam value) => {...},
-    ///     (BetaBashCodeExecutionToolResultBlockParam value) => {...},
-    ///     (BetaTextEditorCodeExecutionToolResultBlockParam value) => {...},
-    ///     (BetaToolSearchToolResultBlockParam value) => {...},
-    ///     (BetaMcpToolUseBlockParam value) => {...},
-    ///     (BetaRequestMcpToolResultBlockParam value) => {...},
-    ///     (BetaContainerUploadBlockParam value) => {...},
-    ///     (BetaCompactionBlockParam value) => {...}
+    ///     (BetaTextBlockParam value) =&gt; {...},
+    ///     (BetaImageBlockParam value) =&gt; {...},
+    ///     (BetaRequestDocumentBlock value) =&gt; {...},
+    ///     (BetaSearchResultBlockParam value) =&gt; {...},
+    ///     (BetaThinkingBlockParam value) =&gt; {...},
+    ///     (BetaRedactedThinkingBlockParam value) =&gt; {...},
+    ///     (BetaToolUseBlockParam value) =&gt; {...},
+    ///     (BetaToolResultBlockParam value) =&gt; {...},
+    ///     (BetaServerToolUseBlockParam value) =&gt; {...},
+    ///     (BetaWebSearchToolResultBlockParam value) =&gt; {...},
+    ///     (BetaWebFetchToolResultBlockParam value) =&gt; {...},
+    ///     (BetaCodeExecutionToolResultBlockParam value) =&gt; {...},
+    ///     (BetaBashCodeExecutionToolResultBlockParam value) =&gt; {...},
+    ///     (BetaTextEditorCodeExecutionToolResultBlockParam value) =&gt; {...},
+    ///     (BetaToolSearchToolResultBlockParam value) =&gt; {...},
+    ///     (BetaMcpToolUseBlockParam value) =&gt; {...},
+    ///     (BetaRequestMcpToolResultBlockParam value) =&gt; {...},
+    ///     (BetaContainerUploadBlockParam value) =&gt; {...},
+    ///     (BetaCompactionBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

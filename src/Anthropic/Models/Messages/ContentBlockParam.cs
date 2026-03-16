@@ -264,7 +264,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="TextBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -285,7 +285,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ImageBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -306,7 +306,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="DocumentBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -327,7 +327,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="SearchResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -348,7 +348,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ThinkingBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -369,7 +369,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="RedactedThinkingBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -390,7 +390,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolUseBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -411,7 +411,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -432,7 +432,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ServerToolUseBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -453,7 +453,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="WebSearchToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -476,7 +476,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="WebFetchToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -499,7 +499,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="CodeExecutionToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -522,7 +522,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BashCodeExecutionToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -545,7 +545,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="TextEditorCodeExecutionToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -568,7 +568,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolSearchToolResultBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -591,7 +591,7 @@ public record class ContentBlockParam : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ContainerUploadBlockParam"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -611,7 +611,7 @@ public record class ContentBlockParam : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -622,22 +622,22 @@ public record class ContentBlockParam : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (TextBlockParam value) => {...},
-    ///     (ImageBlockParam value) => {...},
-    ///     (DocumentBlockParam value) => {...},
-    ///     (SearchResultBlockParam value) => {...},
-    ///     (ThinkingBlockParam value) => {...},
-    ///     (RedactedThinkingBlockParam value) => {...},
-    ///     (ToolUseBlockParam value) => {...},
-    ///     (ToolResultBlockParam value) => {...},
-    ///     (ServerToolUseBlockParam value) => {...},
-    ///     (WebSearchToolResultBlockParam value) => {...},
-    ///     (WebFetchToolResultBlockParam value) => {...},
-    ///     (CodeExecutionToolResultBlockParam value) => {...},
-    ///     (BashCodeExecutionToolResultBlockParam value) => {...},
-    ///     (TextEditorCodeExecutionToolResultBlockParam value) => {...},
-    ///     (ToolSearchToolResultBlockParam value) => {...},
-    ///     (ContainerUploadBlockParam value) => {...}
+    ///     (TextBlockParam value) =&gt; {...},
+    ///     (ImageBlockParam value) =&gt; {...},
+    ///     (DocumentBlockParam value) =&gt; {...},
+    ///     (SearchResultBlockParam value) =&gt; {...},
+    ///     (ThinkingBlockParam value) =&gt; {...},
+    ///     (RedactedThinkingBlockParam value) =&gt; {...},
+    ///     (ToolUseBlockParam value) =&gt; {...},
+    ///     (ToolResultBlockParam value) =&gt; {...},
+    ///     (ServerToolUseBlockParam value) =&gt; {...},
+    ///     (WebSearchToolResultBlockParam value) =&gt; {...},
+    ///     (WebFetchToolResultBlockParam value) =&gt; {...},
+    ///     (CodeExecutionToolResultBlockParam value) =&gt; {...},
+    ///     (BashCodeExecutionToolResultBlockParam value) =&gt; {...},
+    ///     (TextEditorCodeExecutionToolResultBlockParam value) =&gt; {...},
+    ///     (ToolSearchToolResultBlockParam value) =&gt; {...},
+    ///     (ContainerUploadBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -722,7 +722,7 @@ public record class ContentBlockParam : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -733,22 +733,22 @@ public record class ContentBlockParam : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (TextBlockParam value) => {...},
-    ///     (ImageBlockParam value) => {...},
-    ///     (DocumentBlockParam value) => {...},
-    ///     (SearchResultBlockParam value) => {...},
-    ///     (ThinkingBlockParam value) => {...},
-    ///     (RedactedThinkingBlockParam value) => {...},
-    ///     (ToolUseBlockParam value) => {...},
-    ///     (ToolResultBlockParam value) => {...},
-    ///     (ServerToolUseBlockParam value) => {...},
-    ///     (WebSearchToolResultBlockParam value) => {...},
-    ///     (WebFetchToolResultBlockParam value) => {...},
-    ///     (CodeExecutionToolResultBlockParam value) => {...},
-    ///     (BashCodeExecutionToolResultBlockParam value) => {...},
-    ///     (TextEditorCodeExecutionToolResultBlockParam value) => {...},
-    ///     (ToolSearchToolResultBlockParam value) => {...},
-    ///     (ContainerUploadBlockParam value) => {...}
+    ///     (TextBlockParam value) =&gt; {...},
+    ///     (ImageBlockParam value) =&gt; {...},
+    ///     (DocumentBlockParam value) =&gt; {...},
+    ///     (SearchResultBlockParam value) =&gt; {...},
+    ///     (ThinkingBlockParam value) =&gt; {...},
+    ///     (RedactedThinkingBlockParam value) =&gt; {...},
+    ///     (ToolUseBlockParam value) =&gt; {...},
+    ///     (ToolResultBlockParam value) =&gt; {...},
+    ///     (ServerToolUseBlockParam value) =&gt; {...},
+    ///     (WebSearchToolResultBlockParam value) =&gt; {...},
+    ///     (WebFetchToolResultBlockParam value) =&gt; {...},
+    ///     (CodeExecutionToolResultBlockParam value) =&gt; {...},
+    ///     (BashCodeExecutionToolResultBlockParam value) =&gt; {...},
+    ///     (TextEditorCodeExecutionToolResultBlockParam value) =&gt; {...},
+    ///     (ToolSearchToolResultBlockParam value) =&gt; {...},
+    ///     (ContainerUploadBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>

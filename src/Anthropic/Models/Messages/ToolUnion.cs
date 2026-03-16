@@ -295,7 +295,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="Tool"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -316,7 +316,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolBash20250124"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -337,7 +337,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="CodeExecutionTool20250522"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -360,7 +360,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="CodeExecutionTool20250825"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -383,7 +383,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="CodeExecutionTool20260120"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -406,7 +406,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="MemoryTool20250818"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -427,7 +427,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolTextEditor20250124"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -448,7 +448,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolTextEditor20250429"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -469,7 +469,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolTextEditor20250728"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -490,7 +490,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="WebSearchTool20250305"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -511,7 +511,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="WebFetchTool20250910"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -532,7 +532,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="WebSearchTool20260209"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -553,7 +553,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="WebFetchTool20260209"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -574,7 +574,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolSearchToolBm25_20251119"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -597,7 +597,7 @@ public record class ToolUnion : ModelBase
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolSearchToolRegex20251119"/>.
     ///
-    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
@@ -619,7 +619,7 @@ public record class ToolUnion : ModelBase
     /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
     /// if you need your function parameters to return something.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -630,21 +630,21 @@ public record class ToolUnion : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (Tool value) => {...},
-    ///     (ToolBash20250124 value) => {...},
-    ///     (CodeExecutionTool20250522 value) => {...},
-    ///     (CodeExecutionTool20250825 value) => {...},
-    ///     (CodeExecutionTool20260120 value) => {...},
-    ///     (MemoryTool20250818 value) => {...},
-    ///     (ToolTextEditor20250124 value) => {...},
-    ///     (ToolTextEditor20250429 value) => {...},
-    ///     (ToolTextEditor20250728 value) => {...},
-    ///     (WebSearchTool20250305 value) => {...},
-    ///     (WebFetchTool20250910 value) => {...},
-    ///     (WebSearchTool20260209 value) => {...},
-    ///     (WebFetchTool20260209 value) => {...},
-    ///     (ToolSearchToolBm25_20251119 value) => {...},
-    ///     (ToolSearchToolRegex20251119 value) => {...}
+    ///     (Tool value) =&gt; {...},
+    ///     (ToolBash20250124 value) =&gt; {...},
+    ///     (CodeExecutionTool20250522 value) =&gt; {...},
+    ///     (CodeExecutionTool20250825 value) =&gt; {...},
+    ///     (CodeExecutionTool20260120 value) =&gt; {...},
+    ///     (MemoryTool20250818 value) =&gt; {...},
+    ///     (ToolTextEditor20250124 value) =&gt; {...},
+    ///     (ToolTextEditor20250429 value) =&gt; {...},
+    ///     (ToolTextEditor20250728 value) =&gt; {...},
+    ///     (WebSearchTool20250305 value) =&gt; {...},
+    ///     (WebFetchTool20250910 value) =&gt; {...},
+    ///     (WebSearchTool20260209 value) =&gt; {...},
+    ///     (WebFetchTool20260209 value) =&gt; {...},
+    ///     (ToolSearchToolBm25_20251119 value) =&gt; {...},
+    ///     (ToolSearchToolRegex20251119 value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -725,7 +725,7 @@ public record class ToolUnion : ModelBase
     /// Calls the function parameter corresponding to the variant the instance was constructed with and
     /// returns its result.
     ///
-    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
     /// if you don't need your function parameters to return a value.</para>
     ///
     /// <exception cref="AnthropicInvalidDataException">
@@ -736,21 +736,21 @@ public record class ToolUnion : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (Tool value) => {...},
-    ///     (ToolBash20250124 value) => {...},
-    ///     (CodeExecutionTool20250522 value) => {...},
-    ///     (CodeExecutionTool20250825 value) => {...},
-    ///     (CodeExecutionTool20260120 value) => {...},
-    ///     (MemoryTool20250818 value) => {...},
-    ///     (ToolTextEditor20250124 value) => {...},
-    ///     (ToolTextEditor20250429 value) => {...},
-    ///     (ToolTextEditor20250728 value) => {...},
-    ///     (WebSearchTool20250305 value) => {...},
-    ///     (WebFetchTool20250910 value) => {...},
-    ///     (WebSearchTool20260209 value) => {...},
-    ///     (WebFetchTool20260209 value) => {...},
-    ///     (ToolSearchToolBm25_20251119 value) => {...},
-    ///     (ToolSearchToolRegex20251119 value) => {...}
+    ///     (Tool value) =&gt; {...},
+    ///     (ToolBash20250124 value) =&gt; {...},
+    ///     (CodeExecutionTool20250522 value) =&gt; {...},
+    ///     (CodeExecutionTool20250825 value) =&gt; {...},
+    ///     (CodeExecutionTool20260120 value) =&gt; {...},
+    ///     (MemoryTool20250818 value) =&gt; {...},
+    ///     (ToolTextEditor20250124 value) =&gt; {...},
+    ///     (ToolTextEditor20250429 value) =&gt; {...},
+    ///     (ToolTextEditor20250728 value) =&gt; {...},
+    ///     (WebSearchTool20250305 value) =&gt; {...},
+    ///     (WebFetchTool20250910 value) =&gt; {...},
+    ///     (WebSearchTool20260209 value) =&gt; {...},
+    ///     (WebFetchTool20260209 value) =&gt; {...},
+    ///     (ToolSearchToolBm25_20251119 value) =&gt; {...},
+    ///     (ToolSearchToolRegex20251119 value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
