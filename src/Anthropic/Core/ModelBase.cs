@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Exceptions;
+using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Messages;
 using Batches = Anthropic.Models.Messages.Batches;
@@ -26,6 +27,7 @@ public abstract record class ModelBase
         Converters =
         {
             new FrozenDictionaryConverterFactory(),
+            new ApiEnumConverter<string, ErrorType>(),
             new ApiEnumConverter<string, MediaType>(),
             new ApiEnumConverter<string, BashCodeExecutionToolResultErrorCode>(),
             new ApiEnumConverter<string, Ttl>(),
