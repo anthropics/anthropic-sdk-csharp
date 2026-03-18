@@ -12,14 +12,14 @@ public class BetaSkillParamsTest : TestBase
     {
         var model = new BetaSkillParams
         {
-            SkillID = "x",
+            SkillID = "pdf",
             Type = BetaSkillParamsType.Anthropic,
-            Version = "x",
+            Version = "latest",
         };
 
-        string expectedSkillID = "x";
+        string expectedSkillID = "pdf";
         ApiEnum<string, BetaSkillParamsType> expectedType = BetaSkillParamsType.Anthropic;
-        string expectedVersion = "x";
+        string expectedVersion = "latest";
 
         Assert.Equal(expectedSkillID, model.SkillID);
         Assert.Equal(expectedType, model.Type);
@@ -31,9 +31,9 @@ public class BetaSkillParamsTest : TestBase
     {
         var model = new BetaSkillParams
         {
-            SkillID = "x",
+            SkillID = "pdf",
             Type = BetaSkillParamsType.Anthropic,
-            Version = "x",
+            Version = "latest",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -50,9 +50,9 @@ public class BetaSkillParamsTest : TestBase
     {
         var model = new BetaSkillParams
         {
-            SkillID = "x",
+            SkillID = "pdf",
             Type = BetaSkillParamsType.Anthropic,
-            Version = "x",
+            Version = "latest",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -62,9 +62,9 @@ public class BetaSkillParamsTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedSkillID = "x";
+        string expectedSkillID = "pdf";
         ApiEnum<string, BetaSkillParamsType> expectedType = BetaSkillParamsType.Anthropic;
-        string expectedVersion = "x";
+        string expectedVersion = "latest";
 
         Assert.Equal(expectedSkillID, deserialized.SkillID);
         Assert.Equal(expectedType, deserialized.Type);
@@ -76,9 +76,9 @@ public class BetaSkillParamsTest : TestBase
     {
         var model = new BetaSkillParams
         {
-            SkillID = "x",
+            SkillID = "pdf",
             Type = BetaSkillParamsType.Anthropic,
-            Version = "x",
+            Version = "latest",
         };
 
         model.Validate();
@@ -87,7 +87,7 @@ public class BetaSkillParamsTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaSkillParams { SkillID = "x", Type = BetaSkillParamsType.Anthropic };
+        var model = new BetaSkillParams { SkillID = "pdf", Type = BetaSkillParamsType.Anthropic };
 
         Assert.Null(model.Version);
         Assert.False(model.RawData.ContainsKey("version"));
@@ -96,7 +96,7 @@ public class BetaSkillParamsTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaSkillParams { SkillID = "x", Type = BetaSkillParamsType.Anthropic };
+        var model = new BetaSkillParams { SkillID = "pdf", Type = BetaSkillParamsType.Anthropic };
 
         model.Validate();
     }
@@ -106,7 +106,7 @@ public class BetaSkillParamsTest : TestBase
     {
         var model = new BetaSkillParams
         {
-            SkillID = "x",
+            SkillID = "pdf",
             Type = BetaSkillParamsType.Anthropic,
 
             // Null should be interpreted as omitted for these properties
@@ -122,7 +122,7 @@ public class BetaSkillParamsTest : TestBase
     {
         var model = new BetaSkillParams
         {
-            SkillID = "x",
+            SkillID = "pdf",
             Type = BetaSkillParamsType.Anthropic,
 
             // Null should be interpreted as omitted for these properties
@@ -137,9 +137,9 @@ public class BetaSkillParamsTest : TestBase
     {
         var model = new BetaSkillParams
         {
-            SkillID = "x",
+            SkillID = "pdf",
             Type = BetaSkillParamsType.Anthropic,
-            Version = "x",
+            Version = "latest",
         };
 
         BetaSkillParams copied = new(model);

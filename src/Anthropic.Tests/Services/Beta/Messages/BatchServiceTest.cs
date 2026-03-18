@@ -33,9 +33,9 @@ public class BatchServiceTest : TestBase
                                 [
                                     new()
                                     {
-                                        SkillID = "x",
+                                        SkillID = "pdf",
                                         Type = BetaSkillParamsType.Anthropic,
-                                        Version = "x",
+                                        Version = "latest",
                                     },
                                 ],
                             },

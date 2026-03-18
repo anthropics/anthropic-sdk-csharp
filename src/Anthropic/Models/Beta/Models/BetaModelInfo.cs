@@ -26,6 +26,19 @@ public sealed record class BetaModelInfo : JsonModel
     }
 
     /// <summary>
+    /// Model capability information.
+    /// </summary>
+    public required BetaModelCapabilities? Capabilities
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaModelCapabilities>("capabilities");
+        }
+        init { this._rawData.Set("capabilities", value); }
+    }
+
+    /// <summary>
     /// RFC 3339 datetime string representing the time at which the model was released.
     /// May be set to an epoch value if the release date is unknown.
     /// </summary>
@@ -53,6 +66,32 @@ public sealed record class BetaModelInfo : JsonModel
     }
 
     /// <summary>
+    /// Maximum input context window size in tokens for this model.
+    /// </summary>
+    public required long? MaxInputTokens
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("max_input_tokens");
+        }
+        init { this._rawData.Set("max_input_tokens", value); }
+    }
+
+    /// <summary>
+    /// Maximum value for the `max_tokens` parameter when using this model.
+    /// </summary>
+    public required long? MaxTokens
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("max_tokens");
+        }
+        init { this._rawData.Set("max_tokens", value); }
+    }
+
+    /// <summary>
     /// Object type.
     ///
     /// <para>For Models, this is always `"model"`.</para>
@@ -71,8 +110,11 @@ public sealed record class BetaModelInfo : JsonModel
     public override void Validate()
     {
         _ = this.ID;
+        this.Capabilities?.Validate();
         _ = this.CreatedAt;
         _ = this.DisplayName;
+        _ = this.MaxInputTokens;
+        _ = this.MaxTokens;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("model")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");

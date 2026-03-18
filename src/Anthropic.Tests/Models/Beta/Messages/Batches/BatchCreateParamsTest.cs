@@ -36,9 +36,9 @@ public class BatchCreateParamsTest : TestBase
                             [
                                 new()
                                 {
-                                    SkillID = "x",
+                                    SkillID = "pdf",
                                     Type = Messages::BetaSkillParamsType.Anthropic,
-                                    Version = "x",
+                                    Version = "latest",
                                 },
                             ],
                         },
@@ -179,9 +179,9 @@ public class BatchCreateParamsTest : TestBase
                         [
                             new()
                             {
-                                SkillID = "x",
+                                SkillID = "pdf",
                                 Type = Messages::BetaSkillParamsType.Anthropic,
-                                Version = "x",
+                                Version = "latest",
                             },
                         ],
                     },
@@ -338,9 +338,9 @@ public class BatchCreateParamsTest : TestBase
                             [
                                 new()
                                 {
-                                    SkillID = "x",
+                                    SkillID = "pdf",
                                     Type = Messages::BetaSkillParamsType.Anthropic,
-                                    Version = "x",
+                                    Version = "latest",
                                 },
                             ],
                         },
@@ -489,9 +489,9 @@ public class BatchCreateParamsTest : TestBase
                             [
                                 new()
                                 {
-                                    SkillID = "x",
+                                    SkillID = "pdf",
                                     Type = Messages::BetaSkillParamsType.Anthropic,
-                                    Version = "x",
+                                    Version = "latest",
                                 },
                             ],
                         },
@@ -643,9 +643,9 @@ public class BatchCreateParamsTest : TestBase
                             [
                                 new()
                                 {
-                                    SkillID = "x",
+                                    SkillID = "pdf",
                                     Type = Messages::BetaSkillParamsType.Anthropic,
-                                    Version = "x",
+                                    Version = "latest",
                                 },
                             ],
                         },
@@ -796,9 +796,9 @@ public class BatchCreateParamsTest : TestBase
                             [
                                 new()
                                 {
-                                    SkillID = "x",
+                                    SkillID = "pdf",
                                     Type = Messages::BetaSkillParamsType.Anthropic,
-                                    Version = "x",
+                                    Version = "latest",
                                 },
                             ],
                         },
@@ -952,9 +952,9 @@ public class BatchCreateParamsTest : TestBase
                             [
                                 new()
                                 {
-                                    SkillID = "x",
+                                    SkillID = "pdf",
                                     Type = Messages::BetaSkillParamsType.Anthropic,
-                                    Version = "x",
+                                    Version = "latest",
                                 },
                             ],
                         },
@@ -1104,9 +1104,9 @@ public class RequestTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::BetaSkillParamsType.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -1233,9 +1233,9 @@ public class RequestTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -1370,9 +1370,9 @@ public class RequestTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::BetaSkillParamsType.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -1510,9 +1510,9 @@ public class RequestTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::BetaSkillParamsType.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -1646,9 +1646,9 @@ public class RequestTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -1783,9 +1783,9 @@ public class RequestTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::BetaSkillParamsType.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -1920,9 +1920,9 @@ public class RequestTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::BetaSkillParamsType.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -2059,9 +2059,9 @@ public class ParamsTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -2190,9 +2190,9 @@ public class ParamsTest : TestBase
             [
                 new()
                 {
-                    SkillID = "x",
+                    SkillID = "pdf",
                     Type = Messages::BetaSkillParamsType.Anthropic,
-                    Version = "x",
+                    Version = "latest",
                 },
             ],
         };
@@ -2366,9 +2366,9 @@ public class ParamsTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -2502,9 +2502,9 @@ public class ParamsTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -2637,9 +2637,9 @@ public class ParamsTest : TestBase
             [
                 new()
                 {
-                    SkillID = "x",
+                    SkillID = "pdf",
                     Type = Messages::BetaSkillParamsType.Anthropic,
-                    Version = "x",
+                    Version = "latest",
                 },
             ],
         };
@@ -2813,9 +2813,9 @@ public class ParamsTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -2946,9 +2946,9 @@ public class ParamsTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -3021,9 +3021,9 @@ public class ParamsTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -3071,9 +3071,9 @@ public class ParamsTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -3161,9 +3161,9 @@ public class ParamsTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -3646,9 +3646,9 @@ public class ParamsTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -3778,9 +3778,9 @@ public class ContainerTest : TestBase
             [
                 new()
                 {
-                    SkillID = "x",
+                    SkillID = "pdf",
                     Type = Messages::BetaSkillParamsType.Anthropic,
-                    Version = "x",
+                    Version = "latest",
                 },
             ],
         };
@@ -3804,9 +3804,9 @@ public class ContainerTest : TestBase
             [
                 new()
                 {
-                    SkillID = "x",
+                    SkillID = "pdf",
                     Type = Messages::BetaSkillParamsType.Anthropic,
-                    Version = "x",
+                    Version = "latest",
                 },
             ],
         };

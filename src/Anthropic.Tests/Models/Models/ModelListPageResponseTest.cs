@@ -18,8 +18,39 @@ public class ModelListPageResponseTest : TestBase
                 new()
                 {
                     ID = "claude-opus-4-6",
+                    Capabilities = new()
+                    {
+                        Batch = new(true),
+                        Citations = new(true),
+                        CodeExecution = new(true),
+                        ContextManagement = new()
+                        {
+                            ClearThinking20251015 = new(true),
+                            ClearToolUses20250919 = new(true),
+                            Compact20260112 = new(true),
+                            Supported = true,
+                        },
+                        Effort = new()
+                        {
+                            High = new(true),
+                            Low = new(true),
+                            Max = new(true),
+                            Medium = new(true),
+                            Supported = true,
+                        },
+                        ImageInput = new(true),
+                        PdfInput = new(true),
+                        StructuredOutputs = new(true),
+                        Thinking = new()
+                        {
+                            Supported = true,
+                            Types = new() { Adaptive = new(true), Enabled = new(true) },
+                        },
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
                     DisplayName = "Claude Opus 4.6",
+                    MaxInputTokens = 0,
+                    MaxTokens = 0,
                 },
             ],
             FirstID = "first_id",
@@ -32,8 +63,39 @@ public class ModelListPageResponseTest : TestBase
             new()
             {
                 ID = "claude-opus-4-6",
+                Capabilities = new()
+                {
+                    Batch = new(true),
+                    Citations = new(true),
+                    CodeExecution = new(true),
+                    ContextManagement = new()
+                    {
+                        ClearThinking20251015 = new(true),
+                        ClearToolUses20250919 = new(true),
+                        Compact20260112 = new(true),
+                        Supported = true,
+                    },
+                    Effort = new()
+                    {
+                        High = new(true),
+                        Low = new(true),
+                        Max = new(true),
+                        Medium = new(true),
+                        Supported = true,
+                    },
+                    ImageInput = new(true),
+                    PdfInput = new(true),
+                    StructuredOutputs = new(true),
+                    Thinking = new()
+                    {
+                        Supported = true,
+                        Types = new() { Adaptive = new(true), Enabled = new(true) },
+                    },
+                },
                 CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
                 DisplayName = "Claude Opus 4.6",
+                MaxInputTokens = 0,
+                MaxTokens = 0,
             },
         ];
         string expectedFirstID = "first_id";
@@ -60,8 +122,39 @@ public class ModelListPageResponseTest : TestBase
                 new()
                 {
                     ID = "claude-opus-4-6",
+                    Capabilities = new()
+                    {
+                        Batch = new(true),
+                        Citations = new(true),
+                        CodeExecution = new(true),
+                        ContextManagement = new()
+                        {
+                            ClearThinking20251015 = new(true),
+                            ClearToolUses20250919 = new(true),
+                            Compact20260112 = new(true),
+                            Supported = true,
+                        },
+                        Effort = new()
+                        {
+                            High = new(true),
+                            Low = new(true),
+                            Max = new(true),
+                            Medium = new(true),
+                            Supported = true,
+                        },
+                        ImageInput = new(true),
+                        PdfInput = new(true),
+                        StructuredOutputs = new(true),
+                        Thinking = new()
+                        {
+                            Supported = true,
+                            Types = new() { Adaptive = new(true), Enabled = new(true) },
+                        },
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
                     DisplayName = "Claude Opus 4.6",
+                    MaxInputTokens = 0,
+                    MaxTokens = 0,
                 },
             ],
             FirstID = "first_id",
@@ -88,8 +181,39 @@ public class ModelListPageResponseTest : TestBase
                 new()
                 {
                     ID = "claude-opus-4-6",
+                    Capabilities = new()
+                    {
+                        Batch = new(true),
+                        Citations = new(true),
+                        CodeExecution = new(true),
+                        ContextManagement = new()
+                        {
+                            ClearThinking20251015 = new(true),
+                            ClearToolUses20250919 = new(true),
+                            Compact20260112 = new(true),
+                            Supported = true,
+                        },
+                        Effort = new()
+                        {
+                            High = new(true),
+                            Low = new(true),
+                            Max = new(true),
+                            Medium = new(true),
+                            Supported = true,
+                        },
+                        ImageInput = new(true),
+                        PdfInput = new(true),
+                        StructuredOutputs = new(true),
+                        Thinking = new()
+                        {
+                            Supported = true,
+                            Types = new() { Adaptive = new(true), Enabled = new(true) },
+                        },
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
                     DisplayName = "Claude Opus 4.6",
+                    MaxInputTokens = 0,
+                    MaxTokens = 0,
                 },
             ],
             FirstID = "first_id",
@@ -109,8 +233,39 @@ public class ModelListPageResponseTest : TestBase
             new()
             {
                 ID = "claude-opus-4-6",
+                Capabilities = new()
+                {
+                    Batch = new(true),
+                    Citations = new(true),
+                    CodeExecution = new(true),
+                    ContextManagement = new()
+                    {
+                        ClearThinking20251015 = new(true),
+                        ClearToolUses20250919 = new(true),
+                        Compact20260112 = new(true),
+                        Supported = true,
+                    },
+                    Effort = new()
+                    {
+                        High = new(true),
+                        Low = new(true),
+                        Max = new(true),
+                        Medium = new(true),
+                        Supported = true,
+                    },
+                    ImageInput = new(true),
+                    PdfInput = new(true),
+                    StructuredOutputs = new(true),
+                    Thinking = new()
+                    {
+                        Supported = true,
+                        Types = new() { Adaptive = new(true), Enabled = new(true) },
+                    },
+                },
                 CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
                 DisplayName = "Claude Opus 4.6",
+                MaxInputTokens = 0,
+                MaxTokens = 0,
             },
         ];
         string expectedFirstID = "first_id";
@@ -137,8 +292,39 @@ public class ModelListPageResponseTest : TestBase
                 new()
                 {
                     ID = "claude-opus-4-6",
+                    Capabilities = new()
+                    {
+                        Batch = new(true),
+                        Citations = new(true),
+                        CodeExecution = new(true),
+                        ContextManagement = new()
+                        {
+                            ClearThinking20251015 = new(true),
+                            ClearToolUses20250919 = new(true),
+                            Compact20260112 = new(true),
+                            Supported = true,
+                        },
+                        Effort = new()
+                        {
+                            High = new(true),
+                            Low = new(true),
+                            Max = new(true),
+                            Medium = new(true),
+                            Supported = true,
+                        },
+                        ImageInput = new(true),
+                        PdfInput = new(true),
+                        StructuredOutputs = new(true),
+                        Thinking = new()
+                        {
+                            Supported = true,
+                            Types = new() { Adaptive = new(true), Enabled = new(true) },
+                        },
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
                     DisplayName = "Claude Opus 4.6",
+                    MaxInputTokens = 0,
+                    MaxTokens = 0,
                 },
             ],
             FirstID = "first_id",
@@ -159,8 +345,39 @@ public class ModelListPageResponseTest : TestBase
                 new()
                 {
                     ID = "claude-opus-4-6",
+                    Capabilities = new()
+                    {
+                        Batch = new(true),
+                        Citations = new(true),
+                        CodeExecution = new(true),
+                        ContextManagement = new()
+                        {
+                            ClearThinking20251015 = new(true),
+                            ClearToolUses20250919 = new(true),
+                            Compact20260112 = new(true),
+                            Supported = true,
+                        },
+                        Effort = new()
+                        {
+                            High = new(true),
+                            Low = new(true),
+                            Max = new(true),
+                            Medium = new(true),
+                            Supported = true,
+                        },
+                        ImageInput = new(true),
+                        PdfInput = new(true),
+                        StructuredOutputs = new(true),
+                        Thinking = new()
+                        {
+                            Supported = true,
+                            Types = new() { Adaptive = new(true), Enabled = new(true) },
+                        },
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
                     DisplayName = "Claude Opus 4.6",
+                    MaxInputTokens = 0,
+                    MaxTokens = 0,
                 },
             ],
             FirstID = "first_id",

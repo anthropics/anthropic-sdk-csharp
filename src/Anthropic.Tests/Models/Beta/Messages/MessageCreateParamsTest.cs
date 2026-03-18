@@ -28,9 +28,9 @@ public class MessageCreateParamsTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -153,9 +153,9 @@ public class MessageCreateParamsTest : TestBase
             [
                 new()
                 {
-                    SkillID = "x",
+                    SkillID = "pdf",
                     Type = BetaSkillParamsType.Anthropic,
-                    Version = "x",
+                    Version = "latest",
                 },
             ],
         };
@@ -336,9 +336,9 @@ public class MessageCreateParamsTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -411,9 +411,9 @@ public class MessageCreateParamsTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -751,9 +751,9 @@ public class MessageCreateParamsTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = BetaSkillParamsType.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -880,9 +880,9 @@ public class ContainerTest : TestBase
             [
                 new()
                 {
-                    SkillID = "x",
+                    SkillID = "pdf",
                     Type = BetaSkillParamsType.Anthropic,
-                    Version = "x",
+                    Version = "latest",
                 },
             ],
         };
@@ -906,9 +906,9 @@ public class ContainerTest : TestBase
             [
                 new()
                 {
-                    SkillID = "x",
+                    SkillID = "pdf",
                     Type = BetaSkillParamsType.Anthropic,
-                    Version = "x",
+                    Version = "latest",
                 },
             ],
         };

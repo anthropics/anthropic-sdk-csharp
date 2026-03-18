@@ -10,9 +10,13 @@ public class DeletedFileTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new DeletedFile { ID = "id", Type = Type.FileDeleted };
+        var model = new DeletedFile
+        {
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            Type = Type.FileDeleted,
+        };
 
-        string expectedID = "id";
+        string expectedID = "file_011CNha8iCJcU1wXNR6q4V8w";
         ApiEnum<string, Type> expectedType = Type.FileDeleted;
 
         Assert.Equal(expectedID, model.ID);
@@ -22,7 +26,11 @@ public class DeletedFileTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new DeletedFile { ID = "id", Type = Type.FileDeleted };
+        var model = new DeletedFile
+        {
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            Type = Type.FileDeleted,
+        };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<DeletedFile>(
@@ -36,7 +44,11 @@ public class DeletedFileTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new DeletedFile { ID = "id", Type = Type.FileDeleted };
+        var model = new DeletedFile
+        {
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            Type = Type.FileDeleted,
+        };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<DeletedFile>(
@@ -45,7 +57,7 @@ public class DeletedFileTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "id";
+        string expectedID = "file_011CNha8iCJcU1wXNR6q4V8w";
         ApiEnum<string, Type> expectedType = Type.FileDeleted;
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -55,7 +67,11 @@ public class DeletedFileTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new DeletedFile { ID = "id", Type = Type.FileDeleted };
+        var model = new DeletedFile
+        {
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            Type = Type.FileDeleted,
+        };
 
         model.Validate();
     }
@@ -63,7 +79,7 @@ public class DeletedFileTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new DeletedFile { ID = "id" };
+        var model = new DeletedFile { ID = "file_011CNha8iCJcU1wXNR6q4V8w" };
 
         Assert.Null(model.Type);
         Assert.False(model.RawData.ContainsKey("type"));
@@ -72,7 +88,7 @@ public class DeletedFileTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new DeletedFile { ID = "id" };
+        var model = new DeletedFile { ID = "file_011CNha8iCJcU1wXNR6q4V8w" };
 
         model.Validate();
     }
@@ -82,7 +98,7 @@ public class DeletedFileTest : TestBase
     {
         var model = new DeletedFile
         {
-            ID = "id",
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
 
             // Null should be interpreted as omitted for these properties
             Type = null,
@@ -97,7 +113,7 @@ public class DeletedFileTest : TestBase
     {
         var model = new DeletedFile
         {
-            ID = "id",
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
 
             // Null should be interpreted as omitted for these properties
             Type = null,
@@ -109,7 +125,11 @@ public class DeletedFileTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new DeletedFile { ID = "id", Type = Type.FileDeleted };
+        var model = new DeletedFile
+        {
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            Type = Type.FileDeleted,
+        };
 
         DeletedFile copied = new(model);
 

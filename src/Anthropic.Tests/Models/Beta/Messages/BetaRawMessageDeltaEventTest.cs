@@ -31,9 +31,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -84,9 +84,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -148,9 +148,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -215,9 +215,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -275,9 +275,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -339,9 +339,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -400,9 +400,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -455,9 +455,9 @@ public class DeltaTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -473,9 +473,9 @@ public class DeltaTest : TestBase
             [
                 new()
                 {
-                    SkillID = "x",
+                    SkillID = "pdf",
                     Type = Messages::Type.Anthropic,
-                    Version = "x",
+                    Version = "latest",
                 },
             ],
         };
@@ -501,9 +501,9 @@ public class DeltaTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -533,9 +533,9 @@ public class DeltaTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -558,9 +558,9 @@ public class DeltaTest : TestBase
             [
                 new()
                 {
-                    SkillID = "x",
+                    SkillID = "pdf",
                     Type = Messages::Type.Anthropic,
-                    Version = "x",
+                    Version = "latest",
                 },
             ],
         };
@@ -586,9 +586,9 @@ public class DeltaTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -612,9 +612,9 @@ public class DeltaTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },

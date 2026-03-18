@@ -12,14 +12,14 @@ public class BetaSkillTest : TestBase
     {
         var model = new BetaSkill
         {
-            SkillID = "x",
+            SkillID = "pdf",
             Type = Type.Anthropic,
-            Version = "x",
+            Version = "latest",
         };
 
-        string expectedSkillID = "x";
+        string expectedSkillID = "pdf";
         ApiEnum<string, Type> expectedType = Type.Anthropic;
-        string expectedVersion = "x";
+        string expectedVersion = "latest";
 
         Assert.Equal(expectedSkillID, model.SkillID);
         Assert.Equal(expectedType, model.Type);
@@ -31,9 +31,9 @@ public class BetaSkillTest : TestBase
     {
         var model = new BetaSkill
         {
-            SkillID = "x",
+            SkillID = "pdf",
             Type = Type.Anthropic,
-            Version = "x",
+            Version = "latest",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -47,9 +47,9 @@ public class BetaSkillTest : TestBase
     {
         var model = new BetaSkill
         {
-            SkillID = "x",
+            SkillID = "pdf",
             Type = Type.Anthropic,
-            Version = "x",
+            Version = "latest",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -59,9 +59,9 @@ public class BetaSkillTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedSkillID = "x";
+        string expectedSkillID = "pdf";
         ApiEnum<string, Type> expectedType = Type.Anthropic;
-        string expectedVersion = "x";
+        string expectedVersion = "latest";
 
         Assert.Equal(expectedSkillID, deserialized.SkillID);
         Assert.Equal(expectedType, deserialized.Type);
@@ -73,9 +73,9 @@ public class BetaSkillTest : TestBase
     {
         var model = new BetaSkill
         {
-            SkillID = "x",
+            SkillID = "pdf",
             Type = Type.Anthropic,
-            Version = "x",
+            Version = "latest",
         };
 
         model.Validate();
@@ -86,9 +86,9 @@ public class BetaSkillTest : TestBase
     {
         var model = new BetaSkill
         {
-            SkillID = "x",
+            SkillID = "pdf",
             Type = Type.Anthropic,
-            Version = "x",
+            Version = "latest",
         };
 
         BetaSkill copied = new(model);
