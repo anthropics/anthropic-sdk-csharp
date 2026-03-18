@@ -1,17 +1,16 @@
 using System;
-using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
-using Anthropic.Models.Beta;
+using Anthropic.Models.Beta.Files;
 using Anthropic.Models.Beta.Messages;
 using Anthropic.Services.Beta;
 
@@ -103,6 +102,40 @@ public static class AnthropicBetaClientExtensions
         return new AnthropicChatClient(betaService, defaultModelId, defaultMaxOutputTokens);
     }
 
+    /// <summary>
+    /// Creates an <see cref="IHostedFileClient"/> that can be used to manage files via the <see cref="IFileService"/>.
+    /// </summary>
+    /// <param name="fileService">The file service to use.</param>
+    /// <returns>An <see cref="IHostedFileClient"/> that can be used to manage files via the <see cref="IFileService"/>.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="fileService"/> is <see langword="null"/>.</exception>
+    public static IHostedFileClient AsIHostedFileClient(this IFileService fileService)
+    {
+        if (fileService is null)
+        {
+            throw new ArgumentNullException(nameof(fileService));
+        }
+
+        return new AnthropicHostedFileClient(fileService);
+    }
+
+    /// <summary>
+    /// Creates an <see cref="IHostedFileClient"/> that can be used to manage files via the <see cref="Anthropic.Services.IBetaService"/>.
+    /// </summary>
+    /// <param name="betaService">The beta service to use.</param>
+    /// <returns>An <see cref="IHostedFileClient"/> that can be used to manage files via the <see cref="Anthropic.Services.IBetaService"/>.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="betaService"/> is <see langword="null"/>.</exception>
+    public static IHostedFileClient AsIHostedFileClient(
+        this Anthropic.Services.IBetaService betaService
+    )
+    {
+        if (betaService is null)
+        {
+            throw new ArgumentNullException(nameof(betaService));
+        }
+
+        return betaService.Files.AsIHostedFileClient();
+    }
+
     /// <summary>Creates an <see cref="AITool"/> to represent a raw <see cref="BetaToolUnion"/>.</summary>
     /// <param name="tool">The tool to wrap as an <see cref="AITool"/>.</param>
     /// <returns>The <paramref name="tool"/> wrapped as an <see cref="AITool"/>.</returns>
@@ -139,70 +172,6 @@ public static class AnthropicBetaClientExtensions
     ) : IChatClient
     {
         private const int DefaultMaxTokens = 1024;
-        private const string MeaiUserAgentHeaderKey = "User-Agent";
-
-        private static readonly FrozenDictionary<string, JsonElement> s_meaiHeaderData =
-            new Dictionary<string, JsonElement>
-            {
-                [MeaiUserAgentHeaderKey] = JsonSerializer.SerializeToElement(
-                    CreateMeaiUserAgentValue()
-                ),
-            }.ToFrozenDictionary();
-
-        private static string CreateMeaiUserAgentValue()
-        {
-            const string Name = "MEAI";
-
-            if (
-                typeof(IChatClient)
-                    .Assembly.GetCustomAttribute<System.Reflection.AssemblyInformationalVersionAttribute>()
-                    ?.InformationalVersion
-                is string version
-            )
-            {
-                int pos = version.IndexOf('+');
-                if (pos >= 0)
-                {
-                    version = version.Substring(0, pos);
-                }
-
-                if (version.Length > 0)
-                {
-                    return $"{Name}/{version}";
-                }
-            }
-
-            return Name;
-        }
-
-        private static readonly AIJsonSchemaTransformCache s_transformCache = new(
-            new AIJsonSchemaTransformOptions
-            {
-                DisallowAdditionalProperties = true,
-                TransformSchemaNode = (ctx, schemaNode) =>
-                {
-                    if (schemaNode is JsonObject schemaObj)
-                    {
-                        // From https://platform.claude.com/docs/en/build-with-claude/structured-outputs
-                        ReadOnlySpan<string> unsupportedProperties =
-                        [
-                            "minimum",
-                            "maximum",
-                            "multipleOf",
-                            "minLength",
-                            "maxLength",
-                        ];
-
-                        foreach (string propName in unsupportedProperties)
-                        {
-                            _ = schemaObj.Remove(propName);
-                        }
-                    }
-
-                    return schemaNode;
-                },
-            }
-        );
 
         private readonly Anthropic.Services.IBetaService _betaService = betaService;
         private readonly string? _defaultModelId = defaultModelId;
@@ -265,15 +234,46 @@ public static class AnthropicBetaClientExtensions
                 messages,
                 out List<BetaTextBlockParam>? systemMessages
             );
+            bool hasHostedFiles = messages
+                .SelectMany(m => m.Contents)
+                .OfType<HostedFileContent>()
+                .Any();
             MessageCreateParams createParams = GetMessageCreateParams(
                 messageParams,
                 systemMessages,
-                options
+                options,
+                hasHostedFiles
             );
 
-            var createResult = await _betaService.Messages.Create(createParams, cancellationToken);
+            // When thinking is enabled, the auto-increased max_tokens may exceed the
+            // client-side non-streaming token limit. Use a streaming-level timeout to
+            // bypass that check while still providing appropriate timeout behavior.
+            var messageService = _betaService.Messages;
+            if (
+                createParams.Thinking is BetaThinkingConfigParam
+                {
+                    Value: BetaThinkingConfigEnabled
+                }
+            )
+            {
+                messageService = messageService.WithOptions(opts =>
+                    opts with
+                    {
+                        Timeout = ClientOptions.TimeoutFromMaxTokens(
+                            createParams.MaxTokens,
+                            isStreaming: true,
+                            createParams.Model
+                        ),
+                    }
+                );
+            }
 
-            ChatMessage m = new(ChatRole.Assistant, [.. createResult.Content.Select(ToAIContent)])
+            var createResult = await messageService.Create(createParams, cancellationToken);
+
+            ChatMessage m = new(
+                ChatRole.Assistant,
+                [.. createResult.Content.Select(b => ContentBlockValueToAIContent(b.Value))]
+            )
             {
                 CreatedAt = DateTimeOffset.UtcNow,
                 MessageId = createResult.ID,
@@ -306,10 +306,15 @@ public static class AnthropicBetaClientExtensions
                 messages,
                 out List<BetaTextBlockParam>? systemMessages
             );
+            bool hasHostedFiles = messages
+                .SelectMany(m => m.Contents)
+                .OfType<HostedFileContent>()
+                .Any();
             MessageCreateParams createParams = GetMessageCreateParams(
                 messageParams,
                 systemMessages,
-                options
+                options,
+                hasHostedFiles
             );
 
             string? messageId = null;
@@ -400,6 +405,23 @@ public static class AnthropicBetaClientExtensions
                                     Name = toolUse.Name,
                                 };
                                 break;
+
+                            case BetaServerToolUseBlock:
+                            case BetaWebSearchToolResultBlock:
+                            case BetaWebFetchToolResultBlock:
+                            case BetaCodeExecutionToolResultBlock:
+                            case BetaBashCodeExecutionToolResultBlock:
+                            case BetaTextEditorCodeExecutionToolResultBlock:
+                            case BetaMcpToolUseBlock:
+                            case BetaMcpToolResultBlock:
+                            case BetaToolSearchToolResultBlock:
+                            case BetaContainerUploadBlock:
+                                contents.Add(
+                                    ContentBlockValueToAIContent(
+                                        contentBlockStart.ContentBlock.Value
+                                    )
+                                );
+                                break;
                         }
                         break;
 
@@ -445,6 +467,19 @@ public static class AnthropicBetaClientExtensions
                                         RawRepresentation = signatureDelta,
                                     }
                                 );
+                                break;
+
+                            case BetaCitationsDelta citationsDelta:
+                                if (ToAIAnnotation(citationsDelta.Citation) is { } streamAnnotation)
+                                {
+                                    contents.Add(
+                                        new TextContent(string.Empty)
+                                        {
+                                            RawRepresentation = citationsDelta,
+                                            Annotations = [streamAnnotation],
+                                        }
+                                    );
+                                }
                                 break;
                         }
                         break;
@@ -866,7 +901,8 @@ public static class AnthropicBetaClientExtensions
         private MessageCreateParams GetMessageCreateParams(
             List<BetaMessageParam> messages,
             List<BetaTextBlockParam>? systemMessages,
-            ChatOptions? options
+            ChatOptions? options,
+            bool hasHostedFiles
         )
         {
             // Get the initial MessageCreateParams, either with a raw representation provided by the options
@@ -901,6 +937,11 @@ public static class AnthropicBetaClientExtensions
                 : null;
             int originalBetaHeadersCount = betaHeaders?.Count ?? 0;
 
+            if (hasHostedFiles)
+            {
+                (betaHeaders ??= []).Add("files-api-2025-04-14");
+            }
+
             if (options is not null)
             {
                 if (options.Instructions is { } instructions)
@@ -916,8 +957,8 @@ public static class AnthropicBetaClientExtensions
                     switch (responseFormat)
                     {
                         case ChatResponseFormatJson formatJson when formatJson.Schema is not null:
-                            JsonElement schema = s_transformCache
-                                .GetOrCreateTransformedSchema(formatJson)
+                            JsonElement schema = AnthropicClientExtensions
+                                .JsonSchemaTransformCache.GetOrCreateTransformedSchema(formatJson)
                                 .GetValueOrDefault();
                             if (
                                 schema.TryGetProperty("properties", out JsonElement properties)
@@ -999,44 +1040,16 @@ public static class AnthropicBetaClientExtensions
                                 break;
 
                             case AIFunctionDeclaration af:
-                                Dictionary<string, JsonElement> properties = [];
-                                List<string> required = [];
-                                JsonElement inputSchema = af.JsonSchema;
+                                JsonElement inputSchema =
+                                    AnthropicClientExtensions.JsonSchemaTransformCache.GetOrCreateTransformedSchema(
+                                        af
+                                    );
+                                Dictionary<string, JsonElement> schemaData = [];
                                 if (inputSchema.ValueKind is JsonValueKind.Object)
                                 {
-                                    if (
-                                        inputSchema.TryGetProperty(
-                                            "properties",
-                                            out JsonElement propsElement
-                                        )
-                                        && propsElement.ValueKind is JsonValueKind.Object
-                                    )
+                                    foreach (JsonProperty p in inputSchema.EnumerateObject())
                                     {
-                                        foreach (JsonProperty p in propsElement.EnumerateObject())
-                                        {
-                                            properties[p.Name] = p.Value;
-                                        }
-                                    }
-
-                                    if (
-                                        inputSchema.TryGetProperty(
-                                            "required",
-                                            out JsonElement reqElement
-                                        )
-                                        && reqElement.ValueKind is JsonValueKind.Array
-                                    )
-                                    {
-                                        foreach (JsonElement r in reqElement.EnumerateArray())
-                                        {
-                                            if (
-                                                r.ValueKind is JsonValueKind.String
-                                                && r.GetString() is { } s
-                                                && !string.IsNullOrWhiteSpace(s)
-                                            )
-                                            {
-                                                required.Add(s);
-                                            }
-                                        }
+                                        schemaData[p.Name] = p.Value;
                                     }
                                 }
 
@@ -1045,11 +1058,7 @@ public static class AnthropicBetaClientExtensions
                                     {
                                         Name = af.Name,
                                         Description = af.Description,
-                                        InputSchema = new InputSchema()
-                                        {
-                                            Properties = properties,
-                                            Required = required,
-                                        },
+                                        InputSchema = new InputSchema(schemaData),
                                         DeferLoading = GetValue<bool?>(
                                             af,
                                             nameof(BetaTool.DeferLoading)
@@ -1162,6 +1171,79 @@ public static class AnthropicBetaClientExtensions
                         createParams = createParams with { ToolChoice = toolChoice };
                     }
                 }
+
+                if (createParams.Thinking is null && options.Reasoning is { } reasoning)
+                {
+                    BetaThinkingConfigParam? thinkingConfig = null;
+                    if (reasoning.Effort is ReasoningEffort.None)
+                    {
+                        thinkingConfig = new(new BetaThinkingConfigDisabled());
+                    }
+                    else
+                    {
+                        long? budgetTokens = reasoning.Effort switch
+                        {
+                            ReasoningEffort.Low => 1024,
+                            ReasoningEffort.Medium => 8192,
+                            ReasoningEffort.High => 16384,
+                            ReasoningEffort.ExtraHigh => 32768,
+                            _ => null,
+                        };
+
+                        if (budgetTokens is { } budget)
+                        {
+                            // Anthropic requires thinking budget >= 1024 and < max tokens.
+                            bool autoIncreaseMaxTokens = false;
+                            if (createParams.MaxTokens <= budget)
+                            {
+                                if (options.MaxOutputTokens is not null)
+                                {
+                                    // Caller explicitly set MaxOutputTokens. Clamp the budget to fit,
+                                    // and skip thinking if it can't meet the minimum.
+                                    budget = createParams.MaxTokens - 1;
+                                }
+                                else
+                                {
+                                    autoIncreaseMaxTokens = true;
+                                }
+                            }
+
+                            if (budget >= 1024)
+                            {
+                                if (autoIncreaseMaxTokens)
+                                {
+                                    // Caller didn't set MaxOutputTokens. Auto-increase max_tokens
+                                    // to accommodate the thinking budget plus room for output.
+                                    createParams = createParams with
+                                    {
+                                        MaxTokens = budget + _defaultMaxTokens,
+                                    };
+                                }
+
+                                thinkingConfig = new(new BetaThinkingConfigEnabled(budget));
+                            }
+                        }
+                    }
+
+                    if (
+                        thinkingConfig is not null
+                        && reasoning.Output is ReasoningOutput.None
+                        && thinkingConfig.Value is BetaThinkingConfigEnabled enabled
+                    )
+                    {
+                        thinkingConfig = new(
+                            enabled with
+                            {
+                                Display = BetaThinkingConfigEnabledDisplay.Omitted,
+                            }
+                        );
+                    }
+
+                    if (thinkingConfig is not null)
+                    {
+                        createParams = createParams with { Thinking = thinkingConfig };
+                    }
+                }
             }
 
             if (systemMessages is not null)
@@ -1197,7 +1279,9 @@ public static class AnthropicBetaClientExtensions
 
         private static MessageCreateParams AddMeaiHeaders(MessageCreateParams createParams)
         {
-            Dictionary<string, JsonElement> mergedHeaders = new(s_meaiHeaderData);
+            Dictionary<string, JsonElement> mergedHeaders = new(
+                AnthropicClientExtensions.MeaiHeaderData
+            );
 
             foreach (var header in createParams.RawHeaderData)
             {
@@ -1295,7 +1379,7 @@ public static class AnthropicBetaClientExtensions
                 _ => ChatFinishReason.Stop,
             };
 
-        private static AIContent ToAIContent(BetaContentBlock block)
+        private static AIContent ContentBlockValueToAIContent(object? blockValue)
         {
             static AIContent FromBetaTextBlock(BetaTextBlock text)
             {
@@ -1312,7 +1396,7 @@ public static class AnthropicBetaClientExtensions
                 return tc;
             }
 
-            switch (block.Value)
+            switch (blockValue)
             {
                 case BetaTextBlock text:
                     return FromBetaTextBlock(text);
@@ -1366,7 +1450,7 @@ public static class AnthropicBetaClientExtensions
                 case BetaMcpToolResultBlock mcpToolResult:
                     return new McpServerToolResultContent(mcpToolResult.ToolUseID)
                     {
-                        Output = mcpToolResult.IsError
+                        Outputs = mcpToolResult.IsError
                             ? [new ErrorContent(mcpToolResult.Content.Value?.ToString())]
                             : mcpToolResult.Content.Value switch
                             {
@@ -1381,9 +1465,8 @@ public static class AnthropicBetaClientExtensions
 
                 case BetaCodeExecutionToolResultBlock ce:
                 {
-                    CodeInterpreterToolResultContent c = new()
+                    CodeInterpreterToolResultContent c = new(ce.ToolUseID)
                     {
-                        CallId = ce.ToolUseID,
                         RawRepresentation = ce,
                     };
 
@@ -1427,6 +1510,36 @@ public static class AnthropicBetaClientExtensions
                         }
                     }
 
+                    if (ce.Content.TryPickEncryptedCodeExecutionResultBlock(out var ceEncrypted))
+                    {
+                        // Unlike with the non-encrypted case above, we skip Stdout, as here it's encrypted.
+
+                        if (
+                            !string.IsNullOrWhiteSpace(ceEncrypted.Stderr)
+                            || ceEncrypted.ReturnCode != 0
+                        )
+                        {
+                            (c.Outputs ??= []).Add(
+                                new ErrorContent(ceEncrypted.Stderr)
+                                {
+                                    ErrorCode = ceEncrypted.ReturnCode.ToString(
+                                        CultureInfo.InvariantCulture
+                                    ),
+                                }
+                            );
+                        }
+
+                        if (ceEncrypted.Content is { Count: > 0 })
+                        {
+                            foreach (var ceOutputContent in ceEncrypted.Content)
+                            {
+                                (c.Outputs ??= []).Add(
+                                    new HostedFileContent(ceOutputContent.FileID)
+                                );
+                            }
+                        }
+                    }
+
                     return c;
                 }
 
@@ -1434,9 +1547,8 @@ public static class AnthropicBetaClientExtensions
                 // This is the same as BetaCodeExecutionToolResultBlock but with a different type names.
                 // Keep both of them in sync.
                 {
-                    CodeInterpreterToolResultContent c = new()
+                    CodeInterpreterToolResultContent c = new(ce.ToolUseID)
                     {
-                        CallId = ce.ToolUseID,
                         RawRepresentation = ce,
                     };
 
@@ -1483,8 +1595,224 @@ public static class AnthropicBetaClientExtensions
                     return c;
                 }
 
+                case BetaServerToolUseBlock serverToolUse:
+                {
+                    Name nameValue = serverToolUse.Name.Value();
+                    switch (nameValue)
+                    {
+                        case Name.WebSearch:
+                        case Name.WebFetch:
+                            WebSearchToolCallContent wsc = new(serverToolUse.ID)
+                            {
+                                RawRepresentation = serverToolUse,
+                            };
+                            if (
+                                serverToolUse.Input?.TryGetValue(
+                                    "query",
+                                    out JsonElement queryElement
+                                ) == true
+                                && queryElement.ValueKind == JsonValueKind.String
+                            )
+                            {
+                                (wsc.Queries ??= []).Add(queryElement.GetString()!);
+                            }
+
+                            return wsc;
+
+                        case Name.CodeExecution:
+                        case Name.BashCodeExecution:
+                        case Name.TextEditorCodeExecution:
+                            CodeInterpreterToolCallContent cic = new(serverToolUse.ID)
+                            {
+                                RawRepresentation = serverToolUse,
+                            };
+
+                            // CodeExecution (legacy Python) uses "code"; Bash/TextEditor use "command".
+                            if (
+                                (
+                                    serverToolUse.Input?.TryGetValue(
+                                        "code",
+                                        out JsonElement codeElement
+                                    ) == true
+                                    || serverToolUse.Input?.TryGetValue("command", out codeElement)
+                                        == true
+                                )
+                                && codeElement.ValueKind == JsonValueKind.String
+                            )
+                            {
+                                string code = codeElement.GetString()!;
+                                string mediaType =
+                                    nameValue == Name.CodeExecution ? "text/x-python"
+                                    : nameValue == Name.BashCodeExecution ? "application/x-sh"
+                                    : "text/plain";
+                                (cic.Inputs ??= []).Add(
+                                    new DataContent(Encoding.UTF8.GetBytes(code), mediaType)
+                                );
+                            }
+
+                            return cic;
+
+                        default:
+                            return new ToolCallContent(serverToolUse.ID)
+                            {
+                                RawRepresentation = serverToolUse,
+                            };
+                    }
+                }
+
+                case BetaWebSearchToolResultBlock wsResult:
+                {
+                    WebSearchToolResultContent wsrc = new(wsResult.ToolUseID)
+                    {
+                        RawRepresentation = wsResult,
+                    };
+
+                    if (wsResult.Content.TryPickBetaWebSearchResultBlocks(out var searchResults))
+                    {
+                        foreach (var result in searchResults)
+                        {
+                            (wsrc.Results ??= []).Add(
+                                new UriContent(
+                                    result.Url,
+                                    AnthropicClientExtensions.InferMediaTypeFromExtension(
+                                        result.Url
+                                    )
+                                )
+                                {
+                                    RawRepresentation = result,
+                                }
+                            );
+                        }
+                    }
+                    else if (wsResult.Content.TryPickError(out var wsError))
+                    {
+                        (wsrc.Results ??= []).Add(
+                            new ErrorContent(null)
+                            {
+                                ErrorCode = wsError.ErrorCode.Value().ToString(),
+                                RawRepresentation = wsError,
+                            }
+                        );
+                    }
+
+                    return wsrc;
+                }
+
+                case BetaWebFetchToolResultBlock wfResult:
+                {
+                    WebSearchToolResultContent wfrc = new(wfResult.ToolUseID)
+                    {
+                        RawRepresentation = wfResult,
+                    };
+
+                    if (wfResult.Content.TryPickBetaWebFetchBlock(out var fetchBlock))
+                    {
+                        (wfrc.Results ??= []).Add(
+                            new UriContent(
+                                fetchBlock.Url,
+                                AnthropicClientExtensions.InferMediaTypeFromExtension(
+                                    fetchBlock.Url
+                                )
+                            )
+                            {
+                                RawRepresentation = fetchBlock,
+                            }
+                        );
+                    }
+                    else if (
+                        wfResult.Content.TryPickBetaWebFetchToolResultErrorBlock(out var wfError)
+                    )
+                    {
+                        (wfrc.Results ??= []).Add(
+                            new ErrorContent(null)
+                            {
+                                ErrorCode = wfError.ErrorCode.Value().ToString(),
+                                RawRepresentation = wfError,
+                            }
+                        );
+                    }
+
+                    return wfrc;
+                }
+
+                case BetaTextEditorCodeExecutionToolResultBlock te:
+                {
+                    CodeInterpreterToolResultContent c = new(te.ToolUseID)
+                    {
+                        RawRepresentation = te,
+                    };
+
+                    if (
+                        te.Content.TryPickBetaTextEditorCodeExecutionToolResultError(
+                            out var teError
+                        )
+                    )
+                    {
+                        (c.Outputs ??= []).Add(
+                            new ErrorContent(teError.ErrorMessage)
+                            {
+                                ErrorCode = teError.ErrorCode.Value().ToString(),
+                                RawRepresentation = teError,
+                            }
+                        );
+                    }
+                    else if (
+                        te.Content.TryPickBetaTextEditorCodeExecutionViewResultBlock(
+                            out var viewResult
+                        )
+                    )
+                    {
+                        (c.Outputs ??= []).Add(
+                            new TextContent(viewResult.Content) { RawRepresentation = viewResult }
+                        );
+                    }
+                    else if (
+                        te.Content.TryPickBetaTextEditorCodeExecutionCreateResultBlock(
+                            out var createResult
+                        )
+                    )
+                    {
+                        (c.Outputs ??= []).Add(
+                            new TextContent(
+                                createResult.IsFileUpdate ? "File updated" : "File created"
+                            )
+                            {
+                                RawRepresentation = createResult,
+                            }
+                        );
+                    }
+                    else if (
+                        te.Content.TryPickBetaTextEditorCodeExecutionStrReplaceResultBlock(
+                            out var replaceResult
+                        )
+                    )
+                    {
+                        (c.Outputs ??= []).Add(
+                            new TextContent(
+                                replaceResult.Lines is { Count: > 0 }
+                                    ? string.Join("\n", replaceResult.Lines)
+                                    : "String replacement applied"
+                            )
+                            {
+                                RawRepresentation = replaceResult,
+                            }
+                        );
+                    }
+
+                    return c;
+                }
+
+                case BetaToolSearchToolResultBlock ts:
+                    return new ToolResultContent(ts.ToolUseID) { RawRepresentation = ts };
+
+                case BetaContainerUploadBlock containerUpload:
+                    return new HostedFileContent(containerUpload.FileID)
+                    {
+                        RawRepresentation = containerUpload,
+                    };
+
                 default:
-                    return new AIContent() { RawRepresentation = block.Value };
+                    return new AIContent() { RawRepresentation = blockValue };
             }
         }
 
@@ -1521,11 +1849,315 @@ public static class AnthropicBetaClientExtensions
             return annotation;
         }
 
+        private static CitationAnnotation? ToAIAnnotation(Citation citation)
+        {
+            CitationAnnotation annotation = new()
+            {
+                Title = citation.Title ?? citation.DocumentTitle,
+                Snippet = citation.CitedText,
+                FileId = citation.FileID,
+            };
+
+            if (citation.TryPickBetaCitationsWebSearchResultLocation(out var webSearchLocation))
+            {
+                annotation.Url = Uri.TryCreate(
+                    webSearchLocation.Url,
+                    UriKind.Absolute,
+                    out Uri? url
+                )
+                    ? url
+                    : null;
+            }
+            else if (citation.TryPickBetaCitationSearchResultLocation(out var searchLocation))
+            {
+                annotation.Url = Uri.TryCreate(
+                    searchLocation.Source,
+                    UriKind.Absolute,
+                    out Uri? url
+                )
+                    ? url
+                    : null;
+            }
+
+            return annotation;
+        }
+
         private sealed class StreamingFunctionData
         {
             public string CallId { get; set; } = "";
             public string Name { get; set; } = "";
             public StringBuilder Arguments { get; } = new();
+        }
+    }
+
+    private sealed class AnthropicHostedFileClient(IFileService fileService) : IHostedFileClient
+    {
+        private HostedFileClientMetadata? _metadata;
+
+        /// <inheritdoc />
+        void IDisposable.Dispose() { }
+
+        /// <inheritdoc />
+        public object? GetService(System.Type serviceType, object? serviceKey = null)
+        {
+            if (serviceType is null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
+
+            if (serviceKey is not null)
+            {
+                return null;
+            }
+
+            if (serviceType == typeof(HostedFileClientMetadata))
+            {
+                return _metadata ??= new(
+                    "anthropic",
+                    fileService is FileService { _client.BaseUrl: string baseUrl }
+                        ? new Uri(baseUrl)
+                        : null
+                );
+            }
+
+            if (serviceType.IsInstanceOfType(this))
+            {
+                return this;
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc />
+        public async Task<HostedFileContent> UploadAsync(
+            Stream content,
+            string? mediaType,
+            string? fileName,
+            HostedFileClientOptions? options,
+            CancellationToken cancellationToken
+        )
+        {
+            if (content is null)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
+
+            // Infer fileName/mediaType when not provided, matching the OpenAI provider's behavior:
+            // https://github.com/dotnet/extensions/blob/1ebbf3879591843e2f9ec943e17efc7e4163c854/src/Libraries/Microsoft.Extensions.AI.OpenAI/OpenAIHostedFileClient.cs#L105-L107
+            fileName ??= content is FileStream fs ? System.IO.Path.GetFileName(fs.Name) : null;
+            mediaType ??= fileName is not null
+                ? AnthropicClientExtensions.InferMediaTypeFromExtension(
+                    System.IO.Path.GetExtension(fileName)
+                )
+                : null;
+            fileName ??=
+                $"{Guid.NewGuid():N}{AnthropicClientExtensions.InferExtensionFromMediaType(mediaType)}";
+
+            var binaryContent = new BinaryContent { Stream = content, FileName = fileName };
+
+            if (mediaType is not null)
+            {
+                binaryContent.ContentType = new MediaTypeHeaderValue(mediaType);
+            }
+
+            FileMetadata result = await fileService.Upload(
+                new FileUploadParams { File = binaryContent },
+                cancellationToken
+            );
+
+            return ToHostedFileContent(result);
+        }
+
+        /// <inheritdoc />
+        public async Task<HostedFileDownloadStream> DownloadAsync(
+            string fileId,
+            HostedFileClientOptions? options,
+            CancellationToken cancellationToken
+        )
+        {
+            ThrowIfFileIdInvalid(fileId);
+
+            HttpResponse response = await fileService.Download(
+                fileId,
+                cancellationToken: cancellationToken
+            );
+
+            Stream stream = await response.ReadAsStream(cancellationToken);
+
+            string? contentType = response.RawMessage.Content.Headers.ContentType?.MediaType;
+
+            return new AnthropicHostedFileDownloadStream(stream, response, contentType, null);
+        }
+
+        /// <inheritdoc />
+        public async Task<HostedFileContent?> GetFileInfoAsync(
+            string fileId,
+            HostedFileClientOptions? options,
+            CancellationToken cancellationToken
+        )
+        {
+            ThrowIfFileIdInvalid(fileId);
+
+            FileMetadata result = await fileService.RetrieveMetadata(
+                fileId,
+                cancellationToken: cancellationToken
+            );
+
+            return ToHostedFileContent(result);
+        }
+
+        /// <inheritdoc />
+        public async IAsyncEnumerable<HostedFileContent> ListFilesAsync(
+            HostedFileClientOptions? options,
+            [EnumeratorCancellation] CancellationToken cancellationToken
+        )
+        {
+            FileListPage page = await fileService.List(cancellationToken: cancellationToken);
+
+            while (true)
+            {
+                foreach (FileMetadata file in page.Items)
+                {
+                    yield return ToHostedFileContent(file);
+                }
+
+                if (!page.HasNext())
+                {
+                    break;
+                }
+
+                page = await page.Next(cancellationToken);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> DeleteAsync(
+            string fileId,
+            HostedFileClientOptions? options,
+            CancellationToken cancellationToken
+        )
+        {
+            ThrowIfFileIdInvalid(fileId);
+
+            await fileService.Delete(fileId, cancellationToken: cancellationToken);
+            return true;
+        }
+
+        private static void ThrowIfFileIdInvalid(string fileId)
+        {
+            if (fileId is null)
+            {
+                throw new ArgumentNullException(nameof(fileId));
+            }
+
+            if (fileId.Length == 0)
+            {
+                throw new ArgumentException("File ID cannot be empty.", nameof(fileId));
+            }
+        }
+
+        private static HostedFileContent ToHostedFileContent(FileMetadata metadata) =>
+            new(metadata.ID)
+            {
+                MediaType = metadata.MimeType,
+                Name = metadata.Filename,
+                SizeInBytes = metadata.SizeBytes,
+                CreatedAt = metadata.CreatedAt,
+                RawRepresentation = metadata,
+            };
+
+        /// <summary>
+        /// A <see cref="HostedFileDownloadStream"/> that wraps an Anthropic file download response.
+        /// </summary>
+        private sealed class AnthropicHostedFileDownloadStream(
+            Stream innerStream,
+            HttpResponse response,
+            string? mediaType,
+            string? fileName
+        ) : HostedFileDownloadStream
+        {
+            public override string? MediaType => mediaType;
+
+            public override string? FileName => fileName;
+
+            public override bool CanRead => innerStream.CanRead;
+
+            public override bool CanSeek => innerStream.CanSeek;
+
+            public override bool CanWrite => false;
+
+            public override long Length => innerStream.Length;
+
+            public override long Position
+            {
+                get => innerStream.Position;
+                set => innerStream.Position = value;
+            }
+
+            public override int Read(byte[] buffer, int offset, int count) =>
+                innerStream.Read(buffer, offset, count);
+
+            public override Task<int> ReadAsync(
+                byte[] buffer,
+                int offset,
+                int count,
+                CancellationToken cancellationToken
+            ) => innerStream.ReadAsync(buffer, offset, count, cancellationToken);
+
+            public override Task FlushAsync(CancellationToken cancellationToken) =>
+                innerStream.FlushAsync(cancellationToken);
+
+            public override IAsyncResult BeginRead(
+                byte[] buffer,
+                int offset,
+                int count,
+                AsyncCallback? callback,
+                object? state
+            ) => innerStream.BeginRead(buffer, offset, count, callback, state);
+
+            public override int EndRead(IAsyncResult asyncResult) =>
+                innerStream.EndRead(asyncResult);
+
+            public override Task CopyToAsync(
+                Stream destination,
+                int bufferSize,
+                CancellationToken cancellationToken
+            ) => innerStream.CopyToAsync(destination, bufferSize, cancellationToken);
+
+            public override int ReadByte() => innerStream.ReadByte();
+
+            public override long Seek(long offset, SeekOrigin origin) =>
+                innerStream.Seek(offset, origin);
+
+            public override void SetLength(long value) => throw new NotSupportedException();
+
+            public override void Write(byte[] buffer, int offset, int count) =>
+                throw new NotSupportedException();
+
+            public override void Flush() => innerStream.Flush();
+
+            protected override void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    innerStream.Dispose();
+                    response.Dispose();
+                }
+
+                base.Dispose(disposing);
+            }
+
+#if NET
+            public override int Read(Span<byte> buffer) => innerStream.Read(buffer);
+
+            public override ValueTask<int> ReadAsync(
+                Memory<byte> buffer,
+                CancellationToken cancellationToken = default
+            ) => innerStream.ReadAsync(buffer, cancellationToken);
+
+            public override void CopyTo(Stream destination, int bufferSize) =>
+                innerStream.CopyTo(destination, bufferSize);
+#endif
         }
     }
 

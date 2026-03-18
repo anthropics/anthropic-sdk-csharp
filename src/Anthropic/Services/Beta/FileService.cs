@@ -24,7 +24,7 @@ public sealed class FileService : IFileService
         get { return _withRawResponse.Value; }
     }
 
-    readonly IAnthropicClient _client;
+    internal readonly IAnthropicClient _client;
 
     /// <inheritdoc/>
     public IFileService WithOptions(Func<ClientOptions, ClientOptions> modifier)
