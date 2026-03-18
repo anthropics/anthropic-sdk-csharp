@@ -23,9 +23,9 @@ public class BetaMessageTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -98,9 +98,9 @@ public class BetaMessageTest : TestBase
             [
                 new()
                 {
-                    SkillID = "x",
+                    SkillID = "pdf",
                     Type = Messages::Type.Anthropic,
-                    Version = "x",
+                    Version = "latest",
                 },
             ],
         };
@@ -195,9 +195,9 @@ public class BetaMessageTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -284,9 +284,9 @@ public class BetaMessageTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -366,9 +366,9 @@ public class BetaMessageTest : TestBase
             [
                 new()
                 {
-                    SkillID = "x",
+                    SkillID = "pdf",
                     Type = Messages::Type.Anthropic,
-                    Version = "x",
+                    Version = "latest",
                 },
             ],
         };
@@ -463,9 +463,9 @@ public class BetaMessageTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -546,9 +546,9 @@ public class BetaMessageTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },

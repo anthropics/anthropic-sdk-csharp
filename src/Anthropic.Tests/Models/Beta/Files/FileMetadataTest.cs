@@ -12,21 +12,21 @@ public class FileMetadataTest : TestBase
     {
         var model = new FileMetadata
         {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Filename = "x",
-            MimeType = "x",
-            SizeBytes = 0,
-            Downloadable = true,
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
+            Downloadable = false,
         };
 
-        string expectedID = "id";
-        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        string expectedFilename = "x";
-        string expectedMimeType = "x";
-        long expectedSizeBytes = 0;
+        string expectedID = "file_011CNha8iCJcU1wXNR6q4V8w";
+        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z");
+        string expectedFilename = "document.pdf";
+        string expectedMimeType = "application/pdf";
+        long expectedSizeBytes = 102400;
         JsonElement expectedType = JsonSerializer.SerializeToElement("file");
-        bool expectedDownloadable = true;
+        bool expectedDownloadable = false;
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
@@ -42,12 +42,12 @@ public class FileMetadataTest : TestBase
     {
         var model = new FileMetadata
         {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Filename = "x",
-            MimeType = "x",
-            SizeBytes = 0,
-            Downloadable = true,
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
+            Downloadable = false,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -64,12 +64,12 @@ public class FileMetadataTest : TestBase
     {
         var model = new FileMetadata
         {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Filename = "x",
-            MimeType = "x",
-            SizeBytes = 0,
-            Downloadable = true,
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
+            Downloadable = false,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -79,13 +79,13 @@ public class FileMetadataTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "id";
-        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        string expectedFilename = "x";
-        string expectedMimeType = "x";
-        long expectedSizeBytes = 0;
+        string expectedID = "file_011CNha8iCJcU1wXNR6q4V8w";
+        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z");
+        string expectedFilename = "document.pdf";
+        string expectedMimeType = "application/pdf";
+        long expectedSizeBytes = 102400;
         JsonElement expectedType = JsonSerializer.SerializeToElement("file");
-        bool expectedDownloadable = true;
+        bool expectedDownloadable = false;
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
@@ -101,12 +101,12 @@ public class FileMetadataTest : TestBase
     {
         var model = new FileMetadata
         {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Filename = "x",
-            MimeType = "x",
-            SizeBytes = 0,
-            Downloadable = true,
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
+            Downloadable = false,
         };
 
         model.Validate();
@@ -117,11 +117,11 @@ public class FileMetadataTest : TestBase
     {
         var model = new FileMetadata
         {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Filename = "x",
-            MimeType = "x",
-            SizeBytes = 0,
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
         };
 
         Assert.Null(model.Downloadable);
@@ -133,11 +133,11 @@ public class FileMetadataTest : TestBase
     {
         var model = new FileMetadata
         {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Filename = "x",
-            MimeType = "x",
-            SizeBytes = 0,
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
         };
 
         model.Validate();
@@ -148,11 +148,11 @@ public class FileMetadataTest : TestBase
     {
         var model = new FileMetadata
         {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Filename = "x",
-            MimeType = "x",
-            SizeBytes = 0,
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
 
             // Null should be interpreted as omitted for these properties
             Downloadable = null,
@@ -167,11 +167,11 @@ public class FileMetadataTest : TestBase
     {
         var model = new FileMetadata
         {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Filename = "x",
-            MimeType = "x",
-            SizeBytes = 0,
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
 
             // Null should be interpreted as omitted for these properties
             Downloadable = null,
@@ -185,12 +185,12 @@ public class FileMetadataTest : TestBase
     {
         var model = new FileMetadata
         {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Filename = "x",
-            MimeType = "x",
-            SizeBytes = 0,
-            Downloadable = true,
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
+            Downloadable = false,
         };
 
         FileMetadata copied = new(model);

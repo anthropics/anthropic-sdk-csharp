@@ -24,9 +24,9 @@ public class BetaRawMessageStartEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -106,9 +106,9 @@ public class BetaRawMessageStartEventTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -193,9 +193,9 @@ public class BetaRawMessageStartEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -289,9 +289,9 @@ public class BetaRawMessageStartEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -378,9 +378,9 @@ public class BetaRawMessageStartEventTest : TestBase
                 [
                     new()
                     {
-                        SkillID = "x",
+                        SkillID = "pdf",
                         Type = Messages::Type.Anthropic,
-                        Version = "x",
+                        Version = "latest",
                     },
                 ],
             },
@@ -465,9 +465,9 @@ public class BetaRawMessageStartEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -555,9 +555,9 @@ public class BetaRawMessageStartEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },

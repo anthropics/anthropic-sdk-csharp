@@ -23,9 +23,9 @@ public class BetaRawMessageStreamEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -120,9 +120,9 @@ public class BetaRawMessageStreamEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -222,9 +222,9 @@ public class BetaRawMessageStreamEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -325,9 +325,9 @@ public class BetaRawMessageStreamEventTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },

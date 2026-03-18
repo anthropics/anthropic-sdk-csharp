@@ -27,9 +27,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         [
                             new()
                             {
-                                SkillID = "x",
+                                SkillID = "pdf",
                                 Type = Messages::Type.Anthropic,
-                                Version = "x",
+                                Version = "latest",
                             },
                         ],
                     },
@@ -112,9 +112,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -205,9 +205,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         [
                             new()
                             {
-                                SkillID = "x",
+                                SkillID = "pdf",
                                 Type = Messages::Type.Anthropic,
-                                Version = "x",
+                                Version = "latest",
                             },
                         ],
                     },
@@ -304,9 +304,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         [
                             new()
                             {
-                                SkillID = "x",
+                                SkillID = "pdf",
                                 Type = Messages::Type.Anthropic,
-                                Version = "x",
+                                Version = "latest",
                             },
                         ],
                     },
@@ -396,9 +396,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     [
                         new()
                         {
-                            SkillID = "x",
+                            SkillID = "pdf",
                             Type = Messages::Type.Anthropic,
-                            Version = "x",
+                            Version = "latest",
                         },
                     ],
                 },
@@ -489,9 +489,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         [
                             new()
                             {
-                                SkillID = "x",
+                                SkillID = "pdf",
                                 Type = Messages::Type.Anthropic,
-                                Version = "x",
+                                Version = "latest",
                             },
                         ],
                     },
@@ -582,9 +582,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         [
                             new()
                             {
-                                SkillID = "x",
+                                SkillID = "pdf",
                                 Type = Messages::Type.Anthropic,
-                                Version = "x",
+                                Version = "latest",
                             },
                         ],
                     },

@@ -17,34 +17,34 @@ public class FileListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Filename = "x",
-                    MimeType = "x",
-                    SizeBytes = 0,
-                    Downloadable = true,
+                    ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                    Filename = "document.pdf",
+                    MimeType = "application/pdf",
+                    SizeBytes = 102400,
+                    Downloadable = false,
                 },
             ],
-            FirstID = "first_id",
+            FirstID = "file_011CNha8iCJcU1wXNR6q4V8w",
             HasMore = true,
-            LastID = "last_id",
+            LastID = "file_013Zva2CMHLNnXjNJJKqJ2EF",
         };
 
         List<FileMetadata> expectedData =
         [
             new()
             {
-                ID = "id",
-                CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Filename = "x",
-                MimeType = "x",
-                SizeBytes = 0,
-                Downloadable = true,
+                ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                Filename = "document.pdf",
+                MimeType = "application/pdf",
+                SizeBytes = 102400,
+                Downloadable = false,
             },
         ];
-        string expectedFirstID = "first_id";
+        string expectedFirstID = "file_011CNha8iCJcU1wXNR6q4V8w";
         bool expectedHasMore = true;
-        string expectedLastID = "last_id";
+        string expectedLastID = "file_013Zva2CMHLNnXjNJJKqJ2EF";
 
         Assert.Equal(expectedData.Count, model.Data.Count);
         for (int i = 0; i < expectedData.Count; i++)
@@ -65,17 +65,17 @@ public class FileListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Filename = "x",
-                    MimeType = "x",
-                    SizeBytes = 0,
-                    Downloadable = true,
+                    ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                    Filename = "document.pdf",
+                    MimeType = "application/pdf",
+                    SizeBytes = 102400,
+                    Downloadable = false,
                 },
             ],
-            FirstID = "first_id",
+            FirstID = "file_011CNha8iCJcU1wXNR6q4V8w",
             HasMore = true,
-            LastID = "last_id",
+            LastID = "file_013Zva2CMHLNnXjNJJKqJ2EF",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -96,17 +96,17 @@ public class FileListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Filename = "x",
-                    MimeType = "x",
-                    SizeBytes = 0,
-                    Downloadable = true,
+                    ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                    Filename = "document.pdf",
+                    MimeType = "application/pdf",
+                    SizeBytes = 102400,
+                    Downloadable = false,
                 },
             ],
-            FirstID = "first_id",
+            FirstID = "file_011CNha8iCJcU1wXNR6q4V8w",
             HasMore = true,
-            LastID = "last_id",
+            LastID = "file_013Zva2CMHLNnXjNJJKqJ2EF",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -120,17 +120,17 @@ public class FileListPageResponseTest : TestBase
         [
             new()
             {
-                ID = "id",
-                CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Filename = "x",
-                MimeType = "x",
-                SizeBytes = 0,
-                Downloadable = true,
+                ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                Filename = "document.pdf",
+                MimeType = "application/pdf",
+                SizeBytes = 102400,
+                Downloadable = false,
             },
         ];
-        string expectedFirstID = "first_id";
+        string expectedFirstID = "file_011CNha8iCJcU1wXNR6q4V8w";
         bool expectedHasMore = true;
-        string expectedLastID = "last_id";
+        string expectedLastID = "file_013Zva2CMHLNnXjNJJKqJ2EF";
 
         Assert.Equal(expectedData.Count, deserialized.Data.Count);
         for (int i = 0; i < expectedData.Count; i++)
@@ -151,17 +151,17 @@ public class FileListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Filename = "x",
-                    MimeType = "x",
-                    SizeBytes = 0,
-                    Downloadable = true,
+                    ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                    Filename = "document.pdf",
+                    MimeType = "application/pdf",
+                    SizeBytes = 102400,
+                    Downloadable = false,
                 },
             ],
-            FirstID = "first_id",
+            FirstID = "file_011CNha8iCJcU1wXNR6q4V8w",
             HasMore = true,
-            LastID = "last_id",
+            LastID = "file_013Zva2CMHLNnXjNJJKqJ2EF",
         };
 
         model.Validate();
@@ -176,16 +176,16 @@ public class FileListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Filename = "x",
-                    MimeType = "x",
-                    SizeBytes = 0,
-                    Downloadable = true,
+                    ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                    Filename = "document.pdf",
+                    MimeType = "application/pdf",
+                    SizeBytes = 102400,
+                    Downloadable = false,
                 },
             ],
-            FirstID = "first_id",
-            LastID = "last_id",
+            FirstID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            LastID = "file_013Zva2CMHLNnXjNJJKqJ2EF",
         };
 
         Assert.Null(model.HasMore);
@@ -201,16 +201,16 @@ public class FileListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Filename = "x",
-                    MimeType = "x",
-                    SizeBytes = 0,
-                    Downloadable = true,
+                    ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                    Filename = "document.pdf",
+                    MimeType = "application/pdf",
+                    SizeBytes = 102400,
+                    Downloadable = false,
                 },
             ],
-            FirstID = "first_id",
-            LastID = "last_id",
+            FirstID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            LastID = "file_013Zva2CMHLNnXjNJJKqJ2EF",
         };
 
         model.Validate();
@@ -225,16 +225,16 @@ public class FileListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Filename = "x",
-                    MimeType = "x",
-                    SizeBytes = 0,
-                    Downloadable = true,
+                    ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                    Filename = "document.pdf",
+                    MimeType = "application/pdf",
+                    SizeBytes = 102400,
+                    Downloadable = false,
                 },
             ],
-            FirstID = "first_id",
-            LastID = "last_id",
+            FirstID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            LastID = "file_013Zva2CMHLNnXjNJJKqJ2EF",
 
             // Null should be interpreted as omitted for these properties
             HasMore = null,
@@ -253,16 +253,16 @@ public class FileListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Filename = "x",
-                    MimeType = "x",
-                    SizeBytes = 0,
-                    Downloadable = true,
+                    ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                    Filename = "document.pdf",
+                    MimeType = "application/pdf",
+                    SizeBytes = 102400,
+                    Downloadable = false,
                 },
             ],
-            FirstID = "first_id",
-            LastID = "last_id",
+            FirstID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            LastID = "file_013Zva2CMHLNnXjNJJKqJ2EF",
 
             // Null should be interpreted as omitted for these properties
             HasMore = null,
@@ -280,12 +280,12 @@ public class FileListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Filename = "x",
-                    MimeType = "x",
-                    SizeBytes = 0,
-                    Downloadable = true,
+                    ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                    Filename = "document.pdf",
+                    MimeType = "application/pdf",
+                    SizeBytes = 102400,
+                    Downloadable = false,
                 },
             ],
             HasMore = true,
@@ -306,12 +306,12 @@ public class FileListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Filename = "x",
-                    MimeType = "x",
-                    SizeBytes = 0,
-                    Downloadable = true,
+                    ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                    Filename = "document.pdf",
+                    MimeType = "application/pdf",
+                    SizeBytes = 102400,
+                    Downloadable = false,
                 },
             ],
             HasMore = true,
@@ -329,12 +329,12 @@ public class FileListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Filename = "x",
-                    MimeType = "x",
-                    SizeBytes = 0,
-                    Downloadable = true,
+                    ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                    Filename = "document.pdf",
+                    MimeType = "application/pdf",
+                    SizeBytes = 102400,
+                    Downloadable = false,
                 },
             ],
             HasMore = true,
@@ -358,12 +358,12 @@ public class FileListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Filename = "x",
-                    MimeType = "x",
-                    SizeBytes = 0,
-                    Downloadable = true,
+                    ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                    Filename = "document.pdf",
+                    MimeType = "application/pdf",
+                    SizeBytes = 102400,
+                    Downloadable = false,
                 },
             ],
             HasMore = true,
@@ -384,17 +384,17 @@ public class FileListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Filename = "x",
-                    MimeType = "x",
-                    SizeBytes = 0,
-                    Downloadable = true,
+                    ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+                    Filename = "document.pdf",
+                    MimeType = "application/pdf",
+                    SizeBytes = 102400,
+                    Downloadable = false,
                 },
             ],
-            FirstID = "first_id",
+            FirstID = "file_011CNha8iCJcU1wXNR6q4V8w",
             HasMore = true,
-            LastID = "last_id",
+            LastID = "file_013Zva2CMHLNnXjNJJKqJ2EF",
         };
 
         FileListPageResponse copied = new(model);
