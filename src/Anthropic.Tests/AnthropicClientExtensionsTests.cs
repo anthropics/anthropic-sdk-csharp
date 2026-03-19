@@ -339,6 +339,73 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetResponseAsync_WithNonEmptyMessageParams_EmptyMessages()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 2048,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Preconfigured message"
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_factory_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 2048,
+                Model = "claude-haiku-4-5",
+                Messages =
+                [
+                    new MessageParam()
+                    {
+                        Role = Role.User,
+                        Content = new MessageParamContent(
+                            [new TextBlockParam() { Text = "Preconfigured message" }]
+                        ),
+                    },
+                ],
+            },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [],
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_WithRawRepresentationFactory_SystemMessagesMerged()
     {
         VerbatimHttpHandler handler = new(

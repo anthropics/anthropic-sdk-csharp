@@ -890,11 +890,6 @@ public static class AnthropicBetaClientExtensions
                 );
             }
 
-            if (messageParams.Count == 0)
-            {
-                messageParams.Add(new() { Role = Role.User, Content = new("\u200b") }); // zero-width space
-            }
-
             return messageParams;
         }
 
@@ -909,12 +904,23 @@ public static class AnthropicBetaClientExtensions
             // or with only the required properties set.
             MessageCreateParams? createParams =
                 options?.RawRepresentationFactory?.Invoke(this) as MessageCreateParams;
+
+            // Anthropic requires at least one message. If no messages were provided either directly
+            // or via the RawRepresentationFactory, add a placeholder. It's currently expensive to access
+            // the Messages from the raw representation, as each access deserializes an entirely new collection,
+            // so we do it once upfront to try to reduce that overhead.
+            var createParamsOriginalMessages = createParams?.Messages;
+            if (createParamsOriginalMessages is not { Count: > 0 } && messages.Count == 0)
+            {
+                messages.Add(new BetaMessageParam() { Role = Role.User, Content = new("\u200b") }); // zero-width space
+            }
+
             if (createParams is not null)
             {
                 // Merge any messages preconfigured on the params with the ones provided to the IChatClient.
                 createParams = createParams with
                 {
-                    Messages = [.. createParams.Messages, .. messages],
+                    Messages = [.. createParamsOriginalMessages ?? [], .. messages],
                 };
             }
             else
