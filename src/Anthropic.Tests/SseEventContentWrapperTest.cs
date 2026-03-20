@@ -61,15 +61,16 @@ public class SseEventContentWrapperTest
         return message;
     }
 
-    private static uint Crc32(ReadOnlySpan<byte> data)
-        => AwsEventStreamHelpers.CRC32.ComputeChecksum(data);
+    private static uint Crc32(ReadOnlySpan<byte> data) =>
+        AwsEventStreamHelpers.CRC32.ComputeChecksum(data);
 
     [Fact]
     public async Task ReadAsync_HandlesEventLargerThanBuffer()
     {
         // Build an event with a large payload that will exceed a small read buffer
         var largeContent = new string('x', 2000);
-        var eventJson = $"{{\"type\":\"content_block_delta\",\"delta\":{{\"text\":\"{largeContent}\"}}}}";
+        var eventJson =
+            $"{{\"type\":\"content_block_delta\",\"delta\":{{\"text\":\"{largeContent}\"}}}}";
         var messageBytes = BuildEventStreamMessage("chunk", eventJson);
 
         using var stream = new MemoryStream(messageBytes);
@@ -80,7 +81,14 @@ public class SseEventContentWrapperTest
         var allData = new MemoryStream();
         var buffer = new byte[256];
         int bytesRead;
-        while ((bytesRead = await contentStream.ReadAsync(buffer, TestContext.Current.CancellationToken)) > 0)
+        while (
+            (
+                bytesRead = await contentStream.ReadAsync(
+                    buffer,
+                    TestContext.Current.CancellationToken
+                )
+            ) > 0
+        )
         {
             allData.Write(buffer, 0, bytesRead);
         }
@@ -106,7 +114,10 @@ public class SseEventContentWrapperTest
 
         // Use a large buffer — should fit in one read
         var buffer = new byte[8192];
-        var bytesRead = await contentStream.ReadAsync(buffer, TestContext.Current.CancellationToken);
+        var bytesRead = await contentStream.ReadAsync(
+            buffer,
+            TestContext.Current.CancellationToken
+        );
 
         var result = Encoding.UTF8.GetString(buffer, 0, bytesRead);
         Assert.StartsWith("event:", result);
