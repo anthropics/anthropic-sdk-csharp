@@ -45,6 +45,7 @@ internal class SseEventContentWrapper : HttpContent
     private class SseLazyEventStream : Stream
     {
         private readonly Stream _sourceStream;
+        private Memory<byte> _remainder = Memory<byte>.Empty;
 
         public SseLazyEventStream(Stream source)
         {
@@ -69,6 +70,15 @@ internal class SseEventContentWrapper : HttpContent
             CancellationToken cancellationToken = default
         )
         {
+            // Return buffered remainder from a previous oversized event first
+            if (_remainder.Length > 0)
+            {
+                var toCopy = Math.Min(_remainder.Length, buffer.Length);
+                _remainder[..toCopy].CopyTo(buffer);
+                _remainder = _remainder[toCopy..];
+                return toCopy;
+            }
+
             var (data, success) = await AwsEventStreamHelpers
                 .ReadStreamMessage(_sourceStream, cancellationToken)
                 .ConfigureAwait(false);
@@ -78,8 +88,13 @@ internal class SseEventContentWrapper : HttpContent
             }
 
             var encodedData = Encoding.UTF8.GetBytes(data!);
-            encodedData.CopyTo(buffer);
-            return encodedData.Length;
+            var bytesToCopy = Math.Min(encodedData.Length, buffer.Length);
+            encodedData.AsMemory(0, bytesToCopy).CopyTo(buffer);
+            if (bytesToCopy < encodedData.Length)
+            {
+                _remainder = encodedData.AsMemory(bytesToCopy);
+            }
+            return bytesToCopy;
         }
 #else
         public override async Task<int> ReadAsync(
@@ -89,6 +104,15 @@ internal class SseEventContentWrapper : HttpContent
             CancellationToken cancellationToken
         )
         {
+            // Return buffered remainder from a previous oversized event first
+            if (_remainder.Length > 0)
+            {
+                var toCopy = Math.Min(_remainder.Length, count);
+                _remainder[..toCopy].CopyTo(buffer.AsMemory(offset));
+                _remainder = _remainder[toCopy..];
+                return toCopy;
+            }
+
             var (data, success) = await AwsEventStreamHelpers
                 .ReadStreamMessage(_sourceStream, cancellationToken)
                 .ConfigureAwait(false);
@@ -98,8 +122,13 @@ internal class SseEventContentWrapper : HttpContent
             }
 
             var encodedData = Encoding.UTF8.GetBytes(data!);
-            encodedData.CopyTo(buffer, offset);
-            return encodedData.Length;
+            var bytesToCopy = Math.Min(encodedData.Length, count);
+            Array.Copy(encodedData, 0, buffer, offset, bytesToCopy);
+            if (bytesToCopy < encodedData.Length)
+            {
+                _remainder = encodedData.AsMemory(bytesToCopy);
+            }
+            return bytesToCopy;
         }
 #endif
 
