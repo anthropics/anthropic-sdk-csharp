@@ -1144,9 +1144,7 @@ public static class AnthropicClientExtensions
                 options?.RawRepresentationFactory?.Invoke(this) as MessageCreateParams;
 
             // Anthropic requires at least one message. If no messages were provided either directly
-            // or via the RawRepresentationFactory, add a placeholder. It's currently expensive to access
-            // the Messages from the raw representation, as each access deserializes an entirely new collection,
-            // so we do it once upfront to try to reduce that overhead.
+            // or via the RawRepresentationFactory, add an empty message.
             var createParamsOriginalMessages = createParams?.Messages;
             if (createParamsOriginalMessages is not { Count: > 0 } && messages.Count == 0)
             {
