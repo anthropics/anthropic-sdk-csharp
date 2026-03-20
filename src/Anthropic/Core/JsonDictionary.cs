@@ -94,20 +94,7 @@ sealed class JsonDictionary
         {
             throw new AnthropicInvalidDataException($"'{key}' cannot be absent");
         }
-        T deserialized;
-        try
-        {
-            deserialized =
-                JsonSerializer.Deserialize<T>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException($"'{key}' cannot be null");
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
+        T deserialized = WrappedJsonSerializer.GetNotNullClass<T>(element, key);
         _deserializedData[key] = deserialized;
         return deserialized;
     }
@@ -123,20 +110,7 @@ sealed class JsonDictionary
         {
             throw new AnthropicInvalidDataException($"'{key}' cannot be absent");
         }
-        T deserialized;
-        try
-        {
-            deserialized =
-                JsonSerializer.Deserialize<T?>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException($"'{key}' cannot be null");
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
+        T deserialized = WrappedJsonSerializer.GetNotNullStruct<T>(element, key);
         _deserializedData[key] = deserialized;
         return deserialized;
     }
@@ -153,18 +127,7 @@ sealed class JsonDictionary
             _deserializedData[key] = null;
             return null;
         }
-        T? deserialized;
-        try
-        {
-            deserialized = JsonSerializer.Deserialize<T?>(element, ModelBase.SerializerOptions);
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
+        T? deserialized = WrappedJsonSerializer.GetNullableClass<T>(element, key);
         _deserializedData[key] = deserialized;
         return deserialized;
     }
@@ -181,18 +144,7 @@ sealed class JsonDictionary
             _deserializedData[key] = null;
             return null;
         }
-        T? deserialized;
-        try
-        {
-            deserialized = JsonSerializer.Deserialize<T?>(element, ModelBase.SerializerOptions);
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
+        T? deserialized = WrappedJsonSerializer.GetNullableStruct<T>(element, key);
         _deserializedData[key] = deserialized;
         return deserialized;
     }
