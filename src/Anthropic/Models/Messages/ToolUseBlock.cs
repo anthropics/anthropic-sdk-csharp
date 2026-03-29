@@ -24,15 +24,24 @@ public sealed record class ToolUseBlock : JsonModel
 
     /// <summary>
     /// Tool invocation directly from the model.
+    /// When absent, the caller is implicitly "direct" (the model itself).
     /// </summary>
-    public required ToolUseBlockCaller Caller
+    public ToolUseBlockCaller? Caller
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ToolUseBlockCaller>("caller");
+            return this._rawData.GetNullableClass<ToolUseBlockCaller>("caller");
         }
-        init { this._rawData.Set("caller", value); }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("caller", value);
+        }
     }
 
     public required IReadOnlyDictionary<string, JsonElement> Input
@@ -75,7 +84,7 @@ public sealed record class ToolUseBlock : JsonModel
     public override void Validate()
     {
         _ = this.ID;
-        this.Caller.Validate();
+        this.Caller?.Validate();
         _ = this.Input;
         _ = this.Name;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("tool_use")))

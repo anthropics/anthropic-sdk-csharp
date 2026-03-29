@@ -144,6 +144,78 @@ public class ToolUseBlockTest : TestBase
 
         Assert.Equal(model, copied);
     }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new ToolUseBlock
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+        };
+
+        Assert.Null(model.Caller);
+        Assert.False(model.RawData.ContainsKey("caller"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new ToolUseBlock
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
+    {
+        var model = new ToolUseBlock
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+
+            // Null should be interpreted as omitted for these properties
+            Caller = null,
+        };
+
+        Assert.Null(model.Caller);
+        Assert.False(model.RawData.ContainsKey("caller"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new ToolUseBlock
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+
+            // Null should be interpreted as omitted for these properties
+            Caller = null,
+        };
+
+        model.Validate();
+    }
 }
 
 public class ToolUseBlockCallerTest : TestBase
