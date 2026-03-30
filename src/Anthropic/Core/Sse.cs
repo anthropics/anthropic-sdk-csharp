@@ -57,7 +57,10 @@ static class Sse
                 case "error":
                     throw new AnthropicSseException(
                         string.Format("SSE error returned from server: '{0}'", item.Data)
-                    );
+                    )
+                    {
+                        ErrorType = AnthropicExceptionFactory.ExtractErrorType(item.Data),
+                    };
             }
         }
     }

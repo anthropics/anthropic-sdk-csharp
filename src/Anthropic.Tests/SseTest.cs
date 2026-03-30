@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models;
 
 namespace Anthropic.Tests;
 
@@ -113,5 +115,108 @@ public class SseTest : TestBase
         });
 
         Assert.Equal("SSE error returned from server: 'unspecified error'", exception.Message);
+    }
+
+    [Fact]
+    public void CreateApiException_ExtractsErrorType()
+    {
+        var body =
+            """{"type":"error","error":{"type":"invalid_request_error","message":"Bad request"}}""";
+        var ex = AnthropicExceptionFactory.CreateApiException(HttpStatusCode.BadRequest, body);
+
+        Assert.IsType<AnthropicBadRequestException>(ex);
+        Assert.Equal(ErrorType.InvalidRequestError, ex.ErrorType);
+    }
+
+    [Fact]
+    public void CreateApiException_NullErrorType_WhenMissing()
+    {
+        var body = """{"message":"something went wrong"}""";
+        var ex = AnthropicExceptionFactory.CreateApiException(HttpStatusCode.BadRequest, body);
+
+        Assert.Null(ex.ErrorType);
+    }
+
+    [Fact]
+    public void CreateApiException_NullErrorType_WhenNotJson()
+    {
+        var ex = AnthropicExceptionFactory.CreateApiException(
+            HttpStatusCode.BadGateway,
+            "Bad Gateway"
+        );
+
+        Assert.Null(ex.ErrorType);
+    }
+
+    [Fact]
+    public void ExtractErrorType_NullForUnknownType()
+    {
+        var body = """{"type":"error","error":{"type":"some_future_error","message":"Unknown"}}""";
+        var result = AnthropicExceptionFactory.ExtractErrorType(body);
+
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public async Task StreamingError_SseException_WithErrorType()
+    {
+        var sseData =
+            """{"type":"error","error":{"type":"overloaded_error","message":"Overloaded"}}""";
+        var resp = new HttpResponseMessage()
+        {
+            Content = new StringContent($"event: error\ndata: {sseData}\n\n"),
+        };
+
+        var exception = await Assert.ThrowsAsync<AnthropicSseException>(async () =>
+        {
+            await foreach (
+                var message in Sse.Enumerate<JsonElement>(
+                    resp,
+                    TestContext.Current.CancellationToken
+                )
+            ) { }
+        });
+
+        Assert.Equal(ErrorType.OverloadedError, exception.ErrorType);
+    }
+
+    [Fact]
+    public async Task StreamingError_NonJsonData_NullErrorType()
+    {
+        var resp = new HttpResponseMessage()
+        {
+            Content = new StringContent("event: error\ndata: ThrottlingException\n\n"),
+        };
+
+        var exception = await Assert.ThrowsAsync<AnthropicSseException>(async () =>
+        {
+            await foreach (
+                var message in Sse.Enumerate<JsonElement>(
+                    resp,
+                    TestContext.Current.CancellationToken
+                )
+            ) { }
+        });
+
+        Assert.Null(exception.ErrorType);
+    }
+
+    [Fact]
+    public void ServiceException_CatchesBothHttpAndSseErrors()
+    {
+        // HTTP error is catchable as AnthropicServiceException
+        var body =
+            """{"type":"error","error":{"type":"rate_limit_error","message":"Rate limited"}}""";
+        var httpEx = AnthropicExceptionFactory.CreateApiException((HttpStatusCode)429, body);
+        Assert.IsType<AnthropicServiceException>(httpEx, exactMatch: false);
+        Assert.Equal(ErrorType.RateLimitError, httpEx.ErrorType);
+
+        // SSE error is catchable as AnthropicServiceException
+        var sseEx = new AnthropicSseException("SSE error")
+        {
+            ErrorType = ErrorType.OverloadedError,
+        };
+        Assert.IsType<AnthropicServiceException>(sseEx, exactMatch: false);
+        Assert.Equal(ErrorType.OverloadedError, sseEx.ErrorType);
     }
 }

@@ -4,7 +4,7 @@ using System.Net.Http;
 
 namespace Anthropic.Exceptions;
 
-public class AnthropicApiException : AnthropicException
+public class AnthropicApiException : AnthropicServiceException
 {
     public new HttpRequestException InnerException
     {
