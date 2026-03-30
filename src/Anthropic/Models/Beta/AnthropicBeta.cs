@@ -28,6 +28,7 @@ public enum AnthropicBeta
     ModelContextWindowExceeded2025_08_26,
     Skills2025_10_02,
     FastMode2026_02_01,
+    Output300k2026_03_24,
 }
 
 sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
@@ -61,6 +62,7 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.ModelContextWindowExceeded2025_08_26,
             "skills-2025-10-02" => AnthropicBeta.Skills2025_10_02,
             "fast-mode-2026-02-01" => AnthropicBeta.FastMode2026_02_01,
+            "output-300k-2026-03-24" => AnthropicBeta.Output300k2026_03_24,
             _ => (AnthropicBeta)(-1),
         };
     }
@@ -96,6 +98,7 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                     "model-context-window-exceeded-2025-08-26",
                 AnthropicBeta.Skills2025_10_02 => "skills-2025-10-02",
                 AnthropicBeta.FastMode2026_02_01 => "fast-mode-2026-02-01",
+                AnthropicBeta.Output300k2026_03_24 => "output-300k-2026-03-24",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
