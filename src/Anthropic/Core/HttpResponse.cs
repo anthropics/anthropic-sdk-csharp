@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic.Exceptions;
@@ -176,12 +177,17 @@ public sealed class StreamingHttpResponse<T> : HttpResponse
         this.CancellationToken = response.CancellationToken;
     }
 
-    public IAsyncEnumerable<T> Enumerate(Threading::CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<T> Enumerate(
+        [EnumeratorCancellationAttribute] Threading::CancellationToken cancellationToken = default
+    )
     {
         using var cts = Threading::CancellationTokenSource.CreateLinkedTokenSource(
             this.CancellationToken,
             cancellationToken
         );
-        return this._enumerate(cts.Token);
+        await foreach (var item in this._enumerate(cts.Token))
+        {
+            yield return item;
+        }
     }
 }
