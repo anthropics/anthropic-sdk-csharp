@@ -1211,7 +1211,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "content": [{
                             "type": "tool_result",
                             "tool_use_id": "toolu_12345",
-                            "content": "\"Sunny, 22 degrees celsius\"",
+                            "content": "Sunny, 22 degrees celsius",
                             "is_error": false
                         }]
                     }
