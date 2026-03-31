@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 (2026-03-31)
+
+Full Changelog: [Bedrock-v0.1.0...Bedrock-v0.1.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.1.0...Bedrock-v0.1.1)
+
+### Bug Fixes
+
+* handle oversized SSE events in Bedrock SseEventContentWrapper ([#147](https://github.com/anthropics/anthropic-sdk-csharp/issues/147)) ([dcbf8cc](https://github.com/anthropics/anthropic-sdk-csharp/commit/dcbf8ccb4dc4f1d67fe85e3ff1248517bea6af23))
+
 ## 0.1.0 (2026-03-16)
 
 Full Changelog: [Bedrock-v0.0.1...Bedrock-v0.1.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.0.1...Bedrock-v0.1.0)
