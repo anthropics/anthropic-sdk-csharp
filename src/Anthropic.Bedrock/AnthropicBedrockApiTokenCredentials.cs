@@ -27,7 +27,7 @@ public sealed class AnthropicBedrockApiTokenCredentials : IAnthropicBedrockCrede
     public Task Apply(HttpRequestMessage requestMessage)
     {
         requestMessage.Headers.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", BearerToken);
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", BearerToken);
         return Task.CompletedTask;
     }
 }
