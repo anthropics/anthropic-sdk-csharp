@@ -348,12 +348,10 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -370,12 +368,10 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -392,12 +388,10 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -414,12 +408,10 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }

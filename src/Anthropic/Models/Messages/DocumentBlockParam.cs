@@ -495,12 +495,10 @@ sealed class DocumentBlockParamSourceConverter : JsonConverter<DocumentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -517,12 +515,10 @@ sealed class DocumentBlockParamSourceConverter : JsonConverter<DocumentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -539,12 +535,10 @@ sealed class DocumentBlockParamSourceConverter : JsonConverter<DocumentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -558,12 +552,10 @@ sealed class DocumentBlockParamSourceConverter : JsonConverter<DocumentBlockPara
                     var deserialized = JsonSerializer.Deserialize<UrlPdfSource>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }

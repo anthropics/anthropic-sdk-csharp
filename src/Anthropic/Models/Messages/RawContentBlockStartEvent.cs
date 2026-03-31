@@ -859,12 +859,10 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     var deserialized = JsonSerializer.Deserialize<TextBlock>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -878,12 +876,10 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     var deserialized = JsonSerializer.Deserialize<ThinkingBlock>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -900,12 +896,10 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -919,12 +913,10 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     var deserialized = JsonSerializer.Deserialize<ToolUseBlock>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -941,12 +933,10 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -963,12 +953,10 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -985,12 +973,10 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -1007,12 +993,10 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -1029,12 +1013,10 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -1052,12 +1034,10 @@ sealed class RawContentBlockStartEventContentBlockConverter
                         );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -1074,12 +1054,10 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -1096,12 +1074,10 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }

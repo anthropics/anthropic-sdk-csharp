@@ -344,12 +344,10 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -363,12 +361,10 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
                     var deserialized = JsonSerializer.Deserialize<UrlImageSource>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }

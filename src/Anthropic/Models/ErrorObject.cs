@@ -555,11 +555,10 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -576,11 +575,10 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -594,11 +592,10 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     var deserialized = JsonSerializer.Deserialize<BillingError>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -615,11 +612,10 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -633,11 +629,10 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     var deserialized = JsonSerializer.Deserialize<NotFoundError>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -651,11 +646,10 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     var deserialized = JsonSerializer.Deserialize<RateLimitError>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -672,11 +666,10 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -690,11 +683,10 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     var deserialized = JsonSerializer.Deserialize<ApiErrorObject>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -711,11 +703,10 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     );
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }

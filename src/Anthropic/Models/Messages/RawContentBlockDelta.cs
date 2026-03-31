@@ -374,12 +374,10 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     var deserialized = JsonSerializer.Deserialize<TextDelta>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -393,12 +391,10 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     var deserialized = JsonSerializer.Deserialize<InputJsonDelta>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -412,12 +408,10 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     var deserialized = JsonSerializer.Deserialize<CitationsDelta>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -431,12 +425,10 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     var deserialized = JsonSerializer.Deserialize<ThinkingDelta>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -450,12 +442,10 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     var deserialized = JsonSerializer.Deserialize<SignatureDelta>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
