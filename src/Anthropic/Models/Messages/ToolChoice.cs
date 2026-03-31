@@ -349,12 +349,10 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     var deserialized = JsonSerializer.Deserialize<ToolChoiceAuto>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -368,12 +366,10 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     var deserialized = JsonSerializer.Deserialize<ToolChoiceAny>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -387,12 +383,10 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     var deserialized = JsonSerializer.Deserialize<ToolChoiceTool>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
@@ -406,12 +400,10 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     var deserialized = JsonSerializer.Deserialize<ToolChoiceNone>(element, options);
                     if (deserialized != null)
                     {
-                        deserialized.Validate();
                         return new(deserialized, element);
                     }
                 }
-                catch (System::Exception e)
-                    when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (JsonException)
                 {
                     // ignore
                 }
