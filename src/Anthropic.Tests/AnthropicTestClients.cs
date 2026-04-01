@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Anthropic.Aws;
 using Anthropic.Bedrock;
 using Anthropic.Foundry;
 using Anthropic.Vertex;
@@ -92,6 +93,27 @@ public class AnthropicTestClientsAttribute : DataAttribute
                 )
             );
         }
+        if (TestSupportTypes.HasFlag(TestSupportTypes.Aws))
+        {
+            rows.Add(
+                new TheoryDataRow(
+                    [
+                        new AnthropicAwsClient(
+                            new()
+                            {
+                                ApiKey = ApiKey,
+                                WorkspaceId = "default",
+                                BaseUrl = DataServiceUrl,
+                            }
+                        ),
+                        .. testData
+                            .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Aws))
+                            .SelectMany(f => f.TestData)
+                            .ToArray(),
+                    ]
+                )
+            );
+        }
         if (TestSupportTypes.HasFlag(TestSupportTypes.Vertex))
         {
             rows.Add(
@@ -132,9 +154,10 @@ sealed class AnthropicTestDataAttribute : Attribute
 [Flags]
 public enum TestSupportTypes
 {
-    All = Anthropic | Foundry,
+    All = Anthropic | Foundry | Aws,
     Anthropic = 1 << 1,
     Foundry = 1 << 2,
     Bedrock = 1 << 3,
     Vertex = 1 << 4,
+    Aws = 1 << 5,
 }

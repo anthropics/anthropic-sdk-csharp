@@ -3,7 +3,8 @@
     "src/Anthropic": {},
     "src/Anthropic.Foundry": {},
     "src/Anthropic.Bedrock": {},
-    "src/Anthropic.Vertex": {}
+    "src/Anthropic.Vertex": {},
+    "src/Anthropic.Aws": {}
   },
   "$schema": "https://raw.githubusercontent.com/stainless-api/release-please/main/schemas/config.json",
   "include-v-in-tag": true,

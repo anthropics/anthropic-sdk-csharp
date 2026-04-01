@@ -25,6 +25,7 @@ public class MessageServiceMultiClientTest : MessageServiceTest
     [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
     [AnthropicTestData(TestSupportTypes.Bedrock, "global.anthropic.claude-haiku-4-5-20251001-v1:0")]
     [AnthropicTestData(TestSupportTypes.Vertex, "claude-3-7-sonnet@20250219")]
+    [AnthropicTestData(TestSupportTypes.Aws, "ClaudeSonnet4_5")]
     public async Task Create_Works(IAnthropicClient c, string modelName)
     {
         client = c;
@@ -45,6 +46,7 @@ public class MessageServiceMultiClientTest : MessageServiceTest
     [AnthropicTestData(TestSupportTypes.Anthropic, "ClaudeSonnet4_5")]
     [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
     [AnthropicTestData(TestSupportTypes.Bedrock, "global.anthropic.claude-haiku-4-5-20251001-v1:0")]
+    [AnthropicTestData(TestSupportTypes.Aws, "ClaudeSonnet4_5")]
     public async Task CreateStreaming_Works(IAnthropicClient c, string modelName)
     {
         client = c;
@@ -68,6 +70,7 @@ public class MessageServiceMultiClientTest : MessageServiceTest
     [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     [AnthropicTestData(TestSupportTypes.Anthropic, "ClaudeSonnet4_5")]
     [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
+    [AnthropicTestData(TestSupportTypes.Aws, "ClaudeSonnet4_5")]
     public async Task CountTokens_Works(IAnthropicClient c, string modelName)
     {
         client = c;
