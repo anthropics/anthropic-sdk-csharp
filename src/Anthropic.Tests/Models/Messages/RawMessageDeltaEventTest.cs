@@ -19,6 +19,7 @@ public class RawMessageDeltaEventTest : TestBase
                     ID = "id",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
+                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
                 StopReason = StopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -39,6 +40,7 @@ public class RawMessageDeltaEventTest : TestBase
                 ID = "id",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -69,6 +71,7 @@ public class RawMessageDeltaEventTest : TestBase
                     ID = "id",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
+                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
                 StopReason = StopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -103,6 +106,7 @@ public class RawMessageDeltaEventTest : TestBase
                     ID = "id",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
+                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
                 StopReason = StopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -130,6 +134,7 @@ public class RawMessageDeltaEventTest : TestBase
                 ID = "id",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -160,6 +165,7 @@ public class RawMessageDeltaEventTest : TestBase
                     ID = "id",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
+                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
                 StopReason = StopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -188,6 +194,7 @@ public class RawMessageDeltaEventTest : TestBase
                     ID = "id",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
+                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
                 StopReason = StopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -219,6 +226,7 @@ public class DeltaTest : TestBase
                 ID = "id",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -228,10 +236,16 @@ public class DeltaTest : TestBase
             ID = "id",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
+        RefusalStopDetails expectedStopDetails = new()
+        {
+            Category = Category.Cyber,
+            Explanation = "explanation",
+        };
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         string expectedStopSequence = "stop_sequence";
 
         Assert.Equal(expectedContainer, model.Container);
+        Assert.Equal(expectedStopDetails, model.StopDetails);
         Assert.Equal(expectedStopReason, model.StopReason);
         Assert.Equal(expectedStopSequence, model.StopSequence);
     }
@@ -246,6 +260,7 @@ public class DeltaTest : TestBase
                 ID = "id",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -266,6 +281,7 @@ public class DeltaTest : TestBase
                 ID = "id",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -279,10 +295,16 @@ public class DeltaTest : TestBase
             ID = "id",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
+        RefusalStopDetails expectedStopDetails = new()
+        {
+            Category = Category.Cyber,
+            Explanation = "explanation",
+        };
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         string expectedStopSequence = "stop_sequence";
 
         Assert.Equal(expectedContainer, deserialized.Container);
+        Assert.Equal(expectedStopDetails, deserialized.StopDetails);
         Assert.Equal(expectedStopReason, deserialized.StopReason);
         Assert.Equal(expectedStopSequence, deserialized.StopSequence);
     }
@@ -297,6 +319,7 @@ public class DeltaTest : TestBase
                 ID = "id",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -314,6 +337,7 @@ public class DeltaTest : TestBase
                 ID = "id",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };

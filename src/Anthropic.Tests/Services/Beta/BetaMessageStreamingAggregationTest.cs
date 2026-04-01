@@ -17,6 +17,7 @@ public class BetaMessageStreamingAggregationTest
             ID = "Test",
             Content = [],
             Model = Messages::Model.ClaudeOpus4_6,
+            StopDetails = null,
             StopReason = BetaStopReason.ToolUse,
             StopSequence = "",
             Usage = new()

@@ -58,6 +58,11 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Model = Model.ClaudeOpus4_6,
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
+            },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -134,6 +139,11 @@ public class BetaMessageTest : TestBase
         );
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_6;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
+        Messages::BetaRefusalStopDetails expectedStopDetails = new()
+        {
+            Category = Messages::Category.Cyber,
+            Explanation = "explanation",
+        };
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
         JsonElement expectedType = JsonSerializer.SerializeToElement("message");
@@ -175,6 +185,7 @@ public class BetaMessageTest : TestBase
         Assert.Equal(expectedContextManagement, model.ContextManagement);
         Assert.Equal(expectedModel, model.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, model.Role));
+        Assert.Equal(expectedStopDetails, model.StopDetails);
         Assert.Equal(expectedStopReason, model.StopReason);
         Assert.Null(model.StopSequence);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -230,6 +241,11 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Model = Model.ClaudeOpus4_6,
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
+            },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -319,6 +335,11 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Model = Model.ClaudeOpus4_6,
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
+            },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -402,6 +423,11 @@ public class BetaMessageTest : TestBase
         );
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_6;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
+        Messages::BetaRefusalStopDetails expectedStopDetails = new()
+        {
+            Category = Messages::Category.Cyber,
+            Explanation = "explanation",
+        };
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
         JsonElement expectedType = JsonSerializer.SerializeToElement("message");
@@ -443,6 +469,7 @@ public class BetaMessageTest : TestBase
         Assert.Equal(expectedContextManagement, deserialized.ContextManagement);
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, deserialized.Role));
+        Assert.Equal(expectedStopDetails, deserialized.StopDetails);
         Assert.Equal(expectedStopReason, deserialized.StopReason);
         Assert.Null(deserialized.StopSequence);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -498,6 +525,11 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Model = Model.ClaudeOpus4_6,
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
+            },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -581,6 +613,11 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Model = Model.ClaudeOpus4_6,
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
+            },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()

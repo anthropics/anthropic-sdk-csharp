@@ -49,6 +49,7 @@ public sealed class BetaMessageContentAggregator
 
         var stopSequence = startMessage.Message.StopSequence;
         var stopReason = startMessage.Message.StopReason;
+        var stopDetails = startMessage.Message.StopDetails;
         var container = startMessage.Message.Container;
         var usage = startMessage.Message.Usage;
 
@@ -60,6 +61,7 @@ public sealed class BetaMessageContentAggregator
             {
                 stopReason = delta.Delta.StopReason;
                 stopSequence = delta.Delta.StopSequence;
+                stopDetails = delta.Delta.StopDetails;
 
                 if (delta.Delta.Container != null)
                 {
@@ -96,6 +98,7 @@ public sealed class BetaMessageContentAggregator
             ContextManagement = startMessage.Message.ContextManagement,
             ID = startMessage.Message.ID,
             Model = startMessage.Message.Model,
+            StopDetails = stopDetails,
             StopReason = stopReason,
             StopSequence = stopSequence,
             Usage = usage,
