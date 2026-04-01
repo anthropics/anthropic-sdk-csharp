@@ -146,6 +146,19 @@ public sealed record class Delta : JsonModel
         init { this._rawData.Set("container", value); }
     }
 
+    /// <summary>
+    /// Structured information about a refusal.
+    /// </summary>
+    public required BetaRefusalStopDetails? StopDetails
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaRefusalStopDetails>("stop_details");
+        }
+        init { this._rawData.Set("stop_details", value); }
+    }
+
     public required ApiEnum<string, BetaStopReason>? StopReason
     {
         get
@@ -170,6 +183,7 @@ public sealed record class Delta : JsonModel
     public override void Validate()
     {
         this.Container?.Validate();
+        this.StopDetails?.Validate();
         this.StopReason?.Validate();
         _ = this.StopSequence;
     }

@@ -60,6 +60,11 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     ]
                 ),
                 Model = Model.ClaudeOpus4_6,
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -142,6 +147,11 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                 ]
             ),
             Model = Model.ClaudeOpus4_6,
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
+            },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -229,6 +239,11 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     ]
                 ),
                 Model = Model.ClaudeOpus4_6,
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -325,6 +340,11 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     ]
                 ),
                 Model = Model.ClaudeOpus4_6,
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -414,6 +434,11 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                 ]
             ),
             Model = Model.ClaudeOpus4_6,
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
+            },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -501,6 +526,11 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     ]
                 ),
                 Model = Model.ClaudeOpus4_6,
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -591,6 +621,11 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     ]
                 ),
                 Model = Model.ClaudeOpus4_6,
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()

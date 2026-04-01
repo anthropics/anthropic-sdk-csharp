@@ -126,6 +126,19 @@ public sealed record class BetaMessage : JsonModel
     }
 
     /// <summary>
+    /// Structured information about a refusal.
+    /// </summary>
+    public required BetaRefusalStopDetails? StopDetails
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaRefusalStopDetails>("stop_details");
+        }
+        init { this._rawData.Set("stop_details", value); }
+    }
+
+    /// <summary>
     /// The reason that we stopped.
     ///
     /// <para>This may be one the following values: * `"end_turn"`: the model reached
@@ -222,6 +235,7 @@ public sealed record class BetaMessage : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
+        this.StopDetails?.Validate();
         this.StopReason?.Validate();
         _ = this.StopSequence;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message")))

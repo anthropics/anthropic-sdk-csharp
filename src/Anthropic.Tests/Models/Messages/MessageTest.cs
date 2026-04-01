@@ -39,6 +39,7 @@ public class MessageTest : TestBase
                 },
             ],
             Model = Model.ClaudeOpus4_6,
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -81,6 +82,11 @@ public class MessageTest : TestBase
         ];
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_6;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
+        RefusalStopDetails expectedStopDetails = new()
+        {
+            Category = Category.Cyber,
+            Explanation = "explanation",
+        };
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         JsonElement expectedType = JsonSerializer.SerializeToElement("message");
         Usage expectedUsage = new()
@@ -104,6 +110,7 @@ public class MessageTest : TestBase
         }
         Assert.Equal(expectedModel, model.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, model.Role));
+        Assert.Equal(expectedStopDetails, model.StopDetails);
         Assert.Equal(expectedStopReason, model.StopReason);
         Assert.Null(model.StopSequence);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -141,6 +148,7 @@ public class MessageTest : TestBase
                 },
             ],
             Model = Model.ClaudeOpus4_6,
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -193,6 +201,7 @@ public class MessageTest : TestBase
                 },
             ],
             Model = Model.ClaudeOpus4_6,
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -242,6 +251,11 @@ public class MessageTest : TestBase
         ];
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_6;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
+        RefusalStopDetails expectedStopDetails = new()
+        {
+            Category = Category.Cyber,
+            Explanation = "explanation",
+        };
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         JsonElement expectedType = JsonSerializer.SerializeToElement("message");
         Usage expectedUsage = new()
@@ -265,6 +279,7 @@ public class MessageTest : TestBase
         }
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, deserialized.Role));
+        Assert.Equal(expectedStopDetails, deserialized.StopDetails);
         Assert.Equal(expectedStopReason, deserialized.StopReason);
         Assert.Null(deserialized.StopSequence);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -302,6 +317,7 @@ public class MessageTest : TestBase
                 },
             ],
             Model = Model.ClaudeOpus4_6,
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -351,6 +367,7 @@ public class MessageTest : TestBase
                 },
             ],
             Model = Model.ClaudeOpus4_6,
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
