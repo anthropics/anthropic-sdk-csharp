@@ -41,6 +41,7 @@ public class MessageBatchResultTest : TestBase
                     },
                 ],
                 Model = Model.ClaudeOpus4_6,
+                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -122,6 +123,7 @@ public class MessageBatchResultTest : TestBase
                     },
                 ],
                 Model = Model.ClaudeOpus4_6,
+                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()

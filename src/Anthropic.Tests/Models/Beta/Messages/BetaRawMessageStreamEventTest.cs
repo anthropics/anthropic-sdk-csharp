@@ -58,6 +58,11 @@ public class BetaRawMessageStreamEventTest : TestBase
                     ]
                 ),
                 Model = Model.ClaudeOpus4_6,
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -125,6 +130,11 @@ public class BetaRawMessageStreamEventTest : TestBase
                             Version = "latest",
                         },
                     ],
+                },
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
@@ -257,6 +267,11 @@ public class BetaRawMessageStreamEventTest : TestBase
                     ]
                 ),
                 Model = Model.ClaudeOpus4_6,
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -330,6 +345,11 @@ public class BetaRawMessageStreamEventTest : TestBase
                             Version = "latest",
                         },
                     ],
+                },
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",

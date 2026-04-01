@@ -17,6 +17,7 @@ public class MessageStreamingAggregationTest
             ID = "Test",
             Content = [],
             Model = Model.ClaudeOpus4_6,
+            StopDetails = null,
             StopReason = StopReason.ToolUse,
             StopSequence = "",
             Usage = new()

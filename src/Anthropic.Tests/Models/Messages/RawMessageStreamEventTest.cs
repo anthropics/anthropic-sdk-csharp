@@ -39,6 +39,7 @@ public class RawMessageStreamEventTest : TestBase
                     },
                 ],
                 Model = Model.ClaudeOpus4_6,
+                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -73,6 +74,7 @@ public class RawMessageStreamEventTest : TestBase
                     ID = "id",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
+                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
                 StopReason = StopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -171,6 +173,7 @@ public class RawMessageStreamEventTest : TestBase
                     },
                 ],
                 Model = Model.ClaudeOpus4_6,
+                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -211,6 +214,7 @@ public class RawMessageStreamEventTest : TestBase
                     ID = "id",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
+                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
                 StopReason = StopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },

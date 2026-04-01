@@ -49,6 +49,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
 
         var stopSequence = startMessage.Message.StopSequence;
         var stopReason = startMessage.Message.StopReason;
+        var stopDetails = startMessage.Message.StopDetails;
         var usage = startMessage.Message.Usage;
 
         if (messages.TryGetValue(FilterResult.Delta, out var deltaEvents))
@@ -58,6 +59,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             {
                 stopReason = delta.Delta.StopReason;
                 stopSequence = delta.Delta.StopSequence;
+                stopDetails = delta.Delta.StopDetails;
 
                 usage = usage with { OutputTokens = delta.Usage.OutputTokens };
                 if (delta.Usage.InputTokens != null)
@@ -88,6 +90,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             Content = [.. contentBlocks],
             ID = startMessage.Message.ID,
             Model = startMessage.Message.Model,
+            StopDetails = stopDetails,
             StopReason = stopReason,
             StopSequence = stopSequence,
             Usage = usage,

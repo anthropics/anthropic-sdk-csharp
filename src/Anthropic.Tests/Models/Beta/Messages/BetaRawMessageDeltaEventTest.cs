@@ -37,6 +37,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         },
                     ],
                 },
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -89,6 +94,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         Version = "latest",
                     },
                 ],
+            },
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -154,6 +164,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         },
                     ],
                 },
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -221,6 +236,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         },
                     ],
                 },
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -280,6 +300,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         Version = "latest",
                     },
                 ],
+            },
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -345,6 +370,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         },
                     ],
                 },
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -406,6 +436,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         },
                     ],
                 },
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -461,6 +496,11 @@ public class DeltaTest : TestBase
                     },
                 ],
             },
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
+            },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -479,11 +519,17 @@ public class DeltaTest : TestBase
                 },
             ],
         };
+        Messages::BetaRefusalStopDetails expectedStopDetails = new()
+        {
+            Category = Messages::Category.Cyber,
+            Explanation = "explanation",
+        };
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
         string expectedStopSequence = "stop_sequence";
 
         Assert.Equal(expectedContainer, model.Container);
+        Assert.Equal(expectedStopDetails, model.StopDetails);
         Assert.Equal(expectedStopReason, model.StopReason);
         Assert.Equal(expectedStopSequence, model.StopSequence);
     }
@@ -506,6 +552,11 @@ public class DeltaTest : TestBase
                         Version = "latest",
                     },
                 ],
+            },
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -539,6 +590,11 @@ public class DeltaTest : TestBase
                     },
                 ],
             },
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
+            },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -564,11 +620,17 @@ public class DeltaTest : TestBase
                 },
             ],
         };
+        Messages::BetaRefusalStopDetails expectedStopDetails = new()
+        {
+            Category = Messages::Category.Cyber,
+            Explanation = "explanation",
+        };
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
         string expectedStopSequence = "stop_sequence";
 
         Assert.Equal(expectedContainer, deserialized.Container);
+        Assert.Equal(expectedStopDetails, deserialized.StopDetails);
         Assert.Equal(expectedStopReason, deserialized.StopReason);
         Assert.Equal(expectedStopSequence, deserialized.StopSequence);
     }
@@ -591,6 +653,11 @@ public class DeltaTest : TestBase
                         Version = "latest",
                     },
                 ],
+            },
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -617,6 +684,11 @@ public class DeltaTest : TestBase
                         Version = "latest",
                     },
                 ],
+            },
+            StopDetails = new()
+            {
+                Category = Messages::Category.Cyber,
+                Explanation = "explanation",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
