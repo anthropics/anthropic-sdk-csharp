@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2 (2026-04-01)
+
+Full Changelog: [Bedrock-v0.1.1...Bedrock-v0.1.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.1.1...Bedrock-v0.1.2)
+
+### Bug Fixes
+
+* **client:** update Bearer scheme casing to match AWS requirement ([#152](https://github.com/anthropics/anthropic-sdk-csharp/issues/152)) ([aa71d57](https://github.com/anthropics/anthropic-sdk-csharp/commit/aa71d5766f1053501f88e97519205cd41e9e2371))
+
 ## 0.1.1 (2026-03-31)
 
 Full Changelog: [Bedrock-v0.1.0...Bedrock-v0.1.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.1.0...Bedrock-v0.1.1)
