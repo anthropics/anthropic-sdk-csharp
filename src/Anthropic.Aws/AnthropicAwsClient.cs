@@ -98,7 +98,11 @@ public sealed class AnthropicAwsClient : AnthropicClient
         var resolvedBaseUrl =
             opts.BaseUrl
             ?? Environment.GetEnvironmentVariable("ANTHROPIC_AWS_BASE_URL")
-            ?? (resolvedRegion != null ? $"https://gateway.{resolvedRegion}.api.aws" : null);
+            ?? (
+                resolvedRegion != null
+                    ? $"https://aws-external-anthropic.{resolvedRegion}.api.aws"
+                    : null
+            );
 
         if (resolvedBaseUrl != null)
         {
