@@ -2219,6 +2219,453 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetStreamingResponseAsync_WithServerToolUseInputDelta_PopulatesCodeInterpreterToolCallContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Run a bash command"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [{
+                    "type": "code_execution_20250825",
+                    "name": "code_execution"
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_server_tool_stream_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"server_tool_use","id":"srvtoolu_stream_01","name":"bash_code_execution","input":{},"caller":{"type":"direct"}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"command\":\"echo"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":" hello\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":10}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Run a bash command",
+                new() { Tools = [new HostedCodeInterpreterTool()] },
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var ciCall = Assert.Single(
+            updates.SelectMany(u => u.Contents.OfType<CodeInterpreterToolCallContent>())
+        );
+        Assert.Equal("srvtoolu_stream_01", ciCall.CallId);
+        Assert.NotNull(ciCall.Inputs);
+        var codeInput = Assert.IsType<DataContent>(Assert.Single(ciCall.Inputs));
+        Assert.Equal("application/x-sh", codeInput.MediaType);
+        Assert.Equal("echo hello", Encoding.UTF8.GetString(codeInput.Data.ToArray()));
+
+        ChatResponse response = updates.ToChatResponse();
+        var responseCiCall = Assert.IsType<CodeInterpreterToolCallContent>(
+            response.Messages[0].Contents[0]
+        );
+        Assert.NotNull(responseCiCall.Inputs);
+        var responseCodeInput = Assert.IsType<DataContent>(Assert.Single(responseCiCall.Inputs));
+        Assert.Equal("application/x-sh", responseCodeInput.MediaType);
+        Assert.Equal("echo hello", Encoding.UTF8.GetString(responseCodeInput.Data.ToArray()));
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithServerToolUseInputDelta_WebSearch_PopulatesWebSearchToolCallContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search for AI news"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [{
+                    "name": "web_search",
+                    "type": "web_search_20250305"
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_ws_stream_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"server_tool_use","id":"srvtoolu_ws_stream_01","name":"web_search","input":{},"caller":{"type":"direct"}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"query\":\"latest"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":" AI news\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":10}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Search for AI news",
+                new() { Tools = [new HostedWebSearchTool()] },
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var wsCall = Assert.Single(
+            updates.SelectMany(u => u.Contents.OfType<WebSearchToolCallContent>())
+        );
+        Assert.Equal("srvtoolu_ws_stream_01", wsCall.CallId);
+        Assert.NotNull(wsCall.Queries);
+        Assert.Equal("latest AI news", Assert.Single(wsCall.Queries));
+
+        ChatResponse response = updates.ToChatResponse();
+        var responseWsCall = Assert.IsType<WebSearchToolCallContent>(
+            response.Messages[0].Contents[0]
+        );
+        Assert.NotNull(responseWsCall.Queries);
+        Assert.Equal("latest AI news", Assert.Single(responseWsCall.Queries));
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithServerToolUseInputDelta_CodeExecution_PopulatesCodeInterpreterToolCallContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Compute 2**10"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [{
+                    "type": "code_execution_20250825",
+                    "name": "code_execution"
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_ce_stream_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"server_tool_use","id":"srvtoolu_ce_stream_01","name":"code_execution","input":{},"caller":{"type":"direct"}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"code\":\"print(2"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"**10)\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":10}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Compute 2**10",
+                new() { Tools = [new HostedCodeInterpreterTool()] },
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var ciCall = Assert.Single(
+            updates.SelectMany(u => u.Contents.OfType<CodeInterpreterToolCallContent>())
+        );
+        Assert.Equal("srvtoolu_ce_stream_01", ciCall.CallId);
+        Assert.NotNull(ciCall.Inputs);
+        var codeInput = Assert.IsType<DataContent>(Assert.Single(ciCall.Inputs));
+        Assert.Equal("text/x-python", codeInput.MediaType);
+        Assert.Equal("print(2**10)", Encoding.UTF8.GetString(codeInput.Data.ToArray()));
+
+        ChatResponse response = updates.ToChatResponse();
+        var responseCiCall = Assert.IsType<CodeInterpreterToolCallContent>(
+            response.Messages[0].Contents[0]
+        );
+        Assert.NotNull(responseCiCall.Inputs);
+        var responseCodeInput = Assert.IsType<DataContent>(Assert.Single(responseCiCall.Inputs));
+        Assert.Equal("text/x-python", responseCodeInput.MediaType);
+        Assert.Equal("print(2**10)", Encoding.UTF8.GetString(responseCodeInput.Data.ToArray()));
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithServerToolUseInputDelta_TextEditorCodeExecution_PopulatesCodeInterpreterToolCallContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Create a file"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [{
+                    "type": "code_execution_20250825",
+                    "name": "code_execution"
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_te_stream_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"server_tool_use","id":"srvtoolu_te_stream_01","name":"text_editor_code_execution","input":{},"caller":{"type":"direct"}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"command\":\"create"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":10}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Create a file",
+                new() { Tools = [new HostedCodeInterpreterTool()] },
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var ciCall = Assert.Single(
+            updates.SelectMany(u => u.Contents.OfType<CodeInterpreterToolCallContent>())
+        );
+        Assert.Equal("srvtoolu_te_stream_01", ciCall.CallId);
+        Assert.NotNull(ciCall.Inputs);
+        var codeInput = Assert.IsType<DataContent>(Assert.Single(ciCall.Inputs));
+        Assert.Equal("text/plain", codeInput.MediaType);
+        Assert.Equal("create", Encoding.UTF8.GetString(codeInput.Data.ToArray()));
+
+        ChatResponse response = updates.ToChatResponse();
+        var responseCiCall = Assert.IsType<CodeInterpreterToolCallContent>(
+            response.Messages[0].Contents[0]
+        );
+        Assert.NotNull(responseCiCall.Inputs);
+        var responseCodeInput = Assert.IsType<DataContent>(Assert.Single(responseCiCall.Inputs));
+        Assert.Equal("text/plain", responseCodeInput.MediaType);
+        Assert.Equal("create", Encoding.UTF8.GetString(responseCodeInput.Data.ToArray()));
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithServerToolUseInputDelta_UnknownName_MapsToToolCallContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search tools"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_unknown_stream_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"server_tool_use","id":"srvtoolu_unknown_stream_01","name":"tool_search_tool_regex","input":{},"caller":{"type":"direct"}}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":5}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Search tools",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var tc = Assert.Single(updates.SelectMany(u => u.Contents.OfType<ToolCallContent>()));
+        Assert.Equal("srvtoolu_unknown_stream_01", tc.CallId);
+
+        ChatResponse response = updates.ToChatResponse();
+        var responseTc = Assert.IsType<ToolCallContent>(response.Messages[0].Contents[0]);
+        Assert.Equal("srvtoolu_unknown_stream_01", responseTc.CallId);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithServerToolUseInputDelta_InitialInputPopulated_UsesAccumulatedArguments()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Run a command"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [{
+                    "type": "code_execution_20250825",
+                    "name": "code_execution"
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_initial_input_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"server_tool_use","id":"srvtoolu_initial_01","name":"bash_code_execution","input":{"command":"initial"},"caller":{"type":"direct"}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"command\":\"ls"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":" -la\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":10}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Run a command",
+                new() { Tools = [new HostedCodeInterpreterTool()] },
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        // Accumulated arguments should override the initial input
+        var ciCall = Assert.Single(
+            updates.SelectMany(u => u.Contents.OfType<CodeInterpreterToolCallContent>())
+        );
+        Assert.Equal("srvtoolu_initial_01", ciCall.CallId);
+        Assert.NotNull(ciCall.Inputs);
+        var codeInput = Assert.IsType<DataContent>(Assert.Single(ciCall.Inputs));
+        Assert.Equal("application/x-sh", codeInput.MediaType);
+        Assert.Equal("ls -la", Encoding.UTF8.GetString(codeInput.Data.ToArray()));
+    }
+
+    [Fact]
     public async Task GetStreamingResponseAsync_WithParameterlessToolCall()
     {
         VerbatimHttpHandler handler = new(
