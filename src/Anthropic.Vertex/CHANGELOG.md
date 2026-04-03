@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2026-04-03)
+
+Full Changelog: [Vertex-v0.1.0...Vertex-v0.2.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Vertex-v0.1.0...Vertex-v0.2.0)
+
+### Features
+
+* **vertex:** add support for US multi-region endpoint ([b1b7998](https://github.com/anthropics/anthropic-sdk-csharp/commit/b1b7998df74445f8ec4af7d60e817616ebaec686))
+
 ## 0.1.0 (2026-03-16)
 
 Full Changelog: [Vertex-v0.0.1...Vertex-v0.1.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Vertex-v0.0.1...Vertex-v0.1.0)

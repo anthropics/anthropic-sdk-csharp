@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1 (2026-04-03)
+
+Full Changelog: [Aws-v0.2.0...Aws-v0.2.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v0.2.0...Aws-v0.2.1)
+
+### Chores
+
+* **client:** internal updates ([744b690](https://github.com/anthropics/anthropic-sdk-csharp/commit/744b6906011c98fa8645caffffd6261ad07a55f9))
+
 ## 0.2.0 (2026-04-01)
 
 Full Changelog: [Aws-v0.1.0...Aws-v0.2.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v0.1.0...Aws-v0.2.0)
