@@ -19,8 +19,7 @@ public class AnthropicVertexClient : AnthropicClient
         : base()
     {
         _vertexCredentials = vertexCredentials;
-        BaseUrl =
-            $"https://{(_vertexCredentials.Region is "global" or null ? "" : _vertexCredentials.Region + "-")}aiplatform.googleapis.com";
+        BaseUrl = ComputeBaseUrl(vertexCredentials);
         _withRawResponse = new(() =>
             new AnthropicVertexClientWithRawResponse(_vertexCredentials, _options)
         );
@@ -33,12 +32,19 @@ public class AnthropicVertexClient : AnthropicClient
         : base(clientOptions)
     {
         _vertexCredentials = vertexCredentials;
-        BaseUrl =
-            $"https://{(_vertexCredentials.Region is "global" or null ? "" : _vertexCredentials.Region + "-")}aiplatform.googleapis.com";
+        BaseUrl = ComputeBaseUrl(vertexCredentials);
         _withRawResponse = new(() =>
             new AnthropicVertexClientWithRawResponse(_vertexCredentials, _options)
         );
     }
+
+    private static string ComputeBaseUrl(IAnthropicVertexCredentials vertexCredentials) =>
+        vertexCredentials.Region switch
+        {
+            "global" or null => "https://aiplatform.googleapis.com",
+            "us" => "https://aiplatform.us.rep.googleapis.com",
+            _ => $"https://{vertexCredentials.Region}-aiplatform.googleapis.com",
+        };
 
     /// <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
