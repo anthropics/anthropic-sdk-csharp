@@ -1183,7 +1183,7 @@ public static class AnthropicClientExtensions
                 }
 
                 if (
-                    createParams.OutputConfig is null
+                    createParams.OutputConfig?.Format is null
                     && options.ResponseFormat is { } responseFormat
                 )
                 {
@@ -1202,7 +1202,7 @@ public static class AnthropicClientExtensions
                             {
                                 createParams = createParams with
                                 {
-                                    OutputConfig = new OutputConfig()
+                                    OutputConfig = (createParams.OutputConfig ?? new OutputConfig()) with
                                     {
                                         Format = new JsonOutputFormat()
                                         {

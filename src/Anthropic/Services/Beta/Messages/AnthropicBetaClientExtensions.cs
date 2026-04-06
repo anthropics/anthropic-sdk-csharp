@@ -954,7 +954,7 @@ public static class AnthropicBetaClientExtensions
                 }
 
                 if (
-                    createParams.OutputFormat is null
+                    createParams.OutputConfig?.Format is null
                     && options.ResponseFormat is { } responseFormat
                 )
                 {
@@ -973,21 +973,22 @@ public static class AnthropicBetaClientExtensions
                             {
                                 createParams = createParams with
                                 {
-                                    OutputConfig = new BetaOutputConfig()
-                                    {
-                                        Format = new BetaJsonOutputFormat()
+                                    OutputConfig =
+                                        (createParams.OutputConfig ?? new BetaOutputConfig()) with
                                         {
-                                            Schema = new Dictionary<string, JsonElement>
+                                            Format = new BetaJsonOutputFormat()
                                             {
-                                                ["type"] = JsonElement.Parse("\"object\""),
-                                                ["properties"] = properties,
-                                                ["required"] = required,
-                                                ["additionalProperties"] = JsonElement.Parse(
-                                                    "false"
-                                                ),
+                                                Schema = new Dictionary<string, JsonElement>
+                                                {
+                                                    ["type"] = JsonElement.Parse("\"object\""),
+                                                    ["properties"] = properties,
+                                                    ["required"] = required,
+                                                    ["additionalProperties"] = JsonElement.Parse(
+                                                        "false"
+                                                    ),
+                                                },
                                             },
                                         },
-                                    },
                                 };
                             }
                             break;
