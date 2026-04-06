@@ -954,7 +954,7 @@ public static class AnthropicBetaClientExtensions
                 }
 
                 if (
-                    createParams.OutputFormat is null
+                    createParams.OutputConfig?.Format is null
                     && options.ResponseFormat is { } responseFormat
                 )
                 {
@@ -973,7 +973,9 @@ public static class AnthropicBetaClientExtensions
                             {
                                 createParams = createParams with
                                 {
-                                    OutputConfig = new BetaOutputConfig()
+                                    OutputConfig = (
+                                        createParams.OutputConfig ?? new BetaOutputConfig()
+                                    ) with
                                     {
                                         Format = new BetaJsonOutputFormat()
                                         {

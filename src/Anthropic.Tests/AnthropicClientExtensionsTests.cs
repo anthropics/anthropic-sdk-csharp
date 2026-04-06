@@ -339,6 +339,91 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetResponseAsync_WithResponseFormatAndPreconfiguredOutputConfig_MergesFormat()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 2048,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Return JSON"
+                    }]
+                }],
+                "output_config": {
+                    "effort": "medium",
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "answer": { "type": "string" }
+                            },
+                            "required": ["answer"],
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_factory_output_config_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "{\"answer\":\"Response\"}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 2048,
+                Model = "claude-haiku-4-5",
+                Messages = [],
+                OutputConfig = new OutputConfig() { Effort = Effort.Medium },
+            },
+            ResponseFormat = ChatResponseFormat.ForJsonSchema(
+                JsonElement.Parse(
+                    """
+                    {
+                        "type": "object",
+                        "properties": {
+                            "answer": { "type": "string" }
+                        },
+                        "required": ["answer"]
+                    }
+                    """
+                ),
+                "answer_response"
+            ),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Return JSON",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_WithNonEmptyMessageParams_EmptyMessages()
     {
         VerbatimHttpHandler handler = new(
