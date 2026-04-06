@@ -677,7 +677,19 @@ public static class AnthropicClientExtensions
                                 };
                                 break;
 
-                            case ServerToolUseBlock:
+                            case ServerToolUseBlock serverToolUse:
+                                streamingFunctions ??= [];
+                                streamingFunctions[contentBlockStart.Index] = new()
+                                {
+                                    CallId = serverToolUse.ID,
+                                    ServerToolName = serverToolUse.Name.Value(),
+                                    InitialInput = serverToolUse.Input is { Count: > 0 }
+                                        ? serverToolUse.Input
+                                        : null,
+                                    RawRepresentation = serverToolUse,
+                                };
+                                break;
+
                             case WebSearchToolResultBlock:
                             case WebFetchToolResultBlock:
                             case CodeExecutionToolResultBlock:
@@ -758,21 +770,7 @@ public static class AnthropicClientExtensions
                         {
                             foreach (var sf in streamingFunctions)
                             {
-                                contents.Add(
-                                    FunctionCallContent.CreateFromParsedArguments(
-                                        sf.Value.Arguments.ToString(),
-                                        sf.Value.CallId,
-                                        sf.Value.Name,
-                                        json =>
-                                            (Dictionary<string, object?>?)
-                                                JsonSerializer.Deserialize(
-                                                    json,
-                                                    AIJsonUtilities.DefaultOptions.GetTypeInfo(
-                                                        typeof(Dictionary<string, object?>)
-                                                    )
-                                                )
-                                    )
-                                );
+                                contents.Add(CreateStreamingToolCallContent(sf.Value));
                             }
 
                             streamingFunctions.Clear();
@@ -1564,22 +1562,23 @@ public static class AnthropicClientExtensions
                     };
 
                 case ToolUseBlock toolUse:
-                    return new FunctionCallContent(
+                    var fcc = FunctionCallContent.CreateFromParsedArguments(
+                        toolUse.RawData.TryGetValue("input", out JsonElement element)
+                            ? element.GetRawText()
+                            : "{}",
                         toolUse.ID,
                         toolUse.Name,
-                        toolUse.RawData.TryGetValue("input", out JsonElement element)
-                            ? (Dictionary<string, object?>?)
+                        json =>
+                            (Dictionary<string, object?>?)
                                 JsonSerializer.Deserialize(
-                                    element,
+                                    json,
                                     AIJsonUtilities.DefaultOptions.GetTypeInfo(
                                         typeof(Dictionary<string, object?>)
                                     )
                                 )
-                            : null
-                    )
-                    {
-                        RawRepresentation = toolUse,
-                    };
+                    );
+                    fcc.RawRepresentation = toolUse;
+                    return fcc;
 
                 case CodeExecutionToolResultBlock ce:
                 {
@@ -1743,7 +1742,7 @@ public static class AnthropicClientExtensions
                                 RawRepresentation = serverToolUse,
                             };
 
-                            // CodeExecution (legacy Python) uses "code"; Bash/TextEditor use "command".
+                            // CodeExecution (Python) uses "code"; Bash/TextEditor use "command".
                             if (
                                 (
                                     serverToolUse.Input?.TryGetValue(
@@ -1917,6 +1916,92 @@ public static class AnthropicClientExtensions
             }
         }
 
+        private static AIContent CreateStreamingToolCallContent(StreamingFunctionData functionData)
+        {
+            if (functionData.ServerToolName is not Name serverToolName)
+            {
+                return FunctionCallContent.CreateFromParsedArguments(
+                    functionData.Arguments.ToString(),
+                    functionData.CallId,
+                    functionData.Name,
+                    json =>
+                        (Dictionary<string, object?>?)
+                            JsonSerializer.Deserialize(
+                                json,
+                                AIJsonUtilities.DefaultOptions.GetTypeInfo(
+                                    typeof(Dictionary<string, object?>)
+                                )
+                            )
+                );
+            }
+
+            IReadOnlyDictionary<string, JsonElement>? input = functionData.InitialInput;
+            if (functionData.Arguments.Length > 0)
+            {
+                try
+                {
+                    input = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                        functionData.Arguments.ToString()
+                    );
+                }
+                catch (JsonException) { }
+            }
+
+            switch (serverToolName)
+            {
+                case Name.WebSearch:
+                case Name.WebFetch:
+                    WebSearchToolCallContent wsc = new(functionData.CallId)
+                    {
+                        RawRepresentation = functionData.RawRepresentation,
+                    };
+                    if (
+                        input?.TryGetValue("query", out JsonElement queryElement) == true
+                        && queryElement.ValueKind == JsonValueKind.String
+                    )
+                    {
+                        (wsc.Queries ??= []).Add(queryElement.GetString()!);
+                    }
+
+                    return wsc;
+
+                case Name.CodeExecution:
+                case Name.BashCodeExecution:
+                case Name.TextEditorCodeExecution:
+                    CodeInterpreterToolCallContent cic = new(functionData.CallId)
+                    {
+                        RawRepresentation = functionData.RawRepresentation,
+                    };
+
+                    // CodeExecution (Python) uses "code"; Bash/TextEditor use "command".
+                    if (
+                        (
+                            input?.TryGetValue("code", out JsonElement codeElement) == true
+                            || input?.TryGetValue("command", out codeElement) == true
+                        )
+                        && codeElement.ValueKind == JsonValueKind.String
+                    )
+                    {
+                        string code = codeElement.GetString()!;
+                        string mediaType =
+                            serverToolName == Name.CodeExecution ? "text/x-python"
+                            : serverToolName == Name.BashCodeExecution ? "application/x-sh"
+                            : "text/plain";
+                        (cic.Inputs ??= []).Add(
+                            new DataContent(Encoding.UTF8.GetBytes(code), mediaType)
+                        );
+                    }
+
+                    return cic;
+
+                default:
+                    return new ToolCallContent(functionData.CallId)
+                    {
+                        RawRepresentation = functionData.RawRepresentation,
+                    };
+            }
+        }
+
         private static CitationAnnotation? ToAIAnnotation(TextCitation citation)
         {
             CitationAnnotation annotation = new()
@@ -1987,6 +2072,9 @@ public static class AnthropicClientExtensions
         {
             public string CallId { get; set; } = "";
             public string Name { get; set; } = "";
+            public Name? ServerToolName { get; set; }
+            public IReadOnlyDictionary<string, JsonElement>? InitialInput { get; set; }
+            public object? RawRepresentation { get; set; }
             public StringBuilder Arguments { get; } = new();
         }
     }
