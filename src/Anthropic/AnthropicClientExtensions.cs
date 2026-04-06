@@ -1202,7 +1202,9 @@ public static class AnthropicClientExtensions
                             {
                                 createParams = createParams with
                                 {
-                                    OutputConfig = (createParams.OutputConfig ?? new OutputConfig()) with
+                                    OutputConfig = (
+                                        createParams.OutputConfig ?? new OutputConfig()
+                                    ) with
                                     {
                                         Format = new JsonOutputFormat()
                                         {

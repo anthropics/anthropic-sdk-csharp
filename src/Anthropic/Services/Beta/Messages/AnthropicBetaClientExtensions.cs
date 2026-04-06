@@ -973,22 +973,23 @@ public static class AnthropicBetaClientExtensions
                             {
                                 createParams = createParams with
                                 {
-                                    OutputConfig =
-                                        (createParams.OutputConfig ?? new BetaOutputConfig()) with
+                                    OutputConfig = (
+                                        createParams.OutputConfig ?? new BetaOutputConfig()
+                                    ) with
+                                    {
+                                        Format = new BetaJsonOutputFormat()
                                         {
-                                            Format = new BetaJsonOutputFormat()
+                                            Schema = new Dictionary<string, JsonElement>
                                             {
-                                                Schema = new Dictionary<string, JsonElement>
-                                                {
-                                                    ["type"] = JsonElement.Parse("\"object\""),
-                                                    ["properties"] = properties,
-                                                    ["required"] = required,
-                                                    ["additionalProperties"] = JsonElement.Parse(
-                                                        "false"
-                                                    ),
-                                                },
+                                                ["type"] = JsonElement.Parse("\"object\""),
+                                                ["properties"] = properties,
+                                                ["required"] = required,
+                                                ["additionalProperties"] = JsonElement.Parse(
+                                                    "false"
+                                                ),
                                             },
                                         },
+                                    },
                                 };
                             }
                             break;
