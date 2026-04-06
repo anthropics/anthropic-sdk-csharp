@@ -971,6 +971,8 @@ public static class AnthropicClientExtensions
                             {
                                 ToolResultBlockParamContent trbpc => trbpc,
 
+                                string s => new(s),
+
                                 AIContent aiContent => new(ToResultBlocks([aiContent])),
 
                                 IEnumerable<AIContent> aiContents => new(

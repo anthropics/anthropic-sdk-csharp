@@ -723,6 +723,8 @@ public static class AnthropicBetaClientExtensions
                             {
                                 BetaToolResultBlockParamContent btrbpc => btrbpc,
 
+                                string s => new(s),
+
                                 AIContent aiContent => new(ToResultBlocks([aiContent])),
 
                                 IEnumerable<AIContent> aiContents => new(
