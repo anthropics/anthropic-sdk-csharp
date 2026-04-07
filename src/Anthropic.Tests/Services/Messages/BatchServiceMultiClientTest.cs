@@ -16,7 +16,9 @@ namespace Anthropic.Tests.Services.Messages;
 public class BatchServiceMultiClientTest : BatchServiceTest
 {
     [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
+    [AnthropicTestClients(
+        TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
+    )]
     public async Task Create_Works(IAnthropicClient c)
     {
         client = c;
@@ -24,7 +26,9 @@ public class BatchServiceMultiClientTest : BatchServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
+    [AnthropicTestClients(
+        TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
+    )]
     public async Task Retrieve_Works(IAnthropicClient c)
     {
         client = c;
@@ -32,7 +36,9 @@ public class BatchServiceMultiClientTest : BatchServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
+    [AnthropicTestClients(
+        TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
+    )]
     public async Task List_Works(IAnthropicClient c)
     {
         client = c;
@@ -40,7 +46,9 @@ public class BatchServiceMultiClientTest : BatchServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
+    [AnthropicTestClients(
+        TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
+    )]
     public async Task Delete_Works(IAnthropicClient c)
     {
         client = c;
@@ -48,7 +56,9 @@ public class BatchServiceMultiClientTest : BatchServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
+    [AnthropicTestClients(
+        TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
+    )]
     public async Task Cancel_Works(IAnthropicClient c)
     {
         client = c;
@@ -56,7 +66,9 @@ public class BatchServiceMultiClientTest : BatchServiceTest
     }
 
     [Theory(Skip = "Prism doesn't support application/x-jsonl responses")]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
+    [AnthropicTestClients(
+        TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
+    )]
     public async Task ResultsStreaming_Works(IAnthropicClient c)
     {
         client = c;

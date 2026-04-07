@@ -17,7 +17,9 @@ namespace Anthropic.Tests.Services.Beta;
 public class FileServiceMultiClientTest : FileServiceTest
 {
     [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
+    [AnthropicTestClients(
+        TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
+    )]
     public async Task List_Works(IAnthropicClient c)
     {
         client = c;
@@ -25,7 +27,9 @@ public class FileServiceMultiClientTest : FileServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
+    [AnthropicTestClients(
+        TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
+    )]
     public async Task Delete_Works(IAnthropicClient c)
     {
         client = c;
@@ -41,7 +45,9 @@ public class FileServiceMultiClientTest : FileServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
+    [AnthropicTestClients(
+        TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
+    )]
     public async Task RetrieveMetadata_Works(IAnthropicClient c)
     {
         client = c;
@@ -49,7 +55,9 @@ public class FileServiceMultiClientTest : FileServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
+    [AnthropicTestClients(
+        TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
+    )]
     public async Task Upload_Works(IAnthropicClient c)
     {
         client = c;

@@ -98,14 +98,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
             rows.Add(
                 new TheoryDataRow(
                     [
-                        new AnthropicAwsClient(
-                            new()
-                            {
-                                ApiKey = ApiKey,
-                                WorkspaceId = "default",
-                                BaseUrl = DataServiceUrl,
-                            }
-                        ),
+                        new AnthropicAwsClient(new() { ApiKey = ApiKey, BaseUrl = DataServiceUrl }),
                         .. testData
                             .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Aws))
                             .SelectMany(f => f.TestData)
@@ -127,6 +120,23 @@ public class AnthropicTestClientsAttribute : DataAttribute
                         },
                         .. testData
                             .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Vertex))
+                            .SelectMany(f => f.TestData)
+                            .ToArray(),
+                    ]
+                )
+            );
+        }
+
+        if (TestSupportTypes.HasFlag(TestSupportTypes.BedrockMantle))
+        {
+            rows.Add(
+                new TheoryDataRow(
+                    [
+                        new AnthropicBedrockMantleClient(
+                            new() { ApiKey = ApiKey, BaseUrl = DataServiceUrl }
+                        ),
+                        .. testData
+                            .Where(e => e.TestSupport.HasFlag(TestSupportTypes.BedrockMantle))
                             .SelectMany(f => f.TestData)
                             .ToArray(),
                     ]
@@ -160,4 +170,5 @@ public enum TestSupportTypes
     Bedrock = 1 << 3,
     Vertex = 1 << 4,
     Aws = 1 << 5,
+    BedrockMantle = 1 << 6,
 }
