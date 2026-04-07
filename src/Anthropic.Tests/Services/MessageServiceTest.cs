@@ -43,7 +43,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 Messages = [new() { Content = "string", Role = Role.User }],
-                Model = Model.ClaudeOpus4_6,
+                Model = Model.ClaudeMythosPreview,
             },
             TestContext.Current.CancellationToken
         );

@@ -44,7 +44,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 Messages = [new() { Content = "string", Role = Role.User }],
-                Model = Messages::Model.ClaudeOpus4_6,
+                Model = Messages::Model.ClaudeMythosPreview,
             },
             TestContext.Current.CancellationToken
         );

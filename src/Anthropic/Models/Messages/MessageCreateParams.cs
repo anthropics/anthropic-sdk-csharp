@@ -307,6 +307,9 @@ public record class MessageCreateParams : ParamsBase
     /// <para>Note that even with `temperature` of `0.0`, the results will not be
     /// fully deterministic.</para>
     /// </summary>
+    [System::Obsolete(
+        "Deprecated. Models released after Claude Opus 4.6 do not support setting temperature. A value of 1.0 of will be accepted for backwards compatibility, all other values will be rejected with a 400 error."
+    )]
     public double? Temperature
     {
         get
@@ -451,6 +454,9 @@ public record class MessageCreateParams : ParamsBase
     ///
     /// <para>Recommended for advanced use cases only. You usually only need to use `temperature`.</para>
     /// </summary>
+    [System::Obsolete(
+        "Deprecated. Models released after Claude Opus 4.6 do not accept top_k; any value will be rejected with a 400 error."
+    )]
     public long? TopK
     {
         get
@@ -479,6 +485,9 @@ public record class MessageCreateParams : ParamsBase
     ///
     /// <para>Recommended for advanced use cases only. You usually only need to use `temperature`.</para>
     /// </summary>
+    [System::Obsolete(
+        "Deprecated. Models released after Claude Opus 4.6 do not support setting top_p. A value >= 0.99 will be accepted for backwards compatibility, all other values will be rejected with a 400 error."
+    )]
     public double? TopP
     {
         get
