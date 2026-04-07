@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>Anthropic.Aws</PackageId>
-    <VersionPrefix>0.2.1</VersionPrefix>
+    <VersionPrefix>0.2.2</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
