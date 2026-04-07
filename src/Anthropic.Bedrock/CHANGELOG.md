@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2026-04-07)
+
+Full Changelog: [Bedrock-v0.1.2...Bedrock-v0.2.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.1.2...Bedrock-v0.2.0)
+
+### Features
+
+* **bedrock:** Create Bedrock Mantle client ([#768](https://github.com/anthropics/anthropic-sdk-csharp/issues/768)) ([7141e34](https://github.com/anthropics/anthropic-sdk-csharp/commit/7141e3487d09f8e02567359d438e48061554b858))
+
 ## 0.1.2 (2026-04-01)
 
 Full Changelog: [Bedrock-v0.1.1...Bedrock-v0.1.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.1.1...Bedrock-v0.1.2)
