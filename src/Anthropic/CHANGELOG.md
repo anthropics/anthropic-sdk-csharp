@@ -1,5 +1,13 @@
 # Changelog
 
+## 12.13.0 (2026-04-08)
+
+Full Changelog: [Anthropic-v12.12.0...Anthropic-v12.13.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.12.0...Anthropic-v12.13.0)
+
+### Features
+
+* **api:** add support for Claude Managed Agents ([aa4b900](https://github.com/anthropics/anthropic-sdk-csharp/commit/aa4b900c386fa073fc82db4f29bcb9473c8b6282))
+
 ## 12.12.0 (2026-04-07)
 
 Full Changelog: [Anthropic-v12.11.0...Anthropic-v12.12.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.11.0...Anthropic-v12.12.0)

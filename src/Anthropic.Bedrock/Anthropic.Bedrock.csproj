@@ -7,7 +7,7 @@
     <LangVersion>13.0</LangVersion>
     
     <PackageId>Anthropic.Bedrock</PackageId>
-    <VersionPrefix>0.2.0</VersionPrefix>
+    <VersionPrefix>0.3.0</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>

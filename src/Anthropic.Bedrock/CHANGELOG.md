@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 (2026-04-08)
+
+Full Changelog: [Bedrock-v0.2.0...Bedrock-v0.3.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.2.0...Bedrock-v0.3.0)
+
+### Features
+
+* **api:** add support for Claude Managed Agents ([aa4b900](https://github.com/anthropics/anthropic-sdk-csharp/commit/aa4b900c386fa073fc82db4f29bcb9473c8b6282))
+
 ## 0.2.0 (2026-04-07)
 
 Full Changelog: [Bedrock-v0.1.2...Bedrock-v0.2.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.1.2...Bedrock-v0.2.0)
