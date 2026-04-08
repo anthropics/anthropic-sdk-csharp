@@ -115,6 +115,20 @@ public sealed record class FileMetadata : JsonModel
         }
     }
 
+    /// <summary>
+    /// The scope of this file, indicating the context in which it was created (e.g.,
+    /// a session).
+    /// </summary>
+    public BetaFileScope? Scope
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaFileScope>("scope");
+        }
+        init { this._rawData.Set("scope", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -128,6 +142,7 @@ public sealed record class FileMetadata : JsonModel
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         _ = this.Downloadable;
+        this.Scope?.Validate();
     }
 
     public FileMetadata()

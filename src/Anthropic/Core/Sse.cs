@@ -34,6 +34,7 @@ static class Sse
                 case "content_block_start":
                 case "content_block_delta":
                 case "content_block_stop":
+                case "message":
                     T? message;
                     try
                     {

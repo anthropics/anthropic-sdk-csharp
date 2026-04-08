@@ -189,6 +189,30 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
                 "The Beta.Skills resource is not supported on Bedrock Mantle. "
                     + "Only Messages and Beta.Messages are available."
             );
+
+        public Beta::IAgentService Agents =>
+            throw new NotSupportedException(
+                "The Beta.Agents resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
+
+        public Beta::IEnvironmentService Environments =>
+            throw new NotSupportedException(
+                "The Beta.Environments resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
+
+        public Beta::ISessionService Sessions =>
+            throw new NotSupportedException(
+                "The Beta.Sessions resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
+
+        public Beta::IVaultService Vaults =>
+            throw new NotSupportedException(
+                "The Beta.Vaults resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
     }
 
     private sealed class RestrictedBetaServiceWithRawResponse : IBetaServiceWithRawResponse
@@ -219,6 +243,30 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
         public Beta::ISkillServiceWithRawResponse Skills =>
             throw new NotSupportedException(
                 "The Beta.Skills resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
+
+        public Beta::IAgentServiceWithRawResponse Agents =>
+            throw new NotSupportedException(
+                "The Beta.Agents resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
+
+        public Beta::IEnvironmentServiceWithRawResponse Environments =>
+            throw new NotSupportedException(
+                "The Beta.Environments resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
+
+        public Beta::ISessionServiceWithRawResponse Sessions =>
+            throw new NotSupportedException(
+                "The Beta.Sessions resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
+
+        public Beta::IVaultServiceWithRawResponse Vaults =>
+            throw new NotSupportedException(
+                "The Beta.Vaults resource is not supported on Bedrock Mantle. "
                     + "Only Messages and Beta.Messages are available."
             );
     }

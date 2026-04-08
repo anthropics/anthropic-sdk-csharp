@@ -17,12 +17,14 @@ public class FileListParamsTest : TestBase
             AfterID = "after_id",
             BeforeID = "before_id",
             Limit = 1,
+            ScopeID = "scope_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         string expectedAfterID = "after_id";
         string expectedBeforeID = "before_id";
         long expectedLimit = 1;
+        string expectedScopeID = "scope_id";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -31,6 +33,7 @@ public class FileListParamsTest : TestBase
         Assert.Equal(expectedAfterID, parameters.AfterID);
         Assert.Equal(expectedBeforeID, parameters.BeforeID);
         Assert.Equal(expectedLimit, parameters.Limit);
+        Assert.Equal(expectedScopeID, parameters.ScopeID);
         Assert.NotNull(parameters.Betas);
         Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
         for (int i = 0; i < expectedBetas.Count; i++)
@@ -50,6 +53,8 @@ public class FileListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("before_id"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.ScopeID);
+        Assert.False(parameters.RawQueryData.ContainsKey("scope_id"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
@@ -63,6 +68,7 @@ public class FileListParamsTest : TestBase
             AfterID = null,
             BeforeID = null,
             Limit = null,
+            ScopeID = null,
             Betas = null,
         };
 
@@ -72,6 +78,8 @@ public class FileListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("before_id"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.ScopeID);
+        Assert.False(parameters.RawQueryData.ContainsKey("scope_id"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
@@ -84,13 +92,14 @@ public class FileListParamsTest : TestBase
             AfterID = "after_id",
             BeforeID = "before_id",
             Limit = 1,
+            ScopeID = "scope_id",
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
             new Uri(
-                "https://api.anthropic.com/v1/files?beta=true&after_id=after_id&before_id=before_id&limit=1"
+                "https://api.anthropic.com/v1/files?beta=true&after_id=after_id&before_id=before_id&limit=1&scope_id=scope_id"
             ),
             url
         );
@@ -118,6 +127,7 @@ public class FileListParamsTest : TestBase
             AfterID = "after_id",
             BeforeID = "before_id",
             Limit = 1,
+            ScopeID = "scope_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
