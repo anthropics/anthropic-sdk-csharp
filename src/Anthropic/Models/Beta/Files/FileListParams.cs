@@ -87,6 +87,28 @@ public record class FileListParams : ParamsBase
     }
 
     /// <summary>
+    /// Filter by scope ID. Only returns files associated with the specified scope
+    /// (e.g., a session ID).
+    /// </summary>
+    public string? ScopeID
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableClass<string>("scope_id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set("scope_id", value);
+        }
+    }
+
+    /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas

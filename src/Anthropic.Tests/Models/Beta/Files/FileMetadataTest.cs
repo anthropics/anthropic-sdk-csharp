@@ -18,6 +18,7 @@ public class FileMetadataTest : TestBase
             MimeType = "application/pdf",
             SizeBytes = 102400,
             Downloadable = false,
+            Scope = new("id"),
         };
 
         string expectedID = "file_011CNha8iCJcU1wXNR6q4V8w";
@@ -27,6 +28,7 @@ public class FileMetadataTest : TestBase
         long expectedSizeBytes = 102400;
         JsonElement expectedType = JsonSerializer.SerializeToElement("file");
         bool expectedDownloadable = false;
+        BetaFileScope expectedScope = new("id");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
@@ -35,6 +37,7 @@ public class FileMetadataTest : TestBase
         Assert.Equal(expectedSizeBytes, model.SizeBytes);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedDownloadable, model.Downloadable);
+        Assert.Equal(expectedScope, model.Scope);
     }
 
     [Fact]
@@ -48,6 +51,7 @@ public class FileMetadataTest : TestBase
             MimeType = "application/pdf",
             SizeBytes = 102400,
             Downloadable = false,
+            Scope = new("id"),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -70,6 +74,7 @@ public class FileMetadataTest : TestBase
             MimeType = "application/pdf",
             SizeBytes = 102400,
             Downloadable = false,
+            Scope = new("id"),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -86,6 +91,7 @@ public class FileMetadataTest : TestBase
         long expectedSizeBytes = 102400;
         JsonElement expectedType = JsonSerializer.SerializeToElement("file");
         bool expectedDownloadable = false;
+        BetaFileScope expectedScope = new("id");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
@@ -94,6 +100,7 @@ public class FileMetadataTest : TestBase
         Assert.Equal(expectedSizeBytes, deserialized.SizeBytes);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedDownloadable, deserialized.Downloadable);
+        Assert.Equal(expectedScope, deserialized.Scope);
     }
 
     [Fact]
@@ -107,6 +114,7 @@ public class FileMetadataTest : TestBase
             MimeType = "application/pdf",
             SizeBytes = 102400,
             Downloadable = false,
+            Scope = new("id"),
         };
 
         model.Validate();
@@ -122,6 +130,7 @@ public class FileMetadataTest : TestBase
             Filename = "document.pdf",
             MimeType = "application/pdf",
             SizeBytes = 102400,
+            Scope = new("id"),
         };
 
         Assert.Null(model.Downloadable);
@@ -138,6 +147,7 @@ public class FileMetadataTest : TestBase
             Filename = "document.pdf",
             MimeType = "application/pdf",
             SizeBytes = 102400,
+            Scope = new("id"),
         };
 
         model.Validate();
@@ -153,6 +163,7 @@ public class FileMetadataTest : TestBase
             Filename = "document.pdf",
             MimeType = "application/pdf",
             SizeBytes = 102400,
+            Scope = new("id"),
 
             // Null should be interpreted as omitted for these properties
             Downloadable = null,
@@ -172,9 +183,80 @@ public class FileMetadataTest : TestBase
             Filename = "document.pdf",
             MimeType = "application/pdf",
             SizeBytes = 102400,
+            Scope = new("id"),
 
             // Null should be interpreted as omitted for these properties
             Downloadable = null,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new FileMetadata
+        {
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
+            Downloadable = false,
+        };
+
+        Assert.Null(model.Scope);
+        Assert.False(model.RawData.ContainsKey("scope"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new FileMetadata
+        {
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
+            Downloadable = false,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
+    {
+        var model = new FileMetadata
+        {
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
+            Downloadable = false,
+
+            Scope = null,
+        };
+
+        Assert.Null(model.Scope);
+        Assert.True(model.RawData.ContainsKey("scope"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new FileMetadata
+        {
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
+            Downloadable = false,
+
+            Scope = null,
         };
 
         model.Validate();
@@ -191,6 +273,7 @@ public class FileMetadataTest : TestBase
             MimeType = "application/pdf",
             SizeBytes = 102400,
             Downloadable = false,
+            Scope = new("id"),
         };
 
         FileMetadata copied = new(model);

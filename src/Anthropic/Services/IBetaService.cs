@@ -28,6 +28,14 @@ public interface IBetaService
 
     Beta::IMessageService Messages { get; }
 
+    Beta::IAgentService Agents { get; }
+
+    Beta::IEnvironmentService Environments { get; }
+
+    Beta::ISessionService Sessions { get; }
+
+    Beta::IVaultService Vaults { get; }
+
     Beta::IFileService Files { get; }
 
     Beta::ISkillService Skills { get; }
@@ -49,6 +57,14 @@ public interface IBetaServiceWithRawResponse
     Beta::IModelServiceWithRawResponse Models { get; }
 
     Beta::IMessageServiceWithRawResponse Messages { get; }
+
+    Beta::IAgentServiceWithRawResponse Agents { get; }
+
+    Beta::IEnvironmentServiceWithRawResponse Environments { get; }
+
+    Beta::ISessionServiceWithRawResponse Sessions { get; }
+
+    Beta::IVaultServiceWithRawResponse Vaults { get; }
 
     Beta::IFileServiceWithRawResponse Files { get; }
 
