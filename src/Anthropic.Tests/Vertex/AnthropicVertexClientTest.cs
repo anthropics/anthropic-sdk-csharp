@@ -11,6 +11,7 @@ public class AnthropicVertexClientTest
     [InlineData(null, "https://aiplatform.googleapis.com")]
     [InlineData("us", "https://aiplatform.us.rep.googleapis.com")]
     [InlineData("us-central1", "https://us-central1-aiplatform.googleapis.com")]
+    [InlineData("eu", "https://aiplatform.eu.rep.googleapis.com")]
     [InlineData("europe-west4", "https://europe-west4-aiplatform.googleapis.com")]
     public void Constructor_SetsCorrectBaseUrl(string? region, string expectedBaseUrl)
     {
