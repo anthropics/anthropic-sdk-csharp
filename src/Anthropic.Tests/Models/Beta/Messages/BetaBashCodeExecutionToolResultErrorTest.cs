@@ -12,10 +12,11 @@ public class BetaBashCodeExecutionToolResultErrorTest : TestBase
     {
         var model = new BetaBashCodeExecutionToolResultError
         {
-            ErrorCode = ErrorCode.InvalidToolInput,
+            ErrorCode = BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
         };
 
-        ApiEnum<string, ErrorCode> expectedErrorCode = ErrorCode.InvalidToolInput;
+        ApiEnum<string, BetaBashCodeExecutionToolResultErrorErrorCode> expectedErrorCode =
+            BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput;
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "bash_code_execution_tool_result_error"
         );
@@ -29,7 +30,7 @@ public class BetaBashCodeExecutionToolResultErrorTest : TestBase
     {
         var model = new BetaBashCodeExecutionToolResultError
         {
-            ErrorCode = ErrorCode.InvalidToolInput,
+            ErrorCode = BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -46,7 +47,7 @@ public class BetaBashCodeExecutionToolResultErrorTest : TestBase
     {
         var model = new BetaBashCodeExecutionToolResultError
         {
-            ErrorCode = ErrorCode.InvalidToolInput,
+            ErrorCode = BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -56,7 +57,8 @@ public class BetaBashCodeExecutionToolResultErrorTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, ErrorCode> expectedErrorCode = ErrorCode.InvalidToolInput;
+        ApiEnum<string, BetaBashCodeExecutionToolResultErrorErrorCode> expectedErrorCode =
+            BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput;
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "bash_code_execution_tool_result_error"
         );
@@ -70,7 +72,7 @@ public class BetaBashCodeExecutionToolResultErrorTest : TestBase
     {
         var model = new BetaBashCodeExecutionToolResultError
         {
-            ErrorCode = ErrorCode.InvalidToolInput,
+            ErrorCode = BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
         };
 
         model.Validate();
@@ -81,7 +83,7 @@ public class BetaBashCodeExecutionToolResultErrorTest : TestBase
     {
         var model = new BetaBashCodeExecutionToolResultError
         {
-            ErrorCode = ErrorCode.InvalidToolInput,
+            ErrorCode = BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
         };
 
         BetaBashCodeExecutionToolResultError copied = new(model);
@@ -90,49 +92,47 @@ public class BetaBashCodeExecutionToolResultErrorTest : TestBase
     }
 }
 
-public class ErrorCodeTest : TestBase
+public class BetaBashCodeExecutionToolResultErrorErrorCodeTest : TestBase
 {
     [Theory]
-    [InlineData(ErrorCode.InvalidToolInput)]
-    [InlineData(ErrorCode.Unavailable)]
-    [InlineData(ErrorCode.TooManyRequests)]
-    [InlineData(ErrorCode.ExecutionTimeExceeded)]
-    [InlineData(ErrorCode.OutputFileTooLarge)]
-    public void Validation_Works(ErrorCode rawValue)
+    [InlineData(BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput)]
+    [InlineData(BetaBashCodeExecutionToolResultErrorErrorCode.Unavailable)]
+    [InlineData(BetaBashCodeExecutionToolResultErrorErrorCode.TooManyRequests)]
+    [InlineData(BetaBashCodeExecutionToolResultErrorErrorCode.ExecutionTimeExceeded)]
+    [InlineData(BetaBashCodeExecutionToolResultErrorErrorCode.OutputFileTooLarge)]
+    public void Validation_Works(BetaBashCodeExecutionToolResultErrorErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, ErrorCode> value = rawValue;
+        ApiEnum<string, BetaBashCodeExecutionToolResultErrorErrorCode> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, ErrorCode>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaBashCodeExecutionToolResultErrorErrorCode>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
     [Theory]
-    [InlineData(ErrorCode.InvalidToolInput)]
-    [InlineData(ErrorCode.Unavailable)]
-    [InlineData(ErrorCode.TooManyRequests)]
-    [InlineData(ErrorCode.ExecutionTimeExceeded)]
-    [InlineData(ErrorCode.OutputFileTooLarge)]
-    public void SerializationRoundtrip_Works(ErrorCode rawValue)
+    [InlineData(BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput)]
+    [InlineData(BetaBashCodeExecutionToolResultErrorErrorCode.Unavailable)]
+    [InlineData(BetaBashCodeExecutionToolResultErrorErrorCode.TooManyRequests)]
+    [InlineData(BetaBashCodeExecutionToolResultErrorErrorCode.ExecutionTimeExceeded)]
+    [InlineData(BetaBashCodeExecutionToolResultErrorErrorCode.OutputFileTooLarge)]
+    public void SerializationRoundtrip_Works(BetaBashCodeExecutionToolResultErrorErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, ErrorCode> value = rawValue;
+        ApiEnum<string, BetaBashCodeExecutionToolResultErrorErrorCode> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ErrorCode>>(
-            json,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaBashCodeExecutionToolResultErrorErrorCode>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -140,15 +140,13 @@ public class ErrorCodeTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, ErrorCode>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaBashCodeExecutionToolResultErrorErrorCode>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ErrorCode>>(
-            json,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaBashCodeExecutionToolResultErrorErrorCode>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

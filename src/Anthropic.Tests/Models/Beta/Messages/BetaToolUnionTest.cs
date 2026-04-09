@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
 
@@ -85,7 +86,7 @@ public class BetaToolUnionTest : TestBase
     {
         BetaToolUnion value = new BetaCodeExecutionTool20250522()
         {
-            AllowedCallers = [AllowedCaller.Direct],
+            AllowedCallers = [BetaCodeExecutionTool20250522AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
@@ -392,6 +393,22 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
+    public void AdvisorTool20260301ValidationWorks()
+    {
+        BetaToolUnion value = new BetaAdvisorTool20260301()
+        {
+            Model = Messages::Model.ClaudeMythosPreview,
+            AllowedCallers = [AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caching = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxUses = 1,
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void SearchToolBm25_20251119ValidationWorks()
     {
         BetaToolUnion value = new BetaToolSearchToolBm25_20251119()
@@ -534,7 +551,7 @@ public class BetaToolUnionTest : TestBase
     {
         BetaToolUnion value = new BetaCodeExecutionTool20250522()
         {
-            AllowedCallers = [AllowedCaller.Direct],
+            AllowedCallers = [BetaCodeExecutionTool20250522AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
@@ -926,6 +943,28 @@ public class BetaToolUnionTest : TestBase
             MaxUses = 1,
             Strict = true,
             UseCache = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void AdvisorTool20260301SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaAdvisorTool20260301()
+        {
+            Model = Messages::Model.ClaudeMythosPreview,
+            AllowedCallers = [AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caching = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxUses = 1,
+            Strict = true,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(

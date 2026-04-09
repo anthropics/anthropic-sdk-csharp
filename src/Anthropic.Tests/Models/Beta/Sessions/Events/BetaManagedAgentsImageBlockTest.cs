@@ -14,8 +14,8 @@ public class BetaManagedAgentsImageBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64ImageSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64ImageSourceType.Base64,
             },
             Type = BetaManagedAgentsImageBlockType.Image,
@@ -23,8 +23,8 @@ public class BetaManagedAgentsImageBlockTest : TestBase
 
         BetaManagedAgentsImageBlockSource expectedSource = new BetaManagedAgentsBase64ImageSource()
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64ImageSourceType.Base64,
         };
         ApiEnum<string, BetaManagedAgentsImageBlockType> expectedType =
@@ -41,8 +41,8 @@ public class BetaManagedAgentsImageBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64ImageSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64ImageSourceType.Base64,
             },
             Type = BetaManagedAgentsImageBlockType.Image,
@@ -64,8 +64,8 @@ public class BetaManagedAgentsImageBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64ImageSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64ImageSourceType.Base64,
             },
             Type = BetaManagedAgentsImageBlockType.Image,
@@ -80,8 +80,8 @@ public class BetaManagedAgentsImageBlockTest : TestBase
 
         BetaManagedAgentsImageBlockSource expectedSource = new BetaManagedAgentsBase64ImageSource()
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64ImageSourceType.Base64,
         };
         ApiEnum<string, BetaManagedAgentsImageBlockType> expectedType =
@@ -98,8 +98,8 @@ public class BetaManagedAgentsImageBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64ImageSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64ImageSourceType.Base64,
             },
             Type = BetaManagedAgentsImageBlockType.Image,
@@ -115,8 +115,8 @@ public class BetaManagedAgentsImageBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64ImageSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64ImageSourceType.Base64,
             },
             Type = BetaManagedAgentsImageBlockType.Image,
@@ -135,8 +135,8 @@ public class BetaManagedAgentsImageBlockSourceTest : TestBase
     {
         BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsBase64ImageSource()
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64ImageSourceType.Base64,
         };
         value.Validate();
@@ -148,7 +148,7 @@ public class BetaManagedAgentsImageBlockSourceTest : TestBase
         BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsUrlImageSource()
         {
             Type = BetaManagedAgentsUrlImageSourceType.Url,
-            Url = "url",
+            Url = "x",
         };
         value.Validate();
     }
@@ -158,7 +158,7 @@ public class BetaManagedAgentsImageBlockSourceTest : TestBase
     {
         BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsFileImageSource()
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileImageSourceType.File,
         };
         value.Validate();
@@ -169,8 +169,8 @@ public class BetaManagedAgentsImageBlockSourceTest : TestBase
     {
         BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsBase64ImageSource()
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64ImageSourceType.Base64,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -188,7 +188,7 @@ public class BetaManagedAgentsImageBlockSourceTest : TestBase
         BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsUrlImageSource()
         {
             Type = BetaManagedAgentsUrlImageSourceType.Url,
-            Url = "url",
+            Url = "x",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsImageBlockSource>(
@@ -204,7 +204,7 @@ public class BetaManagedAgentsImageBlockSourceTest : TestBase
     {
         BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsFileImageSource()
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileImageSourceType.File,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

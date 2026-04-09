@@ -12,13 +12,13 @@ public class BetaManagedAgentsBase64DocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsBase64DocumentSource
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
         };
 
-        string expectedData = "data";
-        string expectedMediaType = "media_type";
+        string expectedData = "x";
+        string expectedMediaType = "x";
         ApiEnum<string, BetaManagedAgentsBase64DocumentSourceType> expectedType =
             BetaManagedAgentsBase64DocumentSourceType.Base64;
 
@@ -32,8 +32,8 @@ public class BetaManagedAgentsBase64DocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsBase64DocumentSource
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
         };
 
@@ -51,8 +51,8 @@ public class BetaManagedAgentsBase64DocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsBase64DocumentSource
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
         };
 
@@ -63,8 +63,8 @@ public class BetaManagedAgentsBase64DocumentSourceTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedData = "data";
-        string expectedMediaType = "media_type";
+        string expectedData = "x";
+        string expectedMediaType = "x";
         ApiEnum<string, BetaManagedAgentsBase64DocumentSourceType> expectedType =
             BetaManagedAgentsBase64DocumentSourceType.Base64;
 
@@ -78,8 +78,8 @@ public class BetaManagedAgentsBase64DocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsBase64DocumentSource
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
         };
 
@@ -91,8 +91,8 @@ public class BetaManagedAgentsBase64DocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsBase64DocumentSource
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
         };
 

@@ -158,6 +158,7 @@ class BetaServerToolUseBlockParamFromRaw : IFromRawJson<BetaServerToolUseBlockPa
 [JsonConverter(typeof(BetaServerToolUseBlockParamNameConverter))]
 public enum BetaServerToolUseBlockParamName
 {
+    Advisor,
     WebSearch,
     WebFetch,
     CodeExecution,
@@ -178,6 +179,7 @@ sealed class BetaServerToolUseBlockParamNameConverter
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
+            "advisor" => BetaServerToolUseBlockParamName.Advisor,
             "web_search" => BetaServerToolUseBlockParamName.WebSearch,
             "web_fetch" => BetaServerToolUseBlockParamName.WebFetch,
             "code_execution" => BetaServerToolUseBlockParamName.CodeExecution,
@@ -199,6 +201,7 @@ sealed class BetaServerToolUseBlockParamNameConverter
             writer,
             value switch
             {
+                BetaServerToolUseBlockParamName.Advisor => "advisor",
                 BetaServerToolUseBlockParamName.WebSearch => "web_search",
                 BetaServerToolUseBlockParamName.WebFetch => "web_fetch",
                 BetaServerToolUseBlockParamName.CodeExecution => "code_execution",

@@ -920,7 +920,7 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaCodeExecutionTool20250522()
         {
-            AllowedCallers = [AllowedCaller.Direct],
+            AllowedCallers = [BetaCodeExecutionTool20250522AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
@@ -1227,6 +1227,22 @@ public class ToolTest : TestBase
     }
 
     [Fact]
+    public void BetaAdvisorTool20260301ValidationWorks()
+    {
+        Tool value = new BetaAdvisorTool20260301()
+        {
+            Model = Messages::Model.ClaudeMythosPreview,
+            AllowedCallers = [AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caching = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxUses = 1,
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaToolSearchToolBm25_20251119ValidationWorks()
     {
         Tool value = new BetaToolSearchToolBm25_20251119()
@@ -1360,7 +1376,7 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaCodeExecutionTool20250522()
         {
-            AllowedCallers = [AllowedCaller.Direct],
+            AllowedCallers = [BetaCodeExecutionTool20250522AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
@@ -1707,6 +1723,25 @@ public class ToolTest : TestBase
             MaxUses = 1,
             Strict = true,
             UseCache = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaAdvisorTool20260301SerializationRoundtripWorks()
+    {
+        Tool value = new BetaAdvisorTool20260301()
+        {
+            Model = Messages::Model.ClaudeMythosPreview,
+            AllowedCallers = [AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caching = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxUses = 1,
+            Strict = true,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);

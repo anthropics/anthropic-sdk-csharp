@@ -13,12 +13,12 @@ public class BetaManagedAgentsUrlDocumentSourceTest : TestBase
         var model = new BetaManagedAgentsUrlDocumentSource
         {
             Type = BetaManagedAgentsUrlDocumentSourceType.Url,
-            Url = "url",
+            Url = "x",
         };
 
         ApiEnum<string, BetaManagedAgentsUrlDocumentSourceType> expectedType =
             BetaManagedAgentsUrlDocumentSourceType.Url;
-        string expectedUrl = "url";
+        string expectedUrl = "x";
 
         Assert.Equal(expectedType, model.Type);
         Assert.Equal(expectedUrl, model.Url);
@@ -30,7 +30,7 @@ public class BetaManagedAgentsUrlDocumentSourceTest : TestBase
         var model = new BetaManagedAgentsUrlDocumentSource
         {
             Type = BetaManagedAgentsUrlDocumentSourceType.Url,
-            Url = "url",
+            Url = "x",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -48,7 +48,7 @@ public class BetaManagedAgentsUrlDocumentSourceTest : TestBase
         var model = new BetaManagedAgentsUrlDocumentSource
         {
             Type = BetaManagedAgentsUrlDocumentSourceType.Url,
-            Url = "url",
+            Url = "x",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -60,7 +60,7 @@ public class BetaManagedAgentsUrlDocumentSourceTest : TestBase
 
         ApiEnum<string, BetaManagedAgentsUrlDocumentSourceType> expectedType =
             BetaManagedAgentsUrlDocumentSourceType.Url;
-        string expectedUrl = "url";
+        string expectedUrl = "x";
 
         Assert.Equal(expectedType, deserialized.Type);
         Assert.Equal(expectedUrl, deserialized.Url);
@@ -72,7 +72,7 @@ public class BetaManagedAgentsUrlDocumentSourceTest : TestBase
         var model = new BetaManagedAgentsUrlDocumentSource
         {
             Type = BetaManagedAgentsUrlDocumentSourceType.Url,
-            Url = "url",
+            Url = "x",
         };
 
         model.Validate();
@@ -84,7 +84,7 @@ public class BetaManagedAgentsUrlDocumentSourceTest : TestBase
         var model = new BetaManagedAgentsUrlDocumentSource
         {
             Type = BetaManagedAgentsUrlDocumentSourceType.Url,
-            Url = "url",
+            Url = "x",
         };
 
         BetaManagedAgentsUrlDocumentSource copied = new(model);

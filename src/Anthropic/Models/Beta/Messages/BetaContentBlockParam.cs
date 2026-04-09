@@ -44,6 +44,7 @@ public record class BetaContentBlockParam : ModelBase
                 serverToolUse: (x) => x.Type,
                 webSearchToolResult: (x) => x.Type,
                 webFetchToolResult: (x) => x.Type,
+                advisorToolResult: (x) => x.Type,
                 codeExecutionToolResult: (x) => x.Type,
                 bashCodeExecutionToolResult: (x) => x.Type,
                 textEditorCodeExecutionToolResult: (x) => x.Type,
@@ -72,6 +73,7 @@ public record class BetaContentBlockParam : ModelBase
                 serverToolUse: (x) => x.CacheControl,
                 webSearchToolResult: (x) => x.CacheControl,
                 webFetchToolResult: (x) => x.CacheControl,
+                advisorToolResult: (x) => x.CacheControl,
                 codeExecutionToolResult: (x) => x.CacheControl,
                 bashCodeExecutionToolResult: (x) => x.CacheControl,
                 textEditorCodeExecutionToolResult: (x) => x.CacheControl,
@@ -100,6 +102,7 @@ public record class BetaContentBlockParam : ModelBase
                 serverToolUse: (_) => null,
                 webSearchToolResult: (_) => null,
                 webFetchToolResult: (_) => null,
+                advisorToolResult: (_) => null,
                 codeExecutionToolResult: (_) => null,
                 bashCodeExecutionToolResult: (_) => null,
                 textEditorCodeExecutionToolResult: (_) => null,
@@ -128,6 +131,7 @@ public record class BetaContentBlockParam : ModelBase
                 serverToolUse: (x) => x.ID,
                 webSearchToolResult: (_) => null,
                 webFetchToolResult: (_) => null,
+                advisorToolResult: (_) => null,
                 codeExecutionToolResult: (_) => null,
                 bashCodeExecutionToolResult: (_) => null,
                 textEditorCodeExecutionToolResult: (_) => null,
@@ -156,6 +160,7 @@ public record class BetaContentBlockParam : ModelBase
                 serverToolUse: (_) => null,
                 webSearchToolResult: (x) => x.ToolUseID,
                 webFetchToolResult: (x) => x.ToolUseID,
+                advisorToolResult: (x) => x.ToolUseID,
                 codeExecutionToolResult: (x) => x.ToolUseID,
                 bashCodeExecutionToolResult: (x) => x.ToolUseID,
                 textEditorCodeExecutionToolResult: (x) => x.ToolUseID,
@@ -184,6 +189,7 @@ public record class BetaContentBlockParam : ModelBase
                 serverToolUse: (_) => null,
                 webSearchToolResult: (_) => null,
                 webFetchToolResult: (_) => null,
+                advisorToolResult: (_) => null,
                 codeExecutionToolResult: (_) => null,
                 bashCodeExecutionToolResult: (_) => null,
                 textEditorCodeExecutionToolResult: (_) => null,
@@ -263,6 +269,12 @@ public record class BetaContentBlockParam : ModelBase
         BetaWebFetchToolResultBlockParam value,
         JsonElement? element = null
     )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaContentBlockParam(BetaAdvisorToolResultBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -575,6 +587,29 @@ public record class BetaContentBlockParam : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaAdvisorToolResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickAdvisorToolResult(out var value)) {
+    ///     // `value` is of type `BetaAdvisorToolResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickAdvisorToolResult(
+        [NotNullWhen(true)] out BetaAdvisorToolResultBlockParam? value
+    )
+    {
+        value = this.Value as BetaAdvisorToolResultBlockParam;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaCodeExecutionToolResultBlockParam"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -776,6 +811,7 @@ public record class BetaContentBlockParam : ModelBase
     ///     (BetaServerToolUseBlockParam value) =&gt; {...},
     ///     (BetaWebSearchToolResultBlockParam value) =&gt; {...},
     ///     (BetaWebFetchToolResultBlockParam value) =&gt; {...},
+    ///     (BetaAdvisorToolResultBlockParam value) =&gt; {...},
     ///     (BetaCodeExecutionToolResultBlockParam value) =&gt; {...},
     ///     (BetaBashCodeExecutionToolResultBlockParam value) =&gt; {...},
     ///     (BetaTextEditorCodeExecutionToolResultBlockParam value) =&gt; {...},
@@ -800,6 +836,7 @@ public record class BetaContentBlockParam : ModelBase
         System::Action<BetaServerToolUseBlockParam> serverToolUse,
         System::Action<BetaWebSearchToolResultBlockParam> webSearchToolResult,
         System::Action<BetaWebFetchToolResultBlockParam> webFetchToolResult,
+        System::Action<BetaAdvisorToolResultBlockParam> advisorToolResult,
         System::Action<BetaCodeExecutionToolResultBlockParam> codeExecutionToolResult,
         System::Action<BetaBashCodeExecutionToolResultBlockParam> bashCodeExecutionToolResult,
         System::Action<BetaTextEditorCodeExecutionToolResultBlockParam> textEditorCodeExecutionToolResult,
@@ -844,6 +881,9 @@ public record class BetaContentBlockParam : ModelBase
                 break;
             case BetaWebFetchToolResultBlockParam value:
                 webFetchToolResult(value);
+                break;
+            case BetaAdvisorToolResultBlockParam value:
+                advisorToolResult(value);
                 break;
             case BetaCodeExecutionToolResultBlockParam value:
                 codeExecutionToolResult(value);
@@ -902,6 +942,7 @@ public record class BetaContentBlockParam : ModelBase
     ///     (BetaServerToolUseBlockParam value) =&gt; {...},
     ///     (BetaWebSearchToolResultBlockParam value) =&gt; {...},
     ///     (BetaWebFetchToolResultBlockParam value) =&gt; {...},
+    ///     (BetaAdvisorToolResultBlockParam value) =&gt; {...},
     ///     (BetaCodeExecutionToolResultBlockParam value) =&gt; {...},
     ///     (BetaBashCodeExecutionToolResultBlockParam value) =&gt; {...},
     ///     (BetaTextEditorCodeExecutionToolResultBlockParam value) =&gt; {...},
@@ -926,6 +967,7 @@ public record class BetaContentBlockParam : ModelBase
         System::Func<BetaServerToolUseBlockParam, T> serverToolUse,
         System::Func<BetaWebSearchToolResultBlockParam, T> webSearchToolResult,
         System::Func<BetaWebFetchToolResultBlockParam, T> webFetchToolResult,
+        System::Func<BetaAdvisorToolResultBlockParam, T> advisorToolResult,
         System::Func<BetaCodeExecutionToolResultBlockParam, T> codeExecutionToolResult,
         System::Func<BetaBashCodeExecutionToolResultBlockParam, T> bashCodeExecutionToolResult,
         System::Func<
@@ -952,6 +994,7 @@ public record class BetaContentBlockParam : ModelBase
             BetaServerToolUseBlockParam value => serverToolUse(value),
             BetaWebSearchToolResultBlockParam value => webSearchToolResult(value),
             BetaWebFetchToolResultBlockParam value => webFetchToolResult(value),
+            BetaAdvisorToolResultBlockParam value => advisorToolResult(value),
             BetaCodeExecutionToolResultBlockParam value => codeExecutionToolResult(value),
             BetaBashCodeExecutionToolResultBlockParam value => bashCodeExecutionToolResult(value),
             BetaTextEditorCodeExecutionToolResultBlockParam value =>
@@ -997,6 +1040,9 @@ public record class BetaContentBlockParam : ModelBase
     ) => new(value);
 
     public static implicit operator BetaContentBlockParam(BetaWebFetchToolResultBlockParam value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlockParam(BetaAdvisorToolResultBlockParam value) =>
         new(value);
 
     public static implicit operator BetaContentBlockParam(
@@ -1058,6 +1104,7 @@ public record class BetaContentBlockParam : ModelBase
             (serverToolUse) => serverToolUse.Validate(),
             (webSearchToolResult) => webSearchToolResult.Validate(),
             (webFetchToolResult) => webFetchToolResult.Validate(),
+            (advisorToolResult) => advisorToolResult.Validate(),
             (codeExecutionToolResult) => codeExecutionToolResult.Validate(),
             (bashCodeExecutionToolResult) => bashCodeExecutionToolResult.Validate(),
             (textEditorCodeExecutionToolResult) => textEditorCodeExecutionToolResult.Validate(),
@@ -1100,14 +1147,15 @@ public record class BetaContentBlockParam : ModelBase
             BetaServerToolUseBlockParam _ => 8,
             BetaWebSearchToolResultBlockParam _ => 9,
             BetaWebFetchToolResultBlockParam _ => 10,
-            BetaCodeExecutionToolResultBlockParam _ => 11,
-            BetaBashCodeExecutionToolResultBlockParam _ => 12,
-            BetaTextEditorCodeExecutionToolResultBlockParam _ => 13,
-            BetaToolSearchToolResultBlockParam _ => 14,
-            BetaMcpToolUseBlockParam _ => 15,
-            BetaRequestMcpToolResultBlockParam _ => 16,
-            BetaContainerUploadBlockParam _ => 17,
-            BetaCompactionBlockParam _ => 18,
+            BetaAdvisorToolResultBlockParam _ => 11,
+            BetaCodeExecutionToolResultBlockParam _ => 12,
+            BetaBashCodeExecutionToolResultBlockParam _ => 13,
+            BetaTextEditorCodeExecutionToolResultBlockParam _ => 14,
+            BetaToolSearchToolResultBlockParam _ => 15,
+            BetaMcpToolUseBlockParam _ => 16,
+            BetaRequestMcpToolResultBlockParam _ => 17,
+            BetaContainerUploadBlockParam _ => 18,
+            BetaCompactionBlockParam _ => 19,
             _ => -1,
         };
     }
@@ -1340,6 +1388,26 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParam>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "advisor_tool_result":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaAdvisorToolResultBlockParam>(
                         element,
                         options
                     );

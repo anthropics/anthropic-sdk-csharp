@@ -11,13 +11,16 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
     {
         var model = new BetaBashCodeExecutionToolResultBlock
         {
-            Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
+            Content = new BetaBashCodeExecutionToolResultError(
+                BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
+            ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        Content expectedContent = new BetaBashCodeExecutionToolResultError(
-            ErrorCode.InvalidToolInput
-        );
+        BetaBashCodeExecutionToolResultBlockContent expectedContent =
+            new BetaBashCodeExecutionToolResultError(
+                BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
+            );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "bash_code_execution_tool_result"
@@ -33,7 +36,9 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
     {
         var model = new BetaBashCodeExecutionToolResultBlock
         {
-            Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
+            Content = new BetaBashCodeExecutionToolResultError(
+                BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
+            ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
@@ -51,7 +56,9 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
     {
         var model = new BetaBashCodeExecutionToolResultBlock
         {
-            Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
+            Content = new BetaBashCodeExecutionToolResultError(
+                BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
+            ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
@@ -62,9 +69,10 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        Content expectedContent = new BetaBashCodeExecutionToolResultError(
-            ErrorCode.InvalidToolInput
-        );
+        BetaBashCodeExecutionToolResultBlockContent expectedContent =
+            new BetaBashCodeExecutionToolResultError(
+                BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
+            );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "bash_code_execution_tool_result"
@@ -80,7 +88,9 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
     {
         var model = new BetaBashCodeExecutionToolResultBlock
         {
-            Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
+            Content = new BetaBashCodeExecutionToolResultError(
+                BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
+            ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
@@ -92,7 +102,9 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
     {
         var model = new BetaBashCodeExecutionToolResultBlock
         {
-            Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
+            Content = new BetaBashCodeExecutionToolResultError(
+                BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
+            ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
@@ -102,19 +114,22 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
     }
 }
 
-public class ContentTest : TestBase
+public class BetaBashCodeExecutionToolResultBlockContentTest : TestBase
 {
     [Fact]
     public void BetaBashCodeExecutionToolResultErrorValidationWorks()
     {
-        Content value = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput);
+        BetaBashCodeExecutionToolResultBlockContent value =
+            new BetaBashCodeExecutionToolResultError(
+                BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
+            );
         value.Validate();
     }
 
     [Fact]
     public void BetaBashCodeExecutionResultBlockValidationWorks()
     {
-        Content value = new BetaBashCodeExecutionResultBlock()
+        BetaBashCodeExecutionToolResultBlockContent value = new BetaBashCodeExecutionResultBlock()
         {
             Content = [new("file_id")],
             ReturnCode = 0,
@@ -127,9 +142,12 @@ public class ContentTest : TestBase
     [Fact]
     public void BetaBashCodeExecutionToolResultErrorSerializationRoundtripWorks()
     {
-        Content value = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput);
+        BetaBashCodeExecutionToolResultBlockContent value =
+            new BetaBashCodeExecutionToolResultError(
+                BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
+            );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Content>(
+        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockContent>(
             element,
             ModelBase.SerializerOptions
         );
@@ -140,7 +158,7 @@ public class ContentTest : TestBase
     [Fact]
     public void BetaBashCodeExecutionResultBlockSerializationRoundtripWorks()
     {
-        Content value = new BetaBashCodeExecutionResultBlock()
+        BetaBashCodeExecutionToolResultBlockContent value = new BetaBashCodeExecutionResultBlock()
         {
             Content = [new("file_id")],
             ReturnCode = 0,
@@ -148,7 +166,7 @@ public class ContentTest : TestBase
             Stdout = "stdout",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Content>(
+        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockContent>(
             element,
             ModelBase.SerializerOptions
         );

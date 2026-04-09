@@ -141,6 +141,7 @@ public record class ContentBlock : ModelBase
                 betaServerToolUse: (x) => x.Type,
                 betaWebSearchToolResult: (x) => x.Type,
                 betaWebFetchToolResult: (x) => x.Type,
+                betaAdvisorToolResult: (x) => x.Type,
                 betaCodeExecutionToolResult: (x) => x.Type,
                 betaBashCodeExecutionToolResult: (x) => x.Type,
                 betaTextEditorCodeExecutionToolResult: (x) => x.Type,
@@ -165,6 +166,7 @@ public record class ContentBlock : ModelBase
                 betaServerToolUse: (x) => x.ID,
                 betaWebSearchToolResult: (_) => null,
                 betaWebFetchToolResult: (_) => null,
+                betaAdvisorToolResult: (_) => null,
                 betaCodeExecutionToolResult: (_) => null,
                 betaBashCodeExecutionToolResult: (_) => null,
                 betaTextEditorCodeExecutionToolResult: (_) => null,
@@ -189,6 +191,7 @@ public record class ContentBlock : ModelBase
                 betaServerToolUse: (_) => null,
                 betaWebSearchToolResult: (x) => x.ToolUseID,
                 betaWebFetchToolResult: (x) => x.ToolUseID,
+                betaAdvisorToolResult: (x) => x.ToolUseID,
                 betaCodeExecutionToolResult: (x) => x.ToolUseID,
                 betaBashCodeExecutionToolResult: (x) => x.ToolUseID,
                 betaTextEditorCodeExecutionToolResult: (x) => x.ToolUseID,
@@ -238,6 +241,12 @@ public record class ContentBlock : ModelBase
     }
 
     public ContentBlock(BetaWebFetchToolResultBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ContentBlock(BetaAdvisorToolResultBlock value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -454,6 +463,29 @@ public record class ContentBlock : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaAdvisorToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaAdvisorToolResult(out var value)) {
+    ///     // `value` is of type `BetaAdvisorToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaAdvisorToolResult(
+        [NotNullWhen(true)] out BetaAdvisorToolResultBlock? value
+    )
+    {
+        value = this.Value as BetaAdvisorToolResultBlock;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaCodeExecutionToolResultBlock"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -649,6 +681,7 @@ public record class ContentBlock : ModelBase
     ///     (BetaServerToolUseBlock value) =&gt; {...},
     ///     (BetaWebSearchToolResultBlock value) =&gt; {...},
     ///     (BetaWebFetchToolResultBlock value) =&gt; {...},
+    ///     (BetaAdvisorToolResultBlock value) =&gt; {...},
     ///     (BetaCodeExecutionToolResultBlock value) =&gt; {...},
     ///     (BetaBashCodeExecutionToolResultBlock value) =&gt; {...},
     ///     (BetaTextEditorCodeExecutionToolResultBlock value) =&gt; {...},
@@ -669,6 +702,7 @@ public record class ContentBlock : ModelBase
         System::Action<BetaServerToolUseBlock> betaServerToolUse,
         System::Action<BetaWebSearchToolResultBlock> betaWebSearchToolResult,
         System::Action<BetaWebFetchToolResultBlock> betaWebFetchToolResult,
+        System::Action<BetaAdvisorToolResultBlock> betaAdvisorToolResult,
         System::Action<BetaCodeExecutionToolResultBlock> betaCodeExecutionToolResult,
         System::Action<BetaBashCodeExecutionToolResultBlock> betaBashCodeExecutionToolResult,
         System::Action<BetaTextEditorCodeExecutionToolResultBlock> betaTextEditorCodeExecutionToolResult,
@@ -701,6 +735,9 @@ public record class ContentBlock : ModelBase
                 break;
             case BetaWebFetchToolResultBlock value:
                 betaWebFetchToolResult(value);
+                break;
+            case BetaAdvisorToolResultBlock value:
+                betaAdvisorToolResult(value);
                 break;
             case BetaCodeExecutionToolResultBlock value:
                 betaCodeExecutionToolResult(value);
@@ -755,6 +792,7 @@ public record class ContentBlock : ModelBase
     ///     (BetaServerToolUseBlock value) =&gt; {...},
     ///     (BetaWebSearchToolResultBlock value) =&gt; {...},
     ///     (BetaWebFetchToolResultBlock value) =&gt; {...},
+    ///     (BetaAdvisorToolResultBlock value) =&gt; {...},
     ///     (BetaCodeExecutionToolResultBlock value) =&gt; {...},
     ///     (BetaBashCodeExecutionToolResultBlock value) =&gt; {...},
     ///     (BetaTextEditorCodeExecutionToolResultBlock value) =&gt; {...},
@@ -775,6 +813,7 @@ public record class ContentBlock : ModelBase
         System::Func<BetaServerToolUseBlock, T> betaServerToolUse,
         System::Func<BetaWebSearchToolResultBlock, T> betaWebSearchToolResult,
         System::Func<BetaWebFetchToolResultBlock, T> betaWebFetchToolResult,
+        System::Func<BetaAdvisorToolResultBlock, T> betaAdvisorToolResult,
         System::Func<BetaCodeExecutionToolResultBlock, T> betaCodeExecutionToolResult,
         System::Func<BetaBashCodeExecutionToolResultBlock, T> betaBashCodeExecutionToolResult,
         System::Func<
@@ -797,6 +836,7 @@ public record class ContentBlock : ModelBase
             BetaServerToolUseBlock value => betaServerToolUse(value),
             BetaWebSearchToolResultBlock value => betaWebSearchToolResult(value),
             BetaWebFetchToolResultBlock value => betaWebFetchToolResult(value),
+            BetaAdvisorToolResultBlock value => betaAdvisorToolResult(value),
             BetaCodeExecutionToolResultBlock value => betaCodeExecutionToolResult(value),
             BetaBashCodeExecutionToolResultBlock value => betaBashCodeExecutionToolResult(value),
             BetaTextEditorCodeExecutionToolResultBlock value =>
@@ -825,6 +865,8 @@ public record class ContentBlock : ModelBase
     public static implicit operator ContentBlock(BetaWebSearchToolResultBlock value) => new(value);
 
     public static implicit operator ContentBlock(BetaWebFetchToolResultBlock value) => new(value);
+
+    public static implicit operator ContentBlock(BetaAdvisorToolResultBlock value) => new(value);
 
     public static implicit operator ContentBlock(BetaCodeExecutionToolResultBlock value) =>
         new(value);
@@ -872,6 +914,7 @@ public record class ContentBlock : ModelBase
             (betaServerToolUse) => betaServerToolUse.Validate(),
             (betaWebSearchToolResult) => betaWebSearchToolResult.Validate(),
             (betaWebFetchToolResult) => betaWebFetchToolResult.Validate(),
+            (betaAdvisorToolResult) => betaAdvisorToolResult.Validate(),
             (betaCodeExecutionToolResult) => betaCodeExecutionToolResult.Validate(),
             (betaBashCodeExecutionToolResult) => betaBashCodeExecutionToolResult.Validate(),
             (betaTextEditorCodeExecutionToolResult) =>
@@ -911,14 +954,15 @@ public record class ContentBlock : ModelBase
             BetaServerToolUseBlock _ => 4,
             BetaWebSearchToolResultBlock _ => 5,
             BetaWebFetchToolResultBlock _ => 6,
-            BetaCodeExecutionToolResultBlock _ => 7,
-            BetaBashCodeExecutionToolResultBlock _ => 8,
-            BetaTextEditorCodeExecutionToolResultBlock _ => 9,
-            BetaToolSearchToolResultBlock _ => 10,
-            BetaMcpToolUseBlock _ => 11,
-            BetaMcpToolResultBlock _ => 12,
-            BetaContainerUploadBlock _ => 13,
-            BetaCompactionBlock _ => 14,
+            BetaAdvisorToolResultBlock _ => 7,
+            BetaCodeExecutionToolResultBlock _ => 8,
+            BetaBashCodeExecutionToolResultBlock _ => 9,
+            BetaTextEditorCodeExecutionToolResultBlock _ => 10,
+            BetaToolSearchToolResultBlock _ => 11,
+            BetaMcpToolUseBlock _ => 12,
+            BetaMcpToolResultBlock _ => 13,
+            BetaContainerUploadBlock _ => 14,
+            BetaCompactionBlock _ => 15,
             _ => -1,
         };
     }
@@ -1067,6 +1111,26 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlock>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "advisor_tool_result":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaAdvisorToolResultBlock>(
                         element,
                         options
                     );

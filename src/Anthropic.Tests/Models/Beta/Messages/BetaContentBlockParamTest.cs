@@ -148,7 +148,7 @@ public class BetaContentBlockParamTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Name = BetaServerToolUseBlockParamName.WebSearch,
+            Name = BetaServerToolUseBlockParamName.Advisor,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -189,6 +189,20 @@ public class BetaContentBlockParamTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void AdvisorToolResultValidationWorks()
+    {
+        BetaContentBlockParam value = new BetaAdvisorToolResultBlockParam()
+        {
+            Content = new BetaAdvisorToolResultErrorParam(
+                BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         value.Validate();
     }
@@ -493,7 +507,7 @@ public class BetaContentBlockParamTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Name = BetaServerToolUseBlockParamName.WebSearch,
+            Name = BetaServerToolUseBlockParamName.Advisor,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -546,6 +560,26 @@ public class BetaContentBlockParamTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void AdvisorToolResultSerializationRoundtripWorks()
+    {
+        BetaContentBlockParam value = new BetaAdvisorToolResultBlockParam()
+        {
+            Content = new BetaAdvisorToolResultErrorParam(
+                BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(

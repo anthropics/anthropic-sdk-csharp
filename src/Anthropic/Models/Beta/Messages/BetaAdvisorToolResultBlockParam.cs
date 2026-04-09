@@ -11,20 +11,18 @@ namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
     typeof(JsonModelConverter<
-        BetaBashCodeExecutionToolResultBlock,
-        BetaBashCodeExecutionToolResultBlockFromRaw
+        BetaAdvisorToolResultBlockParam,
+        BetaAdvisorToolResultBlockParamFromRaw
     >)
 )]
-public sealed record class BetaBashCodeExecutionToolResultBlock : JsonModel
+public sealed record class BetaAdvisorToolResultBlockParam : JsonModel
 {
-    public required BetaBashCodeExecutionToolResultBlockContent Content
+    public required BetaAdvisorToolResultBlockParamContent Content
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaBashCodeExecutionToolResultBlockContent>(
-                "content"
-            );
+            return this._rawData.GetNotNullClass<BetaAdvisorToolResultBlockParamContent>("content");
         }
         init { this._rawData.Set("content", value); }
     }
@@ -49,6 +47,19 @@ public sealed record class BetaBashCodeExecutionToolResultBlock : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
+    /// <summary>
+    /// Create a cache control breakpoint at this content block.
+    /// </summary>
+    public BetaCacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
+        }
+        init { this._rawData.Set("cache_control", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -57,44 +68,45 @@ public sealed record class BetaBashCodeExecutionToolResultBlock : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.SerializeToElement("bash_code_execution_tool_result")
+                JsonSerializer.SerializeToElement("advisor_tool_result")
             )
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
+        this.CacheControl?.Validate();
     }
 
-    public BetaBashCodeExecutionToolResultBlock()
+    public BetaAdvisorToolResultBlockParam()
     {
-        this.Type = JsonSerializer.SerializeToElement("bash_code_execution_tool_result");
+        this.Type = JsonSerializer.SerializeToElement("advisor_tool_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    public BetaBashCodeExecutionToolResultBlock(
-        BetaBashCodeExecutionToolResultBlock betaBashCodeExecutionToolResultBlock
+    public BetaAdvisorToolResultBlockParam(
+        BetaAdvisorToolResultBlockParam betaAdvisorToolResultBlockParam
     )
-        : base(betaBashCodeExecutionToolResultBlock) { }
+        : base(betaAdvisorToolResultBlockParam) { }
 #pragma warning restore CS8618
 
-    public BetaBashCodeExecutionToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
+    public BetaAdvisorToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.SerializeToElement("bash_code_execution_tool_result");
+        this.Type = JsonSerializer.SerializeToElement("advisor_tool_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaBashCodeExecutionToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
+    BetaAdvisorToolResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="BetaBashCodeExecutionToolResultBlockFromRaw.FromRawUnchecked"/>
-    public static BetaBashCodeExecutionToolResultBlock FromRawUnchecked(
+    /// <inheritdoc cref="BetaAdvisorToolResultBlockParamFromRaw.FromRawUnchecked"/>
+    public static BetaAdvisorToolResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -102,17 +114,16 @@ public sealed record class BetaBashCodeExecutionToolResultBlock : JsonModel
     }
 }
 
-class BetaBashCodeExecutionToolResultBlockFromRaw
-    : IFromRawJson<BetaBashCodeExecutionToolResultBlock>
+class BetaAdvisorToolResultBlockParamFromRaw : IFromRawJson<BetaAdvisorToolResultBlockParam>
 {
     /// <inheritdoc/>
-    public BetaBashCodeExecutionToolResultBlock FromRawUnchecked(
+    public BetaAdvisorToolResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
-    ) => BetaBashCodeExecutionToolResultBlock.FromRawUnchecked(rawData);
+    ) => BetaAdvisorToolResultBlockParam.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(BetaBashCodeExecutionToolResultBlockContentConverter))]
-public record class BetaBashCodeExecutionToolResultBlockContent : ModelBase
+[JsonConverter(typeof(BetaAdvisorToolResultBlockParamContentConverter))]
+public record class BetaAdvisorToolResultBlockParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -134,14 +145,15 @@ public record class BetaBashCodeExecutionToolResultBlockContent : ModelBase
         get
         {
             return Match(
-                betaBashCodeExecutionToolResultError: (x) => x.Type,
-                betaBashCodeExecutionResultBlock: (x) => x.Type
+                betaAdvisorToolResultErrorParam: (x) => x.Type,
+                betaAdvisorResultBlockParam: (x) => x.Type,
+                betaAdvisorRedactedResultBlockParam: (x) => x.Type
             );
         }
     }
 
-    public BetaBashCodeExecutionToolResultBlockContent(
-        BetaBashCodeExecutionToolResultError value,
+    public BetaAdvisorToolResultBlockParamContent(
+        BetaAdvisorToolResultErrorParam value,
         JsonElement? element = null
     )
     {
@@ -149,8 +161,8 @@ public record class BetaBashCodeExecutionToolResultBlockContent : ModelBase
         this._element = element;
     }
 
-    public BetaBashCodeExecutionToolResultBlockContent(
-        BetaBashCodeExecutionResultBlock value,
+    public BetaAdvisorToolResultBlockParamContent(
+        BetaAdvisorResultBlockParam value,
         JsonElement? element = null
     )
     {
@@ -158,54 +170,86 @@ public record class BetaBashCodeExecutionToolResultBlockContent : ModelBase
         this._element = element;
     }
 
-    public BetaBashCodeExecutionToolResultBlockContent(JsonElement element)
+    public BetaAdvisorToolResultBlockParamContent(
+        BetaAdvisorRedactedResultBlockParam value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaAdvisorToolResultBlockParamContent(JsonElement element)
     {
         this._element = element;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaBashCodeExecutionToolResultError"/>.
+    /// type <see cref="BetaAdvisorToolResultErrorParam"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaBashCodeExecutionToolResultError(out var value)) {
-    ///     // `value` is of type `BetaBashCodeExecutionToolResultError`
+    /// if (instance.TryPickBetaAdvisorToolResultErrorParam(out var value)) {
+    ///     // `value` is of type `BetaAdvisorToolResultErrorParam`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaBashCodeExecutionToolResultError(
-        [NotNullWhen(true)] out BetaBashCodeExecutionToolResultError? value
+    public bool TryPickBetaAdvisorToolResultErrorParam(
+        [NotNullWhen(true)] out BetaAdvisorToolResultErrorParam? value
     )
     {
-        value = this.Value as BetaBashCodeExecutionToolResultError;
+        value = this.Value as BetaAdvisorToolResultErrorParam;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaBashCodeExecutionResultBlock"/>.
+    /// type <see cref="BetaAdvisorResultBlockParam"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaBashCodeExecutionResultBlock(out var value)) {
-    ///     // `value` is of type `BetaBashCodeExecutionResultBlock`
+    /// if (instance.TryPickBetaAdvisorResultBlockParam(out var value)) {
+    ///     // `value` is of type `BetaAdvisorResultBlockParam`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaBashCodeExecutionResultBlock(
-        [NotNullWhen(true)] out BetaBashCodeExecutionResultBlock? value
+    public bool TryPickBetaAdvisorResultBlockParam(
+        [NotNullWhen(true)] out BetaAdvisorResultBlockParam? value
     )
     {
-        value = this.Value as BetaBashCodeExecutionResultBlock;
+        value = this.Value as BetaAdvisorResultBlockParam;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaAdvisorRedactedResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaAdvisorRedactedResultBlockParam(out var value)) {
+    ///     // `value` is of type `BetaAdvisorRedactedResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaAdvisorRedactedResultBlockParam(
+        [NotNullWhen(true)] out BetaAdvisorRedactedResultBlockParam? value
+    )
+    {
+        value = this.Value as BetaAdvisorRedactedResultBlockParam;
         return value != null;
     }
 
@@ -223,28 +267,33 @@ public record class BetaBashCodeExecutionToolResultBlockContent : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaBashCodeExecutionToolResultError value) =&gt; {...},
-    ///     (BetaBashCodeExecutionResultBlock value) =&gt; {...}
+    ///     (BetaAdvisorToolResultErrorParam value) =&gt; {...},
+    ///     (BetaAdvisorResultBlockParam value) =&gt; {...},
+    ///     (BetaAdvisorRedactedResultBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaBashCodeExecutionToolResultError> betaBashCodeExecutionToolResultError,
-        System::Action<BetaBashCodeExecutionResultBlock> betaBashCodeExecutionResultBlock
+        System::Action<BetaAdvisorToolResultErrorParam> betaAdvisorToolResultErrorParam,
+        System::Action<BetaAdvisorResultBlockParam> betaAdvisorResultBlockParam,
+        System::Action<BetaAdvisorRedactedResultBlockParam> betaAdvisorRedactedResultBlockParam
     )
     {
         switch (this.Value)
         {
-            case BetaBashCodeExecutionToolResultError value:
-                betaBashCodeExecutionToolResultError(value);
+            case BetaAdvisorToolResultErrorParam value:
+                betaAdvisorToolResultErrorParam(value);
                 break;
-            case BetaBashCodeExecutionResultBlock value:
-                betaBashCodeExecutionResultBlock(value);
+            case BetaAdvisorResultBlockParam value:
+                betaAdvisorResultBlockParam(value);
+                break;
+            case BetaAdvisorRedactedResultBlockParam value:
+                betaAdvisorRedactedResultBlockParam(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of BetaBashCodeExecutionToolResultBlockContent"
+                    "Data did not match any variant of BetaAdvisorToolResultBlockParamContent"
                 );
         }
     }
@@ -264,35 +313,40 @@ public record class BetaBashCodeExecutionToolResultBlockContent : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaBashCodeExecutionToolResultError value) =&gt; {...},
-    ///     (BetaBashCodeExecutionResultBlock value) =&gt; {...}
+    ///     (BetaAdvisorToolResultErrorParam value) =&gt; {...},
+    ///     (BetaAdvisorResultBlockParam value) =&gt; {...},
+    ///     (BetaAdvisorRedactedResultBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaBashCodeExecutionToolResultError, T> betaBashCodeExecutionToolResultError,
-        System::Func<BetaBashCodeExecutionResultBlock, T> betaBashCodeExecutionResultBlock
+        System::Func<BetaAdvisorToolResultErrorParam, T> betaAdvisorToolResultErrorParam,
+        System::Func<BetaAdvisorResultBlockParam, T> betaAdvisorResultBlockParam,
+        System::Func<BetaAdvisorRedactedResultBlockParam, T> betaAdvisorRedactedResultBlockParam
     )
     {
         return this.Value switch
         {
-            BetaBashCodeExecutionToolResultError value => betaBashCodeExecutionToolResultError(
-                value
-            ),
-            BetaBashCodeExecutionResultBlock value => betaBashCodeExecutionResultBlock(value),
+            BetaAdvisorToolResultErrorParam value => betaAdvisorToolResultErrorParam(value),
+            BetaAdvisorResultBlockParam value => betaAdvisorResultBlockParam(value),
+            BetaAdvisorRedactedResultBlockParam value => betaAdvisorRedactedResultBlockParam(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaBashCodeExecutionToolResultBlockContent"
+                "Data did not match any variant of BetaAdvisorToolResultBlockParamContent"
             ),
         };
     }
 
-    public static implicit operator BetaBashCodeExecutionToolResultBlockContent(
-        BetaBashCodeExecutionToolResultError value
+    public static implicit operator BetaAdvisorToolResultBlockParamContent(
+        BetaAdvisorToolResultErrorParam value
     ) => new(value);
 
-    public static implicit operator BetaBashCodeExecutionToolResultBlockContent(
-        BetaBashCodeExecutionResultBlock value
+    public static implicit operator BetaAdvisorToolResultBlockParamContent(
+        BetaAdvisorResultBlockParam value
+    ) => new(value);
+
+    public static implicit operator BetaAdvisorToolResultBlockParamContent(
+        BetaAdvisorRedactedResultBlockParam value
     ) => new(value);
 
     /// <summary>
@@ -310,17 +364,17 @@ public record class BetaBashCodeExecutionToolResultBlockContent : ModelBase
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaBashCodeExecutionToolResultBlockContent"
+                "Data did not match any variant of BetaAdvisorToolResultBlockParamContent"
             );
         }
         this.Switch(
-            (betaBashCodeExecutionToolResultError) =>
-                betaBashCodeExecutionToolResultError.Validate(),
-            (betaBashCodeExecutionResultBlock) => betaBashCodeExecutionResultBlock.Validate()
+            (betaAdvisorToolResultErrorParam) => betaAdvisorToolResultErrorParam.Validate(),
+            (betaAdvisorResultBlockParam) => betaAdvisorResultBlockParam.Validate(),
+            (betaAdvisorRedactedResultBlockParam) => betaAdvisorRedactedResultBlockParam.Validate()
         );
     }
 
-    public virtual bool Equals(BetaBashCodeExecutionToolResultBlockContent? other) =>
+    public virtual bool Equals(BetaAdvisorToolResultBlockParamContent? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -340,17 +394,18 @@ public record class BetaBashCodeExecutionToolResultBlockContent : ModelBase
     {
         return this.Value switch
         {
-            BetaBashCodeExecutionToolResultError _ => 0,
-            BetaBashCodeExecutionResultBlock _ => 1,
+            BetaAdvisorToolResultErrorParam _ => 0,
+            BetaAdvisorResultBlockParam _ => 1,
+            BetaAdvisorRedactedResultBlockParam _ => 2,
             _ => -1,
         };
     }
 }
 
-sealed class BetaBashCodeExecutionToolResultBlockContentConverter
-    : JsonConverter<BetaBashCodeExecutionToolResultBlockContent>
+sealed class BetaAdvisorToolResultBlockParamContentConverter
+    : JsonConverter<BetaAdvisorToolResultBlockParamContent>
 {
-    public override BetaBashCodeExecutionToolResultBlockContent? Read(
+    public override BetaAdvisorToolResultBlockParamContent? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -359,7 +414,7 @@ sealed class BetaBashCodeExecutionToolResultBlockContentConverter
         var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultError>(
+            var deserialized = JsonSerializer.Deserialize<BetaAdvisorToolResultErrorParam>(
                 element,
                 options
             );
@@ -376,7 +431,24 @@ sealed class BetaBashCodeExecutionToolResultBlockContentConverter
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionResultBlock>(
+            var deserialized = JsonSerializer.Deserialize<BetaAdvisorResultBlockParam>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaAdvisorRedactedResultBlockParam>(
                 element,
                 options
             );
@@ -396,7 +468,7 @@ sealed class BetaBashCodeExecutionToolResultBlockContentConverter
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaBashCodeExecutionToolResultBlockContent value,
+        BetaAdvisorToolResultBlockParamContent value,
         JsonSerializerOptions options
     )
     {

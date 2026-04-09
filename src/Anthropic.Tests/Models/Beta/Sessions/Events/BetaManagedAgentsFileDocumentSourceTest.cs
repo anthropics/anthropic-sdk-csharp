@@ -12,11 +12,11 @@ public class BetaManagedAgentsFileDocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsFileDocumentSource
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileDocumentSourceType.File,
         };
 
-        string expectedFileID = "file_id";
+        string expectedFileID = "x";
         ApiEnum<string, BetaManagedAgentsFileDocumentSourceType> expectedType =
             BetaManagedAgentsFileDocumentSourceType.File;
 
@@ -29,7 +29,7 @@ public class BetaManagedAgentsFileDocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsFileDocumentSource
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileDocumentSourceType.File,
         };
 
@@ -47,7 +47,7 @@ public class BetaManagedAgentsFileDocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsFileDocumentSource
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileDocumentSourceType.File,
         };
 
@@ -58,7 +58,7 @@ public class BetaManagedAgentsFileDocumentSourceTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedFileID = "file_id";
+        string expectedFileID = "x";
         ApiEnum<string, BetaManagedAgentsFileDocumentSourceType> expectedType =
             BetaManagedAgentsFileDocumentSourceType.File;
 
@@ -71,7 +71,7 @@ public class BetaManagedAgentsFileDocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsFileDocumentSource
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileDocumentSourceType.File,
         };
 
@@ -83,7 +83,7 @@ public class BetaManagedAgentsFileDocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsFileDocumentSource
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileDocumentSourceType.File,
         };
 

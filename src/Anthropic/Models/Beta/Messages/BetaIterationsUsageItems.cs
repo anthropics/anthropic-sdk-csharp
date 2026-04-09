@@ -34,7 +34,8 @@ public record class BetaIterationsUsageItems : ModelBase
         {
             return Match<BetaCacheCreation?>(
                 messageIterationUsage: (x) => x.CacheCreation,
-                compactionIterationUsage: (x) => x.CacheCreation
+                compactionIterationUsage: (x) => x.CacheCreation,
+                advisorMessageIterationUsage: (x) => x.CacheCreation
             );
         }
     }
@@ -45,7 +46,8 @@ public record class BetaIterationsUsageItems : ModelBase
         {
             return Match(
                 messageIterationUsage: (x) => x.CacheCreationInputTokens,
-                compactionIterationUsage: (x) => x.CacheCreationInputTokens
+                compactionIterationUsage: (x) => x.CacheCreationInputTokens,
+                advisorMessageIterationUsage: (x) => x.CacheCreationInputTokens
             );
         }
     }
@@ -56,7 +58,8 @@ public record class BetaIterationsUsageItems : ModelBase
         {
             return Match(
                 messageIterationUsage: (x) => x.CacheReadInputTokens,
-                compactionIterationUsage: (x) => x.CacheReadInputTokens
+                compactionIterationUsage: (x) => x.CacheReadInputTokens,
+                advisorMessageIterationUsage: (x) => x.CacheReadInputTokens
             );
         }
     }
@@ -67,7 +70,8 @@ public record class BetaIterationsUsageItems : ModelBase
         {
             return Match(
                 messageIterationUsage: (x) => x.InputTokens,
-                compactionIterationUsage: (x) => x.InputTokens
+                compactionIterationUsage: (x) => x.InputTokens,
+                advisorMessageIterationUsage: (x) => x.InputTokens
             );
         }
     }
@@ -78,7 +82,8 @@ public record class BetaIterationsUsageItems : ModelBase
         {
             return Match(
                 messageIterationUsage: (x) => x.OutputTokens,
-                compactionIterationUsage: (x) => x.OutputTokens
+                compactionIterationUsage: (x) => x.OutputTokens,
+                advisorMessageIterationUsage: (x) => x.OutputTokens
             );
         }
     }
@@ -89,7 +94,8 @@ public record class BetaIterationsUsageItems : ModelBase
         {
             return Match(
                 messageIterationUsage: (x) => x.Type,
-                compactionIterationUsage: (x) => x.Type
+                compactionIterationUsage: (x) => x.Type,
+                advisorMessageIterationUsage: (x) => x.Type
             );
         }
     }
@@ -101,6 +107,15 @@ public record class BetaIterationsUsageItems : ModelBase
     }
 
     public BetaIterationsUsageItems(BetaCompactionIterationUsage value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaIterationsUsageItems(
+        BetaAdvisorMessageIterationUsage value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
@@ -158,6 +173,29 @@ public record class BetaIterationsUsageItems : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaAdvisorMessageIterationUsage"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickAdvisorMessageIterationUsage(out var value)) {
+    ///     // `value` is of type `BetaAdvisorMessageIterationUsage`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickAdvisorMessageIterationUsage(
+        [NotNullWhen(true)] out BetaAdvisorMessageIterationUsage? value
+    )
+    {
+        value = this.Value as BetaAdvisorMessageIterationUsage;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -172,14 +210,16 @@ public record class BetaIterationsUsageItems : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (BetaMessageIterationUsage value) =&gt; {...},
-    ///     (BetaCompactionIterationUsage value) =&gt; {...}
+    ///     (BetaCompactionIterationUsage value) =&gt; {...},
+    ///     (BetaAdvisorMessageIterationUsage value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<BetaMessageIterationUsage> messageIterationUsage,
-        System::Action<BetaCompactionIterationUsage> compactionIterationUsage
+        System::Action<BetaCompactionIterationUsage> compactionIterationUsage,
+        System::Action<BetaAdvisorMessageIterationUsage> advisorMessageIterationUsage
     )
     {
         switch (this.Value)
@@ -189,6 +229,9 @@ public record class BetaIterationsUsageItems : ModelBase
                 break;
             case BetaCompactionIterationUsage value:
                 compactionIterationUsage(value);
+                break;
+            case BetaAdvisorMessageIterationUsage value:
+                advisorMessageIterationUsage(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -213,20 +256,23 @@ public record class BetaIterationsUsageItems : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (BetaMessageIterationUsage value) =&gt; {...},
-    ///     (BetaCompactionIterationUsage value) =&gt; {...}
+    ///     (BetaCompactionIterationUsage value) =&gt; {...},
+    ///     (BetaAdvisorMessageIterationUsage value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
         System::Func<BetaMessageIterationUsage, T> messageIterationUsage,
-        System::Func<BetaCompactionIterationUsage, T> compactionIterationUsage
+        System::Func<BetaCompactionIterationUsage, T> compactionIterationUsage,
+        System::Func<BetaAdvisorMessageIterationUsage, T> advisorMessageIterationUsage
     )
     {
         return this.Value switch
         {
             BetaMessageIterationUsage value => messageIterationUsage(value),
             BetaCompactionIterationUsage value => compactionIterationUsage(value),
+            BetaAdvisorMessageIterationUsage value => advisorMessageIterationUsage(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaIterationsUsageItems"
             ),
@@ -238,6 +284,10 @@ public record class BetaIterationsUsageItems : ModelBase
 
     public static implicit operator BetaIterationsUsageItems(BetaCompactionIterationUsage value) =>
         new(value);
+
+    public static implicit operator BetaIterationsUsageItems(
+        BetaAdvisorMessageIterationUsage value
+    ) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -259,7 +309,8 @@ public record class BetaIterationsUsageItems : ModelBase
         }
         this.Switch(
             (messageIterationUsage) => messageIterationUsage.Validate(),
-            (compactionIterationUsage) => compactionIterationUsage.Validate()
+            (compactionIterationUsage) => compactionIterationUsage.Validate(),
+            (advisorMessageIterationUsage) => advisorMessageIterationUsage.Validate()
         );
     }
 
@@ -285,6 +336,7 @@ public record class BetaIterationsUsageItems : ModelBase
         {
             BetaMessageIterationUsage _ => 0,
             BetaCompactionIterationUsage _ => 1,
+            BetaAdvisorMessageIterationUsage _ => 2,
             _ => -1,
         };
     }
@@ -336,6 +388,26 @@ sealed class BetaIterationsUsageItemsConverter : JsonConverter<BetaIterationsUsa
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaCompactionIterationUsage>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "advisor_message":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaAdvisorMessageIterationUsage>(
                         element,
                         options
                     );
