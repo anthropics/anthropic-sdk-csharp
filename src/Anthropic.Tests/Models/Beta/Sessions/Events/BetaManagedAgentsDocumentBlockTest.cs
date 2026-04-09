@@ -14,8 +14,8 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64DocumentSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
             },
             Type = BetaManagedAgentsDocumentBlockType.Document,
@@ -25,8 +25,8 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
 
         Source expectedSource = new BetaManagedAgentsBase64DocumentSource()
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
         };
         ApiEnum<string, BetaManagedAgentsDocumentBlockType> expectedType =
@@ -47,8 +47,8 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64DocumentSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
             },
             Type = BetaManagedAgentsDocumentBlockType.Document,
@@ -72,8 +72,8 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64DocumentSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
             },
             Type = BetaManagedAgentsDocumentBlockType.Document,
@@ -90,8 +90,8 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
 
         Source expectedSource = new BetaManagedAgentsBase64DocumentSource()
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
         };
         ApiEnum<string, BetaManagedAgentsDocumentBlockType> expectedType =
@@ -112,8 +112,8 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64DocumentSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
             },
             Type = BetaManagedAgentsDocumentBlockType.Document,
@@ -131,8 +131,8 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64DocumentSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
             },
             Type = BetaManagedAgentsDocumentBlockType.Document,
@@ -151,8 +151,8 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64DocumentSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
             },
             Type = BetaManagedAgentsDocumentBlockType.Document,
@@ -168,8 +168,8 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64DocumentSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
             },
             Type = BetaManagedAgentsDocumentBlockType.Document,
@@ -191,8 +191,8 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64DocumentSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
             },
             Type = BetaManagedAgentsDocumentBlockType.Document,
@@ -211,8 +211,8 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
         {
             Source = new BetaManagedAgentsBase64DocumentSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
             },
             Type = BetaManagedAgentsDocumentBlockType.Document,
@@ -233,8 +233,8 @@ public class SourceTest : TestBase
     {
         Source value = new BetaManagedAgentsBase64DocumentSource()
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
         };
         value.Validate();
@@ -245,7 +245,7 @@ public class SourceTest : TestBase
     {
         Source value = new BetaManagedAgentsPlainTextDocumentSource()
         {
-            Data = "data",
+            Data = "x",
             MediaType = MediaType.TextPlain,
             Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
         };
@@ -258,7 +258,7 @@ public class SourceTest : TestBase
         Source value = new BetaManagedAgentsUrlDocumentSource()
         {
             Type = BetaManagedAgentsUrlDocumentSourceType.Url,
-            Url = "url",
+            Url = "x",
         };
         value.Validate();
     }
@@ -268,7 +268,7 @@ public class SourceTest : TestBase
     {
         Source value = new BetaManagedAgentsFileDocumentSource()
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileDocumentSourceType.File,
         };
         value.Validate();
@@ -279,8 +279,8 @@ public class SourceTest : TestBase
     {
         Source value = new BetaManagedAgentsBase64DocumentSource()
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -294,7 +294,7 @@ public class SourceTest : TestBase
     {
         Source value = new BetaManagedAgentsPlainTextDocumentSource()
         {
-            Data = "data",
+            Data = "x",
             MediaType = MediaType.TextPlain,
             Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
         };
@@ -310,7 +310,7 @@ public class SourceTest : TestBase
         Source value = new BetaManagedAgentsUrlDocumentSource()
         {
             Type = BetaManagedAgentsUrlDocumentSourceType.Url,
-            Url = "url",
+            Url = "x",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
@@ -323,7 +323,7 @@ public class SourceTest : TestBase
     {
         Source value = new BetaManagedAgentsFileDocumentSource()
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileDocumentSourceType.File,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

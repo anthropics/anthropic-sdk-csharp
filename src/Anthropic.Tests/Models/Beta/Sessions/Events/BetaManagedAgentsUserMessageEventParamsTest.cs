@@ -171,8 +171,8 @@ public class BetaManagedAgentsUserMessageEventParamsContentTest : TestBase
         {
             Source = new BetaManagedAgentsBase64ImageSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64ImageSourceType.Base64,
             },
             Type = BetaManagedAgentsImageBlockType.Image,
@@ -187,8 +187,8 @@ public class BetaManagedAgentsUserMessageEventParamsContentTest : TestBase
         {
             Source = new BetaManagedAgentsBase64DocumentSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
             },
             Type = BetaManagedAgentsDocumentBlockType.Document,
@@ -223,8 +223,8 @@ public class BetaManagedAgentsUserMessageEventParamsContentTest : TestBase
         {
             Source = new BetaManagedAgentsBase64ImageSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64ImageSourceType.Base64,
             },
             Type = BetaManagedAgentsImageBlockType.Image,
@@ -246,8 +246,8 @@ public class BetaManagedAgentsUserMessageEventParamsContentTest : TestBase
         {
             Source = new BetaManagedAgentsBase64DocumentSource()
             {
-                Data = "data",
-                MediaType = "media_type",
+                Data = "x",
+                MediaType = "x",
                 Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
             },
             Type = BetaManagedAgentsDocumentBlockType.Document,

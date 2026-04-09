@@ -6,15 +6,28 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Messages;
 using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(
-    typeof(JsonModelConverter<BetaCodeExecutionTool20250522, BetaCodeExecutionTool20250522FromRaw>)
-)]
-public sealed record class BetaCodeExecutionTool20250522 : JsonModel
+[JsonConverter(typeof(JsonModelConverter<BetaAdvisorTool20260301, BetaAdvisorTool20260301FromRaw>))]
+public sealed record class BetaAdvisorTool20260301 : JsonModel
 {
+    /// <summary>
+    /// The model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview)
+    /// for additional details and options.
+    /// </summary>
+    public required ApiEnum<string, Model> Model
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, Model>>("model");
+        }
+        init { this._rawData.Set("model", value); }
+    }
+
     /// <summary>
     /// Name of the tool.
     ///
@@ -41,14 +54,16 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
     }
 
     public IReadOnlyList<
-        ApiEnum<string, BetaCodeExecutionTool20250522AllowedCaller>
+        ApiEnum<string, global::Anthropic.Models.Beta.Messages.AllowedCaller>
     >? AllowedCallers
     {
         get
         {
             this._rawData.Freeze();
             return this._rawData.GetNullableStruct<
-                ImmutableArray<ApiEnum<string, BetaCodeExecutionTool20250522AllowedCaller>>
+                ImmutableArray<
+                    ApiEnum<string, global::Anthropic.Models.Beta.Messages.AllowedCaller>
+                >
             >("allowed_callers");
         }
         init
@@ -59,7 +74,7 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
             }
 
             this._rawData.Set<ImmutableArray<
-                ApiEnum<string, BetaCodeExecutionTool20250522AllowedCaller>
+                ApiEnum<string, global::Anthropic.Models.Beta.Messages.AllowedCaller>
             >?>("allowed_callers", value == null ? null : ImmutableArray.ToImmutableArray(value));
         }
     }
@@ -75,6 +90,21 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
             return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
         init { this._rawData.Set("cache_control", value); }
+    }
+
+    /// <summary>
+    /// Caching for the advisor's own prompt. When set, each advisor call writes
+    /// a cache entry at the given TTL so subsequent calls in the same conversation
+    /// read the stable prefix. When omitted, the advisor prompt is not cached.
+    /// </summary>
+    public BetaCacheControlEphemeral? Caching
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("caching");
+        }
+        init { this._rawData.Set("caching", value); }
     }
 
     /// <summary>
@@ -97,6 +127,19 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
 
             this._rawData.Set("defer_loading", value);
         }
+    }
+
+    /// <summary>
+    /// Maximum number of times the tool can be used in the API request.
+    /// </summary>
+    public long? MaxUses
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("max_uses");
+        }
+        init { this._rawData.Set("max_uses", value); }
     }
 
     /// <summary>
@@ -123,14 +166,15 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("code_execution")))
+        this.Model.Raw();
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("advisor")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.SerializeToElement("code_execution_20250522")
+                JsonSerializer.SerializeToElement("advisor_20260301")
             )
         )
         {
@@ -141,55 +185,62 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
             item.Validate();
         }
         this.CacheControl?.Validate();
+        this.Caching?.Validate();
         _ = this.DeferLoading;
+        _ = this.MaxUses;
         _ = this.Strict;
     }
 
-    public BetaCodeExecutionTool20250522()
+    public BetaAdvisorTool20260301()
     {
-        this.Name = JsonSerializer.SerializeToElement("code_execution");
-        this.Type = JsonSerializer.SerializeToElement("code_execution_20250522");
+        this.Name = JsonSerializer.SerializeToElement("advisor");
+        this.Type = JsonSerializer.SerializeToElement("advisor_20260301");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    public BetaCodeExecutionTool20250522(
-        BetaCodeExecutionTool20250522 betaCodeExecutionTool20250522
-    )
-        : base(betaCodeExecutionTool20250522) { }
+    public BetaAdvisorTool20260301(BetaAdvisorTool20260301 betaAdvisorTool20260301)
+        : base(betaAdvisorTool20260301) { }
 #pragma warning restore CS8618
 
-    public BetaCodeExecutionTool20250522(IReadOnlyDictionary<string, JsonElement> rawData)
+    public BetaAdvisorTool20260301(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.SerializeToElement("code_execution");
-        this.Type = JsonSerializer.SerializeToElement("code_execution_20250522");
+        this.Name = JsonSerializer.SerializeToElement("advisor");
+        this.Type = JsonSerializer.SerializeToElement("advisor_20260301");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaCodeExecutionTool20250522(FrozenDictionary<string, JsonElement> rawData)
+    BetaAdvisorTool20260301(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="BetaCodeExecutionTool20250522FromRaw.FromRawUnchecked"/>
-    public static BetaCodeExecutionTool20250522 FromRawUnchecked(
+    /// <inheritdoc cref="BetaAdvisorTool20260301FromRaw.FromRawUnchecked"/>
+    public static BetaAdvisorTool20260301 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaAdvisorTool20260301(ApiEnum<string, Model> model)
+        : this()
+    {
+        this.Model = model;
+    }
 }
 
-class BetaCodeExecutionTool20250522FromRaw : IFromRawJson<BetaCodeExecutionTool20250522>
+class BetaAdvisorTool20260301FromRaw : IFromRawJson<BetaAdvisorTool20260301>
 {
     /// <inheritdoc/>
-    public BetaCodeExecutionTool20250522 FromRawUnchecked(
+    public BetaAdvisorTool20260301 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
-    ) => BetaCodeExecutionTool20250522.FromRawUnchecked(rawData);
+    ) => BetaAdvisorTool20260301.FromRawUnchecked(rawData);
 }
 
 /// <summary>
@@ -199,18 +250,18 @@ class BetaCodeExecutionTool20250522FromRaw : IFromRawJson<BetaCodeExecutionTool2
 /// The tool can be called from the code execution environment (v1).     code_execution_20260120:
 /// The tool can be called from the code execution environment (v2 with persistence).</para>
 /// </summary>
-[JsonConverter(typeof(BetaCodeExecutionTool20250522AllowedCallerConverter))]
-public enum BetaCodeExecutionTool20250522AllowedCaller
+[JsonConverter(typeof(global::Anthropic.Models.Beta.Messages.AllowedCallerConverter))]
+public enum AllowedCaller
 {
     Direct,
     CodeExecution20250825,
     CodeExecution20260120,
 }
 
-sealed class BetaCodeExecutionTool20250522AllowedCallerConverter
-    : JsonConverter<BetaCodeExecutionTool20250522AllowedCaller>
+sealed class AllowedCallerConverter
+    : JsonConverter<global::Anthropic.Models.Beta.Messages.AllowedCaller>
 {
-    public override BetaCodeExecutionTool20250522AllowedCaller Read(
+    public override global::Anthropic.Models.Beta.Messages.AllowedCaller Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -218,18 +269,26 @@ sealed class BetaCodeExecutionTool20250522AllowedCallerConverter
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "direct" => BetaCodeExecutionTool20250522AllowedCaller.Direct,
-            "code_execution_20250825" =>
-                BetaCodeExecutionTool20250522AllowedCaller.CodeExecution20250825,
-            "code_execution_20260120" =>
-                BetaCodeExecutionTool20250522AllowedCaller.CodeExecution20260120,
-            _ => (BetaCodeExecutionTool20250522AllowedCaller)(-1),
+            "direct" => global::Anthropic.Models.Beta.Messages.AllowedCaller.Direct,
+            "code_execution_20250825" => global::Anthropic
+                .Models
+                .Beta
+                .Messages
+                .AllowedCaller
+                .CodeExecution20250825,
+            "code_execution_20260120" => global::Anthropic
+                .Models
+                .Beta
+                .Messages
+                .AllowedCaller
+                .CodeExecution20260120,
+            _ => (global::Anthropic.Models.Beta.Messages.AllowedCaller)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaCodeExecutionTool20250522AllowedCaller value,
+        global::Anthropic.Models.Beta.Messages.AllowedCaller value,
         JsonSerializerOptions options
     )
     {
@@ -237,10 +296,10 @@ sealed class BetaCodeExecutionTool20250522AllowedCallerConverter
             writer,
             value switch
             {
-                BetaCodeExecutionTool20250522AllowedCaller.Direct => "direct",
-                BetaCodeExecutionTool20250522AllowedCaller.CodeExecution20250825 =>
+                global::Anthropic.Models.Beta.Messages.AllowedCaller.Direct => "direct",
+                global::Anthropic.Models.Beta.Messages.AllowedCaller.CodeExecution20250825 =>
                     "code_execution_20250825",
-                BetaCodeExecutionTool20250522AllowedCaller.CodeExecution20260120 =>
+                global::Anthropic.Models.Beta.Messages.AllowedCaller.CodeExecution20260120 =>
                     "code_execution_20260120",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))

@@ -12,11 +12,11 @@ public class BetaManagedAgentsFileImageSourceTest : TestBase
     {
         var model = new BetaManagedAgentsFileImageSource
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileImageSourceType.File,
         };
 
-        string expectedFileID = "file_id";
+        string expectedFileID = "x";
         ApiEnum<string, BetaManagedAgentsFileImageSourceType> expectedType =
             BetaManagedAgentsFileImageSourceType.File;
 
@@ -29,7 +29,7 @@ public class BetaManagedAgentsFileImageSourceTest : TestBase
     {
         var model = new BetaManagedAgentsFileImageSource
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileImageSourceType.File,
         };
 
@@ -47,7 +47,7 @@ public class BetaManagedAgentsFileImageSourceTest : TestBase
     {
         var model = new BetaManagedAgentsFileImageSource
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileImageSourceType.File,
         };
 
@@ -58,7 +58,7 @@ public class BetaManagedAgentsFileImageSourceTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedFileID = "file_id";
+        string expectedFileID = "x";
         ApiEnum<string, BetaManagedAgentsFileImageSourceType> expectedType =
             BetaManagedAgentsFileImageSourceType.File;
 
@@ -71,7 +71,7 @@ public class BetaManagedAgentsFileImageSourceTest : TestBase
     {
         var model = new BetaManagedAgentsFileImageSource
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileImageSourceType.File,
         };
 
@@ -83,7 +83,7 @@ public class BetaManagedAgentsFileImageSourceTest : TestBase
     {
         var model = new BetaManagedAgentsFileImageSource
         {
-            FileID = "file_id",
+            FileID = "x",
             Type = BetaManagedAgentsFileImageSourceType.File,
         };
 

@@ -140,6 +140,7 @@ class BetaServerToolUseBlockFromRaw : IFromRawJson<BetaServerToolUseBlock>
 [JsonConverter(typeof(NameConverter))]
 public enum Name
 {
+    Advisor,
     WebSearch,
     WebFetch,
     CodeExecution,
@@ -159,6 +160,7 @@ sealed class NameConverter : JsonConverter<Name>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
+            "advisor" => Name.Advisor,
             "web_search" => Name.WebSearch,
             "web_fetch" => Name.WebFetch,
             "code_execution" => Name.CodeExecution,
@@ -176,6 +178,7 @@ sealed class NameConverter : JsonConverter<Name>
             writer,
             value switch
             {
+                Name.Advisor => "advisor",
                 Name.WebSearch => "web_search",
                 Name.WebFetch => "web_fetch",
                 Name.CodeExecution => "code_execution",

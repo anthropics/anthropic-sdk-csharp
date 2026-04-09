@@ -18,7 +18,7 @@ public class BetaServerToolUseBlockTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Name = Name.WebSearch,
+            Name = Name.Advisor,
             Caller = new BetaDirectCaller(),
         };
 
@@ -27,7 +27,7 @@ public class BetaServerToolUseBlockTest : TestBase
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
-        ApiEnum<string, Name> expectedName = Name.WebSearch;
+        ApiEnum<string, Name> expectedName = Name.Advisor;
         JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
         Caller expectedCaller = new BetaDirectCaller();
 
@@ -54,7 +54,7 @@ public class BetaServerToolUseBlockTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Name = Name.WebSearch,
+            Name = Name.Advisor,
             Caller = new BetaDirectCaller(),
         };
 
@@ -77,7 +77,7 @@ public class BetaServerToolUseBlockTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Name = Name.WebSearch,
+            Name = Name.Advisor,
             Caller = new BetaDirectCaller(),
         };
 
@@ -93,7 +93,7 @@ public class BetaServerToolUseBlockTest : TestBase
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
-        ApiEnum<string, Name> expectedName = Name.WebSearch;
+        ApiEnum<string, Name> expectedName = Name.Advisor;
         JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
         Caller expectedCaller = new BetaDirectCaller();
 
@@ -120,7 +120,7 @@ public class BetaServerToolUseBlockTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Name = Name.WebSearch,
+            Name = Name.Advisor,
             Caller = new BetaDirectCaller(),
         };
 
@@ -137,7 +137,7 @@ public class BetaServerToolUseBlockTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Name = Name.WebSearch,
+            Name = Name.Advisor,
         };
 
         Assert.Null(model.Caller);
@@ -154,7 +154,7 @@ public class BetaServerToolUseBlockTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Name = Name.WebSearch,
+            Name = Name.Advisor,
         };
 
         model.Validate();
@@ -170,7 +170,7 @@ public class BetaServerToolUseBlockTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Name = Name.WebSearch,
+            Name = Name.Advisor,
 
             // Null should be interpreted as omitted for these properties
             Caller = null,
@@ -190,7 +190,7 @@ public class BetaServerToolUseBlockTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Name = Name.WebSearch,
+            Name = Name.Advisor,
 
             // Null should be interpreted as omitted for these properties
             Caller = null,
@@ -209,7 +209,7 @@ public class BetaServerToolUseBlockTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Name = Name.WebSearch,
+            Name = Name.Advisor,
             Caller = new BetaDirectCaller(),
         };
 
@@ -222,6 +222,7 @@ public class BetaServerToolUseBlockTest : TestBase
 public class NameTest : TestBase
 {
     [Theory]
+    [InlineData(Name.Advisor)]
     [InlineData(Name.WebSearch)]
     [InlineData(Name.WebFetch)]
     [InlineData(Name.CodeExecution)]
@@ -249,6 +250,7 @@ public class NameTest : TestBase
     }
 
     [Theory]
+    [InlineData(Name.Advisor)]
     [InlineData(Name.WebSearch)]
     [InlineData(Name.WebFetch)]
     [InlineData(Name.CodeExecution)]

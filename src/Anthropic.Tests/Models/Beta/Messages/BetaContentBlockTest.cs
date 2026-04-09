@@ -73,7 +73,7 @@ public class BetaContentBlockTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Name = Name.WebSearch,
+            Name = Name.Advisor,
             Caller = new BetaDirectCaller(),
         };
         value.Validate();
@@ -108,6 +108,17 @@ public class BetaContentBlockTest : TestBase
     }
 
     [Fact]
+    public void AdvisorToolResultValidationWorks()
+    {
+        BetaContentBlock value = new BetaAdvisorToolResultBlock()
+        {
+            Content = new BetaAdvisorToolResultError(ErrorCode.MaxUsesExceeded),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void CodeExecutionToolResultValidationWorks()
     {
         BetaContentBlock value = new BetaCodeExecutionToolResultBlock()
@@ -125,7 +136,9 @@ public class BetaContentBlockTest : TestBase
     {
         BetaContentBlock value = new BetaBashCodeExecutionToolResultBlock()
         {
-            Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
+            Content = new BetaBashCodeExecutionToolResultError(
+                BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
+            ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
         value.Validate();
@@ -293,7 +306,7 @@ public class BetaContentBlockTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Name = Name.WebSearch,
+            Name = Name.Advisor,
             Caller = new BetaDirectCaller(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -346,6 +359,23 @@ public class BetaContentBlockTest : TestBase
     }
 
     [Fact]
+    public void AdvisorToolResultSerializationRoundtripWorks()
+    {
+        BetaContentBlock value = new BetaAdvisorToolResultBlock()
+        {
+            Content = new BetaAdvisorToolResultError(ErrorCode.MaxUsesExceeded),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void CodeExecutionToolResultSerializationRoundtripWorks()
     {
         BetaContentBlock value = new BetaCodeExecutionToolResultBlock()
@@ -369,7 +399,9 @@ public class BetaContentBlockTest : TestBase
     {
         BetaContentBlock value = new BetaBashCodeExecutionToolResultBlock()
         {
-            Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
+            Content = new BetaBashCodeExecutionToolResultError(
+                BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
+            ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

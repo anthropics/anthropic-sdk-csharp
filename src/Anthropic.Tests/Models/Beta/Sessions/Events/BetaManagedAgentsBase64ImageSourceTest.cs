@@ -12,13 +12,13 @@ public class BetaManagedAgentsBase64ImageSourceTest : TestBase
     {
         var model = new BetaManagedAgentsBase64ImageSource
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64ImageSourceType.Base64,
         };
 
-        string expectedData = "data";
-        string expectedMediaType = "media_type";
+        string expectedData = "x";
+        string expectedMediaType = "x";
         ApiEnum<string, BetaManagedAgentsBase64ImageSourceType> expectedType =
             BetaManagedAgentsBase64ImageSourceType.Base64;
 
@@ -32,8 +32,8 @@ public class BetaManagedAgentsBase64ImageSourceTest : TestBase
     {
         var model = new BetaManagedAgentsBase64ImageSource
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64ImageSourceType.Base64,
         };
 
@@ -51,8 +51,8 @@ public class BetaManagedAgentsBase64ImageSourceTest : TestBase
     {
         var model = new BetaManagedAgentsBase64ImageSource
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64ImageSourceType.Base64,
         };
 
@@ -63,8 +63,8 @@ public class BetaManagedAgentsBase64ImageSourceTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedData = "data";
-        string expectedMediaType = "media_type";
+        string expectedData = "x";
+        string expectedMediaType = "x";
         ApiEnum<string, BetaManagedAgentsBase64ImageSourceType> expectedType =
             BetaManagedAgentsBase64ImageSourceType.Base64;
 
@@ -78,8 +78,8 @@ public class BetaManagedAgentsBase64ImageSourceTest : TestBase
     {
         var model = new BetaManagedAgentsBase64ImageSource
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64ImageSourceType.Base64,
         };
 
@@ -91,8 +91,8 @@ public class BetaManagedAgentsBase64ImageSourceTest : TestBase
     {
         var model = new BetaManagedAgentsBase64ImageSource
         {
-            Data = "data",
-            MediaType = "media_type",
+            Data = "x",
+            MediaType = "x",
             Type = BetaManagedAgentsBase64ImageSourceType.Base64,
         };
 

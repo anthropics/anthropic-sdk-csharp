@@ -12,12 +12,12 @@ public class BetaManagedAgentsPlainTextDocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsPlainTextDocumentSource
         {
-            Data = "data",
+            Data = "x",
             MediaType = MediaType.TextPlain,
             Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
         };
 
-        string expectedData = "data";
+        string expectedData = "x";
         ApiEnum<string, MediaType> expectedMediaType = MediaType.TextPlain;
         ApiEnum<string, BetaManagedAgentsPlainTextDocumentSourceType> expectedType =
             BetaManagedAgentsPlainTextDocumentSourceType.Text;
@@ -32,7 +32,7 @@ public class BetaManagedAgentsPlainTextDocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsPlainTextDocumentSource
         {
-            Data = "data",
+            Data = "x",
             MediaType = MediaType.TextPlain,
             Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
         };
@@ -51,7 +51,7 @@ public class BetaManagedAgentsPlainTextDocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsPlainTextDocumentSource
         {
-            Data = "data",
+            Data = "x",
             MediaType = MediaType.TextPlain,
             Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
         };
@@ -63,7 +63,7 @@ public class BetaManagedAgentsPlainTextDocumentSourceTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedData = "data";
+        string expectedData = "x";
         ApiEnum<string, MediaType> expectedMediaType = MediaType.TextPlain;
         ApiEnum<string, BetaManagedAgentsPlainTextDocumentSourceType> expectedType =
             BetaManagedAgentsPlainTextDocumentSourceType.Text;
@@ -78,7 +78,7 @@ public class BetaManagedAgentsPlainTextDocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsPlainTextDocumentSource
         {
-            Data = "data",
+            Data = "x",
             MediaType = MediaType.TextPlain,
             Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
         };
@@ -91,7 +91,7 @@ public class BetaManagedAgentsPlainTextDocumentSourceTest : TestBase
     {
         var model = new BetaManagedAgentsPlainTextDocumentSource
         {
-            Data = "data",
+            Data = "x",
             MediaType = MediaType.TextPlain,
             Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
         };

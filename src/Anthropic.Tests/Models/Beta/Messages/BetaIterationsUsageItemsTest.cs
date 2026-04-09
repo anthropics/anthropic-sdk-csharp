@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
+using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
 
@@ -35,6 +36,21 @@ public class BetaIterationsUsageItemsTest : TestBase
     }
 
     [Fact]
+    public void AdvisorMessageIterationUsageValidationWorks()
+    {
+        BetaIterationsUsageItems value = new BetaAdvisorMessageIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            Model = Model.ClaudeMythosPreview,
+            OutputTokens = 0,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void MessageIterationUsageSerializationRoundtripWorks()
     {
         BetaIterationsUsageItems value = new BetaMessageIterationUsage()
@@ -63,6 +79,27 @@ public class BetaIterationsUsageItemsTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
+            OutputTokens = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaIterationsUsageItems>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void AdvisorMessageIterationUsageSerializationRoundtripWorks()
+    {
+        BetaIterationsUsageItems value = new BetaAdvisorMessageIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            Model = Model.ClaudeMythosPreview,
             OutputTokens = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

@@ -182,6 +182,7 @@ public sealed class BetaMessageContentAggregator
             e => Single(e),
             e => Single(e),
             e => Single(e),
+            e => Single(e),
             e => Single(e)
         );
 
