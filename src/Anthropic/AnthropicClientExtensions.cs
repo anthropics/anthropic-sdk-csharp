@@ -1507,13 +1507,13 @@ public static class AnthropicClientExtensions
             if (serverToolUsage?.WebFetchRequests is > 0)
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(ServerToolUsage.WebFetchRequests)] =
-                    serverToolUsage.WebFetchRequests;
+                    serverToolUsage.WebFetchRequests.Value;
             }
 
             if (serverToolUsage?.WebSearchRequests is > 0)
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(ServerToolUsage.WebSearchRequests)] =
-                    serverToolUsage.WebSearchRequests;
+                    serverToolUsage.WebSearchRequests.Value;
             }
 
             return usageDetails;
