@@ -43,36 +43,8 @@ public class MessageServiceTest : TestBase
         var betaMessageTokensCount = await this.client.Beta.Messages.CountTokens(
             new()
             {
-                Messages =
-                [
-                    new()
-                    {
-                        Content = new(
-                            [
-                                new BetaContentBlockParam(
-                                    new BetaTextBlockParam()
-                                    {
-                                        Text = "What is a quaternion?",
-                                        CacheControl = new() { Ttl = Ttl.Ttl5m },
-                                        Citations =
-                                        [
-                                            new BetaCitationCharLocationParam()
-                                            {
-                                                CitedText = "cited_text",
-                                                DocumentIndex = 0,
-                                                DocumentTitle = "x",
-                                                EndCharIndex = 0,
-                                                StartCharIndex = 0,
-                                            },
-                                        ],
-                                    }
-                                ),
-                            ]
-                        ),
-                        Role = Role.User,
-                    },
-                ],
-                Model = Messages::Model.ClaudeMythosPreview,
+                Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                Model = Messages::Model.ClaudeOpus4_6,
             },
             TestContext.Current.CancellationToken
         );
