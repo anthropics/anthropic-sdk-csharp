@@ -223,7 +223,7 @@ public class EditTest : TestBase
     [Fact]
     public void BetaClearThinking20251015ValidationWorks()
     {
-        Edit value = new BetaClearThinking20251015Edit() { Keep = new BetaThinkingTurns(1) };
+        Edit value = new BetaClearThinking20251015Edit() { Keep = new All() };
         value.Validate();
     }
 
@@ -259,7 +259,7 @@ public class EditTest : TestBase
     [Fact]
     public void BetaClearThinking20251015SerializationRoundtripWorks()
     {
-        Edit value = new BetaClearThinking20251015Edit() { Keep = new BetaThinkingTurns(1) };
+        Edit value = new BetaClearThinking20251015Edit() { Keep = new All() };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Edit>(element, ModelBase.SerializerOptions);
 

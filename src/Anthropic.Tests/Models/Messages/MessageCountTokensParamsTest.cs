@@ -13,7 +13,35 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new Messages::MessageCountTokensParams
         {
-            Messages = [new() { Content = "string", Role = Messages::Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = new(
+                        [
+                            new Messages::ContentBlockParam(
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "What is a quaternion?",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                }
+                            ),
+                        ]
+                    ),
+                    Role = Messages::Role.User,
+                },
+            ],
             Model = Messages::Model.ClaudeMythosPreview,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             OutputConfig = new()
@@ -86,7 +114,32 @@ public class MessageCountTokensParamsTest : TestBase
 
         List<Messages::MessageParam> expectedMessages =
         [
-            new() { Content = "string", Role = Messages::Role.User },
+            new()
+            {
+                Content = new(
+                    [
+                        new Messages::ContentBlockParam(
+                            new Messages::TextBlockParam()
+                            {
+                                Text = "What is a quaternion?",
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                Citations =
+                                [
+                                    new Messages::CitationCharLocationParam()
+                                    {
+                                        CitedText = "cited_text",
+                                        DocumentIndex = 0,
+                                        DocumentTitle = "x",
+                                        EndCharIndex = 0,
+                                        StartCharIndex = 0,
+                                    },
+                                ],
+                            }
+                        ),
+                    ]
+                ),
+                Role = Messages::Role.User,
+            },
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeMythosPreview;
         Messages::CacheControlEphemeral expectedCacheControl = new() { Ttl = Messages::Ttl.Ttl5m };
@@ -184,7 +237,35 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new Messages::MessageCountTokensParams
         {
-            Messages = [new() { Content = "string", Role = Messages::Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = new(
+                        [
+                            new Messages::ContentBlockParam(
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "What is a quaternion?",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                }
+                            ),
+                        ]
+                    ),
+                    Role = Messages::Role.User,
+                },
+            ],
             Model = Messages::Model.ClaudeMythosPreview,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
         };
@@ -206,7 +287,35 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new Messages::MessageCountTokensParams
         {
-            Messages = [new() { Content = "string", Role = Messages::Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = new(
+                        [
+                            new Messages::ContentBlockParam(
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "What is a quaternion?",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                }
+                            ),
+                        ]
+                    ),
+                    Role = Messages::Role.User,
+                },
+            ],
             Model = Messages::Model.ClaudeMythosPreview,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
 
@@ -235,7 +344,35 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new Messages::MessageCountTokensParams
         {
-            Messages = [new() { Content = "string", Role = Messages::Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = new(
+                        [
+                            new Messages::ContentBlockParam(
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "What is a quaternion?",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                }
+                            ),
+                        ]
+                    ),
+                    Role = Messages::Role.User,
+                },
+            ],
             Model = Messages::Model.ClaudeMythosPreview,
             OutputConfig = new()
             {
@@ -314,7 +451,35 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new Messages::MessageCountTokensParams
         {
-            Messages = [new() { Content = "string", Role = Messages::Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = new(
+                        [
+                            new Messages::ContentBlockParam(
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "What is a quaternion?",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                }
+                            ),
+                        ]
+                    ),
+                    Role = Messages::Role.User,
+                },
+            ],
             Model = Messages::Model.ClaudeMythosPreview,
             OutputConfig = new()
             {
@@ -395,7 +560,35 @@ public class MessageCountTokensParamsTest : TestBase
     {
         Messages::MessageCountTokensParams parameters = new()
         {
-            Messages = [new() { Content = "string", Role = Messages::Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = new(
+                        [
+                            new Messages::ContentBlockParam(
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "What is a quaternion?",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                }
+                            ),
+                        ]
+                    ),
+                    Role = Messages::Role.User,
+                },
+            ],
             Model = Messages::Model.ClaudeMythosPreview,
         };
 
@@ -409,7 +602,35 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new Messages::MessageCountTokensParams
         {
-            Messages = [new() { Content = "string", Role = Messages::Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = new(
+                        [
+                            new Messages::ContentBlockParam(
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "What is a quaternion?",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                }
+                            ),
+                        ]
+                    ),
+                    Role = Messages::Role.User,
+                },
+            ],
             Model = Messages::Model.ClaudeMythosPreview,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             OutputConfig = new()

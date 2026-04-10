@@ -43,6 +43,7 @@ public class AnthropicVertexClient : AnthropicClient
         {
             "global" or null => "https://aiplatform.googleapis.com",
             "us" => "https://aiplatform.us.rep.googleapis.com",
+            "eu" => "https://aiplatform.eu.rep.googleapis.com",
             _ => $"https://{vertexCredentials.Region}-aiplatform.googleapis.com",
         };
 
