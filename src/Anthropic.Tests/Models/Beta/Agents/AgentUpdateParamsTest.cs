@@ -28,7 +28,11 @@ public class AgentUpdateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
-            Model = BetaManagedAgentsModel.ClaudeOpus4_6,
+            Model = new BetaManagedAgentsModelConfigParams()
+            {
+                ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+                Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+            },
             Name = "name",
             Skills =
             [
@@ -82,7 +86,11 @@ public class AgentUpdateParamsTest : TestBase
             },
         ];
         Dictionary<string, string?> expectedMetadata = new() { { "foo", "string" } };
-        AgentUpdateParamsModel expectedModel = BetaManagedAgentsModel.ClaudeOpus4_6;
+        AgentUpdateParamsModel expectedModel = new BetaManagedAgentsModelConfigParams()
+        {
+            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+        };
         string expectedName = "name";
         List<BetaManagedAgentsSkillParams> expectedSkills =
         [
@@ -305,7 +313,11 @@ public class AgentUpdateParamsTest : TestBase
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Version = 1,
-            Model = BetaManagedAgentsModel.ClaudeOpus4_6,
+            Model = new BetaManagedAgentsModelConfigParams()
+            {
+                ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+                Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+            },
             Name = "name",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
@@ -331,7 +343,11 @@ public class AgentUpdateParamsTest : TestBase
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Version = 1,
-            Model = BetaManagedAgentsModel.ClaudeOpus4_6,
+            Model = new BetaManagedAgentsModelConfigParams()
+            {
+                ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+                Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+            },
             Name = "name",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
@@ -411,7 +427,11 @@ public class AgentUpdateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
-            Model = BetaManagedAgentsModel.ClaudeOpus4_6,
+            Model = new BetaManagedAgentsModelConfigParams()
+            {
+                ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+                Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+            },
             Name = "name",
             Skills =
             [

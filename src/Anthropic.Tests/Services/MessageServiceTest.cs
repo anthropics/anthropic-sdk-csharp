@@ -45,7 +45,35 @@ public class MessageServiceTest : TestBase
         var messageTokensCount = await this.client.Messages.CountTokens(
             new()
             {
-                Messages = [new() { Content = "string", Role = Role.User }],
+                Messages =
+                [
+                    new()
+                    {
+                        Content = new(
+                            [
+                                new ContentBlockParam(
+                                    new TextBlockParam()
+                                    {
+                                        Text = "What is a quaternion?",
+                                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                                        Citations =
+                                        [
+                                            new CitationCharLocationParam()
+                                            {
+                                                CitedText = "cited_text",
+                                                DocumentIndex = 0,
+                                                DocumentTitle = "x",
+                                                EndCharIndex = 0,
+                                                StartCharIndex = 0,
+                                            },
+                                        ],
+                                    }
+                                ),
+                            ]
+                        ),
+                        Role = Role.User,
+                    },
+                ],
                 Model = Model.ClaudeMythosPreview,
             },
             TestContext.Current.CancellationToken
