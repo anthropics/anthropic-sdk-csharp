@@ -10,9 +10,55 @@ public class BetaMessageParamTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaMessageParam { Content = "string", Role = Role.User };
+        var model = new BetaMessageParam
+        {
+            Content = new(
+                [
+                    new BetaContentBlockParam(
+                        new BetaTextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new BetaCitationCharLocationParam()
+                                {
+                                    CitedText = "cited_text",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            ),
+            Role = Role.User,
+        };
 
-        BetaMessageParamContent expectedContent = "string";
+        BetaMessageParamContent expectedContent = new(
+            [
+                new BetaContentBlockParam(
+                    new BetaTextBlockParam()
+                    {
+                        Text = "What is a quaternion?",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
+            ]
+        );
         ApiEnum<string, Role> expectedRole = Role.User;
 
         Assert.Equal(expectedContent, model.Content);
@@ -22,7 +68,32 @@ public class BetaMessageParamTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaMessageParam { Content = "string", Role = Role.User };
+        var model = new BetaMessageParam
+        {
+            Content = new(
+                [
+                    new BetaContentBlockParam(
+                        new BetaTextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new BetaCitationCharLocationParam()
+                                {
+                                    CitedText = "cited_text",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            ),
+            Role = Role.User,
+        };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaMessageParam>(
@@ -36,7 +107,32 @@ public class BetaMessageParamTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaMessageParam { Content = "string", Role = Role.User };
+        var model = new BetaMessageParam
+        {
+            Content = new(
+                [
+                    new BetaContentBlockParam(
+                        new BetaTextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new BetaCitationCharLocationParam()
+                                {
+                                    CitedText = "cited_text",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            ),
+            Role = Role.User,
+        };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaMessageParam>(
@@ -45,7 +141,28 @@ public class BetaMessageParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        BetaMessageParamContent expectedContent = "string";
+        BetaMessageParamContent expectedContent = new(
+            [
+                new BetaContentBlockParam(
+                    new BetaTextBlockParam()
+                    {
+                        Text = "What is a quaternion?",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
+            ]
+        );
         ApiEnum<string, Role> expectedRole = Role.User;
 
         Assert.Equal(expectedContent, deserialized.Content);
@@ -55,7 +172,32 @@ public class BetaMessageParamTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaMessageParam { Content = "string", Role = Role.User };
+        var model = new BetaMessageParam
+        {
+            Content = new(
+                [
+                    new BetaContentBlockParam(
+                        new BetaTextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new BetaCitationCharLocationParam()
+                                {
+                                    CitedText = "cited_text",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            ),
+            Role = Role.User,
+        };
 
         model.Validate();
     }
@@ -63,7 +205,32 @@ public class BetaMessageParamTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaMessageParam { Content = "string", Role = Role.User };
+        var model = new BetaMessageParam
+        {
+            Content = new(
+                [
+                    new BetaContentBlockParam(
+                        new BetaTextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new BetaCitationCharLocationParam()
+                                {
+                                    CitedText = "cited_text",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            ),
+            Role = Role.User,
+        };
 
         BetaMessageParam copied = new(model);
 

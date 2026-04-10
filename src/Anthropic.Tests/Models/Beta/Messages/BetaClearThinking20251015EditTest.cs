@@ -10,10 +10,10 @@ public class BetaClearThinking20251015EditTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaClearThinking20251015Edit { Keep = new BetaThinkingTurns(1) };
+        var model = new BetaClearThinking20251015Edit { Keep = new All() };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("clear_thinking_20251015");
-        Keep expectedKeep = new BetaThinkingTurns(1);
+        Keep expectedKeep = new All();
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedKeep, model.Keep);
@@ -22,7 +22,7 @@ public class BetaClearThinking20251015EditTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaClearThinking20251015Edit { Keep = new BetaThinkingTurns(1) };
+        var model = new BetaClearThinking20251015Edit { Keep = new All() };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaClearThinking20251015Edit>(
@@ -36,7 +36,7 @@ public class BetaClearThinking20251015EditTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaClearThinking20251015Edit { Keep = new BetaThinkingTurns(1) };
+        var model = new BetaClearThinking20251015Edit { Keep = new All() };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaClearThinking20251015Edit>(
@@ -46,7 +46,7 @@ public class BetaClearThinking20251015EditTest : TestBase
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("clear_thinking_20251015");
-        Keep expectedKeep = new BetaThinkingTurns(1);
+        Keep expectedKeep = new All();
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedKeep, deserialized.Keep);
@@ -55,7 +55,7 @@ public class BetaClearThinking20251015EditTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaClearThinking20251015Edit { Keep = new BetaThinkingTurns(1) };
+        var model = new BetaClearThinking20251015Edit { Keep = new All() };
 
         model.Validate();
     }
@@ -105,7 +105,7 @@ public class BetaClearThinking20251015EditTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaClearThinking20251015Edit { Keep = new BetaThinkingTurns(1) };
+        var model = new BetaClearThinking20251015Edit { Keep = new All() };
 
         BetaClearThinking20251015Edit copied = new(model);
 
