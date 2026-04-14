@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 (2026-04-14)
+
+Full Changelog: [Bedrock-v0.3.0...Bedrock-v0.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.3.0...Bedrock-v0.4.0)
+
+### Features
+
+* **bedrock:** use auth header for mantle client ([#793](https://github.com/anthropics/anthropic-sdk-csharp/issues/793)) ([2a2e2c3](https://github.com/anthropics/anthropic-sdk-csharp/commit/2a2e2c3cc4740381f52a364acefeb25656abcfcd))
+
 ## 0.3.0 (2026-04-08)
 
 Full Changelog: [Bedrock-v0.2.0...Bedrock-v0.3.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.2.0...Bedrock-v0.3.0)
