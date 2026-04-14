@@ -237,15 +237,16 @@ public class AnthropicBedrockMantleClientTests : IDisposable
     #region Request Headers — API Key Mode
 
     [Fact]
-    public async Task ApiKeyMode_SendsApiKeyHeader()
+    public async Task ApiKeyMode_SendsBearerAuthHeader()
     {
         var client = new AnthropicBedrockMantleClient(
             new() { ApiKey = "sk-test-key", BaseUrl = "http://localhost" }
         );
         var req = await SendOneRequest(client);
 
-        Assert.True(req.Headers.Contains("X-Api-Key"));
-        Assert.Equal("sk-test-key", req.Headers.GetValues("X-Api-Key").Single());
+        Assert.True(req.Headers.Contains("Authorization"));
+        Assert.Equal("Bearer sk-test-key", req.Headers.GetValues("Authorization").Single());
+        Assert.False(req.Headers.Contains("X-Api-Key"));
     }
 
     [Fact]
@@ -270,7 +271,9 @@ public class AnthropicBedrockMantleClientTests : IDisposable
 
         Assert.False(req.Headers.Contains("x-amz-date"));
         Assert.False(req.Headers.Contains("x-amz-content-sha256"));
-        Assert.False(req.Headers.Contains("Authorization"));
+        // Authorization header should be Bearer, not SigV4
+        var authHeader = req.Headers.GetValues("Authorization").Single();
+        Assert.StartsWith("Bearer ", authHeader);
     }
 
     #endregion
@@ -423,7 +426,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
         );
         var req = await SendOneRequest(client);
 
-        Assert.Equal("arg-key", req.Headers.GetValues("X-Api-Key").Single());
+        Assert.Equal("Bearer arg-key", req.Headers.GetValues("Authorization").Single());
     }
 
     [Fact]
@@ -450,7 +453,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
         var client = new AnthropicBedrockMantleClient(new() { BaseUrl = "http://localhost" });
         var req = await SendOneRequest(client);
 
-        Assert.Equal("mantle-key", req.Headers.GetValues("X-Api-Key").Single());
+        Assert.Equal("Bearer mantle-key", req.Headers.GetValues("Authorization").Single());
     }
 
     #endregion

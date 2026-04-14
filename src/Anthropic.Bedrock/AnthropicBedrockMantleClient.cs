@@ -44,27 +44,28 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
             ?? Environment.GetEnvironmentVariable("AWS_DEFAULT_REGION");
 
         bool useSigV4;
+        string? resolvedApiKey = null;
+
+        // Always suppress the base client's ANTHROPIC_API_KEY env var
+        ApiKey = null;
 
         if (opts.SkipAuth)
         {
             useSigV4 = false;
-            ApiKey = null;
         }
         // Auth precedence
         else if (opts.ApiKey != null)
         {
             useSigV4 = false;
-            ApiKey = opts.ApiKey;
+            resolvedApiKey = opts.ApiKey;
         }
         else if (opts.AwsAccessKey != null && opts.AwsSecretAccessKey != null)
         {
             useSigV4 = true;
-            ApiKey = null; // suppress ANTHROPIC_API_KEY env var
         }
         else if (opts.AwsProfile != null)
         {
             useSigV4 = true;
-            ApiKey = null;
         }
         else
         {
@@ -74,12 +75,11 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
             if (envApiKey != null)
             {
                 useSigV4 = false;
-                ApiKey = envApiKey;
+                resolvedApiKey = envApiKey;
             }
             else
             {
                 useSigV4 = true;
-                ApiKey = null; // suppress ANTHROPIC_API_KEY env var
             }
         }
 
@@ -115,6 +115,7 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
             AwsSecretAccessKey = opts.AwsSecretAccessKey,
             AwsSessionToken = opts.AwsSessionToken,
             AwsProfile = opts.AwsProfile,
+            ResolvedApiKey = resolvedApiKey,
         };
 
         _withRawResponse = new Lazy<IAnthropicClientWithRawResponse>(() =>

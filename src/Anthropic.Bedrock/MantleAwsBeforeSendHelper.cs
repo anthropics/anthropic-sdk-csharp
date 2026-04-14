@@ -37,8 +37,21 @@ internal static class MantleAwsBeforeSendHelper
                 new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
         }
 
-        if (awsOptions.SkipAuth || !awsOptions.UseSigV4)
+        if (awsOptions.SkipAuth)
         {
+            return;
+        }
+
+        // API key mode: send as Authorization: Bearer header
+        if (!awsOptions.UseSigV4)
+        {
+            if (awsOptions.ResolvedApiKey != null)
+            {
+                requestMessage.Headers.TryAddWithoutValidation(
+                    "Authorization",
+                    $"Bearer {awsOptions.ResolvedApiKey}"
+                );
+            }
             return;
         }
 

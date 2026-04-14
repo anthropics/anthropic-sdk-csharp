@@ -90,4 +90,10 @@ public sealed class MantleAwsClientOptions
     // Internally resolved — not user-facing.
     internal string ServiceName { get; init; } = "bedrock-mantle";
     internal bool UseSigV4 { get; init; }
+
+    /// <summary>
+    /// The resolved API key for Bearer token authentication. Set internally when
+    /// API key mode is active (not SigV4). Sent as <c>Authorization: Bearer</c>.
+    /// </summary>
+    internal string? ResolvedApiKey { get; init; }
 }
