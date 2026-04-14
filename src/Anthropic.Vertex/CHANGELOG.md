@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 (2026-04-14)
+
+Full Changelog: [Vertex-v0.3.0...Vertex-v0.3.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Vertex-v0.3.0...Vertex-v0.3.1)
+
 ## 0.3.0 (2026-04-10)
 
 Full Changelog: [Vertex-v0.2.1...Vertex-v0.3.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Vertex-v0.2.1...Vertex-v0.3.0)

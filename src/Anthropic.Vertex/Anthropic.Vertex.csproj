@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>Anthropic.Vertex</PackageId>
-    <VersionPrefix>0.3.0</VersionPrefix>
+    <VersionPrefix>0.3.1</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
