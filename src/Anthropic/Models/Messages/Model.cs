@@ -70,21 +70,33 @@ public enum Model
     /// <summary>
     /// Powerful model for complex tasks
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on June 15th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     ClaudeOpus4_0,
 
     /// <summary>
     /// Powerful model for complex tasks
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on June 15th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     ClaudeOpus4_20250514,
 
     /// <summary>
     /// High-performance model with extended thinking
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on June 15th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     ClaudeSonnet4_0,
 
     /// <summary>
     /// High-performance model with extended thinking
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on June 15th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     ClaudeSonnet4_20250514,
 
     /// <summary>
