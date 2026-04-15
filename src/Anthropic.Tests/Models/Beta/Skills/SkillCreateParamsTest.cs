@@ -108,7 +108,9 @@ public class SkillCreateParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(new Uri("https://api.anthropic.com/v1/skills?beta=true"), url);
+        Assert.True(
+            TestBase.UrisEqual(new Uri("https://api.anthropic.com/v1/skills?beta=true"), url)
+        );
     }
 
     [Fact]

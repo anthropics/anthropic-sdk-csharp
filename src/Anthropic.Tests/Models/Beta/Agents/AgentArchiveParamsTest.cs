@@ -64,11 +64,13 @@ public class AgentArchiveParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(
-            new Uri(
-                "https://api.anthropic.com/v1/agents/agent_011CZkYpogX7uDKUyvBTophP/archive?beta=true"
-            ),
-            url
+        Assert.True(
+            TestBase.UrisEqual(
+                new Uri(
+                    "https://api.anthropic.com/v1/agents/agent_011CZkYpogX7uDKUyvBTophP/archive?beta=true"
+                ),
+                url
+            )
         );
     }
 

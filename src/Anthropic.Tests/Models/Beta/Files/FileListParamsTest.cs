@@ -97,11 +97,13 @@ public class FileListParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(
-            new Uri(
-                "https://api.anthropic.com/v1/files?beta=true&after_id=after_id&before_id=before_id&limit=1&scope_id=scope_id"
-            ),
-            url
+        Assert.True(
+            TestBase.UrisEqual(
+                new Uri(
+                    "https://api.anthropic.com/v1/files?beta=true&after_id=after_id&before_id=before_id&limit=1&scope_id=scope_id"
+                ),
+                url
+            )
         );
     }
 

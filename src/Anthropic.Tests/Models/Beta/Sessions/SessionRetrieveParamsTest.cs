@@ -64,11 +64,13 @@ public class SessionRetrieveParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(
-            new Uri(
-                "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7?beta=true"
-            ),
-            url
+        Assert.True(
+            TestBase.UrisEqual(
+                new Uri(
+                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7?beta=true"
+                ),
+                url
+            )
         );
     }
 

@@ -70,11 +70,13 @@ public class EnvironmentDeleteParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(
-            new Uri(
-                "https://api.anthropic.com/v1/environments/env_011CZkZ9X2dpNyB7HsEFoRfW?beta=true"
-            ),
-            url
+        Assert.True(
+            TestBase.UrisEqual(
+                new Uri(
+                    "https://api.anthropic.com/v1/environments/env_011CZkZ9X2dpNyB7HsEFoRfW?beta=true"
+                ),
+                url
+            )
         );
     }
 

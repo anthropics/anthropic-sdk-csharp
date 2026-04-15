@@ -88,11 +88,13 @@ public class VaultListParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(
-            new Uri(
-                "https://api.anthropic.com/v1/vaults?beta=true&include_archived=true&limit=0&page=page"
-            ),
-            url
+        Assert.True(
+            TestBase.UrisEqual(
+                new Uri(
+                    "https://api.anthropic.com/v1/vaults?beta=true&include_archived=true&limit=0&page=page"
+                ),
+                url
+            )
         );
     }
 

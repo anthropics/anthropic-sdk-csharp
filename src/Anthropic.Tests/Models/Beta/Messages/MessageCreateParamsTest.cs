@@ -712,7 +712,9 @@ public class MessageCreateParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(new Uri("https://api.anthropic.com/v1/messages?beta=true"), url);
+        Assert.True(
+            TestBase.UrisEqual(new Uri("https://api.anthropic.com/v1/messages?beta=true"), url)
+        );
     }
 
     [Fact]

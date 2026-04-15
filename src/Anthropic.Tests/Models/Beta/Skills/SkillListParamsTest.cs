@@ -114,11 +114,13 @@ public class SkillListParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(
-            new Uri(
-                "https://api.anthropic.com/v1/skills?beta=true&limit=0&page=page&source=source"
-            ),
-            url
+        Assert.True(
+            TestBase.UrisEqual(
+                new Uri(
+                    "https://api.anthropic.com/v1/skills?beta=true&limit=0&page=page&source=source"
+                ),
+                url
+            )
         );
     }
 
