@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
@@ -171,7 +173,33 @@ public sealed class BetaMessageContentAggregator
                     Thinking = StringJoinHelper(thinkingBlock.Thinking, blocks, e => e.Thinking),
                 }),
             e => Single(e),
-            e => Single(e),
+            toolUseBlock =>
+            {
+                // Reconstruct the tool_use input from input_json_delta events.
+                var partialJsons = Of<BetaInputJsonDelta>().Select(d => d.PartialJson);
+                var mergedJson = string.Concat(partialJsons);
+                IReadOnlyDictionary<string, JsonElement> input;
+                if (string.IsNullOrEmpty(mergedJson))
+                {
+                    input = toolUseBlock.Input;
+                }
+                else
+                {
+                    var parsed = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                        mergedJson
+                    );
+                    input =
+                        parsed != null
+                            ? FrozenDictionary.ToFrozenDictionary(parsed)
+                            : toolUseBlock.Input;
+                }
+                resultBlock = new BetaToolUseBlock()
+                {
+                    ID = toolUseBlock.ID,
+                    Name = toolUseBlock.Name,
+                    Input = input,
+                };
+            },
             e => Single(e),
             e => Single(e),
             e => Single(e),
