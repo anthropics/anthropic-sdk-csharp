@@ -115,11 +115,13 @@ public class EnvironmentListParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(
-            new Uri(
-                "https://api.anthropic.com/v1/environments?beta=true&include_archived=true&limit=1&page=page"
-            ),
-            url
+        Assert.True(
+            TestBase.UrisEqual(
+                new Uri(
+                    "https://api.anthropic.com/v1/environments?beta=true&include_archived=true&limit=1&page=page"
+                ),
+                url
+            )
         );
     }
 

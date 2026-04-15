@@ -64,7 +64,12 @@ public class ModelRetrieveParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(new Uri("https://api.anthropic.com/v1/models/model_id?beta=true"), url);
+        Assert.True(
+            TestBase.UrisEqual(
+                new Uri("https://api.anthropic.com/v1/models/model_id?beta=true"),
+                url
+            )
+        );
     }
 
     [Fact]
