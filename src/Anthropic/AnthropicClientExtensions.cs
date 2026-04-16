@@ -284,6 +284,87 @@ public static class AnthropicClientExtensions
                             : constraintInfo;
                     }
 
+                    // Handle nullable union types (e.g., "type": ["integer", "null"]) for
+                    // non-required properties. The C# MCP SDK generates these for optional
+                    // parameters, but structured outputs doesn't support union types.
+                    // Only transform non-required properties; required + nullable is an
+                    // incompatible schema that should fail at the API level.
+                    if (
+                        schemaObj.TryGetPropertyValue("properties", out JsonNode? propsNode)
+                        && propsNode is JsonObject propsObj
+                    )
+                    {
+                        HashSet<string> requiredProps = [];
+                        if (
+                            schemaObj.TryGetPropertyValue("required", out JsonNode? reqNode)
+                            && reqNode is JsonArray reqArray
+                        )
+                        {
+                            foreach (JsonNode? req in reqArray)
+                            {
+                                if (req?.GetValue<string>() is string reqName)
+                                {
+                                    requiredProps.Add(reqName);
+                                }
+                            }
+                        }
+
+                        foreach (var prop in propsObj)
+                        {
+                            if (requiredProps.Contains(prop.Key))
+                            {
+                                continue;
+                            }
+
+                            if (prop.Value is not JsonObject propSchema)
+                            {
+                                continue;
+                            }
+
+                            if (
+                                !propSchema.TryGetPropertyValue("type", out JsonNode? propTypeNode)
+                                || propTypeNode is not JsonArray typeArray
+                            )
+                            {
+                                continue;
+                            }
+
+                            int nullIndex = -1;
+                            for (int i = 0; i < typeArray.Count; i++)
+                            {
+                                if (typeArray[i]?.GetValue<string>() == "null")
+                                {
+                                    nullIndex = i;
+                                    break;
+                                }
+                            }
+
+                            if (nullIndex < 0)
+                            {
+                                continue;
+                            }
+
+                            typeArray.RemoveAt(nullIndex);
+
+                            if (typeArray.Count == 1)
+                            {
+                                propSchema["type"] = typeArray[0]?.DeepClone();
+                            }
+
+                            if (
+                                propSchema.TryGetPropertyValue(
+                                    "default",
+                                    out JsonNode? defaultNode
+                                )
+                                && defaultNode is JsonValue defaultValue
+                                && defaultValue.GetValueKind() == JsonValueKind.Null
+                            )
+                            {
+                                propSchema.Remove("default");
+                            }
+                        }
+                    }
+
                     return schemaNode;
                 },
             }
