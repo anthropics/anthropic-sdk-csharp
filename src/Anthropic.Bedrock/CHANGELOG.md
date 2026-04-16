@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 (2026-04-16)
+
+Full Changelog: [Bedrock-v0.4.0...Bedrock-v0.5.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.4.0...Bedrock-v0.5.0)
+
+### Features
+
+* **api:** add claude-opus-4-7, token budgets and user_profiles ([93c87dd](https://github.com/anthropics/anthropic-sdk-csharp/commit/93c87dd4d3a9179f7b5f3280fdb8ab27297607bb))
+
 ## 0.4.0 (2026-04-14)
 
 Full Changelog: [Bedrock-v0.3.0...Bedrock-v0.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.3.0...Bedrock-v0.4.0)
