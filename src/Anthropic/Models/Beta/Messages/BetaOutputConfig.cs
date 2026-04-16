@@ -38,11 +38,25 @@ public sealed record class BetaOutputConfig : JsonModel
         init { this._rawData.Set("format", value); }
     }
 
+    /// <summary>
+    /// User-configurable total token budget across contexts.
+    /// </summary>
+    public BetaTokenTaskBudget? TaskBudget
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaTokenTaskBudget>("task_budget");
+        }
+        init { this._rawData.Set("task_budget", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Effort?.Validate();
         this.Format?.Validate();
+        this.TaskBudget?.Validate();
     }
 
     public BetaOutputConfig() { }
@@ -91,6 +105,7 @@ public enum Effort
     Low,
     Medium,
     High,
+    Xhigh,
     Max,
 }
 
@@ -107,6 +122,7 @@ sealed class EffortConverter : JsonConverter<Effort>
             "low" => Effort.Low,
             "medium" => Effort.Medium,
             "high" => Effort.High,
+            "xhigh" => Effort.Xhigh,
             "max" => Effort.Max,
             _ => (Effort)(-1),
         };
@@ -121,6 +137,7 @@ sealed class EffortConverter : JsonConverter<Effort>
                 Effort.Low => "low",
                 Effort.Medium => "medium",
                 Effort.High => "high",
+                Effort.Xhigh => "xhigh",
                 Effort.Max => "max",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))

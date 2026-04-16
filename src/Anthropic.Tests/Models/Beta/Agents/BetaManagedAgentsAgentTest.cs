@@ -15,7 +15,7 @@ public class BetaManagedAgentsAgentTest : TestBase
         var model = new Agents::BetaManagedAgentsAgent
         {
             ID = "agent_011CZkYpogX7uDKUyvBTophP",
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Description = "A general-purpose starter agent.",
             McpServers =
@@ -82,7 +82,6 @@ public class BetaManagedAgentsAgentTest : TestBase
         };
 
         string expectedID = "agent_011CZkYpogX7uDKUyvBTophP";
-        DateTimeOffset expectedArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedDescription = "A general-purpose starter agent.";
         List<Agents::BetaManagedAgentsMcpServerUrlDefinition> expectedMcpServers =
@@ -148,7 +147,7 @@ public class BetaManagedAgentsAgentTest : TestBase
         int expectedVersion = 1;
 
         Assert.Equal(expectedID, model.ID);
-        Assert.Equal(expectedArchivedAt, model.ArchivedAt);
+        Assert.Null(model.ArchivedAt);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
         Assert.Equal(expectedDescription, model.Description);
         Assert.Equal(expectedMcpServers.Count, model.McpServers.Count);
@@ -187,7 +186,7 @@ public class BetaManagedAgentsAgentTest : TestBase
         var model = new Agents::BetaManagedAgentsAgent
         {
             ID = "agent_011CZkYpogX7uDKUyvBTophP",
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Description = "A general-purpose starter agent.",
             McpServers =
@@ -268,7 +267,7 @@ public class BetaManagedAgentsAgentTest : TestBase
         var model = new Agents::BetaManagedAgentsAgent
         {
             ID = "agent_011CZkYpogX7uDKUyvBTophP",
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Description = "A general-purpose starter agent.",
             McpServers =
@@ -342,7 +341,6 @@ public class BetaManagedAgentsAgentTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedID = "agent_011CZkYpogX7uDKUyvBTophP";
-        DateTimeOffset expectedArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedDescription = "A general-purpose starter agent.";
         List<Agents::BetaManagedAgentsMcpServerUrlDefinition> expectedMcpServers =
@@ -408,7 +406,7 @@ public class BetaManagedAgentsAgentTest : TestBase
         int expectedVersion = 1;
 
         Assert.Equal(expectedID, deserialized.ID);
-        Assert.Equal(expectedArchivedAt, deserialized.ArchivedAt);
+        Assert.Null(deserialized.ArchivedAt);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
         Assert.Equal(expectedDescription, deserialized.Description);
         Assert.Equal(expectedMcpServers.Count, deserialized.McpServers.Count);
@@ -447,7 +445,7 @@ public class BetaManagedAgentsAgentTest : TestBase
         var model = new Agents::BetaManagedAgentsAgent
         {
             ID = "agent_011CZkYpogX7uDKUyvBTophP",
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Description = "A general-purpose starter agent.",
             McpServers =
@@ -522,7 +520,7 @@ public class BetaManagedAgentsAgentTest : TestBase
         var model = new Agents::BetaManagedAgentsAgent
         {
             ID = "agent_011CZkYpogX7uDKUyvBTophP",
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Description = "A general-purpose starter agent.",
             McpServers =

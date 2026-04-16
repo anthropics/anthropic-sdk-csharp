@@ -1,10 +1,17 @@
 using System;
+using System.Collections.Generic;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Services;
 
 internal static class MessageServiceHelpers
 {
+    private static readonly HashSet<string> ModelsToWarnWithThinkingEnabled = new()
+    {
+        "claude-opus-4-6",
+        "claude-mythos-preview",
+    };
+
     internal static void WarnIfDeprecatedThinkingConfig(MessageCreateParams parameters)
     {
         WarnIfDeprecatedThinkingConfigImpl(parameters.Model.Raw(), parameters.Thinking);
@@ -31,8 +38,12 @@ internal static class MessageServiceHelpers
 
     private static void WarnIfDeprecatedThinkingConfigImpl(string? modelString, object? thinking)
     {
-        // Check if model is claude-opus-4-6 and thinking type is enabled
-        if (modelString == "claude-opus-4-6" && thinking != null)
+        // Check if model is in the warn list and thinking type is enabled
+        if (
+            modelString != null
+            && ModelsToWarnWithThinkingEnabled.Contains(modelString)
+            && thinking != null
+        )
         {
             // Check if thinking is enabled for non-beta
             if (thinking is ThinkingConfigParam thinkingConfig)

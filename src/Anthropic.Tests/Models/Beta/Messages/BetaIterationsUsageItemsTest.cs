@@ -44,7 +44,7 @@ public class BetaIterationsUsageItemsTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeMythosPreview,
+            Model = Model.ClaudeOpus4_7,
             OutputTokens = 0,
         };
         value.Validate();
@@ -99,7 +99,7 @@ public class BetaIterationsUsageItemsTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeMythosPreview,
+            Model = Model.ClaudeOpus4_7,
             OutputTokens = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

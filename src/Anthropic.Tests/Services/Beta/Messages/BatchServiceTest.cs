@@ -78,6 +78,7 @@ public class BatchServiceTest : TestBase
                                         { "foo", JsonSerializer.SerializeToElement("bar") },
                                     },
                                 },
+                                TaskBudget = new() { Total = 1024, Remaining = 0 },
                             },
                             OutputFormat = new()
                             {
@@ -151,6 +152,7 @@ public class BatchServiceTest : TestBase
                             ],
                             TopK = 5,
                             TopP = 0.7,
+                            UserProfileID = "user_profile_id",
                         },
                     },
                 ],

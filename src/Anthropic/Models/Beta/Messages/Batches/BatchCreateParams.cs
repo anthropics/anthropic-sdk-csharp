@@ -857,6 +857,20 @@ public sealed record class Params : JsonModel
         }
     }
 
+    /// <summary>
+    /// The user profile ID to attribute this request to. Use when acting on behalf
+    /// of a party other than your organization.
+    /// </summary>
+    public string? UserProfileID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("user_profile_id");
+        }
+        init { this._rawData.Set("user_profile_id", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -891,6 +905,7 @@ public sealed record class Params : JsonModel
         }
         _ = this.TopK;
         _ = this.TopP;
+        _ = this.UserProfileID;
     }
 
     public Params() { }

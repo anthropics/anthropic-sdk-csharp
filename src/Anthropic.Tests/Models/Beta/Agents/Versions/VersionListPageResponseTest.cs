@@ -19,7 +19,7 @@ public class VersionListPageResponseTest : TestBase
                 new()
                 {
                     ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
                     McpServers =
@@ -95,7 +95,7 @@ public class VersionListPageResponseTest : TestBase
             new()
             {
                 ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ArchivedAt = null,
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Description = "A general-purpose starter agent.",
                 McpServers =
@@ -183,7 +183,7 @@ public class VersionListPageResponseTest : TestBase
                 new()
                 {
                     ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
                     McpServers =
@@ -273,7 +273,7 @@ public class VersionListPageResponseTest : TestBase
                 new()
                 {
                     ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
                     McpServers =
@@ -356,7 +356,7 @@ public class VersionListPageResponseTest : TestBase
             new()
             {
                 ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ArchivedAt = null,
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Description = "A general-purpose starter agent.",
                 McpServers =
@@ -444,7 +444,7 @@ public class VersionListPageResponseTest : TestBase
                 new()
                 {
                     ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
                     McpServers =
@@ -574,7 +574,7 @@ public class VersionListPageResponseTest : TestBase
                 new()
                 {
                     ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
                     McpServers =
@@ -658,7 +658,7 @@ public class VersionListPageResponseTest : TestBase
                 new()
                 {
                     ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
                     McpServers =
@@ -741,7 +741,7 @@ public class VersionListPageResponseTest : TestBase
                 new()
                 {
                     ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
                     McpServers =
@@ -827,7 +827,7 @@ public class VersionListPageResponseTest : TestBase
                 new()
                 {
                     ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
                     McpServers =
@@ -912,7 +912,7 @@ public class VersionListPageResponseTest : TestBase
                 new()
                 {
                     ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
                     McpServers =

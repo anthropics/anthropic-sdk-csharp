@@ -58,6 +58,19 @@ public sealed record class BetaCompactionBlockParam : JsonModel
         init { this._rawData.Set("cache_control", value); }
     }
 
+    /// <summary>
+    /// Opaque metadata from prior compaction, to be round-tripped verbatim
+    /// </summary>
+    public string? EncryptedContent
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("encrypted_content");
+        }
+        init { this._rawData.Set("encrypted_content", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -67,6 +80,7 @@ public sealed record class BetaCompactionBlockParam : JsonModel
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         this.CacheControl?.Validate();
+        _ = this.EncryptedContent;
     }
 
     public BetaCompactionBlockParam()

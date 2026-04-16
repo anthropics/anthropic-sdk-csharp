@@ -89,6 +89,7 @@ public enum Effort
     Low,
     Medium,
     High,
+    Xhigh,
     Max,
 }
 
@@ -105,6 +106,7 @@ sealed class EffortConverter : JsonConverter<Effort>
             "low" => Effort.Low,
             "medium" => Effort.Medium,
             "high" => Effort.High,
+            "xhigh" => Effort.Xhigh,
             "max" => Effort.Max,
             _ => (Effort)(-1),
         };
@@ -119,6 +121,7 @@ sealed class EffortConverter : JsonConverter<Effort>
                 Effort.Low => "low",
                 Effort.Medium => "medium",
                 Effort.High => "high",
+                Effort.Xhigh => "xhigh",
                 Effort.Max => "max",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))

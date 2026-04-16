@@ -9,19 +9,29 @@ public class BetaCompactionContentBlockDeltaTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaCompactionContentBlockDelta { Content = "content" };
+        var model = new BetaCompactionContentBlockDelta
+        {
+            Content = "content",
+            EncryptedContent = "encrypted_content",
+        };
 
         string expectedContent = "content";
+        string expectedEncryptedContent = "encrypted_content";
         JsonElement expectedType = JsonSerializer.SerializeToElement("compaction_delta");
 
         Assert.Equal(expectedContent, model.Content);
+        Assert.Equal(expectedEncryptedContent, model.EncryptedContent);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaCompactionContentBlockDelta { Content = "content" };
+        var model = new BetaCompactionContentBlockDelta
+        {
+            Content = "content",
+            EncryptedContent = "encrypted_content",
+        };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaCompactionContentBlockDelta>(
@@ -35,7 +45,11 @@ public class BetaCompactionContentBlockDeltaTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaCompactionContentBlockDelta { Content = "content" };
+        var model = new BetaCompactionContentBlockDelta
+        {
+            Content = "content",
+            EncryptedContent = "encrypted_content",
+        };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaCompactionContentBlockDelta>(
@@ -45,16 +59,22 @@ public class BetaCompactionContentBlockDeltaTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedContent = "content";
+        string expectedEncryptedContent = "encrypted_content";
         JsonElement expectedType = JsonSerializer.SerializeToElement("compaction_delta");
 
         Assert.Equal(expectedContent, deserialized.Content);
+        Assert.Equal(expectedEncryptedContent, deserialized.EncryptedContent);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaCompactionContentBlockDelta { Content = "content" };
+        var model = new BetaCompactionContentBlockDelta
+        {
+            Content = "content",
+            EncryptedContent = "encrypted_content",
+        };
 
         model.Validate();
     }
@@ -62,7 +82,11 @@ public class BetaCompactionContentBlockDeltaTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaCompactionContentBlockDelta { Content = "content" };
+        var model = new BetaCompactionContentBlockDelta
+        {
+            Content = "content",
+            EncryptedContent = "encrypted_content",
+        };
 
         BetaCompactionContentBlockDelta copied = new(model);
 
