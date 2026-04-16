@@ -11,8 +11,8 @@ public class ServerToolUsageTest : TestBase
     {
         var model = new ServerToolUsage { WebFetchRequests = 2, WebSearchRequests = 0 };
 
-        long expectedWebFetchRequests = 2;
-        long expectedWebSearchRequests = 0;
+        long? expectedWebFetchRequests = 2;
+        long? expectedWebSearchRequests = 0;
 
         Assert.Equal(expectedWebFetchRequests, model.WebFetchRequests);
         Assert.Equal(expectedWebSearchRequests, model.WebSearchRequests);
@@ -44,8 +44,8 @@ public class ServerToolUsageTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        long expectedWebFetchRequests = 2;
-        long expectedWebSearchRequests = 0;
+        long? expectedWebFetchRequests = 2;
+        long? expectedWebSearchRequests = 0;
 
         Assert.Equal(expectedWebFetchRequests, deserialized.WebFetchRequests);
         Assert.Equal(expectedWebSearchRequests, deserialized.WebSearchRequests);
@@ -56,6 +56,20 @@ public class ServerToolUsageTest : TestBase
     {
         var model = new ServerToolUsage { WebFetchRequests = 2, WebSearchRequests = 0 };
 
+        model.Validate();
+    }
+
+    [Fact]
+    public void MissingFields_AreNullableAndValidationDoesNotThrow()
+    {
+        var model = JsonSerializer.Deserialize<ServerToolUsage>(
+            "{}",
+            ModelBase.SerializerOptions
+        );
+        Assert.NotNull(model);
+
+        Assert.Null(model.WebFetchRequests);
+        Assert.Null(model.WebSearchRequests);
         model.Validate();
     }
 

@@ -13,12 +13,12 @@ public sealed record class BetaServerToolUsage : JsonModel
     /// <summary>
     /// The number of web fetch tool requests.
     /// </summary>
-    public required long WebFetchRequests
+    public long? WebFetchRequests
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<long>("web_fetch_requests");
+            return this._rawData.GetNullableStruct<long>("web_fetch_requests");
         }
         init { this._rawData.Set("web_fetch_requests", value); }
     }
@@ -26,12 +26,12 @@ public sealed record class BetaServerToolUsage : JsonModel
     /// <summary>
     /// The number of web search tool requests.
     /// </summary>
-    public required long WebSearchRequests
+    public long? WebSearchRequests
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<long>("web_search_requests");
+            return this._rawData.GetNullableStruct<long>("web_search_requests");
         }
         init { this._rawData.Set("web_search_requests", value); }
     }
@@ -39,8 +39,15 @@ public sealed record class BetaServerToolUsage : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        _ = this.WebFetchRequests;
-        _ = this.WebSearchRequests;
+        var rawData = this.RawData;
+        if (rawData.ContainsKey("web_fetch_requests"))
+        {
+            _ = this.WebFetchRequests;
+        }
+        if (rawData.ContainsKey("web_search_requests"))
+        {
+            _ = this.WebSearchRequests;
+        }
     }
 
     public BetaServerToolUsage() { }

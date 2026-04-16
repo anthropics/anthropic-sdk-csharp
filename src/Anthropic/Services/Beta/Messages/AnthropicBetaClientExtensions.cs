@@ -1357,14 +1357,14 @@ public static class AnthropicBetaClientExtensions
             {
                 (usageDetails.AdditionalCounts ??= [])[
                     nameof(BetaServerToolUsage.WebFetchRequests)
-                ] = serverToolUsage.WebFetchRequests;
+                ] = serverToolUsage.WebFetchRequests.Value;
             }
 
             if (serverToolUsage?.WebSearchRequests is > 0)
             {
                 (usageDetails.AdditionalCounts ??= [])[
                     nameof(BetaServerToolUsage.WebSearchRequests)
-                ] = serverToolUsage.WebSearchRequests;
+                ] = serverToolUsage.WebSearchRequests.Value;
             }
 
             return usageDetails;
