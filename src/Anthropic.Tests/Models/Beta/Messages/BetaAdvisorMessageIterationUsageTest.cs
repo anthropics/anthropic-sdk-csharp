@@ -16,7 +16,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeMythosPreview,
+            Model = Model.ClaudeOpus4_7,
             OutputTokens = 0,
         };
 
@@ -28,7 +28,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
         long expectedCacheCreationInputTokens = 0;
         long expectedCacheReadInputTokens = 0;
         long expectedInputTokens = 0;
-        ApiEnum<string, Model> expectedModel = Model.ClaudeMythosPreview;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_7;
         long expectedOutputTokens = 0;
         JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_message");
 
@@ -50,7 +50,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeMythosPreview,
+            Model = Model.ClaudeOpus4_7,
             OutputTokens = 0,
         };
 
@@ -72,7 +72,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeMythosPreview,
+            Model = Model.ClaudeOpus4_7,
             OutputTokens = 0,
         };
 
@@ -91,7 +91,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
         long expectedCacheCreationInputTokens = 0;
         long expectedCacheReadInputTokens = 0;
         long expectedInputTokens = 0;
-        ApiEnum<string, Model> expectedModel = Model.ClaudeMythosPreview;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_7;
         long expectedOutputTokens = 0;
         JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_message");
 
@@ -113,7 +113,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeMythosPreview,
+            Model = Model.ClaudeOpus4_7,
             OutputTokens = 0,
         };
 
@@ -129,7 +129,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeMythosPreview,
+            Model = Model.ClaudeOpus4_7,
             OutputTokens = 0,
         };
 

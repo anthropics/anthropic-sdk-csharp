@@ -54,6 +54,7 @@ public class MessageCountTokensParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
+                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             OutputFormat = new()
             {
@@ -158,6 +159,7 @@ public class MessageCountTokensParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
+            TaskBudget = new() { Total = 1024, Remaining = 0 },
         };
         BetaJsonOutputFormat expectedOutputFormat = new()
         {
@@ -397,6 +399,7 @@ public class MessageCountTokensParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
+                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             System = new(
                 [
@@ -490,6 +493,7 @@ public class MessageCountTokensParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
+                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             System = new(
                 [
@@ -641,6 +645,7 @@ public class MessageCountTokensParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
+                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             OutputFormat = new()
             {
@@ -1239,7 +1244,7 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeMythosPreview,
+            Model = Messages::Model.ClaudeOpus4_7,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -1743,7 +1748,7 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeMythosPreview,
+            Model = Messages::Model.ClaudeOpus4_7,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },

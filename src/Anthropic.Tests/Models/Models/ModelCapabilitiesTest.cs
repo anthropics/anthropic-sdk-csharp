@@ -28,6 +28,7 @@ public class ModelCapabilitiesTest : TestBase
                 Max = new(true),
                 Medium = new(true),
                 Supported = true,
+                Xhigh = new(true),
             },
             ImageInput = new(true),
             PdfInput = new(true),
@@ -56,6 +57,7 @@ public class ModelCapabilitiesTest : TestBase
             Max = new(true),
             Medium = new(true),
             Supported = true,
+            Xhigh = new(true),
         };
         CapabilitySupport expectedImageInput = new(true);
         CapabilitySupport expectedPdfInput = new(true);
@@ -99,6 +101,7 @@ public class ModelCapabilitiesTest : TestBase
                 Max = new(true),
                 Medium = new(true),
                 Supported = true,
+                Xhigh = new(true),
             },
             ImageInput = new(true),
             PdfInput = new(true),
@@ -141,6 +144,7 @@ public class ModelCapabilitiesTest : TestBase
                 Max = new(true),
                 Medium = new(true),
                 Supported = true,
+                Xhigh = new(true),
             },
             ImageInput = new(true),
             PdfInput = new(true),
@@ -176,6 +180,7 @@ public class ModelCapabilitiesTest : TestBase
             Max = new(true),
             Medium = new(true),
             Supported = true,
+            Xhigh = new(true),
         };
         CapabilitySupport expectedImageInput = new(true);
         CapabilitySupport expectedPdfInput = new(true);
@@ -219,6 +224,7 @@ public class ModelCapabilitiesTest : TestBase
                 Max = new(true),
                 Medium = new(true),
                 Supported = true,
+                Xhigh = new(true),
             },
             ImageInput = new(true),
             PdfInput = new(true),
@@ -255,6 +261,7 @@ public class ModelCapabilitiesTest : TestBase
                 Max = new(true),
                 Medium = new(true),
                 Supported = true,
+                Xhigh = new(true),
             },
             ImageInput = new(true),
             PdfInput = new(true),

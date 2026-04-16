@@ -14,8 +14,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
     {
         var model = new BetaManagedAgentsSessionAgent
         {
-            ID = "id",
-            Description = "description",
+            ID = "agent_011CZkYpogX7uDKUyvBTophP",
+            Description = "A general-purpose starter agent.",
             McpServers =
             [
                 new()
@@ -27,10 +27,10 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             ],
             Model = new()
             {
-                ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_6,
+                ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
             },
-            Name = "name",
+            Name = "My First Agent",
             Skills =
             [
                 new Agents::BetaManagedAgentsAnthropicSkill()
@@ -39,8 +39,15 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
                     Version = "1",
                 },
+                new Agents::BetaManagedAgentsCustomSkill()
+                {
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                    Version = "2",
+                },
             ],
-            System = "system",
+            System =
+                "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
             Tools =
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401()
@@ -59,19 +66,19 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                            Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                         ),
                     },
                     Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
             Type = BetaManagedAgentsSessionAgentType.Agent,
-            Version = 0,
+            Version = 1,
         };
 
-        string expectedID = "id";
-        string expectedDescription = "description";
+        string expectedID = "agent_011CZkYpogX7uDKUyvBTophP";
+        string expectedDescription = "A general-purpose starter agent.";
         List<Agents::BetaManagedAgentsMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
@@ -83,10 +90,10 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         ];
         Agents::BetaManagedAgentsModelConfig expectedModel = new()
         {
-            ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
             Speed = Agents::Speed.Standard,
         };
-        string expectedName = "name";
+        string expectedName = "My First Agent";
         List<Skill> expectedSkills =
         [
             new Agents::BetaManagedAgentsAnthropicSkill()
@@ -95,8 +102,15 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                 Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
                 Version = "1",
             },
+            new Agents::BetaManagedAgentsCustomSkill()
+            {
+                SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                Version = "2",
+            },
         ];
-        string expectedSystem = "system";
+        string expectedSystem =
+            "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.";
         List<Tool> expectedTools =
         [
             new Agents::BetaManagedAgentsAgentToolset20260401()
@@ -115,8 +129,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                 DefaultConfig = new()
                 {
                     Enabled = true,
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                        Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                     ),
                 },
                 Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
@@ -124,7 +138,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         ];
         ApiEnum<string, BetaManagedAgentsSessionAgentType> expectedType =
             BetaManagedAgentsSessionAgentType.Agent;
-        int expectedVersion = 0;
+        int expectedVersion = 1;
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedDescription, model.Description);
@@ -155,8 +169,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
     {
         var model = new BetaManagedAgentsSessionAgent
         {
-            ID = "id",
-            Description = "description",
+            ID = "agent_011CZkYpogX7uDKUyvBTophP",
+            Description = "A general-purpose starter agent.",
             McpServers =
             [
                 new()
@@ -168,10 +182,10 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             ],
             Model = new()
             {
-                ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_6,
+                ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
             },
-            Name = "name",
+            Name = "My First Agent",
             Skills =
             [
                 new Agents::BetaManagedAgentsAnthropicSkill()
@@ -180,8 +194,15 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
                     Version = "1",
                 },
+                new Agents::BetaManagedAgentsCustomSkill()
+                {
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                    Version = "2",
+                },
             ],
-            System = "system",
+            System =
+                "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
             Tools =
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401()
@@ -200,15 +221,15 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                            Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                         ),
                     },
                     Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
             Type = BetaManagedAgentsSessionAgentType.Agent,
-            Version = 0,
+            Version = 1,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -225,8 +246,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
     {
         var model = new BetaManagedAgentsSessionAgent
         {
-            ID = "id",
-            Description = "description",
+            ID = "agent_011CZkYpogX7uDKUyvBTophP",
+            Description = "A general-purpose starter agent.",
             McpServers =
             [
                 new()
@@ -238,10 +259,10 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             ],
             Model = new()
             {
-                ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_6,
+                ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
             },
-            Name = "name",
+            Name = "My First Agent",
             Skills =
             [
                 new Agents::BetaManagedAgentsAnthropicSkill()
@@ -250,8 +271,15 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
                     Version = "1",
                 },
+                new Agents::BetaManagedAgentsCustomSkill()
+                {
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                    Version = "2",
+                },
             ],
-            System = "system",
+            System =
+                "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
             Tools =
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401()
@@ -270,15 +298,15 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                            Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                         ),
                     },
                     Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
             Type = BetaManagedAgentsSessionAgentType.Agent,
-            Version = 0,
+            Version = 1,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -288,8 +316,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "id";
-        string expectedDescription = "description";
+        string expectedID = "agent_011CZkYpogX7uDKUyvBTophP";
+        string expectedDescription = "A general-purpose starter agent.";
         List<Agents::BetaManagedAgentsMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
@@ -301,10 +329,10 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         ];
         Agents::BetaManagedAgentsModelConfig expectedModel = new()
         {
-            ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
             Speed = Agents::Speed.Standard,
         };
-        string expectedName = "name";
+        string expectedName = "My First Agent";
         List<Skill> expectedSkills =
         [
             new Agents::BetaManagedAgentsAnthropicSkill()
@@ -313,8 +341,15 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                 Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
                 Version = "1",
             },
+            new Agents::BetaManagedAgentsCustomSkill()
+            {
+                SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                Version = "2",
+            },
         ];
-        string expectedSystem = "system";
+        string expectedSystem =
+            "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.";
         List<Tool> expectedTools =
         [
             new Agents::BetaManagedAgentsAgentToolset20260401()
@@ -333,8 +368,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                 DefaultConfig = new()
                 {
                     Enabled = true,
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                        Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                     ),
                 },
                 Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
@@ -342,7 +377,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         ];
         ApiEnum<string, BetaManagedAgentsSessionAgentType> expectedType =
             BetaManagedAgentsSessionAgentType.Agent;
-        int expectedVersion = 0;
+        int expectedVersion = 1;
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedDescription, deserialized.Description);
@@ -373,8 +408,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
     {
         var model = new BetaManagedAgentsSessionAgent
         {
-            ID = "id",
-            Description = "description",
+            ID = "agent_011CZkYpogX7uDKUyvBTophP",
+            Description = "A general-purpose starter agent.",
             McpServers =
             [
                 new()
@@ -386,10 +421,10 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             ],
             Model = new()
             {
-                ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_6,
+                ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
             },
-            Name = "name",
+            Name = "My First Agent",
             Skills =
             [
                 new Agents::BetaManagedAgentsAnthropicSkill()
@@ -398,8 +433,15 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
                     Version = "1",
                 },
+                new Agents::BetaManagedAgentsCustomSkill()
+                {
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                    Version = "2",
+                },
             ],
-            System = "system",
+            System =
+                "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
             Tools =
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401()
@@ -418,15 +460,15 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                            Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                         ),
                     },
                     Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
             Type = BetaManagedAgentsSessionAgentType.Agent,
-            Version = 0,
+            Version = 1,
         };
 
         model.Validate();
@@ -437,8 +479,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
     {
         var model = new BetaManagedAgentsSessionAgent
         {
-            ID = "id",
-            Description = "description",
+            ID = "agent_011CZkYpogX7uDKUyvBTophP",
+            Description = "A general-purpose starter agent.",
             McpServers =
             [
                 new()
@@ -450,10 +492,10 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             ],
             Model = new()
             {
-                ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_6,
+                ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
             },
-            Name = "name",
+            Name = "My First Agent",
             Skills =
             [
                 new Agents::BetaManagedAgentsAnthropicSkill()
@@ -462,8 +504,15 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
                     Version = "1",
                 },
+                new Agents::BetaManagedAgentsCustomSkill()
+                {
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                    Version = "2",
+                },
             ],
-            System = "system",
+            System =
+                "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
             Tools =
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401()
@@ -482,15 +531,15 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                            Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                         ),
                     },
                     Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
             Type = BetaManagedAgentsSessionAgentType.Agent,
-            Version = 0,
+            Version = 1,
         };
 
         BetaManagedAgentsSessionAgent copied = new(model);

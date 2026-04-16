@@ -81,7 +81,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
@@ -187,7 +187,6 @@ public class BetaManagedAgentsSessionTest : TestBase
             Type = BetaManagedAgentsSessionAgentType.Agent,
             Version = 1,
         };
-        DateTimeOffset expectedArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedEnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW";
         Dictionary<string, string> expectedMetadata = new();
@@ -238,7 +237,7 @@ public class BetaManagedAgentsSessionTest : TestBase
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedAgent, model.Agent);
-        Assert.Equal(expectedArchivedAt, model.ArchivedAt);
+        Assert.Null(model.ArchivedAt);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
         Assert.Equal(expectedEnvironmentID, model.EnvironmentID);
         Assert.Equal(expectedMetadata.Count, model.Metadata.Count);
@@ -336,7 +335,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
@@ -460,7 +459,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
@@ -573,7 +572,6 @@ public class BetaManagedAgentsSessionTest : TestBase
             Type = BetaManagedAgentsSessionAgentType.Agent,
             Version = 1,
         };
-        DateTimeOffset expectedArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedEnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW";
         Dictionary<string, string> expectedMetadata = new();
@@ -624,7 +622,7 @@ public class BetaManagedAgentsSessionTest : TestBase
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedAgent, deserialized.Agent);
-        Assert.Equal(expectedArchivedAt, deserialized.ArchivedAt);
+        Assert.Null(deserialized.ArchivedAt);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
         Assert.Equal(expectedEnvironmentID, deserialized.EnvironmentID);
         Assert.Equal(expectedMetadata.Count, deserialized.Metadata.Count);
@@ -722,7 +720,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
@@ -840,7 +838,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
