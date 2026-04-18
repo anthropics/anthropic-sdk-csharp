@@ -16,7 +16,9 @@ public sealed record class BetaThinkingBlock : JsonModel
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<string>("signature");
+            // Some APIs are advertised as Anthropic-compatible but erroneously omit the `signature` field in the response.
+            // This is a bug in the API itself, although we can handle it fairly easily here, so we do.
+            return this._rawData.GetNullableClass<string>("signature") ?? string.Empty;
         }
         init { this._rawData.Set("signature", value); }
     }
