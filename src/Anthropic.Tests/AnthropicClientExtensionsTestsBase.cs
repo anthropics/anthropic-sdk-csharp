@@ -4090,6 +4090,92 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetStreamingResponseAsync_WithThinkingBlockMissingInitialSignature_DoesNotThrow()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Analyze this problem"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_thinking_stream_02","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"thinking","thinking":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"Let me analyze this..."}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"signature_delta","signature":"sig_456"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":1,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":1,"delta":{"type":"text_delta","text":"Based on my analysis"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":1}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":10}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Analyze this problem",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        Assert.NotEmpty(updates);
+        var reasoningUpdates = updates
+            .Where(u => u.Contents.Any(c => c is TextReasoningContent))
+            .ToList();
+        Assert.NotEmpty(reasoningUpdates);
+
+        var allReasoningContent = reasoningUpdates
+            .SelectMany(u => u.Contents.OfType<TextReasoningContent>())
+            .ToList();
+        Assert.Contains(
+            allReasoningContent,
+            static content => content.Text == string.Empty && content.ProtectedData == string.Empty
+        );
+        Assert.Contains(
+            allReasoningContent,
+            static content => content.Text == "Let me analyze this..."
+        );
+        Assert.Contains(allReasoningContent, static content => content.ProtectedData == "sig_456");
+    }
+
+    [Fact]
     public async Task GetStreamingResponseAsync_WithRedactedThinkingBlockInStream()
     {
         VerbatimHttpHandler handler = new(
