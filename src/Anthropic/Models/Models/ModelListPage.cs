@@ -20,25 +20,10 @@ public sealed class ModelListPage(
 ) : IPage<ModelInfo>
 {
     /// <inheritdoc/>
-    public IReadOnlyList<ModelInfo> Items
-    {
-        get { return response.Data; }
-    }
+    public IReadOnlyList<ModelInfo> Items => response.Data;
 
     /// <inheritdoc/>
-    public bool HasNext()
-    {
-        try
-        {
-            return this.Items.Count > 0 && response.LastID != null;
-        }
-        catch (AnthropicInvalidDataException)
-        {
-            // If accessing the response data to determine if there's a next page failed, then just
-            // assume there's no next page.
-            return false;
-        }
-    }
+    public bool HasNext() => response.HasMore;
 
     /// <inheritdoc/>
     async Task<IPage<ModelInfo>> IPage<ModelInfo>.Next(CancellationToken cancellationToken) =>
