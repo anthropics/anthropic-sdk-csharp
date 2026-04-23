@@ -82,7 +82,6 @@ public class BatchCreateParamsTest : TestBase
                                     { "foo", JsonSerializer.SerializeToElement("bar") },
                                 },
                             },
-                            TaskBudget = new() { Total = 1024, Remaining = 0 },
                         },
                         OutputFormat = new()
                         {
@@ -156,7 +155,6 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         TopK = 5,
                         TopP = 0.7,
-                        UserProfileID = "user_profile_id",
                     },
                 },
             ],
@@ -223,7 +221,6 @@ public class BatchCreateParamsTest : TestBase
                                 { "foo", JsonSerializer.SerializeToElement("bar") },
                             },
                         },
-                        TaskBudget = new() { Total = 1024, Remaining = 0 },
                     },
                     OutputFormat = new()
                     {
@@ -297,7 +294,6 @@ public class BatchCreateParamsTest : TestBase
                     ],
                     TopK = 5,
                     TopP = 0.7,
-                    UserProfileID = "user_profile_id",
                 },
             },
         ];
@@ -388,7 +384,6 @@ public class BatchCreateParamsTest : TestBase
                                     { "foo", JsonSerializer.SerializeToElement("bar") },
                                 },
                             },
-                            TaskBudget = new() { Total = 1024, Remaining = 0 },
                         },
                         OutputFormat = new()
                         {
@@ -462,7 +457,6 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         TopK = 5,
                         TopP = 0.7,
-                        UserProfileID = "user_profile_id",
                     },
                 },
             ],
@@ -541,7 +535,6 @@ public class BatchCreateParamsTest : TestBase
                                     { "foo", JsonSerializer.SerializeToElement("bar") },
                                 },
                             },
-                            TaskBudget = new() { Total = 1024, Remaining = 0 },
                         },
                         OutputFormat = new()
                         {
@@ -615,7 +608,6 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         TopK = 5,
                         TopP = 0.7,
-                        UserProfileID = "user_profile_id",
                     },
                 },
             ],
@@ -697,7 +689,6 @@ public class BatchCreateParamsTest : TestBase
                                     { "foo", JsonSerializer.SerializeToElement("bar") },
                                 },
                             },
-                            TaskBudget = new() { Total = 1024, Remaining = 0 },
                         },
                         OutputFormat = new()
                         {
@@ -771,7 +762,6 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         TopK = 5,
                         TopP = 0.7,
-                        UserProfileID = "user_profile_id",
                     },
                 },
             ],
@@ -857,7 +847,6 @@ public class BatchCreateParamsTest : TestBase
                                     { "foo", JsonSerializer.SerializeToElement("bar") },
                                 },
                             },
-                            TaskBudget = new() { Total = 1024, Remaining = 0 },
                         },
                         OutputFormat = new()
                         {
@@ -931,7 +920,6 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         TopK = 5,
                         TopP = 0.7,
-                        UserProfileID = "user_profile_id",
                     },
                 },
             ],
@@ -1015,7 +1003,6 @@ public class BatchCreateParamsTest : TestBase
                                     { "foo", JsonSerializer.SerializeToElement("bar") },
                                 },
                             },
-                            TaskBudget = new() { Total = 1024, Remaining = 0 },
                         },
                         OutputFormat = new()
                         {
@@ -1089,7 +1076,6 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         TopK = 5,
                         TopP = 0.7,
-                        UserProfileID = "user_profile_id",
                     },
                 },
             ],
@@ -1165,7 +1151,6 @@ public class RequestTest : TestBase
                             { "foo", JsonSerializer.SerializeToElement("bar") },
                         },
                     },
-                    TaskBudget = new() { Total = 1024, Remaining = 0 },
                 },
                 OutputFormat = new()
                 {
@@ -1236,7 +1221,6 @@ public class RequestTest : TestBase
                 ],
                 TopK = 5,
                 TopP = 0.7,
-                UserProfileID = "user_profile_id",
             },
         };
 
@@ -1296,7 +1280,6 @@ public class RequestTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             OutputFormat = new()
             {
@@ -1367,7 +1350,6 @@ public class RequestTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         Assert.Equal(expectedCustomID, model.CustomID);
@@ -1435,7 +1417,6 @@ public class RequestTest : TestBase
                             { "foo", JsonSerializer.SerializeToElement("bar") },
                         },
                     },
-                    TaskBudget = new() { Total = 1024, Remaining = 0 },
                 },
                 OutputFormat = new()
                 {
@@ -1506,7 +1487,6 @@ public class RequestTest : TestBase
                 ],
                 TopK = 5,
                 TopP = 0.7,
-                UserProfileID = "user_profile_id",
             },
         };
 
@@ -1577,7 +1557,6 @@ public class RequestTest : TestBase
                             { "foo", JsonSerializer.SerializeToElement("bar") },
                         },
                     },
-                    TaskBudget = new() { Total = 1024, Remaining = 0 },
                 },
                 OutputFormat = new()
                 {
@@ -1648,7 +1627,6 @@ public class RequestTest : TestBase
                 ],
                 TopK = 5,
                 TopP = 0.7,
-                UserProfileID = "user_profile_id",
             },
         };
 
@@ -1715,7 +1693,6 @@ public class RequestTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             OutputFormat = new()
             {
@@ -1786,7 +1763,6 @@ public class RequestTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         Assert.Equal(expectedCustomID, deserialized.CustomID);
@@ -1854,7 +1830,6 @@ public class RequestTest : TestBase
                             { "foo", JsonSerializer.SerializeToElement("bar") },
                         },
                     },
-                    TaskBudget = new() { Total = 1024, Remaining = 0 },
                 },
                 OutputFormat = new()
                 {
@@ -1925,7 +1900,6 @@ public class RequestTest : TestBase
                 ],
                 TopK = 5,
                 TopP = 0.7,
-                UserProfileID = "user_profile_id",
             },
         };
 
@@ -1993,7 +1967,6 @@ public class RequestTest : TestBase
                             { "foo", JsonSerializer.SerializeToElement("bar") },
                         },
                     },
-                    TaskBudget = new() { Total = 1024, Remaining = 0 },
                 },
                 OutputFormat = new()
                 {
@@ -2064,7 +2037,6 @@ public class RequestTest : TestBase
                 ],
                 TopK = 5,
                 TopP = 0.7,
-                UserProfileID = "user_profile_id",
             },
         };
 
@@ -2134,7 +2106,6 @@ public class ParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             OutputFormat = new()
             {
@@ -2205,7 +2176,6 @@ public class ParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         long expectedMaxTokens = 1024;
@@ -2270,7 +2240,6 @@ public class ParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
-            TaskBudget = new() { Total = 1024, Remaining = 0 },
         };
         Messages::BetaJsonOutputFormat expectedOutputFormat = new()
         {
@@ -2342,7 +2311,6 @@ public class ParamsTest : TestBase
         ];
         long expectedTopK = 5;
         double expectedTopP = 0.7;
-        string expectedUserProfileID = "user_profile_id";
 
         Assert.Equal(expectedMaxTokens, model.MaxTokens);
         Assert.Equal(expectedMessages.Count, model.Messages.Count);
@@ -2385,7 +2353,6 @@ public class ParamsTest : TestBase
         }
         Assert.Equal(expectedTopK, model.TopK);
         Assert.Equal(expectedTopP, model.TopP);
-        Assert.Equal(expectedUserProfileID, model.UserProfileID);
     }
 
     [Fact]
@@ -2446,7 +2413,6 @@ public class ParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             OutputFormat = new()
             {
@@ -2517,7 +2483,6 @@ public class ParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -2584,7 +2549,6 @@ public class ParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             OutputFormat = new()
             {
@@ -2655,7 +2619,6 @@ public class ParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -2724,7 +2687,6 @@ public class ParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
-            TaskBudget = new() { Total = 1024, Remaining = 0 },
         };
         Messages::BetaJsonOutputFormat expectedOutputFormat = new()
         {
@@ -2796,7 +2758,6 @@ public class ParamsTest : TestBase
         ];
         long expectedTopK = 5;
         double expectedTopP = 0.7;
-        string expectedUserProfileID = "user_profile_id";
 
         Assert.Equal(expectedMaxTokens, deserialized.MaxTokens);
         Assert.Equal(expectedMessages.Count, deserialized.Messages.Count);
@@ -2839,7 +2800,6 @@ public class ParamsTest : TestBase
         }
         Assert.Equal(expectedTopK, deserialized.TopK);
         Assert.Equal(expectedTopP, deserialized.TopP);
-        Assert.Equal(expectedUserProfileID, deserialized.UserProfileID);
     }
 
     [Fact]
@@ -2900,7 +2860,6 @@ public class ParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             OutputFormat = new()
             {
@@ -2971,7 +2930,6 @@ public class ParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         model.Validate();
@@ -3022,7 +2980,6 @@ public class ParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
-            UserProfileID = "user_profile_id",
         };
 
         Assert.Null(model.McpServers);
@@ -3098,7 +3055,6 @@ public class ParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
-            UserProfileID = "user_profile_id",
         };
 
         model.Validate();
@@ -3149,7 +3105,6 @@ public class ParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
-            UserProfileID = "user_profile_id",
 
             // Null should be interpreted as omitted for these properties
             McpServers = null,
@@ -3240,7 +3195,6 @@ public class ParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
-            UserProfileID = "user_profile_id",
 
             // Null should be interpreted as omitted for these properties
             McpServers = null,
@@ -3290,7 +3244,6 @@ public class ParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
@@ -3367,8 +3320,6 @@ public class ParamsTest : TestBase
         Assert.False(model.RawData.ContainsKey("output_format"));
         Assert.Null(model.Speed);
         Assert.False(model.RawData.ContainsKey("speed"));
-        Assert.Null(model.UserProfileID);
-        Assert.False(model.RawData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -3400,7 +3351,6 @@ public class ParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
@@ -3497,7 +3447,6 @@ public class ParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
@@ -3567,7 +3516,6 @@ public class ParamsTest : TestBase
             InferenceGeo = null,
             OutputFormat = null,
             Speed = null,
-            UserProfileID = null,
         };
 
         Assert.Null(model.CacheControl);
@@ -3582,8 +3530,6 @@ public class ParamsTest : TestBase
         Assert.True(model.RawData.ContainsKey("output_format"));
         Assert.Null(model.Speed);
         Assert.True(model.RawData.ContainsKey("speed"));
-        Assert.Null(model.UserProfileID);
-        Assert.True(model.RawData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -3615,7 +3561,6 @@ public class ParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
@@ -3685,7 +3630,6 @@ public class ParamsTest : TestBase
             InferenceGeo = null,
             OutputFormat = null,
             Speed = null,
-            UserProfileID = null,
         };
 
         model.Validate();
@@ -3749,7 +3693,6 @@ public class ParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             OutputFormat = new()
             {
@@ -3820,7 +3763,6 @@ public class ParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         Params copied = new(model);

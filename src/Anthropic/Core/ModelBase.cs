@@ -9,11 +9,13 @@ using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
 using Environments = Anthropic.Models.Beta.Environments;
 using Events = Anthropic.Models.Beta.Sessions.Events;
 using Files = Anthropic.Models.Beta.Files;
+using Memories = Anthropic.Models.Beta.MemoryStores.Memories;
+using MemoryStores = Anthropic.Models.Beta.MemoryStores;
+using MemoryVersions = Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 using Messages = Anthropic.Models.Beta.Messages;
 using MessagesBatches = Anthropic.Models.Beta.Messages.Batches;
 using Resources = Anthropic.Models.Beta.Sessions.Resources;
 using Sessions = Anthropic.Models.Beta.Sessions;
-using UserProfiles = Anthropic.Models.Beta.UserProfiles;
 using Vaults = Anthropic.Models.Beta.Vaults;
 
 namespace Anthropic.Core;
@@ -181,6 +183,8 @@ public abstract record class ModelBase
                 string,
                 Sessions::BetaManagedAgentsGitHubRepositoryResourceParamsType
             >(),
+            new ApiEnumConverter<string, Sessions::BetaManagedAgentsMemoryStoreResourceParamType>(),
+            new ApiEnumConverter<string, Sessions::Access>(),
             new ApiEnumConverter<string, Sessions::Status>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsSessionType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsSessionAgentType>(),
@@ -269,6 +273,8 @@ public abstract record class ModelBase
                 string,
                 Resources::BetaManagedAgentsGitHubRepositoryResourceType
             >(),
+            new ApiEnumConverter<string, Resources::BetaManagedAgentsMemoryStoreResourceType>(),
+            new ApiEnumConverter<string, Resources::Access>(),
             new ApiEnumConverter<string, Resources::Type>(),
             new ApiEnumConverter<string, Vaults::Type>(),
             new ApiEnumConverter<string, Vaults::BetaManagedAgentsVaultType>(),
@@ -321,11 +327,30 @@ public abstract record class ModelBase
                 string,
                 Credentials::BetaManagedAgentsTokenEndpointAuthPostUpdateParamType
             >(),
+            new ApiEnumConverter<string, MemoryStores::Type>(),
+            new ApiEnumConverter<string, MemoryStores::BetaManagedAgentsMemoryStoreType>(),
+            new ApiEnumConverter<string, Memories::Type>(),
+            new ApiEnumConverter<
+                string,
+                Memories::BetaManagedAgentsContentSha256PreconditionType
+            >(),
+            new ApiEnumConverter<string, Memories::BetaManagedAgentsDeletedMemoryType>(),
+            new ApiEnumConverter<string, Memories::BetaManagedAgentsMemoryType>(),
+            new ApiEnumConverter<string, Memories::BetaManagedAgentsMemoryPathConflictErrorType>(),
+            new ApiEnumConverter<
+                string,
+                Memories::BetaManagedAgentsMemoryPreconditionFailedErrorType
+            >(),
+            new ApiEnumConverter<string, Memories::BetaManagedAgentsMemoryPrefixType>(),
+            new ApiEnumConverter<string, Memories::BetaManagedAgentsMemoryView>(),
+            new ApiEnumConverter<string, Memories::BetaManagedAgentsPreconditionType>(),
+            new ApiEnumConverter<string, Memories::Order>(),
+            new ApiEnumConverter<string, MemoryVersions::Type>(),
+            new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsMemoryVersionType>(),
+            new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsMemoryVersionOperation>(),
+            new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsSessionActorType>(),
+            new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsUserActorType>(),
             new ApiEnumConverter<string, Files::Type>(),
-            new ApiEnumConverter<string, UserProfiles::Type>(),
-            new ApiEnumConverter<string, UserProfiles::BetaUserProfileEnrollmentUrlType>(),
-            new ApiEnumConverter<string, UserProfiles::Status>(),
-            new ApiEnumConverter<string, UserProfiles::Order>(),
         },
     };
 
