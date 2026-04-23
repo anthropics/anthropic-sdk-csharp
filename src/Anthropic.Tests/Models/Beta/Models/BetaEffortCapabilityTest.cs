@@ -16,6 +16,7 @@ public class BetaEffortCapabilityTest : TestBase
             Max = new(true),
             Medium = new(true),
             Supported = true,
+            Xhigh = new(true),
         };
 
         BetaCapabilitySupport expectedHigh = new(true);
@@ -23,12 +24,14 @@ public class BetaEffortCapabilityTest : TestBase
         BetaCapabilitySupport expectedMax = new(true);
         BetaCapabilitySupport expectedMedium = new(true);
         bool expectedSupported = true;
+        BetaCapabilitySupport expectedXhigh = new(true);
 
         Assert.Equal(expectedHigh, model.High);
         Assert.Equal(expectedLow, model.Low);
         Assert.Equal(expectedMax, model.Max);
         Assert.Equal(expectedMedium, model.Medium);
         Assert.Equal(expectedSupported, model.Supported);
+        Assert.Equal(expectedXhigh, model.Xhigh);
     }
 
     [Fact]
@@ -41,6 +44,7 @@ public class BetaEffortCapabilityTest : TestBase
             Max = new(true),
             Medium = new(true),
             Supported = true,
+            Xhigh = new(true),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -62,6 +66,7 @@ public class BetaEffortCapabilityTest : TestBase
             Max = new(true),
             Medium = new(true),
             Supported = true,
+            Xhigh = new(true),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -76,12 +81,14 @@ public class BetaEffortCapabilityTest : TestBase
         BetaCapabilitySupport expectedMax = new(true);
         BetaCapabilitySupport expectedMedium = new(true);
         bool expectedSupported = true;
+        BetaCapabilitySupport expectedXhigh = new(true);
 
         Assert.Equal(expectedHigh, deserialized.High);
         Assert.Equal(expectedLow, deserialized.Low);
         Assert.Equal(expectedMax, deserialized.Max);
         Assert.Equal(expectedMedium, deserialized.Medium);
         Assert.Equal(expectedSupported, deserialized.Supported);
+        Assert.Equal(expectedXhigh, deserialized.Xhigh);
     }
 
     [Fact]
@@ -94,6 +101,7 @@ public class BetaEffortCapabilityTest : TestBase
             Max = new(true),
             Medium = new(true),
             Supported = true,
+            Xhigh = new(true),
         };
 
         model.Validate();
@@ -109,6 +117,7 @@ public class BetaEffortCapabilityTest : TestBase
             Max = new(true),
             Medium = new(true),
             Supported = true,
+            Xhigh = new(true),
         };
 
         BetaEffortCapability copied = new(model);
