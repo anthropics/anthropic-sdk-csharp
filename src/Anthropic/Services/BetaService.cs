@@ -34,9 +34,9 @@ public sealed class BetaService : IBetaService
         _environments = new(() => new Beta::EnvironmentService(client));
         _sessions = new(() => new Beta::SessionService(client));
         _vaults = new(() => new Beta::VaultService(client));
+        _memoryStores = new(() => new Beta::MemoryStoreService(client));
         _files = new(() => new Beta::FileService(client));
         _skills = new(() => new Beta::SkillService(client));
-        _userProfiles = new(() => new Beta::UserProfileService(client));
     }
 
     readonly Lazy<Beta::IModelService> _models;
@@ -75,6 +75,12 @@ public sealed class BetaService : IBetaService
         get { return _vaults.Value; }
     }
 
+    readonly Lazy<Beta::IMemoryStoreService> _memoryStores;
+    public Beta::IMemoryStoreService MemoryStores
+    {
+        get { return _memoryStores.Value; }
+    }
+
     readonly Lazy<Beta::IFileService> _files;
     public Beta::IFileService Files
     {
@@ -85,12 +91,6 @@ public sealed class BetaService : IBetaService
     public Beta::ISkillService Skills
     {
         get { return _skills.Value; }
-    }
-
-    readonly Lazy<Beta::IUserProfileService> _userProfiles;
-    public Beta::IUserProfileService UserProfiles
-    {
-        get { return _userProfiles.Value; }
     }
 }
 
@@ -115,9 +115,9 @@ public sealed class BetaServiceWithRawResponse : IBetaServiceWithRawResponse
         _environments = new(() => new Beta::EnvironmentServiceWithRawResponse(client));
         _sessions = new(() => new Beta::SessionServiceWithRawResponse(client));
         _vaults = new(() => new Beta::VaultServiceWithRawResponse(client));
+        _memoryStores = new(() => new Beta::MemoryStoreServiceWithRawResponse(client));
         _files = new(() => new Beta::FileServiceWithRawResponse(client));
         _skills = new(() => new Beta::SkillServiceWithRawResponse(client));
-        _userProfiles = new(() => new Beta::UserProfileServiceWithRawResponse(client));
     }
 
     readonly Lazy<Beta::IModelServiceWithRawResponse> _models;
@@ -156,6 +156,12 @@ public sealed class BetaServiceWithRawResponse : IBetaServiceWithRawResponse
         get { return _vaults.Value; }
     }
 
+    readonly Lazy<Beta::IMemoryStoreServiceWithRawResponse> _memoryStores;
+    public Beta::IMemoryStoreServiceWithRawResponse MemoryStores
+    {
+        get { return _memoryStores.Value; }
+    }
+
     readonly Lazy<Beta::IFileServiceWithRawResponse> _files;
     public Beta::IFileServiceWithRawResponse Files
     {
@@ -166,11 +172,5 @@ public sealed class BetaServiceWithRawResponse : IBetaServiceWithRawResponse
     public Beta::ISkillServiceWithRawResponse Skills
     {
         get { return _skills.Value; }
-    }
-
-    readonly Lazy<Beta::IUserProfileServiceWithRawResponse> _userProfiles;
-    public Beta::IUserProfileServiceWithRawResponse UserProfiles
-    {
-        get { return _userProfiles.Value; }
     }
 }

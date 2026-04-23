@@ -7,6 +7,9 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Resources;
 
+/// <summary>
+/// A memory store attached to an agent session.
+/// </summary>
 [JsonConverter(typeof(BetaManagedAgentsSessionResourceConverter))]
 public record class BetaManagedAgentsSessionResource : ModelBase
 {
@@ -25,24 +28,52 @@ public record class BetaManagedAgentsSessionResource : ModelBase
         }
     }
 
-    public string ID
+    public string? ID
     {
-        get { return Match(githubRepository: (x) => x.ID, file: (x) => x.ID); }
+        get
+        {
+            return Match<string?>(
+                githubRepository: (x) => x.ID,
+                file: (x) => x.ID,
+                memoryStore: (_) => null
+            );
+        }
     }
 
-    public System::DateTimeOffset CreatedAt
+    public System::DateTimeOffset? CreatedAt
     {
-        get { return Match(githubRepository: (x) => x.CreatedAt, file: (x) => x.CreatedAt); }
+        get
+        {
+            return Match<System::DateTimeOffset?>(
+                githubRepository: (x) => x.CreatedAt,
+                file: (x) => x.CreatedAt,
+                memoryStore: (_) => null
+            );
+        }
     }
 
-    public string MountPath
+    public string? MountPath
     {
-        get { return Match(githubRepository: (x) => x.MountPath, file: (x) => x.MountPath); }
+        get
+        {
+            return Match<string?>(
+                githubRepository: (x) => x.MountPath,
+                file: (x) => x.MountPath,
+                memoryStore: (x) => x.MountPath
+            );
+        }
     }
 
-    public System::DateTimeOffset UpdatedAt
+    public System::DateTimeOffset? UpdatedAt
     {
-        get { return Match(githubRepository: (x) => x.UpdatedAt, file: (x) => x.UpdatedAt); }
+        get
+        {
+            return Match<System::DateTimeOffset?>(
+                githubRepository: (x) => x.UpdatedAt,
+                file: (x) => x.UpdatedAt,
+                memoryStore: (_) => null
+            );
+        }
     }
 
     public BetaManagedAgentsSessionResource(
@@ -56,6 +87,15 @@ public record class BetaManagedAgentsSessionResource : ModelBase
 
     public BetaManagedAgentsSessionResource(
         BetaManagedAgentsFileResource value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsSessionResource(
+        BetaManagedAgentsMemoryStoreResource value,
         JsonElement? element = null
     )
     {
@@ -113,6 +153,29 @@ public record class BetaManagedAgentsSessionResource : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsMemoryStoreResource"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickMemoryStore(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsMemoryStoreResource`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickMemoryStore(
+        [NotNullWhen(true)] out BetaManagedAgentsMemoryStoreResource? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsMemoryStoreResource;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -127,14 +190,16 @@ public record class BetaManagedAgentsSessionResource : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (BetaManagedAgentsGitHubRepositoryResource value) =&gt; {...},
-    ///     (BetaManagedAgentsFileResource value) =&gt; {...}
+    ///     (BetaManagedAgentsFileResource value) =&gt; {...},
+    ///     (BetaManagedAgentsMemoryStoreResource value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<BetaManagedAgentsGitHubRepositoryResource> githubRepository,
-        System::Action<BetaManagedAgentsFileResource> file
+        System::Action<BetaManagedAgentsFileResource> file,
+        System::Action<BetaManagedAgentsMemoryStoreResource> memoryStore
     )
     {
         switch (this.Value)
@@ -144,6 +209,9 @@ public record class BetaManagedAgentsSessionResource : ModelBase
                 break;
             case BetaManagedAgentsFileResource value:
                 file(value);
+                break;
+            case BetaManagedAgentsMemoryStoreResource value:
+                memoryStore(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -168,20 +236,23 @@ public record class BetaManagedAgentsSessionResource : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (BetaManagedAgentsGitHubRepositoryResource value) =&gt; {...},
-    ///     (BetaManagedAgentsFileResource value) =&gt; {...}
+    ///     (BetaManagedAgentsFileResource value) =&gt; {...},
+    ///     (BetaManagedAgentsMemoryStoreResource value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
         System::Func<BetaManagedAgentsGitHubRepositoryResource, T> githubRepository,
-        System::Func<BetaManagedAgentsFileResource, T> file
+        System::Func<BetaManagedAgentsFileResource, T> file,
+        System::Func<BetaManagedAgentsMemoryStoreResource, T> memoryStore
     )
     {
         return this.Value switch
         {
             BetaManagedAgentsGitHubRepositoryResource value => githubRepository(value),
             BetaManagedAgentsFileResource value => file(value),
+            BetaManagedAgentsMemoryStoreResource value => memoryStore(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsSessionResource"
             ),
@@ -194,6 +265,10 @@ public record class BetaManagedAgentsSessionResource : ModelBase
 
     public static implicit operator BetaManagedAgentsSessionResource(
         BetaManagedAgentsFileResource value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsSessionResource(
+        BetaManagedAgentsMemoryStoreResource value
     ) => new(value);
 
     /// <summary>
@@ -214,7 +289,11 @@ public record class BetaManagedAgentsSessionResource : ModelBase
                 "Data did not match any variant of BetaManagedAgentsSessionResource"
             );
         }
-        this.Switch((githubRepository) => githubRepository.Validate(), (file) => file.Validate());
+        this.Switch(
+            (githubRepository) => githubRepository.Validate(),
+            (file) => file.Validate(),
+            (memoryStore) => memoryStore.Validate()
+        );
     }
 
     public virtual bool Equals(BetaManagedAgentsSessionResource? other) =>
@@ -239,6 +318,7 @@ public record class BetaManagedAgentsSessionResource : ModelBase
         {
             BetaManagedAgentsGitHubRepositoryResource _ => 0,
             BetaManagedAgentsFileResource _ => 1,
+            BetaManagedAgentsMemoryStoreResource _ => 2,
             _ => -1,
         };
     }
@@ -295,6 +375,27 @@ sealed class BetaManagedAgentsSessionResourceConverter
                         element,
                         options
                     );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "memory_store":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsMemoryStoreResource>(
+                            element,
+                            options
+                        );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);

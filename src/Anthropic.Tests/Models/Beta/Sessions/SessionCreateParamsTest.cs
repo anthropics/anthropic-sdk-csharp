@@ -329,6 +329,19 @@ public class ResourceTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsMemoryStoreResourceParamValidationWorks()
+    {
+        Sessions::Resource value = new Sessions::BetaManagedAgentsMemoryStoreResourceParam()
+        {
+            MemoryStoreID = "memory_store_id",
+            Type = Sessions::BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
+            Access = Sessions::Access.ReadWrite,
+            Instructions = "instructions",
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsGitHubRepositoryResourceParamsSerializationRoundtripWorks()
     {
         Sessions::Resource value = new Sessions::BetaManagedAgentsGitHubRepositoryResourceParams()
@@ -360,6 +373,25 @@ public class ResourceTest : TestBase
             FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
             MountPath = "/uploads/receipt.pdf",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Sessions::Resource>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMemoryStoreResourceParamSerializationRoundtripWorks()
+    {
+        Sessions::Resource value = new Sessions::BetaManagedAgentsMemoryStoreResourceParam()
+        {
+            MemoryStoreID = "memory_store_id",
+            Type = Sessions::BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
+            Access = Sessions::Access.ReadWrite,
+            Instructions = "instructions",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Sessions::Resource>(

@@ -527,7 +527,7 @@ public record class MessageCreateParams : ParamsBase
     /// <para>Used to remove "long tail" low probability responses. [Learn more technical
     /// details here](https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277).</para>
     ///
-    /// <para>Recommended for advanced use cases only. You usually only need to use `temperature`.</para>
+    /// <para>Recommended for advanced use cases only.</para>
     /// </summary>
     [System::Obsolete(
         "Deprecated. Models released after Claude Opus 4.6 do not accept top_k; any value will be rejected with a 400 error."
@@ -555,10 +555,9 @@ public record class MessageCreateParams : ParamsBase
     ///
     /// <para>In nucleus sampling, we compute the cumulative distribution over all
     /// the options for each subsequent token in decreasing probability order and
-    /// cut it off once it reaches a particular probability specified by `top_p`.
-    /// You should either alter `temperature` or `top_p`, but not both.</para>
+    /// cut it off once it reaches a particular probability specified by `top_p`.</para>
     ///
-    /// <para>Recommended for advanced use cases only. You usually only need to use `temperature`.</para>
+    /// <para>Recommended for advanced use cases only.</para>
     /// </summary>
     [System::Obsolete(
         "Deprecated. Models released after Claude Opus 4.6 do not support setting top_p. A value >= 0.99 will be accepted for backwards compatibility, all other values will be rejected with a 400 error."
@@ -579,20 +578,6 @@ public record class MessageCreateParams : ParamsBase
 
             this._rawBodyData.Set("top_p", value);
         }
-    }
-
-    /// <summary>
-    /// The user profile ID to attribute this request to. Use when acting on behalf
-    /// of a party other than your organization.
-    /// </summary>
-    public string? UserProfileID
-    {
-        get
-        {
-            this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableClass<string>("user_profile_id");
-        }
-        init { this._rawBodyData.Set("user_profile_id", value); }
     }
 
     /// <summary>

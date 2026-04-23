@@ -562,7 +562,8 @@ public record class Resource : ModelBase
         {
             return Match<string?>(
                 betaManagedAgentsGitHubRepositoryResourceParams: (x) => x.MountPath,
-                betaManagedAgentsFileResourceParams: (x) => x.MountPath
+                betaManagedAgentsFileResourceParams: (x) => x.MountPath,
+                betaManagedAgentsMemoryStoreResourceParam: (_) => null
             );
         }
     }
@@ -577,6 +578,12 @@ public record class Resource : ModelBase
     }
 
     public Resource(BetaManagedAgentsFileResourceParams value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Resource(BetaManagedAgentsMemoryStoreResourceParam value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -634,6 +641,29 @@ public record class Resource : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsMemoryStoreResourceParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsMemoryStoreResourceParam(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsMemoryStoreResourceParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsMemoryStoreResourceParam(
+        [NotNullWhen(true)] out BetaManagedAgentsMemoryStoreResourceParam? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsMemoryStoreResourceParam;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -648,14 +678,16 @@ public record class Resource : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (BetaManagedAgentsGitHubRepositoryResourceParams value) =&gt; {...},
-    ///     (BetaManagedAgentsFileResourceParams value) =&gt; {...}
+    ///     (BetaManagedAgentsFileResourceParams value) =&gt; {...},
+    ///     (BetaManagedAgentsMemoryStoreResourceParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<BetaManagedAgentsGitHubRepositoryResourceParams> betaManagedAgentsGitHubRepositoryResourceParams,
-        System::Action<BetaManagedAgentsFileResourceParams> betaManagedAgentsFileResourceParams
+        System::Action<BetaManagedAgentsFileResourceParams> betaManagedAgentsFileResourceParams,
+        System::Action<BetaManagedAgentsMemoryStoreResourceParam> betaManagedAgentsMemoryStoreResourceParam
     )
     {
         switch (this.Value)
@@ -665,6 +697,9 @@ public record class Resource : ModelBase
                 break;
             case BetaManagedAgentsFileResourceParams value:
                 betaManagedAgentsFileResourceParams(value);
+                break;
+            case BetaManagedAgentsMemoryStoreResourceParam value:
+                betaManagedAgentsMemoryStoreResourceParam(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -689,7 +724,8 @@ public record class Resource : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (BetaManagedAgentsGitHubRepositoryResourceParams value) =&gt; {...},
-    ///     (BetaManagedAgentsFileResourceParams value) =&gt; {...}
+    ///     (BetaManagedAgentsFileResourceParams value) =&gt; {...},
+    ///     (BetaManagedAgentsMemoryStoreResourceParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -699,7 +735,11 @@ public record class Resource : ModelBase
             BetaManagedAgentsGitHubRepositoryResourceParams,
             T
         > betaManagedAgentsGitHubRepositoryResourceParams,
-        System::Func<BetaManagedAgentsFileResourceParams, T> betaManagedAgentsFileResourceParams
+        System::Func<BetaManagedAgentsFileResourceParams, T> betaManagedAgentsFileResourceParams,
+        System::Func<
+            BetaManagedAgentsMemoryStoreResourceParam,
+            T
+        > betaManagedAgentsMemoryStoreResourceParam
     )
     {
         return this.Value switch
@@ -707,6 +747,8 @@ public record class Resource : ModelBase
             BetaManagedAgentsGitHubRepositoryResourceParams value =>
                 betaManagedAgentsGitHubRepositoryResourceParams(value),
             BetaManagedAgentsFileResourceParams value => betaManagedAgentsFileResourceParams(value),
+            BetaManagedAgentsMemoryStoreResourceParam value =>
+                betaManagedAgentsMemoryStoreResourceParam(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Resource"
             ),
@@ -718,6 +760,9 @@ public record class Resource : ModelBase
     ) => new(value);
 
     public static implicit operator Resource(BetaManagedAgentsFileResourceParams value) =>
+        new(value);
+
+    public static implicit operator Resource(BetaManagedAgentsMemoryStoreResourceParam value) =>
         new(value);
 
     /// <summary>
@@ -739,7 +784,9 @@ public record class Resource : ModelBase
         this.Switch(
             (betaManagedAgentsGitHubRepositoryResourceParams) =>
                 betaManagedAgentsGitHubRepositoryResourceParams.Validate(),
-            (betaManagedAgentsFileResourceParams) => betaManagedAgentsFileResourceParams.Validate()
+            (betaManagedAgentsFileResourceParams) => betaManagedAgentsFileResourceParams.Validate(),
+            (betaManagedAgentsMemoryStoreResourceParam) =>
+                betaManagedAgentsMemoryStoreResourceParam.Validate()
         );
     }
 
@@ -765,6 +812,7 @@ public record class Resource : ModelBase
         {
             BetaManagedAgentsGitHubRepositoryResourceParams _ => 0,
             BetaManagedAgentsFileResourceParams _ => 1,
+            BetaManagedAgentsMemoryStoreResourceParam _ => 2,
             _ => -1,
         };
     }
@@ -818,6 +866,27 @@ sealed class ResourceConverter : JsonConverter<Resource>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaManagedAgentsFileResourceParams>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "memory_store":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsMemoryStoreResourceParam>(
                             element,
                             options
                         );

@@ -1,8 +1,8 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Resources;
+using Sessions = Anthropic.Models.Beta.Sessions;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Resources;
 
@@ -19,10 +19,10 @@ public class ResourceRetrieveResponseTest : TestBase
             Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Url = "https://github.com/example-org/example-repo",
-            Checkout = new BetaManagedAgentsBranchCheckout()
+            Checkout = new Sessions::BetaManagedAgentsBranchCheckout()
             {
                 Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
+                Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
             },
         };
         value.Validate();
@@ -44,6 +44,22 @@ public class ResourceRetrieveResponseTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsMemoryStoreResourceValidationWorks()
+    {
+        ResourceRetrieveResponse value = new BetaManagedAgentsMemoryStoreResource()
+        {
+            MemoryStoreID = "memory_store_id",
+            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
+            Access = Access.ReadWrite,
+            Description = "description",
+            Instructions = "instructions",
+            MountPath = "mount_path",
+            Name = "name",
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsGitHubRepositoryResourceSerializationRoundtripWorks()
     {
         ResourceRetrieveResponse value = new BetaManagedAgentsGitHubRepositoryResource()
@@ -54,10 +70,10 @@ public class ResourceRetrieveResponseTest : TestBase
             Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Url = "https://github.com/example-org/example-repo",
-            Checkout = new BetaManagedAgentsBranchCheckout()
+            Checkout = new Sessions::BetaManagedAgentsBranchCheckout()
             {
                 Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
+                Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
             },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -80,6 +96,28 @@ public class ResourceRetrieveResponseTest : TestBase
             MountPath = "/uploads/receipt.pdf",
             Type = BetaManagedAgentsFileResourceType.File,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ResourceRetrieveResponse>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMemoryStoreResourceSerializationRoundtripWorks()
+    {
+        ResourceRetrieveResponse value = new BetaManagedAgentsMemoryStoreResource()
+        {
+            MemoryStoreID = "memory_store_id",
+            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
+            Access = Access.ReadWrite,
+            Description = "description",
+            Instructions = "instructions",
+            MountPath = "mount_path",
+            Name = "name",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ResourceRetrieveResponse>(

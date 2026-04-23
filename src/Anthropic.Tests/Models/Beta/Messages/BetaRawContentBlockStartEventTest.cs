@@ -407,11 +407,7 @@ public class ContentBlockTest : TestBase
     [Fact]
     public void BetaCompactionValidationWorks()
     {
-        ContentBlock value = new BetaCompactionBlock()
-        {
-            Content = "content",
-            EncryptedContent = "encrypted_content",
-        };
+        ContentBlock value = new BetaCompactionBlock("content");
         value.Validate();
     }
 
@@ -710,11 +706,7 @@ public class ContentBlockTest : TestBase
     [Fact]
     public void BetaCompactionSerializationRoundtripWorks()
     {
-        ContentBlock value = new BetaCompactionBlock()
-        {
-            Content = "content",
-            EncryptedContent = "encrypted_content",
-        };
+        ContentBlock value = new BetaCompactionBlock("content");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
             element,

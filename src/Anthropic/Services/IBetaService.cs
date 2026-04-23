@@ -36,11 +36,11 @@ public interface IBetaService
 
     Beta::IVaultService Vaults { get; }
 
+    Beta::IMemoryStoreService MemoryStores { get; }
+
     Beta::IFileService Files { get; }
 
     Beta::ISkillService Skills { get; }
-
-    Beta::IUserProfileService UserProfiles { get; }
 }
 
 /// <summary>
@@ -68,9 +68,9 @@ public interface IBetaServiceWithRawResponse
 
     Beta::IVaultServiceWithRawResponse Vaults { get; }
 
+    Beta::IMemoryStoreServiceWithRawResponse MemoryStores { get; }
+
     Beta::IFileServiceWithRawResponse Files { get; }
 
     Beta::ISkillServiceWithRawResponse Skills { get; }
-
-    Beta::IUserProfileServiceWithRawResponse UserProfiles { get; }
 }

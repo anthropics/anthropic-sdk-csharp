@@ -212,11 +212,7 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void CompactionValidationWorks()
     {
-        BetaContentBlock value = new BetaCompactionBlock()
-        {
-            Content = "content",
-            EncryptedContent = "encrypted_content",
-        };
+        BetaContentBlock value = new BetaCompactionBlock("content");
         value.Validate();
     }
 
@@ -515,11 +511,7 @@ public class BetaContentBlockTest : TestBase
     [Fact]
     public void CompactionSerializationRoundtripWorks()
     {
-        BetaContentBlock value = new BetaCompactionBlock()
-        {
-            Content = "content",
-            EncryptedContent = "encrypted_content",
-        };
+        BetaContentBlock value = new BetaCompactionBlock("content");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
             element,

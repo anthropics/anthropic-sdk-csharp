@@ -54,7 +54,6 @@ public class MessageCountTokensParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             OutputFormat = new()
             {
@@ -159,7 +158,6 @@ public class MessageCountTokensParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
-            TaskBudget = new() { Total = 1024, Remaining = 0 },
         };
         BetaJsonOutputFormat expectedOutputFormat = new()
         {
@@ -399,7 +397,6 @@ public class MessageCountTokensParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             System = new(
                 [
@@ -493,7 +490,6 @@ public class MessageCountTokensParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             System = new(
                 [
@@ -645,7 +641,6 @@ public class MessageCountTokensParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
-                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             OutputFormat = new()
             {

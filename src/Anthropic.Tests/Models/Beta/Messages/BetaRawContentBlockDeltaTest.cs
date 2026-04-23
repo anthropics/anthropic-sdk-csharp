@@ -56,11 +56,7 @@ public class BetaRawContentBlockDeltaTest : TestBase
     [Fact]
     public void CompactionValidationWorks()
     {
-        BetaRawContentBlockDelta value = new BetaCompactionContentBlockDelta()
-        {
-            Content = "content",
-            EncryptedContent = "encrypted_content",
-        };
+        BetaRawContentBlockDelta value = new BetaCompactionContentBlockDelta("content");
         value.Validate();
     }
 
@@ -144,11 +140,7 @@ public class BetaRawContentBlockDeltaTest : TestBase
     [Fact]
     public void CompactionSerializationRoundtripWorks()
     {
-        BetaRawContentBlockDelta value = new BetaCompactionContentBlockDelta()
-        {
-            Content = "content",
-            EncryptedContent = "encrypted_content",
-        };
+        BetaRawContentBlockDelta value = new BetaCompactionContentBlockDelta("content");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(
             element,

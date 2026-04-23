@@ -215,9 +215,9 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
                     + "Only Messages and Beta.Messages are available."
             );
 
-        public Beta::IUserProfileService UserProfiles =>
+        public Beta::IMemoryStoreService MemoryStores =>
             throw new NotSupportedException(
-                "The Beta.UserProfiles resource is not supported on Bedrock Mantle. "
+                "The Beta.MemoryStores resource is not supported on Bedrock Mantle. "
                     + "Only Messages and Beta.Messages are available."
             );
     }
@@ -277,9 +277,9 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
                     + "Only Messages and Beta.Messages are available."
             );
 
-        public Beta::IUserProfileServiceWithRawResponse UserProfiles =>
+        public Beta::IMemoryStoreServiceWithRawResponse MemoryStores =>
             throw new NotSupportedException(
-                "The Beta.UserProfiles resource is not supported on Bedrock Mantle. "
+                "The Beta.MemoryStores resource is not supported on Bedrock Mantle. "
                     + "Only Messages and Beta.Messages are available."
             );
     }

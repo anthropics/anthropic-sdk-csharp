@@ -21,7 +21,6 @@ public class BetaOutputConfigTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
-            TaskBudget = new() { Total = 1024, Remaining = 0 },
         };
 
         ApiEnum<string, Effort> expectedEffort = Effort.Low;
@@ -32,11 +31,9 @@ public class BetaOutputConfigTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
         };
-        BetaTokenTaskBudget expectedTaskBudget = new() { Total = 1024, Remaining = 0 };
 
         Assert.Equal(expectedEffort, model.Effort);
         Assert.Equal(expectedFormat, model.Format);
-        Assert.Equal(expectedTaskBudget, model.TaskBudget);
     }
 
     [Fact]
@@ -52,7 +49,6 @@ public class BetaOutputConfigTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
-            TaskBudget = new() { Total = 1024, Remaining = 0 },
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -77,7 +73,6 @@ public class BetaOutputConfigTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
-            TaskBudget = new() { Total = 1024, Remaining = 0 },
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -95,11 +90,9 @@ public class BetaOutputConfigTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
         };
-        BetaTokenTaskBudget expectedTaskBudget = new() { Total = 1024, Remaining = 0 };
 
         Assert.Equal(expectedEffort, deserialized.Effort);
         Assert.Equal(expectedFormat, deserialized.Format);
-        Assert.Equal(expectedTaskBudget, deserialized.TaskBudget);
     }
 
     [Fact]
@@ -115,7 +108,6 @@ public class BetaOutputConfigTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
-            TaskBudget = new() { Total = 1024, Remaining = 0 },
         };
 
         model.Validate();
@@ -130,8 +122,6 @@ public class BetaOutputConfigTest : TestBase
         Assert.False(model.RawData.ContainsKey("effort"));
         Assert.Null(model.Format);
         Assert.False(model.RawData.ContainsKey("format"));
-        Assert.Null(model.TaskBudget);
-        Assert.False(model.RawData.ContainsKey("task_budget"));
     }
 
     [Fact]
@@ -145,30 +135,18 @@ public class BetaOutputConfigTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new BetaOutputConfig
-        {
-            Effort = null,
-            Format = null,
-            TaskBudget = null,
-        };
+        var model = new BetaOutputConfig { Effort = null, Format = null };
 
         Assert.Null(model.Effort);
         Assert.True(model.RawData.ContainsKey("effort"));
         Assert.Null(model.Format);
         Assert.True(model.RawData.ContainsKey("format"));
-        Assert.Null(model.TaskBudget);
-        Assert.True(model.RawData.ContainsKey("task_budget"));
     }
 
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new BetaOutputConfig
-        {
-            Effort = null,
-            Format = null,
-            TaskBudget = null,
-        };
+        var model = new BetaOutputConfig { Effort = null, Format = null };
 
         model.Validate();
     }
@@ -186,7 +164,6 @@ public class BetaOutputConfigTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
-            TaskBudget = new() { Total = 1024, Remaining = 0 },
         };
 
         BetaOutputConfig copied = new(model);
@@ -201,7 +178,6 @@ public class EffortTest : TestBase
     [InlineData(Effort.Low)]
     [InlineData(Effort.Medium)]
     [InlineData(Effort.High)]
-    [InlineData(Effort.Xhigh)]
     [InlineData(Effort.Max)]
     public void Validation_Works(Effort rawValue)
     {
@@ -226,7 +202,6 @@ public class EffortTest : TestBase
     [InlineData(Effort.Low)]
     [InlineData(Effort.Medium)]
     [InlineData(Effort.High)]
-    [InlineData(Effort.Xhigh)]
     [InlineData(Effort.Max)]
     public void SerializationRoundtrip_Works(Effort rawValue)
     {
