@@ -41,6 +41,8 @@ public interface IBetaService
     Beta::IFileService Files { get; }
 
     Beta::ISkillService Skills { get; }
+
+    Beta::IUserProfileService UserProfiles { get; }
 }
 
 /// <summary>
@@ -73,4 +75,6 @@ public interface IBetaServiceWithRawResponse
     Beta::IFileServiceWithRawResponse Files { get; }
 
     Beta::ISkillServiceWithRawResponse Skills { get; }
+
+    Beta::IUserProfileServiceWithRawResponse UserProfiles { get; }
 }

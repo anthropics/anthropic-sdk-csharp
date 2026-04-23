@@ -70,6 +70,7 @@ public class MessageCreateParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
+                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             OutputFormat = new()
             {
@@ -136,6 +137,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
+            UserProfileID = "user_profile_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -195,6 +197,7 @@ public class MessageCreateParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
             },
+            TaskBudget = new() { Total = 1024, Remaining = 0 },
         };
         BetaJsonOutputFormat expectedOutputFormat = new()
         {
@@ -267,6 +270,7 @@ public class MessageCreateParamsTest : TestBase
         ];
         long expectedTopK = 5;
         double expectedTopP = 0.7;
+        string expectedUserProfileID = "user_profile_id";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -312,6 +316,7 @@ public class MessageCreateParamsTest : TestBase
         }
         Assert.Equal(expectedTopK, parameters.TopK);
         Assert.Equal(expectedTopP, parameters.TopP);
+        Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
         Assert.NotNull(parameters.Betas);
         Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
         for (int i = 0; i < expectedBetas.Count; i++)
@@ -365,6 +370,7 @@ public class MessageCreateParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
+            UserProfileID = "user_profile_id",
         };
 
         Assert.Null(parameters.McpServers);
@@ -440,6 +446,7 @@ public class MessageCreateParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
+            UserProfileID = "user_profile_id",
 
             // Null should be interpreted as omitted for these properties
             McpServers = null,
@@ -514,6 +521,7 @@ public class MessageCreateParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
+                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
@@ -587,6 +595,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("output_format"));
         Assert.Null(parameters.Speed);
         Assert.False(parameters.RawBodyData.ContainsKey("speed"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawBodyData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -618,6 +628,7 @@ public class MessageCreateParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
+                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
@@ -684,6 +695,7 @@ public class MessageCreateParamsTest : TestBase
             InferenceGeo = null,
             OutputFormat = null,
             Speed = null,
+            UserProfileID = null,
         };
 
         Assert.Null(parameters.CacheControl);
@@ -698,6 +710,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.True(parameters.RawBodyData.ContainsKey("output_format"));
         Assert.Null(parameters.Speed);
         Assert.True(parameters.RawBodyData.ContainsKey("speed"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.True(parameters.RawBodyData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -795,6 +809,7 @@ public class MessageCreateParamsTest : TestBase
                         { "foo", JsonSerializer.SerializeToElement("bar") },
                     },
                 },
+                TaskBudget = new() { Total = 1024, Remaining = 0 },
             },
             OutputFormat = new()
             {
@@ -861,6 +876,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
+            UserProfileID = "user_profile_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 

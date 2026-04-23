@@ -38,11 +38,25 @@ public sealed record class BetaOutputConfig : JsonModel
         init { this._rawData.Set("format", value); }
     }
 
+    /// <summary>
+    /// User-configurable total token budget across contexts.
+    /// </summary>
+    public BetaTokenTaskBudget? TaskBudget
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaTokenTaskBudget>("task_budget");
+        }
+        init { this._rawData.Set("task_budget", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Effort?.Validate();
         this.Format?.Validate();
+        this.TaskBudget?.Validate();
     }
 
     public BetaOutputConfig() { }

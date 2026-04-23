@@ -26,6 +26,19 @@ public sealed record class BetaCompactionContentBlockDelta : JsonModel
         init { this._rawData.Set("content", value); }
     }
 
+    /// <summary>
+    /// Opaque metadata from prior compaction, to be round-tripped verbatim
+    /// </summary>
+    public required string? EncryptedContent
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("encrypted_content");
+        }
+        init { this._rawData.Set("encrypted_content", value); }
+    }
+
     public JsonElement Type
     {
         get
@@ -40,6 +53,7 @@ public sealed record class BetaCompactionContentBlockDelta : JsonModel
     public override void Validate()
     {
         _ = this.Content;
+        _ = this.EncryptedContent;
         if (
             !JsonElement.DeepEquals(
                 this.Type,
@@ -85,13 +99,6 @@ public sealed record class BetaCompactionContentBlockDelta : JsonModel
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-
-    [SetsRequiredMembers]
-    public BetaCompactionContentBlockDelta(string? content)
-        : this()
-    {
-        this.Content = content;
     }
 }
 
