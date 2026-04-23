@@ -673,6 +673,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public async Task GetResponseAsync_WithFunctionResultContent_HostedFileContent()
     {
+        IEnumerable<string>? capturedBetaHeaders = null;
         VerbatimHttpHandler handler = new(
             expectedRequest: """
             {
@@ -730,7 +731,11 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 }
             }
             """
-        );
+        )
+        {
+            OnRequestHeaders = headers =>
+                headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
+        };
 
         IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
 
@@ -759,6 +764,111 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
             TestContext.Current.CancellationToken
         );
         Assert.NotNull(response);
+        Assert.NotNull(capturedBetaHeaders);
+        Assert.Contains("files-api-2025-04-14", capturedBetaHeaders);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithFunctionResultContent_HostedFileContent_Image()
+    {
+        IEnumerable<string>? capturedBetaHeaders = null;
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Get image"
+                        }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "tool_image",
+                            "name": "image_tool",
+                            "input": {}
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "tool_image",
+                            "is_error": false,
+                            "content": [{
+                                "type": "image",
+                                "source": {
+                                    "type": "file",
+                                    "file_id": "file_abc123"
+                                }
+                            }]
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_image_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Image received"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 28,
+                    "output_tokens": 7
+                }
+            }
+            """
+        )
+        {
+            OnRequestHeaders = headers =>
+                headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
+        };
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatMessage> messages =
+        [
+            new ChatMessage(ChatRole.User, "Get image"),
+            new ChatMessage(
+                ChatRole.Assistant,
+                [
+                    new FunctionCallContent(
+                        "tool_image",
+                        "image_tool",
+                        new Dictionary<string, object?>()
+                    ),
+                ]
+            ),
+            new ChatMessage(
+                ChatRole.User,
+                [
+                    new FunctionResultContent(
+                        "tool_image",
+                        new HostedFileContent("file_abc123") { MediaType = "image/png" }
+                    ),
+                ]
+            ),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+        Assert.NotNull(capturedBetaHeaders);
+        Assert.Contains("files-api-2025-04-14", capturedBetaHeaders);
     }
 
     [Fact]
@@ -789,6 +899,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public async Task GetResponseAsync_WithHostedFileContent()
     {
+        IEnumerable<string>? capturedBetaHeaders = null;
         VerbatimHttpHandler handler = new(
             expectedRequest: """
             {
@@ -823,7 +934,11 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 }
             }
             """
-        );
+        )
+        {
+            OnRequestHeaders = headers =>
+                headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
+        };
 
         IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
 
@@ -835,43 +950,40 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
             TestContext.Current.CancellationToken
         );
         Assert.NotNull(response);
+        Assert.NotNull(capturedBetaHeaders);
+        Assert.Contains("files-api-2025-04-14", capturedBetaHeaders);
     }
 
     [Fact]
-    public async Task GetResponseAsync_WithRawRepresentationFactory()
+    public async Task GetResponseAsync_WithHostedFileContent_Image()
     {
+        IEnumerable<string>? capturedBetaHeaders = null;
         VerbatimHttpHandler handler = new(
             expectedRequest: """
             {
-                "max_tokens": 2048,
+                "max_tokens": 1024,
                 "model": "claude-haiku-4-5",
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": [{
-                            "type": "text",
-                            "text": "Preconfigured message"
-                        }]
-                    },
-                    {
-                        "role": "user",
-                        "content": [{
-                            "type": "text",
-                            "text": "New message"
-                        }]
-                    }
-                ]
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "image",
+                        "source": {
+                            "type": "file",
+                            "file_id": "file_abc123"
+                        }
+                    }]
+                }]
             }
             """,
             actualResponse: """
             {
-                "id": "msg_factory_01",
+                "id": "msg_hosted_image_01",
                 "type": "message",
                 "role": "assistant",
                 "model": "claude-haiku-4-5",
                 "content": [{
                     "type": "text",
-                    "text": "Response"
+                    "text": "I see an image."
                 }],
                 "stop_reason": "end_turn",
                 "usage": {
@@ -880,35 +992,25 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 }
             }
             """
-        );
+        )
+        {
+            OnRequestHeaders = headers =>
+                headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
+        };
 
         IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
 
-        ChatOptions options = new()
-        {
-            RawRepresentationFactory = _ => new MessageCreateParams()
-            {
-                MaxTokens = 2048,
-                Model = "claude-haiku-4-5",
-                Messages =
-                [
-                    new BetaMessageParam()
-                    {
-                        Role = Role.User,
-                        Content = new BetaMessageParamContent(
-                            [new BetaTextBlockParam() { Text = "Preconfigured message" }]
-                        ),
-                    },
-                ],
-            },
-        };
+        var hostedFile = new HostedFileContent("file_abc123") { MediaType = "image/png" };
 
         ChatResponse response = await chatClient.GetResponseAsync(
-            "New message",
-            options,
+            [new ChatMessage(ChatRole.User, [hostedFile])],
+            new(),
             TestContext.Current.CancellationToken
         );
         Assert.NotNull(response);
+        Assert.Equal("I see an image.", response.Text);
+        Assert.NotNull(capturedBetaHeaders);
+        Assert.Contains("files-api-2025-04-14", capturedBetaHeaders);
     }
 
     [Fact]
@@ -1899,6 +2001,80 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
 
         ChatResponse response = await chatClient.GetResponseAsync(
             "Use tool",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithRawRepresentationFactory()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 2048,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Preconfigured message"
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "New message"
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_factory_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 2048,
+                Model = "claude-haiku-4-5",
+                Messages =
+                [
+                    new BetaMessageParam()
+                    {
+                        Role = Role.User,
+                        Content = new BetaMessageParamContent(
+                            [new BetaTextBlockParam() { Text = "Preconfigured message" }]
+                        ),
+                    },
+                ],
+            },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "New message",
             options,
             TestContext.Current.CancellationToken
         );

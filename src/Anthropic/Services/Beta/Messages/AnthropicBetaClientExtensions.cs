@@ -232,12 +232,9 @@ public static class AnthropicBetaClientExtensions
 
             List<BetaMessageParam> messageParams = CreateMessageParams(
                 messages,
-                out List<BetaTextBlockParam>? systemMessages
+                out List<BetaTextBlockParam>? systemMessages,
+                out bool hasHostedFiles
             );
-            bool hasHostedFiles = messages
-                .SelectMany(m => m.Contents)
-                .OfType<HostedFileContent>()
-                .Any();
             MessageCreateParams createParams = GetMessageCreateParams(
                 messageParams,
                 systemMessages,
@@ -304,12 +301,9 @@ public static class AnthropicBetaClientExtensions
 
             List<BetaMessageParam> messageParams = CreateMessageParams(
                 messages,
-                out List<BetaTextBlockParam>? systemMessages
+                out List<BetaTextBlockParam>? systemMessages,
+                out bool hasHostedFiles
             );
-            bool hasHostedFiles = messages
-                .SelectMany(m => m.Contents)
-                .OfType<HostedFileContent>()
-                .Any();
             MessageCreateParams createParams = GetMessageCreateParams(
                 messageParams,
                 systemMessages,
@@ -535,11 +529,13 @@ public static class AnthropicBetaClientExtensions
 
         private static List<BetaMessageParam> CreateMessageParams(
             IEnumerable<ChatMessage> messages,
-            out List<BetaTextBlockParam>? systemMessages
+            out List<BetaTextBlockParam>? systemMessages,
+            out bool hasHostedFiles
         )
         {
             List<BetaMessageParam> messageParams = [];
             systemMessages = null;
+            hasHostedFiles = false;
 
             foreach (ChatMessage message in messages)
             {
@@ -684,7 +680,18 @@ public static class AnthropicBetaClientExtensions
                             );
                             break;
 
+                        case HostedFileContent fc when fc.HasTopLevelMediaType("image"):
+                            hasHostedFiles = true;
+                            contents.Add(
+                                new BetaImageBlockParam()
+                                {
+                                    Source = new(new BetaFileImageSource(fc.FileId)),
+                                }
+                            );
+                            break;
+
                         case HostedFileContent fc:
+                            hasHostedFiles = true;
                             contents.Add(
                                 new BetaRequestDocumentBlock()
                                 {
@@ -723,10 +730,12 @@ public static class AnthropicBetaClientExtensions
 
                                 string s => new(s),
 
-                                AIContent aiContent => new(ToResultBlocks([aiContent])),
+                                AIContent aiContent => new(
+                                    ToResultBlocks([aiContent], ref hasHostedFiles)
+                                ),
 
                                 IEnumerable<AIContent> aiContents => new(
-                                    ToResultBlocks(aiContents)
+                                    ToResultBlocks(aiContents, ref hasHostedFiles)
                                 ),
 
                                 _ => new(
@@ -738,24 +747,30 @@ public static class AnthropicBetaClientExtensions
                             };
 
                             static IReadOnlyList<Block> ToResultBlocks(
-                                IEnumerable<AIContent> aiContents
+                                IEnumerable<AIContent> aiContents,
+                                ref bool hasHostedFiles
                             )
                             {
                                 List<Block> blocks = [];
                                 foreach (AIContent ac in aiContents)
                                 {
-                                    blocks.Add(
-                                        ac switch
-                                        {
-                                            AIContent ai
-                                                when ai.RawRepresentation is Block rawBlock =>
-                                                rawBlock,
+                                    switch (ac)
+                                    {
+                                        case AIContent ai
+                                            when ai.RawRepresentation is Block rawBlock:
+                                            blocks.Add(rawBlock);
+                                            break;
 
-                                            TextContent tc => new Block(
-                                                new BetaTextBlockParam() { Text = tc.Text }
-                                            ),
+                                        case TextContent tc:
+                                            blocks.Add(
+                                                new Block(
+                                                    new BetaTextBlockParam() { Text = tc.Text }
+                                                )
+                                            );
+                                            break;
 
-                                            DataContent dc when dc.HasTopLevelMediaType("image") =>
+                                        case DataContent dc when dc.HasTopLevelMediaType("image"):
+                                            blocks.Add(
                                                 new Block(
                                                     new BetaImageBlockParam()
                                                     {
@@ -767,26 +782,33 @@ public static class AnthropicBetaClientExtensions
                                                             }
                                                         ),
                                                     }
-                                                ),
+                                                )
+                                            );
+                                            break;
 
-                                            DataContent dc
-                                                when string.Equals(
-                                                    dc.MediaType,
-                                                    "application/pdf",
-                                                    StringComparison.OrdinalIgnoreCase
-                                                ) => new Block(
-                                                new BetaRequestDocumentBlock()
-                                                {
-                                                    Source = new(
-                                                        new BetaBase64PdfSource()
-                                                        {
-                                                            Data = dc.Base64Data.ToString(),
-                                                        }
-                                                    ),
-                                                }
-                                            ),
+                                        case DataContent dc
+                                            when string.Equals(
+                                                dc.MediaType,
+                                                "application/pdf",
+                                                StringComparison.OrdinalIgnoreCase
+                                            ):
+                                            blocks.Add(
+                                                new Block(
+                                                    new BetaRequestDocumentBlock()
+                                                    {
+                                                        Source = new(
+                                                            new BetaBase64PdfSource()
+                                                            {
+                                                                Data = dc.Base64Data.ToString(),
+                                                            }
+                                                        ),
+                                                    }
+                                                )
+                                            );
+                                            break;
 
-                                            DataContent dc when dc.HasTopLevelMediaType("text") =>
+                                        case DataContent dc when dc.HasTopLevelMediaType("text"):
+                                            blocks.Add(
                                                 new Block(
                                                     new BetaRequestDocumentBlock()
                                                     {
@@ -805,9 +827,12 @@ public static class AnthropicBetaClientExtensions
                                                             }
                                                         ),
                                                     }
-                                                ),
+                                                )
+                                            );
+                                            break;
 
-                                            UriContent uc when uc.HasTopLevelMediaType("image") =>
+                                        case UriContent uc when uc.HasTopLevelMediaType("image"):
+                                            blocks.Add(
                                                 new Block(
                                                     new BetaImageBlockParam()
                                                     {
@@ -818,47 +843,76 @@ public static class AnthropicBetaClientExtensions
                                                             }
                                                         ),
                                                     }
-                                                ),
+                                                )
+                                            );
+                                            break;
 
-                                            UriContent uc
-                                                when string.Equals(
-                                                    uc.MediaType,
-                                                    "application/pdf",
-                                                    StringComparison.OrdinalIgnoreCase
-                                                ) => new Block(
-                                                new BetaRequestDocumentBlock()
-                                                {
-                                                    Source = new(
-                                                        new BetaUrlPdfSource()
-                                                        {
-                                                            Url = uc.Uri.AbsoluteUri,
-                                                        }
-                                                    ),
-                                                }
-                                            ),
+                                        case UriContent uc
+                                            when string.Equals(
+                                                uc.MediaType,
+                                                "application/pdf",
+                                                StringComparison.OrdinalIgnoreCase
+                                            ):
+                                            blocks.Add(
+                                                new Block(
+                                                    new BetaRequestDocumentBlock()
+                                                    {
+                                                        Source = new(
+                                                            new BetaUrlPdfSource()
+                                                            {
+                                                                Url = uc.Uri.AbsoluteUri,
+                                                            }
+                                                        ),
+                                                    }
+                                                )
+                                            );
+                                            break;
 
-                                            HostedFileContent fc => new Block(
-                                                new BetaRequestDocumentBlock()
-                                                {
-                                                    Source = new(
-                                                        new BetaFileDocumentSource(fc.FileId)
-                                                    ),
-                                                }
-                                            ),
+                                        case HostedFileContent fc
+                                            when fc.HasTopLevelMediaType("image"):
+                                            hasHostedFiles = true;
+                                            blocks.Add(
+                                                new Block(
+                                                    new BetaImageBlockParam()
+                                                    {
+                                                        Source = new(
+                                                            new BetaFileImageSource(fc.FileId)
+                                                        ),
+                                                    }
+                                                )
+                                            );
+                                            break;
 
-                                            _ => new Block(
-                                                new BetaTextBlockParam()
-                                                {
-                                                    Text = JsonSerializer.Serialize(
-                                                        ac,
-                                                        AIJsonUtilities.DefaultOptions.GetTypeInfo(
-                                                            typeof(object)
-                                                        )
-                                                    ),
-                                                }
-                                            ),
-                                        }
-                                    );
+                                        case HostedFileContent fc:
+                                            hasHostedFiles = true;
+                                            blocks.Add(
+                                                new Block(
+                                                    new BetaRequestDocumentBlock()
+                                                    {
+                                                        Source = new(
+                                                            new BetaFileDocumentSource(fc.FileId)
+                                                        ),
+                                                    }
+                                                )
+                                            );
+                                            break;
+
+                                        default:
+                                            blocks.Add(
+                                                new Block(
+                                                    new BetaTextBlockParam()
+                                                    {
+                                                        Text = JsonSerializer.Serialize(
+                                                            ac,
+                                                            AIJsonUtilities.DefaultOptions.GetTypeInfo(
+                                                                typeof(object)
+                                                            )
+                                                        ),
+                                                    }
+                                                )
+                                            );
+                                            break;
+                                    }
                                 }
 
                                 return blocks;
