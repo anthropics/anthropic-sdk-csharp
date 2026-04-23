@@ -29,6 +29,7 @@ public enum AnthropicBeta
     Skills2025_10_02,
     FastMode2026_02_01,
     Output300k2026_03_24,
+    UserProfiles2026_03_24,
     AdvisorTool2026_03_01,
 }
 
@@ -64,6 +65,7 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "skills-2025-10-02" => AnthropicBeta.Skills2025_10_02,
             "fast-mode-2026-02-01" => AnthropicBeta.FastMode2026_02_01,
             "output-300k-2026-03-24" => AnthropicBeta.Output300k2026_03_24,
+            "user-profiles-2026-03-24" => AnthropicBeta.UserProfiles2026_03_24,
             "advisor-tool-2026-03-01" => AnthropicBeta.AdvisorTool2026_03_01,
             _ => (AnthropicBeta)(-1),
         };
@@ -101,6 +103,7 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.Skills2025_10_02 => "skills-2025-10-02",
                 AnthropicBeta.FastMode2026_02_01 => "fast-mode-2026-02-01",
                 AnthropicBeta.Output300k2026_03_24 => "output-300k-2026-03-24",
+                AnthropicBeta.UserProfiles2026_03_24 => "user-profiles-2026-03-24",
                 AnthropicBeta.AdvisorTool2026_03_01 => "advisor-tool-2026-03-01",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))

@@ -16,6 +16,7 @@ using Messages = Anthropic.Models.Beta.Messages;
 using MessagesBatches = Anthropic.Models.Beta.Messages.Batches;
 using Resources = Anthropic.Models.Beta.Sessions.Resources;
 using Sessions = Anthropic.Models.Beta.Sessions;
+using UserProfiles = Anthropic.Models.Beta.UserProfiles;
 using Vaults = Anthropic.Models.Beta.Vaults;
 
 namespace Anthropic.Core;
@@ -351,6 +352,10 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsSessionActorType>(),
             new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsUserActorType>(),
             new ApiEnumConverter<string, Files::Type>(),
+            new ApiEnumConverter<string, UserProfiles::Type>(),
+            new ApiEnumConverter<string, UserProfiles::BetaUserProfileEnrollmentUrlType>(),
+            new ApiEnumConverter<string, UserProfiles::Status>(),
+            new ApiEnumConverter<string, UserProfiles::Order>(),
         },
     };
 
