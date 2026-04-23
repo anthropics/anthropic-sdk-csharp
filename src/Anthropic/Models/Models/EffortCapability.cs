@@ -78,6 +78,19 @@ public sealed record class EffortCapability : JsonModel
         init { this._rawData.Set("supported", value); }
     }
 
+    /// <summary>
+    /// Indicates whether a capability is supported.
+    /// </summary>
+    public required CapabilitySupport? Xhigh
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CapabilitySupport>("xhigh");
+        }
+        init { this._rawData.Set("xhigh", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -86,6 +99,7 @@ public sealed record class EffortCapability : JsonModel
         this.Max.Validate();
         this.Medium.Validate();
         _ = this.Supported;
+        this.Xhigh?.Validate();
     }
 
     public EffortCapability() { }
