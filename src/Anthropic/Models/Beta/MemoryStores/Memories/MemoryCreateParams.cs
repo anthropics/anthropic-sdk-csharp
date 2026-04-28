@@ -12,7 +12,7 @@ using Anthropic.Services.Beta.MemoryStores;
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
 /// <summary>
-/// CreateMemory
+/// Create a memory
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -28,6 +28,10 @@ public record class MemoryCreateParams : ParamsBase
 
     public string? MemoryStoreID { get; init; }
 
+    /// <summary>
+    /// UTF-8 text content for the new memory. Maximum 100 kB (102,400 bytes). Required;
+    /// pass `""` explicitly to create an empty memory.
+    /// </summary>
     public required string? Content
     {
         get
@@ -38,6 +42,12 @@ public record class MemoryCreateParams : ParamsBase
         init { this._rawBodyData.Set("content", value); }
     }
 
+    /// <summary>
+    /// Hierarchical path for the new memory, e.g. `/projects/foo/notes.md`. Must
+    /// start with `/`, contain at least one non-empty segment, and be at most 1,024
+    /// bytes. Must not contain empty segments, `.` or `..` segments, control or format
+    /// characters, and must be NFC-normalized. Paths are case-sensitive.
+    /// </summary>
     public required string Path
     {
         get

@@ -9,6 +9,9 @@ using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
+/// <summary>
+/// Attribution for a write made by a human user through the Anthropic Console.
+/// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaManagedAgentsUserActor, BetaManagedAgentsUserActorFromRaw>)
 )]
@@ -26,6 +29,9 @@ public sealed record class BetaManagedAgentsUserActor : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
+    /// <summary>
+    /// ID of the user who performed the write (a `user_...` value).
+    /// </summary>
     public required string UserID
     {
         get

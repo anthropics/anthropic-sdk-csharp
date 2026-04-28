@@ -9,7 +9,7 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Environments;
 
 /// <summary>
-/// Unified Environment resource for both cloud and BYOC environments.
+/// Unified Environment resource for both cloud and self-hosted environments.
 /// </summary>
 [JsonConverter(typeof(JsonModelConverter<BetaEnvironment, BetaEnvironmentFromRaw>))]
 public sealed record class BetaEnvironment : JsonModel

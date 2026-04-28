@@ -9,6 +9,9 @@ using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores;
 
+/// <summary>
+/// Confirmation that a `memory_store` was deleted.
+/// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<
         BetaManagedAgentsDeletedMemoryStore,
@@ -17,6 +20,10 @@ namespace Anthropic.Models.Beta.MemoryStores;
 )]
 public sealed record class BetaManagedAgentsDeletedMemoryStore : JsonModel
 {
+    /// <summary>
+    /// ID of the deleted memory store (a `memstore_...` identifier). The store and
+    /// all its memories and versions are no longer retrievable.
+    /// </summary>
     public required string ID
     {
         get

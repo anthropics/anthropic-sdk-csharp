@@ -12,7 +12,7 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.MemoryStores;
 
 /// <summary>
-/// UpdateMemoryStore
+/// Update a memory store
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -28,6 +28,10 @@ public record class MemoryStoreUpdateParams : ParamsBase
 
     public string? MemoryStoreID { get; init; }
 
+    /// <summary>
+    /// New description for the store, up to 1024 characters. Pass an empty string
+    /// to clear it.
+    /// </summary>
     public string? Description
     {
         get
@@ -61,6 +65,11 @@ public record class MemoryStoreUpdateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// New human-readable name for the store. 1–255 characters; no control characters.
+    /// Renaming changes the slug used for the store's `mount_path` in sessions created
+    /// after the update.
+    /// </summary>
     public string? Name
     {
         get

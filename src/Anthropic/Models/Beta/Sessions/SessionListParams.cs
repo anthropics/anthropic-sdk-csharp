@@ -190,6 +190,27 @@ public record class SessionListParams : ParamsBase
     }
 
     /// <summary>
+    /// Filter sessions whose resources contain a memory_store with this memory store ID.
+    /// </summary>
+    public string? MemoryStoreID
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableClass<string>("memory_store_id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set("memory_store_id", value);
+        }
+    }
+
+    /// <summary>
     /// Sort direction for results, ordered by created_at. Defaults to desc (newest first).
     /// </summary>
     public ApiEnum<string, Order>? Order

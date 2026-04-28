@@ -12,7 +12,7 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.MemoryStores;
 
 /// <summary>
-/// CreateMemoryStore
+/// Create a memory store
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -26,6 +26,12 @@ public record class MemoryStoreCreateParams : ParamsBase
         get { return this._rawBodyData.Freeze(); }
     }
 
+    /// <summary>
+    /// Human-readable name for the store. Required; 1–255 characters; no control
+    /// characters. The mount-path slug under `/mnt/memory/` is derived from this
+    /// name (lowercased, non-alphanumeric runs collapsed to a hyphen). Names need
+    /// not be unique within a workspace.
+    /// </summary>
     public required string Name
     {
         get
@@ -36,6 +42,11 @@ public record class MemoryStoreCreateParams : ParamsBase
         init { this._rawBodyData.Set("name", value); }
     }
 
+    /// <summary>
+    /// Free-text description of what the store contains, up to 1024 characters. Included
+    /// in the agent's system prompt when the store is attached, so word it to be
+    /// useful to the agent.
+    /// </summary>
     public string? Description
     {
         get
@@ -54,6 +65,11 @@ public record class MemoryStoreCreateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Arbitrary key-value tags for your own bookkeeping (such as the end user a
+    /// store belongs to). Up to 16 pairs; keys 1–64 characters; values up to 512
+    /// characters. Not visible to the agent.
+    /// </summary>
     public IReadOnlyDictionary<string, string>? Metadata
     {
         get

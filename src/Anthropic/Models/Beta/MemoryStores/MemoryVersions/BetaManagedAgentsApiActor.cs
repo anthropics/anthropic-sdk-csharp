@@ -9,11 +9,18 @@ using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
+/// <summary>
+/// Attribution for a write made directly via the public API (outside of any session).
+/// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaManagedAgentsApiActor, BetaManagedAgentsApiActorFromRaw>)
 )]
 public sealed record class BetaManagedAgentsApiActor : JsonModel
 {
+    /// <summary>
+    /// ID of the API key that performed the write. This identifies the key, not
+    /// the secret.
+    /// </summary>
     public required string ApiKeyID
     {
         get

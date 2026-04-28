@@ -6,7 +6,8 @@ using System = System;
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
 /// <summary>
-/// MemoryVersionOperation enum
+/// The kind of mutation a `memory_version` records. Every non-no-op mutation to a
+/// memory appends exactly one version row with one of these values.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsMemoryVersionOperationConverter))]
 public enum BetaManagedAgentsMemoryVersionOperation

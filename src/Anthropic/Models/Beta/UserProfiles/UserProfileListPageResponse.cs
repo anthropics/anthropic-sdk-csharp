@@ -35,7 +35,7 @@ public sealed record class UserProfileListPageResponse : JsonModel
     /// <summary>
     /// Cursor for the next page, or `null` when there are no more results.
     /// </summary>
-    public string? NextPage
+    public required string? NextPage
     {
         get
         {
@@ -82,13 +82,6 @@ public sealed record class UserProfileListPageResponse : JsonModel
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-
-    [SetsRequiredMembers]
-    public UserProfileListPageResponse(IReadOnlyList<BetaUserProfile> data)
-        : this()
-    {
-        this.Data = data;
     }
 }
 

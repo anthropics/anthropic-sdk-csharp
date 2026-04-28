@@ -24,6 +24,7 @@ public class SessionListParamsTest : TestBase
             CreatedAtLte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             IncludeArchived = true,
             Limit = 0,
+            MemoryStoreID = "memory_store_id",
             Order = Order.Asc,
             Page = "page",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -37,6 +38,7 @@ public class SessionListParamsTest : TestBase
         DateTimeOffset expectedCreatedAtLte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         bool expectedIncludeArchived = true;
         int expectedLimit = 0;
+        string expectedMemoryStoreID = "memory_store_id";
         ApiEnum<string, Order> expectedOrder = Order.Asc;
         string expectedPage = "page";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
@@ -52,6 +54,7 @@ public class SessionListParamsTest : TestBase
         Assert.Equal(expectedCreatedAtLte, parameters.CreatedAtLte);
         Assert.Equal(expectedIncludeArchived, parameters.IncludeArchived);
         Assert.Equal(expectedLimit, parameters.Limit);
+        Assert.Equal(expectedMemoryStoreID, parameters.MemoryStoreID);
         Assert.Equal(expectedOrder, parameters.Order);
         Assert.Equal(expectedPage, parameters.Page);
         Assert.NotNull(parameters.Betas);
@@ -83,6 +86,8 @@ public class SessionListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.MemoryStoreID);
+        Assert.False(parameters.RawQueryData.ContainsKey("memory_store_id"));
         Assert.Null(parameters.Order);
         Assert.False(parameters.RawQueryData.ContainsKey("order"));
         Assert.Null(parameters.Page);
@@ -105,6 +110,7 @@ public class SessionListParamsTest : TestBase
             CreatedAtLte = null,
             IncludeArchived = null,
             Limit = null,
+            MemoryStoreID = null,
             Order = null,
             Page = null,
             Betas = null,
@@ -126,6 +132,8 @@ public class SessionListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.MemoryStoreID);
+        Assert.False(parameters.RawQueryData.ContainsKey("memory_store_id"));
         Assert.Null(parameters.Order);
         Assert.False(parameters.RawQueryData.ContainsKey("order"));
         Assert.Null(parameters.Page);
@@ -147,6 +155,7 @@ public class SessionListParamsTest : TestBase
             CreatedAtLte = DateTimeOffset.Parse("2019-12-27T18:11:19.117+00:00"),
             IncludeArchived = true,
             Limit = 0,
+            MemoryStoreID = "memory_store_id",
             Order = Order.Asc,
             Page = "page",
         };
@@ -156,7 +165,7 @@ public class SessionListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/sessions?beta=true&agent_id=agent_id&agent_version=0&created_at%5bgt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&include_archived=true&limit=0&order=asc&page=page"
+                    "https://api.anthropic.com/v1/sessions?beta=true&agent_id=agent_id&agent_version=0&created_at%5bgt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&include_archived=true&limit=0&memory_store_id=memory_store_id&order=asc&page=page"
                 ),
                 url
             )
@@ -190,6 +199,7 @@ public class SessionListParamsTest : TestBase
             CreatedAtLte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             IncludeArchived = true,
             Limit = 0,
+            MemoryStoreID = "memory_store_id",
             Order = Order.Asc,
             Page = "page",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],

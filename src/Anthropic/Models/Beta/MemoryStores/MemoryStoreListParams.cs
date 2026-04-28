@@ -11,7 +11,7 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.MemoryStores;
 
 /// <summary>
-/// ListMemoryStores
+/// List memory stores
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -20,7 +20,8 @@ namespace Anthropic.Models.Beta.MemoryStores;
 public record class MemoryStoreListParams : ParamsBase
 {
     /// <summary>
-    /// Return stores created at or after this time (inclusive).
+    /// Return only stores whose `created_at` is at or after this time (inclusive).
+    /// Sent on the wire as `created_at[gte]`.
     /// </summary>
     public DateTimeOffset? CreatedAtGte
     {
@@ -41,7 +42,8 @@ public record class MemoryStoreListParams : ParamsBase
     }
 
     /// <summary>
-    /// Return stores created at or before this time (inclusive).
+    /// Return only stores whose `created_at` is at or before this time (inclusive).
+    /// Sent on the wire as `created_at[lte]`.
     /// </summary>
     public DateTimeOffset? CreatedAtLte
     {
@@ -62,7 +64,8 @@ public record class MemoryStoreListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for include_archived
+    /// When `true`, archived stores are included in the results. Defaults to `false`
+    /// (archived stores are excluded).
     /// </summary>
     public bool? IncludeArchived
     {
@@ -83,7 +86,8 @@ public record class MemoryStoreListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for limit
+    /// Maximum number of stores to return per page. Must be between 1 and 100. Defaults
+    /// to 20 when omitted.
     /// </summary>
     public int? Limit
     {
@@ -104,7 +108,8 @@ public record class MemoryStoreListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for page
+    /// Opaque pagination cursor (a `page_...` value). Pass the `next_page` value
+    /// from a previous response to fetch the next page; omit for the first page.
     /// </summary>
     public string? Page
     {
