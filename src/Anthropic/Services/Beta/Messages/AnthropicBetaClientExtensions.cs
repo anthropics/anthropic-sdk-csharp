@@ -1921,13 +1921,15 @@ public static class AnthropicBetaClientExtensions
                     functionData.CallId,
                     functionData.Name,
                     json =>
-                        (Dictionary<string, object?>?)
-                            JsonSerializer.Deserialize(
-                                json,
-                                AIJsonUtilities.DefaultOptions.GetTypeInfo(
-                                    typeof(Dictionary<string, object?>)
+                        json.Length == 0
+                            ? null
+                            : (Dictionary<string, object?>?)
+                                JsonSerializer.Deserialize(
+                                    json,
+                                    AIJsonUtilities.DefaultOptions.GetTypeInfo(
+                                        typeof(Dictionary<string, object?>)
+                                    )
                                 )
-                            )
                 );
             }
 
