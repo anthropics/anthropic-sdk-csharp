@@ -9,11 +9,22 @@ using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
+/// <summary>
+/// A rolled-up directory marker returned by [List memories](/en/api/beta/memory_stores/memories/list)
+/// when `depth` is set. Indicates that one or more memories exist deeper than the
+/// requested depth under this prefix. This is a list-time rollup, not a stored resource;
+/// it has no ID and no lifecycle. Each prefix counts toward the page `limit` and
+/// interleaves with `memory` items in path order.
+/// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaManagedAgentsMemoryPrefix, BetaManagedAgentsMemoryPrefixFromRaw>)
 )]
 public sealed record class BetaManagedAgentsMemoryPrefix : JsonModel
 {
+    /// <summary>
+    /// The rolled-up path prefix, including a trailing `/` (e.g. `/projects/foo/`).
+    /// Pass this value as `path_prefix` on a subsequent list call to drill into the directory.
+    /// </summary>
     public required string Path
     {
         get

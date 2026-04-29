@@ -8,9 +8,16 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
+/// <summary>
+/// Response payload for [List memories](/en/api/beta/memory_stores/memories/list).
+/// </summary>
 [JsonConverter(typeof(JsonModelConverter<MemoryListPageResponse, MemoryListPageResponseFromRaw>))]
 public sealed record class MemoryListPageResponse : JsonModel
 {
+    /// <summary>
+    /// One page of results. Each item is either a `memory` object or, when `depth`
+    /// was set, a `memory_prefix` rollup marker. Items appear in the requested `order_by`/`order`.
+    /// </summary>
     public IReadOnlyList<BetaManagedAgentsMemoryListItem>? Data
     {
         get
@@ -34,6 +41,10 @@ public sealed record class MemoryListPageResponse : JsonModel
         }
     }
 
+    /// <summary>
+    /// Opaque cursor for the next page (a `page_...` value), or `null` if there are
+    /// no more results. Pass as `page` on the next request.
+    /// </summary>
     public string? NextPage
     {
         get

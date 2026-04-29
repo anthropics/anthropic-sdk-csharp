@@ -1,5 +1,14 @@
 # Changelog
 
+## 12.18.0 (2026-04-29)
+
+Full Changelog: [Anthropic-v12.17.0...Anthropic-v12.18.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.17.0...Anthropic-v12.18.0)
+
+### Features
+
+* **api:** improve Managed Agents APIs ([1bf373a](https://github.com/anthropics/anthropic-sdk-csharp/commit/1bf373ab18ecfbb7554327411b8c5c762d9d1a10))
+* support setting headers via env ([aa93247](https://github.com/anthropics/anthropic-sdk-csharp/commit/aa93247c59ba9118c27af1dfa5f832e75abecb33))
+
 ## 12.17.0 (2026-04-23)
 
 Full Changelog: [Anthropic-v12.16.0...Anthropic-v12.17.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.16.0...Anthropic-v12.17.0)

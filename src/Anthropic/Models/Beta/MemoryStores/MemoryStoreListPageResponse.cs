@@ -8,11 +8,18 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.MemoryStores;
 
+/// <summary>
+/// A page of `memory_store` results, ordered by `created_at` descending (newest first).
+/// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<MemoryStoreListPageResponse, MemoryStoreListPageResponseFromRaw>)
 )]
 public sealed record class MemoryStoreListPageResponse : JsonModel
 {
+    /// <summary>
+    /// Memory stores on this page, newest first. Empty when there are no stores matching
+    /// the filters.
+    /// </summary>
     public IReadOnlyList<BetaManagedAgentsMemoryStore>? Data
     {
         get
@@ -36,6 +43,10 @@ public sealed record class MemoryStoreListPageResponse : JsonModel
         }
     }
 
+    /// <summary>
+    /// Opaque cursor for the next page (a `page_...` value). Pass as `page` on the
+    /// next request. `null` when there are no more results.
+    /// </summary>
     public string? NextPage
     {
         get

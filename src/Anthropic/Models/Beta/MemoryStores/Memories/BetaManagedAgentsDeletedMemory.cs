@@ -9,6 +9,11 @@ using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
+/// <summary>
+/// Tombstone returned by [Delete a memory](/en/api/beta/memory_stores/memories/delete).
+/// The memory's version history persists and remains listable via [List memory versions](/en/api/beta/memory_stores/memory_versions/list)
+/// until the store itself is deleted.
+/// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<
         BetaManagedAgentsDeletedMemory,
@@ -17,6 +22,9 @@ namespace Anthropic.Models.Beta.MemoryStores.Memories;
 )]
 public sealed record class BetaManagedAgentsDeletedMemory : JsonModel
 {
+    /// <summary>
+    /// ID of the deleted memory (a `mem_...` value).
+    /// </summary>
     public required string ID
     {
         get

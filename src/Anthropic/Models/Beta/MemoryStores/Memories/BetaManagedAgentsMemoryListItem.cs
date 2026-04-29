@@ -7,6 +7,10 @@ using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
+/// <summary>
+/// One item in a [List memories](/en/api/beta/memory_stores/memories/list) response:
+/// either a `memory` object or, when `depth` is set, a `memory_prefix` rollup marker.
+/// </summary>
 [JsonConverter(typeof(BetaManagedAgentsMemoryListItemConverter))]
 public record class BetaManagedAgentsMemoryListItem : ModelBase
 {
