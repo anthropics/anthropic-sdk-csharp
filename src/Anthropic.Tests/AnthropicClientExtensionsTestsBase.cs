@@ -4857,13 +4857,13 @@ public abstract class AnthropicClientExtensionsTestsBase
         // Verify WebSearchToolResultContent
         var wsResult = Assert.IsType<WebSearchToolResultContent>(contents[1]);
         Assert.Equal("srvtoolu_ws_01", wsResult.CallId);
-        Assert.NotNull(wsResult.Results);
-        Assert.Equal(2, wsResult.Results.Count);
+        Assert.NotNull(wsResult.Outputs);
+        Assert.Equal(2, wsResult.Outputs.Count);
 
-        var firstResult = Assert.IsType<UriContent>(wsResult.Results[0]);
+        var firstResult = Assert.IsType<UriContent>(wsResult.Outputs[0]);
         Assert.Equal(new Uri("https://example.com/ai-news"), firstResult.Uri);
 
-        var secondResult = Assert.IsType<UriContent>(wsResult.Results[1]);
+        var secondResult = Assert.IsType<UriContent>(wsResult.Outputs[1]);
         Assert.Equal(new Uri("https://example.com/ai-research"), secondResult.Uri);
 
         // Verify text content
@@ -5034,9 +5034,9 @@ public abstract class AnthropicClientExtensionsTestsBase
 
         var wsResult = Assert.IsType<WebSearchToolResultContent>(contents[1]);
         Assert.Equal("srvtoolu_ws_err_01", wsResult.CallId);
-        Assert.NotNull(wsResult.Results);
-        Assert.Single(wsResult.Results);
-        var errorResult = Assert.IsType<ErrorContent>(wsResult.Results[0]);
+        Assert.NotNull(wsResult.Outputs);
+        Assert.Single(wsResult.Outputs);
+        var errorResult = Assert.IsType<ErrorContent>(wsResult.Outputs[0]);
         Assert.Equal("MaxUsesExceeded", errorResult.ErrorCode);
     }
 
@@ -7618,9 +7618,9 @@ public abstract class AnthropicClientExtensionsTestsBase
         var contents = response.Messages[0].Contents;
         var result = Assert.IsType<WebSearchToolResultContent>(contents[0]);
         Assert.Equal("srvtoolu_wf_01", result.CallId);
-        Assert.NotNull(result.Results);
-        Assert.Single(result.Results);
-        var uriContent = Assert.IsType<UriContent>(result.Results[0]);
+        Assert.NotNull(result.Outputs);
+        Assert.Single(result.Outputs);
+        var uriContent = Assert.IsType<UriContent>(result.Outputs[0]);
         Assert.Equal(new Uri("https://example.com/article.html"), uriContent.Uri);
         Assert.Equal("text/html", uriContent.MediaType);
     }
@@ -7863,10 +7863,10 @@ public abstract class AnthropicClientExtensionsTestsBase
 
         var wsResult = wsResultUpdates[0];
         Assert.Equal("srvtoolu_ws_stream_01", wsResult.CallId);
-        Assert.NotNull(wsResult.Results);
-        Assert.Single(wsResult.Results);
+        Assert.NotNull(wsResult.Outputs);
+        Assert.Single(wsResult.Outputs);
 
-        var uriContent = Assert.IsType<UriContent>(wsResult.Results[0]);
+        var uriContent = Assert.IsType<UriContent>(wsResult.Outputs[0]);
         Assert.Equal(new Uri("https://example.com/stream"), uriContent.Uri);
     }
 

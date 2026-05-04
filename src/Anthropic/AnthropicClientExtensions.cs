@@ -1857,7 +1857,7 @@ public static class AnthropicClientExtensions
                     {
                         foreach (var result in searchResults)
                         {
-                            (wsrc.Results ??= []).Add(
+                            (wsrc.Outputs ??= []).Add(
                                 new UriContent(result.Url, InferMediaTypeFromExtension(result.Url))
                                 {
                                     RawRepresentation = result,
@@ -1867,7 +1867,7 @@ public static class AnthropicClientExtensions
                     }
                     else if (wsResult.Content.TryPickError(out var wsError))
                     {
-                        (wsrc.Results ??= []).Add(
+                        (wsrc.Outputs ??= []).Add(
                             new ErrorContent(null)
                             {
                                 ErrorCode = wsError.ErrorCode.Value().ToString(),
@@ -1888,7 +1888,7 @@ public static class AnthropicClientExtensions
 
                     if (wfResult.Content.TryPickWebFetchBlock(out var fetchBlock))
                     {
-                        (wfrc.Results ??= []).Add(
+                        (wfrc.Outputs ??= []).Add(
                             new UriContent(
                                 fetchBlock.Url,
                                 InferMediaTypeFromExtension(fetchBlock.Url)
@@ -1900,7 +1900,7 @@ public static class AnthropicClientExtensions
                     }
                     else if (wfResult.Content.TryPickWebFetchToolResultErrorBlock(out var wfError))
                     {
-                        (wfrc.Results ??= []).Add(
+                        (wfrc.Outputs ??= []).Add(
                             new ErrorContent(null)
                             {
                                 ErrorCode = wfError.ErrorCode.Value().ToString(),
