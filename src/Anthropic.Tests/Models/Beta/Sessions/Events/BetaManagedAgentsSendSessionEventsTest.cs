@@ -277,6 +277,7 @@ public class DataTest : TestBase
             ID = "id",
             Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
         value.Validate();
     }
@@ -292,6 +293,7 @@ public class DataTest : TestBase
             Type = BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation,
             DenyMessage = "deny_message",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
         value.Validate();
     }
@@ -314,6 +316,27 @@ public class DataTest : TestBase
             ],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserDefineOutcomeEventValidationWorks()
+    {
+        Data value = new BetaManagedAgentsUserDefineOutcomeEvent()
+        {
+            ID = "sevt_011CZkZSTx3lFgt7odUWmkyq",
+            Description = "Produce a 2-page summary as summary.md",
+            MaxIterations = 3,
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
+            Rubric = new BetaManagedAgentsTextRubric()
+            {
+                Content = "Must cover all five sections; cite sources inline.",
+                Type = BetaManagedAgentsTextRubricType.Text,
+            },
+            Type = BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
         };
         value.Validate();
     }
@@ -349,6 +372,7 @@ public class DataTest : TestBase
             ID = "id",
             Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Data>(element, ModelBase.SerializerOptions);
@@ -367,6 +391,7 @@ public class DataTest : TestBase
             Type = BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation,
             DenyMessage = "deny_message",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Data>(element, ModelBase.SerializerOptions);
@@ -392,6 +417,30 @@ public class DataTest : TestBase
             ],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Data>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserDefineOutcomeEventSerializationRoundtripWorks()
+    {
+        Data value = new BetaManagedAgentsUserDefineOutcomeEvent()
+        {
+            ID = "sevt_011CZkZSTx3lFgt7odUWmkyq",
+            Description = "Produce a 2-page summary as summary.md",
+            MaxIterations = 3,
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
+            Rubric = new BetaManagedAgentsTextRubric()
+            {
+                Content = "Must cover all five sections; cite sources inline.",
+                Type = BetaManagedAgentsTextRubricType.Text,
+            },
+            Type = BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Data>(element, ModelBase.SerializerOptions);

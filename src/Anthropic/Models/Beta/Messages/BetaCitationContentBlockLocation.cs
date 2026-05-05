@@ -16,6 +16,14 @@ namespace Anthropic.Models.Beta.Messages;
 )]
 public sealed record class BetaCitationContentBlockLocation : JsonModel
 {
+    /// <summary>
+    /// The full text of the cited block range, concatenated.
+    ///
+    /// <para>Always equals the contents of `content[start_block_index:end_block_index]`
+    /// joined together. The text block is the minimal citable unit; this field is
+    /// never a substring of a single block. Not counted toward output tokens, and
+    /// not counted toward input tokens when sent back in subsequent turns.</para>
+    /// </summary>
     public required string CitedText
     {
         get
@@ -46,6 +54,12 @@ public sealed record class BetaCitationContentBlockLocation : JsonModel
         init { this._rawData.Set("document_title", value); }
     }
 
+    /// <summary>
+    /// Exclusive 0-based end index of the cited block range in the source's `content` array.
+    ///
+    /// <para>Always greater than `start_block_index`; a single-block citation has
+    /// `end_block_index = start_block_index + 1`.</para>
+    /// </summary>
     public required long EndBlockIndex
     {
         get
@@ -66,6 +80,9 @@ public sealed record class BetaCitationContentBlockLocation : JsonModel
         init { this._rawData.Set("file_id", value); }
     }
 
+    /// <summary>
+    /// 0-based index of the first cited block in the source's `content` array.
+    /// </summary>
     public required long StartBlockIndex
     {
         get

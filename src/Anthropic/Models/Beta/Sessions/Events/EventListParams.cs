@@ -24,6 +24,90 @@ public record class EventListParams : ParamsBase
     public string? SessionID { get; init; }
 
     /// <summary>
+    /// Return events created after this time (exclusive).
+    /// </summary>
+    public System::DateTimeOffset? CreatedAtGt
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<System::DateTimeOffset>("created_at[gt]");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set("created_at[gt]", value);
+        }
+    }
+
+    /// <summary>
+    /// Return events created at or after this time (inclusive).
+    /// </summary>
+    public System::DateTimeOffset? CreatedAtGte
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<System::DateTimeOffset>("created_at[gte]");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set("created_at[gte]", value);
+        }
+    }
+
+    /// <summary>
+    /// Return events created before this time (exclusive).
+    /// </summary>
+    public System::DateTimeOffset? CreatedAtLt
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<System::DateTimeOffset>("created_at[lt]");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set("created_at[lt]", value);
+        }
+    }
+
+    /// <summary>
+    /// Return events created at or before this time (inclusive).
+    /// </summary>
+    public System::DateTimeOffset? CreatedAtLte
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<System::DateTimeOffset>("created_at[lte]");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set("created_at[lte]", value);
+        }
+    }
+
+    /// <summary>
     /// Query parameter for limit
     /// </summary>
     public int? Limit
@@ -83,6 +167,31 @@ public record class EventListParams : ParamsBase
             }
 
             this._rawQueryData.Set("page", value);
+        }
+    }
+
+    /// <summary>
+    /// Filter by event type. Values match the `type` field on returned events (for
+    /// example, `user.message` or `agent.tool_use`). Omit to return all event types.
+    /// </summary>
+    public IReadOnlyList<string>? Types
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<ImmutableArray<string>>("types");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set<ImmutableArray<string>?>(
+                "types",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 

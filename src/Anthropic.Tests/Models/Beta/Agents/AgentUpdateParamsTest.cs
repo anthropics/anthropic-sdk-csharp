@@ -5,6 +5,7 @@ using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Agents;
+using Anthropic.Models.Beta.Sessions;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
 
@@ -32,6 +33,17 @@ public class AgentUpdateParamsTest : TestBase
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus4_6,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+            },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
             },
             Name = "name",
             Skills =
@@ -90,6 +102,17 @@ public class AgentUpdateParamsTest : TestBase
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_6,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+        };
+        BetaManagedAgentsMultiagentParams expectedMultiagent = new()
+        {
+            Agents =
+            [
+                "agent_011CZkYqphY8vELVzwCUpqiQ",
+                new BetaManagedAgentsMultiagentSelfParams(
+                    BetaManagedAgentsMultiagentSelfParamsType.Self
+                ),
+            ],
+            Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
         };
         string expectedName = "name";
         List<BetaManagedAgentsSkillParams> expectedSkills =
@@ -151,6 +174,7 @@ public class AgentUpdateParamsTest : TestBase
             Assert.Equal(value, parameters.Metadata[item.Key]);
         }
         Assert.Equal(expectedModel, parameters.Model);
+        Assert.Equal(expectedMultiagent, parameters.Multiagent);
         Assert.Equal(expectedName, parameters.Name);
         Assert.NotNull(parameters.Skills);
         Assert.Equal(expectedSkills.Count, parameters.Skills.Count);
@@ -191,6 +215,17 @@ public class AgentUpdateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
+            },
             Skills =
             [
                 new BetaManagedAgentsAnthropicSkillParams()
@@ -255,6 +290,17 @@ public class AgentUpdateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
+            },
             Skills =
             [
                 new BetaManagedAgentsAnthropicSkillParams()
@@ -328,6 +374,8 @@ public class AgentUpdateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("mcp_servers"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Multiagent);
+        Assert.False(parameters.RawBodyData.ContainsKey("multiagent"));
         Assert.Null(parameters.Skills);
         Assert.False(parameters.RawBodyData.ContainsKey("skills"));
         Assert.Null(parameters.System);
@@ -354,6 +402,7 @@ public class AgentUpdateParamsTest : TestBase
             Description = null,
             McpServers = null,
             Metadata = null,
+            Multiagent = null,
             Skills = null,
             System = null,
             Tools = null,
@@ -365,6 +414,8 @@ public class AgentUpdateParamsTest : TestBase
         Assert.True(parameters.RawBodyData.ContainsKey("mcp_servers"));
         Assert.Null(parameters.Metadata);
         Assert.True(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Multiagent);
+        Assert.True(parameters.RawBodyData.ContainsKey("multiagent"));
         Assert.Null(parameters.Skills);
         Assert.True(parameters.RawBodyData.ContainsKey("skills"));
         Assert.Null(parameters.System);
@@ -435,6 +486,17 @@ public class AgentUpdateParamsTest : TestBase
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus4_6,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+            },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
             },
             Name = "name",
             Skills =

@@ -27,6 +27,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
             ],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         string expectedID = "id";
@@ -43,6 +44,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
         ];
         bool expectedIsError = true;
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedCustomToolUseID, model.CustomToolUseID);
@@ -55,6 +57,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
         }
         Assert.Equal(expectedIsError, model.IsError);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
+        Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
     }
 
     [Fact]
@@ -75,6 +78,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
             ],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -104,6 +108,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
             ],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -127,6 +132,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
         ];
         bool expectedIsError = true;
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedCustomToolUseID, deserialized.CustomToolUseID);
@@ -139,6 +145,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
         }
         Assert.Equal(expectedIsError, deserialized.IsError);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
+        Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
     }
 
     [Fact]
@@ -159,6 +166,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
             ],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         model.Validate();
@@ -174,6 +182,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
             Type = BetaManagedAgentsUserCustomToolResultEventType.UserCustomToolResult,
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         Assert.Null(model.Content);
@@ -190,6 +199,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
             Type = BetaManagedAgentsUserCustomToolResultEventType.UserCustomToolResult,
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         model.Validate();
@@ -205,6 +215,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
             Type = BetaManagedAgentsUserCustomToolResultEventType.UserCustomToolResult,
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
 
             // Null should be interpreted as omitted for these properties
             Content = null,
@@ -224,6 +235,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
             Type = BetaManagedAgentsUserCustomToolResultEventType.UserCustomToolResult,
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
 
             // Null should be interpreted as omitted for these properties
             Content = null,
@@ -254,6 +266,8 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
         Assert.False(model.RawData.ContainsKey("is_error"));
         Assert.Null(model.ProcessedAt);
         Assert.False(model.RawData.ContainsKey("processed_at"));
+        Assert.Null(model.SessionThreadID);
+        Assert.False(model.RawData.ContainsKey("session_thread_id"));
     }
 
     [Fact]
@@ -296,12 +310,15 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
 
             IsError = null,
             ProcessedAt = null,
+            SessionThreadID = null,
         };
 
         Assert.Null(model.IsError);
         Assert.True(model.RawData.ContainsKey("is_error"));
         Assert.Null(model.ProcessedAt);
         Assert.True(model.RawData.ContainsKey("processed_at"));
+        Assert.Null(model.SessionThreadID);
+        Assert.True(model.RawData.ContainsKey("session_thread_id"));
     }
 
     [Fact]
@@ -323,6 +340,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
 
             IsError = null,
             ProcessedAt = null,
+            SessionThreadID = null,
         };
 
         model.Validate();
@@ -346,6 +364,7 @@ public class BetaManagedAgentsUserCustomToolResultEventTest : TestBase
             ],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         BetaManagedAgentsUserCustomToolResultEvent copied = new(model);

@@ -19,6 +19,7 @@ public class BetaManagedAgentsUserToolConfirmationEventTest : TestBase
             Type = BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation,
             DenyMessage = "deny_message",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         string expectedID = "id";
@@ -28,6 +29,7 @@ public class BetaManagedAgentsUserToolConfirmationEventTest : TestBase
             BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation;
         string expectedDenyMessage = "deny_message";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedResult, model.Result);
@@ -35,6 +37,7 @@ public class BetaManagedAgentsUserToolConfirmationEventTest : TestBase
         Assert.Equal(expectedType, model.Type);
         Assert.Equal(expectedDenyMessage, model.DenyMessage);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
+        Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
     }
 
     [Fact]
@@ -48,6 +51,7 @@ public class BetaManagedAgentsUserToolConfirmationEventTest : TestBase
             Type = BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation,
             DenyMessage = "deny_message",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -70,6 +74,7 @@ public class BetaManagedAgentsUserToolConfirmationEventTest : TestBase
             Type = BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation,
             DenyMessage = "deny_message",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -86,6 +91,7 @@ public class BetaManagedAgentsUserToolConfirmationEventTest : TestBase
             BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation;
         string expectedDenyMessage = "deny_message";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedResult, deserialized.Result);
@@ -93,6 +99,7 @@ public class BetaManagedAgentsUserToolConfirmationEventTest : TestBase
         Assert.Equal(expectedType, deserialized.Type);
         Assert.Equal(expectedDenyMessage, deserialized.DenyMessage);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
+        Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
     }
 
     [Fact]
@@ -106,6 +113,7 @@ public class BetaManagedAgentsUserToolConfirmationEventTest : TestBase
             Type = BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation,
             DenyMessage = "deny_message",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         model.Validate();
@@ -126,6 +134,8 @@ public class BetaManagedAgentsUserToolConfirmationEventTest : TestBase
         Assert.False(model.RawData.ContainsKey("deny_message"));
         Assert.Null(model.ProcessedAt);
         Assert.False(model.RawData.ContainsKey("processed_at"));
+        Assert.Null(model.SessionThreadID);
+        Assert.False(model.RawData.ContainsKey("session_thread_id"));
     }
 
     [Fact]
@@ -154,12 +164,15 @@ public class BetaManagedAgentsUserToolConfirmationEventTest : TestBase
 
             DenyMessage = null,
             ProcessedAt = null,
+            SessionThreadID = null,
         };
 
         Assert.Null(model.DenyMessage);
         Assert.True(model.RawData.ContainsKey("deny_message"));
         Assert.Null(model.ProcessedAt);
         Assert.True(model.RawData.ContainsKey("processed_at"));
+        Assert.Null(model.SessionThreadID);
+        Assert.True(model.RawData.ContainsKey("session_thread_id"));
     }
 
     [Fact]
@@ -174,6 +187,7 @@ public class BetaManagedAgentsUserToolConfirmationEventTest : TestBase
 
             DenyMessage = null,
             ProcessedAt = null,
+            SessionThreadID = null,
         };
 
         model.Validate();
@@ -190,6 +204,7 @@ public class BetaManagedAgentsUserToolConfirmationEventTest : TestBase
             Type = BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation,
             DenyMessage = "deny_message",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         BetaManagedAgentsUserToolConfirmationEvent copied = new(model);

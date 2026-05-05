@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,8 +5,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Services.Beta;
+using System = System;
 
 namespace Anthropic.Models.Beta.UserProfiles;
 
@@ -67,6 +69,36 @@ public record class UserProfileUpdateParams : ParamsBase
                 value == null ? null : FrozenDictionary.ToFrozenDictionary(value)
             );
         }
+    }
+
+    /// <summary>
+    /// If present, replaces the stored name. Omit to leave unchanged. Maximum 255 characters.
+    /// </summary>
+    public string? Name
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<string>("name");
+        }
+        init { this._rawBodyData.Set("name", value); }
+    }
+
+    /// <summary>
+    /// How the entity behind a user profile relates to the platform that owns the
+    /// API key. `external`: an individual end-user of the platform. `resold`: a company
+    /// the platform resells Claude access to. `internal`: the platform's own usage.
+    /// </summary>
+    public ApiEnum<string, UserProfileUpdateParamsRelationship>? Relationship
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<
+                ApiEnum<string, UserProfileUpdateParamsRelationship>
+            >("relationship");
+        }
+        init { this._rawBodyData.Set("relationship", value); }
     }
 
     /// <summary>
@@ -181,10 +213,10 @@ public record class UserProfileUpdateParams : ParamsBase
             && this._rawBodyData.Equals(other._rawBodyData);
     }
 
-    public override Uri Url(ClientOptions options)
+    public override System::Uri Url(ClientOptions options)
     {
         var queryString = this.QueryString(options);
-        return new UriBuilder(
+        return new System::UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format("/v1/user_profiles/{0}", this.UserProfileID)
         )
@@ -215,5 +247,58 @@ public record class UserProfileUpdateParams : ParamsBase
     public override int GetHashCode()
     {
         return 0;
+    }
+}
+
+/// <summary>
+/// How the entity behind a user profile relates to the platform that owns the API
+/// key. `external`: an individual end-user of the platform. `resold`: a company
+/// the platform resells Claude access to. `internal`: the platform's own usage.
+/// </summary>
+[JsonConverter(typeof(UserProfileUpdateParamsRelationshipConverter))]
+public enum UserProfileUpdateParamsRelationship
+{
+    External,
+    Resold,
+    Internal,
+}
+
+sealed class UserProfileUpdateParamsRelationshipConverter
+    : JsonConverter<UserProfileUpdateParamsRelationship>
+{
+    public override UserProfileUpdateParamsRelationship Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "external" => UserProfileUpdateParamsRelationship.External,
+            "resold" => UserProfileUpdateParamsRelationship.Resold,
+            "internal" => UserProfileUpdateParamsRelationship.Internal,
+            _ => (UserProfileUpdateParamsRelationship)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        UserProfileUpdateParamsRelationship value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                UserProfileUpdateParamsRelationship.External => "external",
+                UserProfileUpdateParamsRelationship.Resold => "resold",
+                UserProfileUpdateParamsRelationship.Internal => "internal",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }
