@@ -109,6 +109,68 @@ public class WorkloadIdentityCredentialsTests
             root.GetProperty("organization_id").GetString()
         );
         Assert.Equal("svac_01test", root.GetProperty("service_account_id").GetString());
+        // workspace_id must be omitted when not configured.
+        Assert.False(root.TryGetProperty("workspace_id", out _));
+    }
+
+    [Fact]
+    public async Task ExchangeToken_IncludesWorkspaceId()
+    {
+        string? capturedBody = null;
+        var handler = new FakeHandler(async req =>
+        {
+            capturedBody = await req.Content!.ReadAsStringAsync();
+            return OkTokenResponse();
+        });
+
+        using var httpClient = new HttpClient(handler);
+        using var creds = new WorkloadIdentityCredentials(
+            new WorkloadIdentityOptions
+            {
+                FederationRuleId = "fdrl_01test",
+                OrganizationId = "org",
+                WorkspaceId = "wrkspc_01abc",
+                IdentityTokenProvider = new StaticIdentityTokenProvider("jwt"),
+                BaseUrl = "https://api.anthropic.com",
+                HttpClient = httpClient,
+            }
+        );
+
+        await creds.GetTokenAsync();
+
+        Assert.NotNull(capturedBody);
+        using var doc = JsonDocument.Parse(capturedBody!);
+        Assert.Equal("wrkspc_01abc", doc.RootElement.GetProperty("workspace_id").GetString());
+    }
+
+    [Fact]
+    public async Task ExchangeToken_IncludesWorkspaceIdDefaultSentinel()
+    {
+        string? capturedBody = null;
+        var handler = new FakeHandler(async req =>
+        {
+            capturedBody = await req.Content!.ReadAsStringAsync();
+            return OkTokenResponse();
+        });
+
+        using var httpClient = new HttpClient(handler);
+        using var creds = new WorkloadIdentityCredentials(
+            new WorkloadIdentityOptions
+            {
+                FederationRuleId = "fdrl_01test",
+                OrganizationId = "org",
+                WorkspaceId = "default",
+                IdentityTokenProvider = new StaticIdentityTokenProvider("jwt"),
+                BaseUrl = "https://api.anthropic.com",
+                HttpClient = httpClient,
+            }
+        );
+
+        await creds.GetTokenAsync();
+
+        Assert.NotNull(capturedBody);
+        using var doc = JsonDocument.Parse(capturedBody!);
+        Assert.Equal("default", doc.RootElement.GetProperty("workspace_id").GetString());
     }
 
     [Fact]
@@ -170,6 +232,110 @@ public class WorkloadIdentityCredentialsTests
         Assert.Equal(HttpStatusCode.BadRequest, ex.StatusCode);
         Assert.Contains("invalid_grant", ex.ResponseBody!);
         Assert.DoesNotContain("should-not-appear", ex.ResponseBody!);
+    }
+
+    [Fact]
+    public async Task ExchangeToken_401WithoutWorkspaceId_IncludesFullHint()
+    {
+        // Without a workspace_id, the hint should include the federation-rule
+        // guidance, the workspace_id remediation, and the auth-event pointer.
+        var handler = new FakeHandler(_ => new HttpResponseMessage(HttpStatusCode.Unauthorized)
+        {
+            Content = new StringContent(
+                "{\"error\":\"unauthorized\"}",
+                Encoding.UTF8,
+                "application/json"
+            ),
+        });
+
+        using var httpClient = new HttpClient(handler);
+        using var creds = new WorkloadIdentityCredentials(
+            new WorkloadIdentityOptions
+            {
+                FederationRuleId = "fdrl_01test",
+                OrganizationId = "org",
+                IdentityTokenProvider = new StaticIdentityTokenProvider("jwt"),
+                BaseUrl = "https://api.anthropic.com",
+                HttpClient = httpClient,
+            }
+        );
+
+        var ex = await Assert.ThrowsAsync<WorkloadIdentityException>(async () =>
+            await creds.GetTokenAsync()
+        );
+        Assert.Contains("Ensure your federation rule matches your identity token", ex.Message);
+        Assert.Contains("ANTHROPIC_WORKSPACE_ID", ex.Message);
+        Assert.Contains("View your authentication events", ex.Message);
+    }
+
+    [Fact]
+    public async Task ExchangeToken_401WithWorkspaceIdSet_OmitsWorkspaceIdHint()
+    {
+        // When workspace_id is already set, the workspace_id remediation is noise —
+        // but the federation-rule and auth-event guidance still applies.
+        var handler = new FakeHandler(_ => new HttpResponseMessage(HttpStatusCode.Unauthorized)
+        {
+            Content = new StringContent(
+                "{\"error\":\"unauthorized\"}",
+                Encoding.UTF8,
+                "application/json"
+            ),
+        });
+
+        using var httpClient = new HttpClient(handler);
+        using var creds = new WorkloadIdentityCredentials(
+            new WorkloadIdentityOptions
+            {
+                FederationRuleId = "fdrl_01test",
+                OrganizationId = "org",
+                WorkspaceId = "wrkspc_x",
+                IdentityTokenProvider = new StaticIdentityTokenProvider("jwt"),
+                BaseUrl = "https://api.anthropic.com",
+                HttpClient = httpClient,
+            }
+        );
+
+        var ex = await Assert.ThrowsAsync<WorkloadIdentityException>(async () =>
+            await creds.GetTokenAsync()
+        );
+        Assert.Contains("Ensure your federation rule", ex.Message);
+        Assert.Contains("View your authentication events", ex.Message);
+        Assert.DoesNotContain("ANTHROPIC_WORKSPACE_ID", ex.Message);
+    }
+
+    [Fact]
+    public async Task ExchangeToken_Non401WithoutWorkspaceId_OmitsHint()
+    {
+        // The hint is 401-specific; a 5xx or 400 shouldn't suggest a config change.
+        var handler = new FakeHandler(_ => new HttpResponseMessage(
+            HttpStatusCode.InternalServerError
+        )
+        {
+            Content = new StringContent(
+                "{\"error\":\"server_error\"}",
+                Encoding.UTF8,
+                "application/json"
+            ),
+        });
+
+        using var httpClient = new HttpClient(handler);
+        using var creds = new WorkloadIdentityCredentials(
+            new WorkloadIdentityOptions
+            {
+                FederationRuleId = "fdrl_01test",
+                OrganizationId = "org",
+                IdentityTokenProvider = new StaticIdentityTokenProvider("jwt"),
+                BaseUrl = "https://api.anthropic.com",
+                HttpClient = httpClient,
+            }
+        );
+
+        var ex = await Assert.ThrowsAsync<WorkloadIdentityException>(async () =>
+            await creds.GetTokenAsync()
+        );
+        Assert.DoesNotContain("Ensure your federation rule", ex.Message);
+        Assert.DoesNotContain("ANTHROPIC_WORKSPACE_ID", ex.Message);
+        Assert.DoesNotContain("View your authentication events", ex.Message);
     }
 
     [Fact]

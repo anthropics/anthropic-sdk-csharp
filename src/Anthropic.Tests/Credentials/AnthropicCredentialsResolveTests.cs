@@ -1,6 +1,13 @@
+#pragma warning disable xUnit1051
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using Anthropic.Credentials;
 
 namespace Anthropic.Tests.Credentials;
@@ -10,6 +17,37 @@ public class AnthropicCredentialsResolveTests : IDisposable
 {
     private readonly Dictionary<string, string?> _originalEnvVars = new();
     private readonly string _tempConfigDir;
+
+    private class FakeHandler : HttpMessageHandler
+    {
+        private readonly Func<HttpRequestMessage, Task<HttpResponseMessage>> _handler;
+        public List<HttpRequestMessage> Requests { get; } = new();
+
+        public FakeHandler(Func<HttpRequestMessage, Task<HttpResponseMessage>> handler)
+        {
+            _handler = handler;
+        }
+
+        protected override async Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken
+        )
+        {
+            Requests.Add(request);
+            return await _handler(request);
+        }
+    }
+
+    private static HttpResponseMessage OkTokenResponse()
+    {
+        var json = JsonSerializer.Serialize(
+            new { access_token = "sk-ant-oat01-test", expires_in = 600 }
+        );
+        return new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(json, Encoding.UTF8, "application/json"),
+        };
+    }
 
     public AnthropicCredentialsResolveTests()
     {
@@ -51,6 +89,7 @@ public class AnthropicCredentialsResolveTests : IDisposable
         SetEnv(CredentialsConstants.EnvFederationRuleId, null);
         SetEnv(CredentialsConstants.EnvIdentityToken, null);
         SetEnv(CredentialsConstants.EnvIdentityTokenFile, null);
+        SetEnv(CredentialsConstants.EnvWorkspaceId, null);
         SetEnv(CredentialsConstants.EnvProfile, null);
         SetEnv(CredentialsConstants.EnvConfigDir, _tempConfigDir);
 
@@ -66,6 +105,7 @@ public class AnthropicCredentialsResolveTests : IDisposable
         SetEnv(CredentialsConstants.EnvFederationRuleId, null);
         SetEnv(CredentialsConstants.EnvIdentityToken, null);
         SetEnv(CredentialsConstants.EnvIdentityTokenFile, null);
+        SetEnv(CredentialsConstants.EnvWorkspaceId, null);
         SetEnv(CredentialsConstants.EnvProfile, null);
         SetEnv(CredentialsConstants.EnvConfigDir, _tempConfigDir);
 
@@ -83,6 +123,7 @@ public class AnthropicCredentialsResolveTests : IDisposable
         SetEnv(CredentialsConstants.EnvIdentityToken, "jwt-string");
         SetEnv(CredentialsConstants.EnvIdentityTokenFile, null);
         SetEnv(CredentialsConstants.EnvOrganizationId, "org-id");
+        SetEnv(CredentialsConstants.EnvWorkspaceId, null);
         SetEnv(CredentialsConstants.EnvProfile, null);
         SetEnv(CredentialsConstants.EnvConfigDir, _tempConfigDir);
 
@@ -100,6 +141,7 @@ public class AnthropicCredentialsResolveTests : IDisposable
         SetEnv(CredentialsConstants.EnvFederationRuleId, null);
         SetEnv(CredentialsConstants.EnvIdentityToken, null);
         SetEnv(CredentialsConstants.EnvIdentityTokenFile, null);
+        SetEnv(CredentialsConstants.EnvWorkspaceId, null);
         SetEnv(CredentialsConstants.EnvProfile, null);
         SetEnv(CredentialsConstants.EnvConfigDir, _tempConfigDir);
 
@@ -115,6 +157,7 @@ public class AnthropicCredentialsResolveTests : IDisposable
         SetEnv(CredentialsConstants.EnvFederationRuleId, null);
         SetEnv(CredentialsConstants.EnvIdentityToken, null);
         SetEnv(CredentialsConstants.EnvIdentityTokenFile, null);
+        SetEnv(CredentialsConstants.EnvWorkspaceId, null);
         SetEnv(CredentialsConstants.EnvProfile, "nonexistent");
         SetEnv(CredentialsConstants.EnvConfigDir, _tempConfigDir);
 
@@ -130,6 +173,7 @@ public class AnthropicCredentialsResolveTests : IDisposable
         SetEnv(CredentialsConstants.EnvFederationRuleId, "fdrl_01test");
         SetEnv(CredentialsConstants.EnvIdentityToken, null);
         SetEnv(CredentialsConstants.EnvIdentityTokenFile, null);
+        SetEnv(CredentialsConstants.EnvWorkspaceId, null);
         SetEnv(CredentialsConstants.EnvProfile, null);
         SetEnv(CredentialsConstants.EnvConfigDir, _tempConfigDir);
 
@@ -160,6 +204,7 @@ public class AnthropicCredentialsResolveTests : IDisposable
         SetEnv(CredentialsConstants.EnvConfigDir, _tempConfigDir);
         SetEnv(CredentialsConstants.EnvFederationRuleId, "fdrl_01abc");
         SetEnv(CredentialsConstants.EnvOrganizationId, "org-123");
+        SetEnv(CredentialsConstants.EnvWorkspaceId, null);
         SetEnv(CredentialsConstants.EnvIdentityTokenFile, tokenPath);
 
         var result = AnthropicCredentials.Resolve();
@@ -191,6 +236,7 @@ public class AnthropicCredentialsResolveTests : IDisposable
         SetEnv(CredentialsConstants.EnvFederationRuleId, null);
         SetEnv(CredentialsConstants.EnvIdentityToken, null);
         SetEnv(CredentialsConstants.EnvIdentityTokenFile, null);
+        SetEnv(CredentialsConstants.EnvWorkspaceId, null);
 
         var result = AnthropicCredentials.Resolve();
         Assert.NotNull(result);
@@ -217,6 +263,7 @@ public class AnthropicCredentialsResolveTests : IDisposable
         SetEnv(CredentialsConstants.EnvFederationRuleId, null);
         SetEnv(CredentialsConstants.EnvIdentityToken, null);
         SetEnv(CredentialsConstants.EnvIdentityTokenFile, null);
+        SetEnv(CredentialsConstants.EnvWorkspaceId, null);
 
         var result = AnthropicCredentials.Resolve();
         Assert.NotNull(result);
@@ -226,7 +273,7 @@ public class AnthropicCredentialsResolveTests : IDisposable
     }
 
     [Fact]
-    public void Resolve_OidcFederation_DoesNotSetWorkspaceIdHeader()
+    public async Task Resolve_OidcFederation_DoesNotSetWorkspaceIdHeader()
     {
         Directory.CreateDirectory(Path.Combine(_tempConfigDir, "configs"));
         var jwtPath = Path.Combine(_tempConfigDir, "jwt");
@@ -247,11 +294,93 @@ public class AnthropicCredentialsResolveTests : IDisposable
         SetEnv(CredentialsConstants.EnvFederationRuleId, null);
         SetEnv(CredentialsConstants.EnvIdentityToken, null);
         SetEnv(CredentialsConstants.EnvIdentityTokenFile, null);
+        SetEnv(CredentialsConstants.EnvWorkspaceId, null);
 
-        var result = AnthropicCredentials.Resolve();
+        string? capturedBody = null;
+        var handler = new FakeHandler(async req =>
+        {
+            capturedBody = await req.Content!.ReadAsStringAsync();
+            return OkTokenResponse();
+        });
+        using var httpClient = new HttpClient(handler);
+
+        var result = AnthropicCredentials.Resolve(httpClient: httpClient);
         Assert.NotNull(result);
         Assert.IsType<WorkloadIdentityCredentials>(result!.Credentials);
+        // For federation profiles workspace_id is sent in the jwt-bearer exchange body,
+        // not as a request header.
         Assert.False(result.ExtraHeaders.ContainsKey("anthropic-workspace-id"));
+
+        await result.Credentials.GetTokenAsync();
+        Assert.NotNull(capturedBody);
+        using var doc = JsonDocument.Parse(capturedBody!);
+        Assert.Equal("wrkspc_abc", doc.RootElement.GetProperty("workspace_id").GetString());
+        result.Credentials.Dispose();
+    }
+
+    [Fact]
+    public async Task EnvVars_WorkspaceId_PassedThroughToExchange()
+    {
+        SetEnv(CredentialsConstants.EnvApiKey, null);
+        SetEnv(CredentialsConstants.EnvAuthToken, null);
+        SetEnv(CredentialsConstants.EnvFederationRuleId, "fdrl_01abc");
+        SetEnv(CredentialsConstants.EnvIdentityToken, "literal-jwt");
+        SetEnv(CredentialsConstants.EnvIdentityTokenFile, null);
+        SetEnv(CredentialsConstants.EnvOrganizationId, "org-uuid");
+        SetEnv(CredentialsConstants.EnvWorkspaceId, "wrkspc_01abc");
+        SetEnv(CredentialsConstants.EnvProfile, null);
+        SetEnv(CredentialsConstants.EnvConfigDir, _tempConfigDir);
+
+        string? capturedBody = null;
+        var handler = new FakeHandler(async req =>
+        {
+            capturedBody = await req.Content!.ReadAsStringAsync();
+            return OkTokenResponse();
+        });
+        using var httpClient = new HttpClient(handler);
+
+        var result = AnthropicCredentials.Resolve(httpClient: httpClient);
+        Assert.NotNull(result);
+        Assert.IsType<WorkloadIdentityCredentials>(result!.Credentials);
+
+        await result.Credentials.GetTokenAsync();
+        Assert.NotNull(capturedBody);
+        using var doc = JsonDocument.Parse(capturedBody!);
+        Assert.Equal("wrkspc_01abc", doc.RootElement.GetProperty("workspace_id").GetString());
+        result.Credentials.Dispose();
+    }
+
+    [Fact]
+    public async Task EnvVars_WorkspaceId_EmptyTreatedAsUnset()
+    {
+        // ANTHROPIC_WORKSPACE_ID="" (a defaulted-but-empty CI variable) is
+        // treated as unset — never put "workspace_id": "" on the wire.
+        SetEnv(CredentialsConstants.EnvApiKey, null);
+        SetEnv(CredentialsConstants.EnvAuthToken, null);
+        SetEnv(CredentialsConstants.EnvFederationRuleId, "fdrl_01abc");
+        SetEnv(CredentialsConstants.EnvIdentityToken, "literal-jwt");
+        SetEnv(CredentialsConstants.EnvIdentityTokenFile, null);
+        SetEnv(CredentialsConstants.EnvOrganizationId, "org-uuid");
+        SetEnv(CredentialsConstants.EnvWorkspaceId, "");
+        SetEnv(CredentialsConstants.EnvProfile, null);
+        SetEnv(CredentialsConstants.EnvConfigDir, _tempConfigDir);
+
+        string? capturedBody = null;
+        var handler = new FakeHandler(async req =>
+        {
+            capturedBody = await req.Content!.ReadAsStringAsync();
+            return OkTokenResponse();
+        });
+        using var httpClient = new HttpClient(handler);
+
+        var result = AnthropicCredentials.Resolve(httpClient: httpClient);
+        Assert.NotNull(result);
+        Assert.IsType<WorkloadIdentityCredentials>(result!.Credentials);
+
+        await result.Credentials.GetTokenAsync();
+        Assert.NotNull(capturedBody);
+        using var doc = JsonDocument.Parse(capturedBody!);
+        Assert.False(doc.RootElement.TryGetProperty("workspace_id", out _));
         result.Credentials.Dispose();
     }
 
@@ -263,6 +392,7 @@ public class AnthropicCredentialsResolveTests : IDisposable
         SetEnv(CredentialsConstants.EnvFederationRuleId, null);
         SetEnv(CredentialsConstants.EnvIdentityToken, null);
         SetEnv(CredentialsConstants.EnvIdentityTokenFile, null);
+        SetEnv(CredentialsConstants.EnvWorkspaceId, null);
         SetEnv(CredentialsConstants.EnvProfile, null);
         SetEnv(CredentialsConstants.EnvConfigDir, _tempConfigDir);
 

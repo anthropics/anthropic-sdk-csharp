@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -20,6 +21,7 @@ public sealed class WorkloadIdentityCredentials : IAccessTokenProvider
     private readonly string _federationRuleId;
     private readonly string? _organizationId;
     private readonly string? _serviceAccountId;
+    private readonly string? _workspaceId;
     private readonly bool _ownsHttpClient;
 
     public WorkloadIdentityCredentials(WorkloadIdentityOptions options)
@@ -32,6 +34,7 @@ public sealed class WorkloadIdentityCredentials : IAccessTokenProvider
         _federationRuleId = options.FederationRuleId;
         _organizationId = options.OrganizationId;
         _serviceAccountId = options.ServiceAccountId;
+        _workspaceId = options.WorkspaceId;
         _identityTokenProvider = options.IdentityTokenProvider;
         _tokenEndpointUrl = options.BaseUrl.TrimEnd('/') + CredentialsConstants.TokenEndpointPath;
 
@@ -88,6 +91,11 @@ public sealed class WorkloadIdentityCredentials : IAccessTokenProvider
             requestBody["service_account_id"] = _serviceAccountId;
         }
 
+        if (_workspaceId != null)
+        {
+            requestBody["workspace_id"] = _workspaceId;
+        }
+
         var jsonContent = JsonSerializer.Serialize(requestBody);
         using var request = new HttpRequestMessage(HttpMethod.Post, _tokenEndpointUrl)
         {
@@ -130,11 +138,26 @@ public sealed class WorkloadIdentityCredentials : IAccessTokenProvider
             if (!response.IsSuccessStatusCode)
             {
                 var redacted = SecurityHelpers.RedactErrorBody(responseBody);
-                throw new WorkloadIdentityException(
-                    $"Token exchange failed with status {(int)response.StatusCode}: {redacted}",
-                    response.StatusCode,
-                    redacted
-                );
+                var message =
+                    $"Token exchange failed with status {(int)response.StatusCode}: {redacted}";
+                // A 401 on token exchange is almost always a federation-rule
+                // misconfiguration. Surface the likely fixes — and where to look —
+                // in the error rather than making the user dig through docs.
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    message += " Ensure your federation rule matches your identity token.";
+                    if (_workspaceId == null)
+                    {
+                        message +=
+                            " If your federation rule is scoped to multiple workspaces, set the"
+                            + " ANTHROPIC_WORKSPACE_ID environment variable, the 'workspace_id'"
+                            + " config key, or the WorkspaceId option on WorkloadIdentityOptions.";
+                    }
+                    message +=
+                        " View your authentication events in the Workload identity page of"
+                        + " Claude Console for more details.";
+                }
+                throw new WorkloadIdentityException(message, response.StatusCode, redacted);
             }
 
             return ParseTokenResponse(responseBody);

@@ -33,6 +33,7 @@ internal static class CredentialsConstants
     internal const string EnvFederationRuleId = "ANTHROPIC_FEDERATION_RULE_ID";
     internal const string EnvOrganizationId = "ANTHROPIC_ORGANIZATION_ID";
     internal const string EnvServiceAccountId = "ANTHROPIC_SERVICE_ACCOUNT_ID";
+    internal const string EnvWorkspaceId = "ANTHROPIC_WORKSPACE_ID";
 
     // Error body redaction
     internal const int MaxErrorBodyLength = 2000;
