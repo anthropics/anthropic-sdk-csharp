@@ -95,6 +95,28 @@ public sealed record class BetaManagedAgentsSession : JsonModel
         }
     }
 
+    /// <summary>
+    /// Per-outcome evaluation state. One entry per define_outcome event sent to
+    /// the session.
+    /// </summary>
+    public required IReadOnlyList<BetaManagedAgentsOutcomeEvaluationResource> OutcomeEvaluations
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<
+                ImmutableArray<BetaManagedAgentsOutcomeEvaluationResource>
+            >("outcome_evaluations");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaManagedAgentsOutcomeEvaluationResource>>(
+                "outcome_evaluations",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
     public required IReadOnlyList<BetaManagedAgentsSessionResource> Resources
     {
         get
@@ -129,12 +151,14 @@ public sealed record class BetaManagedAgentsSession : JsonModel
     /// <summary>
     /// SessionStatus enum
     /// </summary>
-    public required ApiEnum<string, Status> Status
+    public required ApiEnum<string, BetaManagedAgentsSessionStatus> Status
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, Status>>("status");
+            return this._rawData.GetNotNullClass<ApiEnum<string, BetaManagedAgentsSessionStatus>>(
+                "status"
+            );
         }
         init { this._rawData.Set("status", value); }
     }
@@ -215,6 +239,10 @@ public sealed record class BetaManagedAgentsSession : JsonModel
         _ = this.CreatedAt;
         _ = this.EnvironmentID;
         _ = this.Metadata;
+        foreach (var item in this.OutcomeEvaluations)
+        {
+            item.Validate();
+        }
         foreach (var item in this.Resources)
         {
             item.Validate();
@@ -269,8 +297,8 @@ class BetaManagedAgentsSessionFromRaw : IFromRawJson<BetaManagedAgentsSession>
 /// <summary>
 /// SessionStatus enum
 /// </summary>
-[JsonConverter(typeof(StatusConverter))]
-public enum Status
+[JsonConverter(typeof(BetaManagedAgentsSessionStatusConverter))]
+public enum BetaManagedAgentsSessionStatus
 {
     Rescheduling,
     Running,
@@ -278,9 +306,9 @@ public enum Status
     Terminated,
 }
 
-sealed class StatusConverter : JsonConverter<Status>
+sealed class BetaManagedAgentsSessionStatusConverter : JsonConverter<BetaManagedAgentsSessionStatus>
 {
-    public override Status Read(
+    public override BetaManagedAgentsSessionStatus Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -288,24 +316,28 @@ sealed class StatusConverter : JsonConverter<Status>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "rescheduling" => Status.Rescheduling,
-            "running" => Status.Running,
-            "idle" => Status.Idle,
-            "terminated" => Status.Terminated,
-            _ => (Status)(-1),
+            "rescheduling" => BetaManagedAgentsSessionStatus.Rescheduling,
+            "running" => BetaManagedAgentsSessionStatus.Running,
+            "idle" => BetaManagedAgentsSessionStatus.Idle,
+            "terminated" => BetaManagedAgentsSessionStatus.Terminated,
+            _ => (BetaManagedAgentsSessionStatus)(-1),
         };
     }
 
-    public override void Write(Utf8JsonWriter writer, Status value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsSessionStatus value,
+        JsonSerializerOptions options
+    )
     {
         JsonSerializer.Serialize(
             writer,
             value switch
             {
-                Status.Rescheduling => "rescheduling",
-                Status.Running => "running",
-                Status.Idle => "idle",
-                Status.Terminated => "terminated",
+                BetaManagedAgentsSessionStatus.Rescheduling => "rescheduling",
+                BetaManagedAgentsSessionStatus.Running => "running",
+                BetaManagedAgentsSessionStatus.Idle => "idle",
+                BetaManagedAgentsSessionStatus.Terminated => "terminated",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

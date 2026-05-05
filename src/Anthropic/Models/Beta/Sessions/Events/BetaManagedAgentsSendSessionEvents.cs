@@ -123,7 +123,8 @@ public record class Data : ModelBase
                 betaManagedAgentsUserMessageEvent: (x) => x.ID,
                 betaManagedAgentsUserInterruptEvent: (x) => x.ID,
                 betaManagedAgentsUserToolConfirmationEvent: (x) => x.ID,
-                betaManagedAgentsUserCustomToolResultEvent: (x) => x.ID
+                betaManagedAgentsUserCustomToolResultEvent: (x) => x.ID,
+                betaManagedAgentsUserDefineOutcomeEvent: (x) => x.ID
             );
         }
     }
@@ -136,7 +137,22 @@ public record class Data : ModelBase
                 betaManagedAgentsUserMessageEvent: (x) => x.ProcessedAt,
                 betaManagedAgentsUserInterruptEvent: (x) => x.ProcessedAt,
                 betaManagedAgentsUserToolConfirmationEvent: (x) => x.ProcessedAt,
-                betaManagedAgentsUserCustomToolResultEvent: (x) => x.ProcessedAt
+                betaManagedAgentsUserCustomToolResultEvent: (x) => x.ProcessedAt,
+                betaManagedAgentsUserDefineOutcomeEvent: (x) => x.ProcessedAt
+            );
+        }
+    }
+
+    public string? SessionThreadID
+    {
+        get
+        {
+            return Match<string?>(
+                betaManagedAgentsUserMessageEvent: (_) => null,
+                betaManagedAgentsUserInterruptEvent: (x) => x.SessionThreadID,
+                betaManagedAgentsUserToolConfirmationEvent: (x) => x.SessionThreadID,
+                betaManagedAgentsUserCustomToolResultEvent: (x) => x.SessionThreadID,
+                betaManagedAgentsUserDefineOutcomeEvent: (_) => null
             );
         }
     }
@@ -160,6 +176,12 @@ public record class Data : ModelBase
     }
 
     public Data(BetaManagedAgentsUserCustomToolResultEvent value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Data(BetaManagedAgentsUserDefineOutcomeEvent value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -263,6 +285,29 @@ public record class Data : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsUserDefineOutcomeEvent"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsUserDefineOutcomeEvent(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsUserDefineOutcomeEvent`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsUserDefineOutcomeEvent(
+        [NotNullWhen(true)] out BetaManagedAgentsUserDefineOutcomeEvent? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsUserDefineOutcomeEvent;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -279,7 +324,8 @@ public record class Data : ModelBase
     ///     (BetaManagedAgentsUserMessageEvent value) =&gt; {...},
     ///     (BetaManagedAgentsUserInterruptEvent value) =&gt; {...},
     ///     (BetaManagedAgentsUserToolConfirmationEvent value) =&gt; {...},
-    ///     (BetaManagedAgentsUserCustomToolResultEvent value) =&gt; {...}
+    ///     (BetaManagedAgentsUserCustomToolResultEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsUserDefineOutcomeEvent value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -288,7 +334,8 @@ public record class Data : ModelBase
         System::Action<BetaManagedAgentsUserMessageEvent> betaManagedAgentsUserMessageEvent,
         System::Action<BetaManagedAgentsUserInterruptEvent> betaManagedAgentsUserInterruptEvent,
         System::Action<BetaManagedAgentsUserToolConfirmationEvent> betaManagedAgentsUserToolConfirmationEvent,
-        System::Action<BetaManagedAgentsUserCustomToolResultEvent> betaManagedAgentsUserCustomToolResultEvent
+        System::Action<BetaManagedAgentsUserCustomToolResultEvent> betaManagedAgentsUserCustomToolResultEvent,
+        System::Action<BetaManagedAgentsUserDefineOutcomeEvent> betaManagedAgentsUserDefineOutcomeEvent
     )
     {
         switch (this.Value)
@@ -304,6 +351,9 @@ public record class Data : ModelBase
                 break;
             case BetaManagedAgentsUserCustomToolResultEvent value:
                 betaManagedAgentsUserCustomToolResultEvent(value);
+                break;
+            case BetaManagedAgentsUserDefineOutcomeEvent value:
+                betaManagedAgentsUserDefineOutcomeEvent(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Data");
@@ -328,7 +378,8 @@ public record class Data : ModelBase
     ///     (BetaManagedAgentsUserMessageEvent value) =&gt; {...},
     ///     (BetaManagedAgentsUserInterruptEvent value) =&gt; {...},
     ///     (BetaManagedAgentsUserToolConfirmationEvent value) =&gt; {...},
-    ///     (BetaManagedAgentsUserCustomToolResultEvent value) =&gt; {...}
+    ///     (BetaManagedAgentsUserCustomToolResultEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsUserDefineOutcomeEvent value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -343,7 +394,11 @@ public record class Data : ModelBase
         System::Func<
             BetaManagedAgentsUserCustomToolResultEvent,
             T
-        > betaManagedAgentsUserCustomToolResultEvent
+        > betaManagedAgentsUserCustomToolResultEvent,
+        System::Func<
+            BetaManagedAgentsUserDefineOutcomeEvent,
+            T
+        > betaManagedAgentsUserDefineOutcomeEvent
     )
     {
         return this.Value switch
@@ -354,6 +409,8 @@ public record class Data : ModelBase
                 betaManagedAgentsUserToolConfirmationEvent(value),
             BetaManagedAgentsUserCustomToolResultEvent value =>
                 betaManagedAgentsUserCustomToolResultEvent(value),
+            BetaManagedAgentsUserDefineOutcomeEvent value =>
+                betaManagedAgentsUserDefineOutcomeEvent(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Data"),
         };
     }
@@ -366,6 +423,9 @@ public record class Data : ModelBase
         new(value);
 
     public static implicit operator Data(BetaManagedAgentsUserCustomToolResultEvent value) =>
+        new(value);
+
+    public static implicit operator Data(BetaManagedAgentsUserDefineOutcomeEvent value) =>
         new(value);
 
     /// <summary>
@@ -390,7 +450,9 @@ public record class Data : ModelBase
             (betaManagedAgentsUserToolConfirmationEvent) =>
                 betaManagedAgentsUserToolConfirmationEvent.Validate(),
             (betaManagedAgentsUserCustomToolResultEvent) =>
-                betaManagedAgentsUserCustomToolResultEvent.Validate()
+                betaManagedAgentsUserCustomToolResultEvent.Validate(),
+            (betaManagedAgentsUserDefineOutcomeEvent) =>
+                betaManagedAgentsUserDefineOutcomeEvent.Validate()
         );
     }
 
@@ -418,6 +480,7 @@ public record class Data : ModelBase
             BetaManagedAgentsUserInterruptEvent _ => 1,
             BetaManagedAgentsUserToolConfirmationEvent _ => 2,
             BetaManagedAgentsUserCustomToolResultEvent _ => 3,
+            BetaManagedAgentsUserDefineOutcomeEvent _ => 4,
             _ => -1,
         };
     }
@@ -513,6 +576,27 @@ sealed class DataConverter : JsonConverter<Data>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaManagedAgentsUserCustomToolResultEvent>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "user.define_outcome":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsUserDefineOutcomeEvent>(
                             element,
                             options
                         );

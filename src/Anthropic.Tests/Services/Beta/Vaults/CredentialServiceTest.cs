@@ -78,4 +78,16 @@ public class CredentialServiceTest : TestBase
         );
         betaManagedAgentsCredential.Validate();
     }
+
+    [Fact(Skip = "prism can't find endpoint with beta only tag")]
+    public async Task McpOAuthValidate_Works()
+    {
+        var betaManagedAgentsCredentialValidation =
+            await this.client.Beta.Vaults.Credentials.McpOAuthValidate(
+                "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
+                TestContext.Current.CancellationToken
+            );
+        betaManagedAgentsCredentialValidation.Validate();
+    }
 }

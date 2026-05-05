@@ -73,6 +73,13 @@ public class AnthropicClient : IAnthropicClient
         init { this._options.AuthToken = value; }
     }
 
+    /// <inheritdoc/>
+    public string? WebhookKey
+    {
+        get { return this._options.WebhookKey; }
+        init { this._options.WebhookKey = value; }
+    }
+
     readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
 
     /// <inheritdoc/>
@@ -276,6 +283,13 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
     {
         get { return this._options.AuthToken; }
         init { this._options.AuthToken = value; }
+    }
+
+    /// <inheritdoc/>
+    public virtual string? WebhookKey
+    {
+        get { return this._options.WebhookKey; }
+        init { this._options.WebhookKey = value; }
     }
 
     /// <inheritdoc/>

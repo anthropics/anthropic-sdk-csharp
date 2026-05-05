@@ -42,6 +42,8 @@ public interface IBetaService
 
     Beta::ISkillService Skills { get; }
 
+    Beta::IWebhookService Webhooks { get; }
+
     Beta::IUserProfileService UserProfiles { get; }
 }
 
@@ -75,6 +77,8 @@ public interface IBetaServiceWithRawResponse
     Beta::IFileServiceWithRawResponse Files { get; }
 
     Beta::ISkillServiceWithRawResponse Skills { get; }
+
+    Beta::IWebhookServiceWithRawResponse Webhooks { get; }
 
     Beta::IUserProfileServiceWithRawResponse UserProfiles { get; }
 }

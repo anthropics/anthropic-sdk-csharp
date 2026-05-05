@@ -27,9 +27,11 @@ public class BetaManagedAgentsEventParamsTest : TestBase
     [Fact]
     public void UserInterruptValidationWorks()
     {
-        BetaManagedAgentsEventParams value = new BetaManagedAgentsUserInterruptEventParams(
-            BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt
-        );
+        BetaManagedAgentsEventParams value = new BetaManagedAgentsUserInterruptEventParams()
+        {
+            Type = BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt,
+            SessionThreadID = "session_thread_id",
+        };
         value.Validate();
     }
 
@@ -67,6 +69,23 @@ public class BetaManagedAgentsEventParamsTest : TestBase
     }
 
     [Fact]
+    public void UserDefineOutcomeValidationWorks()
+    {
+        BetaManagedAgentsEventParams value = new BetaManagedAgentsUserDefineOutcomeEventParams()
+        {
+            Description = "Produce a 2-page summary as summary.md",
+            Rubric = new BetaManagedAgentsTextRubricParams()
+            {
+                Content = "Must cover all five sections; cite sources inline.",
+                Type = BetaManagedAgentsTextRubricParamsType.Text,
+            },
+            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            MaxIterations = 3,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void UserMessageSerializationRoundtripWorks()
     {
         BetaManagedAgentsEventParams value = new BetaManagedAgentsUserMessageEventParams()
@@ -93,9 +112,11 @@ public class BetaManagedAgentsEventParamsTest : TestBase
     [Fact]
     public void UserInterruptSerializationRoundtripWorks()
     {
-        BetaManagedAgentsEventParams value = new BetaManagedAgentsUserInterruptEventParams(
-            BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt
-        );
+        BetaManagedAgentsEventParams value = new BetaManagedAgentsUserInterruptEventParams()
+        {
+            Type = BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt,
+            SessionThreadID = "session_thread_id",
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsEventParams>(
             element,
@@ -140,6 +161,29 @@ public class BetaManagedAgentsEventParamsTest : TestBase
                 },
             ],
             IsError = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsEventParams>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UserDefineOutcomeSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsEventParams value = new BetaManagedAgentsUserDefineOutcomeEventParams()
+        {
+            Description = "Produce a 2-page summary as summary.md",
+            Rubric = new BetaManagedAgentsTextRubricParams()
+            {
+                Content = "Must cover all five sections; cite sources inline.",
+                Type = BetaManagedAgentsTextRubricParamsType.Text,
+            },
+            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            MaxIterations = 3,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsEventParams>(

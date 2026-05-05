@@ -253,6 +253,32 @@ public record class SessionListParams : ParamsBase
     }
 
     /// <summary>
+    /// Filter by session status. Repeat the parameter to match any of multiple statuses.
+    /// </summary>
+    public IReadOnlyList<ApiEnum<string, Status>>? Statuses
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<ImmutableArray<ApiEnum<string, Status>>>(
+                "statuses"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set<ImmutableArray<ApiEnum<string, Status>>?>(
+                "statuses",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
+    /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
@@ -404,6 +430,55 @@ sealed class OrderConverter : JsonConverter<Order>
             {
                 Order.Asc => "asc",
                 Order.Desc => "desc",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
+/// SessionStatus enum
+/// </summary>
+[JsonConverter(typeof(StatusConverter))]
+public enum Status
+{
+    Rescheduling,
+    Running,
+    Idle,
+    Terminated,
+}
+
+sealed class StatusConverter : JsonConverter<Status>
+{
+    public override Status Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "rescheduling" => Status.Rescheduling,
+            "running" => Status.Running,
+            "idle" => Status.Idle,
+            "terminated" => Status.Terminated,
+            _ => (Status)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, Status value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                Status.Rescheduling => "rescheduling",
+                Status.Running => "running",
+                Status.Idle => "idle",
+                Status.Terminated => "terminated",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

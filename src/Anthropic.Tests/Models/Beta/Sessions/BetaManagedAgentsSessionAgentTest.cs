@@ -4,6 +4,7 @@ using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions;
 using Agents = Anthropic.Models.Beta.Agents;
+using Threads = Anthropic.Models.Beta.Sessions.Threads;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
 
@@ -29,6 +30,73 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
+            },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Description = "A focused research subagent.",
+                        McpServers =
+                        [
+                            new()
+                            {
+                                Name = "example-mcp",
+                                Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                                Url = "https://example-server.modelcontextprotocol.io/sse",
+                            },
+                        ],
+                        Model = new()
+                        {
+                            ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Speed = Agents::Speed.Standard,
+                        },
+                        Name = "Researcher",
+                        Skills =
+                        [
+                            new Agents::BetaManagedAgentsAnthropicSkill()
+                            {
+                                SkillID = "xlsx",
+                                Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                                Version = "1",
+                            },
+                        ],
+                        System =
+                            "You are a research subagent that gathers and summarises sources for the coordinating agent.",
+                        Tools =
+                        [
+                            new Agents::BetaManagedAgentsAgentToolset20260401()
+                            {
+                                Configs =
+                                [
+                                    new()
+                                    {
+                                        Enabled = true,
+                                        Name = Agents::Name.Bash,
+                                        PermissionPolicy =
+                                            new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                            ),
+                                    },
+                                ],
+                                DefaultConfig = new()
+                                {
+                                    Enabled = true,
+                                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                                        Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                    ),
+                                },
+                                Type =
+                                    Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            },
+                        ],
+                        Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                        Version = 1,
+                    },
+                ],
+                Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
             },
             Name = "My First Agent",
             Skills =
@@ -93,6 +161,73 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
             Speed = Agents::Speed.Standard,
         };
+        BetaManagedAgentsSessionMultiagentCoordinator expectedMultiagent = new()
+        {
+            Agents =
+            [
+                new()
+                {
+                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    Description = "A focused research subagent.",
+                    McpServers =
+                    [
+                        new()
+                        {
+                            Name = "example-mcp",
+                            Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                            Url = "https://example-server.modelcontextprotocol.io/sse",
+                        },
+                    ],
+                    Model = new()
+                    {
+                        ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Speed = Agents::Speed.Standard,
+                    },
+                    Name = "Researcher",
+                    Skills =
+                    [
+                        new Agents::BetaManagedAgentsAnthropicSkill()
+                        {
+                            SkillID = "xlsx",
+                            Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                            Version = "1",
+                        },
+                    ],
+                    System =
+                        "You are a research subagent that gathers and summarises sources for the coordinating agent.",
+                    Tools =
+                    [
+                        new Agents::BetaManagedAgentsAgentToolset20260401()
+                        {
+                            Configs =
+                            [
+                                new()
+                                {
+                                    Enabled = true,
+                                    Name = Agents::Name.Bash,
+                                    PermissionPolicy =
+                                        new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                        ),
+                                },
+                            ],
+                            DefaultConfig = new()
+                            {
+                                Enabled = true,
+                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                                    Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                ),
+                            },
+                            Type =
+                                Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                        },
+                    ],
+                    Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                    Version = 1,
+                },
+            ],
+            Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
+        };
         string expectedName = "My First Agent";
         List<Skill> expectedSkills =
         [
@@ -148,6 +283,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             Assert.Equal(expectedMcpServers[i], model.McpServers[i]);
         }
         Assert.Equal(expectedModel, model.Model);
+        Assert.Equal(expectedMultiagent, model.Multiagent);
         Assert.Equal(expectedName, model.Name);
         Assert.Equal(expectedSkills.Count, model.Skills.Count);
         for (int i = 0; i < expectedSkills.Count; i++)
@@ -184,6 +320,73 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
+            },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Description = "A focused research subagent.",
+                        McpServers =
+                        [
+                            new()
+                            {
+                                Name = "example-mcp",
+                                Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                                Url = "https://example-server.modelcontextprotocol.io/sse",
+                            },
+                        ],
+                        Model = new()
+                        {
+                            ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Speed = Agents::Speed.Standard,
+                        },
+                        Name = "Researcher",
+                        Skills =
+                        [
+                            new Agents::BetaManagedAgentsAnthropicSkill()
+                            {
+                                SkillID = "xlsx",
+                                Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                                Version = "1",
+                            },
+                        ],
+                        System =
+                            "You are a research subagent that gathers and summarises sources for the coordinating agent.",
+                        Tools =
+                        [
+                            new Agents::BetaManagedAgentsAgentToolset20260401()
+                            {
+                                Configs =
+                                [
+                                    new()
+                                    {
+                                        Enabled = true,
+                                        Name = Agents::Name.Bash,
+                                        PermissionPolicy =
+                                            new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                            ),
+                                    },
+                                ],
+                                DefaultConfig = new()
+                                {
+                                    Enabled = true,
+                                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                                        Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                    ),
+                                },
+                                Type =
+                                    Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            },
+                        ],
+                        Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                        Version = 1,
+                    },
+                ],
+                Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
             },
             Name = "My First Agent",
             Skills =
@@ -262,6 +465,73 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                 ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
             },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Description = "A focused research subagent.",
+                        McpServers =
+                        [
+                            new()
+                            {
+                                Name = "example-mcp",
+                                Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                                Url = "https://example-server.modelcontextprotocol.io/sse",
+                            },
+                        ],
+                        Model = new()
+                        {
+                            ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Speed = Agents::Speed.Standard,
+                        },
+                        Name = "Researcher",
+                        Skills =
+                        [
+                            new Agents::BetaManagedAgentsAnthropicSkill()
+                            {
+                                SkillID = "xlsx",
+                                Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                                Version = "1",
+                            },
+                        ],
+                        System =
+                            "You are a research subagent that gathers and summarises sources for the coordinating agent.",
+                        Tools =
+                        [
+                            new Agents::BetaManagedAgentsAgentToolset20260401()
+                            {
+                                Configs =
+                                [
+                                    new()
+                                    {
+                                        Enabled = true,
+                                        Name = Agents::Name.Bash,
+                                        PermissionPolicy =
+                                            new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                            ),
+                                    },
+                                ],
+                                DefaultConfig = new()
+                                {
+                                    Enabled = true,
+                                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                                        Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                    ),
+                                },
+                                Type =
+                                    Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            },
+                        ],
+                        Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                        Version = 1,
+                    },
+                ],
+                Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
+            },
             Name = "My First Agent",
             Skills =
             [
@@ -332,6 +602,73 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
             Speed = Agents::Speed.Standard,
         };
+        BetaManagedAgentsSessionMultiagentCoordinator expectedMultiagent = new()
+        {
+            Agents =
+            [
+                new()
+                {
+                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    Description = "A focused research subagent.",
+                    McpServers =
+                    [
+                        new()
+                        {
+                            Name = "example-mcp",
+                            Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                            Url = "https://example-server.modelcontextprotocol.io/sse",
+                        },
+                    ],
+                    Model = new()
+                    {
+                        ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Speed = Agents::Speed.Standard,
+                    },
+                    Name = "Researcher",
+                    Skills =
+                    [
+                        new Agents::BetaManagedAgentsAnthropicSkill()
+                        {
+                            SkillID = "xlsx",
+                            Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                            Version = "1",
+                        },
+                    ],
+                    System =
+                        "You are a research subagent that gathers and summarises sources for the coordinating agent.",
+                    Tools =
+                    [
+                        new Agents::BetaManagedAgentsAgentToolset20260401()
+                        {
+                            Configs =
+                            [
+                                new()
+                                {
+                                    Enabled = true,
+                                    Name = Agents::Name.Bash,
+                                    PermissionPolicy =
+                                        new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                        ),
+                                },
+                            ],
+                            DefaultConfig = new()
+                            {
+                                Enabled = true,
+                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                                    Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                ),
+                            },
+                            Type =
+                                Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                        },
+                    ],
+                    Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                    Version = 1,
+                },
+            ],
+            Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
+        };
         string expectedName = "My First Agent";
         List<Skill> expectedSkills =
         [
@@ -387,6 +724,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             Assert.Equal(expectedMcpServers[i], deserialized.McpServers[i]);
         }
         Assert.Equal(expectedModel, deserialized.Model);
+        Assert.Equal(expectedMultiagent, deserialized.Multiagent);
         Assert.Equal(expectedName, deserialized.Name);
         Assert.Equal(expectedSkills.Count, deserialized.Skills.Count);
         for (int i = 0; i < expectedSkills.Count; i++)
@@ -423,6 +761,73 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
+            },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Description = "A focused research subagent.",
+                        McpServers =
+                        [
+                            new()
+                            {
+                                Name = "example-mcp",
+                                Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                                Url = "https://example-server.modelcontextprotocol.io/sse",
+                            },
+                        ],
+                        Model = new()
+                        {
+                            ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Speed = Agents::Speed.Standard,
+                        },
+                        Name = "Researcher",
+                        Skills =
+                        [
+                            new Agents::BetaManagedAgentsAnthropicSkill()
+                            {
+                                SkillID = "xlsx",
+                                Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                                Version = "1",
+                            },
+                        ],
+                        System =
+                            "You are a research subagent that gathers and summarises sources for the coordinating agent.",
+                        Tools =
+                        [
+                            new Agents::BetaManagedAgentsAgentToolset20260401()
+                            {
+                                Configs =
+                                [
+                                    new()
+                                    {
+                                        Enabled = true,
+                                        Name = Agents::Name.Bash,
+                                        PermissionPolicy =
+                                            new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                            ),
+                                    },
+                                ],
+                                DefaultConfig = new()
+                                {
+                                    Enabled = true,
+                                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                                        Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                    ),
+                                },
+                                Type =
+                                    Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            },
+                        ],
+                        Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                        Version = 1,
+                    },
+                ],
+                Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
             },
             Name = "My First Agent",
             Skills =
@@ -494,6 +899,73 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
+            },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Description = "A focused research subagent.",
+                        McpServers =
+                        [
+                            new()
+                            {
+                                Name = "example-mcp",
+                                Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                                Url = "https://example-server.modelcontextprotocol.io/sse",
+                            },
+                        ],
+                        Model = new()
+                        {
+                            ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Speed = Agents::Speed.Standard,
+                        },
+                        Name = "Researcher",
+                        Skills =
+                        [
+                            new Agents::BetaManagedAgentsAnthropicSkill()
+                            {
+                                SkillID = "xlsx",
+                                Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                                Version = "1",
+                            },
+                        ],
+                        System =
+                            "You are a research subagent that gathers and summarises sources for the coordinating agent.",
+                        Tools =
+                        [
+                            new Agents::BetaManagedAgentsAgentToolset20260401()
+                            {
+                                Configs =
+                                [
+                                    new()
+                                    {
+                                        Enabled = true,
+                                        Name = Agents::Name.Bash,
+                                        PermissionPolicy =
+                                            new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                            ),
+                                    },
+                                ],
+                                DefaultConfig = new()
+                                {
+                                    Enabled = true,
+                                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
+                                        Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                    ),
+                                },
+                                Type =
+                                    Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            },
+                        ],
+                        Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                        Version = 1,
+                    },
+                ],
+                Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
             },
             Name = "My First Agent",
             Skills =

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Beta.Sessions;
 using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
@@ -32,6 +33,19 @@ public class BetaManagedAgentsAgentTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
+            },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                        Version = 1,
+                    },
+                ],
+                Type = BetaManagedAgentsMultiagentType.Coordinator,
             },
             Name = "My First Agent",
             Skills =
@@ -99,6 +113,19 @@ public class BetaManagedAgentsAgentTest : TestBase
             ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
             Speed = Agents::Speed.Standard,
         };
+        BetaManagedAgentsMultiagent expectedMultiagent = new()
+        {
+            Agents =
+            [
+                new()
+                {
+                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                    Version = 1,
+                },
+            ],
+            Type = BetaManagedAgentsMultiagentType.Coordinator,
+        };
         string expectedName = "My First Agent";
         List<Agents::Skill> expectedSkills =
         [
@@ -163,6 +190,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             Assert.Equal(value, model.Metadata[item.Key]);
         }
         Assert.Equal(expectedModel, model.Model);
+        Assert.Equal(expectedMultiagent, model.Multiagent);
         Assert.Equal(expectedName, model.Name);
         Assert.Equal(expectedSkills.Count, model.Skills.Count);
         for (int i = 0; i < expectedSkills.Count; i++)
@@ -203,6 +231,19 @@ public class BetaManagedAgentsAgentTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
+            },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                        Version = 1,
+                    },
+                ],
+                Type = BetaManagedAgentsMultiagentType.Coordinator,
             },
             Name = "My First Agent",
             Skills =
@@ -285,6 +326,19 @@ public class BetaManagedAgentsAgentTest : TestBase
                 ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
             },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                        Version = 1,
+                    },
+                ],
+                Type = BetaManagedAgentsMultiagentType.Coordinator,
+            },
             Name = "My First Agent",
             Skills =
             [
@@ -358,6 +412,19 @@ public class BetaManagedAgentsAgentTest : TestBase
             ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
             Speed = Agents::Speed.Standard,
         };
+        BetaManagedAgentsMultiagent expectedMultiagent = new()
+        {
+            Agents =
+            [
+                new()
+                {
+                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                    Version = 1,
+                },
+            ],
+            Type = BetaManagedAgentsMultiagentType.Coordinator,
+        };
         string expectedName = "My First Agent";
         List<Agents::Skill> expectedSkills =
         [
@@ -422,6 +489,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             Assert.Equal(value, deserialized.Metadata[item.Key]);
         }
         Assert.Equal(expectedModel, deserialized.Model);
+        Assert.Equal(expectedMultiagent, deserialized.Multiagent);
         Assert.Equal(expectedName, deserialized.Name);
         Assert.Equal(expectedSkills.Count, deserialized.Skills.Count);
         for (int i = 0; i < expectedSkills.Count; i++)
@@ -462,6 +530,19 @@ public class BetaManagedAgentsAgentTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
+            },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                        Version = 1,
+                    },
+                ],
+                Type = BetaManagedAgentsMultiagentType.Coordinator,
             },
             Name = "My First Agent",
             Skills =
@@ -537,6 +618,19 @@ public class BetaManagedAgentsAgentTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Speed = Agents::Speed.Standard,
+            },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                        Version = 1,
+                    },
+                ],
+                Type = BetaManagedAgentsMultiagentType.Coordinator,
             },
             Name = "My First Agent",
             Skills =

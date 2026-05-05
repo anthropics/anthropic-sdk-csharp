@@ -59,6 +59,23 @@ public sealed record class BetaUserProfile : JsonModel
     }
 
     /// <summary>
+    /// How the entity behind a user profile relates to the platform that owns the
+    /// API key. `external`: an individual end-user of the platform. `resold`: a company
+    /// the platform resells Claude access to. `internal`: the platform's own usage.
+    /// </summary>
+    public required ApiEnum<string, BetaUserProfileRelationship> Relationship
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, BetaUserProfileRelationship>>(
+                "relationship"
+            );
+        }
+        init { this._rawData.Set("relationship", value); }
+    }
+
+    /// <summary>
     /// Trust grants for this profile, keyed by grant name. Key omitted when no grant
     /// is active or in flight.
     /// </summary>
@@ -121,12 +138,27 @@ public sealed record class BetaUserProfile : JsonModel
         init { this._rawData.Set("external_id", value); }
     }
 
+    /// <summary>
+    /// Display name of the entity this profile represents. For `resold` this is
+    /// the resold-to company's name.
+    /// </summary>
+    public string? Name
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("name");
+        }
+        init { this._rawData.Set("name", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
         _ = this.CreatedAt;
         _ = this.Metadata;
+        this.Relationship.Validate();
         foreach (var item in this.TrustGrants.Values)
         {
             item.Validate();
@@ -134,6 +166,7 @@ public sealed record class BetaUserProfile : JsonModel
         this.Type.Validate();
         _ = this.UpdatedAt;
         _ = this.ExternalID;
+        _ = this.Name;
     }
 
     public BetaUserProfile() { }
@@ -169,6 +202,58 @@ class BetaUserProfileFromRaw : IFromRawJson<BetaUserProfile>
     /// <inheritdoc/>
     public BetaUserProfile FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaUserProfile.FromRawUnchecked(rawData);
+}
+
+/// <summary>
+/// How the entity behind a user profile relates to the platform that owns the API
+/// key. `external`: an individual end-user of the platform. `resold`: a company
+/// the platform resells Claude access to. `internal`: the platform's own usage.
+/// </summary>
+[JsonConverter(typeof(BetaUserProfileRelationshipConverter))]
+public enum BetaUserProfileRelationship
+{
+    External,
+    Resold,
+    Internal,
+}
+
+sealed class BetaUserProfileRelationshipConverter : JsonConverter<BetaUserProfileRelationship>
+{
+    public override BetaUserProfileRelationship Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "external" => BetaUserProfileRelationship.External,
+            "resold" => BetaUserProfileRelationship.Resold,
+            "internal" => BetaUserProfileRelationship.Internal,
+            _ => (BetaUserProfileRelationship)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaUserProfileRelationship value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaUserProfileRelationship.External => "external",
+                BetaUserProfileRelationship.Resold => "resold",
+                BetaUserProfileRelationship.Internal => "internal",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
 }
 
 /// <summary>

@@ -5,6 +5,7 @@ using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Agents;
+using Sessions = Anthropic.Models.Beta.Sessions;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
 
@@ -28,6 +29,17 @@ public class AgentCreateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+            },
             Skills =
             [
                 new BetaManagedAgentsAnthropicSkillParams()
@@ -80,6 +92,17 @@ public class AgentCreateParamsTest : TestBase
             },
         ];
         Dictionary<string, string> expectedMetadata = new() { { "foo", "bar" } };
+        Sessions::BetaManagedAgentsMultiagentParams expectedMultiagent = new()
+        {
+            Agents =
+            [
+                "agent_011CZkYqphY8vELVzwCUpqiQ",
+                new BetaManagedAgentsMultiagentSelfParams(
+                    BetaManagedAgentsMultiagentSelfParamsType.Self
+                ),
+            ],
+            Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+        };
         List<BetaManagedAgentsSkillParams> expectedSkills =
         [
             new BetaManagedAgentsAnthropicSkillParams()
@@ -138,6 +161,7 @@ public class AgentCreateParamsTest : TestBase
 
             Assert.Equal(value, parameters.Metadata[item.Key]);
         }
+        Assert.Equal(expectedMultiagent, parameters.Multiagent);
         Assert.NotNull(parameters.Skills);
         Assert.Equal(expectedSkills.Count, parameters.Skills.Count);
         for (int i = 0; i < expectedSkills.Count; i++)
@@ -167,6 +191,17 @@ public class AgentCreateParamsTest : TestBase
             Model = BetaManagedAgentsModel.ClaudeSonnet4_6,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+            },
             System =
                 "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
         };
@@ -191,6 +226,17 @@ public class AgentCreateParamsTest : TestBase
             Model = BetaManagedAgentsModel.ClaudeSonnet4_6,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+            },
             System =
                 "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
 
@@ -270,6 +316,8 @@ public class AgentCreateParamsTest : TestBase
 
         Assert.Null(parameters.Description);
         Assert.False(parameters.RawBodyData.ContainsKey("description"));
+        Assert.Null(parameters.Multiagent);
+        Assert.False(parameters.RawBodyData.ContainsKey("multiagent"));
         Assert.Null(parameters.System);
         Assert.False(parameters.RawBodyData.ContainsKey("system"));
     }
@@ -328,11 +376,14 @@ public class AgentCreateParamsTest : TestBase
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
             Description = null,
+            Multiagent = null,
             System = null,
         };
 
         Assert.Null(parameters.Description);
         Assert.True(parameters.RawBodyData.ContainsKey("description"));
+        Assert.Null(parameters.Multiagent);
+        Assert.True(parameters.RawBodyData.ContainsKey("multiagent"));
         Assert.Null(parameters.System);
         Assert.True(parameters.RawBodyData.ContainsKey("system"));
     }
@@ -390,6 +441,17 @@ public class AgentCreateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+            },
             Skills =
             [
                 new BetaManagedAgentsAnthropicSkillParams()
