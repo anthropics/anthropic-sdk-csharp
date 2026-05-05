@@ -184,12 +184,16 @@ public static class AnthropicCredentials
                 );
             }
 
+            // For federation profiles workspace_id is sent in the jwt-bearer exchange
+            // body, not as a request header (the minted token is already
+            // workspace-scoped, so the header would be ignored).
             var creds = new WorkloadIdentityCredentials(
                 new WorkloadIdentityOptions
                 {
                     FederationRuleId = auth.FederationRuleId!,
                     OrganizationId = config.OrganizationId,
                     ServiceAccountId = auth.ServiceAccountId,
+                    WorkspaceId = config.WorkspaceId,
                     IdentityTokenProvider = identityProvider,
                     BaseUrl = effectiveBaseUrl,
                     HttpClient = httpClient,
@@ -201,8 +205,6 @@ public static class AnthropicCredentials
 
         if (auth.Type == "user_oauth")
         {
-            // anthropic-workspace-id is only meaningful for user_oauth — WIF tokens
-            // are already workspace-scoped server-side.
             if (!string.IsNullOrEmpty(config.WorkspaceId))
             {
                 extraHeaders["anthropic-workspace-id"] = config.WorkspaceId!;
@@ -266,6 +268,14 @@ public static class AnthropicCredentials
 
         var effectiveBaseUrl = baseUrlOverride ?? EnvironmentUrl.Production;
 
+        // Coerce empty string to null so a defaulted-but-empty CI variable
+        // doesn't put "workspace_id": "" on the wire.
+        var workspaceId = Environment.GetEnvironmentVariable(CredentialsConstants.EnvWorkspaceId);
+        if (string.IsNullOrEmpty(workspaceId))
+        {
+            workspaceId = null;
+        }
+
         var creds = new WorkloadIdentityCredentials(
             new WorkloadIdentityOptions
             {
@@ -276,6 +286,7 @@ public static class AnthropicCredentials
                 ServiceAccountId = Environment.GetEnvironmentVariable(
                     CredentialsConstants.EnvServiceAccountId
                 ),
+                WorkspaceId = workspaceId,
                 IdentityTokenProvider = identityProvider,
                 BaseUrl = effectiveBaseUrl,
                 HttpClient = httpClient,
