@@ -53,7 +53,7 @@ Configure the client using environment variables:
 ```csharp
 using Anthropic;
 
-// Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
+// Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN, ANTHROPIC_WEBHOOK_SIGNING_KEY and ANTHROPIC_BASE_URL environment variables
 AnthropicClient client = new();
 ```
 
@@ -69,11 +69,12 @@ Or using a combination of the two approaches.
 
 See this table for the available options:
 
-| Property    | Environment variable   | Required | Default value                 |
-| ----------- | ---------------------- | -------- | ----------------------------- |
-| `ApiKey`    | `ANTHROPIC_API_KEY`    | false    | -                             |
-| `AuthToken` | `ANTHROPIC_AUTH_TOKEN` | false    | -                             |
-| `BaseUrl`   | `ANTHROPIC_BASE_URL`   | true     | `"https://api.anthropic.com"` |
+| Property     | Environment variable            | Required | Default value                 |
+| ------------ | ------------------------------- | -------- | ----------------------------- |
+| `ApiKey`     | `ANTHROPIC_API_KEY`             | false    | -                             |
+| `AuthToken`  | `ANTHROPIC_AUTH_TOKEN`          | false    | -                             |
+| `WebhookKey` | `ANTHROPIC_WEBHOOK_SIGNING_KEY` | false    | -                             |
+| `BaseUrl`    | `ANTHROPIC_BASE_URL`            | true     | `"https://api.anthropic.com"` |
 
 ### Modifying configuration
 

@@ -23,6 +23,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+            SessionThreadID = "session_thread_id",
         };
 
         string expectedID = "id";
@@ -38,6 +39,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             string,
             BetaManagedAgentsAgentToolUseEventEvaluatedPermission
         > expectedEvaluatedPermission = BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow;
+        string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedInput.Count, model.Input.Count);
@@ -51,6 +53,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
         Assert.Equal(expectedType, model.Type);
         Assert.Equal(expectedEvaluatedPermission, model.EvaluatedPermission);
+        Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
     }
 
     [Fact]
@@ -67,6 +70,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+            SessionThreadID = "session_thread_id",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -92,6 +96,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+            SessionThreadID = "session_thread_id",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -114,6 +119,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             string,
             BetaManagedAgentsAgentToolUseEventEvaluatedPermission
         > expectedEvaluatedPermission = BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow;
+        string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedInput.Count, deserialized.Input.Count);
@@ -127,6 +133,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
         Assert.Equal(expectedType, deserialized.Type);
         Assert.Equal(expectedEvaluatedPermission, deserialized.EvaluatedPermission);
+        Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
     }
 
     [Fact]
@@ -143,6 +150,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+            SessionThreadID = "session_thread_id",
         };
 
         model.Validate();
@@ -161,6 +169,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
+            SessionThreadID = "session_thread_id",
         };
 
         Assert.Null(model.EvaluatedPermission);
@@ -180,6 +189,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
+            SessionThreadID = "session_thread_id",
         };
 
         model.Validate();
@@ -198,6 +208,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
+            SessionThreadID = "session_thread_id",
 
             // Null should be interpreted as omitted for these properties
             EvaluatedPermission = null,
@@ -220,9 +231,92 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
+            SessionThreadID = "session_thread_id",
 
             // Null should be interpreted as omitted for these properties
             EvaluatedPermission = null,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new BetaManagedAgentsAgentToolUseEvent
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "name",
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
+            EvaluatedPermission = BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+        };
+
+        Assert.Null(model.SessionThreadID);
+        Assert.False(model.RawData.ContainsKey("session_thread_id"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new BetaManagedAgentsAgentToolUseEvent
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "name",
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
+            EvaluatedPermission = BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
+    {
+        var model = new BetaManagedAgentsAgentToolUseEvent
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "name",
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
+            EvaluatedPermission = BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+
+            SessionThreadID = null,
+        };
+
+        Assert.Null(model.SessionThreadID);
+        Assert.True(model.RawData.ContainsKey("session_thread_id"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new BetaManagedAgentsAgentToolUseEvent
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "name",
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
+            EvaluatedPermission = BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+
+            SessionThreadID = null,
         };
 
         model.Validate();
@@ -242,6 +336,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+            SessionThreadID = "session_thread_id",
         };
 
         BetaManagedAgentsAgentToolUseEvent copied = new(model);

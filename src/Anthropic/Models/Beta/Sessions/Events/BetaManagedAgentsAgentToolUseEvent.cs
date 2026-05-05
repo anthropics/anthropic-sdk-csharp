@@ -116,6 +116,21 @@ public sealed record class BetaManagedAgentsAgentToolUseEvent : JsonModel
         }
     }
 
+    /// <summary>
+    /// When set, this event was cross-posted from a subagent's thread to surface
+    /// its permission request on the primary thread's stream. Empty on the thread's
+    /// own events. Echo this on a `user.tool_confirmation` event to route the approval back.
+    /// </summary>
+    public string? SessionThreadID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("session_thread_id");
+        }
+        init { this._rawData.Set("session_thread_id", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -125,6 +140,7 @@ public sealed record class BetaManagedAgentsAgentToolUseEvent : JsonModel
         _ = this.ProcessedAt;
         this.Type.Validate();
         this.EvaluatedPermission?.Validate();
+        _ = this.SessionThreadID;
     }
 
     public BetaManagedAgentsAgentToolUseEvent() { }

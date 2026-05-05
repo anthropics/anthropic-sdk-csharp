@@ -37,6 +37,7 @@ public sealed class BetaService : IBetaService
         _memoryStores = new(() => new Beta::MemoryStoreService(client));
         _files = new(() => new Beta::FileService(client));
         _skills = new(() => new Beta::SkillService(client));
+        _webhooks = new(() => new Beta::WebhookService(client));
         _userProfiles = new(() => new Beta::UserProfileService(client));
     }
 
@@ -94,6 +95,12 @@ public sealed class BetaService : IBetaService
         get { return _skills.Value; }
     }
 
+    readonly Lazy<Beta::IWebhookService> _webhooks;
+    public Beta::IWebhookService Webhooks
+    {
+        get { return _webhooks.Value; }
+    }
+
     readonly Lazy<Beta::IUserProfileService> _userProfiles;
     public Beta::IUserProfileService UserProfiles
     {
@@ -125,6 +132,7 @@ public sealed class BetaServiceWithRawResponse : IBetaServiceWithRawResponse
         _memoryStores = new(() => new Beta::MemoryStoreServiceWithRawResponse(client));
         _files = new(() => new Beta::FileServiceWithRawResponse(client));
         _skills = new(() => new Beta::SkillServiceWithRawResponse(client));
+        _webhooks = new(() => new Beta::WebhookServiceWithRawResponse(client));
         _userProfiles = new(() => new Beta::UserProfileServiceWithRawResponse(client));
     }
 
@@ -180,6 +188,12 @@ public sealed class BetaServiceWithRawResponse : IBetaServiceWithRawResponse
     public Beta::ISkillServiceWithRawResponse Skills
     {
         get { return _skills.Value; }
+    }
+
+    readonly Lazy<Beta::IWebhookServiceWithRawResponse> _webhooks;
+    public Beta::IWebhookServiceWithRawResponse Webhooks
+    {
+        get { return _webhooks.Value; }
     }
 
     readonly Lazy<Beta::IUserProfileServiceWithRawResponse> _userProfiles;

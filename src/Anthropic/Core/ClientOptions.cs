@@ -98,4 +98,13 @@ public record struct ClientOptions()
         readonly get { return _authToken.Value; }
         set { _authToken = new(() => value); }
     }
+
+    Lazy<string?> _webhookKey = new(() =>
+        Environment.GetEnvironmentVariable("ANTHROPIC_WEBHOOK_SIGNING_KEY")
+    );
+    public string? WebhookKey
+    {
+        readonly get { return _webhookKey.Value; }
+        set { _webhookKey = new(() => value); }
+    }
 }

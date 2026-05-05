@@ -16,16 +16,19 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
             ID = "id",
             Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         string expectedID = "id";
         ApiEnum<string, BetaManagedAgentsUserInterruptEventType> expectedType =
             BetaManagedAgentsUserInterruptEventType.UserInterrupt;
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedType, model.Type);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
+        Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
     }
 
     [Fact]
@@ -36,6 +39,7 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
             ID = "id",
             Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -55,6 +59,7 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
             ID = "id",
             Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -68,10 +73,12 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
         ApiEnum<string, BetaManagedAgentsUserInterruptEventType> expectedType =
             BetaManagedAgentsUserInterruptEventType.UserInterrupt;
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedType, deserialized.Type);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
+        Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
     }
 
     [Fact]
@@ -82,6 +89,7 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
             ID = "id",
             Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         model.Validate();
@@ -98,6 +106,8 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
 
         Assert.Null(model.ProcessedAt);
         Assert.False(model.RawData.ContainsKey("processed_at"));
+        Assert.Null(model.SessionThreadID);
+        Assert.False(model.RawData.ContainsKey("session_thread_id"));
     }
 
     [Fact]
@@ -121,10 +131,13 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
             Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
 
             ProcessedAt = null,
+            SessionThreadID = null,
         };
 
         Assert.Null(model.ProcessedAt);
         Assert.True(model.RawData.ContainsKey("processed_at"));
+        Assert.Null(model.SessionThreadID);
+        Assert.True(model.RawData.ContainsKey("session_thread_id"));
     }
 
     [Fact]
@@ -136,6 +149,7 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
             Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
 
             ProcessedAt = null,
+            SessionThreadID = null,
         };
 
         model.Validate();
@@ -149,6 +163,7 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
             ID = "id",
             Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
 
         BetaManagedAgentsUserInterruptEvent copied = new(model);

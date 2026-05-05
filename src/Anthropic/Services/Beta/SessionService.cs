@@ -40,6 +40,7 @@ public sealed class SessionService : ISessionService
         _withRawResponse = new(() => new SessionServiceWithRawResponse(client.WithRawResponse));
         _events = new(() => new EventService(client));
         _resources = new(() => new ResourceService(client));
+        _threads = new(() => new ThreadService(client));
     }
 
     readonly Lazy<IEventService> _events;
@@ -52,6 +53,12 @@ public sealed class SessionService : ISessionService
     public IResourceService Resources
     {
         get { return _resources.Value; }
+    }
+
+    readonly Lazy<IThreadService> _threads;
+    public IThreadService Threads
+    {
+        get { return _threads.Value; }
     }
 
     /// <inheritdoc/>
@@ -192,6 +199,7 @@ public sealed class SessionServiceWithRawResponse : ISessionServiceWithRawRespon
 
         _events = new(() => new EventServiceWithRawResponse(client));
         _resources = new(() => new ResourceServiceWithRawResponse(client));
+        _threads = new(() => new ThreadServiceWithRawResponse(client));
     }
 
     readonly Lazy<IEventServiceWithRawResponse> _events;
@@ -204,6 +212,12 @@ public sealed class SessionServiceWithRawResponse : ISessionServiceWithRawRespon
     public IResourceServiceWithRawResponse Resources
     {
         get { return _resources.Value; }
+    }
+
+    readonly Lazy<IThreadServiceWithRawResponse> _threads;
+    public IThreadServiceWithRawResponse Threads
+    {
+        get { return _threads.Value; }
     }
 
     /// <inheritdoc/>

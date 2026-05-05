@@ -71,6 +71,21 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
         init { this._rawData.Set("model", value); }
     }
 
+    /// <summary>
+    /// Resolved coordinator topology with full agent definitions for each roster member.
+    /// </summary>
+    public required BetaManagedAgentsSessionMultiagentCoordinator? Multiagent
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaManagedAgentsSessionMultiagentCoordinator>(
+                "multiagent"
+            );
+        }
+        init { this._rawData.Set("multiagent", value); }
+    }
+
     public required string Name
     {
         get
@@ -159,6 +174,7 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
             item.Validate();
         }
         this.Model.Validate();
+        this.Multiagent?.Validate();
         _ = this.Name;
         foreach (var item in this.Skills)
         {

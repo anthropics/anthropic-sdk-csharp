@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Models.Beta.Sessions;
 using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
@@ -35,6 +36,19 @@ public class AgentListPageResponseTest : TestBase
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                         Speed = Agents::Speed.Standard,
+                    },
+                    Multiagent = new()
+                    {
+                        Agents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                        Type = BetaManagedAgentsMultiagentType.Coordinator,
                     },
                     Name = "My First Agent",
                     Skills =
@@ -111,6 +125,19 @@ public class AgentListPageResponseTest : TestBase
                 {
                     ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                     Speed = Agents::Speed.Standard,
+                },
+                Multiagent = new()
+                {
+                    Agents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                    Type = BetaManagedAgentsMultiagentType.Coordinator,
                 },
                 Name = "My First Agent",
                 Skills =
@@ -199,6 +226,19 @@ public class AgentListPageResponseTest : TestBase
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                         Speed = Agents::Speed.Standard,
+                    },
+                    Multiagent = new()
+                    {
+                        Agents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                        Type = BetaManagedAgentsMultiagentType.Coordinator,
                     },
                     Name = "My First Agent",
                     Skills =
@@ -290,6 +330,19 @@ public class AgentListPageResponseTest : TestBase
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                         Speed = Agents::Speed.Standard,
                     },
+                    Multiagent = new()
+                    {
+                        Agents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                        Type = BetaManagedAgentsMultiagentType.Coordinator,
+                    },
                     Name = "My First Agent",
                     Skills =
                     [
@@ -372,6 +425,19 @@ public class AgentListPageResponseTest : TestBase
                 {
                     ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                     Speed = Agents::Speed.Standard,
+                },
+                Multiagent = new()
+                {
+                    Agents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                    Type = BetaManagedAgentsMultiagentType.Coordinator,
                 },
                 Name = "My First Agent",
                 Skills =
@@ -460,6 +526,19 @@ public class AgentListPageResponseTest : TestBase
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                         Speed = Agents::Speed.Standard,
+                    },
+                    Multiagent = new()
+                    {
+                        Agents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                        Type = BetaManagedAgentsMultiagentType.Coordinator,
                     },
                     Name = "My First Agent",
                     Skills =
@@ -591,6 +670,19 @@ public class AgentListPageResponseTest : TestBase
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                         Speed = Agents::Speed.Standard,
                     },
+                    Multiagent = new()
+                    {
+                        Agents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                        Type = BetaManagedAgentsMultiagentType.Coordinator,
+                    },
                     Name = "My First Agent",
                     Skills =
                     [
@@ -675,6 +767,19 @@ public class AgentListPageResponseTest : TestBase
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                         Speed = Agents::Speed.Standard,
                     },
+                    Multiagent = new()
+                    {
+                        Agents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                        Type = BetaManagedAgentsMultiagentType.Coordinator,
+                    },
                     Name = "My First Agent",
                     Skills =
                     [
@@ -757,6 +862,19 @@ public class AgentListPageResponseTest : TestBase
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                         Speed = Agents::Speed.Standard,
+                    },
+                    Multiagent = new()
+                    {
+                        Agents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                        Type = BetaManagedAgentsMultiagentType.Coordinator,
                     },
                     Name = "My First Agent",
                     Skills =
@@ -844,6 +962,19 @@ public class AgentListPageResponseTest : TestBase
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                         Speed = Agents::Speed.Standard,
                     },
+                    Multiagent = new()
+                    {
+                        Agents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                        Type = BetaManagedAgentsMultiagentType.Coordinator,
+                    },
                     Name = "My First Agent",
                     Skills =
                     [
@@ -928,6 +1059,19 @@ public class AgentListPageResponseTest : TestBase
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
                         Speed = Agents::Speed.Standard,
+                    },
+                    Multiagent = new()
+                    {
+                        Agents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                        Type = BetaManagedAgentsMultiagentType.Coordinator,
                     },
                     Name = "My First Agent",
                     Skills =

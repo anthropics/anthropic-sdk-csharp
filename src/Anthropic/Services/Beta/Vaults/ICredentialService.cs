@@ -115,6 +115,21 @@ public interface ICredentialService
         CredentialArchiveParams parameters,
         CancellationToken cancellationToken = default
     );
+
+    /// <summary>
+    /// Validate Credential
+    /// </summary>
+    Task<BetaManagedAgentsCredentialValidation> McpOAuthValidate(
+        CredentialMcpOAuthValidateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="McpOAuthValidate(CredentialMcpOAuthValidateParams, CancellationToken)"/>
+    Task<BetaManagedAgentsCredentialValidation> McpOAuthValidate(
+        string credentialID,
+        CredentialMcpOAuthValidateParams parameters,
+        CancellationToken cancellationToken = default
+    );
 }
 
 /// <summary>
@@ -223,6 +238,22 @@ public interface ICredentialServiceWithRawResponse
     Task<HttpResponse<BetaManagedAgentsCredential>> Archive(
         string credentialID,
         CredentialArchiveParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for <c>post /v1/vaults/{vault_id}/credentials/{credential_id}/mcp_oauth_validate?beta=true</c>, but is otherwise the
+    /// same as <see cref="ICredentialService.McpOAuthValidate(CredentialMcpOAuthValidateParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<BetaManagedAgentsCredentialValidation>> McpOAuthValidate(
+        CredentialMcpOAuthValidateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="McpOAuthValidate(CredentialMcpOAuthValidateParams, CancellationToken)"/>
+    Task<HttpResponse<BetaManagedAgentsCredentialValidation>> McpOAuthValidate(
+        string credentialID,
+        CredentialMcpOAuthValidateParams parameters,
         CancellationToken cancellationToken = default
     );
 }

@@ -31,6 +31,8 @@ public interface ISessionService
 
     IResourceService Resources { get; }
 
+    IThreadService Threads { get; }
+
     /// <summary>
     /// Create Session
     /// </summary>
@@ -124,6 +126,8 @@ public interface ISessionServiceWithRawResponse
     IEventServiceWithRawResponse Events { get; }
 
     IResourceServiceWithRawResponse Resources { get; }
+
+    IThreadServiceWithRawResponse Threads { get; }
 
     /// <summary>
     /// Returns a raw HTTP response for <c>post /v1/sessions?beta=true</c>, but is otherwise the

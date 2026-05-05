@@ -172,6 +172,34 @@ public sealed class CredentialService : ICredentialService
     {
         return this.Archive(parameters with { CredentialID = credentialID }, cancellationToken);
     }
+
+    /// <inheritdoc/>
+    public async Task<BetaManagedAgentsCredentialValidation> McpOAuthValidate(
+        CredentialMcpOAuthValidateParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var response = await this
+            .WithRawResponse.McpOAuthValidate(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public Task<BetaManagedAgentsCredentialValidation> McpOAuthValidate(
+        string credentialID,
+        CredentialMcpOAuthValidateParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return this.McpOAuthValidate(
+            parameters with
+            {
+                CredentialID = credentialID,
+            },
+            cancellationToken
+        );
+    }
 }
 
 /// <inheritdoc/>
@@ -450,5 +478,54 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
     )
     {
         return this.Archive(parameters with { CredentialID = credentialID }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public async Task<HttpResponse<BetaManagedAgentsCredentialValidation>> McpOAuthValidate(
+        CredentialMcpOAuthValidateParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (parameters.CredentialID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.CredentialID' cannot be null");
+        }
+
+        HttpRequest<CredentialMcpOAuthValidateParams> request = new()
+        {
+            Method = HttpMethod.Post,
+            Params = parameters,
+        };
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var betaManagedAgentsCredentialValidation = await response
+                    .Deserialize<BetaManagedAgentsCredentialValidation>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    betaManagedAgentsCredentialValidation.Validate();
+                }
+                return betaManagedAgentsCredentialValidation;
+            }
+        );
+    }
+
+    /// <inheritdoc/>
+    public Task<HttpResponse<BetaManagedAgentsCredentialValidation>> McpOAuthValidate(
+        string credentialID,
+        CredentialMcpOAuthValidateParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return this.McpOAuthValidate(
+            parameters with
+            {
+                CredentialID = credentialID,
+            },
+            cancellationToken
+        );
     }
 }

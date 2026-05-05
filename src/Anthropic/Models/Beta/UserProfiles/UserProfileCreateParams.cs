@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,8 +5,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Services.Beta;
+using System = System;
 
 namespace Anthropic.Models.Beta.UserProfiles;
 
@@ -62,6 +64,45 @@ public record class UserProfileCreateParams : ParamsBase
                 "metadata",
                 value == null ? null : FrozenDictionary.ToFrozenDictionary(value)
             );
+        }
+    }
+
+    /// <summary>
+    /// Display name of the entity this profile represents. Required when relationship
+    /// is `resold` (the resold-to company's name); optional otherwise. Maximum 255 characters.
+    /// </summary>
+    public string? Name
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<string>("name");
+        }
+        init { this._rawBodyData.Set("name", value); }
+    }
+
+    /// <summary>
+    /// How the entity behind a user profile relates to the platform that owns the
+    /// API key. `external`: an individual end-user of the platform. `resold`: a company
+    /// the platform resells Claude access to. `internal`: the platform's own usage.
+    /// </summary>
+    public ApiEnum<string, Relationship>? Relationship
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<ApiEnum<string, Relationship>>(
+                "relationship"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("relationship", value);
         }
     }
 
@@ -169,10 +210,10 @@ public record class UserProfileCreateParams : ParamsBase
             && this._rawBodyData.Equals(other._rawBodyData);
     }
 
-    public override Uri Url(ClientOptions options)
+    public override System::Uri Url(ClientOptions options)
     {
         var queryString = this.QueryString(options);
-        return new UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/user_profiles")
+        return new System::UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/user_profiles")
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
@@ -200,5 +241,57 @@ public record class UserProfileCreateParams : ParamsBase
     public override int GetHashCode()
     {
         return 0;
+    }
+}
+
+/// <summary>
+/// How the entity behind a user profile relates to the platform that owns the API
+/// key. `external`: an individual end-user of the platform. `resold`: a company
+/// the platform resells Claude access to. `internal`: the platform's own usage.
+/// </summary>
+[JsonConverter(typeof(RelationshipConverter))]
+public enum Relationship
+{
+    External,
+    Resold,
+    Internal,
+}
+
+sealed class RelationshipConverter : JsonConverter<Relationship>
+{
+    public override Relationship Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "external" => Relationship.External,
+            "resold" => Relationship.Resold,
+            "internal" => Relationship.Internal,
+            _ => (Relationship)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        Relationship value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                Relationship.External => "external",
+                Relationship.Resold => "resold",
+                Relationship.Internal => "internal",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

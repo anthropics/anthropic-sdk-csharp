@@ -55,6 +55,20 @@ static class Sse
                 case "session.deleted":
                 case "span.model_request_start":
                 case "span.model_request_end":
+                case "span.outcome_evaluation_start":
+                case "span.outcome_evaluation_ongoing":
+                case "span.outcome_evaluation_end":
+                case "user.define_outcome":
+                case "agent.thread_message_received":
+                case "agent.thread_message_sent":
+                case "agent.session_thread_message_received":
+                case "agent.session_thread_message_sent":
+                case "session.thread_created":
+                case "session.thread_status_created":
+                case "session.thread_status_running":
+                case "session.thread_status_idle":
+                case "session.thread_status_rescheduled":
+                case "session.thread_status_terminated":
                     T? message;
                     try
                     {

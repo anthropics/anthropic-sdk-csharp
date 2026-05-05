@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Beta.Sessions;
 using Anthropic.Services.Beta;
 using System = System;
 
@@ -125,6 +126,22 @@ public record class AgentUpdateParams : ParamsBase
 
             this._rawBodyData.Set("model", value);
         }
+    }
+
+    /// <summary>
+    /// A coordinator topology: the session's primary thread orchestrates work by
+    /// spawning session threads, each running an agent drawn from the `agents` roster.
+    /// </summary>
+    public BetaManagedAgentsMultiagentParams? Multiagent
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaManagedAgentsMultiagentParams>(
+                "multiagent"
+            );
+        }
+        init { this._rawBodyData.Set("multiagent", value); }
     }
 
     /// <summary>
