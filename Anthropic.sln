@@ -34,8 +34,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StreamingAggregationBetaExa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamingAggregationExample", "examples\StreamingAggregationBetaExample\StreamingAggregationExample.csproj", "{0E525CB1-B565-4ABE-B477-48C53F9BB258}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anthropic.Oidc", "src\Anthropic.Oidc\Anthropic.Oidc.csproj", "{CF21FE1B-2E63-4452-9C24-307530816CB5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,18 +116,6 @@ Global
 		{AA613F83-85F3-45AB-BEFD-54A021F12ACD}.Release|x64.Build.0 = Release|Any CPU
 		{AA613F83-85F3-45AB-BEFD-54A021F12ACD}.Release|x86.ActiveCfg = Release|Any CPU
 		{AA613F83-85F3-45AB-BEFD-54A021F12ACD}.Release|x86.Build.0 = Release|Any CPU
-		{CF21FE1B-2E63-4452-9C24-307530816CB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF21FE1B-2E63-4452-9C24-307530816CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF21FE1B-2E63-4452-9C24-307530816CB5}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{CF21FE1B-2E63-4452-9C24-307530816CB5}.Debug|x64.Build.0 = Debug|Any CPU
-		{CF21FE1B-2E63-4452-9C24-307530816CB5}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CF21FE1B-2E63-4452-9C24-307530816CB5}.Debug|x86.Build.0 = Debug|Any CPU
-		{CF21FE1B-2E63-4452-9C24-307530816CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF21FE1B-2E63-4452-9C24-307530816CB5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF21FE1B-2E63-4452-9C24-307530816CB5}.Release|x64.ActiveCfg = Release|Any CPU
-		{CF21FE1B-2E63-4452-9C24-307530816CB5}.Release|x64.Build.0 = Release|Any CPU
-		{CF21FE1B-2E63-4452-9C24-307530816CB5}.Release|x86.ActiveCfg = Release|Any CPU
-		{CF21FE1B-2E63-4452-9C24-307530816CB5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,6 +129,5 @@ Global
 		{AA613F83-85F3-45AB-BEFD-54A021F12ACD} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{6D5DEC39-3673-615E-54FA-C74C69400686} = {B36A84DF-456D-A817-6EDD-3EC3E7F6E11F}
 		{0E525CB1-B565-4ABE-B477-48C53F9BB258} = {6D5DEC39-3673-615E-54FA-C74C69400686}
-		{CF21FE1B-2E63-4452-9C24-307530816CB5} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 EndGlobal

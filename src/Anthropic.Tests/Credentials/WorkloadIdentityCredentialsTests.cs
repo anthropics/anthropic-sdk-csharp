@@ -8,9 +8,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Anthropic.Oidc;
+using Anthropic.Credentials;
 
-namespace Anthropic.Tests.Oidc;
+namespace Anthropic.Tests.Credentials;
 
 public class WorkloadIdentityCredentialsTests
 {
@@ -75,16 +75,10 @@ public class WorkloadIdentityCredentialsTests
             }
         );
 
-        var request = new HttpRequestMessage(
-            HttpMethod.Get,
-            "https://api.anthropic.com/v1/messages"
-        );
-        await creds.ApplyAsync(request);
+        var token = await creds.GetTokenAsync();
 
-        // Verify token was applied to the API request
-        Assert.Equal("Bearer", request.Headers.Authorization!.Scheme);
-        Assert.Equal("sk-ant-oat01-test", request.Headers.Authorization!.Parameter);
-        Assert.Contains("oauth-2025-04-20", request.Headers.GetValues("anthropic-beta"));
+        // Verify the returned token
+        Assert.Equal("sk-ant-oat01-test", token.Token);
 
         // Verify the token exchange request
         Assert.Single(handler.Requests);
@@ -133,10 +127,10 @@ public class WorkloadIdentityCredentialsTests
             }
         );
 
-        var request = new HttpRequestMessage(HttpMethod.Get, "https://test.com");
-        await creds.ApplyAsync(request);
+        var token = await creds.GetTokenAsync();
 
-        Assert.Equal("sk-ant-oat01-test", request.Headers.Authorization!.Parameter);
+        Assert.Equal("sk-ant-oat01-test", token.Token);
+        Assert.NotNull(token.ExpiresAt);
     }
 
     [Fact]
@@ -169,14 +163,105 @@ public class WorkloadIdentityCredentialsTests
             }
         );
 
-        var request = new HttpRequestMessage(HttpMethod.Get, "https://test.com");
-        var ex = await Assert.ThrowsAsync<WorkloadIdentityException>(() =>
-            creds.ApplyAsync(request).AsTask()
+        var ex = await Assert.ThrowsAsync<WorkloadIdentityException>(async () =>
+            await creds.GetTokenAsync()
         );
 
         Assert.Equal(HttpStatusCode.BadRequest, ex.StatusCode);
         Assert.Contains("invalid_grant", ex.ResponseBody!);
         Assert.DoesNotContain("should-not-appear", ex.ResponseBody!);
+    }
+
+    [Fact]
+    public async Task ExchangeToken_RejectsNonBearerTokenType()
+    {
+        var handler = new FakeHandler(_ =>
+        {
+            var json = JsonSerializer.Serialize(
+                new
+                {
+                    access_token = "x",
+                    token_type = "mac",
+                    expires_in = 3600,
+                }
+            );
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(json, Encoding.UTF8, "application/json"),
+            };
+        });
+
+        using var httpClient = new HttpClient(handler);
+        using var creds = new WorkloadIdentityCredentials(
+            new WorkloadIdentityOptions
+            {
+                FederationRuleId = "fdrl_01test",
+                IdentityTokenProvider = new StaticIdentityTokenProvider("jwt"),
+                BaseUrl = "https://api.anthropic.com",
+                HttpClient = httpClient,
+            }
+        );
+
+        var ex = await Assert.ThrowsAsync<WorkloadIdentityException>(async () =>
+            await creds.GetTokenAsync()
+        );
+        Assert.Contains("token_type", ex.Message);
+        Assert.Contains("mac", ex.Message);
+    }
+
+    [Fact]
+    public async Task ExchangeToken_AllowsMissingTokenType()
+    {
+        // No token_type field — must be tolerated.
+        var handler = new FakeHandler(_ => OkTokenResponse());
+
+        using var httpClient = new HttpClient(handler);
+        using var creds = new WorkloadIdentityCredentials(
+            new WorkloadIdentityOptions
+            {
+                FederationRuleId = "fdrl_01test",
+                IdentityTokenProvider = new StaticIdentityTokenProvider("jwt"),
+                BaseUrl = "https://api.anthropic.com",
+                HttpClient = httpClient,
+            }
+        );
+
+        var token = await creds.GetTokenAsync();
+        Assert.Equal("sk-ant-oat01-test", token.Token);
+    }
+
+    [Fact]
+    public async Task ExchangeToken_AcceptsBearerCaseInsensitive()
+    {
+        var handler = new FakeHandler(_ =>
+        {
+            var json = JsonSerializer.Serialize(
+                new
+                {
+                    access_token = "x",
+                    token_type = "bearer",
+                    expires_in = 3600,
+                }
+            );
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(json, Encoding.UTF8, "application/json"),
+            };
+        });
+
+        using var httpClient = new HttpClient(handler);
+        using var creds = new WorkloadIdentityCredentials(
+            new WorkloadIdentityOptions
+            {
+                FederationRuleId = "fdrl_01test",
+                IdentityTokenProvider = new StaticIdentityTokenProvider("jwt"),
+                BaseUrl = "https://api.anthropic.com",
+                HttpClient = httpClient,
+            }
+        );
+
+        var token = await creds.GetTokenAsync();
+        Assert.Equal("x", token.Token);
     }
 
     [Fact]
@@ -208,8 +293,10 @@ public class WorkloadIdentityCredentialsTests
     }
 
     [Fact]
-    public async Task InvalidateToken_ForcesRefresh()
+    public async Task GetTokenAsync_AlwaysExchangesFresh()
     {
+        // WorkloadIdentityCredentials does not cache internally; the client wraps it
+        // in a TokenCache. Every direct call performs a fresh exchange.
         var callCount = 0;
         var handler = new FakeHandler(_ =>
         {
@@ -234,14 +321,10 @@ public class WorkloadIdentityCredentialsTests
             }
         );
 
-        var req1 = new HttpRequestMessage(HttpMethod.Get, "https://test.com");
-        await creds.ApplyAsync(req1);
-        Assert.Equal("tok-1", req1.Headers.Authorization!.Parameter);
+        var token1 = await creds.GetTokenAsync();
+        Assert.Equal("tok-1", token1.Token);
 
-        creds.InvalidateToken();
-
-        var req2 = new HttpRequestMessage(HttpMethod.Get, "https://test.com");
-        await creds.ApplyAsync(req2);
-        Assert.Equal("tok-2", req2.Headers.Authorization!.Parameter);
+        var token2 = await creds.GetTokenAsync();
+        Assert.Equal("tok-2", token2.Token);
     }
 }

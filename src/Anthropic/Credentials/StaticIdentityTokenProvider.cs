@@ -1,4 +1,8 @@
-namespace Anthropic.Oidc;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Anthropic.Credentials;
 
 /// <summary>
 /// Returns a fixed JWT identity token string.

@@ -1,4 +1,6 @@
-namespace Anthropic.Oidc;
+using System;
+
+namespace Anthropic.Credentials;
 
 /// <summary>
 /// Represents an access token with optional expiration.

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using Anthropic.Credentials;
 
 namespace Anthropic.Core;
 
@@ -27,6 +29,7 @@ public record struct ClientOptions()
     Lazy<string> _baseUrl = new(() =>
         Environment.GetEnvironmentVariable("ANTHROPIC_BASE_URL") ?? EnvironmentUrl.Production
     );
+    internal bool BaseUrlExplicit { get; private set; }
 
     /// <summary>
     /// The base URL to use for every request.
@@ -36,7 +39,11 @@ public record struct ClientOptions()
     public string BaseUrl
     {
         readonly get { return _baseUrl.Value; }
-        set { _baseUrl = new(() => value); }
+        set
+        {
+            _baseUrl = new(() => value);
+            BaseUrlExplicit = true;
+        }
     }
 
     /// <summary>
@@ -84,20 +91,53 @@ public record struct ClientOptions()
     public TimeSpan? Timeout { get; set; } = null;
 
     Lazy<string?> _apiKey = new(() => Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY"));
+    internal bool ApiKeyExplicit { get; private set; }
     public string? ApiKey
     {
         readonly get { return _apiKey.Value; }
-        set { _apiKey = new(() => value); }
+        set
+        {
+            _apiKey = new(() => value);
+            ApiKeyExplicit = true;
+        }
     }
 
     Lazy<string?> _authToken = new(() =>
         Environment.GetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN")
     );
+    internal bool AuthTokenExplicit { get; private set; }
     public string? AuthToken
     {
         readonly get { return _authToken.Value; }
-        set { _authToken = new(() => value); }
+        set
+        {
+            _authToken = new(() => value);
+            AuthTokenExplicit = true;
+        }
     }
+
+    /// <summary>
+    /// OIDC/OAuth credentials for authenticating with the Anthropic API.
+    /// When set, these are used instead of env-var-based ApiKey/AuthToken.
+    /// An explicitly provided ApiKey takes priority over Credentials.
+    ///
+    /// <para>The client wraps the provider in an internal token cache and sets the
+    /// <c>Authorization</c> and <c>anthropic-beta</c> headers on every request.</para>
+    ///
+    /// <para>The client takes ownership of the provider and disposes it when the
+    /// client is disposed. Advanced: if the value is already a <c>TokenCache</c>
+    /// (e.g., propagated via <c>WithOptions</c>), the client does not dispose it.</para>
+    /// </summary>
+    public IAccessTokenProvider? Credentials { get; set; }
+
+    /// <summary>
+    /// Extra headers to include on every request (e.g. <c>anthropic-workspace-id</c>).
+    /// These are additive metadata applied via <c>TryAddWithoutValidation</c> after
+    /// authentication headers are set; they will not override <c>Authorization</c> or
+    /// <c>X-Api-Key</c>. To change auth, use <see cref="ApiKey"/>, <see cref="AuthToken"/>,
+    /// or <see cref="Credentials"/>.
+    /// </summary>
+    public IReadOnlyDictionary<string, string>? ExtraHeaders { get; set; }
 
     internal static TimeSpan TimeoutFromMaxTokens(
         long maxTokens,

@@ -1,10 +1,13 @@
-namespace Anthropic.Oidc;
+using System;
+using System.IO;
+
+namespace Anthropic.Credentials;
 
 internal static class ConfigPaths
 {
     internal static string GetConfigDirectory()
     {
-        var envDir = Environment.GetEnvironmentVariable(OidcConstants.EnvConfigDir);
+        var envDir = Environment.GetEnvironmentVariable(CredentialsConstants.EnvConfigDir);
         if (!string.IsNullOrEmpty(envDir))
         {
             return envDir;
@@ -33,7 +36,7 @@ internal static class ConfigPaths
 
     internal static string GetActiveProfile()
     {
-        var envProfile = Environment.GetEnvironmentVariable(OidcConstants.EnvProfile);
+        var envProfile = Environment.GetEnvironmentVariable(CredentialsConstants.EnvProfile);
         if (!string.IsNullOrEmpty(envProfile))
         {
             SecurityHelpers.ValidateProfileName(envProfile);

@@ -1,4 +1,7 @@
-namespace Anthropic.Oidc;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Anthropic.Credentials;
 
 /// <summary>
 /// Provides identity tokens (external OIDC JWTs) for workload identity federation.

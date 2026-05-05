@@ -1,4 +1,9 @@
-namespace Anthropic.Oidc;
+using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Anthropic.Credentials;
 
 /// <summary>
 /// Reads a JWT identity token from a file on each call.

@@ -1,11 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
 
-namespace Anthropic.Oidc;
+namespace Anthropic.Credentials;
 
 /// <summary>
-/// Resolves OIDC credentials from environment variables and configuration files.
+/// Resolves credentials from environment variables and configuration files.
 /// </summary>
 public static class AnthropicCredentials
 {
@@ -26,14 +29,14 @@ public static class AnthropicCredentials
     )
     {
         // ANTHROPIC_API_KEY
-        var apiKey = Environment.GetEnvironmentVariable(OidcConstants.EnvApiKey);
+        var apiKey = Environment.GetEnvironmentVariable(CredentialsConstants.EnvApiKey);
         if (!string.IsNullOrEmpty(apiKey))
         {
             return null;
         }
 
         // ANTHROPIC_AUTH_TOKEN (static bearer token)
-        var authToken = Environment.GetEnvironmentVariable(OidcConstants.EnvAuthToken);
+        var authToken = Environment.GetEnvironmentVariable(CredentialsConstants.EnvAuthToken);
         if (!string.IsNullOrEmpty(authToken))
         {
             return new CredentialResult(new StaticTokenCredentials(authToken));
@@ -57,14 +60,21 @@ public static class AnthropicCredentials
         // Combined with ANTHROPIC_PROFILE it still flows through step 2;
         // without PROFILE it flows through step 4, like the default case.
         var profileExplicit =
-            profile ?? Environment.GetEnvironmentVariable(OidcConstants.EnvProfile);
-        var configDirExplicit = Environment.GetEnvironmentVariable(OidcConstants.EnvConfigDir);
+            profile ?? Environment.GetEnvironmentVariable(CredentialsConstants.EnvProfile);
+        var configDirExplicit = Environment.GetEnvironmentVariable(
+            CredentialsConstants.EnvConfigDir
+        );
 
         // Step 2: explicit profile selection — errors propagate.
         // Only PROFILE qualifies; CONFIG_DIR alone does not.
         if (profileExplicit != null)
         {
-            var explicitResult = TryResolveFromConfig(profileExplicit, baseUrl, httpClient);
+            var explicitResult = TryResolveFromConfig(
+                profileExplicit,
+                baseUrl,
+                httpClient,
+                explicitProfile: true
+            );
             if (explicitResult != null)
             {
                 return explicitResult;
@@ -91,16 +101,23 @@ public static class AnthropicCredentials
                 var fallbackResult = TryResolveFromConfig(
                     ConfigPaths.GetActiveProfile(),
                     baseUrl,
-                    httpClient
+                    httpClient,
+                    explicitProfile: false
                 );
                 if (fallbackResult != null)
                 {
                     return fallbackResult;
                 }
             }
-            catch (Exception) when (configDirExplicit == null)
+            catch (Exception ex) when (configDirExplicit == null)
             {
-                // Auto-discovered config: swallow errors and fall through.
+                // Auto-discovered config: swallow errors and fall through, but
+                // surface a hint so users notice a corrupt default profile.
+                // Type-only — ex.Message could leak file contents.
+                Console.Error.WriteLine(
+                    "anthropic: ignoring auto-discovered profile due to load error "
+                        + $"({ex.GetType().Name})"
+                );
             }
         }
 
@@ -110,12 +127,19 @@ public static class AnthropicCredentials
     private static CredentialResult? TryResolveFromConfig(
         string profile,
         string? baseUrlOverride,
-        HttpClient? httpClient
+        HttpClient? httpClient,
+        bool explicitProfile
     )
     {
         var configPath = ConfigPaths.GetConfigFilePath(profile);
         if (!File.Exists(configPath))
         {
+            if (explicitProfile)
+            {
+                throw new WorkloadIdentityException(
+                    $"Profile '{profile}' not found at {configPath}."
+                );
+            }
             return null;
         }
 
@@ -123,17 +147,17 @@ public static class AnthropicCredentials
         var config = JsonSerializer.Deserialize<ConfigFile>(configJson, ConfigFile.JsonOptions);
         if (config?.Authentication == null)
         {
+            if (explicitProfile)
+            {
+                throw new WorkloadIdentityException(
+                    $"Profile '{profile}' has no 'authentication' section."
+                );
+            }
             return null;
         }
 
         var effectiveBaseUrl = baseUrlOverride ?? config.BaseUrl ?? EnvironmentUrl.Production;
         var extraHeaders = new Dictionary<string, string>();
-
-        if (!string.IsNullOrEmpty(config.WorkspaceId))
-        {
-            extraHeaders["anthropic-workspace-id"] = config.WorkspaceId!;
-        }
-
         var auth = config.Authentication;
 
         if (auth.Type == "oidc_federation")
@@ -172,18 +196,36 @@ public static class AnthropicCredentials
                 }
             );
 
-            return new CredentialResult(creds, extraHeaders);
+            return new CredentialResult(creds, extraHeaders, config.BaseUrl);
         }
 
         if (auth.Type == "user_oauth")
         {
+            // anthropic-workspace-id is only meaningful for user_oauth — WIF tokens
+            // are already workspace-scoped server-side.
+            if (!string.IsNullOrEmpty(config.WorkspaceId))
+            {
+                extraHeaders["anthropic-workspace-id"] = config.WorkspaceId!;
+            }
+
             var credentialsPath =
                 auth.CredentialsPath ?? ConfigPaths.GetCredentialsFilePath(profile);
-            var creds = new CredentialsFileProvider(credentialsPath, effectiveBaseUrl, httpClient);
+            var creds = new CredentialsFileProvider(
+                credentialsPath,
+                effectiveBaseUrl,
+                httpClient,
+                clientId: auth.ClientId
+            );
 
-            return new CredentialResult(creds, extraHeaders);
+            return new CredentialResult(creds, extraHeaders, config.BaseUrl);
         }
 
+        if (explicitProfile)
+        {
+            throw new WorkloadIdentityException(
+                $"Profile '{profile}' has unsupported authentication type '{auth.Type}'."
+            );
+        }
         return null;
     }
 
@@ -193,10 +235,14 @@ public static class AnthropicCredentials
     )
     {
         var identityTokenFile = Environment.GetEnvironmentVariable(
-            OidcConstants.EnvIdentityTokenFile
+            CredentialsConstants.EnvIdentityTokenFile
         );
-        var identityToken = Environment.GetEnvironmentVariable(OidcConstants.EnvIdentityToken);
-        var federationRule = Environment.GetEnvironmentVariable(OidcConstants.EnvFederationRuleId);
+        var identityToken = Environment.GetEnvironmentVariable(
+            CredentialsConstants.EnvIdentityToken
+        );
+        var federationRule = Environment.GetEnvironmentVariable(
+            CredentialsConstants.EnvFederationRuleId
+        );
 
         if (string.IsNullOrEmpty(federationRule))
         {
@@ -225,10 +271,10 @@ public static class AnthropicCredentials
             {
                 FederationRuleId = federationRule!,
                 OrganizationId = Environment.GetEnvironmentVariable(
-                    OidcConstants.EnvOrganizationId
+                    CredentialsConstants.EnvOrganizationId
                 ),
                 ServiceAccountId = Environment.GetEnvironmentVariable(
-                    OidcConstants.EnvServiceAccountId
+                    CredentialsConstants.EnvServiceAccountId
                 ),
                 IdentityTokenProvider = identityProvider,
                 BaseUrl = effectiveBaseUrl,
@@ -249,22 +295,30 @@ public sealed class CredentialResult
     /// <summary>
     /// The resolved credentials.
     /// </summary>
-    public IAnthropicOidcCredentials Credentials { get; }
+    public IAccessTokenProvider Credentials { get; }
 
     /// <summary>
     /// Extra headers to include in API requests (e.g., <c>anthropic-workspace-id</c>).
     /// </summary>
     public IReadOnlyDictionary<string, string> ExtraHeaders { get; }
 
-    public CredentialResult(IAnthropicOidcCredentials credentials)
+    /// <summary>
+    /// Base URL from the profile config, if any. Applied to API requests only when
+    /// neither an explicit constructor argument nor <c>ANTHROPIC_BASE_URL</c> set one.
+    /// </summary>
+    public string? BaseUrl { get; }
+
+    public CredentialResult(IAccessTokenProvider credentials)
         : this(credentials, new Dictionary<string, string>()) { }
 
     public CredentialResult(
-        IAnthropicOidcCredentials credentials,
-        IReadOnlyDictionary<string, string> extraHeaders
+        IAccessTokenProvider credentials,
+        IReadOnlyDictionary<string, string> extraHeaders,
+        string? baseUrl = null
     )
     {
         Credentials = credentials ?? throw new ArgumentNullException(nameof(credentials));
         ExtraHeaders = extraHeaders ?? throw new ArgumentNullException(nameof(extraHeaders));
+        BaseUrl = baseUrl;
     }
 }

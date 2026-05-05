@@ -1,6 +1,6 @@
-namespace Anthropic.Oidc;
+namespace Anthropic.Credentials;
 
-internal static class OidcConstants
+internal static class CredentialsConstants
 {
     // Beta headers
     internal const string OAuthBeta = "oauth-2025-04-20";
@@ -14,6 +14,7 @@ internal static class OidcConstants
     // Token cache thresholds
     internal const int AdvisoryRefreshSeconds = 120;
     internal const int MandatoryRefreshSeconds = 30;
+    internal const int AdvisoryRefreshBackoffSeconds = 5;
 
     // OAuth grant types
     internal const string JwtBearerGrantType = "urn:ietf:params:oauth:grant-type:jwt-bearer";
@@ -34,5 +35,5 @@ internal static class OidcConstants
     internal const string EnvServiceAccountId = "ANTHROPIC_SERVICE_ACCOUNT_ID";
 
     // Error body redaction
-    internal const int MaxErrorBodyLength = 256;
+    internal const int MaxErrorBodyLength = 2000;
 }

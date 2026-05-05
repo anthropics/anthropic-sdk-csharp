@@ -2,9 +2,9 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Anthropic.Oidc;
+using Anthropic.Credentials;
 
-namespace Anthropic.Tests.Oidc;
+namespace Anthropic.Tests.Credentials;
 
 public class IdentityTokenProviderTests : IDisposable
 {

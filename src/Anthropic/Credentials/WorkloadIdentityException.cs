@@ -1,7 +1,8 @@
+using System;
 using System.Net;
 using Anthropic.Exceptions;
 
-namespace Anthropic.Oidc;
+namespace Anthropic.Credentials;
 
 /// <summary>
 /// Exception thrown when a workload identity token exchange fails.

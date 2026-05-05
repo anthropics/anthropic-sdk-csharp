@@ -1,6 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text.Json;
 
-namespace Anthropic.Oidc;
+namespace Anthropic.Credentials;
 
 internal static class SecurityHelpers
 {
@@ -53,11 +56,12 @@ internal static class SecurityHelpers
             throw new ArgumentException("Profile name cannot start with a dot.", nameof(profile));
         }
 
+        // string overloads (not char) for netstandard2.0 compat — Contains(char) is netcoreapp2.1+.
         if (
             profile.Contains("..")
-            || profile.Contains('/')
-            || profile.Contains('\\')
-            || profile.Contains('\0')
+            || profile.Contains("/")
+            || profile.Contains("\\")
+            || profile.Contains("\0")
         )
         {
             throw new ArgumentException(
@@ -95,6 +99,77 @@ internal static class SecurityHelpers
 #endif
 
     /// <summary>
+    /// Deserializes a token-endpoint 2xx response body, wrapping JSON failures in
+    /// <see cref="WorkloadIdentityException"/> so callers see a domain error instead
+    /// of a bare <see cref="JsonException"/>.
+    /// </summary>
+    internal static JsonElement DeserializeTokenResponse(string responseBody)
+    {
+        try
+        {
+            return JsonSerializer.Deserialize<JsonElement>(responseBody);
+        }
+        catch (JsonException ex)
+        {
+            throw new WorkloadIdentityException(
+                "Token endpoint returned a non-JSON 2xx response.",
+                ex
+            );
+        }
+    }
+
+    /// <summary>
+    /// Reads <c>expires_in</c> from a token response. Absent → <c>null</c> (no expiry).
+    /// Present but unparsable → throws. Accepts integer, fractional, and string forms
+    /// (the server has historically sent it as a string).
+    /// </summary>
+    internal static long? ParseExpiresIn(JsonElement root)
+    {
+        if (!root.TryGetProperty("expires_in", out var element))
+        {
+            return null;
+        }
+
+        long seconds;
+        if (element.ValueKind == JsonValueKind.Number && element.TryGetDouble(out var d))
+        {
+            seconds = (long)d;
+        }
+        else if (
+            element.ValueKind == JsonValueKind.String
+            && long.TryParse(element.GetString(), out var parsed)
+        )
+        {
+            seconds = parsed;
+        }
+        else
+        {
+            throw new WorkloadIdentityException("Token response 'expires_in' has unexpected type.");
+        }
+
+        return DateTimeOffset.UtcNow.ToUnixTimeSeconds() + seconds;
+    }
+
+    /// <summary>
+    /// Validates the optional <c>token_type</c> field of an RFC 6749 §5.1 token
+    /// response. If present and not <c>Bearer</c> (case-insensitive), throws.
+    /// Absent is allowed for servers that omit it.
+    /// </summary>
+    internal static void RequireBearerTokenType(JsonElement root)
+    {
+        if (
+            root.TryGetProperty("token_type", out var tt)
+            && tt.ValueKind == JsonValueKind.String
+            && !string.Equals(tt.GetString(), "Bearer", StringComparison.OrdinalIgnoreCase)
+        )
+        {
+            throw new WorkloadIdentityException(
+                $"Unexpected token_type '{tt.GetString()}'; only Bearer is supported."
+            );
+        }
+    }
+
+    /// <summary>
     /// Redacts an error response body, keeping only RFC 6749 standard error fields
     /// and truncating to a maximum length.
     /// </summary>
@@ -129,29 +204,37 @@ internal static class SecurityHelpers
                 if (safeFields.Count > 0)
                 {
                     var redacted = JsonSerializer.Serialize(safeFields);
-                    return Truncate(redacted);
+                    return Truncate(redacted, CredentialsConstants.MaxErrorBodyLength);
                 }
             }
         }
         catch (JsonException)
         {
-            // Not valid JSON, fall through to raw truncation
+            // Not valid JSON — fall through to the redacted placeholder.
         }
 
-        return Truncate(body);
+        // Body is not a JSON object with RFC-6749 error fields. Don't echo it back —
+        // it could be a misrouted JSON payload containing tokens, or an HTML error page.
+        // Surface only the length and a short prefix as a debugging hint.
+        //
+        // The 40-char prefix is for diagnostic value only. It must NOT be routed through
+        // any structured-logging or telemetry sink that could persist it; if the SDK gains
+        // such a sink, drop the prefix and emit only the byte count.
+        var prefix = Truncate(body, 40);
+        return $"<non-standard error body redacted; {body.Length} bytes, starts with '{prefix}'>";
     }
 
-    private static string Truncate(string value)
+    private static string Truncate(string value, int max)
     {
-        if (value.Length <= OidcConstants.MaxErrorBodyLength)
+        if (value.Length <= max)
         {
             return value;
         }
 
 #if NET
-        return string.Concat(value.AsSpan(0, OidcConstants.MaxErrorBodyLength), "...");
+        return string.Concat(value.AsSpan(0, max), "...");
 #else
-        return value.Substring(0, OidcConstants.MaxErrorBodyLength) + "...";
+        return value.Substring(0, max) + "...";
 #endif
     }
 }

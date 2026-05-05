@@ -1,20 +1,21 @@
-using System.Net;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace Anthropic.Oidc;
+namespace Anthropic.Credentials;
 
 /// <summary>
 /// OIDC workload identity federation credentials. Exchanges platform-issued JWTs for
 /// short-lived Anthropic access tokens via the jwt-bearer grant type.
 /// </summary>
-public sealed class WorkloadIdentityCredentials : IAnthropicOidcCredentials, IAccessTokenProvider
+public sealed class WorkloadIdentityCredentials : IAccessTokenProvider
 {
     private readonly HttpClient _tokenHttpClient;
     private readonly IIdentityTokenProvider _identityTokenProvider;
-    private readonly TokenCache _tokenCache;
     private readonly string _tokenEndpointUrl;
     private readonly string _federationRuleId;
     private readonly string? _organizationId;
@@ -32,7 +33,7 @@ public sealed class WorkloadIdentityCredentials : IAnthropicOidcCredentials, IAc
         _organizationId = options.OrganizationId;
         _serviceAccountId = options.ServiceAccountId;
         _identityTokenProvider = options.IdentityTokenProvider;
-        _tokenEndpointUrl = options.BaseUrl.TrimEnd('/') + OidcConstants.TokenEndpointPath;
+        _tokenEndpointUrl = options.BaseUrl.TrimEnd('/') + CredentialsConstants.TokenEndpointPath;
 
         if (options.HttpClient != null)
         {
@@ -44,43 +45,35 @@ public sealed class WorkloadIdentityCredentials : IAnthropicOidcCredentials, IAc
             _tokenHttpClient = new HttpClient();
             _ownsHttpClient = true;
         }
-
-        _tokenCache = new TokenCache(this);
     }
 
-    public async ValueTask ApplyAsync(
-        HttpRequestMessage requestMessage,
+    public async ValueTask<AccessToken> GetTokenAsync(
+        bool forceRefresh = false,
         CancellationToken cancellationToken = default
     )
     {
-        var token = await _tokenCache.GetTokenAsync(cancellationToken).ConfigureAwait(false);
-        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token.Token);
-        // Append the OAuth beta header for API requests
-        requestMessage.Headers.TryAddWithoutValidation(
-            "anthropic-beta",
-            OidcConstants.ApiRequestBetaValue
-        );
-    }
-
-    public void InvalidateToken()
-    {
-        _tokenCache.Invalidate();
-    }
-
-    async Task<AccessToken> IAccessTokenProvider.GetTokenAsync(CancellationToken cancellationToken)
-    {
+        // The exchange always fetches a fresh token, so forceRefresh is implicit.
         return await ExchangeTokenAsync(cancellationToken).ConfigureAwait(false);
     }
 
     private async Task<AccessToken> ExchangeTokenAsync(CancellationToken cancellationToken)
     {
-        var jwt = await _identityTokenProvider
-            .GetIdentityTokenAsync(cancellationToken)
-            .ConfigureAwait(false);
+        string jwt;
+        try
+        {
+            jwt = await _identityTokenProvider
+                .GetIdentityTokenAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch (Exception ex)
+            when (ex is not OperationCanceledException and not WorkloadIdentityException)
+        {
+            throw new WorkloadIdentityException("Failed to obtain identity token.", ex);
+        }
 
         var requestBody = new Dictionary<string, string>
         {
-            ["grant_type"] = OidcConstants.JwtBearerGrantType,
+            ["grant_type"] = CredentialsConstants.JwtBearerGrantType,
             ["assertion"] = jwt,
             ["federation_rule_id"] = _federationRuleId,
         };
@@ -104,7 +97,7 @@ public sealed class WorkloadIdentityCredentials : IAnthropicOidcCredentials, IAc
         // Token exchange uses BOTH beta headers
         request.Headers.TryAddWithoutValidation(
             "anthropic-beta",
-            OidcConstants.TokenExchangeBetaValue
+            CredentialsConstants.TokenExchangeBetaValue
         );
 
         HttpResponseMessage response;
@@ -117,6 +110,10 @@ public sealed class WorkloadIdentityCredentials : IAnthropicOidcCredentials, IAc
         catch (HttpRequestException ex)
         {
             throw new WorkloadIdentityException("Failed to connect to token endpoint.", ex);
+        }
+        catch (OperationCanceledException ex) when (!cancellationToken.IsCancellationRequested)
+        {
+            throw new WorkloadIdentityException("Token endpoint request timed out.", ex);
         }
 
         using (response)
@@ -146,7 +143,9 @@ public sealed class WorkloadIdentityCredentials : IAnthropicOidcCredentials, IAc
 
     private static AccessToken ParseTokenResponse(string responseBody)
     {
-        var root = JsonSerializer.Deserialize<JsonElement>(responseBody);
+        var root = SecurityHelpers.DeserializeTokenResponse(responseBody);
+
+        SecurityHelpers.RequireBearerTokenType(root);
 
         if (
             !root.TryGetProperty("access_token", out var accessTokenElement)
@@ -164,30 +163,11 @@ public sealed class WorkloadIdentityCredentials : IAnthropicOidcCredentials, IAc
                 "Token exchange response 'access_token' is null."
             );
 
-        long? expiresAt = null;
-        if (root.TryGetProperty("expires_in", out var expiresInElement))
-        {
-            // Defensive: accept both Number and String forms.
-            // The server has historically sent expires_in as a string.
-            if (expiresInElement.ValueKind == JsonValueKind.Number)
-            {
-                expiresAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + expiresInElement.GetInt64();
-            }
-            else if (
-                expiresInElement.ValueKind == JsonValueKind.String
-                && long.TryParse(expiresInElement.GetString(), out var parsed)
-            )
-            {
-                expiresAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + parsed;
-            }
-        }
-
-        return new AccessToken(accessToken, expiresAt);
+        return new AccessToken(accessToken, SecurityHelpers.ParseExpiresIn(root));
     }
 
     public void Dispose()
     {
-        _tokenCache.Dispose();
         if (_ownsHttpClient)
         {
             _tokenHttpClient.Dispose();

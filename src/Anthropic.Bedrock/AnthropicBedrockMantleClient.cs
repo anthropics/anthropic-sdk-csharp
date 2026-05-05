@@ -22,6 +22,9 @@ namespace Anthropic.Bedrock;
 /// </remarks>
 public sealed class AnthropicBedrockMantleClient : AnthropicClient
 {
+    /// <inheritdoc/>
+    protected override bool ShouldAutoResolveCredentials => false;
+
     private readonly MantleAwsClientOptions _awsOptions;
     private readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
 

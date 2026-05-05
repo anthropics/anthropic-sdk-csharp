@@ -1,7 +1,7 @@
 using System.Net.Http;
 using Anthropic.Core;
 
-namespace Anthropic.Oidc;
+namespace Anthropic.Credentials;
 
 /// <summary>
 /// Configuration options for workload identity federation credentials.

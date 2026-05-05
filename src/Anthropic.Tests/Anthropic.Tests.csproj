@@ -25,7 +25,6 @@
     <ProjectReference Include="..\Anthropic.Bedrock\Anthropic.Bedrock.csproj" />
     <ProjectReference Include="..\Anthropic.Aws\Anthropic.Aws.csproj" />
     <ProjectReference Include="..\Anthropic.Vertex\Anthropic.Vertex.csproj" />
-    <ProjectReference Include="..\Anthropic.Oidc\Anthropic.Oidc.csproj" />
     <Using Include="Xunit" />
   </ItemGroup>
 </Project>

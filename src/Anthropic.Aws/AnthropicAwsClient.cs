@@ -25,6 +25,9 @@ namespace Anthropic.Aws;
 /// </remarks>
 public sealed class AnthropicAwsClient : AnthropicClient
 {
+    /// <inheritdoc/>
+    protected override bool ShouldAutoResolveCredentials => false;
+
     private readonly AwsClientOptions _awsConfig;
     private readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
 

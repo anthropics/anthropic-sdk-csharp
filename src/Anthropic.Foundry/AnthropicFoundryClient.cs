@@ -7,6 +7,9 @@ namespace Anthropic.Foundry;
 /// </summary>
 public class AnthropicFoundryClient : AnthropicClient
 {
+    /// <inheritdoc/>
+    protected override bool ShouldAutoResolveCredentials => false;
+
     private readonly IAnthropicFoundryCredentials _azureCredentials;
     private readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
 

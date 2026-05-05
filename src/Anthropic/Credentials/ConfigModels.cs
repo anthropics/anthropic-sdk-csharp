@@ -1,7 +1,8 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Anthropic.Oidc;
+namespace Anthropic.Credentials;
 
 internal sealed class ConfigFile
 {
@@ -56,7 +57,7 @@ internal sealed class IdentityTokenConfig
 internal sealed class CredentialsFileData
 {
     [JsonPropertyName("version")]
-    public int? Version { get; set; }
+    public string? Version { get; set; }
 
     [JsonPropertyName("type")]
     public string? Type { get; set; }
@@ -69,6 +70,13 @@ internal sealed class CredentialsFileData
 
     [JsonPropertyName("refresh_token")]
     public string? RefreshToken { get; set; }
+
+    /// <summary>
+    /// Captures any fields the SDK doesn't model explicitly (scope, organization_uuid,
+    /// account_email, workspace_id, …) so they round-trip through a refresh write-back.
+    /// </summary>
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement>? ExtensionData { get; set; }
 
     internal static readonly JsonSerializerOptions JsonOptions = new()
     {

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Anthropic.Oidc;
+using Anthropic.Credentials;
 
-namespace Anthropic.Tests.Oidc;
+namespace Anthropic.Tests.Credentials;
 
+[Collection("EnvVarMutating")]
 public class ConfigPathsTests : IDisposable
 {
     private readonly Dictionary<string, string?> _originalEnvVars = new();
