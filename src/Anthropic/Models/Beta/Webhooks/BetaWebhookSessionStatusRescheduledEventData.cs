@@ -10,11 +10,11 @@ namespace Anthropic.Models.Beta.Webhooks;
 
 [JsonConverter(
     typeof(JsonModelConverter<
-        BetaWebhookSessionStatusScheduledEventData,
-        BetaWebhookSessionStatusScheduledEventDataFromRaw
+        BetaWebhookSessionStatusRescheduledEventData,
+        BetaWebhookSessionStatusRescheduledEventDataFromRaw
     >)
 )]
-public sealed record class BetaWebhookSessionStatusScheduledEventData : JsonModel
+public sealed record class BetaWebhookSessionStatusRescheduledEventData : JsonModel
 {
     /// <summary>
     /// ID of the resource that triggered the event.
@@ -67,7 +67,7 @@ public sealed record class BetaWebhookSessionStatusScheduledEventData : JsonMode
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.SerializeToElement("session.status_scheduled")
+                JsonSerializer.SerializeToElement("session.status_rescheduled")
             )
         )
         {
@@ -76,38 +76,38 @@ public sealed record class BetaWebhookSessionStatusScheduledEventData : JsonMode
         _ = this.WorkspaceID;
     }
 
-    public BetaWebhookSessionStatusScheduledEventData()
+    public BetaWebhookSessionStatusRescheduledEventData()
     {
-        this.Type = JsonSerializer.SerializeToElement("session.status_scheduled");
+        this.Type = JsonSerializer.SerializeToElement("session.status_rescheduled");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    public BetaWebhookSessionStatusScheduledEventData(
-        BetaWebhookSessionStatusScheduledEventData betaWebhookSessionStatusScheduledEventData
+    public BetaWebhookSessionStatusRescheduledEventData(
+        BetaWebhookSessionStatusRescheduledEventData betaWebhookSessionStatusRescheduledEventData
     )
-        : base(betaWebhookSessionStatusScheduledEventData) { }
+        : base(betaWebhookSessionStatusRescheduledEventData) { }
 #pragma warning restore CS8618
 
-    public BetaWebhookSessionStatusScheduledEventData(
+    public BetaWebhookSessionStatusRescheduledEventData(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.SerializeToElement("session.status_scheduled");
+        this.Type = JsonSerializer.SerializeToElement("session.status_rescheduled");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaWebhookSessionStatusScheduledEventData(FrozenDictionary<string, JsonElement> rawData)
+    BetaWebhookSessionStatusRescheduledEventData(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="BetaWebhookSessionStatusScheduledEventDataFromRaw.FromRawUnchecked"/>
-    public static BetaWebhookSessionStatusScheduledEventData FromRawUnchecked(
+    /// <inheritdoc cref="BetaWebhookSessionStatusRescheduledEventDataFromRaw.FromRawUnchecked"/>
+    public static BetaWebhookSessionStatusRescheduledEventData FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -115,11 +115,11 @@ public sealed record class BetaWebhookSessionStatusScheduledEventData : JsonMode
     }
 }
 
-class BetaWebhookSessionStatusScheduledEventDataFromRaw
-    : IFromRawJson<BetaWebhookSessionStatusScheduledEventData>
+class BetaWebhookSessionStatusRescheduledEventDataFromRaw
+    : IFromRawJson<BetaWebhookSessionStatusRescheduledEventData>
 {
     /// <inheritdoc/>
-    public BetaWebhookSessionStatusScheduledEventData FromRawUnchecked(
+    public BetaWebhookSessionStatusRescheduledEventData FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
-    ) => BetaWebhookSessionStatusScheduledEventData.FromRawUnchecked(rawData);
+    ) => BetaWebhookSessionStatusRescheduledEventData.FromRawUnchecked(rawData);
 }
