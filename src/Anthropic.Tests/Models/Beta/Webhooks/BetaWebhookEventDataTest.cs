@@ -91,9 +91,9 @@ public class BetaWebhookEventDataTest : TestBase
     }
 
     [Fact]
-    public void SessionStatusScheduledValidationWorks()
+    public void SessionStatusRescheduledValidationWorks()
     {
-        BetaWebhookEventData value = new BetaWebhookSessionStatusScheduledEventData()
+        BetaWebhookEventData value = new BetaWebhookSessionStatusRescheduledEventData()
         {
             ID = "id",
             OrganizationID = "organization_id",
@@ -401,9 +401,9 @@ public class BetaWebhookEventDataTest : TestBase
     }
 
     [Fact]
-    public void SessionStatusScheduledSerializationRoundtripWorks()
+    public void SessionStatusRescheduledSerializationRoundtripWorks()
     {
-        BetaWebhookEventData value = new BetaWebhookSessionStatusScheduledEventData()
+        BetaWebhookEventData value = new BetaWebhookSessionStatusRescheduledEventData()
         {
             ID = "id",
             OrganizationID = "organization_id",

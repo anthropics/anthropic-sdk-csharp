@@ -37,7 +37,7 @@ public record class BetaWebhookEventData : ModelBase
                 sessionRequiresAction: (x) => x.ID,
                 sessionArchived: (x) => x.ID,
                 sessionDeleted: (x) => x.ID,
-                sessionStatusScheduled: (x) => x.ID,
+                sessionStatusRescheduled: (x) => x.ID,
                 sessionStatusRunStarted: (x) => x.ID,
                 sessionStatusIdled: (x) => x.ID,
                 sessionStatusTerminated: (x) => x.ID,
@@ -68,7 +68,7 @@ public record class BetaWebhookEventData : ModelBase
                 sessionRequiresAction: (x) => x.OrganizationID,
                 sessionArchived: (x) => x.OrganizationID,
                 sessionDeleted: (x) => x.OrganizationID,
-                sessionStatusScheduled: (x) => x.OrganizationID,
+                sessionStatusRescheduled: (x) => x.OrganizationID,
                 sessionStatusRunStarted: (x) => x.OrganizationID,
                 sessionStatusIdled: (x) => x.OrganizationID,
                 sessionStatusTerminated: (x) => x.OrganizationID,
@@ -99,7 +99,7 @@ public record class BetaWebhookEventData : ModelBase
                 sessionRequiresAction: (x) => x.Type,
                 sessionArchived: (x) => x.Type,
                 sessionDeleted: (x) => x.Type,
-                sessionStatusScheduled: (x) => x.Type,
+                sessionStatusRescheduled: (x) => x.Type,
                 sessionStatusRunStarted: (x) => x.Type,
                 sessionStatusIdled: (x) => x.Type,
                 sessionStatusTerminated: (x) => x.Type,
@@ -130,7 +130,7 @@ public record class BetaWebhookEventData : ModelBase
                 sessionRequiresAction: (x) => x.WorkspaceID,
                 sessionArchived: (x) => x.WorkspaceID,
                 sessionDeleted: (x) => x.WorkspaceID,
-                sessionStatusScheduled: (x) => x.WorkspaceID,
+                sessionStatusRescheduled: (x) => x.WorkspaceID,
                 sessionStatusRunStarted: (x) => x.WorkspaceID,
                 sessionStatusIdled: (x) => x.WorkspaceID,
                 sessionStatusTerminated: (x) => x.WorkspaceID,
@@ -161,7 +161,7 @@ public record class BetaWebhookEventData : ModelBase
                 sessionRequiresAction: (_) => null,
                 sessionArchived: (_) => null,
                 sessionDeleted: (_) => null,
-                sessionStatusScheduled: (_) => null,
+                sessionStatusRescheduled: (_) => null,
                 sessionStatusRunStarted: (_) => null,
                 sessionStatusIdled: (_) => null,
                 sessionStatusTerminated: (_) => null,
@@ -241,7 +241,7 @@ public record class BetaWebhookEventData : ModelBase
     }
 
     public BetaWebhookEventData(
-        BetaWebhookSessionStatusScheduledEventData value,
+        BetaWebhookSessionStatusRescheduledEventData value,
         JsonElement? element = null
     )
     {
@@ -535,24 +535,24 @@ public record class BetaWebhookEventData : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaWebhookSessionStatusScheduledEventData"/>.
+    /// type <see cref="BetaWebhookSessionStatusRescheduledEventData"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickSessionStatusScheduled(out var value)) {
-    ///     // `value` is of type `BetaWebhookSessionStatusScheduledEventData`
+    /// if (instance.TryPickSessionStatusRescheduled(out var value)) {
+    ///     // `value` is of type `BetaWebhookSessionStatusRescheduledEventData`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickSessionStatusScheduled(
-        [NotNullWhen(true)] out BetaWebhookSessionStatusScheduledEventData? value
+    public bool TryPickSessionStatusRescheduled(
+        [NotNullWhen(true)] out BetaWebhookSessionStatusRescheduledEventData? value
     )
     {
-        value = this.Value as BetaWebhookSessionStatusScheduledEventData;
+        value = this.Value as BetaWebhookSessionStatusRescheduledEventData;
         return value != null;
     }
 
@@ -895,7 +895,7 @@ public record class BetaWebhookEventData : ModelBase
     ///     (BetaWebhookSessionRequiresActionEventData value) =&gt; {...},
     ///     (BetaWebhookSessionArchivedEventData value) =&gt; {...},
     ///     (BetaWebhookSessionDeletedEventData value) =&gt; {...},
-    ///     (BetaWebhookSessionStatusScheduledEventData value) =&gt; {...},
+    ///     (BetaWebhookSessionStatusRescheduledEventData value) =&gt; {...},
     ///     (BetaWebhookSessionStatusRunStartedEventData value) =&gt; {...},
     ///     (BetaWebhookSessionStatusIdledEventData value) =&gt; {...},
     ///     (BetaWebhookSessionStatusTerminatedEventData value) =&gt; {...},
@@ -922,7 +922,7 @@ public record class BetaWebhookEventData : ModelBase
         Action<BetaWebhookSessionRequiresActionEventData> sessionRequiresAction,
         Action<BetaWebhookSessionArchivedEventData> sessionArchived,
         Action<BetaWebhookSessionDeletedEventData> sessionDeleted,
-        Action<BetaWebhookSessionStatusScheduledEventData> sessionStatusScheduled,
+        Action<BetaWebhookSessionStatusRescheduledEventData> sessionStatusRescheduled,
         Action<BetaWebhookSessionStatusRunStartedEventData> sessionStatusRunStarted,
         Action<BetaWebhookSessionStatusIdledEventData> sessionStatusIdled,
         Action<BetaWebhookSessionStatusTerminatedEventData> sessionStatusTerminated,
@@ -962,8 +962,8 @@ public record class BetaWebhookEventData : ModelBase
             case BetaWebhookSessionDeletedEventData value:
                 sessionDeleted(value);
                 break;
-            case BetaWebhookSessionStatusScheduledEventData value:
-                sessionStatusScheduled(value);
+            case BetaWebhookSessionStatusRescheduledEventData value:
+                sessionStatusRescheduled(value);
                 break;
             case BetaWebhookSessionStatusRunStartedEventData value:
                 sessionStatusRunStarted(value);
@@ -1036,7 +1036,7 @@ public record class BetaWebhookEventData : ModelBase
     ///     (BetaWebhookSessionRequiresActionEventData value) =&gt; {...},
     ///     (BetaWebhookSessionArchivedEventData value) =&gt; {...},
     ///     (BetaWebhookSessionDeletedEventData value) =&gt; {...},
-    ///     (BetaWebhookSessionStatusScheduledEventData value) =&gt; {...},
+    ///     (BetaWebhookSessionStatusRescheduledEventData value) =&gt; {...},
     ///     (BetaWebhookSessionStatusRunStartedEventData value) =&gt; {...},
     ///     (BetaWebhookSessionStatusIdledEventData value) =&gt; {...},
     ///     (BetaWebhookSessionStatusTerminatedEventData value) =&gt; {...},
@@ -1063,7 +1063,7 @@ public record class BetaWebhookEventData : ModelBase
         Func<BetaWebhookSessionRequiresActionEventData, T> sessionRequiresAction,
         Func<BetaWebhookSessionArchivedEventData, T> sessionArchived,
         Func<BetaWebhookSessionDeletedEventData, T> sessionDeleted,
-        Func<BetaWebhookSessionStatusScheduledEventData, T> sessionStatusScheduled,
+        Func<BetaWebhookSessionStatusRescheduledEventData, T> sessionStatusRescheduled,
         Func<BetaWebhookSessionStatusRunStartedEventData, T> sessionStatusRunStarted,
         Func<BetaWebhookSessionStatusIdledEventData, T> sessionStatusIdled,
         Func<BetaWebhookSessionStatusTerminatedEventData, T> sessionStatusTerminated,
@@ -1089,7 +1089,7 @@ public record class BetaWebhookEventData : ModelBase
             BetaWebhookSessionRequiresActionEventData value => sessionRequiresAction(value),
             BetaWebhookSessionArchivedEventData value => sessionArchived(value),
             BetaWebhookSessionDeletedEventData value => sessionDeleted(value),
-            BetaWebhookSessionStatusScheduledEventData value => sessionStatusScheduled(value),
+            BetaWebhookSessionStatusRescheduledEventData value => sessionStatusRescheduled(value),
             BetaWebhookSessionStatusRunStartedEventData value => sessionStatusRunStarted(value),
             BetaWebhookSessionStatusIdledEventData value => sessionStatusIdled(value),
             BetaWebhookSessionStatusTerminatedEventData value => sessionStatusTerminated(value),
@@ -1141,7 +1141,7 @@ public record class BetaWebhookEventData : ModelBase
     ) => new(value);
 
     public static implicit operator BetaWebhookEventData(
-        BetaWebhookSessionStatusScheduledEventData value
+        BetaWebhookSessionStatusRescheduledEventData value
     ) => new(value);
 
     public static implicit operator BetaWebhookEventData(
@@ -1223,7 +1223,7 @@ public record class BetaWebhookEventData : ModelBase
             (sessionRequiresAction) => sessionRequiresAction.Validate(),
             (sessionArchived) => sessionArchived.Validate(),
             (sessionDeleted) => sessionDeleted.Validate(),
-            (sessionStatusScheduled) => sessionStatusScheduled.Validate(),
+            (sessionStatusRescheduled) => sessionStatusRescheduled.Validate(),
             (sessionStatusRunStarted) => sessionStatusRunStarted.Validate(),
             (sessionStatusIdled) => sessionStatusIdled.Validate(),
             (sessionStatusTerminated) => sessionStatusTerminated.Validate(),
@@ -1268,7 +1268,7 @@ public record class BetaWebhookEventData : ModelBase
             BetaWebhookSessionRequiresActionEventData _ => 4,
             BetaWebhookSessionArchivedEventData _ => 5,
             BetaWebhookSessionDeletedEventData _ => 6,
-            BetaWebhookSessionStatusScheduledEventData _ => 7,
+            BetaWebhookSessionStatusRescheduledEventData _ => 7,
             BetaWebhookSessionStatusRunStartedEventData _ => 8,
             BetaWebhookSessionStatusIdledEventData _ => 9,
             BetaWebhookSessionStatusTerminatedEventData _ => 10,
@@ -1455,12 +1455,12 @@ sealed class BetaWebhookEventDataConverter : JsonConverter<BetaWebhookEventData>
 
                 return new(element);
             }
-            case "session.status_scheduled":
+            case "session.status_rescheduled":
             {
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaWebhookSessionStatusScheduledEventData>(
+                        JsonSerializer.Deserialize<BetaWebhookSessionStatusRescheduledEventData>(
                             element,
                             options
                         );
