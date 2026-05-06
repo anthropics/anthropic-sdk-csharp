@@ -4,12 +4,12 @@ using Anthropic.Models.Beta.Webhooks;
 
 namespace Anthropic.Tests.Models.Beta.Webhooks;
 
-public class BetaWebhookSessionStatusScheduledEventDataTest : TestBase
+public class BetaWebhookSessionStatusRescheduledEventDataTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaWebhookSessionStatusScheduledEventData
+        var model = new BetaWebhookSessionStatusRescheduledEventData
         {
             ID = "id",
             OrganizationID = "organization_id",
@@ -18,7 +18,7 @@ public class BetaWebhookSessionStatusScheduledEventDataTest : TestBase
 
         string expectedID = "id";
         string expectedOrganizationID = "organization_id";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("session.status_scheduled");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("session.status_rescheduled");
         string expectedWorkspaceID = "workspace_id";
 
         Assert.Equal(expectedID, model.ID);
@@ -30,7 +30,7 @@ public class BetaWebhookSessionStatusScheduledEventDataTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaWebhookSessionStatusScheduledEventData
+        var model = new BetaWebhookSessionStatusRescheduledEventData
         {
             ID = "id",
             OrganizationID = "organization_id",
@@ -38,7 +38,7 @@ public class BetaWebhookSessionStatusScheduledEventDataTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaWebhookSessionStatusScheduledEventData>(
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookSessionStatusRescheduledEventData>(
             json,
             ModelBase.SerializerOptions
         );
@@ -49,7 +49,7 @@ public class BetaWebhookSessionStatusScheduledEventDataTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaWebhookSessionStatusScheduledEventData
+        var model = new BetaWebhookSessionStatusRescheduledEventData
         {
             ID = "id",
             OrganizationID = "organization_id",
@@ -57,7 +57,7 @@ public class BetaWebhookSessionStatusScheduledEventDataTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaWebhookSessionStatusScheduledEventData>(
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookSessionStatusRescheduledEventData>(
             element,
             ModelBase.SerializerOptions
         );
@@ -65,7 +65,7 @@ public class BetaWebhookSessionStatusScheduledEventDataTest : TestBase
 
         string expectedID = "id";
         string expectedOrganizationID = "organization_id";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("session.status_scheduled");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("session.status_rescheduled");
         string expectedWorkspaceID = "workspace_id";
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -77,7 +77,7 @@ public class BetaWebhookSessionStatusScheduledEventDataTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaWebhookSessionStatusScheduledEventData
+        var model = new BetaWebhookSessionStatusRescheduledEventData
         {
             ID = "id",
             OrganizationID = "organization_id",
@@ -90,14 +90,14 @@ public class BetaWebhookSessionStatusScheduledEventDataTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaWebhookSessionStatusScheduledEventData
+        var model = new BetaWebhookSessionStatusRescheduledEventData
         {
             ID = "id",
             OrganizationID = "organization_id",
             WorkspaceID = "workspace_id",
         };
 
-        BetaWebhookSessionStatusScheduledEventData copied = new(model);
+        BetaWebhookSessionStatusRescheduledEventData copied = new(model);
 
         Assert.Equal(model, copied);
     }
