@@ -113,6 +113,20 @@ public sealed record class BetaManagedAgentsUserCustomToolResultEvent : JsonMode
         init { this._rawData.Set("processed_at", value); }
     }
 
+    /// <summary>
+    /// Routes this result to a subagent thread. Copy from the `agent.custom_tool_use`
+    /// event's `session_thread_id`.
+    /// </summary>
+    public string? SessionThreadID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("session_thread_id");
+        }
+        init { this._rawData.Set("session_thread_id", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -125,6 +139,7 @@ public sealed record class BetaManagedAgentsUserCustomToolResultEvent : JsonMode
         }
         _ = this.IsError;
         _ = this.ProcessedAt;
+        _ = this.SessionThreadID;
     }
 
     public BetaManagedAgentsUserCustomToolResultEvent() { }

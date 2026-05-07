@@ -40,6 +40,8 @@ public interface IAnthropicClient : IDisposable
 
     string? AuthToken { get; init; }
 
+    string? WebhookKey { get; init; }
+
     /// <summary>
     /// Returns a view of this service that provides access to raw HTTP responses
     /// for each method.
@@ -83,6 +85,8 @@ public interface IAnthropicClientWithRawResponse : IDisposable
     string? ApiKey { get; init; }
 
     string? AuthToken { get; init; }
+
+    string? WebhookKey { get; init; }
 
     /// <summary>
     /// Returns a view of this service with the given option modifications applied.

@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Beta.Sessions;
 using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
@@ -109,6 +110,19 @@ public sealed record class BetaManagedAgentsAgent : JsonModel
         init { this._rawData.Set("model", value); }
     }
 
+    /// <summary>
+    /// Resolved coordinator topology with a concrete agent roster.
+    /// </summary>
+    public required BetaManagedAgentsMultiagent? Multiagent
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaManagedAgentsMultiagent>("multiagent");
+        }
+        init { this._rawData.Set("multiagent", value); }
+    }
+
     public required string Name
     {
         get
@@ -119,16 +133,18 @@ public sealed record class BetaManagedAgentsAgent : JsonModel
         init { this._rawData.Set("name", value); }
     }
 
-    public required IReadOnlyList<Skill> Skills
+    public required IReadOnlyList<global::Anthropic.Models.Beta.Agents.Skill> Skills
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<ImmutableArray<Skill>>("skills");
+            return this._rawData.GetNotNullStruct<
+                ImmutableArray<global::Anthropic.Models.Beta.Agents.Skill>
+            >("skills");
         }
         init
         {
-            this._rawData.Set<ImmutableArray<Skill>>(
+            this._rawData.Set<ImmutableArray<global::Anthropic.Models.Beta.Agents.Skill>>(
                 "skills",
                 ImmutableArray.ToImmutableArray(value)
             );
@@ -214,6 +230,7 @@ public sealed record class BetaManagedAgentsAgent : JsonModel
         }
         _ = this.Metadata;
         this.Model.Validate();
+        this.Multiagent?.Validate();
         _ = this.Name;
         foreach (var item in this.Skills)
         {
@@ -270,7 +287,7 @@ class BetaManagedAgentsAgentFromRaw : IFromRawJson<BetaManagedAgentsAgent>
 /// <summary>
 /// Resolved skill as returned in API responses.
 /// </summary>
-[JsonConverter(typeof(SkillConverter))]
+[JsonConverter(typeof(global::Anthropic.Models.Beta.Agents.SkillConverter))]
 public record class Skill : ModelBase
 {
     public object? Value { get; } = null;
@@ -445,9 +462,13 @@ public record class Skill : ModelBase
         };
     }
 
-    public static implicit operator Skill(BetaManagedAgentsAnthropicSkill value) => new(value);
+    public static implicit operator global::Anthropic.Models.Beta.Agents.Skill(
+        BetaManagedAgentsAnthropicSkill value
+    ) => new(value);
 
-    public static implicit operator Skill(BetaManagedAgentsCustomSkill value) => new(value);
+    public static implicit operator global::Anthropic.Models.Beta.Agents.Skill(
+        BetaManagedAgentsCustomSkill value
+    ) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -471,7 +492,7 @@ public record class Skill : ModelBase
         );
     }
 
-    public virtual bool Equals(Skill? other) =>
+    public virtual bool Equals(global::Anthropic.Models.Beta.Agents.Skill? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -498,9 +519,9 @@ public record class Skill : ModelBase
     }
 }
 
-sealed class SkillConverter : JsonConverter<Skill>
+sealed class SkillConverter : JsonConverter<global::Anthropic.Models.Beta.Agents.Skill>
 {
-    public override Skill? Read(
+    public override global::Anthropic.Models.Beta.Agents.Skill? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -561,12 +582,16 @@ sealed class SkillConverter : JsonConverter<Skill>
             }
             default:
             {
-                return new Skill(element);
+                return new global::Anthropic.Models.Beta.Agents.Skill(element);
             }
         }
     }
 
-    public override void Write(Utf8JsonWriter writer, Skill value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        global::Anthropic.Models.Beta.Agents.Skill value,
+        JsonSerializerOptions options
+    )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
     }
@@ -946,7 +971,7 @@ sealed class BetaManagedAgentsAgentToolConverter : JsonConverter<BetaManagedAgen
     }
 }
 
-[JsonConverter(typeof(TypeConverter))]
+[JsonConverter(typeof(global::Anthropic.Models.Beta.Agents.TypeConverter))]
 public enum Type
 {
     Agent,

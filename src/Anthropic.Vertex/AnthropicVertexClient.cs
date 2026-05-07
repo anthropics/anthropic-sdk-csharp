@@ -7,6 +7,9 @@ namespace Anthropic.Vertex;
 /// </summary>
 public class AnthropicVertexClient : AnthropicClient
 {
+    /// <inheritdoc/>
+    protected override bool ShouldAutoResolveCredentials => false;
+
     private readonly IAnthropicVertexCredentials _vertexCredentials;
 
     private readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;

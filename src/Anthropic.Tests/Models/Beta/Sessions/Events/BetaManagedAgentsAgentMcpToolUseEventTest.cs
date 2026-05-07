@@ -24,6 +24,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = EvaluatedPermission.Allow,
+            SessionThreadID = "session_thread_id",
         };
 
         string expectedID = "id";
@@ -38,6 +39,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse;
         ApiEnum<string, EvaluatedPermission> expectedEvaluatedPermission =
             EvaluatedPermission.Allow;
+        string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedInput.Count, model.Input.Count);
@@ -52,6 +54,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
         Assert.Equal(expectedType, model.Type);
         Assert.Equal(expectedEvaluatedPermission, model.EvaluatedPermission);
+        Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
     }
 
     [Fact]
@@ -69,6 +72,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = EvaluatedPermission.Allow,
+            SessionThreadID = "session_thread_id",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -95,6 +99,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = EvaluatedPermission.Allow,
+            SessionThreadID = "session_thread_id",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -116,6 +121,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse;
         ApiEnum<string, EvaluatedPermission> expectedEvaluatedPermission =
             EvaluatedPermission.Allow;
+        string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedInput.Count, deserialized.Input.Count);
@@ -130,6 +136,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
         Assert.Equal(expectedType, deserialized.Type);
         Assert.Equal(expectedEvaluatedPermission, deserialized.EvaluatedPermission);
+        Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
     }
 
     [Fact]
@@ -147,6 +154,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = EvaluatedPermission.Allow,
+            SessionThreadID = "session_thread_id",
         };
 
         model.Validate();
@@ -166,6 +174,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
+            SessionThreadID = "session_thread_id",
         };
 
         Assert.Null(model.EvaluatedPermission);
@@ -186,6 +195,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
+            SessionThreadID = "session_thread_id",
         };
 
         model.Validate();
@@ -205,6 +215,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
+            SessionThreadID = "session_thread_id",
 
             // Null should be interpreted as omitted for these properties
             EvaluatedPermission = null,
@@ -228,9 +239,96 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
+            SessionThreadID = "session_thread_id",
 
             // Null should be interpreted as omitted for these properties
             EvaluatedPermission = null,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new BetaManagedAgentsAgentMcpToolUseEvent
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            McpServerName = "mcp_server_name",
+            Name = "name",
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
+            EvaluatedPermission = EvaluatedPermission.Allow,
+        };
+
+        Assert.Null(model.SessionThreadID);
+        Assert.False(model.RawData.ContainsKey("session_thread_id"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new BetaManagedAgentsAgentMcpToolUseEvent
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            McpServerName = "mcp_server_name",
+            Name = "name",
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
+            EvaluatedPermission = EvaluatedPermission.Allow,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
+    {
+        var model = new BetaManagedAgentsAgentMcpToolUseEvent
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            McpServerName = "mcp_server_name",
+            Name = "name",
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
+            EvaluatedPermission = EvaluatedPermission.Allow,
+
+            SessionThreadID = null,
+        };
+
+        Assert.Null(model.SessionThreadID);
+        Assert.True(model.RawData.ContainsKey("session_thread_id"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new BetaManagedAgentsAgentMcpToolUseEvent
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            McpServerName = "mcp_server_name",
+            Name = "name",
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
+            EvaluatedPermission = EvaluatedPermission.Allow,
+
+            SessionThreadID = null,
         };
 
         model.Validate();
@@ -251,6 +349,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = EvaluatedPermission.Allow,
+            SessionThreadID = "session_thread_id",
         };
 
         BetaManagedAgentsAgentMcpToolUseEvent copied = new(model);

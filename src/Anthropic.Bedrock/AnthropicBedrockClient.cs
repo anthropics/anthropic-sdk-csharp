@@ -11,6 +11,9 @@ namespace Anthropic.Bedrock;
 /// </summary>
 public sealed class AnthropicBedrockClient : AnthropicClient
 {
+    /// <inheritdoc/>
+    protected override bool ShouldAutoResolveCredentials => false;
+
     private const string ServiceName = "bedrock-runtime";
 
     private readonly IAnthropicBedrockCredentials _bedrockCredentials;

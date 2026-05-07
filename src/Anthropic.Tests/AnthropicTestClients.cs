@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Anthropic.Aws;
 using Anthropic.Bedrock;
+using Anthropic.Core;
 using Anthropic.Foundry;
 using Anthropic.Vertex;
 using Xunit.Sdk;
@@ -42,7 +43,9 @@ public class AnthropicTestClientsAttribute : DataAttribute
             rows.Add(
                 new TheoryDataRow(
                     [
-                        new AnthropicClient() { BaseUrl = DataServiceUrl, ApiKey = ApiKey },
+                        new AnthropicClient(
+                            new ClientOptions { ApiKey = ApiKey, BaseUrl = DataServiceUrl }
+                        ),
                         .. testData
                             .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Anthropic))
                             .SelectMany(f => f.TestData)

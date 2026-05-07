@@ -32,10 +32,26 @@ public sealed record class BetaManagedAgentsUserInterruptEventParams : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
+    /// <summary>
+    /// If absent, interrupts every non-archived thread in a multiagent session (or
+    /// the primary alone in a single-agent session). If present, interrupts only
+    /// the named thread.
+    /// </summary>
+    public string? SessionThreadID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("session_thread_id");
+        }
+        init { this._rawData.Set("session_thread_id", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Type.Validate();
+        _ = this.SessionThreadID;
     }
 
     public BetaManagedAgentsUserInterruptEventParams() { }

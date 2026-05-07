@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Beta.Sessions;
 using Anthropic.Services.Beta;
 using System = System;
 
@@ -121,6 +122,22 @@ public record class AgentCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// A coordinator topology: the session's primary thread orchestrates work by
+    /// spawning session threads, each running an agent drawn from the `agents` roster.
+    /// </summary>
+    public BetaManagedAgentsMultiagentParams? Multiagent
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaManagedAgentsMultiagentParams>(
+                "multiagent"
+            );
+        }
+        init { this._rawBodyData.Set("multiagent", value); }
+    }
+
+    /// <summary>
     /// Skills available to the agent. Maximum 20.
     /// </summary>
     public IReadOnlyList<BetaManagedAgentsSkillParams>? Skills
@@ -163,12 +180,14 @@ public record class AgentCreateParams : ParamsBase
     /// Tool configurations available to the agent. Maximum of 128 tools across all
     /// toolsets allowed.
     /// </summary>
-    public IReadOnlyList<Tool>? Tools
+    public IReadOnlyList<global::Anthropic.Models.Beta.Agents.Tool>? Tools
     {
         get
         {
             this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableStruct<ImmutableArray<Tool>>("tools");
+            return this._rawBodyData.GetNullableStruct<
+                ImmutableArray<global::Anthropic.Models.Beta.Agents.Tool>
+            >("tools");
         }
         init
         {
@@ -177,7 +196,7 @@ public record class AgentCreateParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData.Set<ImmutableArray<Tool>?>(
+            this._rawBodyData.Set<ImmutableArray<global::Anthropic.Models.Beta.Agents.Tool>?>(
                 "tools",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
@@ -591,7 +610,7 @@ sealed class ModelConverter : JsonConverter<Model>
 /// <summary>
 /// Union type for tool configurations in the tools array.
 /// </summary>
-[JsonConverter(typeof(ToolConverter))]
+[JsonConverter(typeof(global::Anthropic.Models.Beta.Agents.ToolConverter))]
 public record class Tool : ModelBase
 {
     public object? Value { get; } = null;
@@ -785,12 +804,17 @@ public record class Tool : ModelBase
         };
     }
 
-    public static implicit operator Tool(BetaManagedAgentsAgentToolset20260401Params value) =>
-        new(value);
+    public static implicit operator global::Anthropic.Models.Beta.Agents.Tool(
+        BetaManagedAgentsAgentToolset20260401Params value
+    ) => new(value);
 
-    public static implicit operator Tool(BetaManagedAgentsMcpToolsetParams value) => new(value);
+    public static implicit operator global::Anthropic.Models.Beta.Agents.Tool(
+        BetaManagedAgentsMcpToolsetParams value
+    ) => new(value);
 
-    public static implicit operator Tool(BetaManagedAgentsCustomToolParams value) => new(value);
+    public static implicit operator global::Anthropic.Models.Beta.Agents.Tool(
+        BetaManagedAgentsCustomToolParams value
+    ) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -816,7 +840,7 @@ public record class Tool : ModelBase
         );
     }
 
-    public virtual bool Equals(Tool? other) =>
+    public virtual bool Equals(global::Anthropic.Models.Beta.Agents.Tool? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -844,9 +868,9 @@ public record class Tool : ModelBase
     }
 }
 
-sealed class ToolConverter : JsonConverter<Tool>
+sealed class ToolConverter : JsonConverter<global::Anthropic.Models.Beta.Agents.Tool>
 {
-    public override Tool? Read(
+    public override global::Anthropic.Models.Beta.Agents.Tool? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -930,12 +954,16 @@ sealed class ToolConverter : JsonConverter<Tool>
             }
             default:
             {
-                return new Tool(element);
+                return new global::Anthropic.Models.Beta.Agents.Tool(element);
             }
         }
     }
 
-    public override void Write(Utf8JsonWriter writer, Tool value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        global::Anthropic.Models.Beta.Agents.Tool value,
+        JsonSerializerOptions options
+    )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
     }

@@ -13,12 +13,15 @@ public class BetaManagedAgentsUserInterruptEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserInterruptEventParams
         {
             Type = BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt,
+            SessionThreadID = "session_thread_id",
         };
 
         ApiEnum<string, BetaManagedAgentsUserInterruptEventParamsType> expectedType =
             BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt;
+        string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedType, model.Type);
+        Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
     }
 
     [Fact]
@@ -27,6 +30,7 @@ public class BetaManagedAgentsUserInterruptEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserInterruptEventParams
         {
             Type = BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt,
+            SessionThreadID = "session_thread_id",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -44,6 +48,7 @@ public class BetaManagedAgentsUserInterruptEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserInterruptEventParams
         {
             Type = BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt,
+            SessionThreadID = "session_thread_id",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -55,8 +60,10 @@ public class BetaManagedAgentsUserInterruptEventParamsTest : TestBase
 
         ApiEnum<string, BetaManagedAgentsUserInterruptEventParamsType> expectedType =
             BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt;
+        string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedType, deserialized.Type);
+        Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
     }
 
     [Fact]
@@ -65,6 +72,57 @@ public class BetaManagedAgentsUserInterruptEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserInterruptEventParams
         {
             Type = BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt,
+            SessionThreadID = "session_thread_id",
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new BetaManagedAgentsUserInterruptEventParams
+        {
+            Type = BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt,
+        };
+
+        Assert.Null(model.SessionThreadID);
+        Assert.False(model.RawData.ContainsKey("session_thread_id"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new BetaManagedAgentsUserInterruptEventParams
+        {
+            Type = BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
+    {
+        var model = new BetaManagedAgentsUserInterruptEventParams
+        {
+            Type = BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt,
+
+            SessionThreadID = null,
+        };
+
+        Assert.Null(model.SessionThreadID);
+        Assert.True(model.RawData.ContainsKey("session_thread_id"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new BetaManagedAgentsUserInterruptEventParams
+        {
+            Type = BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt,
+
+            SessionThreadID = null,
         };
 
         model.Validate();
@@ -76,6 +134,7 @@ public class BetaManagedAgentsUserInterruptEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserInterruptEventParams
         {
             Type = BetaManagedAgentsUserInterruptEventParamsType.UserInterrupt,
+            SessionThreadID = "session_thread_id",
         };
 
         BetaManagedAgentsUserInterruptEventParams copied = new(model);

@@ -100,6 +100,21 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEvent : JsonMode
         init { this._rawData.Set("processed_at", value); }
     }
 
+    /// <summary>
+    /// When set, the confirmation routes to this subagent's thread rather than the
+    /// primary. Echo this from the `session_thread_id` on the `agent.tool_use` or
+    /// `agent.mcp_tool_use` event that prompted the approval.
+    /// </summary>
+    public string? SessionThreadID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("session_thread_id");
+        }
+        init { this._rawData.Set("session_thread_id", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -109,6 +124,7 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEvent : JsonMode
         this.Type.Validate();
         _ = this.DenyMessage;
         _ = this.ProcessedAt;
+        _ = this.SessionThreadID;
     }
 
     public BetaManagedAgentsUserToolConfirmationEvent() { }

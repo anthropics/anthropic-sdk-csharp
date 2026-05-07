@@ -91,6 +91,21 @@ public sealed record class BetaManagedAgentsAgentCustomToolUseEvent : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
+    /// <summary>
+    /// When set, this event was cross-posted from a subagent's thread to surface
+    /// its custom tool use on the primary thread's stream. Empty on the thread's
+    /// own events. Echo this on a `user.custom_tool_result` event to route the result back.
+    /// </summary>
+    public string? SessionThreadID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("session_thread_id");
+        }
+        init { this._rawData.Set("session_thread_id", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -99,6 +114,7 @@ public sealed record class BetaManagedAgentsAgentCustomToolUseEvent : JsonModel
         _ = this.Name;
         _ = this.ProcessedAt;
         this.Type.Validate();
+        _ = this.SessionThreadID;
     }
 
     public BetaManagedAgentsAgentCustomToolUseEvent() { }

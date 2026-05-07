@@ -38,6 +38,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 ID = "id",
                 Type = Events::BetaManagedAgentsUserInterruptEventType.UserInterrupt,
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
             };
         value.Validate();
     }
@@ -54,6 +55,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 Type = Events::BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation,
                 DenyMessage = "deny_message",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
             };
         value.Validate();
     }
@@ -77,6 +79,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 ],
                 IsError = true,
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
             };
         value.Validate();
     }
@@ -95,6 +98,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 Name = "name",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::Type.AgentCustomToolUse,
+                SessionThreadID = "session_thread_id",
             };
         value.Validate();
     }
@@ -149,6 +153,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
                 EvaluatedPermission = Events::EvaluatedPermission.Allow,
+                SessionThreadID = "session_thread_id",
             };
         value.Validate();
     }
@@ -192,6 +197,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 Type = Events::BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
                 EvaluatedPermission =
                     Events::BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+                SessionThreadID = "session_thread_id",
             };
         value.Validate();
     }
@@ -215,6 +221,54 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                     },
                 ],
                 IsError = true,
+            };
+        value.Validate();
+    }
+
+    [Fact]
+    public void AgentThreadMessageReceivedEventValidationWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsAgentThreadMessageReceivedEvent()
+            {
+                ID = "id",
+                Content =
+                [
+                    new Events::BetaManagedAgentsTextBlock()
+                    {
+                        Text = "Where is my order #1234?",
+                        Type = Events::BetaManagedAgentsTextBlockType.Text,
+                    },
+                ],
+                FromSessionThreadID = "from_session_thread_id",
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Type =
+                    Events::BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived,
+                FromAgentName = "from_agent_name",
+            };
+        value.Validate();
+    }
+
+    [Fact]
+    public void AgentThreadMessageSentEventValidationWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsAgentThreadMessageSentEvent()
+            {
+                ID = "id",
+                Content =
+                [
+                    new Events::BetaManagedAgentsTextBlock()
+                    {
+                        Text = "Where is my order #1234?",
+                        Type = Events::BetaManagedAgentsTextBlockType.Text,
+                    },
+                ],
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ToSessionThreadID = "to_session_thread_id",
+                Type =
+                    Events::BetaManagedAgentsAgentThreadMessageSentEventType.AgentThreadMessageSent,
+                ToAgentName = "to_agent_name",
             };
         value.Validate();
     }
@@ -312,6 +366,64 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
     }
 
     [Fact]
+    public void SessionThreadCreatedEventValidationWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSessionThreadCreatedEvent()
+            {
+                ID = "sevt_011CZkZWXb7pJkx1shYaqoCu",
+                AgentName = "Researcher",
+                ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                Type = Events::BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
+            };
+        value.Validate();
+    }
+
+    [Fact]
+    public void SpanOutcomeEvaluationStartEventValidationWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSpanOutcomeEvaluationStartEvent()
+            {
+                ID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
+                Iteration = 0,
+                OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
+                Type =
+                    Events::BetaManagedAgentsSpanOutcomeEvaluationStartEventType.SpanOutcomeEvaluationStart,
+            };
+        value.Validate();
+    }
+
+    [Fact]
+    public void SpanOutcomeEvaluationEndEventValidationWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSpanOutcomeEvaluationEndEvent()
+            {
+                ID = "sevt_011CZkZUVz5nHiv9qfWYomas",
+                Explanation = "All five sections present with inline citations.",
+                Iteration = 0,
+                OutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
+                OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:31Z"),
+                Result = "satisfied",
+                Type =
+                    Events::BetaManagedAgentsSpanOutcomeEvaluationEndEventType.SpanOutcomeEvaluationEnd,
+                Usage = new()
+                {
+                    CacheCreationInputTokens = 0,
+                    CacheReadInputTokens = 1536,
+                    InputTokens = 1842,
+                    OutputTokens = 213,
+                    Speed = Events::Speed.Standard,
+                },
+            };
+        value.Validate();
+    }
+
+    [Fact]
     public void SpanModelRequestStartEventValidationWorks()
     {
         Events::BetaManagedAgentsStreamSessionEvents value =
@@ -349,6 +461,43 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
     }
 
     [Fact]
+    public void SpanOutcomeEvaluationOngoingEventValidationWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent()
+            {
+                ID = "sevt_011CZkZbCG2uOpc6xmDfvTzh",
+                Iteration = 0,
+                OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
+                Type =
+                    Events::BetaManagedAgentsSpanOutcomeEvaluationOngoingEventType.SpanOutcomeEvaluationOngoing,
+            };
+        value.Validate();
+    }
+
+    [Fact]
+    public void UserDefineOutcomeEventValidationWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsUserDefineOutcomeEvent()
+            {
+                ID = "sevt_011CZkZSTx3lFgt7odUWmkyq",
+                Description = "Produce a 2-page summary as summary.md",
+                MaxIterations = 3,
+                OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
+                Rubric = new Events::BetaManagedAgentsTextRubric()
+                {
+                    Content = "Must cover all five sections; cite sources inline.",
+                    Type = Events::BetaManagedAgentsTextRubricType.Text,
+                },
+                Type = Events::BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
+            };
+        value.Validate();
+    }
+
+    [Fact]
     public void SessionDeletedEventValidationWorks()
     {
         Events::BetaManagedAgentsStreamSessionEvents value =
@@ -357,6 +506,73 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 ID = "id",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::BetaManagedAgentsSessionDeletedEventType.SessionDeleted,
+            };
+        value.Validate();
+    }
+
+    [Fact]
+    public void SessionThreadStatusRunningEventValidationWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSessionThreadStatusRunningEvent()
+            {
+                ID = "id",
+                AgentName = "agent_name",
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
+                Type =
+                    Events::BetaManagedAgentsSessionThreadStatusRunningEventType.SessionThreadStatusRunning,
+            };
+        value.Validate();
+    }
+
+    [Fact]
+    public void SessionThreadStatusIdleEventValidationWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSessionThreadStatusIdleEvent()
+            {
+                ID = "sevt_011CZkZXYc8qKly2tiZbrpDv",
+                AgentName = "Researcher",
+                ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                StopReason = new Events::BetaManagedAgentsSessionEndTurn(
+                    Events::BetaManagedAgentsSessionEndTurnType.EndTurn
+                ),
+                Type =
+                    Events::BetaManagedAgentsSessionThreadStatusIdleEventType.SessionThreadStatusIdle,
+            };
+        value.Validate();
+    }
+
+    [Fact]
+    public void SessionThreadStatusTerminatedEventValidationWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSessionThreadStatusTerminatedEvent()
+            {
+                ID = "id",
+                AgentName = "agent_name",
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
+                Type =
+                    Events::BetaManagedAgentsSessionThreadStatusTerminatedEventType.SessionThreadStatusTerminated,
+            };
+        value.Validate();
+    }
+
+    [Fact]
+    public void SessionThreadStatusRescheduledEventValidationWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSessionThreadStatusRescheduledEvent()
+            {
+                ID = "id",
+                AgentName = "agent_name",
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
+                Type =
+                    Events::BetaManagedAgentsSessionThreadStatusRescheduledEventType.SessionThreadStatusRescheduled,
             };
         value.Validate();
     }
@@ -397,6 +613,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 ID = "id",
                 Type = Events::BetaManagedAgentsUserInterruptEventType.UserInterrupt,
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
@@ -419,6 +636,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 Type = Events::BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation,
                 DenyMessage = "deny_message",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
@@ -448,6 +666,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 ],
                 IsError = true,
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
@@ -472,6 +691,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 Name = "name",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::Type.AgentCustomToolUse,
+                SessionThreadID = "session_thread_id",
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
@@ -544,6 +764,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
                 EvaluatedPermission = Events::EvaluatedPermission.Allow,
+                SessionThreadID = "session_thread_id",
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
@@ -599,6 +820,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 Type = Events::BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
                 EvaluatedPermission =
                     Events::BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+                SessionThreadID = "session_thread_id",
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
@@ -628,6 +850,66 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                     },
                 ],
                 IsError = true,
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void AgentThreadMessageReceivedEventSerializationRoundtripWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsAgentThreadMessageReceivedEvent()
+            {
+                ID = "id",
+                Content =
+                [
+                    new Events::BetaManagedAgentsTextBlock()
+                    {
+                        Text = "Where is my order #1234?",
+                        Type = Events::BetaManagedAgentsTextBlockType.Text,
+                    },
+                ],
+                FromSessionThreadID = "from_session_thread_id",
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Type =
+                    Events::BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived,
+                FromAgentName = "from_agent_name",
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void AgentThreadMessageSentEventSerializationRoundtripWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsAgentThreadMessageSentEvent()
+            {
+                ID = "id",
+                Content =
+                [
+                    new Events::BetaManagedAgentsTextBlock()
+                    {
+                        Text = "Where is my order #1234?",
+                        Type = Events::BetaManagedAgentsTextBlockType.Text,
+                    },
+                ],
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ToSessionThreadID = "to_session_thread_id",
+                Type =
+                    Events::BetaManagedAgentsAgentThreadMessageSentEventType.AgentThreadMessageSent,
+                ToAgentName = "to_agent_name",
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
@@ -767,6 +1049,82 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
     }
 
     [Fact]
+    public void SessionThreadCreatedEventSerializationRoundtripWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSessionThreadCreatedEvent()
+            {
+                ID = "sevt_011CZkZWXb7pJkx1shYaqoCu",
+                AgentName = "Researcher",
+                ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                Type = Events::BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void SpanOutcomeEvaluationStartEventSerializationRoundtripWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSpanOutcomeEvaluationStartEvent()
+            {
+                ID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
+                Iteration = 0,
+                OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
+                Type =
+                    Events::BetaManagedAgentsSpanOutcomeEvaluationStartEventType.SpanOutcomeEvaluationStart,
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void SpanOutcomeEvaluationEndEventSerializationRoundtripWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSpanOutcomeEvaluationEndEvent()
+            {
+                ID = "sevt_011CZkZUVz5nHiv9qfWYomas",
+                Explanation = "All five sections present with inline citations.",
+                Iteration = 0,
+                OutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
+                OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:31Z"),
+                Result = "satisfied",
+                Type =
+                    Events::BetaManagedAgentsSpanOutcomeEvaluationEndEventType.SpanOutcomeEvaluationEnd,
+                Usage = new()
+                {
+                    CacheCreationInputTokens = 0,
+                    CacheReadInputTokens = 1536,
+                    InputTokens = 1842,
+                    OutputTokens = 213,
+                    Speed = Events::Speed.Standard,
+                },
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void SpanModelRequestStartEventSerializationRoundtripWorks()
     {
         Events::BetaManagedAgentsStreamSessionEvents value =
@@ -816,6 +1174,55 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
     }
 
     [Fact]
+    public void SpanOutcomeEvaluationOngoingEventSerializationRoundtripWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent()
+            {
+                ID = "sevt_011CZkZbCG2uOpc6xmDfvTzh",
+                Iteration = 0,
+                OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
+                Type =
+                    Events::BetaManagedAgentsSpanOutcomeEvaluationOngoingEventType.SpanOutcomeEvaluationOngoing,
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UserDefineOutcomeEventSerializationRoundtripWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsUserDefineOutcomeEvent()
+            {
+                ID = "sevt_011CZkZSTx3lFgt7odUWmkyq",
+                Description = "Produce a 2-page summary as summary.md",
+                MaxIterations = 3,
+                OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
+                Rubric = new Events::BetaManagedAgentsTextRubric()
+                {
+                    Content = "Must cover all five sections; cite sources inline.",
+                    Type = Events::BetaManagedAgentsTextRubricType.Text,
+                },
+                Type = Events::BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void SessionDeletedEventSerializationRoundtripWorks()
     {
         Events::BetaManagedAgentsStreamSessionEvents value =
@@ -824,6 +1231,97 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 ID = "id",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::BetaManagedAgentsSessionDeletedEventType.SessionDeleted,
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void SessionThreadStatusRunningEventSerializationRoundtripWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSessionThreadStatusRunningEvent()
+            {
+                ID = "id",
+                AgentName = "agent_name",
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
+                Type =
+                    Events::BetaManagedAgentsSessionThreadStatusRunningEventType.SessionThreadStatusRunning,
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void SessionThreadStatusIdleEventSerializationRoundtripWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSessionThreadStatusIdleEvent()
+            {
+                ID = "sevt_011CZkZXYc8qKly2tiZbrpDv",
+                AgentName = "Researcher",
+                ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                StopReason = new Events::BetaManagedAgentsSessionEndTurn(
+                    Events::BetaManagedAgentsSessionEndTurnType.EndTurn
+                ),
+                Type =
+                    Events::BetaManagedAgentsSessionThreadStatusIdleEventType.SessionThreadStatusIdle,
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void SessionThreadStatusTerminatedEventSerializationRoundtripWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSessionThreadStatusTerminatedEvent()
+            {
+                ID = "id",
+                AgentName = "agent_name",
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
+                Type =
+                    Events::BetaManagedAgentsSessionThreadStatusTerminatedEventType.SessionThreadStatusTerminated,
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void SessionThreadStatusRescheduledEventSerializationRoundtripWorks()
+    {
+        Events::BetaManagedAgentsStreamSessionEvents value =
+            new Events::BetaManagedAgentsSessionThreadStatusRescheduledEvent()
+            {
+                ID = "id",
+                AgentName = "agent_name",
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
+                Type =
+                    Events::BetaManagedAgentsSessionThreadStatusRescheduledEventType.SessionThreadStatusRescheduled,
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Events::BetaManagedAgentsStreamSessionEvents>(

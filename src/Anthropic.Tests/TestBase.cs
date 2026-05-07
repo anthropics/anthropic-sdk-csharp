@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Anthropic;
+using Anthropic.Core;
 
 namespace Anthropic.Tests;
 
@@ -17,11 +18,13 @@ public abstract class TestBase
     /// </summary>
     public TestBase()
     {
-        client = new AnthropicClient()
-        {
-            BaseUrl = AnthropicTestClientsAttribute.DataServiceUrl,
-            ApiKey = AnthropicTestClientsAttribute.ApiKey,
-        };
+        client = new AnthropicClient(
+            new ClientOptions
+            {
+                ApiKey = AnthropicTestClientsAttribute.ApiKey,
+                BaseUrl = AnthropicTestClientsAttribute.DataServiceUrl,
+            }
+        );
     }
 
     internal static bool UrisEqual(Uri uri1, Uri uri2)
