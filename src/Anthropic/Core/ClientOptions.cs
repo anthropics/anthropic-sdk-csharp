@@ -22,9 +22,16 @@ public record struct ClientOptions()
 
     /// <summary>
     /// The HTTP client to use for making requests in the SDK.
+    ///
+    /// <para>Note: The HttpClient has a built-in timeout, which defaults to 100 seconds.
+    /// When passing a custom HttpClient, this timeout may conflict with the SDK's
+    /// own timeout handler and cause premature cancellation.</para>
     /// </summary>
     public HttpClient HttpClient { get; set; } =
-        new(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.Available });
+        new(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.Available })
+        {
+            Timeout = global::System.Threading.Timeout.InfiniteTimeSpan,
+        };
 
     Lazy<string> _baseUrl = new(() =>
         Environment.GetEnvironmentVariable("ANTHROPIC_BASE_URL") ?? EnvironmentUrl.Production
