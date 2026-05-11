@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Amazon.Runtime;
@@ -203,13 +202,18 @@ internal class AnthropicAwsClientWithRawResponse : AnthropicClientWithRawRespons
             );
         }
 
-        // Read the body and replace the content with a fresh MemoryStream so it can be
-        // consumed again after we read it for signing.
-        var body = "";
+        // Capture the original Content-Type (including any multipart boundary) before we
+        // replace the content below — replacing Content discards its headers.
+        var originalContentType = requestMessage.Content?.Headers.ContentType?.ToString();
+
+        // Read the body as raw bytes and replace the content with a fresh MemoryStream so
+        // it can be consumed again after we read it for signing. Reading bytes (rather than
+        // a string) preserves binary payloads such as multipart/form-data file uploads.
+        var bodyBytes = Array.Empty<byte>();
         if (requestMessage.Content != null)
         {
-            body = await requestMessage
-                .Content.ReadAsStringAsync(
+            bodyBytes = await requestMessage
+                .Content.ReadAsByteArrayAsync(
 #if NET
                     cancellationToken
 #endif
@@ -217,22 +221,22 @@ internal class AnthropicAwsClientWithRawResponse : AnthropicClientWithRawRespons
                 .ConfigureAwait(false);
         }
 
-        var bodyBytes = Encoding.UTF8.GetBytes(body);
         var bodyStream = new MemoryStream(bodyBytes);
-        requestMessage.Content = new StreamContent(bodyStream);
+        var newContent = new StreamContent(bodyStream);
+        // Content-Type and Content-Length are content headers per the HTTP spec and must be
+        // set on Content.Headers (HttpClient may strip or reject them on request headers).
+        if (originalContentType != null)
+        {
+            newContent.Headers.TryAddWithoutValidation("Content-Type", originalContentType);
+        }
+        newContent.Headers.TryAddWithoutValidation("Content-Length", bodyBytes.Length.ToString());
+        requestMessage.Content = newContent;
 
-        var payloadHash = AwsSigner.CalculateHash(body);
+        var payloadHash = AwsSigner.CalculateHash(bodyBytes);
 
         // Add headers required for SigV4 signing. These will be included in the
         // signed-headers list and must be present on the actual request.
         requestMessage.Headers.TryAddWithoutValidation("Host", requestMessage.RequestUri!.Host);
-        // StreamContent replaces the original Content-Type; hardcode application/json which
-        // is correct for all current Anthropic API endpoints.
-        requestMessage.Headers.TryAddWithoutValidation("content-type", "application/json");
-        requestMessage.Headers.TryAddWithoutValidation(
-            "content-length",
-            bodyBytes.Length.ToString()
-        );
 
         var now = DateTime.UtcNow;
         var amzDate = AwsSigner.ToAmzDate(now);
@@ -247,6 +251,24 @@ internal class AnthropicAwsClientWithRawResponse : AnthropicClientWithRawRespons
             requestMessage.Headers.TryAddWithoutValidation("x-amz-security-token", sessionToken);
         }
 
+        // Collapse any multi-value request headers (e.g. anthropic-beta when several
+        // betas are supplied) to a single comma-joined value before signing AND sending.
+        // HttpClient serializes multi-value headers with ", " on the wire, which would
+        // not match the canonical request and cause a SigV4 signature mismatch. By
+        // mutating the message headers here, the signed bytes and the wire bytes agree.
+        foreach (var header in requestMessage.Headers.ToList())
+        {
+            var values = header.Value.ToList();
+            if (values.Count > 1)
+            {
+                requestMessage.Headers.Remove(header.Key);
+                requestMessage.Headers.TryAddWithoutValidation(
+                    header.Key,
+                    string.Join(",", values)
+                );
+            }
+        }
+
         var authHeader = AwsSigner.GetAuthorizationHeader(
             new SigningRequest
             {
@@ -255,11 +277,15 @@ internal class AnthropicAwsClientWithRawResponse : AnthropicClientWithRawRespons
                 HttpMethod = requestMessage.Method.ToString(),
                 Uri = requestMessage.RequestUri!,
                 Now = now,
-                Headers = requestMessage.Headers.ToDictionary(
-                    e => e.Key,
-                    e => string.Join(" ", e.Value),
-                    StringComparer.InvariantCultureIgnoreCase
-                ),
+                // Sign both request headers and content headers (Content-Type,
+                // Content-Length) so the canonical request matches the bytes on the wire.
+                Headers = requestMessage
+                    .Headers.Concat(requestMessage.Content.Headers)
+                    .ToDictionary(
+                        e => e.Key,
+                        e => string.Join(",", e.Value),
+                        StringComparer.InvariantCultureIgnoreCase
+                    ),
                 PayloadHash = payloadHash,
                 AwsAccessKey = accessKey,
                 AwsSecretKey = secretKey,

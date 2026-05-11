@@ -18,7 +18,13 @@
     <PackageReference Include="Microsoft.Bcl.Memory" Version="10.0.4"/>
     <ProjectReference Include="..\Anthropic\Anthropic.csproj"/>
     <PackageReference Include="AWSSDK.Core" Version="4.0.3.3"/>
-    
+    <!--
+      Required at runtime for the default AWS credential chain to resolve SSO-backed
+      profiles (DefaultAWSCredentialsIdentityResolver / CredentialProfileStoreChain).
+    -->
+    <PackageReference Include="AWSSDK.SSO" Version="4.0.2.5"/>
+    <PackageReference Include="AWSSDK.SSOOIDC" Version="4.0.3.6"/>
+
     <None Include="..\logo.png" Pack="true" PackagePath="\"/>
     <Compile Include="..\Anthropic\Shims.cs"/>
   </ItemGroup>

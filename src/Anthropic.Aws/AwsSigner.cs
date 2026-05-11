@@ -190,17 +190,19 @@ internal static class AwsSigner
         return hmac.ComputeHash(Encoding.UTF8.GetBytes(data));
     }
 
-    public static string CalculateHash(string data)
+    public static string CalculateHash(string data) => CalculateHash(Encoding.UTF8.GetBytes(data));
+
+    public static string CalculateHash(byte[] data)
     {
         // SHA256.HashData + Convert.ToHexStringLower avoids allocations on newer runtimes.
 #if NET9_0_OR_GREATER
-        return Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(data)));
+        return Convert.ToHexStringLower(SHA256.HashData(data));
 #elif NET
-        var hash = SHA256.HashData(Encoding.UTF8.GetBytes(data));
+        var hash = SHA256.HashData(data);
         return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
 #else
         using SHA256 sha256 = SHA256.Create();
-        var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(data));
+        var hash = sha256.ComputeHash(data);
         return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
 #endif
     }
