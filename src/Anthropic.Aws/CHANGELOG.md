@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.0 (2026-05-11)
+
+Full Changelog: [Aws-v0.3.0...Aws-v0.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v0.3.0...Aws-v0.4.0)
+
+### Features
+
+* **aws:** Add AWS client for Claude Platform on AWS ([321c71c](https://github.com/anthropics/anthropic-sdk-csharp/commit/321c71c184a16be4cc39e9943f2ec13babf91e34))
+
+
+### Bug Fixes
+
+* **aws,bedrock:** preserve multipart Content-Type and collapse multi-value headers in SigV4 signing; add SSO package deps ([#837](https://github.com/anthropics/anthropic-sdk-csharp/issues/837)) ([9aa2083](https://github.com/anthropics/anthropic-sdk-csharp/commit/9aa20832da1ad509afeeeb9d55bca84959672ef4))
+
 ## 0.3.0 (2026-05-05)
 
 Full Changelog: [Aws-v0.2.2...Aws-v0.3.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v0.2.2...Aws-v0.3.0)
@@ -36,4 +49,3 @@ Full Changelog: [Aws-v0.1.0...Aws-v0.2.0](https://github.com/anthropics/anthropi
 ### Features
 
 * prepare aws package ([#770](https://github.com/anthropics/anthropic-sdk-csharp/issues/770)) ([b10ef0f](https://github.com/anthropics/anthropic-sdk-csharp/commit/b10ef0fe5c8d2c64035da7f89182e0a903530d89))
-

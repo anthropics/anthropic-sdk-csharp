@@ -1,5 +1,13 @@
 # Changelog
 
+## 12.20.1 (2026-05-11)
+
+Full Changelog: [Anthropic-v12.20.0...Anthropic-v12.20.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.20.0...Anthropic-v12.20.1)
+
+### Bug Fixes
+
+* **internal:** disable default HttpClient timeout as we have our own ([fc84460](https://github.com/anthropics/anthropic-sdk-csharp/commit/fc8446059a2a13b40fcc54652ddf73f9ab09d02d))
+
 ## 12.20.0 (2026-05-06)
 
 Full Changelog: [Anthropic-v12.19.0...Anthropic-v12.20.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.19.0...Anthropic-v12.20.0)
