@@ -52,6 +52,7 @@ public class BatchServiceTest : TestBase
                                     },
                                 ],
                             },
+                            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                             InferenceGeo = "inference_geo",
                             McpServers =
                             [

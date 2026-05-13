@@ -328,6 +328,7 @@ public class BetaAbstractMemoryToolTest
             },
             Container = null,
             ContextManagement = null,
+            Diagnostics = null,
         };
     }
 }

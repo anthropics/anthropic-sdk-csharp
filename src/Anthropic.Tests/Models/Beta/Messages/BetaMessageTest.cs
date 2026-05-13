@@ -57,6 +57,9 @@ public class BetaMessageTest : TestBase
                     },
                 ]
             ),
+            Diagnostics = new(
+                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+            ),
             Model = Model.ClaudeOpus4_6,
             StopDetails = new()
             {
@@ -137,6 +140,9 @@ public class BetaMessageTest : TestBase
                 },
             ]
         );
+        Messages::BetaDiagnostics expectedDiagnostics = new(
+            new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+        );
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_6;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         Messages::BetaRefusalStopDetails expectedStopDetails = new()
@@ -183,6 +189,7 @@ public class BetaMessageTest : TestBase
             Assert.Equal(expectedContent[i], model.Content[i]);
         }
         Assert.Equal(expectedContextManagement, model.ContextManagement);
+        Assert.Equal(expectedDiagnostics, model.Diagnostics);
         Assert.Equal(expectedModel, model.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, model.Role));
         Assert.Equal(expectedStopDetails, model.StopDetails);
@@ -239,6 +246,9 @@ public class BetaMessageTest : TestBase
                         ClearedToolUses = 0,
                     },
                 ]
+            ),
+            Diagnostics = new(
+                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
             Model = Model.ClaudeOpus4_6,
             StopDetails = new()
@@ -334,6 +344,9 @@ public class BetaMessageTest : TestBase
                     },
                 ]
             ),
+            Diagnostics = new(
+                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+            ),
             Model = Model.ClaudeOpus4_6,
             StopDetails = new()
             {
@@ -421,6 +434,9 @@ public class BetaMessageTest : TestBase
                 },
             ]
         );
+        Messages::BetaDiagnostics expectedDiagnostics = new(
+            new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+        );
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_6;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         Messages::BetaRefusalStopDetails expectedStopDetails = new()
@@ -467,6 +483,7 @@ public class BetaMessageTest : TestBase
             Assert.Equal(expectedContent[i], deserialized.Content[i]);
         }
         Assert.Equal(expectedContextManagement, deserialized.ContextManagement);
+        Assert.Equal(expectedDiagnostics, deserialized.Diagnostics);
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, deserialized.Role));
         Assert.Equal(expectedStopDetails, deserialized.StopDetails);
@@ -523,6 +540,9 @@ public class BetaMessageTest : TestBase
                         ClearedToolUses = 0,
                     },
                 ]
+            ),
+            Diagnostics = new(
+                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
             Model = Model.ClaudeOpus4_6,
             StopDetails = new()
@@ -611,6 +631,9 @@ public class BetaMessageTest : TestBase
                         ClearedToolUses = 0,
                     },
                 ]
+            ),
+            Diagnostics = new(
+                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
             Model = Model.ClaudeOpus4_6,
             StopDetails = new()

@@ -49,6 +49,7 @@ public class BetaMessageStreamingAggregationTest
             },
             Container = null,
             ContextManagement = null,
+            Diagnostics = null,
         };
 
     private static MessageCreateParams StreamingParam =>

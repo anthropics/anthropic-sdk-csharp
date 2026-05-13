@@ -59,6 +59,9 @@ public class BetaMessageBatchResultTest : TestBase
                         },
                     ]
                 ),
+                Diagnostics = new(
+                    new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+                ),
                 Model = Model.ClaudeOpus4_6,
                 StopDetails = new()
                 {
@@ -178,6 +181,9 @@ public class BetaMessageBatchResultTest : TestBase
                             ClearedToolUses = 0,
                         },
                     ]
+                ),
+                Diagnostics = new(
+                    new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
                 ),
                 Model = Model.ClaudeOpus4_6,
                 StopDetails = new()

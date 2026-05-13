@@ -43,6 +43,7 @@ public class BetaToolRunnerTest
             },
             Container = null,
             ContextManagement = null,
+            Diagnostics = null,
         };
     }
 

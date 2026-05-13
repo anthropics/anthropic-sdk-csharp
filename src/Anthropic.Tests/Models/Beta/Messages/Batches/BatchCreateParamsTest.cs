@@ -56,6 +56,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         McpServers =
                         [
@@ -201,6 +202,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                     },
+                    Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                     InferenceGeo = "inference_geo",
                     McpServers =
                     [
@@ -362,6 +364,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         McpServers =
                         [
@@ -515,6 +518,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         McpServers =
                         [
@@ -671,6 +675,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         McpServers =
                         [
@@ -831,6 +836,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         McpServers =
                         [
@@ -989,6 +995,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         McpServers =
                         [
@@ -1143,6 +1150,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 McpServers =
                 [
@@ -1274,6 +1282,7 @@ public class RequestTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -1413,6 +1422,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 McpServers =
                 [
@@ -1555,6 +1565,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 McpServers =
                 [
@@ -1693,6 +1704,7 @@ public class RequestTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -1832,6 +1844,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 McpServers =
                 [
@@ -1971,6 +1984,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 McpServers =
                 [
@@ -2112,6 +2126,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -2245,6 +2260,10 @@ public class ParamsTest : TestBase
                 },
             ],
         };
+        Messages::BetaDiagnosticsParam expectedDiagnostics = new()
+        {
+            PreviousMessageID = "previous_message_id",
+        };
         string expectedInferenceGeo = "inference_geo";
         List<Messages::BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
@@ -2354,6 +2373,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedContainer, model.Container);
         Assert.Equal(expectedContextManagement, model.ContextManagement);
+        Assert.Equal(expectedDiagnostics, model.Diagnostics);
         Assert.Equal(expectedInferenceGeo, model.InferenceGeo);
         Assert.NotNull(model.McpServers);
         Assert.Equal(expectedMcpServers.Count, model.McpServers.Count);
@@ -2424,6 +2444,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -2562,6 +2583,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -2699,6 +2721,10 @@ public class ParamsTest : TestBase
                 },
             ],
         };
+        Messages::BetaDiagnosticsParam expectedDiagnostics = new()
+        {
+            PreviousMessageID = "previous_message_id",
+        };
         string expectedInferenceGeo = "inference_geo";
         List<Messages::BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
@@ -2808,6 +2834,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedContainer, deserialized.Container);
         Assert.Equal(expectedContextManagement, deserialized.ContextManagement);
+        Assert.Equal(expectedDiagnostics, deserialized.Diagnostics);
         Assert.Equal(expectedInferenceGeo, deserialized.InferenceGeo);
         Assert.NotNull(deserialized.McpServers);
         Assert.Equal(expectedMcpServers.Count, deserialized.McpServers.Count);
@@ -2878,6 +2905,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -3013,6 +3041,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
@@ -3089,6 +3118,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
@@ -3140,6 +3170,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
@@ -3231,6 +3262,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
@@ -3361,6 +3393,8 @@ public class ParamsTest : TestBase
         Assert.False(model.RawData.ContainsKey("container"));
         Assert.Null(model.ContextManagement);
         Assert.False(model.RawData.ContainsKey("context_management"));
+        Assert.Null(model.Diagnostics);
+        Assert.False(model.RawData.ContainsKey("diagnostics"));
         Assert.Null(model.InferenceGeo);
         Assert.False(model.RawData.ContainsKey("inference_geo"));
         Assert.Null(model.OutputFormat);
@@ -3564,6 +3598,7 @@ public class ParamsTest : TestBase
             CacheControl = null,
             Container = null,
             ContextManagement = null,
+            Diagnostics = null,
             InferenceGeo = null,
             OutputFormat = null,
             Speed = null,
@@ -3576,6 +3611,8 @@ public class ParamsTest : TestBase
         Assert.True(model.RawData.ContainsKey("container"));
         Assert.Null(model.ContextManagement);
         Assert.True(model.RawData.ContainsKey("context_management"));
+        Assert.Null(model.Diagnostics);
+        Assert.True(model.RawData.ContainsKey("diagnostics"));
         Assert.Null(model.InferenceGeo);
         Assert.True(model.RawData.ContainsKey("inference_geo"));
         Assert.Null(model.OutputFormat);
@@ -3682,6 +3719,7 @@ public class ParamsTest : TestBase
             CacheControl = null,
             Container = null,
             ContextManagement = null,
+            Diagnostics = null,
             InferenceGeo = null,
             OutputFormat = null,
             Speed = null,
@@ -3727,6 +3765,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             McpServers =
             [

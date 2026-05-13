@@ -97,6 +97,20 @@ public sealed record class BetaMessage : JsonModel
     }
 
     /// <summary>
+    /// Response envelope for request-level diagnostics. Present (possibly null)
+    /// whenever the caller supplied `diagnostics` on the request.
+    /// </summary>
+    public required BetaDiagnostics? Diagnostics
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaDiagnostics>("diagnostics");
+        }
+        init { this._rawData.Set("diagnostics", value); }
+    }
+
+    /// <summary>
     /// The model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview)
     /// for additional details and options.
     /// </summary>
@@ -230,6 +244,7 @@ public sealed record class BetaMessage : JsonModel
             item.Validate();
         }
         this.ContextManagement?.Validate();
+        this.Diagnostics?.Validate();
         this.Model.Raw();
         if (!JsonElement.DeepEquals(this.Role, JsonSerializer.SerializeToElement("assistant")))
         {

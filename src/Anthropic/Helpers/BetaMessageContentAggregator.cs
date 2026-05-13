@@ -98,6 +98,7 @@ public sealed class BetaMessageContentAggregator
             Content = [.. contentBlocks],
             Container = container,
             ContextManagement = startMessage.Message.ContextManagement,
+            Diagnostics = startMessage.Message.Diagnostics,
             ID = startMessage.Message.ID,
             Model = startMessage.Message.Model,
             StopDetails = stopDetails,

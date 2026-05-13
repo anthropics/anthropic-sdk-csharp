@@ -48,6 +48,7 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -175,6 +176,10 @@ public class MessageCreateParamsTest : TestBase
                 },
             ],
         };
+        BetaDiagnosticsParam expectedDiagnostics = new()
+        {
+            PreviousMessageID = "previous_message_id",
+        };
         string expectedInferenceGeo = "inference_geo";
         List<BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
@@ -286,6 +291,7 @@ public class MessageCreateParamsTest : TestBase
         Assert.Equal(expectedCacheControl, parameters.CacheControl);
         Assert.Equal(expectedContainer, parameters.Container);
         Assert.Equal(expectedContextManagement, parameters.ContextManagement);
+        Assert.Equal(expectedDiagnostics, parameters.Diagnostics);
         Assert.Equal(expectedInferenceGeo, parameters.InferenceGeo);
         Assert.NotNull(parameters.McpServers);
         Assert.Equal(expectedMcpServers.Count, parameters.McpServers.Count);
@@ -361,6 +367,7 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
@@ -437,6 +444,7 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
@@ -589,6 +597,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("container"));
         Assert.Null(parameters.ContextManagement);
         Assert.False(parameters.RawBodyData.ContainsKey("context_management"));
+        Assert.Null(parameters.Diagnostics);
+        Assert.False(parameters.RawBodyData.ContainsKey("diagnostics"));
         Assert.Null(parameters.InferenceGeo);
         Assert.False(parameters.RawBodyData.ContainsKey("inference_geo"));
         Assert.Null(parameters.OutputFormat);
@@ -692,6 +702,7 @@ public class MessageCreateParamsTest : TestBase
             CacheControl = null,
             Container = null,
             ContextManagement = null,
+            Diagnostics = null,
             InferenceGeo = null,
             OutputFormat = null,
             Speed = null,
@@ -704,6 +715,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.True(parameters.RawBodyData.ContainsKey("container"));
         Assert.Null(parameters.ContextManagement);
         Assert.True(parameters.RawBodyData.ContainsKey("context_management"));
+        Assert.Null(parameters.Diagnostics);
+        Assert.True(parameters.RawBodyData.ContainsKey("diagnostics"));
         Assert.Null(parameters.InferenceGeo);
         Assert.True(parameters.RawBodyData.ContainsKey("inference_geo"));
         Assert.Null(parameters.OutputFormat);
@@ -787,6 +800,7 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             McpServers =
             [

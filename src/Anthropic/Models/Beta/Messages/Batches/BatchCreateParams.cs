@@ -432,6 +432,20 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
+    /// Request-level diagnostics. Currently carries the previous response id for
+    /// prompt-cache divergence reporting.
+    /// </summary>
+    public BetaDiagnosticsParam? Diagnostics
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaDiagnosticsParam>("diagnostics");
+        }
+        init { this._rawData.Set("diagnostics", value); }
+    }
+
+    /// <summary>
     /// Specifies the geographic region for inference processing. If not specified,
     /// the workspace's `default_inference_geo` is used.
     /// </summary>
@@ -885,6 +899,7 @@ public sealed record class Params : JsonModel
         this.CacheControl?.Validate();
         this.Container?.Validate();
         this.ContextManagement?.Validate();
+        this.Diagnostics?.Validate();
         _ = this.InferenceGeo;
         foreach (var item in this.McpServers ?? [])
         {
