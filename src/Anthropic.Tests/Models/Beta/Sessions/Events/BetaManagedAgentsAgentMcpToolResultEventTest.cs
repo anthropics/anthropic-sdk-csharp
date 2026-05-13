@@ -460,7 +460,6 @@ public class ContentTest : TestBase
             Content = [new() { Text = "x", Type = BetaManagedAgentsSearchResultContentType.Text }],
             Source = "x",
             Title = "x",
-            ToolUseID = "x",
             Type = BetaManagedAgentsSearchResultBlockType.SearchResult,
         };
         value.Validate();
@@ -538,7 +537,6 @@ public class ContentTest : TestBase
             Content = [new() { Text = "x", Type = BetaManagedAgentsSearchResultContentType.Text }],
             Source = "x",
             Title = "x",
-            ToolUseID = "x",
             Type = BetaManagedAgentsSearchResultBlockType.SearchResult,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

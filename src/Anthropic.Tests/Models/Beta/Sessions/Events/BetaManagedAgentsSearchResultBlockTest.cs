@@ -17,7 +17,6 @@ public class BetaManagedAgentsSearchResultBlockTest : TestBase
             Content = [new() { Text = "x", Type = BetaManagedAgentsSearchResultContentType.Text }],
             Source = "x",
             Title = "x",
-            ToolUseID = "x",
             Type = BetaManagedAgentsSearchResultBlockType.SearchResult,
         };
 
@@ -28,7 +27,6 @@ public class BetaManagedAgentsSearchResultBlockTest : TestBase
         ];
         string expectedSource = "x";
         string expectedTitle = "x";
-        string expectedToolUseID = "x";
         ApiEnum<string, BetaManagedAgentsSearchResultBlockType> expectedType =
             BetaManagedAgentsSearchResultBlockType.SearchResult;
 
@@ -40,7 +38,6 @@ public class BetaManagedAgentsSearchResultBlockTest : TestBase
         }
         Assert.Equal(expectedSource, model.Source);
         Assert.Equal(expectedTitle, model.Title);
-        Assert.Equal(expectedToolUseID, model.ToolUseID);
         Assert.Equal(expectedType, model.Type);
     }
 
@@ -53,7 +50,6 @@ public class BetaManagedAgentsSearchResultBlockTest : TestBase
             Content = [new() { Text = "x", Type = BetaManagedAgentsSearchResultContentType.Text }],
             Source = "x",
             Title = "x",
-            ToolUseID = "x",
             Type = BetaManagedAgentsSearchResultBlockType.SearchResult,
         };
 
@@ -75,7 +71,6 @@ public class BetaManagedAgentsSearchResultBlockTest : TestBase
             Content = [new() { Text = "x", Type = BetaManagedAgentsSearchResultContentType.Text }],
             Source = "x",
             Title = "x",
-            ToolUseID = "x",
             Type = BetaManagedAgentsSearchResultBlockType.SearchResult,
         };
 
@@ -93,7 +88,6 @@ public class BetaManagedAgentsSearchResultBlockTest : TestBase
         ];
         string expectedSource = "x";
         string expectedTitle = "x";
-        string expectedToolUseID = "x";
         ApiEnum<string, BetaManagedAgentsSearchResultBlockType> expectedType =
             BetaManagedAgentsSearchResultBlockType.SearchResult;
 
@@ -105,7 +99,6 @@ public class BetaManagedAgentsSearchResultBlockTest : TestBase
         }
         Assert.Equal(expectedSource, deserialized.Source);
         Assert.Equal(expectedTitle, deserialized.Title);
-        Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
         Assert.Equal(expectedType, deserialized.Type);
     }
 
@@ -118,7 +111,6 @@ public class BetaManagedAgentsSearchResultBlockTest : TestBase
             Content = [new() { Text = "x", Type = BetaManagedAgentsSearchResultContentType.Text }],
             Source = "x",
             Title = "x",
-            ToolUseID = "x",
             Type = BetaManagedAgentsSearchResultBlockType.SearchResult,
         };
 
@@ -134,7 +126,6 @@ public class BetaManagedAgentsSearchResultBlockTest : TestBase
             Content = [new() { Text = "x", Type = BetaManagedAgentsSearchResultContentType.Text }],
             Source = "x",
             Title = "x",
-            ToolUseID = "x",
             Type = BetaManagedAgentsSearchResultBlockType.SearchResult,
         };
 

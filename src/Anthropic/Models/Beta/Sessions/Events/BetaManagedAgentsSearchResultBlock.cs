@@ -83,19 +83,6 @@ public sealed record class BetaManagedAgentsSearchResultBlock : JsonModel
         init { this._rawData.Set("title", value); }
     }
 
-    /// <summary>
-    /// The ID of the tool use that produced this search result.
-    /// </summary>
-    public required string ToolUseID
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<string>("tool_use_id");
-        }
-        init { this._rawData.Set("tool_use_id", value); }
-    }
-
     public required ApiEnum<string, BetaManagedAgentsSearchResultBlockType> Type
     {
         get
@@ -118,7 +105,6 @@ public sealed record class BetaManagedAgentsSearchResultBlock : JsonModel
         }
         _ = this.Source;
         _ = this.Title;
-        _ = this.ToolUseID;
         this.Type.Validate();
     }
 
