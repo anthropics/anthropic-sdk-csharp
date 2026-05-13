@@ -255,6 +255,8 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Events::BetaManagedAgentsRetryStatusExhaustedType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsRetryStatusRetryingType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsRetryStatusTerminalType>(),
+            new ApiEnumConverter<string, Events::BetaManagedAgentsSearchResultBlockType>(),
+            new ApiEnumConverter<string, Events::BetaManagedAgentsSearchResultContentType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsSessionDeletedEventType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsSessionEndTurnType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsSessionErrorEventType>(),
