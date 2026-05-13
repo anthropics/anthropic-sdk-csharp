@@ -229,6 +229,19 @@ public record class BetaManagedAgentsAgentToolResultEventContent : ModelBase
         }
     }
 
+    public string? Title
+    {
+        get
+        {
+            return Match<string?>(
+                betaManagedAgentsTextBlock: (_) => null,
+                betaManagedAgentsImageBlock: (_) => null,
+                betaManagedAgentsDocumentBlock: (x) => x.Title,
+                betaManagedAgentsSearchResultBlock: (x) => x.Title
+            );
+        }
+    }
+
     public BetaManagedAgentsAgentToolResultEventContent(
         BetaManagedAgentsTextBlock value,
         JsonElement? element = null
@@ -249,6 +262,15 @@ public record class BetaManagedAgentsAgentToolResultEventContent : ModelBase
 
     public BetaManagedAgentsAgentToolResultEventContent(
         BetaManagedAgentsDocumentBlock value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsAgentToolResultEventContent(
+        BetaManagedAgentsSearchResultBlock value,
         JsonElement? element = null
     )
     {
@@ -331,6 +353,29 @@ public record class BetaManagedAgentsAgentToolResultEventContent : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsSearchResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsSearchResultBlock(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsSearchResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsSearchResultBlock(
+        [NotNullWhen(true)] out BetaManagedAgentsSearchResultBlock? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsSearchResultBlock;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -346,7 +391,8 @@ public record class BetaManagedAgentsAgentToolResultEventContent : ModelBase
     /// instance.Switch(
     ///     (BetaManagedAgentsTextBlock value) =&gt; {...},
     ///     (BetaManagedAgentsImageBlock value) =&gt; {...},
-    ///     (BetaManagedAgentsDocumentBlock value) =&gt; {...}
+    ///     (BetaManagedAgentsDocumentBlock value) =&gt; {...},
+    ///     (BetaManagedAgentsSearchResultBlock value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -354,7 +400,8 @@ public record class BetaManagedAgentsAgentToolResultEventContent : ModelBase
     public void Switch(
         System::Action<BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
         System::Action<BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
-        System::Action<BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock
+        System::Action<BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
+        System::Action<BetaManagedAgentsSearchResultBlock> betaManagedAgentsSearchResultBlock
     )
     {
         switch (this.Value)
@@ -367,6 +414,9 @@ public record class BetaManagedAgentsAgentToolResultEventContent : ModelBase
                 break;
             case BetaManagedAgentsDocumentBlock value:
                 betaManagedAgentsDocumentBlock(value);
+                break;
+            case BetaManagedAgentsSearchResultBlock value:
+                betaManagedAgentsSearchResultBlock(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -392,7 +442,8 @@ public record class BetaManagedAgentsAgentToolResultEventContent : ModelBase
     /// var result = instance.Match(
     ///     (BetaManagedAgentsTextBlock value) =&gt; {...},
     ///     (BetaManagedAgentsImageBlock value) =&gt; {...},
-    ///     (BetaManagedAgentsDocumentBlock value) =&gt; {...}
+    ///     (BetaManagedAgentsDocumentBlock value) =&gt; {...},
+    ///     (BetaManagedAgentsSearchResultBlock value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -400,7 +451,8 @@ public record class BetaManagedAgentsAgentToolResultEventContent : ModelBase
     public T Match<T>(
         System::Func<BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
         System::Func<BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
-        System::Func<BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock
+        System::Func<BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
+        System::Func<BetaManagedAgentsSearchResultBlock, T> betaManagedAgentsSearchResultBlock
     )
     {
         return this.Value switch
@@ -408,6 +460,7 @@ public record class BetaManagedAgentsAgentToolResultEventContent : ModelBase
             BetaManagedAgentsTextBlock value => betaManagedAgentsTextBlock(value),
             BetaManagedAgentsImageBlock value => betaManagedAgentsImageBlock(value),
             BetaManagedAgentsDocumentBlock value => betaManagedAgentsDocumentBlock(value),
+            BetaManagedAgentsSearchResultBlock value => betaManagedAgentsSearchResultBlock(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsAgentToolResultEventContent"
             ),
@@ -424,6 +477,10 @@ public record class BetaManagedAgentsAgentToolResultEventContent : ModelBase
 
     public static implicit operator BetaManagedAgentsAgentToolResultEventContent(
         BetaManagedAgentsDocumentBlock value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsAgentToolResultEventContent(
+        BetaManagedAgentsSearchResultBlock value
     ) => new(value);
 
     /// <summary>
@@ -447,7 +504,8 @@ public record class BetaManagedAgentsAgentToolResultEventContent : ModelBase
         this.Switch(
             (betaManagedAgentsTextBlock) => betaManagedAgentsTextBlock.Validate(),
             (betaManagedAgentsImageBlock) => betaManagedAgentsImageBlock.Validate(),
-            (betaManagedAgentsDocumentBlock) => betaManagedAgentsDocumentBlock.Validate()
+            (betaManagedAgentsDocumentBlock) => betaManagedAgentsDocumentBlock.Validate(),
+            (betaManagedAgentsSearchResultBlock) => betaManagedAgentsSearchResultBlock.Validate()
         );
     }
 
@@ -474,6 +532,7 @@ public record class BetaManagedAgentsAgentToolResultEventContent : ModelBase
             BetaManagedAgentsTextBlock _ => 0,
             BetaManagedAgentsImageBlock _ => 1,
             BetaManagedAgentsDocumentBlock _ => 2,
+            BetaManagedAgentsSearchResultBlock _ => 3,
             _ => -1,
         };
     }
@@ -549,6 +608,27 @@ sealed class BetaManagedAgentsAgentToolResultEventContentConverter
                         element,
                         options
                     );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "search_result":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsSearchResultBlock>(
+                            element,
+                            options
+                        );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);

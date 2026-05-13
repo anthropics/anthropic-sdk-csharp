@@ -452,6 +452,25 @@ public class BetaManagedAgentsAgentToolResultEventContentTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsSearchResultBlockValidationWorks()
+    {
+        BetaManagedAgentsAgentToolResultEventContent value =
+            new BetaManagedAgentsSearchResultBlock()
+            {
+                Citations = new(true),
+                Content =
+                [
+                    new() { Text = "x", Type = BetaManagedAgentsSearchResultContentType.Text },
+                ],
+                Source = "x",
+                Title = "x",
+                ToolUseID = "x",
+                Type = BetaManagedAgentsSearchResultBlockType.SearchResult,
+            };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsTextBlockSerializationRoundtripWorks()
     {
         BetaManagedAgentsAgentToolResultEventContent value = new BetaManagedAgentsTextBlock()
@@ -505,6 +524,31 @@ public class BetaManagedAgentsAgentToolResultEventContentTest : TestBase
             Context = "context",
             Title = "title",
         };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolResultEventContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSearchResultBlockSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsAgentToolResultEventContent value =
+            new BetaManagedAgentsSearchResultBlock()
+            {
+                Citations = new(true),
+                Content =
+                [
+                    new() { Text = "x", Type = BetaManagedAgentsSearchResultContentType.Text },
+                ],
+                Source = "x",
+                Title = "x",
+                ToolUseID = "x",
+                Type = BetaManagedAgentsSearchResultBlockType.SearchResult,
+            };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolResultEventContent>(
             element,

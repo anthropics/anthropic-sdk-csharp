@@ -476,6 +476,25 @@ public class BetaManagedAgentsUserCustomToolResultEventContentTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsSearchResultBlockValidationWorks()
+    {
+        BetaManagedAgentsUserCustomToolResultEventContent value =
+            new BetaManagedAgentsSearchResultBlock()
+            {
+                Citations = new(true),
+                Content =
+                [
+                    new() { Text = "x", Type = BetaManagedAgentsSearchResultContentType.Text },
+                ],
+                Source = "x",
+                Title = "x",
+                ToolUseID = "x",
+                Type = BetaManagedAgentsSearchResultBlockType.SearchResult,
+            };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsTextBlockSerializationRoundtripWorks()
     {
         BetaManagedAgentsUserCustomToolResultEventContent value = new BetaManagedAgentsTextBlock()
@@ -531,6 +550,32 @@ public class BetaManagedAgentsUserCustomToolResultEventContentTest : TestBase
                 Type = BetaManagedAgentsDocumentBlockType.Document,
                 Context = "context",
                 Title = "title",
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaManagedAgentsUserCustomToolResultEventContent>(
+                element,
+                ModelBase.SerializerOptions
+            );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSearchResultBlockSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsUserCustomToolResultEventContent value =
+            new BetaManagedAgentsSearchResultBlock()
+            {
+                Citations = new(true),
+                Content =
+                [
+                    new() { Text = "x", Type = BetaManagedAgentsSearchResultContentType.Text },
+                ],
+                Source = "x",
+                Title = "x",
+                ToolUseID = "x",
+                Type = BetaManagedAgentsSearchResultBlockType.SearchResult,
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
