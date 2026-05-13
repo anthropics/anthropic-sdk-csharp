@@ -228,7 +228,7 @@ internal class AnthropicBedrockClientWithRawResponse : AnthropicClientWithRawRes
             !string.Equals(
                 httpResponseMessage.Content.Headers.ContentType?.MediaType,
                 ContentTypeAwsEventStream,
-                StringComparison.CurrentCultureIgnoreCase
+                StringComparison.OrdinalIgnoreCase
             )
         )
         {

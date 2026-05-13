@@ -27,11 +27,29 @@ public record struct ClientOptions()
     /// When passing a custom HttpClient, this timeout may conflict with the SDK's
     /// own timeout handler and cause premature cancellation.</para>
     /// </summary>
-    public HttpClient HttpClient { get; set; } =
+    public HttpClient HttpClient
+    {
+        get => _httpClient;
+        set
+        {
+            _httpClient = value;
+            OwnsHttpClient = false; // caller takes ownership
+        }
+    }
+
+    private HttpClient _httpClient =
         new(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.Available })
         {
             Timeout = global::System.Threading.Timeout.InfiniteTimeSpan,
         };
+
+    /// <summary>
+    /// True when the HttpClient was created internally by the SDK and should be
+    /// disposed together with the client. False when the caller supplied their
+    /// own HttpClient (e.g. from IHttpClientFactory) — in that case the caller
+    /// is responsible for its lifetime.
+    /// </summary>
+    internal bool OwnsHttpClient { get; private set; } = true;
 
     Lazy<string> _baseUrl = new(() =>
         Environment.GetEnvironmentVariable("ANTHROPIC_BASE_URL") ?? EnvironmentUrl.Production
