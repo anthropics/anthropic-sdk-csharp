@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments;
 
@@ -15,7 +17,7 @@ public class EnvironmentCreateParamsTest : TestBase
         var parameters = new EnvironmentCreateParams
         {
             Name = "python-data-analysis",
-            Config = new()
+            Config = new BetaCloudConfigParams()
             {
                 Networking = new BetaLimitedNetworkParams()
                 {
@@ -36,11 +38,12 @@ public class EnvironmentCreateParamsTest : TestBase
             },
             Description = "Python environment with data-analysis packages.",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
+            Scope = Scope.Organization,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         string expectedName = "python-data-analysis";
-        BetaCloudConfigParams expectedConfig = new()
+        Config expectedConfig = new BetaCloudConfigParams()
         {
             Networking = new BetaLimitedNetworkParams()
             {
@@ -61,6 +64,7 @@ public class EnvironmentCreateParamsTest : TestBase
         };
         string expectedDescription = "Python environment with data-analysis packages.";
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
+        ApiEnum<string, Scope> expectedScope = Scope.Organization;
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -77,6 +81,7 @@ public class EnvironmentCreateParamsTest : TestBase
 
             Assert.Equal(value, parameters.Metadata[item.Key]);
         }
+        Assert.Equal(expectedScope, parameters.Scope);
         Assert.NotNull(parameters.Betas);
         Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
         for (int i = 0; i < expectedBetas.Count; i++)
@@ -91,7 +96,7 @@ public class EnvironmentCreateParamsTest : TestBase
         var parameters = new EnvironmentCreateParams
         {
             Name = "python-data-analysis",
-            Config = new()
+            Config = new BetaCloudConfigParams()
             {
                 Networking = new BetaLimitedNetworkParams()
                 {
@@ -111,6 +116,7 @@ public class EnvironmentCreateParamsTest : TestBase
                 },
             },
             Description = "Python environment with data-analysis packages.",
+            Scope = Scope.Organization,
         };
 
         Assert.Null(parameters.Metadata);
@@ -125,7 +131,7 @@ public class EnvironmentCreateParamsTest : TestBase
         var parameters = new EnvironmentCreateParams
         {
             Name = "python-data-analysis",
-            Config = new()
+            Config = new BetaCloudConfigParams()
             {
                 Networking = new BetaLimitedNetworkParams()
                 {
@@ -145,6 +151,7 @@ public class EnvironmentCreateParamsTest : TestBase
                 },
             },
             Description = "Python environment with data-analysis packages.",
+            Scope = Scope.Organization,
 
             // Null should be interpreted as omitted for these properties
             Metadata = null,
@@ -171,6 +178,8 @@ public class EnvironmentCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("config"));
         Assert.Null(parameters.Description);
         Assert.False(parameters.RawBodyData.ContainsKey("description"));
+        Assert.Null(parameters.Scope);
+        Assert.False(parameters.RawBodyData.ContainsKey("scope"));
     }
 
     [Fact]
@@ -184,12 +193,15 @@ public class EnvironmentCreateParamsTest : TestBase
 
             Config = null,
             Description = null,
+            Scope = null,
         };
 
         Assert.Null(parameters.Config);
         Assert.True(parameters.RawBodyData.ContainsKey("config"));
         Assert.Null(parameters.Description);
         Assert.True(parameters.RawBodyData.ContainsKey("description"));
+        Assert.Null(parameters.Scope);
+        Assert.True(parameters.RawBodyData.ContainsKey("scope"));
     }
 
     [Fact]
@@ -228,7 +240,7 @@ public class EnvironmentCreateParamsTest : TestBase
         var parameters = new EnvironmentCreateParams
         {
             Name = "python-data-analysis",
-            Config = new()
+            Config = new BetaCloudConfigParams()
             {
                 Networking = new BetaLimitedNetworkParams()
                 {
@@ -249,11 +261,143 @@ public class EnvironmentCreateParamsTest : TestBase
             },
             Description = "Python environment with data-analysis packages.",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
+            Scope = Scope.Organization,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         EnvironmentCreateParams copied = new(parameters);
 
         Assert.Equal(parameters, copied);
+    }
+}
+
+public class ConfigTest : TestBase
+{
+    [Fact]
+    public void BetaCloudConfigParamsValidationWorks()
+    {
+        Config value = new BetaCloudConfigParams()
+        {
+            Networking = new BetaLimitedNetworkParams()
+            {
+                AllowMcpServers = true,
+                AllowPackageManagers = true,
+                AllowedHosts = ["api.example.com"],
+            },
+            Packages = new()
+            {
+                Apt = ["string"],
+                Cargo = ["string"],
+                Gem = ["string"],
+                Go = ["string"],
+                Npm = ["string"],
+                Pip = ["pandas", "numpy"],
+                Type = BetaPackagesParamsType.Packages,
+            },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaSelfHostedConfigParamsValidationWorks()
+    {
+        Config value = new BetaSelfHostedConfigParams();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaCloudConfigParamsSerializationRoundtripWorks()
+    {
+        Config value = new BetaCloudConfigParams()
+        {
+            Networking = new BetaLimitedNetworkParams()
+            {
+                AllowMcpServers = true,
+                AllowPackageManagers = true,
+                AllowedHosts = ["api.example.com"],
+            },
+            Packages = new()
+            {
+                Apt = ["string"],
+                Cargo = ["string"],
+                Gem = ["string"],
+                Go = ["string"],
+                Npm = ["string"],
+                Pip = ["pandas", "numpy"],
+                Type = BetaPackagesParamsType.Packages,
+            },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Config>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaSelfHostedConfigParamsSerializationRoundtripWorks()
+    {
+        Config value = new BetaSelfHostedConfigParams();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Config>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class ScopeTest : TestBase
+{
+    [Theory]
+    [InlineData(Scope.Organization)]
+    [InlineData(Scope.Account)]
+    public void Validation_Works(Scope rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Scope> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(Scope.Organization)]
+    [InlineData(Scope.Account)]
+    public void SerializationRoundtrip_Works(Scope rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Scope> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

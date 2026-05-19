@@ -130,6 +130,25 @@ public sealed class VersionService : IVersionService
     {
         return this.Delete(parameters with { Version = version }, cancellationToken);
     }
+
+    /// <inheritdoc/>
+    public Task<HttpResponse> Download(
+        VersionDownloadParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return this.WithRawResponse.Download(parameters, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<HttpResponse> Download(
+        string version,
+        VersionDownloadParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return this.Download(parameters with { Version = version }, cancellationToken);
+    }
 }
 
 /// <inheritdoc/>
@@ -322,5 +341,34 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
     )
     {
         return this.Delete(parameters with { Version = version }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<HttpResponse> Download(
+        VersionDownloadParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (parameters.Version == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.Version' cannot be null");
+        }
+
+        HttpRequest<VersionDownloadParams> request = new()
+        {
+            Method = HttpMethod.Get,
+            Params = parameters,
+        };
+        return this._client.Execute(request, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<HttpResponse> Download(
+        string version,
+        VersionDownloadParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return this.Download(parameters with { Version = version }, cancellationToken);
     }
 }

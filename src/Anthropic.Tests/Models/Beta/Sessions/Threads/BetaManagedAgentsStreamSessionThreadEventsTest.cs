@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Models.Beta.Agents;
+using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Threads;
 using Events = Anthropic.Models.Beta.Sessions.Events;
 
@@ -563,6 +565,30 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
     }
 
     [Fact]
+    public void UserToolResultEventValidationWorks()
+    {
+        BetaManagedAgentsStreamSessionThreadEvents value =
+            new BetaManagedAgentsUserToolResultEvent()
+            {
+                ID = "id",
+                ToolUseID = "tool_use_id",
+                Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
+                Content =
+                [
+                    new Events::BetaManagedAgentsTextBlock()
+                    {
+                        Text = "Where is my order #1234?",
+                        Type = Events::BetaManagedAgentsTextBlockType.Text,
+                    },
+                ],
+                IsError = true,
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
+            };
+        value.Validate();
+    }
+
+    [Fact]
     public void SessionThreadStatusRescheduledEventValidationWorks()
     {
         BetaManagedAgentsStreamSessionThreadEvents value =
@@ -574,6 +600,152 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                 SessionThreadID = "session_thread_id",
                 Type =
                     Events::BetaManagedAgentsSessionThreadStatusRescheduledEventType.SessionThreadStatusRescheduled,
+            };
+        value.Validate();
+    }
+
+    [Fact]
+    public void SessionUpdatedEventValidationWorks()
+    {
+        BetaManagedAgentsStreamSessionThreadEvents value =
+            new BetaManagedAgentsSessionUpdatedEvent()
+            {
+                ID = "id",
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Type = BetaManagedAgentsSessionUpdatedEventType.SessionUpdated,
+                Agent = new()
+                {
+                    ID = "agent_011CZkYpogX7uDKUyvBTophP",
+                    Description = "A general-purpose starter agent.",
+                    McpServers =
+                    [
+                        new()
+                        {
+                            Name = "example-mcp",
+                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                            Url = "https://example-server.modelcontextprotocol.io/sse",
+                        },
+                    ],
+                    Model = new()
+                    {
+                        ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Speed = Speed.Standard,
+                    },
+                    Multiagent = new()
+                    {
+                        Agents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Description = "A focused research subagent.",
+                                McpServers =
+                                [
+                                    new()
+                                    {
+                                        Name = "example-mcp",
+                                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                                        Url = "https://example-server.modelcontextprotocol.io/sse",
+                                    },
+                                ],
+                                Model = new()
+                                {
+                                    ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                    Speed = Speed.Standard,
+                                },
+                                Name = "Researcher",
+                                Skills =
+                                [
+                                    new BetaManagedAgentsAnthropicSkill()
+                                    {
+                                        SkillID = "xlsx",
+                                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
+                                        Version = "1",
+                                    },
+                                ],
+                                System =
+                                    "You are a research subagent that gathers and summarises sources for the coordinating agent.",
+                                Tools =
+                                [
+                                    new BetaManagedAgentsAgentToolset20260401()
+                                    {
+                                        Configs =
+                                        [
+                                            new()
+                                            {
+                                                Enabled = true,
+                                                Name = Name.Bash,
+                                                PermissionPolicy =
+                                                    new BetaManagedAgentsAlwaysAllowPolicy(
+                                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                                    ),
+                                            },
+                                        ],
+                                        DefaultConfig = new()
+                                        {
+                                            Enabled = true,
+                                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                            ),
+                                        },
+                                        Type =
+                                            BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                                    },
+                                ],
+                                Type = BetaManagedAgentsSessionThreadAgentType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                        Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
+                    },
+                    Name = "My First Agent",
+                    Skills =
+                    [
+                        new BetaManagedAgentsAnthropicSkill()
+                        {
+                            SkillID = "xlsx",
+                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
+                            Version = "1",
+                        },
+                        new BetaManagedAgentsCustomSkill()
+                        {
+                            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                            Type = BetaManagedAgentsCustomSkillType.Custom,
+                            Version = "2",
+                        },
+                    ],
+                    System =
+                        "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
+                    Tools =
+                    [
+                        new BetaManagedAgentsAgentToolset20260401()
+                        {
+                            Configs =
+                            [
+                                new()
+                                {
+                                    Enabled = true,
+                                    Name = Name.Bash,
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                    ),
+                                },
+                            ],
+                            DefaultConfig = new()
+                            {
+                                Enabled = true,
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                ),
+                            },
+                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                        },
+                    ],
+                    Type = BetaManagedAgentsSessionAgentType.Agent,
+                    Version = 1,
+                },
+                Metadata = new Dictionary<string, string>() { { "foo", "string" } },
+                Title = "title",
             };
         value.Validate();
     }
@@ -1312,6 +1484,36 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
     }
 
     [Fact]
+    public void UserToolResultEventSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsStreamSessionThreadEvents value =
+            new BetaManagedAgentsUserToolResultEvent()
+            {
+                ID = "id",
+                ToolUseID = "tool_use_id",
+                Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
+                Content =
+                [
+                    new Events::BetaManagedAgentsTextBlock()
+                    {
+                        Text = "Where is my order #1234?",
+                        Type = Events::BetaManagedAgentsTextBlockType.Text,
+                    },
+                ],
+                IsError = true,
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                SessionThreadID = "session_thread_id",
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsStreamSessionThreadEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void SessionThreadStatusRescheduledEventSerializationRoundtripWorks()
     {
         BetaManagedAgentsStreamSessionThreadEvents value =
@@ -1323,6 +1525,158 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                 SessionThreadID = "session_thread_id",
                 Type =
                     Events::BetaManagedAgentsSessionThreadStatusRescheduledEventType.SessionThreadStatusRescheduled,
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsStreamSessionThreadEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void SessionUpdatedEventSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsStreamSessionThreadEvents value =
+            new BetaManagedAgentsSessionUpdatedEvent()
+            {
+                ID = "id",
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Type = BetaManagedAgentsSessionUpdatedEventType.SessionUpdated,
+                Agent = new()
+                {
+                    ID = "agent_011CZkYpogX7uDKUyvBTophP",
+                    Description = "A general-purpose starter agent.",
+                    McpServers =
+                    [
+                        new()
+                        {
+                            Name = "example-mcp",
+                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                            Url = "https://example-server.modelcontextprotocol.io/sse",
+                        },
+                    ],
+                    Model = new()
+                    {
+                        ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Speed = Speed.Standard,
+                    },
+                    Multiagent = new()
+                    {
+                        Agents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Description = "A focused research subagent.",
+                                McpServers =
+                                [
+                                    new()
+                                    {
+                                        Name = "example-mcp",
+                                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                                        Url = "https://example-server.modelcontextprotocol.io/sse",
+                                    },
+                                ],
+                                Model = new()
+                                {
+                                    ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                    Speed = Speed.Standard,
+                                },
+                                Name = "Researcher",
+                                Skills =
+                                [
+                                    new BetaManagedAgentsAnthropicSkill()
+                                    {
+                                        SkillID = "xlsx",
+                                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
+                                        Version = "1",
+                                    },
+                                ],
+                                System =
+                                    "You are a research subagent that gathers and summarises sources for the coordinating agent.",
+                                Tools =
+                                [
+                                    new BetaManagedAgentsAgentToolset20260401()
+                                    {
+                                        Configs =
+                                        [
+                                            new()
+                                            {
+                                                Enabled = true,
+                                                Name = Name.Bash,
+                                                PermissionPolicy =
+                                                    new BetaManagedAgentsAlwaysAllowPolicy(
+                                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                                    ),
+                                            },
+                                        ],
+                                        DefaultConfig = new()
+                                        {
+                                            Enabled = true,
+                                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                            ),
+                                        },
+                                        Type =
+                                            BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                                    },
+                                ],
+                                Type = BetaManagedAgentsSessionThreadAgentType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                        Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
+                    },
+                    Name = "My First Agent",
+                    Skills =
+                    [
+                        new BetaManagedAgentsAnthropicSkill()
+                        {
+                            SkillID = "xlsx",
+                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
+                            Version = "1",
+                        },
+                        new BetaManagedAgentsCustomSkill()
+                        {
+                            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                            Type = BetaManagedAgentsCustomSkillType.Custom,
+                            Version = "2",
+                        },
+                    ],
+                    System =
+                        "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
+                    Tools =
+                    [
+                        new BetaManagedAgentsAgentToolset20260401()
+                        {
+                            Configs =
+                            [
+                                new()
+                                {
+                                    Enabled = true,
+                                    Name = Name.Bash,
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                    ),
+                                },
+                            ],
+                            DefaultConfig = new()
+                            {
+                                Enabled = true,
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                ),
+                            },
+                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                        },
+                    ],
+                    Type = BetaManagedAgentsSessionAgentType.Agent,
+                    Version = 1,
+                },
+                Metadata = new Dictionary<string, string>() { { "foo", "string" } },
+                Title = "title",
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsStreamSessionThreadEvents>(

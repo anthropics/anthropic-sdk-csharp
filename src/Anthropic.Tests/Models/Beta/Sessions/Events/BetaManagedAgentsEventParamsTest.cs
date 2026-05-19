@@ -86,6 +86,26 @@ public class BetaManagedAgentsEventParamsTest : TestBase
     }
 
     [Fact]
+    public void UserToolResultValidationWorks()
+    {
+        BetaManagedAgentsEventParams value = new BetaManagedAgentsUserToolResultEventParams()
+        {
+            ToolUseID = "x",
+            Type = BetaManagedAgentsUserToolResultEventParamsType.UserToolResult,
+            Content =
+            [
+                new BetaManagedAgentsTextBlock()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = BetaManagedAgentsTextBlockType.Text,
+                },
+            ],
+            IsError = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void UserMessageSerializationRoundtripWorks()
     {
         BetaManagedAgentsEventParams value = new BetaManagedAgentsUserMessageEventParams()
@@ -184,6 +204,32 @@ public class BetaManagedAgentsEventParamsTest : TestBase
             },
             Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
             MaxIterations = 3,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsEventParams>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UserToolResultSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsEventParams value = new BetaManagedAgentsUserToolResultEventParams()
+        {
+            ToolUseID = "x",
+            Type = BetaManagedAgentsUserToolResultEventParamsType.UserToolResult,
+            Content =
+            [
+                new BetaManagedAgentsTextBlock()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = BetaManagedAgentsTextBlockType.Text,
+                },
+            ],
+            IsError = true,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsEventParams>(

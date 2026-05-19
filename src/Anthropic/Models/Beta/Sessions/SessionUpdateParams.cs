@@ -29,6 +29,29 @@ public record class SessionUpdateParams : ParamsBase
     public string? SessionID { get; init; }
 
     /// <summary>
+    /// Mid-session agent configuration update. Only `tools` and `mcp_servers` are
+    /// updatable. Full replacement: the provided array becomes the new value. To
+    /// preserve existing entries, GET the session, modify the array, and POST it back.
+    /// </summary>
+    public BetaManagedAgentsSessionAgentUpdate? Agent
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaManagedAgentsSessionAgentUpdate>("agent");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("agent", value);
+        }
+    }
+
+    /// <summary>
     /// Metadata patch. Set a key to a string to upsert it, or to null to delete
     /// it. Omit the field to preserve.
     /// </summary>

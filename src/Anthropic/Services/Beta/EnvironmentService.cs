@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Environments;
+using Anthropic.Services.Beta.Environments;
 
 namespace Anthropic.Services.Beta;
 
@@ -37,6 +38,13 @@ public sealed class EnvironmentService : IEnvironmentService
         _client = client;
 
         _withRawResponse = new(() => new EnvironmentServiceWithRawResponse(client.WithRawResponse));
+        _work = new(() => new WorkService(client));
+    }
+
+    readonly Lazy<IWorkService> _work;
+    public IWorkService Work
+    {
+        get { return _work.Value; }
     }
 
     /// <inheritdoc/>
@@ -176,6 +184,14 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
     public EnvironmentServiceWithRawResponse(IAnthropicClientWithRawResponse client)
     {
         _client = client;
+
+        _work = new(() => new WorkServiceWithRawResponse(client));
+    }
+
+    readonly Lazy<IWorkServiceWithRawResponse> _work;
+    public IWorkServiceWithRawResponse Work
+    {
+        get { return _work.Value; }
     }
 
     /// <inheritdoc/>

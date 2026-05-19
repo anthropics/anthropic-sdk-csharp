@@ -4,7 +4,6 @@ using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions;
 using Agents = Anthropic.Models.Beta.Agents;
-using Threads = Anthropic.Models.Beta.Sessions.Threads;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
 
@@ -92,7 +91,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                                     Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                        Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                 ],
@@ -222,7 +221,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                                 Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                    Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
                     Version = 1,
                 },
             ],
@@ -382,7 +381,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                                     Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                        Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                 ],
@@ -526,7 +525,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                                     Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                        Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                 ],
@@ -663,7 +662,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                                 Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                    Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
                     Version = 1,
                 },
             ],
@@ -823,7 +822,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                                     Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                        Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                 ],
@@ -961,7 +960,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                                     Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                        Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                 ],

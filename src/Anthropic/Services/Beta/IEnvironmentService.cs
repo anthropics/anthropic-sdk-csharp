@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Environments;
+using Anthropic.Services.Beta.Environments;
 
 namespace Anthropic.Services.Beta;
 
@@ -25,6 +26,8 @@ public interface IEnvironmentService
     /// <para>The original service is not modified.</para>
     /// </summary>
     IEnvironmentService WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
+    IWorkService Work { get; }
 
     /// <summary>
     /// Create a new environment with the specified configuration.
@@ -116,6 +119,8 @@ public interface IEnvironmentServiceWithRawResponse
     /// <para>The original service is not modified.</para>
     /// </summary>
     IEnvironmentServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
+    IWorkServiceWithRawResponse Work { get; }
 
     /// <summary>
     /// Returns a raw HTTP response for <c>post /v1/environments?beta=true</c>, but is otherwise the

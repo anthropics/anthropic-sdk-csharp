@@ -63,7 +63,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
                 threadStatusRunning: (x) => x.ID,
                 threadStatusIdle: (x) => x.ID,
                 threadStatusTerminated: (x) => x.ID,
-                threadStatusRescheduled: (x) => x.ID
+                userToolResult: (x) => x.ID,
+                threadStatusRescheduled: (x) => x.ID,
+                updated: (x) => x.ID
             );
         }
     }
@@ -103,7 +105,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
                 threadStatusRunning: (x) => x.ProcessedAt,
                 threadStatusIdle: (x) => x.ProcessedAt,
                 threadStatusTerminated: (x) => x.ProcessedAt,
-                threadStatusRescheduled: (x) => x.ProcessedAt
+                userToolResult: (x) => x.ProcessedAt,
+                threadStatusRescheduled: (x) => x.ProcessedAt,
+                updated: (x) => x.ProcessedAt
             );
         }
     }
@@ -143,7 +147,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
                 threadStatusRunning: (x) => x.SessionThreadID,
                 threadStatusIdle: (x) => x.SessionThreadID,
                 threadStatusTerminated: (x) => x.SessionThreadID,
-                threadStatusRescheduled: (x) => x.SessionThreadID
+                userToolResult: (x) => x.SessionThreadID,
+                threadStatusRescheduled: (x) => x.SessionThreadID,
+                updated: (_) => null
             );
         }
     }
@@ -183,7 +189,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
                 threadStatusRunning: (_) => null,
                 threadStatusIdle: (_) => null,
                 threadStatusTerminated: (_) => null,
-                threadStatusRescheduled: (_) => null
+                userToolResult: (x) => x.ToolUseID,
+                threadStatusRescheduled: (_) => null,
+                updated: (_) => null
             );
         }
     }
@@ -223,7 +231,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
                 threadStatusRunning: (_) => null,
                 threadStatusIdle: (_) => null,
                 threadStatusTerminated: (_) => null,
-                threadStatusRescheduled: (_) => null
+                userToolResult: (x) => x.IsError,
+                threadStatusRescheduled: (_) => null,
+                updated: (_) => null
             );
         }
     }
@@ -263,7 +273,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
                 threadStatusRunning: (_) => null,
                 threadStatusIdle: (_) => null,
                 threadStatusTerminated: (_) => null,
-                threadStatusRescheduled: (_) => null
+                userToolResult: (_) => null,
+                threadStatusRescheduled: (_) => null,
+                updated: (_) => null
             );
         }
     }
@@ -303,7 +315,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
                 threadStatusRunning: (x) => x.AgentName,
                 threadStatusIdle: (x) => x.AgentName,
                 threadStatusTerminated: (x) => x.AgentName,
-                threadStatusRescheduled: (x) => x.AgentName
+                userToolResult: (_) => null,
+                threadStatusRescheduled: (x) => x.AgentName,
+                updated: (_) => null
             );
         }
     }
@@ -343,7 +357,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
                 threadStatusRunning: (_) => null,
                 threadStatusIdle: (_) => null,
                 threadStatusTerminated: (_) => null,
-                threadStatusRescheduled: (_) => null
+                userToolResult: (_) => null,
+                threadStatusRescheduled: (_) => null,
+                updated: (_) => null
             );
         }
     }
@@ -383,7 +399,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
                 threadStatusRunning: (_) => null,
                 threadStatusIdle: (_) => null,
                 threadStatusTerminated: (_) => null,
-                threadStatusRescheduled: (_) => null
+                userToolResult: (_) => null,
+                threadStatusRescheduled: (_) => null,
+                updated: (_) => null
             );
         }
     }
@@ -659,7 +677,25 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
     }
 
     public BetaManagedAgentsSessionEvent(
+        BetaManagedAgentsUserToolResultEvent value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsSessionEvent(
         BetaManagedAgentsSessionThreadStatusRescheduledEvent value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsSessionEvent(
+        BetaManagedAgentsSessionUpdatedEvent value,
         JsonElement? element = null
     )
     {
@@ -1358,6 +1394,29 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsUserToolResultEvent"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickUserToolResult(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsUserToolResultEvent`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickUserToolResult(
+        [NotNullWhen(true)] out BetaManagedAgentsUserToolResultEvent? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsUserToolResultEvent;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaManagedAgentsSessionThreadStatusRescheduledEvent"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -1376,6 +1435,27 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
     )
     {
         value = this.Value as BetaManagedAgentsSessionThreadStatusRescheduledEvent;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsSessionUpdatedEvent"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickUpdated(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsSessionUpdatedEvent`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickUpdated([NotNullWhen(true)] out BetaManagedAgentsSessionUpdatedEvent? value)
+    {
+        value = this.Value as BetaManagedAgentsSessionUpdatedEvent;
         return value != null;
     }
 
@@ -1423,7 +1503,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
     ///     (BetaManagedAgentsSessionThreadStatusRunningEvent value) =&gt; {...},
     ///     (BetaManagedAgentsSessionThreadStatusIdleEvent value) =&gt; {...},
     ///     (BetaManagedAgentsSessionThreadStatusTerminatedEvent value) =&gt; {...},
-    ///     (BetaManagedAgentsSessionThreadStatusRescheduledEvent value) =&gt; {...}
+    ///     (BetaManagedAgentsUserToolResultEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsSessionThreadStatusRescheduledEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsSessionUpdatedEvent value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -1459,7 +1541,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
         System::Action<BetaManagedAgentsSessionThreadStatusRunningEvent> threadStatusRunning,
         System::Action<BetaManagedAgentsSessionThreadStatusIdleEvent> threadStatusIdle,
         System::Action<BetaManagedAgentsSessionThreadStatusTerminatedEvent> threadStatusTerminated,
-        System::Action<BetaManagedAgentsSessionThreadStatusRescheduledEvent> threadStatusRescheduled
+        System::Action<BetaManagedAgentsUserToolResultEvent> userToolResult,
+        System::Action<BetaManagedAgentsSessionThreadStatusRescheduledEvent> threadStatusRescheduled,
+        System::Action<BetaManagedAgentsSessionUpdatedEvent> updated
     )
     {
         switch (this.Value)
@@ -1554,8 +1638,14 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
             case BetaManagedAgentsSessionThreadStatusTerminatedEvent value:
                 threadStatusTerminated(value);
                 break;
+            case BetaManagedAgentsUserToolResultEvent value:
+                userToolResult(value);
+                break;
             case BetaManagedAgentsSessionThreadStatusRescheduledEvent value:
                 threadStatusRescheduled(value);
+                break;
+            case BetaManagedAgentsSessionUpdatedEvent value:
+                updated(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -1609,7 +1699,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
     ///     (BetaManagedAgentsSessionThreadStatusRunningEvent value) =&gt; {...},
     ///     (BetaManagedAgentsSessionThreadStatusIdleEvent value) =&gt; {...},
     ///     (BetaManagedAgentsSessionThreadStatusTerminatedEvent value) =&gt; {...},
-    ///     (BetaManagedAgentsSessionThreadStatusRescheduledEvent value) =&gt; {...}
+    ///     (BetaManagedAgentsUserToolResultEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsSessionThreadStatusRescheduledEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsSessionUpdatedEvent value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -1657,10 +1749,12 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
         System::Func<BetaManagedAgentsSessionThreadStatusRunningEvent, T> threadStatusRunning,
         System::Func<BetaManagedAgentsSessionThreadStatusIdleEvent, T> threadStatusIdle,
         System::Func<BetaManagedAgentsSessionThreadStatusTerminatedEvent, T> threadStatusTerminated,
+        System::Func<BetaManagedAgentsUserToolResultEvent, T> userToolResult,
         System::Func<
             BetaManagedAgentsSessionThreadStatusRescheduledEvent,
             T
-        > threadStatusRescheduled
+        > threadStatusRescheduled,
+        System::Func<BetaManagedAgentsSessionUpdatedEvent, T> updated
     )
     {
         return this.Value switch
@@ -1704,9 +1798,11 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
             BetaManagedAgentsSessionThreadStatusTerminatedEvent value => threadStatusTerminated(
                 value
             ),
+            BetaManagedAgentsUserToolResultEvent value => userToolResult(value),
             BetaManagedAgentsSessionThreadStatusRescheduledEvent value => threadStatusRescheduled(
                 value
             ),
+            BetaManagedAgentsSessionUpdatedEvent value => updated(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsSessionEvent"
             ),
@@ -1834,7 +1930,15 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
     ) => new(value);
 
     public static implicit operator BetaManagedAgentsSessionEvent(
+        BetaManagedAgentsUserToolResultEvent value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsSessionEvent(
         BetaManagedAgentsSessionThreadStatusRescheduledEvent value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsSessionEvent(
+        BetaManagedAgentsSessionUpdatedEvent value
     ) => new(value);
 
     /// <summary>
@@ -1886,7 +1990,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
             (threadStatusRunning) => threadStatusRunning.Validate(),
             (threadStatusIdle) => threadStatusIdle.Validate(),
             (threadStatusTerminated) => threadStatusTerminated.Validate(),
-            (threadStatusRescheduled) => threadStatusRescheduled.Validate()
+            (userToolResult) => userToolResult.Validate(),
+            (threadStatusRescheduled) => threadStatusRescheduled.Validate(),
+            (updated) => updated.Validate()
         );
     }
 
@@ -1940,7 +2046,9 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
             BetaManagedAgentsSessionThreadStatusRunningEvent _ => 27,
             BetaManagedAgentsSessionThreadStatusIdleEvent _ => 28,
             BetaManagedAgentsSessionThreadStatusTerminatedEvent _ => 29,
-            BetaManagedAgentsSessionThreadStatusRescheduledEvent _ => 30,
+            BetaManagedAgentsUserToolResultEvent _ => 30,
+            BetaManagedAgentsSessionThreadStatusRescheduledEvent _ => 31,
+            BetaManagedAgentsSessionUpdatedEvent _ => 32,
             _ => -1,
         };
     }
@@ -2597,12 +2705,54 @@ sealed class BetaManagedAgentsSessionEventConverter : JsonConverter<BetaManagedA
 
                 return new(element);
             }
+            case "user.tool_result":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsUserToolResultEvent>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             case "session.thread_status_rescheduled":
             {
                 try
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaManagedAgentsSessionThreadStatusRescheduledEvent>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "session.updated":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsSessionUpdatedEvent>(
                             element,
                             options
                         );

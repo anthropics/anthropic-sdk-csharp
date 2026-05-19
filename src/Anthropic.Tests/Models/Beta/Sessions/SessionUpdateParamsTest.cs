@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Anthropic.Core;
 using Anthropic.Models.Beta;
+using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
@@ -15,6 +16,43 @@ public class SessionUpdateParamsTest : TestBase
         var parameters = new SessionUpdateParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+            Agent = new()
+            {
+                McpServers =
+                [
+                    new()
+                    {
+                        Name = "example-mcp",
+                        Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
+                        Url = "https://example-server.modelcontextprotocol.io/sse",
+                    },
+                ],
+                Tools =
+                [
+                    new BetaManagedAgentsAgentToolset20260401Params()
+                    {
+                        Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                        Configs =
+                        [
+                            new()
+                            {
+                                Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
+                                Enabled = true,
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                ),
+                            },
+                        ],
+                        DefaultConfig = new()
+                        {
+                            Enabled = true,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                        },
+                    },
+                ],
+            },
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Title = "Order #1234 inquiry",
             VaultIds = ["string"],
@@ -22,6 +60,43 @@ public class SessionUpdateParamsTest : TestBase
         };
 
         string expectedSessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7";
+        BetaManagedAgentsSessionAgentUpdate expectedAgent = new()
+        {
+            McpServers =
+            [
+                new()
+                {
+                    Name = "example-mcp",
+                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
+                    Url = "https://example-server.modelcontextprotocol.io/sse",
+                },
+            ],
+            Tools =
+            [
+                new BetaManagedAgentsAgentToolset20260401Params()
+                {
+                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                    Configs =
+                    [
+                        new()
+                        {
+                            Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
+                            Enabled = true,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                        },
+                    ],
+                    DefaultConfig = new()
+                    {
+                        Enabled = true,
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        ),
+                    },
+                },
+            ],
+        };
         Dictionary<string, string?> expectedMetadata = new() { { "foo", "string" } };
         string expectedTitle = "Order #1234 inquiry";
         List<string> expectedVaultIds = ["string"];
@@ -31,6 +106,7 @@ public class SessionUpdateParamsTest : TestBase
         ];
 
         Assert.Equal(expectedSessionID, parameters.SessionID);
+        Assert.Equal(expectedAgent, parameters.Agent);
         Assert.NotNull(parameters.Metadata);
         Assert.Equal(expectedMetadata.Count, parameters.Metadata.Count);
         foreach (var item in expectedMetadata)
@@ -64,6 +140,8 @@ public class SessionUpdateParamsTest : TestBase
             Title = "Order #1234 inquiry",
         };
 
+        Assert.Null(parameters.Agent);
+        Assert.False(parameters.RawBodyData.ContainsKey("agent"));
         Assert.Null(parameters.VaultIds);
         Assert.False(parameters.RawBodyData.ContainsKey("vault_ids"));
         Assert.Null(parameters.Betas);
@@ -80,10 +158,13 @@ public class SessionUpdateParamsTest : TestBase
             Title = "Order #1234 inquiry",
 
             // Null should be interpreted as omitted for these properties
+            Agent = null,
             VaultIds = null,
             Betas = null,
         };
 
+        Assert.Null(parameters.Agent);
+        Assert.False(parameters.RawBodyData.ContainsKey("agent"));
         Assert.Null(parameters.VaultIds);
         Assert.False(parameters.RawBodyData.ContainsKey("vault_ids"));
         Assert.Null(parameters.Betas);
@@ -96,6 +177,43 @@ public class SessionUpdateParamsTest : TestBase
         var parameters = new SessionUpdateParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+            Agent = new()
+            {
+                McpServers =
+                [
+                    new()
+                    {
+                        Name = "example-mcp",
+                        Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
+                        Url = "https://example-server.modelcontextprotocol.io/sse",
+                    },
+                ],
+                Tools =
+                [
+                    new BetaManagedAgentsAgentToolset20260401Params()
+                    {
+                        Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                        Configs =
+                        [
+                            new()
+                            {
+                                Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
+                                Enabled = true,
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                ),
+                            },
+                        ],
+                        DefaultConfig = new()
+                        {
+                            Enabled = true,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                        },
+                    },
+                ],
+            },
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
@@ -112,6 +230,43 @@ public class SessionUpdateParamsTest : TestBase
         var parameters = new SessionUpdateParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+            Agent = new()
+            {
+                McpServers =
+                [
+                    new()
+                    {
+                        Name = "example-mcp",
+                        Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
+                        Url = "https://example-server.modelcontextprotocol.io/sse",
+                    },
+                ],
+                Tools =
+                [
+                    new BetaManagedAgentsAgentToolset20260401Params()
+                    {
+                        Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                        Configs =
+                        [
+                            new()
+                            {
+                                Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
+                                Enabled = true,
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                ),
+                            },
+                        ],
+                        DefaultConfig = new()
+                        {
+                            Enabled = true,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                        },
+                    },
+                ],
+            },
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
@@ -166,6 +321,43 @@ public class SessionUpdateParamsTest : TestBase
         var parameters = new SessionUpdateParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+            Agent = new()
+            {
+                McpServers =
+                [
+                    new()
+                    {
+                        Name = "example-mcp",
+                        Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
+                        Url = "https://example-server.modelcontextprotocol.io/sse",
+                    },
+                ],
+                Tools =
+                [
+                    new BetaManagedAgentsAgentToolset20260401Params()
+                    {
+                        Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                        Configs =
+                        [
+                            new()
+                            {
+                                Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
+                                Enabled = true,
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                ),
+                            },
+                        ],
+                        DefaultConfig = new()
+                        {
+                            Enabled = true,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                        },
+                    },
+                ],
+            },
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Title = "Order #1234 inquiry",
             VaultIds = ["string"],

@@ -70,7 +70,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                         Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
@@ -96,7 +96,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
         };
 
         string expectedID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
-        Threads::BetaManagedAgentsSessionThreadAgent expectedAgent = new()
+        BetaManagedAgentsSessionThreadAgent expectedAgent = new()
         {
             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
             Description = "A focused research subagent.",
@@ -147,7 +147,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
-            Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
             Version = 1,
         };
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
@@ -244,7 +244,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                         Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
@@ -339,7 +339,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                         Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
@@ -372,7 +372,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
-        Threads::BetaManagedAgentsSessionThreadAgent expectedAgent = new()
+        BetaManagedAgentsSessionThreadAgent expectedAgent = new()
         {
             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
             Description = "A focused research subagent.",
@@ -423,7 +423,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
-            Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
             Version = 1,
         };
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
@@ -520,7 +520,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                         Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
@@ -609,7 +609,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                         Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = Threads::BetaManagedAgentsSessionThreadAgentType.Agent,
+                Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,

@@ -6,10 +6,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Anthropic.Models.Beta.Agents;
 using System = System;
 
-namespace Anthropic.Models.Beta.Sessions.Threads;
+namespace Anthropic.Models.Beta.Agents;
 
 /// <summary>
 /// Resolved `agent` definition for a single `session_thread`. Snapshot of the agent
@@ -85,18 +84,18 @@ public sealed record class BetaManagedAgentsSessionThreadAgent : JsonModel
         init { this._rawData.Set("name", value); }
     }
 
-    public required IReadOnlyList<global::Anthropic.Models.Beta.Sessions.Threads.Skill> Skills
+    public required IReadOnlyList<BetaManagedAgentsSessionThreadAgentSkill> Skills
     {
         get
         {
             this._rawData.Freeze();
             return this._rawData.GetNotNullStruct<
-                ImmutableArray<global::Anthropic.Models.Beta.Sessions.Threads.Skill>
+                ImmutableArray<BetaManagedAgentsSessionThreadAgentSkill>
             >("skills");
         }
         init
         {
-            this._rawData.Set<ImmutableArray<global::Anthropic.Models.Beta.Sessions.Threads.Skill>>(
+            this._rawData.Set<ImmutableArray<BetaManagedAgentsSessionThreadAgentSkill>>(
                 "skills",
                 ImmutableArray.ToImmutableArray(value)
             );
@@ -113,18 +112,18 @@ public sealed record class BetaManagedAgentsSessionThreadAgent : JsonModel
         init { this._rawData.Set("system", value); }
     }
 
-    public required IReadOnlyList<global::Anthropic.Models.Beta.Sessions.Threads.Tool> Tools
+    public required IReadOnlyList<BetaManagedAgentsSessionThreadAgentTool> Tools
     {
         get
         {
             this._rawData.Freeze();
             return this._rawData.GetNotNullStruct<
-                ImmutableArray<global::Anthropic.Models.Beta.Sessions.Threads.Tool>
+                ImmutableArray<BetaManagedAgentsSessionThreadAgentTool>
             >("tools");
         }
         init
         {
-            this._rawData.Set<ImmutableArray<global::Anthropic.Models.Beta.Sessions.Threads.Tool>>(
+            this._rawData.Set<ImmutableArray<BetaManagedAgentsSessionThreadAgentTool>>(
                 "tools",
                 ImmutableArray.ToImmutableArray(value)
             );
@@ -220,8 +219,8 @@ class BetaManagedAgentsSessionThreadAgentFromRaw : IFromRawJson<BetaManagedAgent
 /// <summary>
 /// Resolved skill as returned in API responses.
 /// </summary>
-[JsonConverter(typeof(global::Anthropic.Models.Beta.Sessions.Threads.SkillConverter))]
-public record class Skill : ModelBase
+[JsonConverter(typeof(BetaManagedAgentsSessionThreadAgentSkillConverter))]
+public record class BetaManagedAgentsSessionThreadAgentSkill : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -260,19 +259,25 @@ public record class Skill : ModelBase
         }
     }
 
-    public Skill(BetaManagedAgentsAnthropicSkill value, JsonElement? element = null)
+    public BetaManagedAgentsSessionThreadAgentSkill(
+        BetaManagedAgentsAnthropicSkill value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Skill(BetaManagedAgentsCustomSkill value, JsonElement? element = null)
+    public BetaManagedAgentsSessionThreadAgentSkill(
+        BetaManagedAgentsCustomSkill value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Skill(JsonElement element)
+    public BetaManagedAgentsSessionThreadAgentSkill(JsonElement element)
     {
         this._element = element;
     }
@@ -357,7 +362,9 @@ public record class Skill : ModelBase
                 betaManagedAgentsCustom(value);
                 break;
             default:
-                throw new AnthropicInvalidDataException("Data did not match any variant of Skill");
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaManagedAgentsSessionThreadAgentSkill"
+                );
         }
     }
 
@@ -391,15 +398,17 @@ public record class Skill : ModelBase
         {
             BetaManagedAgentsAnthropicSkill value => betaManagedAgentsAnthropic(value),
             BetaManagedAgentsCustomSkill value => betaManagedAgentsCustom(value),
-            _ => throw new AnthropicInvalidDataException("Data did not match any variant of Skill"),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaManagedAgentsSessionThreadAgentSkill"
+            ),
         };
     }
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Threads.Skill(
+    public static implicit operator BetaManagedAgentsSessionThreadAgentSkill(
         BetaManagedAgentsAnthropicSkill value
     ) => new(value);
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Threads.Skill(
+    public static implicit operator BetaManagedAgentsSessionThreadAgentSkill(
         BetaManagedAgentsCustomSkill value
     ) => new(value);
 
@@ -417,7 +426,9 @@ public record class Skill : ModelBase
     {
         if (this.Value == null)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Skill");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaManagedAgentsSessionThreadAgentSkill"
+            );
         }
         this.Switch(
             (betaManagedAgentsAnthropic) => betaManagedAgentsAnthropic.Validate(),
@@ -425,7 +436,7 @@ public record class Skill : ModelBase
         );
     }
 
-    public virtual bool Equals(global::Anthropic.Models.Beta.Sessions.Threads.Skill? other) =>
+    public virtual bool Equals(BetaManagedAgentsSessionThreadAgentSkill? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -452,9 +463,10 @@ public record class Skill : ModelBase
     }
 }
 
-sealed class SkillConverter : JsonConverter<global::Anthropic.Models.Beta.Sessions.Threads.Skill>
+sealed class BetaManagedAgentsSessionThreadAgentSkillConverter
+    : JsonConverter<BetaManagedAgentsSessionThreadAgentSkill>
 {
-    public override global::Anthropic.Models.Beta.Sessions.Threads.Skill? Read(
+    public override BetaManagedAgentsSessionThreadAgentSkill? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -515,14 +527,14 @@ sealed class SkillConverter : JsonConverter<global::Anthropic.Models.Beta.Sessio
             }
             default:
             {
-                return new global::Anthropic.Models.Beta.Sessions.Threads.Skill(element);
+                return new BetaManagedAgentsSessionThreadAgentSkill(element);
             }
         }
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Sessions.Threads.Skill value,
+        BetaManagedAgentsSessionThreadAgentSkill value,
         JsonSerializerOptions options
     )
     {
@@ -533,8 +545,8 @@ sealed class SkillConverter : JsonConverter<global::Anthropic.Models.Beta.Sessio
 /// <summary>
 /// Union type for tool configurations returned in API responses.
 /// </summary>
-[JsonConverter(typeof(global::Anthropic.Models.Beta.Sessions.Threads.ToolConverter))]
-public record class Tool : ModelBase
+[JsonConverter(typeof(BetaManagedAgentsSessionThreadAgentToolConverter))]
+public record class BetaManagedAgentsSessionThreadAgentTool : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -551,25 +563,34 @@ public record class Tool : ModelBase
         }
     }
 
-    public Tool(BetaManagedAgentsAgentToolset20260401 value, JsonElement? element = null)
+    public BetaManagedAgentsSessionThreadAgentTool(
+        BetaManagedAgentsAgentToolset20260401 value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Tool(BetaManagedAgentsMcpToolset value, JsonElement? element = null)
+    public BetaManagedAgentsSessionThreadAgentTool(
+        BetaManagedAgentsMcpToolset value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Tool(BetaManagedAgentsCustomTool value, JsonElement? element = null)
+    public BetaManagedAgentsSessionThreadAgentTool(
+        BetaManagedAgentsCustomTool value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Tool(JsonElement element)
+    public BetaManagedAgentsSessionThreadAgentTool(JsonElement element)
     {
         this._element = element;
     }
@@ -682,7 +703,9 @@ public record class Tool : ModelBase
                 betaManagedAgentsCustom(value);
                 break;
             default:
-                throw new AnthropicInvalidDataException("Data did not match any variant of Tool");
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaManagedAgentsSessionThreadAgentTool"
+                );
         }
     }
 
@@ -724,19 +747,21 @@ public record class Tool : ModelBase
             ),
             BetaManagedAgentsMcpToolset value => betaManagedAgentsMcpToolset(value),
             BetaManagedAgentsCustomTool value => betaManagedAgentsCustom(value),
-            _ => throw new AnthropicInvalidDataException("Data did not match any variant of Tool"),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaManagedAgentsSessionThreadAgentTool"
+            ),
         };
     }
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Threads.Tool(
+    public static implicit operator BetaManagedAgentsSessionThreadAgentTool(
         BetaManagedAgentsAgentToolset20260401 value
     ) => new(value);
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Threads.Tool(
+    public static implicit operator BetaManagedAgentsSessionThreadAgentTool(
         BetaManagedAgentsMcpToolset value
     ) => new(value);
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Threads.Tool(
+    public static implicit operator BetaManagedAgentsSessionThreadAgentTool(
         BetaManagedAgentsCustomTool value
     ) => new(value);
 
@@ -754,7 +779,9 @@ public record class Tool : ModelBase
     {
         if (this.Value == null)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Tool");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaManagedAgentsSessionThreadAgentTool"
+            );
         }
         this.Switch(
             (betaManagedAgentsAgentToolset20260401) =>
@@ -764,7 +791,7 @@ public record class Tool : ModelBase
         );
     }
 
-    public virtual bool Equals(global::Anthropic.Models.Beta.Sessions.Threads.Tool? other) =>
+    public virtual bool Equals(BetaManagedAgentsSessionThreadAgentTool? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -792,9 +819,10 @@ public record class Tool : ModelBase
     }
 }
 
-sealed class ToolConverter : JsonConverter<global::Anthropic.Models.Beta.Sessions.Threads.Tool>
+sealed class BetaManagedAgentsSessionThreadAgentToolConverter
+    : JsonConverter<BetaManagedAgentsSessionThreadAgentTool>
 {
-    public override global::Anthropic.Models.Beta.Sessions.Threads.Tool? Read(
+    public override BetaManagedAgentsSessionThreadAgentTool? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -876,14 +904,14 @@ sealed class ToolConverter : JsonConverter<global::Anthropic.Models.Beta.Session
             }
             default:
             {
-                return new global::Anthropic.Models.Beta.Sessions.Threads.Tool(element);
+                return new BetaManagedAgentsSessionThreadAgentTool(element);
             }
         }
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Sessions.Threads.Tool value,
+        BetaManagedAgentsSessionThreadAgentTool value,
         JsonSerializerOptions options
     )
     {

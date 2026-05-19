@@ -18,7 +18,7 @@ public class EnvironmentListPageResponseTest : TestBase
                 {
                     ID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     ArchivedAt = null,
-                    Config = new()
+                    Config = new BetaCloudConfig()
                     {
                         Networking = new BetaLimitedNetwork()
                         {
@@ -42,6 +42,7 @@ public class EnvironmentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>(),
                     Name = "python-data-analysis",
                     UpdatedAt = "2026-03-15T10:00:00Z",
+                    Scope = BetaEnvironmentScope.Organization,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -53,7 +54,7 @@ public class EnvironmentListPageResponseTest : TestBase
             {
                 ID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                 ArchivedAt = null,
-                Config = new()
+                Config = new BetaCloudConfig()
                 {
                     Networking = new BetaLimitedNetwork()
                     {
@@ -77,6 +78,7 @@ public class EnvironmentListPageResponseTest : TestBase
                 Metadata = new Dictionary<string, string>(),
                 Name = "python-data-analysis",
                 UpdatedAt = "2026-03-15T10:00:00Z",
+                Scope = BetaEnvironmentScope.Organization,
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -100,7 +102,7 @@ public class EnvironmentListPageResponseTest : TestBase
                 {
                     ID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     ArchivedAt = null,
-                    Config = new()
+                    Config = new BetaCloudConfig()
                     {
                         Networking = new BetaLimitedNetwork()
                         {
@@ -124,6 +126,7 @@ public class EnvironmentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>(),
                     Name = "python-data-analysis",
                     UpdatedAt = "2026-03-15T10:00:00Z",
+                    Scope = BetaEnvironmentScope.Organization,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -149,7 +152,7 @@ public class EnvironmentListPageResponseTest : TestBase
                 {
                     ID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     ArchivedAt = null,
-                    Config = new()
+                    Config = new BetaCloudConfig()
                     {
                         Networking = new BetaLimitedNetwork()
                         {
@@ -173,6 +176,7 @@ public class EnvironmentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>(),
                     Name = "python-data-analysis",
                     UpdatedAt = "2026-03-15T10:00:00Z",
+                    Scope = BetaEnvironmentScope.Organization,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -191,7 +195,7 @@ public class EnvironmentListPageResponseTest : TestBase
             {
                 ID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                 ArchivedAt = null,
-                Config = new()
+                Config = new BetaCloudConfig()
                 {
                     Networking = new BetaLimitedNetwork()
                     {
@@ -215,6 +219,7 @@ public class EnvironmentListPageResponseTest : TestBase
                 Metadata = new Dictionary<string, string>(),
                 Name = "python-data-analysis",
                 UpdatedAt = "2026-03-15T10:00:00Z",
+                Scope = BetaEnvironmentScope.Organization,
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -238,7 +243,7 @@ public class EnvironmentListPageResponseTest : TestBase
                 {
                     ID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     ArchivedAt = null,
-                    Config = new()
+                    Config = new BetaCloudConfig()
                     {
                         Networking = new BetaLimitedNetwork()
                         {
@@ -262,6 +267,7 @@ public class EnvironmentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>(),
                     Name = "python-data-analysis",
                     UpdatedAt = "2026-03-15T10:00:00Z",
+                    Scope = BetaEnvironmentScope.Organization,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -281,7 +287,7 @@ public class EnvironmentListPageResponseTest : TestBase
                 {
                     ID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     ArchivedAt = null,
-                    Config = new()
+                    Config = new BetaCloudConfig()
                     {
                         Networking = new BetaLimitedNetwork()
                         {
@@ -305,6 +311,7 @@ public class EnvironmentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>(),
                     Name = "python-data-analysis",
                     UpdatedAt = "2026-03-15T10:00:00Z",
+                    Scope = BetaEnvironmentScope.Organization,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",

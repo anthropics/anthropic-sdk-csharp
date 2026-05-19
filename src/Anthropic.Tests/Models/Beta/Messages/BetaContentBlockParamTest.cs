@@ -312,8 +312,8 @@ public class BetaContentBlockParamTest : TestBase
     {
         BetaContentBlockParam value = new BetaCompactionBlockParam()
         {
-            Content = "content",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Content = "content",
             EncryptedContent = "encrypted_content",
         };
         value.Validate();
@@ -738,8 +738,8 @@ public class BetaContentBlockParamTest : TestBase
     {
         BetaContentBlockParam value = new BetaCompactionBlockParam()
         {
-            Content = "content",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Content = "content",
             EncryptedContent = "encrypted_content",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

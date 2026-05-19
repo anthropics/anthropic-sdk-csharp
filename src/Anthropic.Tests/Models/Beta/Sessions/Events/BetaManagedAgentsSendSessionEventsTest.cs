@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Events;
@@ -342,6 +343,29 @@ public class DataTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsUserToolResultEventValidationWorks()
+    {
+        Data value = new BetaManagedAgentsUserToolResultEvent()
+        {
+            ID = "id",
+            ToolUseID = "tool_use_id",
+            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
+            Content =
+            [
+                new BetaManagedAgentsTextBlock()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = BetaManagedAgentsTextBlockType.Text,
+                },
+            ],
+            IsError = true,
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsUserMessageEventSerializationRoundtripWorks()
     {
         Data value = new BetaManagedAgentsUserMessageEvent()
@@ -441,6 +465,32 @@ public class DataTest : TestBase
                 Type = BetaManagedAgentsTextRubricType.Text,
             },
             Type = BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Data>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserToolResultEventSerializationRoundtripWorks()
+    {
+        Data value = new BetaManagedAgentsUserToolResultEvent()
+        {
+            ID = "id",
+            ToolUseID = "tool_use_id",
+            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
+            Content =
+            [
+                new BetaManagedAgentsTextBlock()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = BetaManagedAgentsTextBlockType.Text,
+                },
+            ],
+            IsError = true,
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Data>(element, ModelBase.SerializerOptions);

@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Beta.Agents;
 using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Threads;
@@ -223,7 +224,7 @@ class BetaManagedAgentsSessionThreadFromRaw : IFromRawJson<BetaManagedAgentsSess
     ) => BetaManagedAgentsSessionThread.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(TypeConverter))]
+[JsonConverter(typeof(global::Anthropic.Models.Beta.Sessions.Threads.TypeConverter))]
 public enum Type
 {
     SessionThread,

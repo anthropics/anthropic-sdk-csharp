@@ -2,6 +2,7 @@ using System.Text.Json;
 using Anthropic.Exceptions;
 using Anthropic.Models;
 using Anthropic.Models.Beta;
+using Anthropic.Models.Beta.Environments.Work;
 using Anthropic.Models.Messages;
 using Agents = Anthropic.Models.Beta.Agents;
 using Batches = Anthropic.Models.Messages.Batches;
@@ -180,10 +181,16 @@ public abstract record class ModelBase
                 Agents::BetaManagedAgentsMultiagentCoordinatorParamsType
             >(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsMultiagentSelfParamsType>(),
+            new ApiEnumConverter<string, Agents::BetaManagedAgentsSessionThreadAgentType>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsUrlMcpServerParamsType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsMultiagentParamsType>(),
+            new ApiEnumConverter<string, Environments::BetaEnvironmentScope>(),
             new ApiEnumConverter<string, Environments::Type>(),
             new ApiEnumConverter<string, Environments::BetaPackagesParamsType>(),
+            new ApiEnumConverter<string, Environments::Scope>(),
+            new ApiEnumConverter<string, Environments::EnvironmentUpdateParamsScope>(),
+            new ApiEnumConverter<string, State>(),
+            new ApiEnumConverter<string, BetaSelfHostedWorkHeartbeatResponseState>(),
             new ApiEnumConverter<string, Sessions::Type>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsBranchCheckoutType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsCommitCheckoutType>(),
@@ -207,6 +214,8 @@ public abstract record class ModelBase
                 string,
                 Sessions::BetaManagedAgentsSessionMultiagentCoordinatorType
             >(),
+            new ApiEnumConverter<string, Sessions::BetaManagedAgentsSessionUpdatedEventType>(),
+            new ApiEnumConverter<string, Sessions::BetaManagedAgentsUserToolResultEventType>(),
             new ApiEnumConverter<string, Sessions::Order>(),
             new ApiEnumConverter<string, Sessions::Status>(),
             new ApiEnumConverter<string, Events::Type>(),
@@ -334,6 +343,7 @@ public abstract record class ModelBase
                 string,
                 Events::BetaManagedAgentsUserToolConfirmationEventParamsType
             >(),
+            new ApiEnumConverter<string, Events::BetaManagedAgentsUserToolResultEventParamsType>(),
             new ApiEnumConverter<string, Events::Order>(),
             new ApiEnumConverter<string, Resources::BetaManagedAgentsDeleteSessionResourceType>(),
             new ApiEnumConverter<string, Resources::BetaManagedAgentsFileResourceType>(),
@@ -345,7 +355,6 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Resources::Access>(),
             new ApiEnumConverter<string, Resources::Type>(),
             new ApiEnumConverter<string, Threads::Type>(),
-            new ApiEnumConverter<string, Threads::BetaManagedAgentsSessionThreadAgentType>(),
             new ApiEnumConverter<string, Threads::BetaManagedAgentsSessionThreadStatus>(),
             new ApiEnumConverter<string, Vaults::Type>(),
             new ApiEnumConverter<string, Vaults::BetaManagedAgentsVaultType>(),

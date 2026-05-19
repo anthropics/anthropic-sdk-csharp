@@ -5,7 +5,6 @@ using Anthropic.Core;
 using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Resources;
-using Anthropic.Models.Beta.Sessions.Threads;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
 

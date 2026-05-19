@@ -85,6 +85,23 @@ public interface IVersionService
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default
     );
+
+    /// <summary>
+    /// Download a skill version's content as a zip archive.
+    ///
+    /// <para>It's the caller's responsibility to dispose the returned response.</para>
+    /// </summary>
+    Task<HttpResponse> Download(
+        VersionDownloadParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Download(VersionDownloadParams, CancellationToken)"/>
+    Task<HttpResponse> Download(
+        string version,
+        VersionDownloadParams parameters,
+        CancellationToken cancellationToken = default
+    );
 }
 
 /// <summary>
@@ -161,6 +178,22 @@ public interface IVersionServiceWithRawResponse
     Task<HttpResponse<VersionDeleteResponse>> Delete(
         string version,
         VersionDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for <c>get /v1/skills/{skill_id}/versions/{version}/content?beta=true</c>, but is otherwise the
+    /// same as <see cref="IVersionService.Download(VersionDownloadParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse> Download(
+        VersionDownloadParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Download(VersionDownloadParams, CancellationToken)"/>
+    Task<HttpResponse> Download(
+        string version,
+        VersionDownloadParams parameters,
         CancellationToken cancellationToken = default
     );
 }

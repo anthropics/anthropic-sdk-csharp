@@ -15,7 +15,7 @@ namespace Anthropic.Tests.Services.Beta.Skills;
 /// </summary>
 public class VersionServiceMultiClientTest : VersionServiceTest
 {
-    [Theory(Skip = "prism binary unsupported")]
+    [Theory]
     [AnthropicTestClients]
     public async Task Create_Works(IAnthropicClient c)
     {
@@ -45,5 +45,13 @@ public class VersionServiceMultiClientTest : VersionServiceTest
     {
         client = c;
         await base.Delete_Works();
+    }
+
+    [Theory]
+    [AnthropicTestClients]
+    public async Task Download_Works(IAnthropicClient c)
+    {
+        client = c;
+        await base.Download_Works();
     }
 }

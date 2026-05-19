@@ -11,19 +11,19 @@ public class BetaCompactionBlockParamTest : TestBase
     {
         var model = new BetaCompactionBlockParam
         {
-            Content = "content",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Content = "content",
             EncryptedContent = "encrypted_content",
         };
 
-        string expectedContent = "content";
         JsonElement expectedType = JsonSerializer.SerializeToElement("compaction");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        string expectedContent = "content";
         string expectedEncryptedContent = "encrypted_content";
 
-        Assert.Equal(expectedContent, model.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedCacheControl, model.CacheControl);
+        Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedEncryptedContent, model.EncryptedContent);
     }
 
@@ -32,8 +32,8 @@ public class BetaCompactionBlockParamTest : TestBase
     {
         var model = new BetaCompactionBlockParam
         {
-            Content = "content",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Content = "content",
             EncryptedContent = "encrypted_content",
         };
 
@@ -51,8 +51,8 @@ public class BetaCompactionBlockParamTest : TestBase
     {
         var model = new BetaCompactionBlockParam
         {
-            Content = "content",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Content = "content",
             EncryptedContent = "encrypted_content",
         };
 
@@ -63,14 +63,14 @@ public class BetaCompactionBlockParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedContent = "content";
         JsonElement expectedType = JsonSerializer.SerializeToElement("compaction");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        string expectedContent = "content";
         string expectedEncryptedContent = "encrypted_content";
 
-        Assert.Equal(expectedContent, deserialized.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
+        Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedEncryptedContent, deserialized.EncryptedContent);
     }
 
@@ -79,8 +79,8 @@ public class BetaCompactionBlockParamTest : TestBase
     {
         var model = new BetaCompactionBlockParam
         {
-            Content = "content",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Content = "content",
             EncryptedContent = "encrypted_content",
         };
 
@@ -90,10 +90,12 @@ public class BetaCompactionBlockParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaCompactionBlockParam { Content = "content" };
+        var model = new BetaCompactionBlockParam { };
 
         Assert.Null(model.CacheControl);
         Assert.False(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.Content);
+        Assert.False(model.RawData.ContainsKey("content"));
         Assert.Null(model.EncryptedContent);
         Assert.False(model.RawData.ContainsKey("encrypted_content"));
     }
@@ -101,7 +103,7 @@ public class BetaCompactionBlockParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaCompactionBlockParam { Content = "content" };
+        var model = new BetaCompactionBlockParam { };
 
         model.Validate();
     }
@@ -111,14 +113,15 @@ public class BetaCompactionBlockParamTest : TestBase
     {
         var model = new BetaCompactionBlockParam
         {
-            Content = "content",
-
             CacheControl = null,
+            Content = null,
             EncryptedContent = null,
         };
 
         Assert.Null(model.CacheControl);
         Assert.True(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.Content);
+        Assert.True(model.RawData.ContainsKey("content"));
         Assert.Null(model.EncryptedContent);
         Assert.True(model.RawData.ContainsKey("encrypted_content"));
     }
@@ -128,9 +131,8 @@ public class BetaCompactionBlockParamTest : TestBase
     {
         var model = new BetaCompactionBlockParam
         {
-            Content = "content",
-
             CacheControl = null,
+            Content = null,
             EncryptedContent = null,
         };
 
@@ -142,8 +144,8 @@ public class BetaCompactionBlockParamTest : TestBase
     {
         var model = new BetaCompactionBlockParam
         {
-            Content = "content",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Content = "content",
             EncryptedContent = "encrypted_content",
         };
 

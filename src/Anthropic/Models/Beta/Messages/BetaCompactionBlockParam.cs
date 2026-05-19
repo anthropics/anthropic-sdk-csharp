@@ -22,19 +22,6 @@ namespace Anthropic.Models.Beta.Messages;
 )]
 public sealed record class BetaCompactionBlockParam : JsonModel
 {
-    /// <summary>
-    /// Summary of previously compacted content, or null if compaction failed
-    /// </summary>
-    public required string? Content
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("content");
-        }
-        init { this._rawData.Set("content", value); }
-    }
-
     public JsonElement Type
     {
         get
@@ -59,6 +46,19 @@ public sealed record class BetaCompactionBlockParam : JsonModel
     }
 
     /// <summary>
+    /// Summary of previously compacted content, or null if compaction failed
+    /// </summary>
+    public string? Content
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("content");
+        }
+        init { this._rawData.Set("content", value); }
+    }
+
+    /// <summary>
     /// Opaque metadata from prior compaction, to be round-tripped verbatim
     /// </summary>
     public string? EncryptedContent
@@ -74,12 +74,12 @@ public sealed record class BetaCompactionBlockParam : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        _ = this.Content;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("compaction")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         this.CacheControl?.Validate();
+        _ = this.Content;
         _ = this.EncryptedContent;
     }
 
@@ -115,13 +115,6 @@ public sealed record class BetaCompactionBlockParam : JsonModel
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-
-    [SetsRequiredMembers]
-    public BetaCompactionBlockParam(string? content)
-        : this()
-    {
-        this.Content = content;
     }
 }
 
