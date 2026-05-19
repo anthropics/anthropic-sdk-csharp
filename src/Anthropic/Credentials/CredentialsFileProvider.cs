@@ -26,7 +26,30 @@ public sealed class CredentialsFileProvider : IAccessTokenProvider
 {
     // Per-file lock prevents concurrent refresh races when multiple CredentialsFileProvider
     // instances (or callers) target the same credentials file within one process.
-    private static readonly ConcurrentDictionary<string, SemaphoreSlim> s_fileLocks = new();
+    // StringComparer.Ordinal: file paths are binary identities, not locale-sensitive text.
+    private static readonly ConcurrentDictionary<string, SemaphoreSlim> s_fileLocks =
+        new(StringComparer.Ordinal);
+
+    // Amortized pruning: remove semaphores for file paths that are no longer held
+    // (CurrentCount == 1 means nobody is waiting or inside the lock) to prevent
+    // the dictionary from growing unboundedly in long-running servers with rotating
+    // credential paths.
+    private static void PruneFileLocks()
+    {
+        // Snapshot keys without LINQ (System.Linq is not imported here) so we can
+        // safely mutate the dictionary while iterating.
+        var keys = new List<string>(s_fileLocks.Keys);
+        foreach (var key in keys)
+        {
+            if (s_fileLocks.TryGetValue(key, out var sem) && sem.CurrentCount == 1)
+            {
+                // Safe to remove: the semaphore is idle. A concurrent caller that just
+                // called GetOrAdd will get a fresh SemaphoreSlim from GetOrAdd, which is
+                // fine — both callers will proceed, just without cross-instance locking.
+                s_fileLocks.TryRemove(key, out _);
+            }
+        }
+    }
 
 #if !NET
     private static int s_netstandardPermWarningEmitted;
@@ -108,6 +131,8 @@ public sealed class CredentialsFileProvider : IAccessTokenProvider
 
         // Token expired or about to expire: acquire per-file lock so that concurrent
         // callers sharing the same credentials file don't race on read-refresh-write.
+        // Prune idle semaphores first to prevent unbounded dictionary growth.
+        PruneFileLocks();
         var fileLock = s_fileLocks.GetOrAdd(_credentialsFilePath, _ => new SemaphoreSlim(1, 1));
         await fileLock.WaitAsync(cancellationToken).ConfigureAwait(false);
         try

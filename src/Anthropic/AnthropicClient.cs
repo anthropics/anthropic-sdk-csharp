@@ -118,7 +118,10 @@ public class AnthropicClient : IAnthropicClient
         {
             _options.Credentials?.Dispose();
         }
-        HttpClient.Dispose();
+        if (_options.OwnsHttpClient)
+        {
+            HttpClient.Dispose();
+        }
         GC.SuppressFinalize(this);
     }
 
@@ -338,7 +341,10 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
             }
             catch (Exception e)
             {
-                if (++retries > maxRetries || !ShouldRetry(e))
+                // Increment before the limit check so the response-path check
+                // below (which also does ++retries) stays independent.
+                retries++;
+                if (retries > maxRetries || !ShouldRetry(e))
                 {
                     throw;
                 }
@@ -599,21 +605,14 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
             return shouldRetry;
         }
 
+        // Retry 408 (Request Timeout), 409 (Conflict/lock timeout), 429 (Rate Limit),
+        // and all 5xx server errors on every target framework.
+        // Note: NETSTANDARD2_0_OR_GREATER is defined on .NET 5+ as well, so a
+        // #if !NETSTANDARD2_0_OR_GREATER guard would silently exclude 429 on modern
+        // runtimes — do not add such a guard here.
         return (int)response.StatusCode switch
         {
-            // Retry on request timeouts
-            408
-            or
-            // Retry on lock timeouts
-            409
-            or
-#if !NETSTANDARD2_0_OR_GREATER
-            // Retry on rate limits
-            429
-            or
-#endif
-            // Retry internal errors
-            >= 500 => true,
+            408 or 409 or 429 or >= 500 => true,
             _ => false,
         };
     }
@@ -634,7 +633,10 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         {
             _options.Credentials?.Dispose();
         }
-        this.HttpClient.Dispose();
+        if (_options.OwnsHttpClient)
+        {
+            this.HttpClient.Dispose();
+        }
         GC.SuppressFinalize(this);
     }
 
