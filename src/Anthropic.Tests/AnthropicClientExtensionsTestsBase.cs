@@ -3134,7 +3134,7 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Equal("tool_a", fccA.Name);
         Assert.NotNull(fccA.Arguments);
         Assert.Equal("a", fccA.Arguments["arg"]?.ToString());
-        
+
         var fccB = allFunctionCalls.Single(fc => fc.CallId == "toolu_b");
         Assert.Equal("tool_b", fccB.Name);
         Assert.NotNull(fccB.Arguments);
