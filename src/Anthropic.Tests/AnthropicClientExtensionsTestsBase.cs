@@ -3061,6 +3061,87 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetStreamingResponseAsync_WithOverlappingParallelToolBlocks_EmitsOneCompleteFunctionCallPerBlock()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Call overlapping parallel tools"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_overlap_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_a","name":"tool_a","input":{},"caller":{"type":"direct"}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"arg\":\"a\"}"}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":1,"content_block":{"type":"tool_use","id":"toolu_b","name":"tool_b","input":{},"caller":{"type":"direct"}}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":1,"delta":{"type":"input_json_delta","partial_json":"{\"arg\":\"b\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":1}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null},"usage":{"output_tokens":15}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Call overlapping parallel tools",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var allFunctionCalls = updates
+            .SelectMany(u => u.Contents.OfType<FunctionCallContent>())
+            .ToList();
+
+        Assert.Equal(2, allFunctionCalls.Count);
+        Assert.Equal(2, allFunctionCalls.Select(fc => fc.CallId).Distinct().Count());
+
+        var fccA = allFunctionCalls.Single(fc => fc.CallId == "toolu_a");
+        Assert.Equal("tool_a", fccA.Name);
+        Assert.NotNull(fccA.Arguments);
+        Assert.Equal("a", fccA.Arguments["arg"]?.ToString());
+        
+        var fccB = allFunctionCalls.Single(fc => fc.CallId == "toolu_b");
+        Assert.Equal("tool_b", fccB.Name);
+        Assert.NotNull(fccB.Arguments);
+        Assert.Equal("b", fccB.Arguments["arg"]?.ToString());
+    }
+
+    [Fact]
     public async Task GetResponseAsync_WithAdditionalUsageCounts()
     {
         VerbatimHttpHandler handler = new(
