@@ -11,6 +11,25 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(JsonModelConverter<BetaThinkingDelta, BetaThinkingDeltaFromRaw>))]
 public sealed record class BetaThinkingDelta : JsonModel
 {
+    /// <summary>
+    /// Per-frame increment of a coarse, running estimate of the tokens this thinking
+    /// block has produced so far. Present whenever the `thinking-token-count-2026-05-13`
+    /// beta is set; `null` unless `thinking.display` resolves to `"omitted"` and
+    /// a count is due this frame. Sum the increments across `thinking_delta` frames
+    /// on this block for a progress indicator. Each increment is a non-negative multiple
+    /// of a fixed quantum and the cadence is rate-limited, so this is a deliberately
+    /// lossy display hint, not a billable count; `usage.output_tokens` remains authoritative.
+    /// </summary>
+    public required long? EstimatedTokens
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("estimated_tokens");
+        }
+        init { this._rawData.Set("estimated_tokens", value); }
+    }
+
     public required string Thinking
     {
         get
@@ -34,6 +53,7 @@ public sealed record class BetaThinkingDelta : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
+        _ = this.EstimatedTokens;
         _ = this.Thinking;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("thinking_delta")))
         {
@@ -73,13 +93,6 @@ public sealed record class BetaThinkingDelta : JsonModel
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-
-    [SetsRequiredMembers]
-    public BetaThinkingDelta(string thinking)
-        : this()
-    {
-        this.Thinking = thinking;
     }
 }
 

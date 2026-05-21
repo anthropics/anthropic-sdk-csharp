@@ -33,6 +33,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.AdvisorTool2026_03_01)]
     [InlineData(AnthropicBeta.ManagedAgents2026_04_01)]
     [InlineData(AnthropicBeta.CacheDiagnosis2026_04_07)]
+    [InlineData(AnthropicBeta.ThinkingTokenCount2026_05_13)]
     public void Validation_Works(AnthropicBeta rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -78,6 +79,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.AdvisorTool2026_03_01)]
     [InlineData(AnthropicBeta.ManagedAgents2026_04_01)]
     [InlineData(AnthropicBeta.CacheDiagnosis2026_04_07)]
+    [InlineData(AnthropicBeta.ThinkingTokenCount2026_05_13)]
     public void SerializationRoundtrip_Works(AnthropicBeta rawValue)
     {
         // force implicit conversion because Theory can't do that for us

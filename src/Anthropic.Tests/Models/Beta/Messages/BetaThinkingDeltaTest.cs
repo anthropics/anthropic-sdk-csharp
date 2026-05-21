@@ -9,11 +9,13 @@ public class BetaThinkingDeltaTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaThinkingDelta { Thinking = "thinking" };
+        var model = new BetaThinkingDelta { EstimatedTokens = 0, Thinking = "thinking" };
 
+        long expectedEstimatedTokens = 0;
         string expectedThinking = "thinking";
         JsonElement expectedType = JsonSerializer.SerializeToElement("thinking_delta");
 
+        Assert.Equal(expectedEstimatedTokens, model.EstimatedTokens);
         Assert.Equal(expectedThinking, model.Thinking);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -21,7 +23,7 @@ public class BetaThinkingDeltaTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaThinkingDelta { Thinking = "thinking" };
+        var model = new BetaThinkingDelta { EstimatedTokens = 0, Thinking = "thinking" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaThinkingDelta>(
@@ -35,7 +37,7 @@ public class BetaThinkingDeltaTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaThinkingDelta { Thinking = "thinking" };
+        var model = new BetaThinkingDelta { EstimatedTokens = 0, Thinking = "thinking" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaThinkingDelta>(
@@ -44,9 +46,11 @@ public class BetaThinkingDeltaTest : TestBase
         );
         Assert.NotNull(deserialized);
 
+        long expectedEstimatedTokens = 0;
         string expectedThinking = "thinking";
         JsonElement expectedType = JsonSerializer.SerializeToElement("thinking_delta");
 
+        Assert.Equal(expectedEstimatedTokens, deserialized.EstimatedTokens);
         Assert.Equal(expectedThinking, deserialized.Thinking);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
@@ -54,7 +58,7 @@ public class BetaThinkingDeltaTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaThinkingDelta { Thinking = "thinking" };
+        var model = new BetaThinkingDelta { EstimatedTokens = 0, Thinking = "thinking" };
 
         model.Validate();
     }
@@ -62,7 +66,7 @@ public class BetaThinkingDeltaTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaThinkingDelta { Thinking = "thinking" };
+        var model = new BetaThinkingDelta { EstimatedTokens = 0, Thinking = "thinking" };
 
         BetaThinkingDelta copied = new(model);
 

@@ -42,7 +42,11 @@ public class BetaRawContentBlockDeltaTest : TestBase
     [Fact]
     public void ThinkingValidationWorks()
     {
-        BetaRawContentBlockDelta value = new BetaThinkingDelta("thinking");
+        BetaRawContentBlockDelta value = new BetaThinkingDelta()
+        {
+            EstimatedTokens = 0,
+            Thinking = "thinking",
+        };
         value.Validate();
     }
 
@@ -118,7 +122,11 @@ public class BetaRawContentBlockDeltaTest : TestBase
     [Fact]
     public void ThinkingSerializationRoundtripWorks()
     {
-        BetaRawContentBlockDelta value = new BetaThinkingDelta("thinking");
+        BetaRawContentBlockDelta value = new BetaThinkingDelta()
+        {
+            EstimatedTokens = 0,
+            Thinking = "thinking",
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(
             element,
