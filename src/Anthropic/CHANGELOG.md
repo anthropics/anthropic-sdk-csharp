@@ -1,5 +1,13 @@
 # Changelog
 
+## 12.23.0 (2026-05-21)
+
+Full Changelog: [Anthropic-v12.22.0...Anthropic-v12.23.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.22.0...Anthropic-v12.23.0)
+
+### Features
+
+* **api:** Add support for thinking-token-count beta for estimated tokens in thinking block deltas when streaming ([4618399](https://github.com/anthropics/anthropic-sdk-csharp/commit/46183996ce30d05c9e050839a9eb5e852d2bd765))
+
 ## 12.22.0 (2026-05-19)
 
 Full Changelog: [Anthropic-v12.21.0...Anthropic-v12.22.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.21.0...Anthropic-v12.22.0)
