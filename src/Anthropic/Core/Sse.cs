@@ -72,6 +72,13 @@ static class Sse
                 case "session.thread_status_rescheduled":
                 case "session.thread_status_terminated":
                 case "system.message":
+                    if (item.Data == "[DONE]")
+                    {
+                        // This is a terminal event sent by Microsoft Foundry to indicate the
+                        // end of the stream. It should not be treated as a message and should
+                        // not be deserialized.
+                        continue;
+                    }
                     T? message;
                     try
                     {
