@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+echo "==> Detecting breaking changes"
+
+# Restore the previous versions of the generated tests (the API-surface tests:
+# Services mirror the public SDK methods, Models mirror the public model types)
+# and compile them against the current SDK. If a public type or member was
+# removed or changed incompatibly, the old tests will no longer build,
+# surfacing the breaking change.
+git checkout "$1" -- src/Anthropic.Tests/Services src/Anthropic.Tests/Models 2>/dev/null || true
+
+# Compile only (don't run the tests): a clean build proves the previous tests
+# still bind to the current public API. The test project references the SDK
+# projects, so this builds them as well.
+dotnet build src/Anthropic.Tests/Anthropic.Tests.csproj
