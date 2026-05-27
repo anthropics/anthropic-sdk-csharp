@@ -18,8 +18,10 @@ namespace Anthropic.Models.Beta.Agents;
 public sealed record class BetaManagedAgentsModelConfig : JsonModel
 {
     /// <summary>
-    /// The model that will power your agent.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview)
-    /// for additional details and options.
+    /// The model that will power your agent.
+    ///
+    /// <para>See [models](https://docs.anthropic.com/en/docs/models-overview) for
+    /// additional details and options.</para>
     /// </summary>
     public required ApiEnum<string, BetaManagedAgentsModel> ID
     {

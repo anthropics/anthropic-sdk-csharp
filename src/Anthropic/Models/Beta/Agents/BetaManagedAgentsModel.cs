@@ -6,8 +6,10 @@ using System = System;
 namespace Anthropic.Models.Beta.Agents;
 
 /// <summary>
-/// The model that will power your agent.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview)
-/// for additional details and options.
+/// The model that will power your agent.
+///
+/// <para>See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+/// details and options.</para>
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsModelConverter))]
 public enum BetaManagedAgentsModel
