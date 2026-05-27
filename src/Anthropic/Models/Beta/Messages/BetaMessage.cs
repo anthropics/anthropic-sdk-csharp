@@ -111,8 +111,10 @@ public sealed record class BetaMessage : JsonModel
     }
 
     /// <summary>
-    /// The model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview)
-    /// for additional details and options.
+    /// The model that will complete your prompt.
+    ///
+    /// <para>See [models](https://docs.anthropic.com/en/docs/models-overview) for
+    /// additional details and options.</para>
     /// </summary>
     public required ApiEnum<string, Model> Model
     {

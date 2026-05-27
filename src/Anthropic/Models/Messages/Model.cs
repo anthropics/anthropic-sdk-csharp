@@ -6,8 +6,10 @@ using System = System;
 namespace Anthropic.Models.Messages;
 
 /// <summary>
-/// The model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview)
-/// for additional details and options.
+/// The model that will complete your prompt.
+///
+/// <para>See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+/// details and options.</para>
 /// </summary>
 [JsonConverter(typeof(ModelConverter))]
 public enum Model
