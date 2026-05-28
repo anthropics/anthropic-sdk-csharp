@@ -1134,10 +1134,7 @@ public static class AnthropicBetaClientExtensions
                                         createParams.OutputConfig ?? new BetaOutputConfig()
                                     ) with
                                     {
-                                        Format = new BetaJsonOutputFormat()
-                                        {
-                                            Schema = schemaDict,
-                                        },
+                                        Format = new BetaJsonOutputFormat() { Schema = schemaDict },
                                     },
                                 };
                             }
