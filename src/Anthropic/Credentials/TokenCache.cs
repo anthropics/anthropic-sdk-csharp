@@ -137,15 +137,19 @@ internal sealed class TokenCache : IAccessTokenProvider
     {
         if (!_refreshLock.Wait(0))
         {
-            // Another refresh is already in progress
+            // Another refresh is already in progress — do not start a second one.
             return;
         }
 
+        // We now hold the semaphore. It MUST be released in every exit path:
+        //   (a) early return when a background task is already running → release inline,
+        //   (b) Task.Run lambda completes (success or failure) → release in finally,
+        //   (c) Task.Run itself throws (rare: thread-pool exhaustion) → release in outer catch.
         try
         {
             if (_backgroundRefresh != null && !_backgroundRefresh.IsCompleted)
             {
-                // Already have a background refresh running
+                // A background refresh is already running; release and bail out.
                 _refreshLock.Release();
                 return;
             }
@@ -174,6 +178,8 @@ internal sealed class TokenCache : IAccessTokenProvider
                 }
                 finally
                 {
+                    // Release the semaphore so synchronous callers are no longer blocked.
+                    // Guard against ObjectDisposedException if Dispose() raced with us.
                     if (!_disposed)
                     {
                         try
@@ -187,6 +193,8 @@ internal sealed class TokenCache : IAccessTokenProvider
         }
         catch
         {
+            // Task.Run failed to schedule (e.g. thread-pool exhaustion).
+            // Release the semaphore so future mandatory refreshes can proceed.
             _refreshLock.Release();
             throw;
         }

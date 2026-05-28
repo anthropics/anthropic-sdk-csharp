@@ -54,17 +54,22 @@ public static class AWSSigner
 
         var amzDate = ToAmzDate(now);
         var datestamp = now.ToString("yyyyMMdd");
-        headers["host"] = uri.Host;
-        headers["x-amz-date"] = amzDate;
+
+        // Work on a copy so the caller’s dictionary is not mutated between retries.
+        var workingHeaders = new Dictionary<string, string>(headers, StringComparer.OrdinalIgnoreCase)
+        {
+            ["host"] = uri.Host,
+            ["x-amz-date"] = amzDate,
+        };
         if (!string.IsNullOrWhiteSpace(awsSessionToken))
         {
-            headers["x-amz-security-token"] = awsSessionToken!;
+            workingHeaders["x-amz-security-token"] = awsSessionToken!;
         }
 
         // Create the canonical request
         var canonicalQuerystring = "";
-        var canonicalHeaders = CanonicalizeHeaders(headers);
-        var signedHeaders = CanonicalizeHeaderNames(headers);
+        var canonicalHeaders = CanonicalizeHeaders(workingHeaders);
+        var signedHeaders = CanonicalizeHeaderNames(workingHeaders);
         var canonicalRequest =
             $"{httpMethod}\n{string.Join("/", uri.AbsolutePath.Split('/').Select(WebUtility.UrlEncode))}\n{canonicalQuerystring}\n{canonicalHeaders}\n{signedHeaders}\n{payloadHash}";
 
@@ -133,7 +138,8 @@ public static class AWSSigner
     {
         var hash = HmacSha256(key, data);
 #if NET9_0_OR_GREATER
-        return System.Convert.ToHexStringLower(hash).Replace("-", "");
+        // Convert.ToHexStringLower never produces hyphens, so no Replace needed.
+        return System.Convert.ToHexStringLower(hash);
 #else
         return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
 #endif
