@@ -212,7 +212,37 @@ public sealed class BetaMessageContentAggregator
             e => Single(e),
             e => Single(e),
             e => Single(e),
-            e => Single(e)
+            compactionBlock =>
+            {
+                // Merge the content/encrypted_content carried by compaction_delta events; the
+                // start block leaves both null until the deltas arrive.
+                var deltas = Of<BetaCompactionContentBlockDelta>();
+                string? Merge(string? seed, Func<BetaCompactionContentBlockDelta, string?> selector)
+                {
+                    var parts = new List<string>();
+                    if (seed != null)
+                    {
+                        parts.Add(seed);
+                    }
+                    foreach (var delta in deltas)
+                    {
+                        var value = selector(delta);
+                        if (value != null)
+                        {
+                            parts.Add(value);
+                        }
+                    }
+                    return parts.Count == 0 ? null : string.Concat(parts);
+                }
+                resultBlock = new BetaCompactionBlock()
+                {
+                    Content = Merge(compactionBlock.Content, d => d.Content),
+                    EncryptedContent = Merge(
+                        compactionBlock.EncryptedContent,
+                        d => d.EncryptedContent
+                    ),
+                };
+            }
         );
 
         return resultBlock ?? throw new AnthropicInvalidDataException("Missing result block");

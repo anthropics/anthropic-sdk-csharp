@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 using Anthropic.Services;
@@ -165,7 +166,23 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
                     Thinking = StringJoinHelper(thinkingBlock.Thinking, blocks, e => e.Thinking),
                 }),
             e => Single(e),
-            e => Single(e),
+            toolUseBlock =>
+            {
+                // Reconstruct the tool_use input from input_json_delta events, overriding only
+                // "input" so the other fields the start block carried (id, name, and any optional
+                // ones such as caller, which the wire omits here) survive untouched.
+                var mergedJson = string.Concat(Of<InputJsonDelta>().Select(d => d.PartialJson));
+                if (string.IsNullOrEmpty(mergedJson))
+                {
+                    resultBlock = toolUseBlock;
+                }
+                else
+                {
+                    var raw = toolUseBlock.RawData.ToDictionary(kv => kv.Key, kv => kv.Value);
+                    raw["input"] = JsonSerializer.Deserialize<JsonElement>(mergedJson);
+                    resultBlock = ToolUseBlock.FromRawUnchecked(raw);
+                }
+            },
             e => Single(e),
             e => Single(e),
             e => Single(e),
