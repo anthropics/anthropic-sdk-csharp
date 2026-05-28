@@ -1108,30 +1108,33 @@ public static class AnthropicBetaClientExtensions
                                 .JsonSchemaTransformCache.GetOrCreateTransformedSchema(formatJson)
                                 .GetValueOrDefault();
                             if (
-                                schema.TryGetProperty("properties", out JsonElement properties)
+                                schema.ValueKind is JsonValueKind.Object
+                                && schema.TryGetProperty("properties", out JsonElement properties)
                                 && properties.ValueKind is JsonValueKind.Object
                                 && schema.TryGetProperty("required", out JsonElement required)
                                 && required.ValueKind is JsonValueKind.Array
                             )
                             {
+                                // Preserve all top-level schema keywords (e.g. $defs,
+                                // description, title) so $ref references remain resolvable; only
+                                // override type/additionalProperties to satisfy API requirements.
+                                var schemaDict = new Dictionary<string, JsonElement>(
+                                    StringComparer.Ordinal
+                                );
+                                foreach (JsonProperty p in schema.EnumerateObject())
+                                {
+                                    schemaDict[p.Name] = p.Value;
+                                }
+                                schemaDict["type"] = JsonElement.Parse("\"object\"");
+                                schemaDict["additionalProperties"] = JsonElement.Parse("false");
+
                                 createParams = createParams with
                                 {
                                     OutputConfig = (
                                         createParams.OutputConfig ?? new BetaOutputConfig()
                                     ) with
                                     {
-                                        Format = new BetaJsonOutputFormat()
-                                        {
-                                            Schema = new Dictionary<string, JsonElement>
-                                            {
-                                                ["type"] = JsonElement.Parse("\"object\""),
-                                                ["properties"] = properties,
-                                                ["required"] = required,
-                                                ["additionalProperties"] = JsonElement.Parse(
-                                                    "false"
-                                                ),
-                                            },
-                                        },
+                                        Format = new BetaJsonOutputFormat() { Schema = schemaDict },
                                     },
                                 };
                             }

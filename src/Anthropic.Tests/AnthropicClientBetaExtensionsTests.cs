@@ -1099,6 +1099,92 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     }
 
     [Fact]
+    public async Task GetResponseAsync_WithResponseFormatSchemaContainingDefs_PreservesDefs()
+    {
+        // Top-level JSON Schema keywords like $defs must survive forwarding to
+        // output_config.format.schema; otherwise $ref references become
+        // unresolvable and the server returns 400.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Return JSON"
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "value": { "$ref": "#/$defs/Item" }
+                            },
+                            "required": ["value"],
+                            "$defs": {
+                                "Item": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_defs_beta_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "{\"value\":\"hello\"}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema(
+                JsonElement.Parse(
+                    """
+                    {
+                        "type": "object",
+                        "properties": {
+                            "value": { "$ref": "#/$defs/Item" }
+                        },
+                        "required": ["value"],
+                        "$defs": {
+                            "Item": { "type": "string" }
+                        }
+                    }
+                    """
+                ),
+                "result_with_defs"
+            ),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Return JSON",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_WithNonEmptyMessageParams_EmptyMessages()
     {
         VerbatimHttpHandler handler = new(
