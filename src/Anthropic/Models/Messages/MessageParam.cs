@@ -352,6 +352,7 @@ public enum Role
 {
     User,
     Assistant,
+    System,
 }
 
 sealed class RoleConverter : JsonConverter<Role>
@@ -366,6 +367,7 @@ sealed class RoleConverter : JsonConverter<Role>
         {
             "user" => Role.User,
             "assistant" => Role.Assistant,
+            "system" => Role.System,
             _ => (Role)(-1),
         };
     }
@@ -378,6 +380,7 @@ sealed class RoleConverter : JsonConverter<Role>
             {
                 Role.User => "user",
                 Role.Assistant => "assistant",
+                Role.System => "system",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

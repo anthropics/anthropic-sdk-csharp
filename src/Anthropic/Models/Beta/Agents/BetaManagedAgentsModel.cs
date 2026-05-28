@@ -17,6 +17,11 @@ public enum BetaManagedAgentsModel
     /// <summary>
     /// Frontier intelligence for long-running agents and coding
     /// </summary>
+    ClaudeOpus4_8,
+
+    /// <summary>
+    /// Frontier intelligence for long-running agents and coding
+    /// </summary>
     ClaudeOpus4_7,
 
     /// <summary>
@@ -70,6 +75,7 @@ sealed class BetaManagedAgentsModelConverter : JsonConverter<BetaManagedAgentsMo
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
+            "claude-opus-4-8" => BetaManagedAgentsModel.ClaudeOpus4_8,
             "claude-opus-4-7" => BetaManagedAgentsModel.ClaudeOpus4_7,
             "claude-opus-4-6" => BetaManagedAgentsModel.ClaudeOpus4_6,
             "claude-sonnet-4-6" => BetaManagedAgentsModel.ClaudeSonnet4_6,
@@ -93,6 +99,7 @@ sealed class BetaManagedAgentsModelConverter : JsonConverter<BetaManagedAgentsMo
             writer,
             value switch
             {
+                BetaManagedAgentsModel.ClaudeOpus4_8 => "claude-opus-4-8",
                 BetaManagedAgentsModel.ClaudeOpus4_7 => "claude-opus-4-7",
                 BetaManagedAgentsModel.ClaudeOpus4_6 => "claude-opus-4-6",
                 BetaManagedAgentsModel.ClaudeSonnet4_6 => "claude-sonnet-4-6",

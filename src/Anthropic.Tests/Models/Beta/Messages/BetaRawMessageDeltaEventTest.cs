@@ -66,6 +66,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     },
                 ],
                 OutputTokens = 503,
+                OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
@@ -125,6 +126,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 },
             ],
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
@@ -193,6 +195,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     },
                 ],
                 OutputTokens = 503,
+                OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
@@ -265,6 +268,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     },
                 ],
                 OutputTokens = 503,
+                OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
@@ -331,6 +335,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 },
             ],
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
@@ -399,6 +404,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     },
                 ],
                 OutputTokens = 503,
+                OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
@@ -465,6 +471,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     },
                 ],
                 OutputTokens = 503,
+                OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };

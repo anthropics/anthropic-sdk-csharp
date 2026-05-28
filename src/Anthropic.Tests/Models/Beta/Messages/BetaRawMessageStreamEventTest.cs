@@ -95,6 +95,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                         },
                     ],
                     OutputTokens = 503,
+                    OutputTokensDetails = new(0),
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
                     Speed = Messages::BetaUsageSpeed.Standard,
@@ -163,6 +164,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                     },
                 ],
                 OutputTokens = 503,
+                OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
@@ -307,6 +309,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                         },
                     ],
                     OutputTokens = 503,
+                    OutputTokensDetails = new(0),
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
                     Speed = Messages::BetaUsageSpeed.Standard,
@@ -381,6 +384,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                     },
                 ],
                 OutputTokens = 503,
+                OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };

@@ -30,6 +30,19 @@ public sealed record class BetaAdvisorRedactedResultBlock : JsonModel
         init { this._rawData.Set("encrypted_content", value); }
     }
 
+    /// <summary>
+    /// The advisor sub-inference's stop reason (same values as the top-level message `stop_reason`).
+    /// </summary>
+    public required string? StopReason
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("stop_reason");
+        }
+        init { this._rawData.Set("stop_reason", value); }
+    }
+
     public JsonElement Type
     {
         get
@@ -44,6 +57,7 @@ public sealed record class BetaAdvisorRedactedResultBlock : JsonModel
     public override void Validate()
     {
         _ = this.EncryptedContent;
+        _ = this.StopReason;
         if (
             !JsonElement.DeepEquals(
                 this.Type,
@@ -89,13 +103,6 @@ public sealed record class BetaAdvisorRedactedResultBlock : JsonModel
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-
-    [SetsRequiredMembers]
-    public BetaAdvisorRedactedResultBlock(string encryptedContent)
-        : this()
-    {
-        this.EncryptedContent = encryptedContent;
     }
 }
 

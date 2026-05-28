@@ -34,6 +34,7 @@ public class BetaUsageTest : TestBase
                 },
             ],
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = BetaUsageServiceTier.Standard,
             Speed = BetaUsageSpeed.Standard,
@@ -60,6 +61,7 @@ public class BetaUsageTest : TestBase
             },
         ];
         long expectedOutputTokens = 503;
+        BetaOutputTokensDetails expectedOutputTokensDetails = new(0);
         BetaServerToolUsage expectedServerToolUse = new()
         {
             WebFetchRequests = 2,
@@ -80,6 +82,7 @@ public class BetaUsageTest : TestBase
             Assert.Equal(expectedIterations[i], model.Iterations[i]);
         }
         Assert.Equal(expectedOutputTokens, model.OutputTokens);
+        Assert.Equal(expectedOutputTokensDetails, model.OutputTokensDetails);
         Assert.Equal(expectedServerToolUse, model.ServerToolUse);
         Assert.Equal(expectedServiceTier, model.ServiceTier);
         Assert.Equal(expectedSpeed, model.Speed);
@@ -111,6 +114,7 @@ public class BetaUsageTest : TestBase
                 },
             ],
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = BetaUsageServiceTier.Standard,
             Speed = BetaUsageSpeed.Standard,
@@ -148,6 +152,7 @@ public class BetaUsageTest : TestBase
                 },
             ],
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = BetaUsageServiceTier.Standard,
             Speed = BetaUsageSpeed.Standard,
@@ -181,6 +186,7 @@ public class BetaUsageTest : TestBase
             },
         ];
         long expectedOutputTokens = 503;
+        BetaOutputTokensDetails expectedOutputTokensDetails = new(0);
         BetaServerToolUsage expectedServerToolUse = new()
         {
             WebFetchRequests = 2,
@@ -201,6 +207,7 @@ public class BetaUsageTest : TestBase
             Assert.Equal(expectedIterations[i], deserialized.Iterations[i]);
         }
         Assert.Equal(expectedOutputTokens, deserialized.OutputTokens);
+        Assert.Equal(expectedOutputTokensDetails, deserialized.OutputTokensDetails);
         Assert.Equal(expectedServerToolUse, deserialized.ServerToolUse);
         Assert.Equal(expectedServiceTier, deserialized.ServiceTier);
         Assert.Equal(expectedSpeed, deserialized.Speed);
@@ -232,6 +239,7 @@ public class BetaUsageTest : TestBase
                 },
             ],
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = BetaUsageServiceTier.Standard,
             Speed = BetaUsageSpeed.Standard,
@@ -266,6 +274,7 @@ public class BetaUsageTest : TestBase
                 },
             ],
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = BetaUsageServiceTier.Standard,
             Speed = BetaUsageSpeed.Standard,

@@ -29,6 +29,7 @@ public class RawMessageDeltaEventTest : TestBase
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
                 OutputTokens = 503,
+                OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
@@ -51,6 +52,7 @@ public class RawMessageDeltaEventTest : TestBase
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
@@ -81,6 +83,7 @@ public class RawMessageDeltaEventTest : TestBase
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
                 OutputTokens = 503,
+                OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
@@ -116,6 +119,7 @@ public class RawMessageDeltaEventTest : TestBase
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
                 OutputTokens = 503,
+                OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
@@ -145,6 +149,7 @@ public class RawMessageDeltaEventTest : TestBase
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
@@ -175,6 +180,7 @@ public class RawMessageDeltaEventTest : TestBase
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
                 OutputTokens = 503,
+                OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
@@ -204,6 +210,7 @@ public class RawMessageDeltaEventTest : TestBase
                 CacheReadInputTokens = 2051,
                 InputTokens = 2095,
                 OutputTokens = 503,
+                OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };

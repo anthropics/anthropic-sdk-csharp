@@ -195,16 +195,22 @@ public class BetaAdvisorToolResultBlockParamContentTest : TestBase
     [Fact]
     public void BetaAdvisorResultBlockParamValidationWorks()
     {
-        BetaAdvisorToolResultBlockParamContent value = new BetaAdvisorResultBlockParam("text");
+        BetaAdvisorToolResultBlockParamContent value = new BetaAdvisorResultBlockParam()
+        {
+            Text = "text",
+            StopReason = "stop_reason",
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaAdvisorRedactedResultBlockParamValidationWorks()
     {
-        BetaAdvisorToolResultBlockParamContent value = new BetaAdvisorRedactedResultBlockParam(
-            "encrypted_content"
-        );
+        BetaAdvisorToolResultBlockParamContent value = new BetaAdvisorRedactedResultBlockParam()
+        {
+            EncryptedContent = "encrypted_content",
+            StopReason = "stop_reason",
+        };
         value.Validate();
     }
 
@@ -226,7 +232,11 @@ public class BetaAdvisorToolResultBlockParamContentTest : TestBase
     [Fact]
     public void BetaAdvisorResultBlockParamSerializationRoundtripWorks()
     {
-        BetaAdvisorToolResultBlockParamContent value = new BetaAdvisorResultBlockParam("text");
+        BetaAdvisorToolResultBlockParamContent value = new BetaAdvisorResultBlockParam()
+        {
+            Text = "text",
+            StopReason = "stop_reason",
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaAdvisorToolResultBlockParamContent>(
             element,
@@ -239,9 +249,11 @@ public class BetaAdvisorToolResultBlockParamContentTest : TestBase
     [Fact]
     public void BetaAdvisorRedactedResultBlockParamSerializationRoundtripWorks()
     {
-        BetaAdvisorToolResultBlockParamContent value = new BetaAdvisorRedactedResultBlockParam(
-            "encrypted_content"
-        );
+        BetaAdvisorToolResultBlockParamContent value = new BetaAdvisorRedactedResultBlockParam()
+        {
+            EncryptedContent = "encrypted_content",
+            StopReason = "stop_reason",
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaAdvisorToolResultBlockParamContent>(
             element,

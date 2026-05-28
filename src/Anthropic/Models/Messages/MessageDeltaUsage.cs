@@ -63,6 +63,24 @@ public sealed record class MessageDeltaUsage : JsonModel
     }
 
     /// <summary>
+    /// Breakdown of output tokens by category.
+    ///
+    /// <para>`output_tokens` remains the inclusive, authoritative total used for
+    /// billing. This object provides a read-only decomposition for observability
+    /// — for example, how many of the billed output tokens were spent on internal
+    /// reasoning that may have been summarized before being returned to you.</para>
+    /// </summary>
+    public required OutputTokensDetails? OutputTokensDetails
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<OutputTokensDetails>("output_tokens_details");
+        }
+        init { this._rawData.Set("output_tokens_details", value); }
+    }
+
+    /// <summary>
     /// The number of server tool requests.
     /// </summary>
     public required ServerToolUsage? ServerToolUse
@@ -82,6 +100,7 @@ public sealed record class MessageDeltaUsage : JsonModel
         _ = this.CacheReadInputTokens;
         _ = this.InputTokens;
         _ = this.OutputTokens;
+        this.OutputTokensDetails?.Validate();
         this.ServerToolUse?.Validate();
     }
 

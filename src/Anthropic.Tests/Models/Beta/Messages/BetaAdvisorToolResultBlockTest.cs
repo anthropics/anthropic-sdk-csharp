@@ -106,14 +106,18 @@ public class ContentTest : TestBase
     [Fact]
     public void BetaAdvisorResultBlockValidationWorks()
     {
-        Content value = new BetaAdvisorResultBlock("text");
+        Content value = new BetaAdvisorResultBlock() { StopReason = "stop_reason", Text = "text" };
         value.Validate();
     }
 
     [Fact]
     public void BetaAdvisorRedactedResultBlockValidationWorks()
     {
-        Content value = new BetaAdvisorRedactedResultBlock("encrypted_content");
+        Content value = new BetaAdvisorRedactedResultBlock()
+        {
+            EncryptedContent = "encrypted_content",
+            StopReason = "stop_reason",
+        };
         value.Validate();
     }
 
@@ -133,7 +137,7 @@ public class ContentTest : TestBase
     [Fact]
     public void BetaAdvisorResultBlockSerializationRoundtripWorks()
     {
-        Content value = new BetaAdvisorResultBlock("text");
+        Content value = new BetaAdvisorResultBlock() { StopReason = "stop_reason", Text = "text" };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Content>(
             element,
@@ -146,7 +150,11 @@ public class ContentTest : TestBase
     [Fact]
     public void BetaAdvisorRedactedResultBlockSerializationRoundtripWorks()
     {
-        Content value = new BetaAdvisorRedactedResultBlock("encrypted_content");
+        Content value = new BetaAdvisorRedactedResultBlock()
+        {
+            EncryptedContent = "encrypted_content",
+            StopReason = "stop_reason",
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Content>(
             element,

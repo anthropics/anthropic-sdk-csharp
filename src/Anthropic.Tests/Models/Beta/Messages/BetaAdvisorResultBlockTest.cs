@@ -9,11 +9,13 @@ public class BetaAdvisorResultBlockTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaAdvisorResultBlock { Text = "text" };
+        var model = new BetaAdvisorResultBlock { StopReason = "stop_reason", Text = "text" };
 
+        string expectedStopReason = "stop_reason";
         string expectedText = "text";
         JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_result");
 
+        Assert.Equal(expectedStopReason, model.StopReason);
         Assert.Equal(expectedText, model.Text);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -21,7 +23,7 @@ public class BetaAdvisorResultBlockTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaAdvisorResultBlock { Text = "text" };
+        var model = new BetaAdvisorResultBlock { StopReason = "stop_reason", Text = "text" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaAdvisorResultBlock>(
@@ -35,7 +37,7 @@ public class BetaAdvisorResultBlockTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaAdvisorResultBlock { Text = "text" };
+        var model = new BetaAdvisorResultBlock { StopReason = "stop_reason", Text = "text" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaAdvisorResultBlock>(
@@ -44,9 +46,11 @@ public class BetaAdvisorResultBlockTest : TestBase
         );
         Assert.NotNull(deserialized);
 
+        string expectedStopReason = "stop_reason";
         string expectedText = "text";
         JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_result");
 
+        Assert.Equal(expectedStopReason, deserialized.StopReason);
         Assert.Equal(expectedText, deserialized.Text);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
@@ -54,7 +58,7 @@ public class BetaAdvisorResultBlockTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaAdvisorResultBlock { Text = "text" };
+        var model = new BetaAdvisorResultBlock { StopReason = "stop_reason", Text = "text" };
 
         model.Validate();
     }
@@ -62,7 +66,7 @@ public class BetaAdvisorResultBlockTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaAdvisorResultBlock { Text = "text" };
+        var model = new BetaAdvisorResultBlock { StopReason = "stop_reason", Text = "text" };
 
         BetaAdvisorResultBlock copied = new(model);
 
