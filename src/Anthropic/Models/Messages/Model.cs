@@ -17,6 +17,11 @@ public enum Model
     /// <summary>
     /// Frontier intelligence for long-running agents and coding
     /// </summary>
+    ClaudeOpus4_8,
+
+    /// <summary>
+    /// Frontier intelligence for long-running agents and coding
+    /// </summary>
     ClaudeOpus4_7,
 
     /// <summary>
@@ -125,6 +130,7 @@ sealed class ModelConverter : JsonConverter<Model>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
+            "claude-opus-4-8" => Model.ClaudeOpus4_8,
             "claude-opus-4-7" => Model.ClaudeOpus4_7,
             "claude-mythos-preview" => Model.ClaudeMythosPreview,
             "claude-opus-4-6" => Model.ClaudeOpus4_6,
@@ -152,6 +158,7 @@ sealed class ModelConverter : JsonConverter<Model>
             writer,
             value switch
             {
+                Model.ClaudeOpus4_8 => "claude-opus-4-8",
                 Model.ClaudeOpus4_7 => "claude-opus-4-7",
                 Model.ClaudeMythosPreview => "claude-mythos-preview",
                 Model.ClaudeOpus4_6 => "claude-opus-4-6",

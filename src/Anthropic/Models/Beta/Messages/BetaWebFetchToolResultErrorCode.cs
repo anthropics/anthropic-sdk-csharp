@@ -11,6 +11,7 @@ public enum BetaWebFetchToolResultErrorCode
     InvalidToolInput,
     UrlTooLong,
     UrlNotAllowed,
+    UrlNotInPriorContext,
     UrlNotAccessible,
     UnsupportedContentType,
     TooManyRequests,
@@ -32,6 +33,7 @@ sealed class BetaWebFetchToolResultErrorCodeConverter
             "invalid_tool_input" => BetaWebFetchToolResultErrorCode.InvalidToolInput,
             "url_too_long" => BetaWebFetchToolResultErrorCode.UrlTooLong,
             "url_not_allowed" => BetaWebFetchToolResultErrorCode.UrlNotAllowed,
+            "url_not_in_prior_context" => BetaWebFetchToolResultErrorCode.UrlNotInPriorContext,
             "url_not_accessible" => BetaWebFetchToolResultErrorCode.UrlNotAccessible,
             "unsupported_content_type" => BetaWebFetchToolResultErrorCode.UnsupportedContentType,
             "too_many_requests" => BetaWebFetchToolResultErrorCode.TooManyRequests,
@@ -54,6 +56,7 @@ sealed class BetaWebFetchToolResultErrorCodeConverter
                 BetaWebFetchToolResultErrorCode.InvalidToolInput => "invalid_tool_input",
                 BetaWebFetchToolResultErrorCode.UrlTooLong => "url_too_long",
                 BetaWebFetchToolResultErrorCode.UrlNotAllowed => "url_not_allowed",
+                BetaWebFetchToolResultErrorCode.UrlNotInPriorContext => "url_not_in_prior_context",
                 BetaWebFetchToolResultErrorCode.UrlNotAccessible => "url_not_accessible",
                 BetaWebFetchToolResultErrorCode.UnsupportedContentType =>
                     "unsupported_content_type",

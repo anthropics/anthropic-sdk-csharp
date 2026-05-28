@@ -133,6 +133,18 @@ public record class Content : ModelBase
         }
     }
 
+    public string? StopReason
+    {
+        get
+        {
+            return Match<string?>(
+                betaAdvisorToolResultError: (_) => null,
+                betaAdvisorResultBlock: (x) => x.StopReason,
+                betaAdvisorRedactedResultBlock: (x) => x.StopReason
+            );
+        }
+    }
+
     public Content(BetaAdvisorToolResultError value, JsonElement? element = null)
     {
         this.Value = value;

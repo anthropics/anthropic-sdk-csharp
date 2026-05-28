@@ -31,6 +31,7 @@ public class BetaMessageDeltaUsageTest : TestBase
                 },
             ],
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
@@ -49,6 +50,7 @@ public class BetaMessageDeltaUsageTest : TestBase
             },
         ];
         long expectedOutputTokens = 503;
+        BetaOutputTokensDetails expectedOutputTokensDetails = new(0);
         BetaServerToolUsage expectedServerToolUse = new()
         {
             WebFetchRequests = 2,
@@ -65,6 +67,7 @@ public class BetaMessageDeltaUsageTest : TestBase
             Assert.Equal(expectedIterations[i], model.Iterations[i]);
         }
         Assert.Equal(expectedOutputTokens, model.OutputTokens);
+        Assert.Equal(expectedOutputTokensDetails, model.OutputTokensDetails);
         Assert.Equal(expectedServerToolUse, model.ServerToolUse);
     }
 
@@ -92,6 +95,7 @@ public class BetaMessageDeltaUsageTest : TestBase
                 },
             ],
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
@@ -128,6 +132,7 @@ public class BetaMessageDeltaUsageTest : TestBase
                 },
             ],
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
@@ -153,6 +158,7 @@ public class BetaMessageDeltaUsageTest : TestBase
             },
         ];
         long expectedOutputTokens = 503;
+        BetaOutputTokensDetails expectedOutputTokensDetails = new(0);
         BetaServerToolUsage expectedServerToolUse = new()
         {
             WebFetchRequests = 2,
@@ -169,6 +175,7 @@ public class BetaMessageDeltaUsageTest : TestBase
             Assert.Equal(expectedIterations[i], deserialized.Iterations[i]);
         }
         Assert.Equal(expectedOutputTokens, deserialized.OutputTokens);
+        Assert.Equal(expectedOutputTokensDetails, deserialized.OutputTokensDetails);
         Assert.Equal(expectedServerToolUse, deserialized.ServerToolUse);
     }
 
@@ -196,6 +203,7 @@ public class BetaMessageDeltaUsageTest : TestBase
                 },
             ],
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
@@ -226,6 +234,7 @@ public class BetaMessageDeltaUsageTest : TestBase
                 },
             ],
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 

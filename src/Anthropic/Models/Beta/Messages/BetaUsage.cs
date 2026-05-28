@@ -119,6 +119,24 @@ public sealed record class BetaUsage : JsonModel
     }
 
     /// <summary>
+    /// Breakdown of output tokens by category.
+    ///
+    /// <para>`output_tokens` remains the inclusive, authoritative total used for
+    /// billing. This object provides a read-only decomposition for observability
+    /// — for example, how many of the billed output tokens were spent on internal
+    /// reasoning that may have been summarized before being returned to you.</para>
+    /// </summary>
+    public required BetaOutputTokensDetails? OutputTokensDetails
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaOutputTokensDetails>("output_tokens_details");
+        }
+        init { this._rawData.Set("output_tokens_details", value); }
+    }
+
+    /// <summary>
     /// The number of server tool requests.
     /// </summary>
     public required BetaServerToolUsage? ServerToolUse
@@ -172,6 +190,7 @@ public sealed record class BetaUsage : JsonModel
             item.Validate();
         }
         _ = this.OutputTokens;
+        this.OutputTokensDetails?.Validate();
         this.ServerToolUse?.Validate();
         this.ServiceTier?.Validate();
         this.Speed?.Validate();

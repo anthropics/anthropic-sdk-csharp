@@ -35,6 +35,7 @@ public class BetaToolRunnerTest
                 CacheReadInputTokens = null,
                 InputTokens = 10,
                 OutputTokens = 10,
+                OutputTokensDetails = new(0),
                 ServerToolUse = null,
                 ServiceTier = BetaUsageServiceTier.Standard,
                 Speed = null,

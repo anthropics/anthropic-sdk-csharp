@@ -15,6 +15,7 @@ public class MessageDeltaUsageTest : TestBase
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
@@ -22,6 +23,7 @@ public class MessageDeltaUsageTest : TestBase
         long expectedCacheReadInputTokens = 2051;
         long expectedInputTokens = 2095;
         long expectedOutputTokens = 503;
+        OutputTokensDetails expectedOutputTokensDetails = new(0);
         ServerToolUsage expectedServerToolUse = new()
         {
             WebFetchRequests = 2,
@@ -32,6 +34,7 @@ public class MessageDeltaUsageTest : TestBase
         Assert.Equal(expectedCacheReadInputTokens, model.CacheReadInputTokens);
         Assert.Equal(expectedInputTokens, model.InputTokens);
         Assert.Equal(expectedOutputTokens, model.OutputTokens);
+        Assert.Equal(expectedOutputTokensDetails, model.OutputTokensDetails);
         Assert.Equal(expectedServerToolUse, model.ServerToolUse);
     }
 
@@ -44,6 +47,7 @@ public class MessageDeltaUsageTest : TestBase
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
@@ -65,6 +69,7 @@ public class MessageDeltaUsageTest : TestBase
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
@@ -79,6 +84,7 @@ public class MessageDeltaUsageTest : TestBase
         long expectedCacheReadInputTokens = 2051;
         long expectedInputTokens = 2095;
         long expectedOutputTokens = 503;
+        OutputTokensDetails expectedOutputTokensDetails = new(0);
         ServerToolUsage expectedServerToolUse = new()
         {
             WebFetchRequests = 2,
@@ -89,6 +95,7 @@ public class MessageDeltaUsageTest : TestBase
         Assert.Equal(expectedCacheReadInputTokens, deserialized.CacheReadInputTokens);
         Assert.Equal(expectedInputTokens, deserialized.InputTokens);
         Assert.Equal(expectedOutputTokens, deserialized.OutputTokens);
+        Assert.Equal(expectedOutputTokensDetails, deserialized.OutputTokensDetails);
         Assert.Equal(expectedServerToolUse, deserialized.ServerToolUse);
     }
 
@@ -101,6 +108,7 @@ public class MessageDeltaUsageTest : TestBase
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
@@ -116,6 +124,7 @@ public class MessageDeltaUsageTest : TestBase
             CacheReadInputTokens = 2051,
             InputTokens = 2095,
             OutputTokens = 503,
+            OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 

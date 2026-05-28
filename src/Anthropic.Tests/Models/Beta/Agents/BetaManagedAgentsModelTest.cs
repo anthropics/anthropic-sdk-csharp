@@ -8,6 +8,7 @@ namespace Anthropic.Tests.Models.Beta.Agents;
 public class BetaManagedAgentsModelTest : TestBase
 {
     [Theory]
+    [InlineData(BetaManagedAgentsModel.ClaudeOpus4_8)]
     [InlineData(BetaManagedAgentsModel.ClaudeOpus4_7)]
     [InlineData(BetaManagedAgentsModel.ClaudeOpus4_6)]
     [InlineData(BetaManagedAgentsModel.ClaudeSonnet4_6)]
@@ -37,6 +38,7 @@ public class BetaManagedAgentsModelTest : TestBase
     }
 
     [Theory]
+    [InlineData(BetaManagedAgentsModel.ClaudeOpus4_8)]
     [InlineData(BetaManagedAgentsModel.ClaudeOpus4_7)]
     [InlineData(BetaManagedAgentsModel.ClaudeOpus4_6)]
     [InlineData(BetaManagedAgentsModel.ClaudeSonnet4_6)]

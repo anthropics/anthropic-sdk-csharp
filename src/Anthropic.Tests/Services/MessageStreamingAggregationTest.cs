@@ -27,6 +27,7 @@ public class MessageStreamingAggregationTest
                 CacheReadInputTokens = null,
                 InputTokens = 25,
                 OutputTokens = 25,
+                OutputTokensDetails = new(0),
                 ServerToolUse = null,
                 ServiceTier = UsageServiceTier.Standard,
                 InferenceGeo = "inference_geo",

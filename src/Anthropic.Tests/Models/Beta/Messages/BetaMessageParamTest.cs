@@ -328,6 +328,7 @@ public class RoleTest : TestBase
     [Theory]
     [InlineData(Role.User)]
     [InlineData(Role.Assistant)]
+    [InlineData(Role.System)]
     public void Validation_Works(Role rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -350,6 +351,7 @@ public class RoleTest : TestBase
     [Theory]
     [InlineData(Role.User)]
     [InlineData(Role.Assistant)]
+    [InlineData(Role.System)]
     public void SerializationRoundtrip_Works(Role rawValue)
     {
         // force implicit conversion because Theory can't do that for us

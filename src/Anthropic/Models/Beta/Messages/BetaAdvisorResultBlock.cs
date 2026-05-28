@@ -11,6 +11,21 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(JsonModelConverter<BetaAdvisorResultBlock, BetaAdvisorResultBlockFromRaw>))]
 public sealed record class BetaAdvisorResultBlock : JsonModel
 {
+    /// <summary>
+    /// The advisor sub-inference's stop reason (same values as the top-level message
+    /// `stop_reason`). `max_tokens` indicates the advisor's output was truncated
+    /// at the tool's `max_tokens` value or the advisor model's policy cap.
+    /// </summary>
+    public required string? StopReason
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("stop_reason");
+        }
+        init { this._rawData.Set("stop_reason", value); }
+    }
+
     public required string Text
     {
         get
@@ -34,6 +49,7 @@ public sealed record class BetaAdvisorResultBlock : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
+        _ = this.StopReason;
         _ = this.Text;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("advisor_result")))
         {
@@ -73,13 +89,6 @@ public sealed record class BetaAdvisorResultBlock : JsonModel
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-
-    [SetsRequiredMembers]
-    public BetaAdvisorResultBlock(string text)
-        : this()
-    {
-        this.Text = text;
     }
 }
 

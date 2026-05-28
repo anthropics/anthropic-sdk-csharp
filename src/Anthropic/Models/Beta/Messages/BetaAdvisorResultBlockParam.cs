@@ -33,6 +33,16 @@ public sealed record class BetaAdvisorResultBlockParam : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
+    public string? StopReason
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("stop_reason");
+        }
+        init { this._rawData.Set("stop_reason", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -41,6 +51,7 @@ public sealed record class BetaAdvisorResultBlockParam : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
+        _ = this.StopReason;
     }
 
     public BetaAdvisorResultBlockParam()

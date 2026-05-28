@@ -152,6 +152,18 @@ public record class BetaAdvisorToolResultBlockParamContent : ModelBase
         }
     }
 
+    public string? StopReason
+    {
+        get
+        {
+            return Match<string?>(
+                betaAdvisorToolResultErrorParam: (_) => null,
+                betaAdvisorResultBlockParam: (x) => x.StopReason,
+                betaAdvisorRedactedResultBlockParam: (x) => x.StopReason
+            );
+        }
+    }
+
     public BetaAdvisorToolResultBlockParamContent(
         BetaAdvisorToolResultErrorParam value,
         JsonElement? element = null
