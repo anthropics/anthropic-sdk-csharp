@@ -1270,7 +1270,7 @@ public static class AnthropicClientExtensions
                                 && required.ValueKind is JsonValueKind.Array
                             )
                             {
-                                // Preserve all top-level schema keywords (e.g. $defs, definitions,
+                                // Preserve all top-level schema keywords (e.g. $defs,
                                 // description, title) so $ref references remain resolvable; only
                                 // override type/additionalProperties to satisfy API requirements.
                                 var schemaDict = new Dictionary<string, JsonElement>(
