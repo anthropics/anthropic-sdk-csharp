@@ -223,7 +223,7 @@ public class SseTest : TestBase
     [Fact]
     public async Task Sse_SkipsDoneTerminalEvent()
     {
-        // Microsoft Foundry sends "data: [DONE]" (without an event: field) after
+        // Azure APIM may send "data: [DONE]" (without an event: field) after
         // message_stop to signal end-of-stream. SseParser assigns it the default
         // EventType "message", which matches the deserialization case. Without the
         // [DONE] guard this would throw a JsonException.
@@ -262,7 +262,7 @@ public class SseTest : TestBase
         }
 
         // Should have received 6 events (start, block_start, delta, block_stop, message_delta, message_stop)
-        // and NOT thrown on [DONE]
+        // and NOT throw on [DONE]
         Assert.Equal(6, actualMessages.Count);
     }
 }
