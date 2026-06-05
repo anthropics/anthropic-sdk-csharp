@@ -24,6 +24,13 @@ public sealed class AnthropicClient : IAnthropicClient
     }
 
     /// <inheritdoc/>
+    public IReadOnlyList<DelegatingHandler> Handlers
+    {
+        get { return this._options.Handlers; }
+        init { this._options.Handlers = value; }
+    }
+
+    /// <inheritdoc/>
     public string BaseUrl
     {
         get { return this._options.BaseUrl; }
@@ -104,7 +111,7 @@ public sealed class AnthropicClient : IAnthropicClient
         get { return _beta.Value; }
     }
 
-    public void Dispose() => this.HttpClient.Dispose();
+    public void Dispose() => this._options.DisposeHttpResources();
 
     public AnthropicClient()
     {
@@ -144,6 +151,13 @@ public sealed class AnthropicClientWithRawResponse : IAnthropicClientWithRawResp
     {
         get { return this._options.HttpClient; }
         init { this._options.HttpClient = value; }
+    }
+
+    /// <inheritdoc/>
+    public IReadOnlyList<DelegatingHandler> Handlers
+    {
+        get { return this._options.Handlers; }
+        init { this._options.Handlers = value; }
     }
 
     /// <inheritdoc/>
@@ -304,11 +318,7 @@ public sealed class AnthropicClientWithRawResponse : IAnthropicClientWithRawResp
         try
         {
             responseMessage = await this
-                .HttpClient.SendAsync(
-                    requestMessage,
-                    HttpCompletionOption.ResponseHeadersRead,
-                    cts.Token
-                )
+                ._options.SendRequestAsync(requestMessage, cts.Token)
                 .ConfigureAwait(false);
         }
         catch (HttpRequestException e)
@@ -411,7 +421,7 @@ public sealed class AnthropicClientWithRawResponse : IAnthropicClientWithRawResp
         return e is IOException || e is AnthropicIOException;
     }
 
-    public void Dispose() => this.HttpClient.Dispose();
+    public void Dispose() => this._options.DisposeHttpResources();
 
     public AnthropicClientWithRawResponse()
     {

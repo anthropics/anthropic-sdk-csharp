@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,6 +24,9 @@ public interface IAnthropicClient : IDisposable
 {
     /// <inheritdoc cref="ClientOptions.HttpClient" />
     HttpClient HttpClient { get; init; }
+
+    /// <inheritdoc cref="ClientOptions.Handlers" />
+    IReadOnlyList<DelegatingHandler> Handlers { get; init; }
 
     /// <inheritdoc cref="ClientOptions.BaseUrl" />
     string BaseUrl { get; init; }
@@ -69,6 +73,9 @@ public interface IAnthropicClientWithRawResponse : IDisposable
 {
     /// <inheritdoc cref="ClientOptions.HttpClient" />
     HttpClient HttpClient { get; init; }
+
+    /// <inheritdoc cref="ClientOptions.Handlers" />
+    IReadOnlyList<DelegatingHandler> Handlers { get; init; }
 
     /// <inheritdoc cref="ClientOptions.BaseUrl" />
     string BaseUrl { get; init; }
