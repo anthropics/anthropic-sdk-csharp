@@ -1,5 +1,13 @@
 # Changelog
 
+## 12.25.0 (2026-06-05)
+
+Full Changelog: [Anthropic-v12.24.1...Anthropic-v12.25.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.24.1...Anthropic-v12.25.0)
+
+### Features
+
+* **client:** add first class handler support ([86994df](https://github.com/anthropics/anthropic-sdk-csharp/commit/86994df354926eed8f538877a563265440b701a7))
+
 ## 12.24.1 (2026-05-28)
 
 Full Changelog: [Anthropic-v12.24.0...Anthropic-v12.24.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.24.0...Anthropic-v12.24.1)
