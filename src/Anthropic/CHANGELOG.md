@@ -1,5 +1,13 @@
 # Changelog
 
+## 12.26.0 (2026-06-05)
+
+Full Changelog: [Anthropic-v12.25.0...Anthropic-v12.26.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.25.0...Anthropic-v12.26.0)
+
+### Features
+
+* **api:** mark Claude Opus 4.1 as deprecated ([4658f3a](https://github.com/anthropics/anthropic-sdk-csharp/commit/4658f3a9ea431bc87b51febf282e7405f8c8e4cb))
+
 ## 12.25.0 (2026-06-05)
 
 Full Changelog: [Anthropic-v12.24.1...Anthropic-v12.25.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.24.1...Anthropic-v12.25.0)
