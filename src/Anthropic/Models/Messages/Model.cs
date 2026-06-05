@@ -72,11 +72,17 @@ public enum Model
     /// <summary>
     /// Exceptional model for specialized complex tasks
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on August 5, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     ClaudeOpus4_1,
 
     /// <summary>
     /// Exceptional model for specialized complex tasks
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on August 5, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     ClaudeOpus4_1_20250805,
 
     /// <summary>
