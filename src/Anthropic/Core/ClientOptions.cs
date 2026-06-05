@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using Anthropic.Credentials;
 
 namespace Anthropic.Core;
@@ -8,7 +10,7 @@ namespace Anthropic.Core;
 /// <summary>
 /// A class representing the SDK client configuration.
 /// </summary>
-public record struct ClientOptions()
+public record struct ClientOptions
 {
     /// <summary>
     /// The default value used for <see cref="MaxRetries"/>.
@@ -20,18 +22,67 @@ public record struct ClientOptions()
     /// </summary>
     public static readonly TimeSpan DefaultTimeout = TimeSpan.FromMinutes(10);
 
+    HttpClient _httpClient = new(
+        new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.Available }
+    )
+    {
+        Timeout = global::System.Threading.Timeout.InfiniteTimeSpan,
+    };
+    Lazy<HttpMessageInvoker> _messageInvoker;
+
     /// <summary>
     /// The HTTP client to use for making requests in the SDK.
     ///
-    /// <para>Note: The HttpClient has a built-in timeout, which defaults to 100 seconds.
-    /// When passing a custom HttpClient, this timeout may conflict with the SDK's
-    /// own timeout handler and cause premature cancellation.</para>
+    /// <para>When <see cref="Handlers"/> is non-empty, the handlers are attached to
+    /// this client when the first request is sent.</para>
+    ///
+    /// <para>Note: The HttpClient has a built-in timeout, which defaults to 100 seconds. When passing a custom HttpClient,
+    /// this timeout may conflict with the SDK's own timeout handler and cause premature cancellation.</para>
     /// </summary>
-    public HttpClient HttpClient { get; set; } =
-        new(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.Available })
+    public HttpClient HttpClient
+    {
+        readonly get { return _httpClient; }
+        set
         {
-            Timeout = global::System.Threading.Timeout.InfiniteTimeSpan,
-        };
+            _httpClient = value;
+            var handlers = _handlers;
+            _messageInvoker = new(() => AttachHandlers(value, handlers));
+        }
+    }
+
+    IReadOnlyList<DelegatingHandler> _handlers = [];
+
+    /// <summary>
+    /// The handlers to attach to <see cref="HttpClient"/> when the first request is sent.
+    ///
+    /// <para>Each handler wraps the next one, and the last handler wraps <see cref="HttpClient"/>
+    /// itself, making the last handler the innermost one.</para>
+    ///
+    /// <para>Setting this property throws an <see cref="ArgumentException"/> if any handler is already
+    /// attached to a client.</para>
+    /// </summary>
+    public IReadOnlyList<DelegatingHandler> Handlers
+    {
+        readonly get { return _handlers; }
+        set
+        {
+            var handlers = new List<DelegatingHandler>(value);
+            foreach (var handler in handlers)
+            {
+                if (handler.InnerHandler != null)
+                {
+                    throw new ArgumentException(
+                        "Handler is already attached to a client",
+                        nameof(value)
+                    );
+                }
+            }
+
+            _handlers = handlers;
+            var httpClient = _httpClient;
+            _messageInvoker = new(() => AttachHandlers(httpClient, handlers));
+        }
+    }
 
     Lazy<string> _baseUrl = new(() =>
         Environment.GetEnvironmentVariable("ANTHROPIC_BASE_URL") ?? EnvironmentUrl.Production
@@ -213,5 +264,67 @@ public record struct ClientOptions()
     {
         readonly get { return _webhookKey.Value; }
         set { _webhookKey = new(() => value); }
+    }
+
+    /// <summary>
+    /// Chains the given handlers together (last handler is the innermost one), attaches
+    /// them to the given HTTP client, and returns an invoker that sends requests
+    /// through the chain.
+    /// </summary>
+    static HttpMessageInvoker AttachHandlers(
+        HttpClient httpClient,
+        IReadOnlyList<DelegatingHandler> handlers
+    )
+    {
+        HttpMessageHandler innerHandler = new HttpClientPassthroughHandler(httpClient);
+        for (var index = handlers.Count - 1; index >= 0; index--)
+        {
+            var handler = handlers[index];
+            if (handler.InnerHandler != null)
+            {
+                throw new InvalidOperationException("Handler is already attached to a client");
+            }
+
+            handler.InnerHandler = innerHandler;
+            innerHandler = handler;
+        }
+
+        return new(innerHandler);
+    }
+
+    /// <summary>
+    /// Sends the given request through <see cref="Handlers"/> and
+    /// <see cref="HttpClient"/>.
+    /// </summary>
+    internal readonly Task<HttpResponseMessage> SendRequestAsync(
+        HttpRequestMessage request,
+        CancellationToken cancellationToken
+    )
+    {
+        return _messageInvoker.Value.SendAsync(request, cancellationToken);
+    }
+
+    /// <summary>
+    /// Disposes <see cref="HttpClient"/> along with any attached
+    /// <see cref="Handlers"/>.
+    /// </summary>
+    internal readonly void DisposeHttpResources()
+    {
+        if (_messageInvoker.IsValueCreated)
+        {
+            // Disposes the attached handlers, which in turn dispose the HTTP client.
+            _messageInvoker.Value.Dispose();
+        }
+        else
+        {
+            _httpClient.Dispose();
+        }
+    }
+
+    public ClientOptions()
+    {
+        var httpClient = _httpClient;
+        var handlers = _handlers;
+        _messageInvoker = new(() => AttachHandlers(httpClient, handlers));
     }
 }

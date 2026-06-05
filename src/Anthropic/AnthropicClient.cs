@@ -32,6 +32,13 @@ public class AnthropicClient : IAnthropicClient
     }
 
     /// <inheritdoc/>
+    public IReadOnlyList<DelegatingHandler> Handlers
+    {
+        get { return this._options.Handlers; }
+        init { this._options.Handlers = value; }
+    }
+
+    /// <inheritdoc/>
     public string BaseUrl
     {
         get { return this._options.BaseUrl; }
@@ -118,7 +125,7 @@ public class AnthropicClient : IAnthropicClient
         {
             _options.Credentials?.Dispose();
         }
-        HttpClient.Dispose();
+        this._options.DisposeHttpResources();
         GC.SuppressFinalize(this);
     }
 
@@ -241,6 +248,13 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
     {
         get { return this._options.HttpClient; }
         init { this._options.HttpClient = value; }
+    }
+
+    /// <inheritdoc/>
+    public IReadOnlyList<DelegatingHandler> Handlers
+    {
+        get { return this._options.Handlers; }
+        init { this._options.Handlers = value; }
     }
 
     /// <inheritdoc/>
@@ -513,11 +527,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         {
             await BeforeSend(request, requestMessage, cts.Token).ConfigureAwait(false);
             responseMessage = await this
-                .HttpClient.SendAsync(
-                    requestMessage,
-                    HttpCompletionOption.ResponseHeadersRead,
-                    cts.Token
-                )
+                ._options.SendRequestAsync(requestMessage, cts.Token)
                 .ConfigureAwait(false);
             await AfterSend(request, responseMessage, cts.Token).ConfigureAwait(false);
         }
@@ -634,7 +644,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         {
             _options.Credentials?.Dispose();
         }
-        this.HttpClient.Dispose();
+        this._options.DisposeHttpResources();
         GC.SuppressFinalize(this);
     }
 
