@@ -17,7 +17,7 @@ namespace Anthropic.Models.Beta.Webhooks;
 public sealed record class BetaWebhookVaultDeletedEventData : JsonModel
 {
     /// <summary>
-    /// ID of the resource that triggered the event.
+    /// ID of the vault that triggered the event.
     /// </summary>
     public required string ID
     {

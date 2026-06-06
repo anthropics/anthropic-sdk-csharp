@@ -13,6 +13,7 @@ public class BetaToolSearchToolResultErrorParamTest : TestBase
         var model = new BetaToolSearchToolResultErrorParam
         {
             ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
         };
 
         ApiEnum<string, BetaToolSearchToolResultErrorParamErrorCode> expectedErrorCode =
@@ -20,9 +21,11 @@ public class BetaToolSearchToolResultErrorParamTest : TestBase
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "tool_search_tool_result_error"
         );
+        string expectedErrorMessage = "error_message";
 
         Assert.Equal(expectedErrorCode, model.ErrorCode);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.Equal(expectedErrorMessage, model.ErrorMessage);
     }
 
     [Fact]
@@ -31,6 +34,7 @@ public class BetaToolSearchToolResultErrorParamTest : TestBase
         var model = new BetaToolSearchToolResultErrorParam
         {
             ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -48,6 +52,7 @@ public class BetaToolSearchToolResultErrorParamTest : TestBase
         var model = new BetaToolSearchToolResultErrorParam
         {
             ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -62,9 +67,11 @@ public class BetaToolSearchToolResultErrorParamTest : TestBase
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "tool_search_tool_result_error"
         );
+        string expectedErrorMessage = "error_message";
 
         Assert.Equal(expectedErrorCode, deserialized.ErrorCode);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.Equal(expectedErrorMessage, deserialized.ErrorMessage);
     }
 
     [Fact]
@@ -73,6 +80,57 @@ public class BetaToolSearchToolResultErrorParamTest : TestBase
         var model = new BetaToolSearchToolResultErrorParam
         {
             ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new BetaToolSearchToolResultErrorParam
+        {
+            ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
+        };
+
+        Assert.Null(model.ErrorMessage);
+        Assert.False(model.RawData.ContainsKey("error_message"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new BetaToolSearchToolResultErrorParam
+        {
+            ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
+    {
+        var model = new BetaToolSearchToolResultErrorParam
+        {
+            ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
+
+            ErrorMessage = null,
+        };
+
+        Assert.Null(model.ErrorMessage);
+        Assert.True(model.RawData.ContainsKey("error_message"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new BetaToolSearchToolResultErrorParam
+        {
+            ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
+
+            ErrorMessage = null,
         };
 
         model.Validate();
@@ -84,6 +142,7 @@ public class BetaToolSearchToolResultErrorParamTest : TestBase
         var model = new BetaToolSearchToolResultErrorParam
         {
             ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
         };
 
         BetaToolSearchToolResultErrorParam copied = new(model);

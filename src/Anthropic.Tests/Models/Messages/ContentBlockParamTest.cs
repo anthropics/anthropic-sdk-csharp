@@ -242,9 +242,11 @@ public class ContentBlockParamTest : TestBase
     {
         ContentBlockParam value = new ToolSearchToolResultBlockParam()
         {
-            Content = new ToolSearchToolResultErrorParam(
-                ToolSearchToolResultErrorCode.InvalidToolInput
-            ),
+            Content = new ToolSearchToolResultErrorParam()
+            {
+                ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
@@ -610,9 +612,11 @@ public class ContentBlockParamTest : TestBase
     {
         ContentBlockParam value = new ToolSearchToolResultBlockParam()
         {
-            Content = new ToolSearchToolResultErrorParam(
-                ToolSearchToolResultErrorCode.InvalidToolInput
-            ),
+            Content = new ToolSearchToolResultErrorParam()
+            {
+                ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };

@@ -191,7 +191,6 @@ public class VersionListPageResponseTest : TestBase
         ];
         string expectedNextPage = "next_page";
 
-        Assert.NotNull(model.Data);
         Assert.Equal(expectedData.Count, model.Data.Count);
         for (int i = 0; i < expectedData.Count; i++)
         {
@@ -491,7 +490,6 @@ public class VersionListPageResponseTest : TestBase
         ];
         string expectedNextPage = "next_page";
 
-        Assert.NotNull(deserialized.Data);
         Assert.Equal(expectedData.Count, deserialized.Data.Count);
         for (int i = 0; i < expectedData.Count; i++)
         {
@@ -592,52 +590,6 @@ public class VersionListPageResponseTest : TestBase
                 },
             ],
             NextPage = "next_page",
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
-    {
-        var model = new VersionListPageResponse { NextPage = "next_page" };
-
-        Assert.Null(model.Data);
-        Assert.False(model.RawData.ContainsKey("data"));
-    }
-
-    [Fact]
-    public void OptionalNonNullablePropertiesUnsetValidation_Works()
-    {
-        var model = new VersionListPageResponse { NextPage = "next_page" };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
-    {
-        var model = new VersionListPageResponse
-        {
-            NextPage = "next_page",
-
-            // Null should be interpreted as omitted for these properties
-            Data = null,
-        };
-
-        Assert.Null(model.Data);
-        Assert.False(model.RawData.ContainsKey("data"));
-    }
-
-    [Fact]
-    public void OptionalNonNullablePropertiesSetToNullValidation_Works()
-    {
-        var model = new VersionListPageResponse
-        {
-            NextPage = "next_page",
-
-            // Null should be interpreted as omitted for these properties
-            Data = null,
         };
 
         model.Validate();

@@ -80,6 +80,7 @@ public class ErrorCodeTest : TestBase
     [InlineData(ErrorCode.Overloaded)]
     [InlineData(ErrorCode.Unavailable)]
     [InlineData(ErrorCode.ExecutionTimeExceeded)]
+    [InlineData(ErrorCode.ModelNotFound)]
     public void Validation_Works(ErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -106,6 +107,7 @@ public class ErrorCodeTest : TestBase
     [InlineData(ErrorCode.Overloaded)]
     [InlineData(ErrorCode.Unavailable)]
     [InlineData(ErrorCode.ExecutionTimeExceeded)]
+    [InlineData(ErrorCode.ModelNotFound)]
     public void SerializationRoundtrip_Works(ErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us

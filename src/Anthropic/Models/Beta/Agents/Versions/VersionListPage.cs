@@ -22,7 +22,7 @@ public sealed class VersionListPage(
     /// <inheritdoc/>
     public IReadOnlyList<BetaManagedAgentsAgent> Items
     {
-        get { return response.Data ?? []; }
+        get { return response.Data; }
     }
 
     /// <inheritdoc/>

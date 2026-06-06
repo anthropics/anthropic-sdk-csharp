@@ -232,7 +232,7 @@ public record class SessionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Opaque pagination cursor from a previous response's next_page.
+    /// Opaque pagination cursor from a previous response.
     /// </summary>
     public string? Page
     {

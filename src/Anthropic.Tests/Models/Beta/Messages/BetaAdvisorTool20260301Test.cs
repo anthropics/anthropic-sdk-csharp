@@ -19,6 +19,7 @@ public class BetaAdvisorTool20260301Test : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
+            MaxTokens = 1024,
             MaxUses = 1,
             Strict = true,
         };
@@ -30,6 +31,7 @@ public class BetaAdvisorTool20260301Test : TestBase
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCacheControlEphemeral expectedCaching = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
+        long expectedMaxTokens = 1024;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
 
@@ -45,6 +47,7 @@ public class BetaAdvisorTool20260301Test : TestBase
         Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedCaching, model.Caching);
         Assert.Equal(expectedDeferLoading, model.DeferLoading);
+        Assert.Equal(expectedMaxTokens, model.MaxTokens);
         Assert.Equal(expectedMaxUses, model.MaxUses);
         Assert.Equal(expectedStrict, model.Strict);
     }
@@ -59,6 +62,7 @@ public class BetaAdvisorTool20260301Test : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
+            MaxTokens = 1024,
             MaxUses = 1,
             Strict = true,
         };
@@ -82,6 +86,7 @@ public class BetaAdvisorTool20260301Test : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
+            MaxTokens = 1024,
             MaxUses = 1,
             Strict = true,
         };
@@ -100,6 +105,7 @@ public class BetaAdvisorTool20260301Test : TestBase
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCacheControlEphemeral expectedCaching = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
+        long expectedMaxTokens = 1024;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
 
@@ -115,6 +121,7 @@ public class BetaAdvisorTool20260301Test : TestBase
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedCaching, deserialized.Caching);
         Assert.Equal(expectedDeferLoading, deserialized.DeferLoading);
+        Assert.Equal(expectedMaxTokens, deserialized.MaxTokens);
         Assert.Equal(expectedMaxUses, deserialized.MaxUses);
         Assert.Equal(expectedStrict, deserialized.Strict);
     }
@@ -129,6 +136,7 @@ public class BetaAdvisorTool20260301Test : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
+            MaxTokens = 1024,
             MaxUses = 1,
             Strict = true,
         };
@@ -144,6 +152,7 @@ public class BetaAdvisorTool20260301Test : TestBase
             Model = Messages::Model.ClaudeOpus4_8,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
+            MaxTokens = 1024,
             MaxUses = 1,
         };
 
@@ -163,6 +172,7 @@ public class BetaAdvisorTool20260301Test : TestBase
             Model = Messages::Model.ClaudeOpus4_8,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
+            MaxTokens = 1024,
             MaxUses = 1,
         };
 
@@ -177,6 +187,7 @@ public class BetaAdvisorTool20260301Test : TestBase
             Model = Messages::Model.ClaudeOpus4_8,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
+            MaxTokens = 1024,
             MaxUses = 1,
 
             // Null should be interpreted as omitted for these properties
@@ -201,6 +212,7 @@ public class BetaAdvisorTool20260301Test : TestBase
             Model = Messages::Model.ClaudeOpus4_8,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
+            MaxTokens = 1024,
             MaxUses = 1,
 
             // Null should be interpreted as omitted for these properties
@@ -227,6 +239,8 @@ public class BetaAdvisorTool20260301Test : TestBase
         Assert.False(model.RawData.ContainsKey("cache_control"));
         Assert.Null(model.Caching);
         Assert.False(model.RawData.ContainsKey("caching"));
+        Assert.Null(model.MaxTokens);
+        Assert.False(model.RawData.ContainsKey("max_tokens"));
         Assert.Null(model.MaxUses);
         Assert.False(model.RawData.ContainsKey("max_uses"));
     }
@@ -257,6 +271,7 @@ public class BetaAdvisorTool20260301Test : TestBase
 
             CacheControl = null,
             Caching = null,
+            MaxTokens = null,
             MaxUses = null,
         };
 
@@ -264,6 +279,8 @@ public class BetaAdvisorTool20260301Test : TestBase
         Assert.True(model.RawData.ContainsKey("cache_control"));
         Assert.Null(model.Caching);
         Assert.True(model.RawData.ContainsKey("caching"));
+        Assert.Null(model.MaxTokens);
+        Assert.True(model.RawData.ContainsKey("max_tokens"));
         Assert.Null(model.MaxUses);
         Assert.True(model.RawData.ContainsKey("max_uses"));
     }
@@ -280,6 +297,7 @@ public class BetaAdvisorTool20260301Test : TestBase
 
             CacheControl = null,
             Caching = null,
+            MaxTokens = null,
             MaxUses = null,
         };
 
@@ -296,6 +314,7 @@ public class BetaAdvisorTool20260301Test : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
+            MaxTokens = 1024,
             MaxUses = 1,
             Strict = true,
         };
