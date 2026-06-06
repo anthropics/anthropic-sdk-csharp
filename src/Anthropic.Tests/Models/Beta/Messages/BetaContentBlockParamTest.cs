@@ -257,9 +257,11 @@ public class BetaContentBlockParamTest : TestBase
     {
         BetaContentBlockParam value = new BetaToolSearchToolResultBlockParam()
         {
-            Content = new BetaToolSearchToolResultErrorParam(
-                BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
-            ),
+            Content = new BetaToolSearchToolResultErrorParam()
+            {
+                ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
@@ -688,9 +690,11 @@ public class BetaContentBlockParamTest : TestBase
     {
         BetaContentBlockParam value = new BetaToolSearchToolResultBlockParam()
         {
-            Content = new BetaToolSearchToolResultErrorParam(
-                BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
-            ),
+            Content = new BetaToolSearchToolResultErrorParam()
+            {
+                ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };

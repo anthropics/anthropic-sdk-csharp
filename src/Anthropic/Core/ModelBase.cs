@@ -167,7 +167,6 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Agents::BetaManagedAgentsCustomSkillType>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsCustomSkillParamsType>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsCustomToolType>(),
-            new ApiEnumConverter<string, Agents::BetaManagedAgentsCustomToolInputSchemaType>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsCustomToolParamsType>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsMcpServerUrlDefinitionType>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsMcpToolsetType>(),

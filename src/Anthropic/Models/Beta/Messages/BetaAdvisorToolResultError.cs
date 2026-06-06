@@ -108,6 +108,7 @@ public enum ErrorCode
     Overloaded,
     Unavailable,
     ExecutionTimeExceeded,
+    ModelNotFound,
 }
 
 sealed class ErrorCodeConverter : JsonConverter<ErrorCode>
@@ -126,6 +127,7 @@ sealed class ErrorCodeConverter : JsonConverter<ErrorCode>
             "overloaded" => ErrorCode.Overloaded,
             "unavailable" => ErrorCode.Unavailable,
             "execution_time_exceeded" => ErrorCode.ExecutionTimeExceeded,
+            "model_not_found" => ErrorCode.ModelNotFound,
             _ => (ErrorCode)(-1),
         };
     }
@@ -146,6 +148,7 @@ sealed class ErrorCodeConverter : JsonConverter<ErrorCode>
                 ErrorCode.Overloaded => "overloaded",
                 ErrorCode.Unavailable => "unavailable",
                 ErrorCode.ExecutionTimeExceeded => "execution_time_exceeded",
+                ErrorCode.ModelNotFound => "model_not_found",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

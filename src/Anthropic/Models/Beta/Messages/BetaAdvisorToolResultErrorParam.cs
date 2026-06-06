@@ -117,6 +117,7 @@ public enum BetaAdvisorToolResultErrorParamErrorCode
     Overloaded,
     Unavailable,
     ExecutionTimeExceeded,
+    ModelNotFound,
 }
 
 sealed class BetaAdvisorToolResultErrorParamErrorCodeConverter
@@ -137,6 +138,7 @@ sealed class BetaAdvisorToolResultErrorParamErrorCodeConverter
             "unavailable" => BetaAdvisorToolResultErrorParamErrorCode.Unavailable,
             "execution_time_exceeded" =>
                 BetaAdvisorToolResultErrorParamErrorCode.ExecutionTimeExceeded,
+            "model_not_found" => BetaAdvisorToolResultErrorParamErrorCode.ModelNotFound,
             _ => (BetaAdvisorToolResultErrorParamErrorCode)(-1),
         };
     }
@@ -158,6 +160,7 @@ sealed class BetaAdvisorToolResultErrorParamErrorCodeConverter
                 BetaAdvisorToolResultErrorParamErrorCode.Unavailable => "unavailable",
                 BetaAdvisorToolResultErrorParamErrorCode.ExecutionTimeExceeded =>
                     "execution_time_exceeded",
+                BetaAdvisorToolResultErrorParamErrorCode.ModelNotFound => "model_not_found",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

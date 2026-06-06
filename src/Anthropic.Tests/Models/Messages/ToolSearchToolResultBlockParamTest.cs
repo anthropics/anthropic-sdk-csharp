@@ -11,16 +11,20 @@ public class ToolSearchToolResultBlockParamTest : TestBase
     {
         var model = new ToolSearchToolResultBlockParam
         {
-            Content = new ToolSearchToolResultErrorParam(
-                ToolSearchToolResultErrorCode.InvalidToolInput
-            ),
+            Content = new ToolSearchToolResultErrorParam()
+            {
+                ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        ToolSearchToolResultBlockParamContent expectedContent = new ToolSearchToolResultErrorParam(
-            ToolSearchToolResultErrorCode.InvalidToolInput
-        );
+        ToolSearchToolResultBlockParamContent expectedContent = new ToolSearchToolResultErrorParam()
+        {
+            ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
+        };
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_search_tool_result");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
@@ -36,9 +40,11 @@ public class ToolSearchToolResultBlockParamTest : TestBase
     {
         var model = new ToolSearchToolResultBlockParam
         {
-            Content = new ToolSearchToolResultErrorParam(
-                ToolSearchToolResultErrorCode.InvalidToolInput
-            ),
+            Content = new ToolSearchToolResultErrorParam()
+            {
+                ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
@@ -57,9 +63,11 @@ public class ToolSearchToolResultBlockParamTest : TestBase
     {
         var model = new ToolSearchToolResultBlockParam
         {
-            Content = new ToolSearchToolResultErrorParam(
-                ToolSearchToolResultErrorCode.InvalidToolInput
-            ),
+            Content = new ToolSearchToolResultErrorParam()
+            {
+                ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
@@ -71,9 +79,11 @@ public class ToolSearchToolResultBlockParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ToolSearchToolResultBlockParamContent expectedContent = new ToolSearchToolResultErrorParam(
-            ToolSearchToolResultErrorCode.InvalidToolInput
-        );
+        ToolSearchToolResultBlockParamContent expectedContent = new ToolSearchToolResultErrorParam()
+        {
+            ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
+        };
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_search_tool_result");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
@@ -89,9 +99,11 @@ public class ToolSearchToolResultBlockParamTest : TestBase
     {
         var model = new ToolSearchToolResultBlockParam
         {
-            Content = new ToolSearchToolResultErrorParam(
-                ToolSearchToolResultErrorCode.InvalidToolInput
-            ),
+            Content = new ToolSearchToolResultErrorParam()
+            {
+                ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
@@ -104,9 +116,11 @@ public class ToolSearchToolResultBlockParamTest : TestBase
     {
         var model = new ToolSearchToolResultBlockParam
         {
-            Content = new ToolSearchToolResultErrorParam(
-                ToolSearchToolResultErrorCode.InvalidToolInput
-            ),
+            Content = new ToolSearchToolResultErrorParam()
+            {
+                ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
@@ -119,9 +133,11 @@ public class ToolSearchToolResultBlockParamTest : TestBase
     {
         var model = new ToolSearchToolResultBlockParam
         {
-            Content = new ToolSearchToolResultErrorParam(
-                ToolSearchToolResultErrorCode.InvalidToolInput
-            ),
+            Content = new ToolSearchToolResultErrorParam()
+            {
+                ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
@@ -133,9 +149,11 @@ public class ToolSearchToolResultBlockParamTest : TestBase
     {
         var model = new ToolSearchToolResultBlockParam
         {
-            Content = new ToolSearchToolResultErrorParam(
-                ToolSearchToolResultErrorCode.InvalidToolInput
-            ),
+            Content = new ToolSearchToolResultErrorParam()
+            {
+                ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
 
             CacheControl = null,
@@ -150,9 +168,11 @@ public class ToolSearchToolResultBlockParamTest : TestBase
     {
         var model = new ToolSearchToolResultBlockParam
         {
-            Content = new ToolSearchToolResultErrorParam(
-                ToolSearchToolResultErrorCode.InvalidToolInput
-            ),
+            Content = new ToolSearchToolResultErrorParam()
+            {
+                ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
 
             CacheControl = null,
@@ -166,9 +186,11 @@ public class ToolSearchToolResultBlockParamTest : TestBase
     {
         var model = new ToolSearchToolResultBlockParam
         {
-            Content = new ToolSearchToolResultErrorParam(
-                ToolSearchToolResultErrorCode.InvalidToolInput
-            ),
+            Content = new ToolSearchToolResultErrorParam()
+            {
+                ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
@@ -184,9 +206,11 @@ public class ToolSearchToolResultBlockParamContentTest : TestBase
     [Fact]
     public void ToolSearchToolResultErrorParamValidationWorks()
     {
-        ToolSearchToolResultBlockParamContent value = new ToolSearchToolResultErrorParam(
-            ToolSearchToolResultErrorCode.InvalidToolInput
-        );
+        ToolSearchToolResultBlockParamContent value = new ToolSearchToolResultErrorParam()
+        {
+            ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
+        };
         value.Validate();
     }
 
@@ -208,9 +232,11 @@ public class ToolSearchToolResultBlockParamContentTest : TestBase
     [Fact]
     public void ToolSearchToolResultErrorParamSerializationRoundtripWorks()
     {
-        ToolSearchToolResultBlockParamContent value = new ToolSearchToolResultErrorParam(
-            ToolSearchToolResultErrorCode.InvalidToolInput
-        );
+        ToolSearchToolResultBlockParamContent value = new ToolSearchToolResultErrorParam()
+        {
+            ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ToolSearchToolResultBlockParamContent>(
             element,

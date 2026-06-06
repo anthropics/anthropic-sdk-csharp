@@ -47,8 +47,7 @@ public record class AgentUpdateParams : ParamsBase
     }
 
     /// <summary>
-    /// Description. Up to 2048 characters. Omit to preserve; send empty string or
-    /// null to clear.
+    /// Description. Omit to preserve; send empty string or null to clear.
     /// </summary>
     public string? Description
     {
@@ -145,7 +144,7 @@ public record class AgentUpdateParams : ParamsBase
     }
 
     /// <summary>
-    /// Human-readable name. 1-256 characters. Omit to preserve. Cannot be cleared.
+    /// Human-readable name. Must be non-empty. Omit to preserve. Cannot be cleared.
     /// </summary>
     public string? Name
     {
@@ -167,7 +166,6 @@ public record class AgentUpdateParams : ParamsBase
 
     /// <summary>
     /// Skills. Full replacement. Omit to preserve; send empty array or null to clear.
-    /// Maximum 20.
     /// </summary>
     public IReadOnlyList<BetaManagedAgentsSkillParams>? Skills
     {
@@ -188,8 +186,7 @@ public record class AgentUpdateParams : ParamsBase
     }
 
     /// <summary>
-    /// System prompt. Up to 100,000 characters. Omit to preserve; send empty string
-    /// or null to clear.
+    /// System prompt. Omit to preserve; send empty string or null to clear.
     /// </summary>
     public string? System
     {

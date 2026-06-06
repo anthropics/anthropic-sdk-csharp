@@ -105,7 +105,6 @@ var agentV1 = await client.Beta.Agents.Create(
                 Description = "Look up the current weather for a city.",
                 InputSchema = new BetaManagedAgentsCustomToolInputSchema
                 {
-                    Type = BetaManagedAgentsCustomToolInputSchemaType.Object,
                     Properties = new Dictionary<string, System.Text.Json.JsonElement>
                     {
                         ["city"] = System.Text.Json.JsonSerializer.SerializeToElement(

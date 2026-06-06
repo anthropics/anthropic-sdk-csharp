@@ -97,6 +97,7 @@ public class BetaAdvisorToolResultErrorParamErrorCodeTest : TestBase
     [InlineData(BetaAdvisorToolResultErrorParamErrorCode.Overloaded)]
     [InlineData(BetaAdvisorToolResultErrorParamErrorCode.Unavailable)]
     [InlineData(BetaAdvisorToolResultErrorParamErrorCode.ExecutionTimeExceeded)]
+    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.ModelNotFound)]
     public void Validation_Works(BetaAdvisorToolResultErrorParamErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -122,6 +123,7 @@ public class BetaAdvisorToolResultErrorParamErrorCodeTest : TestBase
     [InlineData(BetaAdvisorToolResultErrorParamErrorCode.Overloaded)]
     [InlineData(BetaAdvisorToolResultErrorParamErrorCode.Unavailable)]
     [InlineData(BetaAdvisorToolResultErrorParamErrorCode.ExecutionTimeExceeded)]
+    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.ModelNotFound)]
     public void SerializationRoundtrip_Works(BetaAdvisorToolResultErrorParamErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us

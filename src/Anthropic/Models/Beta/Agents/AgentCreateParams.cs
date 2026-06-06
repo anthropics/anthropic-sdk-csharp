@@ -44,7 +44,7 @@ public record class AgentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Human-readable name for the agent. 1-256 characters.
+    /// Human-readable name for the agent.
     /// </summary>
     public required string Name
     {
@@ -57,7 +57,7 @@ public record class AgentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Description of what the agent does. Up to 2048 characters.
+    /// Description of what the agent does.
     /// </summary>
     public string? Description
     {
@@ -138,7 +138,7 @@ public record class AgentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Skills available to the agent. Maximum 20.
+    /// Skills available to the agent.
     /// </summary>
     public IReadOnlyList<BetaManagedAgentsSkillParams>? Skills
     {
@@ -164,7 +164,7 @@ public record class AgentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// System prompt for the agent. Up to 100,000 characters.
+    /// System prompt for the agent.
     /// </summary>
     public string? System
     {

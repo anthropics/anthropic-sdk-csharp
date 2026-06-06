@@ -17,23 +17,18 @@ public sealed record class VersionListPageResponse : JsonModel
     /// <summary>
     /// Agent versions.
     /// </summary>
-    public IReadOnlyList<BetaManagedAgentsAgent>? Data
+    public required IReadOnlyList<BetaManagedAgentsAgent> Data
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<ImmutableArray<BetaManagedAgentsAgent>>("data");
+            return this._rawData.GetNotNullStruct<ImmutableArray<BetaManagedAgentsAgent>>("data");
         }
         init
         {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawData.Set<ImmutableArray<BetaManagedAgentsAgent>?>(
+            this._rawData.Set<ImmutableArray<BetaManagedAgentsAgent>>(
                 "data",
-                value == null ? null : ImmutableArray.ToImmutableArray(value)
+                ImmutableArray.ToImmutableArray(value)
             );
         }
     }
@@ -54,7 +49,7 @@ public sealed record class VersionListPageResponse : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        foreach (var item in this.Data ?? [])
+        foreach (var item in this.Data)
         {
             item.Validate();
         }
@@ -88,6 +83,13 @@ public sealed record class VersionListPageResponse : JsonModel
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+
+    [SetsRequiredMembers]
+    public VersionListPageResponse(IReadOnlyList<BetaManagedAgentsAgent> data)
+        : this()
+    {
+        this.Data = data;
     }
 }
 

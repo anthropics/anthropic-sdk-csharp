@@ -39,6 +39,16 @@ public sealed record class BetaToolSearchToolResultErrorParam : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
+    public string? ErrorMessage
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("error_message");
+        }
+        init { this._rawData.Set("error_message", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -52,6 +62,7 @@ public sealed record class BetaToolSearchToolResultErrorParam : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
+        _ = this.ErrorMessage;
     }
 
     public BetaToolSearchToolResultErrorParam()

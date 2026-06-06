@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -21,9 +20,16 @@ namespace Anthropic.Models.Beta.Agents;
 )]
 public sealed record class BetaManagedAgentsCustomToolInputSchema : JsonModel
 {
-    /// <summary>
-    /// JSON Schema properties defining the tool's input parameters.
-    /// </summary>
+    public JsonElement Type
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
+    }
+
     public IReadOnlyDictionary<string, JsonElement>? Properties
     {
         get
@@ -42,9 +48,6 @@ public sealed record class BetaManagedAgentsCustomToolInputSchema : JsonModel
         }
     }
 
-    /// <summary>
-    /// List of required property names.
-    /// </summary>
     public IReadOnlyList<string>? Required
     {
         get
@@ -54,11 +57,6 @@ public sealed record class BetaManagedAgentsCustomToolInputSchema : JsonModel
         }
         init
         {
-            if (value == null)
-            {
-                return;
-            }
-
             this._rawData.Set<ImmutableArray<string>?>(
                 "required",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
@@ -66,38 +64,21 @@ public sealed record class BetaManagedAgentsCustomToolInputSchema : JsonModel
         }
     }
 
-    /// <summary>
-    /// Must be 'object' for tool input schemas.
-    /// </summary>
-    public ApiEnum<string, BetaManagedAgentsCustomToolInputSchemaType>? Type
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<
-                ApiEnum<string, BetaManagedAgentsCustomToolInputSchemaType>
-            >("type");
-        }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawData.Set("type", value);
-        }
-    }
-
     /// <inheritdoc/>
     public override void Validate()
     {
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("object")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Properties;
         _ = this.Required;
-        this.Type?.Validate();
     }
 
-    public BetaManagedAgentsCustomToolInputSchema() { }
+    public BetaManagedAgentsCustomToolInputSchema()
+    {
+        this.Type = JsonSerializer.SerializeToElement("object");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -110,6 +91,8 @@ public sealed record class BetaManagedAgentsCustomToolInputSchema : JsonModel
     public BetaManagedAgentsCustomToolInputSchema(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("object");
     }
 
 #pragma warning disable CS8618
@@ -136,49 +119,4 @@ class BetaManagedAgentsCustomToolInputSchemaFromRaw
     public BetaManagedAgentsCustomToolInputSchema FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsCustomToolInputSchema.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// Must be 'object' for tool input schemas.
-/// </summary>
-[JsonConverter(typeof(BetaManagedAgentsCustomToolInputSchemaTypeConverter))]
-public enum BetaManagedAgentsCustomToolInputSchemaType
-{
-    Object,
-}
-
-sealed class BetaManagedAgentsCustomToolInputSchemaTypeConverter
-    : JsonConverter<BetaManagedAgentsCustomToolInputSchemaType>
-{
-    public override BetaManagedAgentsCustomToolInputSchemaType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "object" => BetaManagedAgentsCustomToolInputSchemaType.Object,
-            _ => (BetaManagedAgentsCustomToolInputSchemaType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsCustomToolInputSchemaType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsCustomToolInputSchemaType.Object => "object",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

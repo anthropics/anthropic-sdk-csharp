@@ -21,7 +21,6 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
                 Required = ["string"],
-                Type = BetaManagedAgentsCustomToolInputSchemaType.Object,
             },
             Name = "x",
             Type = BetaManagedAgentsCustomToolParamsType.Custom,
@@ -35,7 +34,6 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Required = ["string"],
-            Type = BetaManagedAgentsCustomToolInputSchemaType.Object,
         };
         string expectedName = "x";
         ApiEnum<string, BetaManagedAgentsCustomToolParamsType> expectedType =
@@ -60,7 +58,6 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
                 Required = ["string"],
-                Type = BetaManagedAgentsCustomToolInputSchemaType.Object,
             },
             Name = "x",
             Type = BetaManagedAgentsCustomToolParamsType.Custom,
@@ -88,7 +85,6 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
                 Required = ["string"],
-                Type = BetaManagedAgentsCustomToolInputSchemaType.Object,
             },
             Name = "x",
             Type = BetaManagedAgentsCustomToolParamsType.Custom,
@@ -109,7 +105,6 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Required = ["string"],
-            Type = BetaManagedAgentsCustomToolInputSchemaType.Object,
         };
         string expectedName = "x";
         ApiEnum<string, BetaManagedAgentsCustomToolParamsType> expectedType =
@@ -134,7 +129,6 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
                 Required = ["string"],
-                Type = BetaManagedAgentsCustomToolInputSchemaType.Object,
             },
             Name = "x",
             Type = BetaManagedAgentsCustomToolParamsType.Custom,
@@ -156,7 +150,6 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
                 Required = ["string"],
-                Type = BetaManagedAgentsCustomToolInputSchemaType.Object,
             },
             Name = "x",
             Type = BetaManagedAgentsCustomToolParamsType.Custom,

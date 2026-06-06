@@ -1249,6 +1249,7 @@ public class ToolTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
+            MaxTokens = 1024,
             MaxUses = 1,
             Strict = true,
         };
@@ -1753,6 +1754,7 @@ public class ToolTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
+            MaxTokens = 1024,
             MaxUses = 1,
             Strict = true,
         };
