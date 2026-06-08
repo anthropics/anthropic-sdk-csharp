@@ -173,10 +173,11 @@ public sealed class CredentialsFileProvider : IAccessTokenProvider
             );
         }
 
-        if (data.Type != "oauth_token")
+        if (data.Type != "oauth_token" && data.Type != "access_token")
         {
             throw new WorkloadIdentityException(
-                $"Unexpected credentials type '{data.Type}' in {_credentialsFilePath}. Expected 'oauth_token'."
+                $"Unexpected credentials type '{data.Type}' in {_credentialsFilePath}. "
+                    + "Expected 'oauth_token' or 'access_token'."
             );
         }
 

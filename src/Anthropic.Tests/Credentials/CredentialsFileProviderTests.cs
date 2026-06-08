@@ -73,6 +73,47 @@ public class CredentialsFileProviderTests : IDisposable
     }
 
     [Fact]
+    public async Task ReadsAccessTokenTypeCredentialsFile()
+    {
+        var path = WriteCredentialsFile(
+            new
+            {
+                type = "access_token",
+                access_token = "sk-ant-cached-test",
+                expires_at = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 600,
+                refresh_token = "rt-test",
+            }
+        );
+
+        using var provider = new CredentialsFileProvider(path, "https://api.anthropic.com");
+
+        var token = await provider.GetTokenAsync();
+
+        Assert.Equal("sk-ant-cached-test", token.Token);
+    }
+
+    [Fact]
+    public async Task ThrowsOnUnknownCredentialsType()
+    {
+        var path = WriteCredentialsFile(
+            new
+            {
+                type = "api_key",
+                access_token = "sk-ant-test",
+                expires_at = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 600,
+            }
+        );
+
+        using var provider = new CredentialsFileProvider(path, "https://api.anthropic.com");
+
+        var exception = await Assert.ThrowsAsync<WorkloadIdentityException>(async () =>
+            await provider.GetTokenAsync()
+        );
+
+        Assert.Contains("Unexpected credentials type 'api_key'", exception.Message);
+    }
+
+    [Fact]
     public async Task RefreshesExpiredToken()
     {
         var path = WriteCredentialsFile(
