@@ -100,6 +100,7 @@ public class CategoryTest : TestBase
     [Theory]
     [InlineData(Category.Cyber)]
     [InlineData(Category.Bio)]
+    [InlineData(Category.FrontierLlm)]
     [InlineData(Category.ReasoningExtraction)]
     public void Validation_Works(Category rawValue)
     {
@@ -123,6 +124,7 @@ public class CategoryTest : TestBase
     [Theory]
     [InlineData(Category.Cyber)]
     [InlineData(Category.Bio)]
+    [InlineData(Category.FrontierLlm)]
     [InlineData(Category.ReasoningExtraction)]
     public void SerializationRoundtrip_Works(Category rawValue)
     {
