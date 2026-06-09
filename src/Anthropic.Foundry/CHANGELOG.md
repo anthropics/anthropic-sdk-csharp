@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.0 (2026-06-09)
+
+Full Changelog: [Foundry-v0.6.0...Foundry-v0.7.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Foundry-v0.6.0...Foundry-v0.7.0)
+
+### Features
+
+* **api:** add support for claude-mythos-5 and claude-fable-5, with support for server-side fallbacks on refusal ([a9d68ed](https://github.com/anthropics/anthropic-sdk-csharp/commit/a9d68ed7e6b023429943e8f9662a7d45bc407890))
+* **client:** adds client-side fallbacks middleware for API providers that do not support server-side fallbacks ([a9d68ed](https://github.com/anthropics/anthropic-sdk-csharp/commit/a9d68ed7e6b023429943e8f9662a7d45bc407890))
+
 ## 0.6.0 (2026-05-05)
 
 Full Changelog: [Foundry-v0.5.0...Foundry-v0.6.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Foundry-v0.5.0...Foundry-v0.6.0)
