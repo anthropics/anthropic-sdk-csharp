@@ -46,6 +46,82 @@ public sealed record class BetaRefusalStopDetails : JsonModel
         init { this._rawData.Set("explanation", value); }
     }
 
+    /// <summary>
+    /// Opaque code that refunds the cache-miss cost when retrying this refused request
+    /// on the fallback model. Pass it as `fallback_credit_token` on the retry request.
+    /// Expires 5 minutes after the refusal.
+    ///
+    /// <para>The retry is sent either with the same request body (`system`, `messages`,
+    /// `tools`, and other render-shaping fields), or with the same body plus one
+    /// appended `assistant` message whose content is the partial text (with any trailing
+    /// whitespace stripped from the final text block) and paired server-tool blocks
+    /// from this refusal — which also authorizes that appended turn as an assistant-prefill
+    /// continuation on models that otherwise disallow prefill. A token minted mid-server-tool-loop
+    /// whose partial content was continuable may only be redeemed the second way
+    /// — if a same-body retry is rejected with a 400 saying the token must be redeemed
+    /// by continuing the partial response, retry the second way instead. Either
+    /// way: same workspace, same platform; a mismatch is a 400. Resending a token
+    /// for an already-warm prefix is permitted but yields no additional credit.</para>
+    ///
+    /// <para>`null` when the refused model isn't eligible for a fallback credit.</para>
+    /// </summary>
+    public required string? FallbackCreditToken
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("fallback_credit_token");
+        }
+        init { this._rawData.Set("fallback_credit_token", value); }
+    }
+
+    /// <summary>
+    /// Whether the accompanying `fallback_credit_token` may be redeemed with the
+    /// appended-assistant retry form. Only set when `fallback_credit_token` is present.
+    ///
+    /// <para>`true`: retry by resending the same request body plus one appended `assistant`
+    /// message whose content is this response's `content` with any trailing whitespace
+    /// stripped from the final text block and unpaired `tool_use` blocks omitted
+    /// (the same appended-turn shape described on `fallback_credit_token`), with
+    /// the token attached. `false`: retry by resending the original request body
+    /// unchanged, with the token attached — the appended-assistant form is not available
+    /// for this refusal (no continuable partial content, or the request uses `output_format`
+    /// or a `tool_choice` that forces tool use). One exception: when the request
+    /// used `output_format` or a forced `tool_choice` and the refusal arrived after
+    /// server tools (including MCP connector tools) had already executed, the token
+    /// may not be redeemable by either retry form; if the exact-body retry is then
+    /// rejected with a 400 saying the token must be redeemed by continuing the partial
+    /// response, discard the token and retry without it.</para>
+    ///
+    /// <para>Advisory: if an appended-assistant retry is rejected with a 400 despite
+    /// `true`, fall back to resending the original request body with the token.</para>
+    /// </summary>
+    public required bool? FallbackHasPrefillClaim
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("fallback_has_prefill_claim");
+        }
+        init { this._rawData.Set("fallback_has_prefill_claim", value); }
+    }
+
+    /// <summary>
+    /// The server's suggested retry target for this refusal. Populated when a fallback
+    /// attempt could not be made (the fallback model's rate limit was exhausted,
+    /// or it was overloaded); names the fallback model the caller can retry directly.
+    /// Null otherwise.
+    /// </summary>
+    public required string? RecommendedModel
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("recommended_model");
+        }
+        init { this._rawData.Set("recommended_model", value); }
+    }
+
     public JsonElement Type
     {
         get
@@ -61,6 +137,9 @@ public sealed record class BetaRefusalStopDetails : JsonModel
     {
         this.Category?.Validate();
         _ = this.Explanation;
+        _ = this.FallbackCreditToken;
+        _ = this.FallbackHasPrefillClaim;
+        _ = this.RecommendedModel;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("refusal")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -120,6 +199,7 @@ public enum Category
 {
     Cyber,
     Bio,
+    ReasoningExtraction,
 }
 
 sealed class CategoryConverter : JsonConverter<Category>
@@ -134,6 +214,7 @@ sealed class CategoryConverter : JsonConverter<Category>
         {
             "cyber" => Category.Cyber,
             "bio" => Category.Bio,
+            "reasoning_extraction" => Category.ReasoningExtraction,
             _ => (Category)(-1),
         };
     }
@@ -146,6 +227,7 @@ sealed class CategoryConverter : JsonConverter<Category>
             {
                 Category.Cyber => "cyber",
                 Category.Bio => "bio",
+                Category.ReasoningExtraction => "reasoning_extraction",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

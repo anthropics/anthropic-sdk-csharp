@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Models;
@@ -13,6 +14,7 @@ public class BetaModelInfoTest : TestBase
         var model = new BetaModelInfo
         {
             ID = "claude-opus-4-6",
+            AllowedFallbackModels = ["string"],
             Capabilities = new()
             {
                 Batch = new(true),
@@ -50,6 +52,7 @@ public class BetaModelInfoTest : TestBase
         };
 
         string expectedID = "claude-opus-4-6";
+        List<string> expectedAllowedFallbackModels = ["string"];
         BetaModelCapabilities expectedCapabilities = new()
         {
             Batch = new(true),
@@ -87,6 +90,12 @@ public class BetaModelInfoTest : TestBase
         JsonElement expectedType = JsonSerializer.SerializeToElement("model");
 
         Assert.Equal(expectedID, model.ID);
+        Assert.NotNull(model.AllowedFallbackModels);
+        Assert.Equal(expectedAllowedFallbackModels.Count, model.AllowedFallbackModels.Count);
+        for (int i = 0; i < expectedAllowedFallbackModels.Count; i++)
+        {
+            Assert.Equal(expectedAllowedFallbackModels[i], model.AllowedFallbackModels[i]);
+        }
         Assert.Equal(expectedCapabilities, model.Capabilities);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
         Assert.Equal(expectedDisplayName, model.DisplayName);
@@ -101,6 +110,7 @@ public class BetaModelInfoTest : TestBase
         var model = new BetaModelInfo
         {
             ID = "claude-opus-4-6",
+            AllowedFallbackModels = ["string"],
             Capabilities = new()
             {
                 Batch = new(true),
@@ -152,6 +162,7 @@ public class BetaModelInfoTest : TestBase
         var model = new BetaModelInfo
         {
             ID = "claude-opus-4-6",
+            AllowedFallbackModels = ["string"],
             Capabilities = new()
             {
                 Batch = new(true),
@@ -196,6 +207,7 @@ public class BetaModelInfoTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedID = "claude-opus-4-6";
+        List<string> expectedAllowedFallbackModels = ["string"];
         BetaModelCapabilities expectedCapabilities = new()
         {
             Batch = new(true),
@@ -233,6 +245,12 @@ public class BetaModelInfoTest : TestBase
         JsonElement expectedType = JsonSerializer.SerializeToElement("model");
 
         Assert.Equal(expectedID, deserialized.ID);
+        Assert.NotNull(deserialized.AllowedFallbackModels);
+        Assert.Equal(expectedAllowedFallbackModels.Count, deserialized.AllowedFallbackModels.Count);
+        for (int i = 0; i < expectedAllowedFallbackModels.Count; i++)
+        {
+            Assert.Equal(expectedAllowedFallbackModels[i], deserialized.AllowedFallbackModels[i]);
+        }
         Assert.Equal(expectedCapabilities, deserialized.Capabilities);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
         Assert.Equal(expectedDisplayName, deserialized.DisplayName);
@@ -247,6 +265,7 @@ public class BetaModelInfoTest : TestBase
         var model = new BetaModelInfo
         {
             ID = "claude-opus-4-6",
+            AllowedFallbackModels = ["string"],
             Capabilities = new()
             {
                 Batch = new(true),
@@ -292,6 +311,7 @@ public class BetaModelInfoTest : TestBase
         var model = new BetaModelInfo
         {
             ID = "claude-opus-4-6",
+            AllowedFallbackModels = ["string"],
             Capabilities = new()
             {
                 Batch = new(true),

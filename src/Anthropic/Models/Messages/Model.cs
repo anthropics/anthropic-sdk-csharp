@@ -15,6 +15,16 @@ namespace Anthropic.Models.Messages;
 public enum Model
 {
     /// <summary>
+    /// Next generation of intelligence for the hardest knowledge work and coding problems
+    /// </summary>
+    ClaudeFable5,
+
+    /// <summary>
+    /// Most capable model for cybersecurity and biology research
+    /// </summary>
+    ClaudeMythos5,
+
+    /// <summary>
     /// Frontier intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_8,
@@ -27,6 +37,9 @@ public enum Model
     /// <summary>
     /// New class of intelligence, strongest in coding and cybersecurity
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on June 30, 2026. Please migrate to claude-mythos-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     ClaudeMythosPreview,
 
     /// <summary>
@@ -136,6 +149,8 @@ sealed class ModelConverter : JsonConverter<Model>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
+            "claude-fable-5" => Model.ClaudeFable5,
+            "claude-mythos-5" => Model.ClaudeMythos5,
             "claude-opus-4-8" => Model.ClaudeOpus4_8,
             "claude-opus-4-7" => Model.ClaudeOpus4_7,
             "claude-mythos-preview" => Model.ClaudeMythosPreview,
@@ -164,6 +179,8 @@ sealed class ModelConverter : JsonConverter<Model>
             writer,
             value switch
             {
+                Model.ClaudeFable5 => "claude-fable-5",
+                Model.ClaudeMythos5 => "claude-mythos-5",
                 Model.ClaudeOpus4_8 => "claude-opus-4-8",
                 Model.ClaudeOpus4_7 => "claude-opus-4-7",
                 Model.ClaudeMythosPreview => "claude-mythos-preview",

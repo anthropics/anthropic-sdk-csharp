@@ -53,7 +53,8 @@ public record class BetaContentBlockParam : ModelBase
                 requestMcpToolResult: (x) => x.Type,
                 containerUpload: (x) => x.Type,
                 compaction: (x) => x.Type,
-                midConversationSystem: (x) => x.Type
+                midConversationSystem: (x) => x.Type,
+                fallback: (x) => x.Type
             );
         }
     }
@@ -83,7 +84,8 @@ public record class BetaContentBlockParam : ModelBase
                 requestMcpToolResult: (x) => x.CacheControl,
                 containerUpload: (x) => x.CacheControl,
                 compaction: (x) => x.CacheControl,
-                midConversationSystem: (x) => x.CacheControl
+                midConversationSystem: (x) => x.CacheControl,
+                fallback: (_) => null
             );
         }
     }
@@ -113,7 +115,8 @@ public record class BetaContentBlockParam : ModelBase
                 requestMcpToolResult: (_) => null,
                 containerUpload: (_) => null,
                 compaction: (_) => null,
-                midConversationSystem: (_) => null
+                midConversationSystem: (_) => null,
+                fallback: (_) => null
             );
         }
     }
@@ -143,7 +146,8 @@ public record class BetaContentBlockParam : ModelBase
                 requestMcpToolResult: (_) => null,
                 containerUpload: (_) => null,
                 compaction: (_) => null,
-                midConversationSystem: (_) => null
+                midConversationSystem: (_) => null,
+                fallback: (_) => null
             );
         }
     }
@@ -173,7 +177,8 @@ public record class BetaContentBlockParam : ModelBase
                 requestMcpToolResult: (x) => x.ToolUseID,
                 containerUpload: (_) => null,
                 compaction: (_) => null,
-                midConversationSystem: (_) => null
+                midConversationSystem: (_) => null,
+                fallback: (_) => null
             );
         }
     }
@@ -203,7 +208,8 @@ public record class BetaContentBlockParam : ModelBase
                 requestMcpToolResult: (x) => x.IsError,
                 containerUpload: (_) => null,
                 compaction: (_) => null,
-                midConversationSystem: (_) => null
+                midConversationSystem: (_) => null,
+                fallback: (_) => null
             );
         }
     }
@@ -353,6 +359,12 @@ public record class BetaContentBlockParam : ModelBase
         BetaMidConversationSystemBlockParam value,
         JsonElement? element = null
     )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaContentBlockParam(BetaFallbackBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -825,6 +837,27 @@ public record class BetaContentBlockParam : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaFallbackBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickFallback(out var value)) {
+    ///     // `value` is of type `BetaFallbackBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickFallback([NotNullWhen(true)] out BetaFallbackBlockParam? value)
+    {
+        value = this.Value as BetaFallbackBlockParam;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -858,7 +891,8 @@ public record class BetaContentBlockParam : ModelBase
     ///     (BetaRequestMcpToolResultBlockParam value) =&gt; {...},
     ///     (BetaContainerUploadBlockParam value) =&gt; {...},
     ///     (BetaCompactionBlockParam value) =&gt; {...},
-    ///     (BetaMidConversationSystemBlockParam value) =&gt; {...}
+    ///     (BetaMidConversationSystemBlockParam value) =&gt; {...},
+    ///     (BetaFallbackBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -884,7 +918,8 @@ public record class BetaContentBlockParam : ModelBase
         System::Action<BetaRequestMcpToolResultBlockParam> requestMcpToolResult,
         System::Action<BetaContainerUploadBlockParam> containerUpload,
         System::Action<BetaCompactionBlockParam> compaction,
-        System::Action<BetaMidConversationSystemBlockParam> midConversationSystem
+        System::Action<BetaMidConversationSystemBlockParam> midConversationSystem,
+        System::Action<BetaFallbackBlockParam> fallback
     )
     {
         switch (this.Value)
@@ -952,6 +987,9 @@ public record class BetaContentBlockParam : ModelBase
             case BetaMidConversationSystemBlockParam value:
                 midConversationSystem(value);
                 break;
+            case BetaFallbackBlockParam value:
+                fallback(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of BetaContentBlockParam"
@@ -994,7 +1032,8 @@ public record class BetaContentBlockParam : ModelBase
     ///     (BetaRequestMcpToolResultBlockParam value) =&gt; {...},
     ///     (BetaContainerUploadBlockParam value) =&gt; {...},
     ///     (BetaCompactionBlockParam value) =&gt; {...},
-    ///     (BetaMidConversationSystemBlockParam value) =&gt; {...}
+    ///     (BetaMidConversationSystemBlockParam value) =&gt; {...},
+    ///     (BetaFallbackBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -1023,7 +1062,8 @@ public record class BetaContentBlockParam : ModelBase
         System::Func<BetaRequestMcpToolResultBlockParam, T> requestMcpToolResult,
         System::Func<BetaContainerUploadBlockParam, T> containerUpload,
         System::Func<BetaCompactionBlockParam, T> compaction,
-        System::Func<BetaMidConversationSystemBlockParam, T> midConversationSystem
+        System::Func<BetaMidConversationSystemBlockParam, T> midConversationSystem,
+        System::Func<BetaFallbackBlockParam, T> fallback
     )
     {
         return this.Value switch
@@ -1050,6 +1090,7 @@ public record class BetaContentBlockParam : ModelBase
             BetaContainerUploadBlockParam value => containerUpload(value),
             BetaCompactionBlockParam value => compaction(value),
             BetaMidConversationSystemBlockParam value => midConversationSystem(value),
+            BetaFallbackBlockParam value => fallback(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaContentBlockParam"
             ),
@@ -1124,6 +1165,9 @@ public record class BetaContentBlockParam : ModelBase
         BetaMidConversationSystemBlockParam value
     ) => new(value);
 
+    public static implicit operator BetaContentBlockParam(BetaFallbackBlockParam value) =>
+        new(value);
+
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -1163,7 +1207,8 @@ public record class BetaContentBlockParam : ModelBase
             (requestMcpToolResult) => requestMcpToolResult.Validate(),
             (containerUpload) => containerUpload.Validate(),
             (compaction) => compaction.Validate(),
-            (midConversationSystem) => midConversationSystem.Validate()
+            (midConversationSystem) => midConversationSystem.Validate(),
+            (fallback) => fallback.Validate()
         );
     }
 
@@ -1208,6 +1253,7 @@ public record class BetaContentBlockParam : ModelBase
             BetaContainerUploadBlockParam _ => 18,
             BetaCompactionBlockParam _ => 19,
             BetaMidConversationSystemBlockParam _ => 20,
+            BetaFallbackBlockParam _ => 21,
             _ => -1,
         };
     }
@@ -1649,6 +1695,26 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                             element,
                             options
                         );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "fallback":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaFallbackBlockParam>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);

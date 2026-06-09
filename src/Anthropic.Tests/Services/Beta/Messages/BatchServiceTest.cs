@@ -54,6 +54,33 @@ public class BatchServiceTest : TestBase
                                 ],
                             },
                             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                            FallbackCreditToken = "x",
+                            Fallbacks =
+                            [
+                                new()
+                                {
+                                    Model = Messages::Model.ClaudeFable5,
+                                    MaxTokens = 0,
+                                    OutputConfig = new()
+                                    {
+                                        Effort = Effort.Low,
+                                        Format = new()
+                                        {
+                                            Schema = new Dictionary<string, JsonElement>()
+                                            {
+                                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                                            },
+                                        },
+                                        TaskBudget = new() { Total = 1024, Remaining = 0 },
+                                    },
+                                    Speed = BetaFallbackParamSpeed.Standard,
+                                    Thinking = new BetaThinkingConfigEnabled()
+                                    {
+                                        BudgetTokens = 1024,
+                                        Display = BetaThinkingConfigEnabledDisplay.Summarized,
+                                    },
+                                },
+                            ],
                             InferenceGeo = "inference_geo",
                             McpServers =
                             [

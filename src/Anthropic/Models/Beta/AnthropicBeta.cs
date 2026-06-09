@@ -34,6 +34,8 @@ public enum AnthropicBeta
     ManagedAgents2026_04_01,
     CacheDiagnosis2026_04_07,
     ThinkingTokenCount2026_05_13,
+    ServerSideFallback2026_06_01,
+    FallbackCredit2026_06_01,
 }
 
 sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
@@ -73,6 +75,8 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "managed-agents-2026-04-01" => AnthropicBeta.ManagedAgents2026_04_01,
             "cache-diagnosis-2026-04-07" => AnthropicBeta.CacheDiagnosis2026_04_07,
             "thinking-token-count-2026-05-13" => AnthropicBeta.ThinkingTokenCount2026_05_13,
+            "server-side-fallback-2026-06-01" => AnthropicBeta.ServerSideFallback2026_06_01,
+            "fallback-credit-2026-06-01" => AnthropicBeta.FallbackCredit2026_06_01,
             _ => (AnthropicBeta)(-1),
         };
     }
@@ -114,6 +118,8 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.ManagedAgents2026_04_01 => "managed-agents-2026-04-01",
                 AnthropicBeta.CacheDiagnosis2026_04_07 => "cache-diagnosis-2026-04-07",
                 AnthropicBeta.ThinkingTokenCount2026_05_13 => "thinking-token-count-2026-05-13",
+                AnthropicBeta.ServerSideFallback2026_06_01 => "server-side-fallback-2026-06-01",
+                AnthropicBeta.FallbackCredit2026_06_01 => "fallback-credit-2026-06-01",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

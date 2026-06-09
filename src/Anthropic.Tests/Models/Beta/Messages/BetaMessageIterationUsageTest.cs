@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
+using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
 
@@ -15,6 +16,7 @@ public class BetaMessageIterationUsageTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
+            Model = Model.ClaudeFable5,
             OutputTokens = 0,
         };
 
@@ -26,6 +28,7 @@ public class BetaMessageIterationUsageTest : TestBase
         long expectedCacheCreationInputTokens = 0;
         long expectedCacheReadInputTokens = 0;
         long expectedInputTokens = 0;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeFable5;
         long expectedOutputTokens = 0;
         JsonElement expectedType = JsonSerializer.SerializeToElement("message");
 
@@ -33,6 +36,7 @@ public class BetaMessageIterationUsageTest : TestBase
         Assert.Equal(expectedCacheCreationInputTokens, model.CacheCreationInputTokens);
         Assert.Equal(expectedCacheReadInputTokens, model.CacheReadInputTokens);
         Assert.Equal(expectedInputTokens, model.InputTokens);
+        Assert.Equal(expectedModel, model.Model);
         Assert.Equal(expectedOutputTokens, model.OutputTokens);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -46,6 +50,7 @@ public class BetaMessageIterationUsageTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
+            Model = Model.ClaudeFable5,
             OutputTokens = 0,
         };
 
@@ -67,6 +72,7 @@ public class BetaMessageIterationUsageTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
+            Model = Model.ClaudeFable5,
             OutputTokens = 0,
         };
 
@@ -85,6 +91,7 @@ public class BetaMessageIterationUsageTest : TestBase
         long expectedCacheCreationInputTokens = 0;
         long expectedCacheReadInputTokens = 0;
         long expectedInputTokens = 0;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeFable5;
         long expectedOutputTokens = 0;
         JsonElement expectedType = JsonSerializer.SerializeToElement("message");
 
@@ -92,6 +99,7 @@ public class BetaMessageIterationUsageTest : TestBase
         Assert.Equal(expectedCacheCreationInputTokens, deserialized.CacheCreationInputTokens);
         Assert.Equal(expectedCacheReadInputTokens, deserialized.CacheReadInputTokens);
         Assert.Equal(expectedInputTokens, deserialized.InputTokens);
+        Assert.Equal(expectedModel, deserialized.Model);
         Assert.Equal(expectedOutputTokens, deserialized.OutputTokens);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
@@ -105,6 +113,7 @@ public class BetaMessageIterationUsageTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
+            Model = Model.ClaudeFable5,
             OutputTokens = 0,
         };
 
@@ -120,6 +129,7 @@ public class BetaMessageIterationUsageTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
+            Model = Model.ClaudeFable5,
             OutputTokens = 0,
         };
 

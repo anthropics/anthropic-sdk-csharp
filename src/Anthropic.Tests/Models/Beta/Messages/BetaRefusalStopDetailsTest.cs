@@ -14,14 +14,23 @@ public class BetaRefusalStopDetailsTest : TestBase
         {
             Category = Category.Cyber,
             Explanation = "explanation",
+            FallbackCreditToken = "fallback_credit_token",
+            FallbackHasPrefillClaim = true,
+            RecommendedModel = "recommended_model",
         };
 
         ApiEnum<string, Category> expectedCategory = Category.Cyber;
         string expectedExplanation = "explanation";
+        string expectedFallbackCreditToken = "fallback_credit_token";
+        bool expectedFallbackHasPrefillClaim = true;
+        string expectedRecommendedModel = "recommended_model";
         JsonElement expectedType = JsonSerializer.SerializeToElement("refusal");
 
         Assert.Equal(expectedCategory, model.Category);
         Assert.Equal(expectedExplanation, model.Explanation);
+        Assert.Equal(expectedFallbackCreditToken, model.FallbackCreditToken);
+        Assert.Equal(expectedFallbackHasPrefillClaim, model.FallbackHasPrefillClaim);
+        Assert.Equal(expectedRecommendedModel, model.RecommendedModel);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
@@ -32,6 +41,9 @@ public class BetaRefusalStopDetailsTest : TestBase
         {
             Category = Category.Cyber,
             Explanation = "explanation",
+            FallbackCreditToken = "fallback_credit_token",
+            FallbackHasPrefillClaim = true,
+            RecommendedModel = "recommended_model",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -50,6 +62,9 @@ public class BetaRefusalStopDetailsTest : TestBase
         {
             Category = Category.Cyber,
             Explanation = "explanation",
+            FallbackCreditToken = "fallback_credit_token",
+            FallbackHasPrefillClaim = true,
+            RecommendedModel = "recommended_model",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -61,10 +76,16 @@ public class BetaRefusalStopDetailsTest : TestBase
 
         ApiEnum<string, Category> expectedCategory = Category.Cyber;
         string expectedExplanation = "explanation";
+        string expectedFallbackCreditToken = "fallback_credit_token";
+        bool expectedFallbackHasPrefillClaim = true;
+        string expectedRecommendedModel = "recommended_model";
         JsonElement expectedType = JsonSerializer.SerializeToElement("refusal");
 
         Assert.Equal(expectedCategory, deserialized.Category);
         Assert.Equal(expectedExplanation, deserialized.Explanation);
+        Assert.Equal(expectedFallbackCreditToken, deserialized.FallbackCreditToken);
+        Assert.Equal(expectedFallbackHasPrefillClaim, deserialized.FallbackHasPrefillClaim);
+        Assert.Equal(expectedRecommendedModel, deserialized.RecommendedModel);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
@@ -75,6 +96,9 @@ public class BetaRefusalStopDetailsTest : TestBase
         {
             Category = Category.Cyber,
             Explanation = "explanation",
+            FallbackCreditToken = "fallback_credit_token",
+            FallbackHasPrefillClaim = true,
+            RecommendedModel = "recommended_model",
         };
 
         model.Validate();
@@ -87,6 +111,9 @@ public class BetaRefusalStopDetailsTest : TestBase
         {
             Category = Category.Cyber,
             Explanation = "explanation",
+            FallbackCreditToken = "fallback_credit_token",
+            FallbackHasPrefillClaim = true,
+            RecommendedModel = "recommended_model",
         };
 
         BetaRefusalStopDetails copied = new(model);
@@ -100,6 +127,7 @@ public class CategoryTest : TestBase
     [Theory]
     [InlineData(Category.Cyber)]
     [InlineData(Category.Bio)]
+    [InlineData(Category.ReasoningExtraction)]
     public void Validation_Works(Category rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -122,6 +150,7 @@ public class CategoryTest : TestBase
     [Theory]
     [InlineData(Category.Cyber)]
     [InlineData(Category.Bio)]
+    [InlineData(Category.ReasoningExtraction)]
     public void SerializationRoundtrip_Works(Category rawValue)
     {
         // force implicit conversion because Theory can't do that for us

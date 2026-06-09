@@ -10,12 +10,19 @@ using Anthropic.Models.Messages;
 namespace Anthropic.Models.Beta.Messages;
 
 /// <summary>
-/// Token usage for a sampling iteration.
+/// Token usage for the fallback-model attempt of a server-side fallback request.
+///
+/// <para>Produced in place of a `message` entry for whichever hop served the response.
+/// A declined hop produces the existing `message` entry. Whether a fallback model
+/// served the response is signalled by the presence of this entry in `usage.iterations`.</para>
 /// </summary>
 [JsonConverter(
-    typeof(JsonModelConverter<BetaMessageIterationUsage, BetaMessageIterationUsageFromRaw>)
+    typeof(JsonModelConverter<
+        BetaFallbackMessageIterationUsage,
+        BetaFallbackMessageIterationUsageFromRaw
+    >)
 )]
-public sealed record class BetaMessageIterationUsage : JsonModel
+public sealed record class BetaFallbackMessageIterationUsage : JsonModel
 {
     /// <summary>
     /// Breakdown of cached tokens by TTL
@@ -99,7 +106,7 @@ public sealed record class BetaMessageIterationUsage : JsonModel
     }
 
     /// <summary>
-    /// Usage for a sampling iteration
+    /// Usage for the fallback-model attempt that served the response
     /// </summary>
     public JsonElement Type
     {
@@ -120,40 +127,47 @@ public sealed record class BetaMessageIterationUsage : JsonModel
         _ = this.InputTokens;
         this.Model.Raw();
         _ = this.OutputTokens;
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message")))
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("fallback_message")
+            )
+        )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
     }
 
-    public BetaMessageIterationUsage()
+    public BetaFallbackMessageIterationUsage()
     {
-        this.Type = JsonSerializer.SerializeToElement("message");
+        this.Type = JsonSerializer.SerializeToElement("fallback_message");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    public BetaMessageIterationUsage(BetaMessageIterationUsage betaMessageIterationUsage)
-        : base(betaMessageIterationUsage) { }
+    public BetaFallbackMessageIterationUsage(
+        BetaFallbackMessageIterationUsage betaFallbackMessageIterationUsage
+    )
+        : base(betaFallbackMessageIterationUsage) { }
 #pragma warning restore CS8618
 
-    public BetaMessageIterationUsage(IReadOnlyDictionary<string, JsonElement> rawData)
+    public BetaFallbackMessageIterationUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.SerializeToElement("message");
+        this.Type = JsonSerializer.SerializeToElement("fallback_message");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMessageIterationUsage(FrozenDictionary<string, JsonElement> rawData)
+    BetaFallbackMessageIterationUsage(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="BetaMessageIterationUsageFromRaw.FromRawUnchecked"/>
-    public static BetaMessageIterationUsage FromRawUnchecked(
+    /// <inheritdoc cref="BetaFallbackMessageIterationUsageFromRaw.FromRawUnchecked"/>
+    public static BetaFallbackMessageIterationUsage FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -161,10 +175,10 @@ public sealed record class BetaMessageIterationUsage : JsonModel
     }
 }
 
-class BetaMessageIterationUsageFromRaw : IFromRawJson<BetaMessageIterationUsage>
+class BetaFallbackMessageIterationUsageFromRaw : IFromRawJson<BetaFallbackMessageIterationUsage>
 {
     /// <inheritdoc/>
-    public BetaMessageIterationUsage FromRawUnchecked(
+    public BetaFallbackMessageIterationUsage FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
-    ) => BetaMessageIterationUsage.FromRawUnchecked(rawData);
+    ) => BetaFallbackMessageIterationUsage.FromRawUnchecked(rawData);
 }

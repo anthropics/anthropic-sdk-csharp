@@ -57,6 +57,33 @@ public class BatchCreateParamsTest : TestBase
                             ],
                         },
                         Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                        FallbackCreditToken = "x",
+                        Fallbacks =
+                        [
+                            new()
+                            {
+                                Model = ModelsMessages::Model.ClaudeFable5,
+                                MaxTokens = 0,
+                                OutputConfig = new()
+                                {
+                                    Effort = Messages::Effort.Low,
+                                    Format = new()
+                                    {
+                                        Schema = new Dictionary<string, JsonElement>()
+                                        {
+                                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                                        },
+                                    },
+                                    TaskBudget = new() { Total = 1024, Remaining = 0 },
+                                },
+                                Speed = Messages::BetaFallbackParamSpeed.Standard,
+                                Thinking = new Messages::BetaThinkingConfigEnabled()
+                                {
+                                    BudgetTokens = 1024,
+                                    Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                                },
+                            },
+                        ],
                         InferenceGeo = "inference_geo",
                         McpServers =
                         [
@@ -203,6 +230,33 @@ public class BatchCreateParamsTest : TestBase
                         ],
                     },
                     Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                    FallbackCreditToken = "x",
+                    Fallbacks =
+                    [
+                        new()
+                        {
+                            Model = ModelsMessages::Model.ClaudeFable5,
+                            MaxTokens = 0,
+                            OutputConfig = new()
+                            {
+                                Effort = Messages::Effort.Low,
+                                Format = new()
+                                {
+                                    Schema = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                },
+                                TaskBudget = new() { Total = 1024, Remaining = 0 },
+                            },
+                            Speed = Messages::BetaFallbackParamSpeed.Standard,
+                            Thinking = new Messages::BetaThinkingConfigEnabled()
+                            {
+                                BudgetTokens = 1024,
+                                Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                            },
+                        },
+                    ],
                     InferenceGeo = "inference_geo",
                     McpServers =
                     [
@@ -365,6 +419,33 @@ public class BatchCreateParamsTest : TestBase
                             ],
                         },
                         Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                        FallbackCreditToken = "x",
+                        Fallbacks =
+                        [
+                            new()
+                            {
+                                Model = ModelsMessages::Model.ClaudeFable5,
+                                MaxTokens = 0,
+                                OutputConfig = new()
+                                {
+                                    Effort = Messages::Effort.Low,
+                                    Format = new()
+                                    {
+                                        Schema = new Dictionary<string, JsonElement>()
+                                        {
+                                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                                        },
+                                    },
+                                    TaskBudget = new() { Total = 1024, Remaining = 0 },
+                                },
+                                Speed = Messages::BetaFallbackParamSpeed.Standard,
+                                Thinking = new Messages::BetaThinkingConfigEnabled()
+                                {
+                                    BudgetTokens = 1024,
+                                    Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                                },
+                            },
+                        ],
                         InferenceGeo = "inference_geo",
                         McpServers =
                         [
@@ -519,6 +600,33 @@ public class BatchCreateParamsTest : TestBase
                             ],
                         },
                         Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                        FallbackCreditToken = "x",
+                        Fallbacks =
+                        [
+                            new()
+                            {
+                                Model = ModelsMessages::Model.ClaudeFable5,
+                                MaxTokens = 0,
+                                OutputConfig = new()
+                                {
+                                    Effort = Messages::Effort.Low,
+                                    Format = new()
+                                    {
+                                        Schema = new Dictionary<string, JsonElement>()
+                                        {
+                                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                                        },
+                                    },
+                                    TaskBudget = new() { Total = 1024, Remaining = 0 },
+                                },
+                                Speed = Messages::BetaFallbackParamSpeed.Standard,
+                                Thinking = new Messages::BetaThinkingConfigEnabled()
+                                {
+                                    BudgetTokens = 1024,
+                                    Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                                },
+                            },
+                        ],
                         InferenceGeo = "inference_geo",
                         McpServers =
                         [
@@ -676,6 +784,33 @@ public class BatchCreateParamsTest : TestBase
                             ],
                         },
                         Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                        FallbackCreditToken = "x",
+                        Fallbacks =
+                        [
+                            new()
+                            {
+                                Model = ModelsMessages::Model.ClaudeFable5,
+                                MaxTokens = 0,
+                                OutputConfig = new()
+                                {
+                                    Effort = Messages::Effort.Low,
+                                    Format = new()
+                                    {
+                                        Schema = new Dictionary<string, JsonElement>()
+                                        {
+                                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                                        },
+                                    },
+                                    TaskBudget = new() { Total = 1024, Remaining = 0 },
+                                },
+                                Speed = Messages::BetaFallbackParamSpeed.Standard,
+                                Thinking = new Messages::BetaThinkingConfigEnabled()
+                                {
+                                    BudgetTokens = 1024,
+                                    Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                                },
+                            },
+                        ],
                         InferenceGeo = "inference_geo",
                         McpServers =
                         [
@@ -837,6 +972,33 @@ public class BatchCreateParamsTest : TestBase
                             ],
                         },
                         Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                        FallbackCreditToken = "x",
+                        Fallbacks =
+                        [
+                            new()
+                            {
+                                Model = ModelsMessages::Model.ClaudeFable5,
+                                MaxTokens = 0,
+                                OutputConfig = new()
+                                {
+                                    Effort = Messages::Effort.Low,
+                                    Format = new()
+                                    {
+                                        Schema = new Dictionary<string, JsonElement>()
+                                        {
+                                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                                        },
+                                    },
+                                    TaskBudget = new() { Total = 1024, Remaining = 0 },
+                                },
+                                Speed = Messages::BetaFallbackParamSpeed.Standard,
+                                Thinking = new Messages::BetaThinkingConfigEnabled()
+                                {
+                                    BudgetTokens = 1024,
+                                    Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                                },
+                            },
+                        ],
                         InferenceGeo = "inference_geo",
                         McpServers =
                         [
@@ -996,6 +1158,33 @@ public class BatchCreateParamsTest : TestBase
                             ],
                         },
                         Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                        FallbackCreditToken = "x",
+                        Fallbacks =
+                        [
+                            new()
+                            {
+                                Model = ModelsMessages::Model.ClaudeFable5,
+                                MaxTokens = 0,
+                                OutputConfig = new()
+                                {
+                                    Effort = Messages::Effort.Low,
+                                    Format = new()
+                                    {
+                                        Schema = new Dictionary<string, JsonElement>()
+                                        {
+                                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                                        },
+                                    },
+                                    TaskBudget = new() { Total = 1024, Remaining = 0 },
+                                },
+                                Speed = Messages::BetaFallbackParamSpeed.Standard,
+                                Thinking = new Messages::BetaThinkingConfigEnabled()
+                                {
+                                    BudgetTokens = 1024,
+                                    Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                                },
+                            },
+                        ],
                         InferenceGeo = "inference_geo",
                         McpServers =
                         [
@@ -1151,6 +1340,33 @@ public class RequestTest : TestBase
                     ],
                 },
                 Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                FallbackCreditToken = "x",
+                Fallbacks =
+                [
+                    new()
+                    {
+                        Model = ModelsMessages::Model.ClaudeFable5,
+                        MaxTokens = 0,
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                            TaskBudget = new() { Total = 1024, Remaining = 0 },
+                        },
+                        Speed = Messages::BetaFallbackParamSpeed.Standard,
+                        Thinking = new Messages::BetaThinkingConfigEnabled()
+                        {
+                            BudgetTokens = 1024,
+                            Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                        },
+                    },
+                ],
                 InferenceGeo = "inference_geo",
                 McpServers =
                 [
@@ -1283,6 +1499,33 @@ public class RequestTest : TestBase
                 ],
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            FallbackCreditToken = "x",
+            Fallbacks =
+            [
+                new()
+                {
+                    Model = ModelsMessages::Model.ClaudeFable5,
+                    MaxTokens = 0,
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        TaskBudget = new() { Total = 1024, Remaining = 0 },
+                    },
+                    Speed = Messages::BetaFallbackParamSpeed.Standard,
+                    Thinking = new Messages::BetaThinkingConfigEnabled()
+                    {
+                        BudgetTokens = 1024,
+                        Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                    },
+                },
+            ],
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -1423,6 +1666,33 @@ public class RequestTest : TestBase
                     ],
                 },
                 Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                FallbackCreditToken = "x",
+                Fallbacks =
+                [
+                    new()
+                    {
+                        Model = ModelsMessages::Model.ClaudeFable5,
+                        MaxTokens = 0,
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                            TaskBudget = new() { Total = 1024, Remaining = 0 },
+                        },
+                        Speed = Messages::BetaFallbackParamSpeed.Standard,
+                        Thinking = new Messages::BetaThinkingConfigEnabled()
+                        {
+                            BudgetTokens = 1024,
+                            Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                        },
+                    },
+                ],
                 InferenceGeo = "inference_geo",
                 McpServers =
                 [
@@ -1566,6 +1836,33 @@ public class RequestTest : TestBase
                     ],
                 },
                 Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                FallbackCreditToken = "x",
+                Fallbacks =
+                [
+                    new()
+                    {
+                        Model = ModelsMessages::Model.ClaudeFable5,
+                        MaxTokens = 0,
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                            TaskBudget = new() { Total = 1024, Remaining = 0 },
+                        },
+                        Speed = Messages::BetaFallbackParamSpeed.Standard,
+                        Thinking = new Messages::BetaThinkingConfigEnabled()
+                        {
+                            BudgetTokens = 1024,
+                            Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                        },
+                    },
+                ],
                 InferenceGeo = "inference_geo",
                 McpServers =
                 [
@@ -1705,6 +2002,33 @@ public class RequestTest : TestBase
                 ],
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            FallbackCreditToken = "x",
+            Fallbacks =
+            [
+                new()
+                {
+                    Model = ModelsMessages::Model.ClaudeFable5,
+                    MaxTokens = 0,
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        TaskBudget = new() { Total = 1024, Remaining = 0 },
+                    },
+                    Speed = Messages::BetaFallbackParamSpeed.Standard,
+                    Thinking = new Messages::BetaThinkingConfigEnabled()
+                    {
+                        BudgetTokens = 1024,
+                        Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                    },
+                },
+            ],
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -1845,6 +2169,33 @@ public class RequestTest : TestBase
                     ],
                 },
                 Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                FallbackCreditToken = "x",
+                Fallbacks =
+                [
+                    new()
+                    {
+                        Model = ModelsMessages::Model.ClaudeFable5,
+                        MaxTokens = 0,
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                            TaskBudget = new() { Total = 1024, Remaining = 0 },
+                        },
+                        Speed = Messages::BetaFallbackParamSpeed.Standard,
+                        Thinking = new Messages::BetaThinkingConfigEnabled()
+                        {
+                            BudgetTokens = 1024,
+                            Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                        },
+                    },
+                ],
                 InferenceGeo = "inference_geo",
                 McpServers =
                 [
@@ -1985,6 +2336,33 @@ public class RequestTest : TestBase
                     ],
                 },
                 Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                FallbackCreditToken = "x",
+                Fallbacks =
+                [
+                    new()
+                    {
+                        Model = ModelsMessages::Model.ClaudeFable5,
+                        MaxTokens = 0,
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                            TaskBudget = new() { Total = 1024, Remaining = 0 },
+                        },
+                        Speed = Messages::BetaFallbackParamSpeed.Standard,
+                        Thinking = new Messages::BetaThinkingConfigEnabled()
+                        {
+                            BudgetTokens = 1024,
+                            Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                        },
+                    },
+                ],
                 InferenceGeo = "inference_geo",
                 McpServers =
                 [
@@ -2127,6 +2505,33 @@ public class ParamsTest : TestBase
                 ],
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            FallbackCreditToken = "x",
+            Fallbacks =
+            [
+                new()
+                {
+                    Model = ModelsMessages::Model.ClaudeFable5,
+                    MaxTokens = 0,
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        TaskBudget = new() { Total = 1024, Remaining = 0 },
+                    },
+                    Speed = Messages::BetaFallbackParamSpeed.Standard,
+                    Thinking = new Messages::BetaThinkingConfigEnabled()
+                    {
+                        BudgetTokens = 1024,
+                        Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                    },
+                },
+            ],
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -2264,6 +2669,33 @@ public class ParamsTest : TestBase
         {
             PreviousMessageID = "previous_message_id",
         };
+        string expectedFallbackCreditToken = "x";
+        List<Messages::BetaFallbackParam> expectedFallbacks =
+        [
+            new()
+            {
+                Model = ModelsMessages::Model.ClaudeFable5,
+                MaxTokens = 0,
+                OutputConfig = new()
+                {
+                    Effort = Messages::Effort.Low,
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                    TaskBudget = new() { Total = 1024, Remaining = 0 },
+                },
+                Speed = Messages::BetaFallbackParamSpeed.Standard,
+                Thinking = new Messages::BetaThinkingConfigEnabled()
+                {
+                    BudgetTokens = 1024,
+                    Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                },
+            },
+        ];
         string expectedInferenceGeo = "inference_geo";
         List<Messages::BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
@@ -2374,6 +2806,13 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedContainer, model.Container);
         Assert.Equal(expectedContextManagement, model.ContextManagement);
         Assert.Equal(expectedDiagnostics, model.Diagnostics);
+        Assert.Equal(expectedFallbackCreditToken, model.FallbackCreditToken);
+        Assert.NotNull(model.Fallbacks);
+        Assert.Equal(expectedFallbacks.Count, model.Fallbacks.Count);
+        for (int i = 0; i < expectedFallbacks.Count; i++)
+        {
+            Assert.Equal(expectedFallbacks[i], model.Fallbacks[i]);
+        }
         Assert.Equal(expectedInferenceGeo, model.InferenceGeo);
         Assert.NotNull(model.McpServers);
         Assert.Equal(expectedMcpServers.Count, model.McpServers.Count);
@@ -2445,6 +2884,33 @@ public class ParamsTest : TestBase
                 ],
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            FallbackCreditToken = "x",
+            Fallbacks =
+            [
+                new()
+                {
+                    Model = ModelsMessages::Model.ClaudeFable5,
+                    MaxTokens = 0,
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        TaskBudget = new() { Total = 1024, Remaining = 0 },
+                    },
+                    Speed = Messages::BetaFallbackParamSpeed.Standard,
+                    Thinking = new Messages::BetaThinkingConfigEnabled()
+                    {
+                        BudgetTokens = 1024,
+                        Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                    },
+                },
+            ],
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -2584,6 +3050,33 @@ public class ParamsTest : TestBase
                 ],
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            FallbackCreditToken = "x",
+            Fallbacks =
+            [
+                new()
+                {
+                    Model = ModelsMessages::Model.ClaudeFable5,
+                    MaxTokens = 0,
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        TaskBudget = new() { Total = 1024, Remaining = 0 },
+                    },
+                    Speed = Messages::BetaFallbackParamSpeed.Standard,
+                    Thinking = new Messages::BetaThinkingConfigEnabled()
+                    {
+                        BudgetTokens = 1024,
+                        Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                    },
+                },
+            ],
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -2725,6 +3218,33 @@ public class ParamsTest : TestBase
         {
             PreviousMessageID = "previous_message_id",
         };
+        string expectedFallbackCreditToken = "x";
+        List<Messages::BetaFallbackParam> expectedFallbacks =
+        [
+            new()
+            {
+                Model = ModelsMessages::Model.ClaudeFable5,
+                MaxTokens = 0,
+                OutputConfig = new()
+                {
+                    Effort = Messages::Effort.Low,
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                    TaskBudget = new() { Total = 1024, Remaining = 0 },
+                },
+                Speed = Messages::BetaFallbackParamSpeed.Standard,
+                Thinking = new Messages::BetaThinkingConfigEnabled()
+                {
+                    BudgetTokens = 1024,
+                    Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                },
+            },
+        ];
         string expectedInferenceGeo = "inference_geo";
         List<Messages::BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
@@ -2835,6 +3355,13 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedContainer, deserialized.Container);
         Assert.Equal(expectedContextManagement, deserialized.ContextManagement);
         Assert.Equal(expectedDiagnostics, deserialized.Diagnostics);
+        Assert.Equal(expectedFallbackCreditToken, deserialized.FallbackCreditToken);
+        Assert.NotNull(deserialized.Fallbacks);
+        Assert.Equal(expectedFallbacks.Count, deserialized.Fallbacks.Count);
+        for (int i = 0; i < expectedFallbacks.Count; i++)
+        {
+            Assert.Equal(expectedFallbacks[i], deserialized.Fallbacks[i]);
+        }
         Assert.Equal(expectedInferenceGeo, deserialized.InferenceGeo);
         Assert.NotNull(deserialized.McpServers);
         Assert.Equal(expectedMcpServers.Count, deserialized.McpServers.Count);
@@ -2906,6 +3433,33 @@ public class ParamsTest : TestBase
                 ],
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            FallbackCreditToken = "x",
+            Fallbacks =
+            [
+                new()
+                {
+                    Model = ModelsMessages::Model.ClaudeFable5,
+                    MaxTokens = 0,
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        TaskBudget = new() { Total = 1024, Remaining = 0 },
+                    },
+                    Speed = Messages::BetaFallbackParamSpeed.Standard,
+                    Thinking = new Messages::BetaThinkingConfigEnabled()
+                    {
+                        BudgetTokens = 1024,
+                        Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                    },
+                },
+            ],
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -3042,6 +3596,33 @@ public class ParamsTest : TestBase
                 ],
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            FallbackCreditToken = "x",
+            Fallbacks =
+            [
+                new()
+                {
+                    Model = ModelsMessages::Model.ClaudeFable5,
+                    MaxTokens = 0,
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        TaskBudget = new() { Total = 1024, Remaining = 0 },
+                    },
+                    Speed = Messages::BetaFallbackParamSpeed.Standard,
+                    Thinking = new Messages::BetaThinkingConfigEnabled()
+                    {
+                        BudgetTokens = 1024,
+                        Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                    },
+                },
+            ],
             InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
@@ -3119,6 +3700,33 @@ public class ParamsTest : TestBase
                 ],
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            FallbackCreditToken = "x",
+            Fallbacks =
+            [
+                new()
+                {
+                    Model = ModelsMessages::Model.ClaudeFable5,
+                    MaxTokens = 0,
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        TaskBudget = new() { Total = 1024, Remaining = 0 },
+                    },
+                    Speed = Messages::BetaFallbackParamSpeed.Standard,
+                    Thinking = new Messages::BetaThinkingConfigEnabled()
+                    {
+                        BudgetTokens = 1024,
+                        Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                    },
+                },
+            ],
             InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
@@ -3171,6 +3779,33 @@ public class ParamsTest : TestBase
                 ],
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            FallbackCreditToken = "x",
+            Fallbacks =
+            [
+                new()
+                {
+                    Model = ModelsMessages::Model.ClaudeFable5,
+                    MaxTokens = 0,
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        TaskBudget = new() { Total = 1024, Remaining = 0 },
+                    },
+                    Speed = Messages::BetaFallbackParamSpeed.Standard,
+                    Thinking = new Messages::BetaThinkingConfigEnabled()
+                    {
+                        BudgetTokens = 1024,
+                        Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                    },
+                },
+            ],
             InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
@@ -3263,6 +3898,33 @@ public class ParamsTest : TestBase
                 ],
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            FallbackCreditToken = "x",
+            Fallbacks =
+            [
+                new()
+                {
+                    Model = ModelsMessages::Model.ClaudeFable5,
+                    MaxTokens = 0,
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        TaskBudget = new() { Total = 1024, Remaining = 0 },
+                    },
+                    Speed = Messages::BetaFallbackParamSpeed.Standard,
+                    Thinking = new Messages::BetaThinkingConfigEnabled()
+                    {
+                        BudgetTokens = 1024,
+                        Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                    },
+                },
+            ],
             InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
@@ -3395,6 +4057,10 @@ public class ParamsTest : TestBase
         Assert.False(model.RawData.ContainsKey("context_management"));
         Assert.Null(model.Diagnostics);
         Assert.False(model.RawData.ContainsKey("diagnostics"));
+        Assert.Null(model.FallbackCreditToken);
+        Assert.False(model.RawData.ContainsKey("fallback_credit_token"));
+        Assert.Null(model.Fallbacks);
+        Assert.False(model.RawData.ContainsKey("fallbacks"));
         Assert.Null(model.InferenceGeo);
         Assert.False(model.RawData.ContainsKey("inference_geo"));
         Assert.Null(model.OutputFormat);
@@ -3599,6 +4265,8 @@ public class ParamsTest : TestBase
             Container = null,
             ContextManagement = null,
             Diagnostics = null,
+            FallbackCreditToken = null,
+            Fallbacks = null,
             InferenceGeo = null,
             OutputFormat = null,
             Speed = null,
@@ -3613,6 +4281,10 @@ public class ParamsTest : TestBase
         Assert.True(model.RawData.ContainsKey("context_management"));
         Assert.Null(model.Diagnostics);
         Assert.True(model.RawData.ContainsKey("diagnostics"));
+        Assert.Null(model.FallbackCreditToken);
+        Assert.True(model.RawData.ContainsKey("fallback_credit_token"));
+        Assert.Null(model.Fallbacks);
+        Assert.True(model.RawData.ContainsKey("fallbacks"));
         Assert.Null(model.InferenceGeo);
         Assert.True(model.RawData.ContainsKey("inference_geo"));
         Assert.Null(model.OutputFormat);
@@ -3720,6 +4392,8 @@ public class ParamsTest : TestBase
             Container = null,
             ContextManagement = null,
             Diagnostics = null,
+            FallbackCreditToken = null,
+            Fallbacks = null,
             InferenceGeo = null,
             OutputFormat = null,
             Speed = null,
@@ -3766,6 +4440,33 @@ public class ParamsTest : TestBase
                 ],
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            FallbackCreditToken = "x",
+            Fallbacks =
+            [
+                new()
+                {
+                    Model = ModelsMessages::Model.ClaudeFable5,
+                    MaxTokens = 0,
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        TaskBudget = new() { Total = 1024, Remaining = 0 },
+                    },
+                    Speed = Messages::BetaFallbackParamSpeed.Standard,
+                    Thinking = new Messages::BetaThinkingConfigEnabled()
+                    {
+                        BudgetTokens = 1024,
+                        Display = Messages::BetaThinkingConfigEnabledDisplay.Summarized,
+                    },
+                },
+            ],
             InferenceGeo = "inference_geo",
             McpServers =
             [

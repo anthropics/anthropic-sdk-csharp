@@ -15,6 +15,11 @@ namespace Anthropic.Models.Beta.Agents;
 public enum BetaManagedAgentsModel
 {
     /// <summary>
+    /// Next generation of intelligence for the hardest knowledge work and coding problems
+    /// </summary>
+    ClaudeFable5,
+
+    /// <summary>
     /// Frontier intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_8,
@@ -75,6 +80,7 @@ sealed class BetaManagedAgentsModelConverter : JsonConverter<BetaManagedAgentsMo
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
+            "claude-fable-5" => BetaManagedAgentsModel.ClaudeFable5,
             "claude-opus-4-8" => BetaManagedAgentsModel.ClaudeOpus4_8,
             "claude-opus-4-7" => BetaManagedAgentsModel.ClaudeOpus4_7,
             "claude-opus-4-6" => BetaManagedAgentsModel.ClaudeOpus4_6,
@@ -99,6 +105,7 @@ sealed class BetaManagedAgentsModelConverter : JsonConverter<BetaManagedAgentsMo
             writer,
             value switch
             {
+                BetaManagedAgentsModel.ClaudeFable5 => "claude-fable-5",
                 BetaManagedAgentsModel.ClaudeOpus4_8 => "claude-opus-4-8",
                 BetaManagedAgentsModel.ClaudeOpus4_7 => "claude-opus-4-7",
                 BetaManagedAgentsModel.ClaudeOpus4_6 => "claude-opus-4-6",

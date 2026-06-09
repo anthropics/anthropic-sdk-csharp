@@ -5,12 +5,12 @@ using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
 
-public class BetaAdvisorMessageIterationUsageTest : TestBase
+public class BetaFallbackMessageIterationUsageTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaAdvisorMessageIterationUsage
+        var model = new BetaFallbackMessageIterationUsage
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 0,
@@ -30,7 +30,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
         long expectedInputTokens = 0;
         ApiEnum<string, Model> expectedModel = Model.ClaudeFable5;
         long expectedOutputTokens = 0;
-        JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_message");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("fallback_message");
 
         Assert.Equal(expectedCacheCreation, model.CacheCreation);
         Assert.Equal(expectedCacheCreationInputTokens, model.CacheCreationInputTokens);
@@ -44,7 +44,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaAdvisorMessageIterationUsage
+        var model = new BetaFallbackMessageIterationUsage
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 0,
@@ -55,7 +55,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaAdvisorMessageIterationUsage>(
+        var deserialized = JsonSerializer.Deserialize<BetaFallbackMessageIterationUsage>(
             json,
             ModelBase.SerializerOptions
         );
@@ -66,7 +66,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaAdvisorMessageIterationUsage
+        var model = new BetaFallbackMessageIterationUsage
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 0,
@@ -77,7 +77,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaAdvisorMessageIterationUsage>(
+        var deserialized = JsonSerializer.Deserialize<BetaFallbackMessageIterationUsage>(
             element,
             ModelBase.SerializerOptions
         );
@@ -93,7 +93,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
         long expectedInputTokens = 0;
         ApiEnum<string, Model> expectedModel = Model.ClaudeFable5;
         long expectedOutputTokens = 0;
-        JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_message");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("fallback_message");
 
         Assert.Equal(expectedCacheCreation, deserialized.CacheCreation);
         Assert.Equal(expectedCacheCreationInputTokens, deserialized.CacheCreationInputTokens);
@@ -107,7 +107,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaAdvisorMessageIterationUsage
+        var model = new BetaFallbackMessageIterationUsage
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 0,
@@ -123,7 +123,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaAdvisorMessageIterationUsage
+        var model = new BetaFallbackMessageIterationUsage
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 0,
@@ -133,7 +133,7 @@ public class BetaAdvisorMessageIterationUsageTest : TestBase
             OutputTokens = 0,
         };
 
-        BetaAdvisorMessageIterationUsage copied = new(model);
+        BetaFallbackMessageIterationUsage copied = new(model);
 
         Assert.Equal(model, copied);
     }

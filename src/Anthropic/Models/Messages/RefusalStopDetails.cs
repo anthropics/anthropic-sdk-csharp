@@ -119,6 +119,7 @@ public enum Category
 {
     Cyber,
     Bio,
+    ReasoningExtraction,
 }
 
 sealed class CategoryConverter : JsonConverter<Category>
@@ -133,6 +134,7 @@ sealed class CategoryConverter : JsonConverter<Category>
         {
             "cyber" => Category.Cyber,
             "bio" => Category.Bio,
+            "reasoning_extraction" => Category.ReasoningExtraction,
             _ => (Category)(-1),
         };
     }
@@ -145,6 +147,7 @@ sealed class CategoryConverter : JsonConverter<Category>
             {
                 Category.Cyber => "cyber",
                 Category.Bio => "bio",
+                Category.ReasoningExtraction => "reasoning_extraction",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

@@ -149,7 +149,8 @@ public record class ContentBlock : ModelBase
                 betaMcpToolUse: (x) => x.Type,
                 betaMcpToolResult: (x) => x.Type,
                 betaContainerUpload: (x) => x.Type,
-                betaCompaction: (x) => x.Type
+                betaCompaction: (x) => x.Type,
+                betaFallback: (x) => x.Type
             );
         }
     }
@@ -174,7 +175,8 @@ public record class ContentBlock : ModelBase
                 betaMcpToolUse: (x) => x.ID,
                 betaMcpToolResult: (_) => null,
                 betaContainerUpload: (_) => null,
-                betaCompaction: (_) => null
+                betaCompaction: (_) => null,
+                betaFallback: (_) => null
             );
         }
     }
@@ -199,7 +201,8 @@ public record class ContentBlock : ModelBase
                 betaMcpToolUse: (_) => null,
                 betaMcpToolResult: (x) => x.ToolUseID,
                 betaContainerUpload: (_) => null,
-                betaCompaction: (_) => null
+                betaCompaction: (_) => null,
+                betaFallback: (_) => null
             );
         }
     }
@@ -298,6 +301,12 @@ public record class ContentBlock : ModelBase
     }
 
     public ContentBlock(BetaCompactionBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ContentBlock(BetaFallbackBlock value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -661,6 +670,27 @@ public record class ContentBlock : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaFallbackBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaFallback(out var value)) {
+    ///     // `value` is of type `BetaFallbackBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaFallback([NotNullWhen(true)] out BetaFallbackBlock? value)
+    {
+        value = this.Value as BetaFallbackBlock;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -689,7 +719,8 @@ public record class ContentBlock : ModelBase
     ///     (BetaMcpToolUseBlock value) =&gt; {...},
     ///     (BetaMcpToolResultBlock value) =&gt; {...},
     ///     (BetaContainerUploadBlock value) =&gt; {...},
-    ///     (BetaCompactionBlock value) =&gt; {...}
+    ///     (BetaCompactionBlock value) =&gt; {...},
+    ///     (BetaFallbackBlock value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -710,7 +741,8 @@ public record class ContentBlock : ModelBase
         System::Action<BetaMcpToolUseBlock> betaMcpToolUse,
         System::Action<BetaMcpToolResultBlock> betaMcpToolResult,
         System::Action<BetaContainerUploadBlock> betaContainerUpload,
-        System::Action<BetaCompactionBlock> betaCompaction
+        System::Action<BetaCompactionBlock> betaCompaction,
+        System::Action<BetaFallbackBlock> betaFallback
     )
     {
         switch (this.Value)
@@ -763,6 +795,9 @@ public record class ContentBlock : ModelBase
             case BetaCompactionBlock value:
                 betaCompaction(value);
                 break;
+            case BetaFallbackBlock value:
+                betaFallback(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of ContentBlock"
@@ -800,7 +835,8 @@ public record class ContentBlock : ModelBase
     ///     (BetaMcpToolUseBlock value) =&gt; {...},
     ///     (BetaMcpToolResultBlock value) =&gt; {...},
     ///     (BetaContainerUploadBlock value) =&gt; {...},
-    ///     (BetaCompactionBlock value) =&gt; {...}
+    ///     (BetaCompactionBlock value) =&gt; {...},
+    ///     (BetaFallbackBlock value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -824,7 +860,8 @@ public record class ContentBlock : ModelBase
         System::Func<BetaMcpToolUseBlock, T> betaMcpToolUse,
         System::Func<BetaMcpToolResultBlock, T> betaMcpToolResult,
         System::Func<BetaContainerUploadBlock, T> betaContainerUpload,
-        System::Func<BetaCompactionBlock, T> betaCompaction
+        System::Func<BetaCompactionBlock, T> betaCompaction,
+        System::Func<BetaFallbackBlock, T> betaFallback
     )
     {
         return this.Value switch
@@ -846,6 +883,7 @@ public record class ContentBlock : ModelBase
             BetaMcpToolResultBlock value => betaMcpToolResult(value),
             BetaContainerUploadBlock value => betaContainerUpload(value),
             BetaCompactionBlock value => betaCompaction(value),
+            BetaFallbackBlock value => betaFallback(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ContentBlock"
             ),
@@ -888,6 +926,8 @@ public record class ContentBlock : ModelBase
 
     public static implicit operator ContentBlock(BetaCompactionBlock value) => new(value);
 
+    public static implicit operator ContentBlock(BetaFallbackBlock value) => new(value);
+
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -923,7 +963,8 @@ public record class ContentBlock : ModelBase
             (betaMcpToolUse) => betaMcpToolUse.Validate(),
             (betaMcpToolResult) => betaMcpToolResult.Validate(),
             (betaContainerUpload) => betaContainerUpload.Validate(),
-            (betaCompaction) => betaCompaction.Validate()
+            (betaCompaction) => betaCompaction.Validate(),
+            (betaFallback) => betaFallback.Validate()
         );
     }
 
@@ -963,6 +1004,7 @@ public record class ContentBlock : ModelBase
             BetaMcpToolResultBlock _ => 13,
             BetaContainerUploadBlock _ => 14,
             BetaCompactionBlock _ => 15,
+            BetaFallbackBlock _ => 16,
             _ => -1,
         };
     }
@@ -1293,6 +1335,26 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaCompactionBlock>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "fallback":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaFallbackBlock>(
                         element,
                         options
                     );
