@@ -264,6 +264,23 @@ public class ErrorTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsCredentialHostUnreachableValidationWorks()
+    {
+        Error value = new BetaManagedAgentsCredentialHostUnreachableError()
+        {
+            CredentialID = "credential_id",
+            Message = "message",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
+                BetaManagedAgentsRetryStatusRetryingType.Retrying
+            ),
+            Type =
+                BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError,
+            VaultID = "vault_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsUnknownSerializationRoundtripWorks()
     {
         Error value = new BetaManagedAgentsUnknownError()
@@ -377,6 +394,26 @@ public class ErrorTest : TestBase
                 BetaManagedAgentsRetryStatusRetryingType.Retrying
             ),
             Type = BetaManagedAgentsBillingErrorType.BillingError,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCredentialHostUnreachableSerializationRoundtripWorks()
+    {
+        Error value = new BetaManagedAgentsCredentialHostUnreachableError()
+        {
+            CredentialID = "credential_id",
+            Message = "message",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
+                BetaManagedAgentsRetryStatusRetryingType.Retrying
+            ),
+            Type =
+                BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError,
+            VaultID = "vault_id",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);

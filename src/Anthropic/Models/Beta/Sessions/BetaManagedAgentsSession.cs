@@ -230,6 +230,19 @@ public sealed record class BetaManagedAgentsSession : JsonModel
         }
     }
 
+    /// <summary>
+    /// Deployment ID when the session was created from a deployment reference. Null otherwise.
+    /// </summary>
+    public string? DeploymentID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("deployment_id");
+        }
+        init { this._rawData.Set("deployment_id", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -254,6 +267,7 @@ public sealed record class BetaManagedAgentsSession : JsonModel
         _ = this.UpdatedAt;
         this.Usage.Validate();
         _ = this.VaultIds;
+        _ = this.DeploymentID;
     }
 
     public BetaManagedAgentsSession() { }

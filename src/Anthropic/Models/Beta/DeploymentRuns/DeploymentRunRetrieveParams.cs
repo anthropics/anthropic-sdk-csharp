@@ -1,0 +1,154 @@
+using System;
+using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
+using System.Text.Json;
+using Anthropic.Core;
+using Anthropic.Services.Beta;
+
+namespace Anthropic.Models.Beta.DeploymentRuns;
+
+/// <summary>
+/// Get Deployment Run
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
+/// </summary>
+public record class DeploymentRunRetrieveParams : ParamsBase
+{
+    public string? DeploymentRunID { get; init; }
+
+    /// <summary>
+    /// Optional header to specify the beta version(s) you want to use.
+    /// </summary>
+    public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, AnthropicBeta>>
+            >("anthropic-beta");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set<ImmutableArray<ApiEnum<string, AnthropicBeta>>?>(
+                "anthropic-beta",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
+    public DeploymentRunRetrieveParams() { }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    public DeploymentRunRetrieveParams(DeploymentRunRetrieveParams deploymentRunRetrieveParams)
+        : base(deploymentRunRetrieveParams)
+    {
+        this.DeploymentRunID = deploymentRunRetrieveParams.DeploymentRunID;
+    }
+#pragma warning restore CS8618
+
+    public DeploymentRunRetrieveParams(
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData
+    )
+    {
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    DeploymentRunRetrieveParams(
+        FrozenDictionary<string, JsonElement> rawHeaderData,
+        FrozenDictionary<string, JsonElement> rawQueryData,
+        string deploymentRunID
+    )
+    {
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this.DeploymentRunID = deploymentRunID;
+    }
+#pragma warning restore CS8618
+
+    /// <inheritdoc cref="IFromRawJson{T}.FromRawUnchecked"/>
+    public static DeploymentRunRetrieveParams FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        string deploymentRunID
+    )
+    {
+        return new(
+            FrozenDictionary.ToFrozenDictionary(rawHeaderData),
+            FrozenDictionary.ToFrozenDictionary(rawQueryData),
+            deploymentRunID
+        );
+    }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            FriendlyJsonPrinter.PrintValue(
+                new Dictionary<string, JsonElement>()
+                {
+                    ["DeploymentRunID"] = JsonSerializer.SerializeToElement(this.DeploymentRunID),
+                    ["HeaderData"] = FriendlyJsonPrinter.PrintValue(
+                        JsonSerializer.SerializeToElement(this._rawHeaderData.Freeze())
+                    ),
+                    ["QueryData"] = FriendlyJsonPrinter.PrintValue(
+                        JsonSerializer.SerializeToElement(this._rawQueryData.Freeze())
+                    ),
+                }
+            ),
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public virtual bool Equals(DeploymentRunRetrieveParams? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        return (
+                this.DeploymentRunID?.Equals(other.DeploymentRunID) ?? other.DeploymentRunID == null
+            )
+            && this._rawHeaderData.Equals(other._rawHeaderData)
+            && this._rawQueryData.Equals(other._rawQueryData);
+    }
+
+    public override Uri Url(ClientOptions options)
+    {
+        var queryString = this.QueryString(options);
+        return new UriBuilder(
+            options.BaseUrl.ToString().TrimEnd('/')
+                + string.Format("/v1/deployment_runs/{0}", this.DeploymentRunID)
+        )
+        {
+            Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
+        }.Uri;
+    }
+
+    internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
+    {
+        ParamsBase.AddDefaultHeaders(request, options);
+        DeploymentRunService.AddDefaultHeaders(request);
+        foreach (var item in this.RawHeaderData)
+        {
+            ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
+        }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
+}

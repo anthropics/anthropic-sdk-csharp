@@ -39,6 +39,19 @@ public sealed record class BetaWebhookSessionThreadCreatedEventData : JsonModel
         init { this._rawData.Set("organization_id", value); }
     }
 
+    /// <summary>
+    /// ID of the session thread this event refers to.
+    /// </summary>
+    public required string SessionThreadID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("session_thread_id");
+        }
+        init { this._rawData.Set("session_thread_id", value); }
+    }
+
     public JsonElement Type
     {
         get
@@ -64,6 +77,7 @@ public sealed record class BetaWebhookSessionThreadCreatedEventData : JsonModel
     {
         _ = this.ID;
         _ = this.OrganizationID;
+        _ = this.SessionThreadID;
         if (
             !JsonElement.DeepEquals(
                 this.Type,

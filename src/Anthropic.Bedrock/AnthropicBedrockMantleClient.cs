@@ -232,6 +232,18 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
                 "The Beta.Webhooks resource is not supported on Bedrock Mantle. "
                     + "Only Messages and Beta.Messages are available."
             );
+
+        public Beta::IDeploymentService Deployments =>
+            throw new NotSupportedException(
+                "The Beta.Deployments resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
+
+        public Beta::IDeploymentRunService DeploymentRuns =>
+            throw new NotSupportedException(
+                "The Beta.DeploymentRuns resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
     }
 
     private sealed class RestrictedBetaServiceWithRawResponse : IBetaServiceWithRawResponse
@@ -304,6 +316,18 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
         public Beta::IWebhookServiceWithRawResponse Webhooks =>
             throw new NotSupportedException(
                 "The Beta.Webhooks resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
+
+        public Beta::IDeploymentServiceWithRawResponse Deployments =>
+            throw new NotSupportedException(
+                "The Beta.Deployments resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
+
+        public Beta::IDeploymentRunServiceWithRawResponse DeploymentRuns =>
+            throw new NotSupportedException(
+                "The Beta.DeploymentRuns resource is not supported on Bedrock Mantle. "
                     + "Only Messages and Beta.Messages are available."
             );
     }

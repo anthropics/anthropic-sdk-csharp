@@ -302,6 +302,20 @@ public class CredentialUpdateParamsAuthTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsEnvironmentVariableUpdateParamsValidationWorks()
+    {
+        CredentialUpdateParamsAuth value = new BetaManagedAgentsEnvironmentVariableUpdateParams()
+        {
+            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
+                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
+            ),
+            SecretValue = "x",
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsMcpOAuthUpdateParamsSerializationRoundtripWorks()
     {
         CredentialUpdateParamsAuth value = new BetaManagedAgentsMcpOAuthUpdateParams()
@@ -336,6 +350,26 @@ public class CredentialUpdateParamsAuthTest : TestBase
         {
             Type = BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer,
             Token = "x",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<CredentialUpdateParamsAuth>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEnvironmentVariableUpdateParamsSerializationRoundtripWorks()
+    {
+        CredentialUpdateParamsAuth value = new BetaManagedAgentsEnvironmentVariableUpdateParams()
+        {
+            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
+                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
+            ),
+            SecretValue = "x",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<CredentialUpdateParamsAuth>(

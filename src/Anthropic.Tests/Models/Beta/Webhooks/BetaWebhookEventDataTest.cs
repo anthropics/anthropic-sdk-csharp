@@ -145,6 +145,7 @@ public class BetaWebhookEventDataTest : TestBase
         {
             ID = "id",
             OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
             WorkspaceID = "workspace_id",
         };
         value.Validate();
@@ -157,6 +158,7 @@ public class BetaWebhookEventDataTest : TestBase
         {
             ID = "id",
             OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
             WorkspaceID = "workspace_id",
         };
         value.Validate();
@@ -169,6 +171,7 @@ public class BetaWebhookEventDataTest : TestBase
         {
             ID = "id",
             OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
             WorkspaceID = "workspace_id",
         };
         value.Validate();
@@ -479,6 +482,7 @@ public class BetaWebhookEventDataTest : TestBase
         {
             ID = "id",
             OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
             WorkspaceID = "workspace_id",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -497,6 +501,7 @@ public class BetaWebhookEventDataTest : TestBase
         {
             ID = "id",
             OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
             WorkspaceID = "workspace_id",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -515,6 +520,7 @@ public class BetaWebhookEventDataTest : TestBase
         {
             ID = "id",
             OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
             WorkspaceID = "workspace_id",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

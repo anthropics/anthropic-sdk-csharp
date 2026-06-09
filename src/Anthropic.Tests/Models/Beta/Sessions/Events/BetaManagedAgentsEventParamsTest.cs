@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Events;
@@ -101,6 +102,24 @@ public class BetaManagedAgentsEventParamsTest : TestBase
                 },
             ],
             IsError = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void SystemMessageValidationWorks()
+    {
+        BetaManagedAgentsEventParams value = new BetaManagedAgentsSystemMessageEventParams()
+        {
+            Content =
+            [
+                new()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = BetaManagedAgentsSystemContentBlockType.Text,
+                },
+            ],
+            Type = BetaManagedAgentsSystemMessageEventParamsType.SystemMessage,
         };
         value.Validate();
     }
@@ -230,6 +249,30 @@ public class BetaManagedAgentsEventParamsTest : TestBase
                 },
             ],
             IsError = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsEventParams>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void SystemMessageSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsEventParams value = new BetaManagedAgentsSystemMessageEventParams()
+        {
+            Content =
+            [
+                new()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = BetaManagedAgentsSystemContentBlockType.Text,
+                },
+            ],
+            Type = BetaManagedAgentsSystemMessageEventParamsType.SystemMessage,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsEventParams>(

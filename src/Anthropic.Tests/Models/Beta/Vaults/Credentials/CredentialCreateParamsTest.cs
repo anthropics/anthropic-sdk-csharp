@@ -260,6 +260,21 @@ public class AuthTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsEnvironmentVariableCreateParamsValidationWorks()
+    {
+        Auth value = new BetaManagedAgentsEnvironmentVariableCreateParams()
+        {
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
+                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
+            ),
+            SecretName = "x",
+            SecretValue = "x",
+            Type = BetaManagedAgentsEnvironmentVariableCreateParamsType.EnvironmentVariable,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsMcpOAuthCreateParamsSerializationRoundtripWorks()
     {
         Auth value = new BetaManagedAgentsMcpOAuthCreateParams()
@@ -294,6 +309,24 @@ public class AuthTest : TestBase
             Token = "bearer_exampletoken",
             McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
             Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Auth>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEnvironmentVariableCreateParamsSerializationRoundtripWorks()
+    {
+        Auth value = new BetaManagedAgentsEnvironmentVariableCreateParams()
+        {
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
+                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
+            ),
+            SecretName = "x",
+            SecretValue = "x",
+            Type = BetaManagedAgentsEnvironmentVariableCreateParamsType.EnvironmentVariable,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Auth>(element, ModelBase.SerializerOptions);

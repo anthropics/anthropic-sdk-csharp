@@ -149,6 +149,37 @@ public record class BetaWebhookEventData : ModelBase
         }
     }
 
+    public string? SessionThreadID
+    {
+        get
+        {
+            return Match<string?>(
+                sessionCreated: (_) => null,
+                sessionPending: (_) => null,
+                sessionRunning: (_) => null,
+                sessionIdled: (_) => null,
+                sessionRequiresAction: (_) => null,
+                sessionArchived: (_) => null,
+                sessionDeleted: (_) => null,
+                sessionStatusRescheduled: (_) => null,
+                sessionStatusRunStarted: (_) => null,
+                sessionStatusIdled: (_) => null,
+                sessionStatusTerminated: (_) => null,
+                sessionThreadCreated: (x) => x.SessionThreadID,
+                sessionThreadIdled: (x) => x.SessionThreadID,
+                sessionThreadTerminated: (x) => x.SessionThreadID,
+                sessionOutcomeEvaluationEnded: (_) => null,
+                vaultCreated: (_) => null,
+                vaultArchived: (_) => null,
+                vaultDeleted: (_) => null,
+                vaultCredentialCreated: (_) => null,
+                vaultCredentialArchived: (_) => null,
+                vaultCredentialDeleted: (_) => null,
+                vaultCredentialRefreshFailed: (_) => null
+            );
+        }
+    }
+
     public string? VaultID
     {
         get

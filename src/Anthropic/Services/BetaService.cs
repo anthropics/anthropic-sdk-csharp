@@ -33,6 +33,8 @@ public sealed class BetaService : IBetaService
         _agents = new(() => new Beta::AgentService(client));
         _environments = new(() => new Beta::EnvironmentService(client));
         _sessions = new(() => new Beta::SessionService(client));
+        _deployments = new(() => new Beta::DeploymentService(client));
+        _deploymentRuns = new(() => new Beta::DeploymentRunService(client));
         _vaults = new(() => new Beta::VaultService(client));
         _memoryStores = new(() => new Beta::MemoryStoreService(client));
         _files = new(() => new Beta::FileService(client));
@@ -69,6 +71,18 @@ public sealed class BetaService : IBetaService
     public Beta::ISessionService Sessions
     {
         get { return _sessions.Value; }
+    }
+
+    readonly Lazy<Beta::IDeploymentService> _deployments;
+    public Beta::IDeploymentService Deployments
+    {
+        get { return _deployments.Value; }
+    }
+
+    readonly Lazy<Beta::IDeploymentRunService> _deploymentRuns;
+    public Beta::IDeploymentRunService DeploymentRuns
+    {
+        get { return _deploymentRuns.Value; }
     }
 
     readonly Lazy<Beta::IVaultService> _vaults;
@@ -128,6 +142,8 @@ public sealed class BetaServiceWithRawResponse : IBetaServiceWithRawResponse
         _agents = new(() => new Beta::AgentServiceWithRawResponse(client));
         _environments = new(() => new Beta::EnvironmentServiceWithRawResponse(client));
         _sessions = new(() => new Beta::SessionServiceWithRawResponse(client));
+        _deployments = new(() => new Beta::DeploymentServiceWithRawResponse(client));
+        _deploymentRuns = new(() => new Beta::DeploymentRunServiceWithRawResponse(client));
         _vaults = new(() => new Beta::VaultServiceWithRawResponse(client));
         _memoryStores = new(() => new Beta::MemoryStoreServiceWithRawResponse(client));
         _files = new(() => new Beta::FileServiceWithRawResponse(client));
@@ -164,6 +180,18 @@ public sealed class BetaServiceWithRawResponse : IBetaServiceWithRawResponse
     public Beta::ISessionServiceWithRawResponse Sessions
     {
         get { return _sessions.Value; }
+    }
+
+    readonly Lazy<Beta::IDeploymentServiceWithRawResponse> _deployments;
+    public Beta::IDeploymentServiceWithRawResponse Deployments
+    {
+        get { return _deployments.Value; }
+    }
+
+    readonly Lazy<Beta::IDeploymentRunServiceWithRawResponse> _deploymentRuns;
+    public Beta::IDeploymentRunServiceWithRawResponse DeploymentRuns
+    {
+        get { return _deploymentRuns.Value; }
     }
 
     readonly Lazy<Beta::IVaultServiceWithRawResponse> _vaults;
