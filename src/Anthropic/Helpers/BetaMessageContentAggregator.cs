@@ -34,6 +34,7 @@ public sealed class BetaMessageContentAggregator
             ?? throw new AnthropicInvalidDataException("stop message not yet received");
 
         var contentBlocks = new List<BetaContentBlock>();
+        var model = startMessage.Message.Model;
         foreach (var item in content)
         {
             var startContent =
@@ -46,7 +47,15 @@ public sealed class BetaMessageContentAggregator
                 .ToArray();
 
             var contentBlock = startContent.ContentBlock;
-            contentBlocks.Add(MergeBlock(contentBlock, blockContent.Select(e => e.Delta)));
+            var mergedBlock = MergeBlock(contentBlock, blockContent.Select(e => e.Delta));
+            contentBlocks.Add(mergedBlock);
+
+            // The final hop's fallback block names the model that served the response —
+            // keeps the aggregated message consistent with the relabeled non-streaming message.
+            if (mergedBlock.Value is BetaFallbackBlock fallbackBlock)
+            {
+                model = fallbackBlock.To.Model;
+            }
         }
 
         var stopSequence = startMessage.Message.StopSequence;
@@ -90,6 +99,17 @@ public sealed class BetaMessageContentAggregator
                 {
                     usage = usage with { ServerToolUse = delta.Usage.ServerToolUse };
                 }
+                if (delta.Usage.OutputTokensDetails != null)
+                {
+                    usage = usage with { OutputTokensDetails = delta.Usage.OutputTokensDetails };
+                }
+                // The per-hop usage chain (server-side fallbacks or the fallback handler's
+                // splice) is a cumulative ledger arriving on the terminal message_delta;
+                // the latest delta supersedes prior values.
+                if (delta.Usage.Iterations != null)
+                {
+                    usage = usage with { Iterations = delta.Usage.Iterations };
+                }
             }
         }
 
@@ -100,7 +120,7 @@ public sealed class BetaMessageContentAggregator
             ContextManagement = startMessage.Message.ContextManagement,
             Diagnostics = startMessage.Message.Diagnostics,
             ID = startMessage.Message.ID,
-            Model = startMessage.Message.Model,
+            Model = model,
             StopDetails = stopDetails,
             StopReason = stopReason,
             StopSequence = stopSequence,
@@ -242,6 +262,12 @@ public sealed class BetaMessageContentAggregator
                         d => d.EncryptedContent
                     ),
                 };
+            },
+            fallbackBlock =>
+            {
+                // Fallback blocks arrive complete in the content_block_start event and
+                // have no delta variants, so pass the start block through unchanged.
+                resultBlock = fallbackBlock;
             }
         );
 

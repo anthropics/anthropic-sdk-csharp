@@ -45,8 +45,7 @@ public record struct ClientOptions
         set
         {
             _httpClient = value;
-            var handlers = _handlers;
-            _messageInvoker = new(() => AttachHandlers(value, handlers));
+            _messageInvoker = BuildMessageInvoker();
         }
     }
 
@@ -57,6 +56,12 @@ public record struct ClientOptions
     ///
     /// <para>Each handler wraps the next one, and the last handler wraps <see cref="HttpClient"/>
     /// itself, making the last handler the innermost one.</para>
+    ///
+    /// <para>Cloud-backend clients (Bedrock, Vertex, Foundry, AWS) attach their own adaptation
+    /// handler inside all of these handlers, so handlers always observe Anthropic-shaped requests
+    /// and normalized responses; the backend's URL/body rewriting, request signing, and response
+    /// translation happen after every handler has run. Handlers must therefore keep requests
+    /// Anthropic-shaped (e.g. a <c>/v1/...</c> path with <c>model</c> in the body).</para>
     ///
     /// <para>Setting this property throws an <see cref="ArgumentException"/> if any handler is already
     /// attached to a client.</para>
@@ -79,9 +84,43 @@ public record struct ClientOptions
             }
 
             _handlers = handlers;
-            var httpClient = _httpClient;
-            _messageInvoker = new(() => AttachHandlers(httpClient, handlers));
+            _messageInvoker = BuildMessageInvoker();
         }
+    }
+
+    Func<DelegatingHandler>? _backendAdaptationHandler;
+
+    /// <summary>
+    /// Factory for the handler that adapts requests and responses for a cloud backend
+    /// (URL/body rewriting, request signing, response normalization).
+    ///
+    /// <para>The created handler is attached as the innermost handler, inside all user
+    /// <see cref="Handlers"/>, so user handlers observe Anthropic-shaped requests and
+    /// normalized responses, and any request mutation they perform is covered by backend
+    /// request signing. A factory (rather than an instance) because every attached handler
+    /// chain needs its own unattached instance.</para>
+    /// </summary>
+    internal Func<DelegatingHandler>? BackendAdaptationHandler
+    {
+        readonly get { return _backendAdaptationHandler; }
+        set
+        {
+            _backendAdaptationHandler = value;
+            _messageInvoker = BuildMessageInvoker();
+        }
+    }
+
+    /// <summary>
+    /// Builds a lazy invoker from a snapshot of the fields that make up the handler
+    /// chain. Every setter that affects the chain must reassign
+    /// <see cref="_messageInvoker"/> with this.
+    /// </summary>
+    readonly Lazy<HttpMessageInvoker> BuildMessageInvoker()
+    {
+        var httpClient = _httpClient;
+        var handlers = _handlers;
+        var backendAdaptationHandler = _backendAdaptationHandler;
+        return new(() => AttachHandlers(httpClient, handlers, backendAdaptationHandler));
     }
 
     Lazy<string> _baseUrl = new(() =>
@@ -270,13 +309,23 @@ public record struct ClientOptions
     /// Chains the given handlers together (last handler is the innermost one), attaches
     /// them to the given HTTP client, and returns an invoker that sends requests
     /// through the chain.
+    ///
+    /// <para>When a backend adaptation handler factory is given, the created handler is
+    /// placed inside all the given handlers, just outside the HTTP client itself.</para>
     /// </summary>
     static HttpMessageInvoker AttachHandlers(
         HttpClient httpClient,
-        IReadOnlyList<DelegatingHandler> handlers
+        IReadOnlyList<DelegatingHandler> handlers,
+        Func<DelegatingHandler>? backendAdaptationHandler
     )
     {
         HttpMessageHandler innerHandler = new HttpClientPassthroughHandler(httpClient);
+        if (backendAdaptationHandler != null)
+        {
+            var handler = backendAdaptationHandler();
+            handler.InnerHandler = innerHandler;
+            innerHandler = handler;
+        }
         for (var index = handlers.Count - 1; index >= 0; index--)
         {
             var handler = handlers[index];
@@ -323,8 +372,6 @@ public record struct ClientOptions
 
     public ClientOptions()
     {
-        var httpClient = _httpClient;
-        var handlers = _handlers;
-        _messageInvoker = new(() => AttachHandlers(httpClient, handlers));
+        _messageInvoker = BuildMessageInvoker();
     }
 }

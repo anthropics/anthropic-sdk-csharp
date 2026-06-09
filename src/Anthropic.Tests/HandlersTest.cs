@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic;
 using Anthropic.Core;
+using Anthropic.Models.Beta.Messages;
 using Moq;
 using Moq.Protected;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests;
 
@@ -146,6 +149,54 @@ public class HandlersTest : TestBase
 
         Assert.Equal(HttpStatusCode.OK, resp.StatusCode);
         Assert.Equal(new List<string> { "before", "after" }, calls);
+    }
+
+    [Fact]
+    public async Task WithOptions_SequentialRequests_DoesNotReattachHandlers()
+    {
+        const string messageJson = """
+            {"id":"msg_x","type":"message","role":"assistant","model":"claude-sonnet-4-5","content":[{"type":"text","text":"hi"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":1,"output_tokens":1}}
+            """;
+        var calls = 0;
+
+        AnthropicClient client = new()
+        {
+            ApiKey = "my-anthropic-api-key",
+            Handlers = new List<DelegatingHandler>
+            {
+                Handler.Create(
+                    (request, next, cancellationToken) =>
+                    {
+                        calls++;
+                        return Task.FromResult(
+                            new HttpResponseMessage(HttpStatusCode.OK)
+                            {
+                                Content = new StringContent(
+                                    messageJson,
+                                    Encoding.UTF8,
+                                    "application/json"
+                                ),
+                            }
+                        );
+                    }
+                ),
+            },
+        };
+
+        MessageCreateParams parameters = new()
+        {
+            MaxTokens = 64,
+            Messages = [new() { Content = "hello", Role = Role.User }],
+            Model = Messages::Model.ClaudeSonnet4_5,
+        };
+
+        // Beta Create derives a per-request client via WithOptions (max_tokens-based
+        // timeout); the derived options must not rebuild the handler chain over the
+        // already-attached handlers on subsequent requests.
+        await client.Beta.Messages.Create(parameters, TestContext.Current.CancellationToken);
+        await client.Beta.Messages.Create(parameters, TestContext.Current.CancellationToken);
+
+        Assert.Equal(2, calls);
     }
 
     [Fact]

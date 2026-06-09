@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolRunnerExample", "ToolRu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryToolExample", "MemoryToolExample\MemoryToolExample.csproj", "{D7EAF3C4-5F6B-4A2D-9C3E-8B1F0A4D2E6C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FallbacksExample", "FallbacksExample\FallbacksExample.csproj", "{DB81D731-9AFA-45EE-94C6-92F0F749C557}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -223,6 +225,18 @@ Global
 		{D7EAF3C4-5F6B-4A2D-9C3E-8B1F0A4D2E6C}.Release|x64.Build.0 = Release|Any CPU
 		{D7EAF3C4-5F6B-4A2D-9C3E-8B1F0A4D2E6C}.Release|x86.ActiveCfg = Release|Any CPU
 		{D7EAF3C4-5F6B-4A2D-9C3E-8B1F0A4D2E6C}.Release|x86.Build.0 = Release|Any CPU
+		{DB81D731-9AFA-45EE-94C6-92F0F749C557}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB81D731-9AFA-45EE-94C6-92F0F749C557}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB81D731-9AFA-45EE-94C6-92F0F749C557}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DB81D731-9AFA-45EE-94C6-92F0F749C557}.Debug|x64.Build.0 = Debug|Any CPU
+		{DB81D731-9AFA-45EE-94C6-92F0F749C557}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DB81D731-9AFA-45EE-94C6-92F0F749C557}.Debug|x86.Build.0 = Debug|Any CPU
+		{DB81D731-9AFA-45EE-94C6-92F0F749C557}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB81D731-9AFA-45EE-94C6-92F0F749C557}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB81D731-9AFA-45EE-94C6-92F0F749C557}.Release|x64.ActiveCfg = Release|Any CPU
+		{DB81D731-9AFA-45EE-94C6-92F0F749C557}.Release|x64.Build.0 = Release|Any CPU
+		{DB81D731-9AFA-45EE-94C6-92F0F749C557}.Release|x86.ActiveCfg = Release|Any CPU
+		{DB81D731-9AFA-45EE-94C6-92F0F749C557}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -16,6 +16,7 @@ public class BetaIterationsUsageItemsTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
+            Model = Model.ClaudeFable5,
             OutputTokens = 0,
         };
         value.Validate();
@@ -44,7 +45,22 @@ public class BetaIterationsUsageItemsTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeOpus4_8,
+            Model = Model.ClaudeFable5,
+            OutputTokens = 0,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void FallbackMessageIterationUsageValidationWorks()
+    {
+        BetaIterationsUsageItems value = new BetaFallbackMessageIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            Model = Model.ClaudeFable5,
             OutputTokens = 0,
         };
         value.Validate();
@@ -59,6 +75,7 @@ public class BetaIterationsUsageItemsTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
+            Model = Model.ClaudeFable5,
             OutputTokens = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -99,7 +116,28 @@ public class BetaIterationsUsageItemsTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeOpus4_8,
+            Model = Model.ClaudeFable5,
+            OutputTokens = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaIterationsUsageItems>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void FallbackMessageIterationUsageSerializationRoundtripWorks()
+    {
+        BetaIterationsUsageItems value = new BetaFallbackMessageIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            Model = Model.ClaudeFable5,
             OutputTokens = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

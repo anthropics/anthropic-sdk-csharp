@@ -145,15 +145,18 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
 
             yield return response;
 
-            // Collect tool_use blocks from the response.
-            var toolUseBlocks = new List<BetaToolUseBlock>();
-            foreach (var block in response.Content)
+            // A refusal-terminated turn is terminal: its tool calls belong to a dead
+            // conversation — executing them fires side effects the model never confirmed
+            // and produces tool_results that cannot be coherently replayed.
+            if (
+                response.StopReason is { } stopReason
+                && stopReason.Value() == BetaStopReason.Refusal
+            )
             {
-                if (block.TryPickToolUse(out var toolUse))
-                {
-                    toolUseBlocks.Add(toolUse);
-                }
+                yield break;
             }
+
+            var toolUseBlocks = CollectToolUses(response);
 
             if (toolUseBlocks.Count == 0)
                 yield break;
@@ -239,15 +242,18 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
             var response = aggregator.Message();
             iterations++;
 
-            // Collect tool_use blocks from the aggregated response.
-            var toolUseBlocks = new List<BetaToolUseBlock>();
-            foreach (var block in response.Content)
+            // A refusal-terminated turn is terminal: its tool calls belong to a dead
+            // conversation — executing them fires side effects the model never confirmed
+            // and produces tool_results that cannot be coherently replayed.
+            if (
+                response.StopReason is { } stopReason
+                && stopReason.Value() == BetaStopReason.Refusal
+            )
             {
-                if (block.TryPickToolUse(out var toolUse))
-                {
-                    toolUseBlocks.Add(toolUse);
-                }
+                yield break;
             }
+
+            var toolUseBlocks = CollectToolUses(response);
 
             if (toolUseBlocks.Count == 0)
                 yield break;
@@ -303,6 +309,38 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
             ?? throw new InvalidOperationException(
                 "Tool runner completed without producing any messages."
             );
+    }
+
+    /// <summary>
+    /// Collects the <c>tool_use</c> blocks the runner should execute from a response.
+    /// Tool calls before the last <c>fallback</c> block belong to the attempt that refused;
+    /// the fallback handler trims them from replayed history, so answering them would
+    /// orphan their <c>tool_results</c>.
+    /// </summary>
+    private static List<BetaToolUseBlock> CollectToolUses(BetaMessage response)
+    {
+        var seam = -1;
+        var index = 0;
+        foreach (var block in response.Content)
+        {
+            if (block.TryPickFallback(out _))
+            {
+                seam = index;
+            }
+            index++;
+        }
+
+        var toolUseBlocks = new List<BetaToolUseBlock>();
+        index = 0;
+        foreach (var block in response.Content)
+        {
+            if (index > seam && block.TryPickToolUse(out var toolUse))
+            {
+                toolUseBlocks.Add(toolUse);
+            }
+            index++;
+        }
+        return toolUseBlocks;
     }
 
     private async Task<List<BetaContentBlockParam>> ExecuteToolsAsync(

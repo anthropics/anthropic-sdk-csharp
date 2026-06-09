@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Messages;
 using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
@@ -35,7 +36,8 @@ public record class BetaIterationsUsageItems : ModelBase
             return Match<BetaCacheCreation?>(
                 messageIterationUsage: (x) => x.CacheCreation,
                 compactionIterationUsage: (x) => x.CacheCreation,
-                advisorMessageIterationUsage: (x) => x.CacheCreation
+                advisorMessageIterationUsage: (x) => x.CacheCreation,
+                fallbackMessageIterationUsage: (x) => x.CacheCreation
             );
         }
     }
@@ -47,7 +49,8 @@ public record class BetaIterationsUsageItems : ModelBase
             return Match(
                 messageIterationUsage: (x) => x.CacheCreationInputTokens,
                 compactionIterationUsage: (x) => x.CacheCreationInputTokens,
-                advisorMessageIterationUsage: (x) => x.CacheCreationInputTokens
+                advisorMessageIterationUsage: (x) => x.CacheCreationInputTokens,
+                fallbackMessageIterationUsage: (x) => x.CacheCreationInputTokens
             );
         }
     }
@@ -59,7 +62,8 @@ public record class BetaIterationsUsageItems : ModelBase
             return Match(
                 messageIterationUsage: (x) => x.CacheReadInputTokens,
                 compactionIterationUsage: (x) => x.CacheReadInputTokens,
-                advisorMessageIterationUsage: (x) => x.CacheReadInputTokens
+                advisorMessageIterationUsage: (x) => x.CacheReadInputTokens,
+                fallbackMessageIterationUsage: (x) => x.CacheReadInputTokens
             );
         }
     }
@@ -71,7 +75,21 @@ public record class BetaIterationsUsageItems : ModelBase
             return Match(
                 messageIterationUsage: (x) => x.InputTokens,
                 compactionIterationUsage: (x) => x.InputTokens,
-                advisorMessageIterationUsage: (x) => x.InputTokens
+                advisorMessageIterationUsage: (x) => x.InputTokens,
+                fallbackMessageIterationUsage: (x) => x.InputTokens
+            );
+        }
+    }
+
+    public ApiEnum<string, Model>? Model
+    {
+        get
+        {
+            return Match<ApiEnum<string, Model>?>(
+                messageIterationUsage: (x) => x.Model,
+                compactionIterationUsage: (_) => null,
+                advisorMessageIterationUsage: (x) => x.Model,
+                fallbackMessageIterationUsage: (x) => x.Model
             );
         }
     }
@@ -83,7 +101,8 @@ public record class BetaIterationsUsageItems : ModelBase
             return Match(
                 messageIterationUsage: (x) => x.OutputTokens,
                 compactionIterationUsage: (x) => x.OutputTokens,
-                advisorMessageIterationUsage: (x) => x.OutputTokens
+                advisorMessageIterationUsage: (x) => x.OutputTokens,
+                fallbackMessageIterationUsage: (x) => x.OutputTokens
             );
         }
     }
@@ -95,7 +114,8 @@ public record class BetaIterationsUsageItems : ModelBase
             return Match(
                 messageIterationUsage: (x) => x.Type,
                 compactionIterationUsage: (x) => x.Type,
-                advisorMessageIterationUsage: (x) => x.Type
+                advisorMessageIterationUsage: (x) => x.Type,
+                fallbackMessageIterationUsage: (x) => x.Type
             );
         }
     }
@@ -114,6 +134,15 @@ public record class BetaIterationsUsageItems : ModelBase
 
     public BetaIterationsUsageItems(
         BetaAdvisorMessageIterationUsage value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaIterationsUsageItems(
+        BetaFallbackMessageIterationUsage value,
         JsonElement? element = null
     )
     {
@@ -196,6 +225,29 @@ public record class BetaIterationsUsageItems : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaFallbackMessageIterationUsage"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickFallbackMessageIterationUsage(out var value)) {
+    ///     // `value` is of type `BetaFallbackMessageIterationUsage`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickFallbackMessageIterationUsage(
+        [NotNullWhen(true)] out BetaFallbackMessageIterationUsage? value
+    )
+    {
+        value = this.Value as BetaFallbackMessageIterationUsage;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -211,7 +263,8 @@ public record class BetaIterationsUsageItems : ModelBase
     /// instance.Switch(
     ///     (BetaMessageIterationUsage value) =&gt; {...},
     ///     (BetaCompactionIterationUsage value) =&gt; {...},
-    ///     (BetaAdvisorMessageIterationUsage value) =&gt; {...}
+    ///     (BetaAdvisorMessageIterationUsage value) =&gt; {...},
+    ///     (BetaFallbackMessageIterationUsage value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -219,7 +272,8 @@ public record class BetaIterationsUsageItems : ModelBase
     public void Switch(
         System::Action<BetaMessageIterationUsage> messageIterationUsage,
         System::Action<BetaCompactionIterationUsage> compactionIterationUsage,
-        System::Action<BetaAdvisorMessageIterationUsage> advisorMessageIterationUsage
+        System::Action<BetaAdvisorMessageIterationUsage> advisorMessageIterationUsage,
+        System::Action<BetaFallbackMessageIterationUsage> fallbackMessageIterationUsage
     )
     {
         switch (this.Value)
@@ -232,6 +286,9 @@ public record class BetaIterationsUsageItems : ModelBase
                 break;
             case BetaAdvisorMessageIterationUsage value:
                 advisorMessageIterationUsage(value);
+                break;
+            case BetaFallbackMessageIterationUsage value:
+                fallbackMessageIterationUsage(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -257,7 +314,8 @@ public record class BetaIterationsUsageItems : ModelBase
     /// var result = instance.Match(
     ///     (BetaMessageIterationUsage value) =&gt; {...},
     ///     (BetaCompactionIterationUsage value) =&gt; {...},
-    ///     (BetaAdvisorMessageIterationUsage value) =&gt; {...}
+    ///     (BetaAdvisorMessageIterationUsage value) =&gt; {...},
+    ///     (BetaFallbackMessageIterationUsage value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -265,7 +323,8 @@ public record class BetaIterationsUsageItems : ModelBase
     public T Match<T>(
         System::Func<BetaMessageIterationUsage, T> messageIterationUsage,
         System::Func<BetaCompactionIterationUsage, T> compactionIterationUsage,
-        System::Func<BetaAdvisorMessageIterationUsage, T> advisorMessageIterationUsage
+        System::Func<BetaAdvisorMessageIterationUsage, T> advisorMessageIterationUsage,
+        System::Func<BetaFallbackMessageIterationUsage, T> fallbackMessageIterationUsage
     )
     {
         return this.Value switch
@@ -273,6 +332,7 @@ public record class BetaIterationsUsageItems : ModelBase
             BetaMessageIterationUsage value => messageIterationUsage(value),
             BetaCompactionIterationUsage value => compactionIterationUsage(value),
             BetaAdvisorMessageIterationUsage value => advisorMessageIterationUsage(value),
+            BetaFallbackMessageIterationUsage value => fallbackMessageIterationUsage(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaIterationsUsageItems"
             ),
@@ -287,6 +347,10 @@ public record class BetaIterationsUsageItems : ModelBase
 
     public static implicit operator BetaIterationsUsageItems(
         BetaAdvisorMessageIterationUsage value
+    ) => new(value);
+
+    public static implicit operator BetaIterationsUsageItems(
+        BetaFallbackMessageIterationUsage value
     ) => new(value);
 
     /// <summary>
@@ -310,7 +374,8 @@ public record class BetaIterationsUsageItems : ModelBase
         this.Switch(
             (messageIterationUsage) => messageIterationUsage.Validate(),
             (compactionIterationUsage) => compactionIterationUsage.Validate(),
-            (advisorMessageIterationUsage) => advisorMessageIterationUsage.Validate()
+            (advisorMessageIterationUsage) => advisorMessageIterationUsage.Validate(),
+            (fallbackMessageIterationUsage) => fallbackMessageIterationUsage.Validate()
         );
     }
 
@@ -337,6 +402,7 @@ public record class BetaIterationsUsageItems : ModelBase
             BetaMessageIterationUsage _ => 0,
             BetaCompactionIterationUsage _ => 1,
             BetaAdvisorMessageIterationUsage _ => 2,
+            BetaFallbackMessageIterationUsage _ => 3,
             _ => -1,
         };
     }
@@ -411,6 +477,27 @@ sealed class BetaIterationsUsageItemsConverter : JsonConverter<BetaIterationsUsa
                         element,
                         options
                     );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "fallback_message":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaFallbackMessageIterationUsage>(
+                            element,
+                            options
+                        );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);

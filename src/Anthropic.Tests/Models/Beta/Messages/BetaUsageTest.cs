@@ -3,6 +3,7 @@ using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
+using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
 
@@ -30,6 +31,7 @@ public class BetaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
+                    Model = Model.ClaudeFable5,
                     OutputTokens = 0,
                 },
             ],
@@ -57,6 +59,7 @@ public class BetaUsageTest : TestBase
                 CacheCreationInputTokens = 0,
                 CacheReadInputTokens = 0,
                 InputTokens = 0,
+                Model = Model.ClaudeFable5,
                 OutputTokens = 0,
             },
         ];
@@ -110,6 +113,7 @@ public class BetaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
+                    Model = Model.ClaudeFable5,
                     OutputTokens = 0,
                 },
             ],
@@ -148,6 +152,7 @@ public class BetaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
+                    Model = Model.ClaudeFable5,
                     OutputTokens = 0,
                 },
             ],
@@ -182,6 +187,7 @@ public class BetaUsageTest : TestBase
                 CacheCreationInputTokens = 0,
                 CacheReadInputTokens = 0,
                 InputTokens = 0,
+                Model = Model.ClaudeFable5,
                 OutputTokens = 0,
             },
         ];
@@ -235,6 +241,7 @@ public class BetaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
+                    Model = Model.ClaudeFable5,
                     OutputTokens = 0,
                 },
             ],
@@ -270,6 +277,7 @@ public class BetaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
+                    Model = Model.ClaudeFable5,
                     OutputTokens = 0,
                 },
             ],

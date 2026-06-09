@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Beta.Messages;
 
@@ -69,6 +70,22 @@ public sealed record class BetaMessageIterationUsage : JsonModel
     }
 
     /// <summary>
+    /// The model that will complete your prompt.
+    ///
+    /// <para>See [models](https://docs.anthropic.com/en/docs/models-overview) for
+    /// additional details and options.</para>
+    /// </summary>
+    public required ApiEnum<string, Model> Model
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, Model>>("model");
+        }
+        init { this._rawData.Set("model", value); }
+    }
+
+    /// <summary>
     /// The number of output tokens which were used.
     /// </summary>
     public required long OutputTokens
@@ -101,6 +118,7 @@ public sealed record class BetaMessageIterationUsage : JsonModel
         _ = this.CacheCreationInputTokens;
         _ = this.CacheReadInputTokens;
         _ = this.InputTokens;
+        this.Model.Raw();
         _ = this.OutputTokens;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message")))
         {

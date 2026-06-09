@@ -1,39 +1,38 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Anthropic.Core;
 using Anthropic.Exceptions;
 
 namespace Anthropic.Vertex;
 
-internal class AnthropicVertexClientWithRawResponse : AnthropicClientWithRawResponse
+/// <summary>
+/// Adapts requests for Google Vertex AI: rewrites the Anthropic-shaped URL and body
+/// into Vertex's wire shape and applies the Vertex credentials.
+///
+/// <para>Attached as the innermost handler so user handlers observe Anthropic-shaped
+/// requests regardless of backend.</para>
+/// </summary>
+internal sealed class VertexAdaptationHandler : DelegatingHandler
 {
     private const string ANTHROPIC_VERSION = "vertex-2023-10-16";
 
     private readonly IAnthropicVertexCredentials _vertexCredentials;
 
-    /// <summary>
-    /// Creates a new Instance of the <see cref="AnthropicVertexClientWithRawResponse"/>.
-    /// </summary>
-    /// <param name="vertexCredentials">The credential Provider used to authenticate with the AWS Bedrock service.</param>
-    public AnthropicVertexClientWithRawResponse(
-        IAnthropicVertexCredentials vertexCredentials,
-        ClientOptions options
-    )
-        : base(options)
+    public VertexAdaptationHandler(IAnthropicVertexCredentials vertexCredentials)
     {
         _vertexCredentials = vertexCredentials;
     }
 
-    public override IAnthropicClientWithRawResponse WithOptions(
-        Func<ClientOptions, ClientOptions> modifier
+    protected override async Task<HttpResponseMessage> SendAsync(
+        HttpRequestMessage requestMessage,
+        CancellationToken cancellationToken
     )
     {
-        return new AnthropicVertexClientWithRawResponse(_vertexCredentials, modifier(_options));
+        await AdaptRequest(requestMessage, cancellationToken).ConfigureAwait(false);
+        return await base.SendAsync(requestMessage, cancellationToken).ConfigureAwait(false);
     }
 
-    protected override async ValueTask BeforeSend<T>(
-        HttpRequest<T> request,
+    private async Task AdaptRequest(
         HttpRequestMessage requestMessage,
         CancellationToken cancellationToken
     )

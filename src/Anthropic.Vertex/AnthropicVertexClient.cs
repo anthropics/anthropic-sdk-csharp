@@ -12,8 +12,6 @@ public class AnthropicVertexClient : AnthropicClient
 
     private readonly IAnthropicVertexCredentials _vertexCredentials;
 
-    private readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
-
     /// <summary>
     /// Creates a new Instance of the <see cref="AnthropicVertexClient"/>.
     /// </summary>
@@ -23,9 +21,7 @@ public class AnthropicVertexClient : AnthropicClient
     {
         _vertexCredentials = vertexCredentials;
         BaseUrl = ComputeBaseUrl(vertexCredentials);
-        _withRawResponse = new(() =>
-            new AnthropicVertexClientWithRawResponse(_vertexCredentials, _options)
-        );
+        BackendAdaptationHandler = () => new VertexAdaptationHandler(vertexCredentials);
     }
 
     private AnthropicVertexClient(
@@ -36,9 +32,9 @@ public class AnthropicVertexClient : AnthropicClient
     {
         _vertexCredentials = vertexCredentials;
         BaseUrl = ComputeBaseUrl(vertexCredentials);
-        _withRawResponse = new(() =>
-            new AnthropicVertexClientWithRawResponse(_vertexCredentials, _options)
-        );
+        // The options normally carry the backend adaptation handler from the original
+        // construction; restore it if a WithOptions modifier returned fresh options.
+        BackendAdaptationHandler ??= () => new VertexAdaptationHandler(vertexCredentials);
     }
 
     private static string ComputeBaseUrl(IAnthropicVertexCredentials vertexCredentials) =>
@@ -55,7 +51,4 @@ public class AnthropicVertexClient : AnthropicClient
     {
         return new AnthropicVertexClient(_vertexCredentials, modifier(this._options));
     }
-
-    /// <inheritdoc/>
-    public override IAnthropicClientWithRawResponse WithRawResponse => _withRawResponse.Value;
 }

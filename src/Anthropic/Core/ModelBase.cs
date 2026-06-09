@@ -98,6 +98,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Messages::BetaCodeExecutionTool20250825AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaCodeExecutionTool20260120AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaCodeExecutionToolResultErrorCode>(),
+            new ApiEnumConverter<string, Messages::BetaFallbackParamSpeed>(),
             new ApiEnumConverter<string, Messages::BetaMemoryTool20250818AllowedCaller>(),
             new ApiEnumConverter<string, Messages::Role>(),
             new ApiEnumConverter<string, Messages::Effort>(),

@@ -26,7 +26,6 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
     protected override bool ShouldAutoResolveCredentials => false;
 
     private readonly MantleAwsClientOptions _awsOptions;
-    private readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
 
     /// <summary>
     /// Creates a new <see cref="AnthropicBedrockMantleClient"/>.
@@ -109,7 +108,9 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
             );
         }
 
-        _awsOptions = new MantleAwsClientOptions
+        // A local (rather than the field) so the factory closure below doesn't
+        // capture and pin the whole client.
+        var awsOptions = new MantleAwsClientOptions
         {
             SkipAuth = opts.SkipAuth,
             UseSigV4 = useSigV4,
@@ -120,23 +121,19 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
             AwsProfile = opts.AwsProfile,
             ResolvedApiKey = resolvedApiKey,
         };
+        _awsOptions = awsOptions;
 
-        _withRawResponse = new Lazy<IAnthropicClientWithRawResponse>(() =>
-            new AnthropicBedrockMantleClientWithRawResponse(_awsOptions, _options)
-        );
+        BackendAdaptationHandler = () => new MantleAwsAdaptationHandler(awsOptions);
     }
 
     private AnthropicBedrockMantleClient(MantleAwsClientOptions awsOptions, ClientOptions options)
         : base(options)
     {
         _awsOptions = awsOptions;
-        _withRawResponse = new Lazy<IAnthropicClientWithRawResponse>(() =>
-            new AnthropicBedrockMantleClientWithRawResponse(_awsOptions, _options)
-        );
+        // The options normally carry the backend adaptation handler from the original
+        // construction; restore it if a WithOptions modifier returned fresh options.
+        BackendAdaptationHandler ??= () => new MantleAwsAdaptationHandler(awsOptions);
     }
-
-    /// <inheritdoc />
-    public override IAnthropicClientWithRawResponse WithRawResponse => _withRawResponse.Value;
 
     /// <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
@@ -312,39 +309,4 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
     }
 
     #endregion
-}
-
-internal class AnthropicBedrockMantleClientWithRawResponse : AnthropicClientWithRawResponse
-{
-    private readonly MantleAwsClientOptions _awsOptions;
-
-    public AnthropicBedrockMantleClientWithRawResponse(
-        MantleAwsClientOptions awsOptions,
-        ClientOptions options
-    )
-        : base(options)
-    {
-        _awsOptions = awsOptions;
-    }
-
-    /// <inheritdoc />
-    public override IAnthropicClientWithRawResponse WithOptions(
-        Func<ClientOptions, ClientOptions> modifier
-    )
-    {
-        return new AnthropicBedrockMantleClientWithRawResponse(_awsOptions, modifier(_options));
-    }
-
-    /// <inheritdoc />
-    protected override ValueTask BeforeSend<T>(
-        HttpRequest<T> request,
-        HttpRequestMessage requestMessage,
-        CancellationToken cancellationToken
-    ) =>
-        MantleAwsBeforeSendHelper.ApplyBeforeSend(
-            _awsOptions,
-            request,
-            requestMessage,
-            cancellationToken
-        );
 }

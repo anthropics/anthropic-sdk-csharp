@@ -11,7 +11,6 @@ public class AnthropicFoundryClient : AnthropicClient
     protected override bool ShouldAutoResolveCredentials => false;
 
     private readonly IAnthropicFoundryCredentials _azureCredentials;
-    private readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
 
     /// <summary>
     /// Creates a new instance of the <see cref="AnthropicFoundryClient"/>.
@@ -23,9 +22,7 @@ public class AnthropicFoundryClient : AnthropicClient
         _azureCredentials =
             azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));
         BaseUrl = $"https://{azureCredentials.ResourceName}.services.ai.azure.com/anthropic";
-        _withRawResponse = new(() =>
-            new AnthropicFoundryClientWithRawResponse(_azureCredentials, _options)
-        );
+        BackendAdaptationHandler = () => CreateAdaptationHandler(azureCredentials);
     }
 
     private AnthropicFoundryClient(
@@ -36,10 +33,25 @@ public class AnthropicFoundryClient : AnthropicClient
     {
         _azureCredentials =
             azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));
-        _withRawResponse = new(() =>
-            new AnthropicFoundryClientWithRawResponse(_azureCredentials, _options)
-        );
+        // The options normally carry the backend adaptation handler from the original
+        // construction; restore it if a WithOptions modifier returned fresh options.
+        BackendAdaptationHandler ??= () => CreateAdaptationHandler(azureCredentials);
     }
+
+    /// <summary>
+    /// Creates the innermost handler that applies the Foundry credentials, inside any
+    /// user handlers, so user handlers observe the request without backend credentials.
+    /// </summary>
+    private static DelegatingHandler CreateAdaptationHandler(
+        IAnthropicFoundryCredentials azureCredentials
+    ) =>
+        Handler.Create(
+            (requestMessage, next, cancellationToken) =>
+            {
+                azureCredentials.Apply(requestMessage);
+                return next(requestMessage, cancellationToken);
+            }
+        );
 
     [Obsolete("The {nameof(ApiKey)} property is not supported in this configuration.", true)]
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
@@ -56,42 +68,8 @@ public class AnthropicFoundryClient : AnthropicClient
             );
     }
 
-    public override IAnthropicClientWithRawResponse WithRawResponse => _withRawResponse.Value;
-
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new AnthropicFoundryClient(_azureCredentials, modifier(_options));
-    }
-
-    private class AnthropicFoundryClientWithRawResponse : AnthropicClientWithRawResponse
-    {
-        private readonly IAnthropicFoundryCredentials _azureCredentials;
-
-        public AnthropicFoundryClientWithRawResponse(
-            IAnthropicFoundryCredentials azureCredentials,
-            ClientOptions modifier
-        )
-            : base(modifier)
-        {
-            _azureCredentials = azureCredentials;
-        }
-
-        public override IAnthropicClientWithRawResponse WithOptions(
-            Func<ClientOptions, ClientOptions> modifier
-        )
-        {
-            return new AnthropicFoundryClientWithRawResponse(_azureCredentials, modifier(_options));
-        }
-
-        protected override ValueTask BeforeSend<T>(
-            HttpRequest<T> request,
-            HttpRequestMessage requestMessage,
-            CancellationToken cancellationToken
-        )
-        {
-            _azureCredentials.Apply(requestMessage);
-
-            return default;
-        }
     }
 }

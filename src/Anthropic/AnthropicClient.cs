@@ -87,6 +87,20 @@ public class AnthropicClient : IAnthropicClient
         init { this._options.WebhookKey = value; }
     }
 
+    /// <inheritdoc cref="ClientOptions.BackendAdaptationHandler"/>
+    internal Func<DelegatingHandler>? BackendAdaptationHandler
+    {
+        get { return this._options.BackendAdaptationHandler; }
+        init { this._options.BackendAdaptationHandler = value; }
+    }
+
+    /// <inheritdoc cref="ClientOptions.ExtraHeaders"/>
+    internal IReadOnlyDictionary<string, string>? ExtraHeaders
+    {
+        get { return this._options.ExtraHeaders; }
+        init { this._options.ExtraHeaders = value; }
+    }
+
     readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
 
     /// <inheritdoc/>
@@ -311,7 +325,20 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         Func<ClientOptions, ClientOptions> modifier
     )
     {
-        return new AnthropicClientWithRawResponse(modifier(this._options));
+        var options = modifier(this._options);
+        // Cloud-backend clients carry their adaptation handler in the options; restore
+        // it if the modifier returned fresh options, so requests keep being adapted
+        // (rewritten/signed) for the backend. Guarded instead of `??=` because even a
+        // null-to-null assignment runs the setter, which rebuilds the handler chain and
+        // re-attaches already-attached user Handlers on the next request.
+        if (
+            options.BackendAdaptationHandler == null
+            && this._options.BackendAdaptationHandler != null
+        )
+        {
+            options.BackendAdaptationHandler = this._options.BackendAdaptationHandler;
+        }
+        return new AnthropicClientWithRawResponse(options);
     }
 
     readonly Lazy<IMessageServiceWithRawResponse> _messages;
@@ -424,6 +451,15 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
     {
         get
         {
+            // Token credentials are first-party-only auth; cloud-backend clients
+            // (which install a backend adaptation handler) authenticate in that
+            // handler instead, so neither token application nor the 401
+            // token-refresh retry applies to them.
+            if (_options.BackendAdaptationHandler != null)
+            {
+                return false;
+            }
+
             // Precedence: explicit ApiKey/AuthToken > Credentials > env-var ApiKey/AuthToken.
             var explicitKeyAuth =
                 (_options.ApiKeyExplicit && _options.ApiKey != null)
@@ -510,6 +546,12 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         {
             Content = request.Params.BodyContent(),
         };
+        // Wire parity with the other SDKs: bare media type, no charset suffix
+        // (JSON is UTF-8 by definition per RFC 8259).
+        if (requestMessage.Content?.Headers.ContentType is { CharSet: not null } contentType)
+        {
+            contentType.CharSet = null;
+        }
         request.Params.AddHeadersToRequest(requestMessage, this._options);
         if (!requestMessage.Headers.Contains("x-stainless-retry-count"))
         {

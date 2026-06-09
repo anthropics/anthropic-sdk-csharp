@@ -1,35 +1,44 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
 using Amazon.Runtime.Credentials;
-using Anthropic.Core;
 using Anthropic.Exceptions;
 
 namespace Anthropic.Bedrock;
 
 /// <summary>
-/// Shared <c>BeforeSend</c> logic for the Bedrock Mantle client: (when SigV4 is active)
-/// request signing.
+/// Adapts requests for the Bedrock Mantle gateway: (when SigV4 is active) request
+/// signing, otherwise API-key bearer authorization.
+///
+/// <para>Attached as the innermost handler so user handlers observe Anthropic-shaped
+/// requests, and any mutation they perform is covered by the request signature.</para>
 /// </summary>
 /// <remarks>
-/// This is a self-contained copy of the helper used by the AWS client,
+/// This is a self-contained copy of the handler used by the AWS client,
 /// duplicated to keep the Anthropic.Bedrock package independently publishable.
 /// </remarks>
-internal static class MantleAwsBeforeSendHelper
+internal sealed class MantleAwsAdaptationHandler : DelegatingHandler
 {
-    internal static async ValueTask ApplyBeforeSend<T>(
-        MantleAwsClientOptions awsOptions,
-        HttpRequest<T> request,
+    private readonly MantleAwsClientOptions _awsOptions;
+
+    public MantleAwsAdaptationHandler(MantleAwsClientOptions awsOptions)
+    {
+        _awsOptions = awsOptions;
+    }
+
+    protected override async Task<HttpResponseMessage> SendAsync(
         HttpRequestMessage requestMessage,
         CancellationToken cancellationToken
     )
-        where T : ParamsBase
+    {
+        await AdaptRequest(requestMessage, cancellationToken).ConfigureAwait(false);
+        return await base.SendAsync(requestMessage, cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task AdaptRequest(
+        HttpRequestMessage requestMessage,
+        CancellationToken cancellationToken
+    )
     {
         if (requestMessage.Content != null)
         {
@@ -37,25 +46,25 @@ internal static class MantleAwsBeforeSendHelper
                 new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
         }
 
-        if (awsOptions.SkipAuth)
+        if (_awsOptions.SkipAuth)
         {
             return;
         }
 
         // API key mode: send as Authorization: Bearer header
-        if (!awsOptions.UseSigV4)
+        if (!_awsOptions.UseSigV4)
         {
-            if (awsOptions.ResolvedApiKey != null)
+            if (_awsOptions.ResolvedApiKey != null)
             {
                 requestMessage.Headers.TryAddWithoutValidation(
                     "Authorization",
-                    $"Bearer {awsOptions.ResolvedApiKey}"
+                    $"Bearer {_awsOptions.ResolvedApiKey}"
                 );
             }
             return;
         }
 
-        if (awsOptions.AwsRegion == null)
+        if (_awsOptions.AwsRegion == null)
         {
             throw new AnthropicInvalidDataException(
                 "AWS region is required when using SigV4 authentication. "
@@ -73,7 +82,7 @@ internal static class MantleAwsBeforeSendHelper
                 )
                 : Task.FromResult("");
 
-        var credentialsTask = ResolveCredentialsAsync(awsOptions, cancellationToken);
+        var credentialsTask = ResolveCredentialsAsync(cancellationToken);
 
         await Task.WhenAll(bodyTask, credentialsTask).ConfigureAwait(false);
 
@@ -106,17 +115,36 @@ internal static class MantleAwsBeforeSendHelper
             requestMessage.Headers.TryAddWithoutValidation("x-amz-security-token", sessionToken);
         }
 
+        // Collapse any multi-value request headers (e.g. anthropic-beta when several
+        // betas are supplied, or values added by user handlers, which run before this
+        // handler) to a single comma-joined value before signing AND sending.
+        // HttpClient serializes multi-value headers with ", " on the wire, which would
+        // not match the canonical request and cause a SigV4 signature mismatch. By
+        // mutating the message headers here, the signed bytes and the wire bytes agree.
+        foreach (var header in requestMessage.Headers.ToList())
+        {
+            var values = header.Value.ToList();
+            if (values.Count > 1)
+            {
+                requestMessage.Headers.Remove(header.Key);
+                requestMessage.Headers.TryAddWithoutValidation(
+                    header.Key,
+                    string.Join(",", values)
+                );
+            }
+        }
+
         var authHeader = MantleAwsSigner.GetAuthorizationHeader(
             new MantleSigningRequest
             {
-                Service = awsOptions.ServiceName,
-                Region = awsOptions.AwsRegion,
+                Service = _awsOptions.ServiceName,
+                Region = _awsOptions.AwsRegion,
                 HttpMethod = requestMessage.Method.ToString(),
                 Uri = requestMessage.RequestUri!,
                 Now = now,
                 Headers = requestMessage.Headers.ToDictionary(
                     e => e.Key,
-                    e => string.Join(" ", e.Value),
+                    e => string.Join(",", e.Value),
                     StringComparer.InvariantCultureIgnoreCase
                 ),
                 PayloadHash = payloadHash,
@@ -128,15 +156,13 @@ internal static class MantleAwsBeforeSendHelper
         requestMessage.Headers.TryAddWithoutValidation("Authorization", authHeader);
     }
 
-    internal static async Task<(
+    private async Task<(
         string accessKey,
         string secretKey,
         string? sessionToken
-    )> ResolveCredentialsAsync(
-        MantleAwsClientOptions awsOptions,
-        CancellationToken cancellationToken
-    )
+    )> ResolveCredentialsAsync(CancellationToken cancellationToken)
     {
+        var awsOptions = _awsOptions;
         if (awsOptions.AwsAccessKey != null)
         {
             return (

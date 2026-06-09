@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
 
@@ -416,6 +417,17 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
+    public void BetaFallbackValidationWorks()
+    {
+        ContentBlock value = new BetaFallbackBlock()
+        {
+            From = new(Messages::Model.ClaudeFable5),
+            To = new(Messages::Model.ClaudeFable5),
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaTextSerializationRoundtripWorks()
     {
         ContentBlock value = new BetaTextBlock()
@@ -714,6 +726,23 @@ public class ContentBlockTest : TestBase
         {
             Content = "content",
             EncryptedContent = "encrypted_content",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaFallbackSerializationRoundtripWorks()
+    {
+        ContentBlock value = new BetaFallbackBlock()
+        {
+            From = new(Messages::Model.ClaudeFable5),
+            To = new(Messages::Model.ClaudeFable5),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(

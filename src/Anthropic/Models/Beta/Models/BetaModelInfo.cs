@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -23,6 +24,29 @@ public sealed record class BetaModelInfo : JsonModel
             return this._rawData.GetNotNullClass<string>("id");
         }
         init { this._rawData.Set("id", value); }
+    }
+
+    /// <summary>
+    /// Model IDs this model accepts as `fallbacks[i].model` on the Messages API.
+    /// An empty list means the `fallbacks` parameter is not supported for this model
+    /// as primary.
+    /// </summary>
+    public required IReadOnlyList<string>? AllowedFallbackModels
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<string>>(
+                "allowed_fallback_models"
+            );
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<string>?>(
+                "allowed_fallback_models",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -110,6 +134,7 @@ public sealed record class BetaModelInfo : JsonModel
     public override void Validate()
     {
         _ = this.ID;
+        _ = this.AllowedFallbackModels;
         this.Capabilities?.Validate();
         _ = this.CreatedAt;
         _ = this.DisplayName;

@@ -72,6 +72,19 @@ public class BetaToolRunnerTest
         return JsonSerializer.Deserialize<BetaContentBlock>(json, s_jsonOptions)!;
     }
 
+    private static BetaContentBlock MakeFallbackBlock()
+    {
+        var json = JsonSerializer.SerializeToElement(
+            new
+            {
+                type = "fallback",
+                from = new { model = "model-a" },
+                to = new { model = "model-b" },
+            }
+        );
+        return JsonSerializer.Deserialize<BetaContentBlock>(json, s_jsonOptions)!;
+    }
+
     private static MessageCreateParams BaseParams =>
         new()
         {
@@ -734,8 +747,7 @@ public class BetaToolRunnerTest
             }
         }
 
-        // The aggregator collects the message_stop event but doesn't yield it.
-        Assert.Equal(5, eventCount);
+        Assert.Equal(6, eventCount);
     }
 
     [Fact]
@@ -1093,6 +1105,230 @@ public class BetaToolRunnerTest
         Assert.NotNull(result);
         mock.Verify(
             s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()),
+            Times.Exactly(2)
+        );
+    }
+
+    // --- Refusal and fallback-seam handling ---
+
+    [Fact]
+    public async Task Refusal_EndsLoopWithoutExecutingTools()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+        mock.Setup(s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(
+                MakeMessage(
+                    [
+                        MakeToolUseBlock(
+                            "tu_1",
+                            "get_weather",
+                            new() { ["location"] = JsonSerializer.SerializeToElement("SF") }
+                        ),
+                    ],
+                    BetaStopReason.Refusal
+                )
+            );
+
+        var toolExecuted = false;
+        var tool = MakeWeatherToolSync(_ =>
+        {
+            toolExecuted = true;
+            return "Sunny";
+        });
+
+        // maxIterations bounds the damage if refusal handling regresses — a runner that
+        // retries a refusal here would otherwise loop forever against the mock.
+        var runner = mock.Object.ToolRunner(BaseParams, [tool], maxIterations: 3);
+        var result = await runner.RunUntilDoneAsync(ct);
+
+        // A refusal-terminated turn is terminal: no tool execution, no follow-up request.
+        Assert.False(toolExecuted);
+        Assert.Equal(BetaStopReason.Refusal, result.StopReason!.Value());
+        mock.Verify(
+            s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()),
+            Times.Once
+        );
+    }
+
+    [Fact]
+    public async Task FallbackSeam_OnlyPostSeamToolsExecuted()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+        var callCount = 0;
+        MessageCreateParams? secondCallParams = null;
+
+        mock.Setup(s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(
+                (MessageCreateParams p, CancellationToken _) =>
+                {
+                    callCount++;
+                    if (callCount == 1)
+                    {
+                        return MakeMessage(
+                            [
+                                MakeToolUseBlock(
+                                    "tu_pre",
+                                    "get_weather",
+                                    new() { ["location"] = JsonSerializer.SerializeToElement("SF") }
+                                ),
+                                MakeFallbackBlock(),
+                                MakeToolUseBlock(
+                                    "tu_post",
+                                    "get_weather",
+                                    new()
+                                    {
+                                        ["location"] = JsonSerializer.SerializeToElement("NYC"),
+                                    }
+                                ),
+                            ],
+                            BetaStopReason.ToolUse
+                        );
+                    }
+                    secondCallParams = p;
+                    return MakeMessage([MakeTextBlock("Done")]);
+                }
+            );
+
+        var executedIDs = new List<string>();
+        var tool = MakeWeatherTool(
+            (toolUse, _) =>
+            {
+                executedIDs.Add(toolUse.ID);
+                return Task.FromResult<BetaToolResultBlockParamContent>("Sunny");
+            }
+        );
+
+        var runner = mock.Object.ToolRunner(BaseParams, [tool]);
+        await runner.RunUntilDoneAsync(ct);
+
+        // Only the post-seam call runs; the pre-seam call belongs to the refused attempt.
+        var executedID = Assert.Single(executedIDs);
+        Assert.Equal("tu_post", executedID);
+
+        // The tool_result turn answers only the post-seam call; a pre-seam result would be
+        // orphaned once the fallback handler trims the pre-seam tool_use from history.
+        Assert.NotNull(secondCallParams);
+        var userMsg = secondCallParams!.Messages[secondCallParams.Messages.Count - 1];
+        var resultJson = Assert.Single(userMsg.Content.Json.EnumerateArray());
+        Assert.Equal("tu_post", resultJson.GetProperty("tool_use_id").GetString());
+    }
+
+    [Fact]
+    public async Task Streaming_Refusal_EndsLoopWithoutExecutingTools()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+
+        mock.Setup(s =>
+                s.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
+            )
+            .Returns(() =>
+                MakeEventStream(
+                    """{"type":"message_start","message":{"id":"msg_1","type":"message","role":"assistant","content":[],"model":"claude-opus-4-6-20250929","stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":10}}}""",
+                    """{"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"tu_1","name":"get_weather","input":{}}}""",
+                    """{"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"location\":\"SF\"}"}}""",
+                    """{"type":"content_block_stop","index":0}""",
+                    """{"type":"message_delta","delta":{"stop_reason":"refusal","stop_sequence":null},"usage":{"output_tokens":10}}""",
+                    """{"type":"message_stop"}"""
+                )
+            );
+
+        var toolExecuted = false;
+        var tool = MakeWeatherToolSync(_ =>
+        {
+            toolExecuted = true;
+            return "Sunny";
+        });
+
+        // maxIterations bounds the damage if refusal handling regresses — a runner that
+        // retries a refusal here would otherwise loop forever against the mock.
+        var runner = mock.Object.ToolRunner(BaseParams, [tool], maxIterations: 3);
+        var iterationCount = 0;
+
+        await foreach (var stream in runner.Streaming(ct).WithCancellation(ct))
+        {
+            await foreach (var _ in stream.WithCancellation(ct)) { }
+            iterationCount++;
+        }
+
+        Assert.False(toolExecuted);
+        Assert.Equal(1, iterationCount);
+        mock.Verify(
+            s => s.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()),
+            Times.Once
+        );
+    }
+
+    [Fact]
+    public async Task Streaming_FallbackSeam_OnlyPostSeamToolsExecuted()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+        var callCount = 0;
+
+        static IAsyncEnumerable<BetaRawMessageStreamEvent> MakeSeamStream()
+        {
+            return MakeEventStream(
+                """{"type":"message_start","message":{"id":"msg_1","type":"message","role":"assistant","content":[],"model":"claude-opus-4-6-20250929","stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":10}}}""",
+                """{"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"tu_pre","name":"get_weather","input":{}}}""",
+                """{"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"location\":\"SF\"}"}}""",
+                """{"type":"content_block_stop","index":0}""",
+                """{"type":"content_block_start","index":1,"content_block":{"type":"fallback","from":{"model":"model-a"},"to":{"model":"model-b"}}}""",
+                """{"type":"content_block_stop","index":1}""",
+                """{"type":"content_block_start","index":2,"content_block":{"type":"tool_use","id":"tu_post","name":"get_weather","input":{}}}""",
+                """{"type":"content_block_delta","index":2,"delta":{"type":"input_json_delta","partial_json":"{\"location\":\"NYC\"}"}}""",
+                """{"type":"content_block_stop","index":2}""",
+                """{"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null},"usage":{"output_tokens":10}}""",
+                """{"type":"message_stop"}"""
+            );
+        }
+
+        static IAsyncEnumerable<BetaRawMessageStreamEvent> MakeTextStream()
+        {
+            return MakeEventStream(
+                """{"type":"message_start","message":{"id":"msg_2","type":"message","role":"assistant","content":[],"model":"claude-opus-4-6-20250929","stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":10}}}""",
+                """{"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}""",
+                """{"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Done"}}""",
+                """{"type":"content_block_stop","index":0}""",
+                """{"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":10}}""",
+                """{"type":"message_stop"}"""
+            );
+        }
+
+        mock.Setup(s =>
+                s.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
+            )
+            .Returns(() =>
+            {
+                callCount++;
+                return callCount == 1 ? MakeSeamStream() : MakeTextStream();
+            });
+
+        var executedIDs = new List<string>();
+        var tool = MakeWeatherTool(
+            (toolUse, _) =>
+            {
+                executedIDs.Add(toolUse.ID);
+                return Task.FromResult<BetaToolResultBlockParamContent>("Sunny");
+            }
+        );
+
+        var runner = mock.Object.ToolRunner(BaseParams, [tool]);
+        var iterationCount = 0;
+
+        await foreach (var stream in runner.Streaming(ct).WithCancellation(ct))
+        {
+            await foreach (var _ in stream.WithCancellation(ct)) { }
+            iterationCount++;
+        }
+
+        var executedID = Assert.Single(executedIDs);
+        Assert.Equal("tu_post", executedID);
+        Assert.Equal(2, iterationCount);
+        mock.Verify(
+            s => s.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()),
             Times.Exactly(2)
         );
     }

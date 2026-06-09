@@ -53,7 +53,7 @@ public class AnthropicAwsClientTests : IDisposable
 
     /// <summary>
     /// A minimal <see cref="ParamsBase"/> that targets the gateway URL so we can
-    /// exercise <c>BeforeSend</c> via <c>WithRawResponse.Execute</c>.
+    /// exercise the gateway adaptation via <c>WithRawResponse.Execute</c>.
     /// </summary>
     record class BlankParams : ParamsBase
     {

@@ -60,6 +60,7 @@ public abstract class SseAggregator<TMessage, TResult>
                 _messages[filterResult].Add(message);
                 if (filterResult == FilterResult.EndMessage)
                 {
+                    yield return message;
                     break;
                 }
             }

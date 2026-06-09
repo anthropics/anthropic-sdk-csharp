@@ -18,6 +18,7 @@ public class ModelListPageResponseTest : TestBase
                 new()
                 {
                     ID = "claude-opus-4-6",
+                    AllowedFallbackModels = ["string"],
                     Capabilities = new()
                     {
                         Batch = new(true),
@@ -64,6 +65,7 @@ public class ModelListPageResponseTest : TestBase
             new()
             {
                 ID = "claude-opus-4-6",
+                AllowedFallbackModels = ["string"],
                 Capabilities = new()
                 {
                     Batch = new(true),
@@ -124,6 +126,7 @@ public class ModelListPageResponseTest : TestBase
                 new()
                 {
                     ID = "claude-opus-4-6",
+                    AllowedFallbackModels = ["string"],
                     Capabilities = new()
                     {
                         Batch = new(true),
@@ -184,6 +187,7 @@ public class ModelListPageResponseTest : TestBase
                 new()
                 {
                     ID = "claude-opus-4-6",
+                    AllowedFallbackModels = ["string"],
                     Capabilities = new()
                     {
                         Batch = new(true),
@@ -237,6 +241,7 @@ public class ModelListPageResponseTest : TestBase
             new()
             {
                 ID = "claude-opus-4-6",
+                AllowedFallbackModels = ["string"],
                 Capabilities = new()
                 {
                     Batch = new(true),
@@ -297,6 +302,7 @@ public class ModelListPageResponseTest : TestBase
                 new()
                 {
                     ID = "claude-opus-4-6",
+                    AllowedFallbackModels = ["string"],
                     Capabilities = new()
                     {
                         Batch = new(true),
@@ -351,6 +357,7 @@ public class ModelListPageResponseTest : TestBase
                 new()
                 {
                     ID = "claude-opus-4-6",
+                    AllowedFallbackModels = ["string"],
                     Capabilities = new()
                     {
                         Batch = new(true),

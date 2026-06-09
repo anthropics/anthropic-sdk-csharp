@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Models.Messages;
 using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -41,6 +42,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 {
                     Category = Messages::Category.Cyber,
                     Explanation = "explanation",
+                    FallbackCreditToken = "fallback_credit_token",
+                    FallbackHasPrefillClaim = true,
+                    RecommendedModel = "recommended_model",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
@@ -62,6 +66,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        Model = Model.ClaudeFable5,
                         OutputTokens = 0,
                     },
                 ],
@@ -100,6 +105,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
             {
                 Category = Messages::Category.Cyber,
                 Explanation = "explanation",
+                FallbackCreditToken = "fallback_credit_token",
+                FallbackHasPrefillClaim = true,
+                RecommendedModel = "recommended_model",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -122,6 +130,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
+                    Model = Model.ClaudeFable5,
                     OutputTokens = 0,
                 },
             ],
@@ -170,6 +179,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 {
                     Category = Messages::Category.Cyber,
                     Explanation = "explanation",
+                    FallbackCreditToken = "fallback_credit_token",
+                    FallbackHasPrefillClaim = true,
+                    RecommendedModel = "recommended_model",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
@@ -191,6 +203,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        Model = Model.ClaudeFable5,
                         OutputTokens = 0,
                     },
                 ],
@@ -243,6 +256,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 {
                     Category = Messages::Category.Cyber,
                     Explanation = "explanation",
+                    FallbackCreditToken = "fallback_credit_token",
+                    FallbackHasPrefillClaim = true,
+                    RecommendedModel = "recommended_model",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
@@ -264,6 +280,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        Model = Model.ClaudeFable5,
                         OutputTokens = 0,
                     },
                 ],
@@ -309,6 +326,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
             {
                 Category = Messages::Category.Cyber,
                 Explanation = "explanation",
+                FallbackCreditToken = "fallback_credit_token",
+                FallbackHasPrefillClaim = true,
+                RecommendedModel = "recommended_model",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -331,6 +351,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
+                    Model = Model.ClaudeFable5,
                     OutputTokens = 0,
                 },
             ],
@@ -379,6 +400,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 {
                     Category = Messages::Category.Cyber,
                     Explanation = "explanation",
+                    FallbackCreditToken = "fallback_credit_token",
+                    FallbackHasPrefillClaim = true,
+                    RecommendedModel = "recommended_model",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
@@ -400,6 +424,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        Model = Model.ClaudeFable5,
                         OutputTokens = 0,
                     },
                 ],
@@ -446,6 +471,9 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 {
                     Category = Messages::Category.Cyber,
                     Explanation = "explanation",
+                    FallbackCreditToken = "fallback_credit_token",
+                    FallbackHasPrefillClaim = true,
+                    RecommendedModel = "recommended_model",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
@@ -467,6 +495,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        Model = Model.ClaudeFable5,
                         OutputTokens = 0,
                     },
                 ],
@@ -507,6 +536,9 @@ public class DeltaTest : TestBase
             {
                 Category = Messages::Category.Cyber,
                 Explanation = "explanation",
+                FallbackCreditToken = "fallback_credit_token",
+                FallbackHasPrefillClaim = true,
+                RecommendedModel = "recommended_model",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -530,6 +562,9 @@ public class DeltaTest : TestBase
         {
             Category = Messages::Category.Cyber,
             Explanation = "explanation",
+            FallbackCreditToken = "fallback_credit_token",
+            FallbackHasPrefillClaim = true,
+            RecommendedModel = "recommended_model",
         };
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
@@ -564,6 +599,9 @@ public class DeltaTest : TestBase
             {
                 Category = Messages::Category.Cyber,
                 Explanation = "explanation",
+                FallbackCreditToken = "fallback_credit_token",
+                FallbackHasPrefillClaim = true,
+                RecommendedModel = "recommended_model",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -601,6 +639,9 @@ public class DeltaTest : TestBase
             {
                 Category = Messages::Category.Cyber,
                 Explanation = "explanation",
+                FallbackCreditToken = "fallback_credit_token",
+                FallbackHasPrefillClaim = true,
+                RecommendedModel = "recommended_model",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -631,6 +672,9 @@ public class DeltaTest : TestBase
         {
             Category = Messages::Category.Cyber,
             Explanation = "explanation",
+            FallbackCreditToken = "fallback_credit_token",
+            FallbackHasPrefillClaim = true,
+            RecommendedModel = "recommended_model",
         };
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
@@ -665,6 +709,9 @@ public class DeltaTest : TestBase
             {
                 Category = Messages::Category.Cyber,
                 Explanation = "explanation",
+                FallbackCreditToken = "fallback_credit_token",
+                FallbackHasPrefillClaim = true,
+                RecommendedModel = "recommended_model",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -696,6 +743,9 @@ public class DeltaTest : TestBase
             {
                 Category = Messages::Category.Cyber,
                 Explanation = "explanation",
+                FallbackCreditToken = "fallback_credit_token",
+                FallbackHasPrefillClaim = true,
+                RecommendedModel = "recommended_model",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
