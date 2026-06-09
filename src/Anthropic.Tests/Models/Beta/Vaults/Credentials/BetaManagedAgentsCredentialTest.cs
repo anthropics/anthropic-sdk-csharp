@@ -329,6 +329,23 @@ public class BetaManagedAgentsCredentialAuthTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsEnvironmentVariableAuthResponseValidationWorks()
+    {
+        Credentials::BetaManagedAgentsCredentialAuth value =
+            new Credentials::BetaManagedAgentsEnvironmentVariableAuthResponse()
+            {
+                Networking =
+                    new Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
+                        Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
+                    ),
+                SecretName = "secret_name",
+                Type =
+                    Credentials::BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable,
+            };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsMcpOAuthAuthResponseSerializationRoundtripWorks()
     {
         Credentials::BetaManagedAgentsCredentialAuth value =
@@ -366,6 +383,29 @@ public class BetaManagedAgentsCredentialAuthTest : TestBase
             {
                 McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
                 Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Credentials::BetaManagedAgentsCredentialAuth>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEnvironmentVariableAuthResponseSerializationRoundtripWorks()
+    {
+        Credentials::BetaManagedAgentsCredentialAuth value =
+            new Credentials::BetaManagedAgentsEnvironmentVariableAuthResponse()
+            {
+                Networking =
+                    new Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
+                        Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
+                    ),
+                SecretName = "secret_name",
+                Type =
+                    Credentials::BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable,
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Credentials::BetaManagedAgentsCredentialAuth>(

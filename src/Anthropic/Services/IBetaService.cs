@@ -34,6 +34,10 @@ public interface IBetaService
 
     Beta::ISessionService Sessions { get; }
 
+    Beta::IDeploymentService Deployments { get; }
+
+    Beta::IDeploymentRunService DeploymentRuns { get; }
+
     Beta::IVaultService Vaults { get; }
 
     Beta::IMemoryStoreService MemoryStores { get; }
@@ -69,6 +73,10 @@ public interface IBetaServiceWithRawResponse
     Beta::IEnvironmentServiceWithRawResponse Environments { get; }
 
     Beta::ISessionServiceWithRawResponse Sessions { get; }
+
+    Beta::IDeploymentServiceWithRawResponse Deployments { get; }
+
+    Beta::IDeploymentRunServiceWithRawResponse DeploymentRuns { get; }
 
     Beta::IVaultServiceWithRawResponse Vaults { get; }
 

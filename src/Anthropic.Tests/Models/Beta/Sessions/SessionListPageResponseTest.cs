@@ -214,6 +214,7 @@ public class SessionListPageResponseTest : TestBase
                         OutputTokens = 0,
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    DeploymentID = "deployment_id",
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -415,6 +416,7 @@ public class SessionListPageResponseTest : TestBase
                     OutputTokens = 0,
                 },
                 VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                DeploymentID = "deployment_id",
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -632,6 +634,7 @@ public class SessionListPageResponseTest : TestBase
                         OutputTokens = 0,
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    DeploymentID = "deployment_id",
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -850,6 +853,7 @@ public class SessionListPageResponseTest : TestBase
                         OutputTokens = 0,
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    DeploymentID = "deployment_id",
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -1058,6 +1062,7 @@ public class SessionListPageResponseTest : TestBase
                     OutputTokens = 0,
                 },
                 VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                DeploymentID = "deployment_id",
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -1275,6 +1280,7 @@ public class SessionListPageResponseTest : TestBase
                         OutputTokens = 0,
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    DeploymentID = "deployment_id",
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -1533,6 +1539,7 @@ public class SessionListPageResponseTest : TestBase
                         OutputTokens = 0,
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    DeploymentID = "deployment_id",
                 },
             ],
         };
@@ -1745,6 +1752,7 @@ public class SessionListPageResponseTest : TestBase
                         OutputTokens = 0,
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    DeploymentID = "deployment_id",
                 },
             ],
         };
@@ -1956,6 +1964,7 @@ public class SessionListPageResponseTest : TestBase
                         OutputTokens = 0,
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    DeploymentID = "deployment_id",
                 },
             ],
 
@@ -2170,6 +2179,7 @@ public class SessionListPageResponseTest : TestBase
                         OutputTokens = 0,
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    DeploymentID = "deployment_id",
                 },
             ],
 
@@ -2383,6 +2393,7 @@ public class SessionListPageResponseTest : TestBase
                         OutputTokens = 0,
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    DeploymentID = "deployment_id",
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",

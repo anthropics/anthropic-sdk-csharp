@@ -7,6 +7,8 @@ using Anthropic.Models.Messages;
 using Agents = Anthropic.Models.Beta.Agents;
 using Batches = Anthropic.Models.Messages.Batches;
 using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
+using DeploymentRuns = Anthropic.Models.Beta.DeploymentRuns;
+using Deployments = Anthropic.Models.Beta.Deployments;
 using Environments = Anthropic.Models.Beta.Environments;
 using Events = Anthropic.Models.Beta.Sessions.Events;
 using Files = Anthropic.Models.Beta.Files;
@@ -215,6 +217,8 @@ public abstract record class ModelBase
                 Sessions::BetaManagedAgentsSessionMultiagentCoordinatorType
             >(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsSessionUpdatedEventType>(),
+            new ApiEnumConverter<string, Sessions::BetaManagedAgentsSystemContentBlockType>(),
+            new ApiEnumConverter<string, Sessions::BetaManagedAgentsSystemMessageEventType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsUserToolResultEventType>(),
             new ApiEnumConverter<string, Sessions::Order>(),
             new ApiEnumConverter<string, Sessions::Status>(),
@@ -245,6 +249,10 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Events::BetaManagedAgentsBase64DocumentSourceType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsBase64ImageSourceType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsBillingErrorType>(),
+            new ApiEnumConverter<
+                string,
+                Events::BetaManagedAgentsCredentialHostUnreachableErrorType
+            >(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsDocumentBlockType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsFileDocumentSourceType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsFileImageSourceType>(),
@@ -313,6 +321,7 @@ public abstract record class ModelBase
                 string,
                 Events::BetaManagedAgentsSpanOutcomeEvaluationStartEventType
             >(),
+            new ApiEnumConverter<string, Events::BetaManagedAgentsSystemMessageEventParamsType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsTextBlockType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsTextRubricType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsTextRubricParamsType>(),
@@ -356,6 +365,163 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Resources::Type>(),
             new ApiEnumConverter<string, Threads::Type>(),
             new ApiEnumConverter<string, Threads::BetaManagedAgentsSessionThreadStatus>(),
+            new ApiEnumConverter<string, Deployments::Type>(),
+            new ApiEnumConverter<string, Deployments::BetaManagedAgentsCronScheduleType>(),
+            new ApiEnumConverter<string, Deployments::BetaManagedAgentsCronScheduleParamsType>(),
+            new ApiEnumConverter<string, Deployments::BetaManagedAgentsDeploymentType>(),
+            new ApiEnumConverter<string, Deployments::BetaManagedAgentsDeploymentStatus>(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsDeploymentSystemMessageEventType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsDeploymentUserDefineOutcomeEventType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsDeploymentUserMessageEventType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsErrorDeploymentPausedReasonType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorType
+            >(),
+            new ApiEnumConverter<string, Deployments::BetaManagedAgentsFileResourceConfigType>(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsGitHubRepositoryResourceConfigType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsManualDeploymentPausedReasonType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsMemoryStoreResourceConfigType
+            >(),
+            new ApiEnumConverter<string, Deployments::Access>(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorType
+            >(),
+            new ApiEnumConverter<string, Deployments::BetaManagedAgentsScheduleType>(),
+            new ApiEnumConverter<string, Deployments::BetaManagedAgentsScheduleParamsType>(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsSkillNotFoundDeploymentPausedReasonErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsUnknownDeploymentPausedReasonErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsVaultArchivedDeploymentPausedReasonErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsVaultNotFoundDeploymentPausedReasonErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Deployments::BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorType
+            >(),
+            new ApiEnumConverter<string, DeploymentRuns::Type>(),
+            new ApiEnumConverter<string, DeploymentRuns::BetaManagedAgentsDeploymentRunType>(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsEnvironmentNotFoundRunErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsFileNotFoundRunErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsManualTriggerContextType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsMcpEgressBlockedRunErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsMemoryStoreArchivedRunErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsOrganizationDisabledRunErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsScheduleTriggerContextType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsSelfHostedResourcesUnsupportedRunErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsSessionCreationRejectedRunErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsSessionRateLimitedRunErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsSessionResourceNotFoundRunErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsSkillNotFoundRunErrorType
+            >(),
+            new ApiEnumConverter<string, DeploymentRuns::BetaManagedAgentsTriggerType>(),
+            new ApiEnumConverter<string, DeploymentRuns::BetaManagedAgentsUnknownRunErrorType>(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsVaultArchivedRunErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsVaultNotFoundRunErrorType
+            >(),
+            new ApiEnumConverter<
+                string,
+                DeploymentRuns::BetaManagedAgentsWorkspaceArchivedRunErrorType
+            >(),
             new ApiEnumConverter<string, Vaults::Type>(),
             new ApiEnumConverter<string, Vaults::BetaManagedAgentsVaultType>(),
             new ApiEnumConverter<string, Credentials::Type>(),
@@ -365,6 +531,26 @@ public abstract record class ModelBase
                 Credentials::BetaManagedAgentsCredentialValidationStatus
             >(),
             new ApiEnumConverter<string, Credentials::BetaManagedAgentsDeletedCredentialType>(),
+            new ApiEnumConverter<
+                string,
+                Credentials::BetaManagedAgentsEnvironmentVariableAuthResponseType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Credentials::BetaManagedAgentsEnvironmentVariableCreateParamsType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Credentials::BetaManagedAgentsEnvironmentVariableUpdateParamsType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Credentials::BetaManagedAgentsLimitedCredentialNetworkingParamsType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Credentials::BetaManagedAgentsLimitedCredentialNetworkingResponseType
+            >(),
             new ApiEnumConverter<string, Credentials::BetaManagedAgentsMcpOAuthAuthResponseType>(),
             new ApiEnumConverter<string, Credentials::BetaManagedAgentsMcpOAuthCreateParamsType>(),
             new ApiEnumConverter<string, Credentials::BetaManagedAgentsMcpOAuthUpdateParamsType>(),
@@ -412,6 +598,14 @@ public abstract record class ModelBase
             new ApiEnumConverter<
                 string,
                 Credentials::BetaManagedAgentsTokenEndpointAuthPostUpdateParamType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType
+            >(),
+            new ApiEnumConverter<
+                string,
+                Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType
             >(),
             new ApiEnumConverter<string, MemoryStores::Type>(),
             new ApiEnumConverter<string, MemoryStores::BetaManagedAgentsMemoryStoreType>(),

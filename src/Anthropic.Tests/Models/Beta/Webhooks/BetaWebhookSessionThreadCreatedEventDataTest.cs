@@ -13,16 +13,19 @@ public class BetaWebhookSessionThreadCreatedEventDataTest : TestBase
         {
             ID = "id",
             OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
             WorkspaceID = "workspace_id",
         };
 
         string expectedID = "id";
         string expectedOrganizationID = "organization_id";
+        string expectedSessionThreadID = "session_thread_id";
         JsonElement expectedType = JsonSerializer.SerializeToElement("session.thread_created");
         string expectedWorkspaceID = "workspace_id";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedOrganizationID, model.OrganizationID);
+        Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedWorkspaceID, model.WorkspaceID);
     }
@@ -34,6 +37,7 @@ public class BetaWebhookSessionThreadCreatedEventDataTest : TestBase
         {
             ID = "id",
             OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
             WorkspaceID = "workspace_id",
         };
 
@@ -53,6 +57,7 @@ public class BetaWebhookSessionThreadCreatedEventDataTest : TestBase
         {
             ID = "id",
             OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
             WorkspaceID = "workspace_id",
         };
 
@@ -65,11 +70,13 @@ public class BetaWebhookSessionThreadCreatedEventDataTest : TestBase
 
         string expectedID = "id";
         string expectedOrganizationID = "organization_id";
+        string expectedSessionThreadID = "session_thread_id";
         JsonElement expectedType = JsonSerializer.SerializeToElement("session.thread_created");
         string expectedWorkspaceID = "workspace_id";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedOrganizationID, deserialized.OrganizationID);
+        Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedWorkspaceID, deserialized.WorkspaceID);
     }
@@ -81,6 +88,7 @@ public class BetaWebhookSessionThreadCreatedEventDataTest : TestBase
         {
             ID = "id",
             OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
             WorkspaceID = "workspace_id",
         };
 
@@ -94,6 +102,7 @@ public class BetaWebhookSessionThreadCreatedEventDataTest : TestBase
         {
             ID = "id",
             OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
             WorkspaceID = "workspace_id",
         };
 

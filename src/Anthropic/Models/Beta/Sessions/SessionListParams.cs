@@ -148,6 +148,27 @@ public record class SessionListParams : ParamsBase
     }
 
     /// <summary>
+    /// Filter sessions created by this deployment ID.
+    /// </summary>
+    public string? DeploymentID
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableClass<string>("deployment_id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set("deployment_id", value);
+        }
+    }
+
+    /// <summary>
     /// When true, includes archived sessions. Default: false (exclude archived).
     /// </summary>
     public bool? IncludeArchived

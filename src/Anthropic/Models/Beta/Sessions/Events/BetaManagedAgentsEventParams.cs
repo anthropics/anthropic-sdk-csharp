@@ -38,7 +38,8 @@ public record class BetaManagedAgentsEventParams : ModelBase
                 userToolConfirmation: (x) => x.ToolUseID,
                 userCustomToolResult: (_) => null,
                 userDefineOutcome: (_) => null,
-                userToolResult: (x) => x.ToolUseID
+                userToolResult: (x) => x.ToolUseID,
+                systemMessage: (_) => null
             );
         }
     }
@@ -53,7 +54,8 @@ public record class BetaManagedAgentsEventParams : ModelBase
                 userToolConfirmation: (_) => null,
                 userCustomToolResult: (x) => x.IsError,
                 userDefineOutcome: (_) => null,
-                userToolResult: (x) => x.IsError
+                userToolResult: (x) => x.IsError,
+                systemMessage: (_) => null
             );
         }
     }
@@ -105,6 +107,15 @@ public record class BetaManagedAgentsEventParams : ModelBase
 
     public BetaManagedAgentsEventParams(
         BetaManagedAgentsUserToolResultEventParams value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsEventParams(
+        BetaManagedAgentsSystemMessageEventParams value,
         JsonElement? element = null
     )
     {
@@ -256,6 +267,29 @@ public record class BetaManagedAgentsEventParams : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsSystemMessageEventParams"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickSystemMessage(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsSystemMessageEventParams`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickSystemMessage(
+        [NotNullWhen(true)] out BetaManagedAgentsSystemMessageEventParams? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsSystemMessageEventParams;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -274,7 +308,8 @@ public record class BetaManagedAgentsEventParams : ModelBase
     ///     (BetaManagedAgentsUserToolConfirmationEventParams value) =&gt; {...},
     ///     (BetaManagedAgentsUserCustomToolResultEventParams value) =&gt; {...},
     ///     (BetaManagedAgentsUserDefineOutcomeEventParams value) =&gt; {...},
-    ///     (BetaManagedAgentsUserToolResultEventParams value) =&gt; {...}
+    ///     (BetaManagedAgentsUserToolResultEventParams value) =&gt; {...},
+    ///     (BetaManagedAgentsSystemMessageEventParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -285,7 +320,8 @@ public record class BetaManagedAgentsEventParams : ModelBase
         System::Action<BetaManagedAgentsUserToolConfirmationEventParams> userToolConfirmation,
         System::Action<BetaManagedAgentsUserCustomToolResultEventParams> userCustomToolResult,
         System::Action<BetaManagedAgentsUserDefineOutcomeEventParams> userDefineOutcome,
-        System::Action<BetaManagedAgentsUserToolResultEventParams> userToolResult
+        System::Action<BetaManagedAgentsUserToolResultEventParams> userToolResult,
+        System::Action<BetaManagedAgentsSystemMessageEventParams> systemMessage
     )
     {
         switch (this.Value)
@@ -307,6 +343,9 @@ public record class BetaManagedAgentsEventParams : ModelBase
                 break;
             case BetaManagedAgentsUserToolResultEventParams value:
                 userToolResult(value);
+                break;
+            case BetaManagedAgentsSystemMessageEventParams value:
+                systemMessage(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -335,7 +374,8 @@ public record class BetaManagedAgentsEventParams : ModelBase
     ///     (BetaManagedAgentsUserToolConfirmationEventParams value) =&gt; {...},
     ///     (BetaManagedAgentsUserCustomToolResultEventParams value) =&gt; {...},
     ///     (BetaManagedAgentsUserDefineOutcomeEventParams value) =&gt; {...},
-    ///     (BetaManagedAgentsUserToolResultEventParams value) =&gt; {...}
+    ///     (BetaManagedAgentsUserToolResultEventParams value) =&gt; {...},
+    ///     (BetaManagedAgentsSystemMessageEventParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -346,7 +386,8 @@ public record class BetaManagedAgentsEventParams : ModelBase
         System::Func<BetaManagedAgentsUserToolConfirmationEventParams, T> userToolConfirmation,
         System::Func<BetaManagedAgentsUserCustomToolResultEventParams, T> userCustomToolResult,
         System::Func<BetaManagedAgentsUserDefineOutcomeEventParams, T> userDefineOutcome,
-        System::Func<BetaManagedAgentsUserToolResultEventParams, T> userToolResult
+        System::Func<BetaManagedAgentsUserToolResultEventParams, T> userToolResult,
+        System::Func<BetaManagedAgentsSystemMessageEventParams, T> systemMessage
     )
     {
         return this.Value switch
@@ -357,6 +398,7 @@ public record class BetaManagedAgentsEventParams : ModelBase
             BetaManagedAgentsUserCustomToolResultEventParams value => userCustomToolResult(value),
             BetaManagedAgentsUserDefineOutcomeEventParams value => userDefineOutcome(value),
             BetaManagedAgentsUserToolResultEventParams value => userToolResult(value),
+            BetaManagedAgentsSystemMessageEventParams value => systemMessage(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsEventParams"
             ),
@@ -387,6 +429,10 @@ public record class BetaManagedAgentsEventParams : ModelBase
         BetaManagedAgentsUserToolResultEventParams value
     ) => new(value);
 
+    public static implicit operator BetaManagedAgentsEventParams(
+        BetaManagedAgentsSystemMessageEventParams value
+    ) => new(value);
+
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -411,7 +457,8 @@ public record class BetaManagedAgentsEventParams : ModelBase
             (userToolConfirmation) => userToolConfirmation.Validate(),
             (userCustomToolResult) => userCustomToolResult.Validate(),
             (userDefineOutcome) => userDefineOutcome.Validate(),
-            (userToolResult) => userToolResult.Validate()
+            (userToolResult) => userToolResult.Validate(),
+            (systemMessage) => systemMessage.Validate()
         );
     }
 
@@ -441,6 +488,7 @@ public record class BetaManagedAgentsEventParams : ModelBase
             BetaManagedAgentsUserCustomToolResultEventParams _ => 3,
             BetaManagedAgentsUserDefineOutcomeEventParams _ => 4,
             BetaManagedAgentsUserToolResultEventParams _ => 5,
+            BetaManagedAgentsSystemMessageEventParams _ => 6,
             _ => -1,
         };
     }
@@ -578,6 +626,27 @@ sealed class BetaManagedAgentsEventParamsConverter : JsonConverter<BetaManagedAg
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaManagedAgentsUserToolResultEventParams>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "system.message":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsSystemMessageEventParams>(
                             element,
                             options
                         );

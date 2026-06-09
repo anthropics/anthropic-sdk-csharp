@@ -212,13 +212,14 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
         }
     }
 
-    public string McpServerUrl
+    public string? McpServerUrl
     {
         get
         {
-            return Match(
+            return Match<string?>(
                 betaManagedAgentsMcpOAuthAuthResponse: (x) => x.McpServerUrl,
-                betaManagedAgentsStaticBearerAuthResponse: (x) => x.McpServerUrl
+                betaManagedAgentsStaticBearerAuthResponse: (x) => x.McpServerUrl,
+                betaManagedAgentsEnvironmentVariableAuthResponse: (_) => null
             );
         }
     }
@@ -234,6 +235,15 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
 
     public BetaManagedAgentsCredentialAuth(
         BetaManagedAgentsStaticBearerAuthResponse value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsCredentialAuth(
+        BetaManagedAgentsEnvironmentVariableAuthResponse value,
         JsonElement? element = null
     )
     {
@@ -293,6 +303,29 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsEnvironmentVariableAuthResponse"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsEnvironmentVariableAuthResponse(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsEnvironmentVariableAuthResponse`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsEnvironmentVariableAuthResponse(
+        [NotNullWhen(true)] out BetaManagedAgentsEnvironmentVariableAuthResponse? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsEnvironmentVariableAuthResponse;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -307,14 +340,16 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (BetaManagedAgentsMcpOAuthAuthResponse value) =&gt; {...},
-    ///     (BetaManagedAgentsStaticBearerAuthResponse value) =&gt; {...}
+    ///     (BetaManagedAgentsStaticBearerAuthResponse value) =&gt; {...},
+    ///     (BetaManagedAgentsEnvironmentVariableAuthResponse value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<BetaManagedAgentsMcpOAuthAuthResponse> betaManagedAgentsMcpOAuthAuthResponse,
-        System::Action<BetaManagedAgentsStaticBearerAuthResponse> betaManagedAgentsStaticBearerAuthResponse
+        System::Action<BetaManagedAgentsStaticBearerAuthResponse> betaManagedAgentsStaticBearerAuthResponse,
+        System::Action<BetaManagedAgentsEnvironmentVariableAuthResponse> betaManagedAgentsEnvironmentVariableAuthResponse
     )
     {
         switch (this.Value)
@@ -324,6 +359,9 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
                 break;
             case BetaManagedAgentsStaticBearerAuthResponse value:
                 betaManagedAgentsStaticBearerAuthResponse(value);
+                break;
+            case BetaManagedAgentsEnvironmentVariableAuthResponse value:
+                betaManagedAgentsEnvironmentVariableAuthResponse(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -348,7 +386,8 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (BetaManagedAgentsMcpOAuthAuthResponse value) =&gt; {...},
-    ///     (BetaManagedAgentsStaticBearerAuthResponse value) =&gt; {...}
+    ///     (BetaManagedAgentsStaticBearerAuthResponse value) =&gt; {...},
+    ///     (BetaManagedAgentsEnvironmentVariableAuthResponse value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -361,7 +400,11 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
         System::Func<
             BetaManagedAgentsStaticBearerAuthResponse,
             T
-        > betaManagedAgentsStaticBearerAuthResponse
+        > betaManagedAgentsStaticBearerAuthResponse,
+        System::Func<
+            BetaManagedAgentsEnvironmentVariableAuthResponse,
+            T
+        > betaManagedAgentsEnvironmentVariableAuthResponse
     )
     {
         return this.Value switch
@@ -371,6 +414,8 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
             ),
             BetaManagedAgentsStaticBearerAuthResponse value =>
                 betaManagedAgentsStaticBearerAuthResponse(value),
+            BetaManagedAgentsEnvironmentVariableAuthResponse value =>
+                betaManagedAgentsEnvironmentVariableAuthResponse(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsCredentialAuth"
             ),
@@ -383,6 +428,10 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
 
     public static implicit operator BetaManagedAgentsCredentialAuth(
         BetaManagedAgentsStaticBearerAuthResponse value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsCredentialAuth(
+        BetaManagedAgentsEnvironmentVariableAuthResponse value
     ) => new(value);
 
     /// <summary>
@@ -407,7 +456,9 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
             (betaManagedAgentsMcpOAuthAuthResponse) =>
                 betaManagedAgentsMcpOAuthAuthResponse.Validate(),
             (betaManagedAgentsStaticBearerAuthResponse) =>
-                betaManagedAgentsStaticBearerAuthResponse.Validate()
+                betaManagedAgentsStaticBearerAuthResponse.Validate(),
+            (betaManagedAgentsEnvironmentVariableAuthResponse) =>
+                betaManagedAgentsEnvironmentVariableAuthResponse.Validate()
         );
     }
 
@@ -433,6 +484,7 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
         {
             BetaManagedAgentsMcpOAuthAuthResponse _ => 0,
             BetaManagedAgentsStaticBearerAuthResponse _ => 1,
+            BetaManagedAgentsEnvironmentVariableAuthResponse _ => 2,
             _ => -1,
         };
     }
@@ -487,6 +539,27 @@ sealed class BetaManagedAgentsCredentialAuthConverter
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaManagedAgentsStaticBearerAuthResponse>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "environment_variable":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsEnvironmentVariableAuthResponse>(
                             element,
                             options
                         );

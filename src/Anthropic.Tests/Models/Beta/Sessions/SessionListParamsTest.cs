@@ -22,6 +22,7 @@ public class SessionListParamsTest : TestBase
             CreatedAtGte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             CreatedAtLt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             CreatedAtLte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DeploymentID = "deployment_id",
             IncludeArchived = true,
             Limit = 0,
             MemoryStoreID = "memory_store_id",
@@ -37,6 +38,7 @@ public class SessionListParamsTest : TestBase
         DateTimeOffset expectedCreatedAtGte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         DateTimeOffset expectedCreatedAtLt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         DateTimeOffset expectedCreatedAtLte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        string expectedDeploymentID = "deployment_id";
         bool expectedIncludeArchived = true;
         int expectedLimit = 0;
         string expectedMemoryStoreID = "memory_store_id";
@@ -54,6 +56,7 @@ public class SessionListParamsTest : TestBase
         Assert.Equal(expectedCreatedAtGte, parameters.CreatedAtGte);
         Assert.Equal(expectedCreatedAtLt, parameters.CreatedAtLt);
         Assert.Equal(expectedCreatedAtLte, parameters.CreatedAtLte);
+        Assert.Equal(expectedDeploymentID, parameters.DeploymentID);
         Assert.Equal(expectedIncludeArchived, parameters.IncludeArchived);
         Assert.Equal(expectedLimit, parameters.Limit);
         Assert.Equal(expectedMemoryStoreID, parameters.MemoryStoreID);
@@ -90,6 +93,8 @@ public class SessionListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("created_at[lt]"));
         Assert.Null(parameters.CreatedAtLte);
         Assert.False(parameters.RawQueryData.ContainsKey("created_at[lte]"));
+        Assert.Null(parameters.DeploymentID);
+        Assert.False(parameters.RawQueryData.ContainsKey("deployment_id"));
         Assert.Null(parameters.IncludeArchived);
         Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
         Assert.Null(parameters.Limit);
@@ -118,6 +123,7 @@ public class SessionListParamsTest : TestBase
             CreatedAtGte = null,
             CreatedAtLt = null,
             CreatedAtLte = null,
+            DeploymentID = null,
             IncludeArchived = null,
             Limit = null,
             MemoryStoreID = null,
@@ -139,6 +145,8 @@ public class SessionListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("created_at[lt]"));
         Assert.Null(parameters.CreatedAtLte);
         Assert.False(parameters.RawQueryData.ContainsKey("created_at[lte]"));
+        Assert.Null(parameters.DeploymentID);
+        Assert.False(parameters.RawQueryData.ContainsKey("deployment_id"));
         Assert.Null(parameters.IncludeArchived);
         Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
         Assert.Null(parameters.Limit);
@@ -166,6 +174,7 @@ public class SessionListParamsTest : TestBase
             CreatedAtGte = DateTimeOffset.Parse("2019-12-27T18:11:19.117+00:00"),
             CreatedAtLt = DateTimeOffset.Parse("2019-12-27T18:11:19.117+00:00"),
             CreatedAtLte = DateTimeOffset.Parse("2019-12-27T18:11:19.117+00:00"),
+            DeploymentID = "deployment_id",
             IncludeArchived = true,
             Limit = 0,
             MemoryStoreID = "memory_store_id",
@@ -179,7 +188,7 @@ public class SessionListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/sessions?beta=true&agent_id=agent_id&agent_version=0&created_at%5bgt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&include_archived=true&limit=0&memory_store_id=memory_store_id&order=asc&page=page&statuses%5b%5d=rescheduling"
+                    "https://api.anthropic.com/v1/sessions?beta=true&agent_id=agent_id&agent_version=0&created_at%5bgt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&deployment_id=deployment_id&include_archived=true&limit=0&memory_store_id=memory_store_id&order=asc&page=page&statuses%5b%5d=rescheduling"
                 ),
                 url
             )
@@ -211,6 +220,7 @@ public class SessionListParamsTest : TestBase
             CreatedAtGte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             CreatedAtLt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             CreatedAtLte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DeploymentID = "deployment_id",
             IncludeArchived = true,
             Limit = 0,
             MemoryStoreID = "memory_store_id",

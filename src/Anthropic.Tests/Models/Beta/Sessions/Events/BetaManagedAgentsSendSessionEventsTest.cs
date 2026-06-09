@@ -366,6 +366,26 @@ public class DataTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsSystemMessageEventValidationWorks()
+    {
+        Data value = new BetaManagedAgentsSystemMessageEvent()
+        {
+            ID = "id",
+            Content =
+            [
+                new()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = BetaManagedAgentsSystemContentBlockType.Text,
+                },
+            ],
+            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsUserMessageEventSerializationRoundtripWorks()
     {
         Data value = new BetaManagedAgentsUserMessageEvent()
@@ -491,6 +511,29 @@ public class DataTest : TestBase
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Data>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSystemMessageEventSerializationRoundtripWorks()
+    {
+        Data value = new BetaManagedAgentsSystemMessageEvent()
+        {
+            ID = "id",
+            Content =
+            [
+                new()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = BetaManagedAgentsSystemContentBlockType.Text,
+                },
+            ],
+            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Data>(element, ModelBase.SerializerOptions);

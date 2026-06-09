@@ -251,13 +251,14 @@ public record class Auth : ModelBase
         }
     }
 
-    public string McpServerUrl
+    public string? McpServerUrl
     {
         get
         {
-            return Match(
+            return Match<string?>(
                 betaManagedAgentsMcpOAuthCreateParams: (x) => x.McpServerUrl,
-                betaManagedAgentsStaticBearerCreateParams: (x) => x.McpServerUrl
+                betaManagedAgentsStaticBearerCreateParams: (x) => x.McpServerUrl,
+                betaManagedAgentsEnvironmentVariableCreateParams: (_) => null
             );
         }
     }
@@ -269,6 +270,12 @@ public record class Auth : ModelBase
     }
 
     public Auth(BetaManagedAgentsStaticBearerCreateParams value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Auth(BetaManagedAgentsEnvironmentVariableCreateParams value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -326,6 +333,29 @@ public record class Auth : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsEnvironmentVariableCreateParams"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsEnvironmentVariableCreateParams(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsEnvironmentVariableCreateParams`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsEnvironmentVariableCreateParams(
+        [NotNullWhen(true)] out BetaManagedAgentsEnvironmentVariableCreateParams? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsEnvironmentVariableCreateParams;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -340,14 +370,16 @@ public record class Auth : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (BetaManagedAgentsMcpOAuthCreateParams value) =&gt; {...},
-    ///     (BetaManagedAgentsStaticBearerCreateParams value) =&gt; {...}
+    ///     (BetaManagedAgentsStaticBearerCreateParams value) =&gt; {...},
+    ///     (BetaManagedAgentsEnvironmentVariableCreateParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<BetaManagedAgentsMcpOAuthCreateParams> betaManagedAgentsMcpOAuthCreateParams,
-        System::Action<BetaManagedAgentsStaticBearerCreateParams> betaManagedAgentsStaticBearerCreateParams
+        System::Action<BetaManagedAgentsStaticBearerCreateParams> betaManagedAgentsStaticBearerCreateParams,
+        System::Action<BetaManagedAgentsEnvironmentVariableCreateParams> betaManagedAgentsEnvironmentVariableCreateParams
     )
     {
         switch (this.Value)
@@ -357,6 +389,9 @@ public record class Auth : ModelBase
                 break;
             case BetaManagedAgentsStaticBearerCreateParams value:
                 betaManagedAgentsStaticBearerCreateParams(value);
+                break;
+            case BetaManagedAgentsEnvironmentVariableCreateParams value:
+                betaManagedAgentsEnvironmentVariableCreateParams(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Auth");
@@ -379,7 +414,8 @@ public record class Auth : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (BetaManagedAgentsMcpOAuthCreateParams value) =&gt; {...},
-    ///     (BetaManagedAgentsStaticBearerCreateParams value) =&gt; {...}
+    ///     (BetaManagedAgentsStaticBearerCreateParams value) =&gt; {...},
+    ///     (BetaManagedAgentsEnvironmentVariableCreateParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -392,7 +428,11 @@ public record class Auth : ModelBase
         System::Func<
             BetaManagedAgentsStaticBearerCreateParams,
             T
-        > betaManagedAgentsStaticBearerCreateParams
+        > betaManagedAgentsStaticBearerCreateParams,
+        System::Func<
+            BetaManagedAgentsEnvironmentVariableCreateParams,
+            T
+        > betaManagedAgentsEnvironmentVariableCreateParams
     )
     {
         return this.Value switch
@@ -402,6 +442,8 @@ public record class Auth : ModelBase
             ),
             BetaManagedAgentsStaticBearerCreateParams value =>
                 betaManagedAgentsStaticBearerCreateParams(value),
+            BetaManagedAgentsEnvironmentVariableCreateParams value =>
+                betaManagedAgentsEnvironmentVariableCreateParams(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Auth"),
         };
     }
@@ -409,6 +451,9 @@ public record class Auth : ModelBase
     public static implicit operator Auth(BetaManagedAgentsMcpOAuthCreateParams value) => new(value);
 
     public static implicit operator Auth(BetaManagedAgentsStaticBearerCreateParams value) =>
+        new(value);
+
+    public static implicit operator Auth(BetaManagedAgentsEnvironmentVariableCreateParams value) =>
         new(value);
 
     /// <summary>
@@ -431,7 +476,9 @@ public record class Auth : ModelBase
             (betaManagedAgentsMcpOAuthCreateParams) =>
                 betaManagedAgentsMcpOAuthCreateParams.Validate(),
             (betaManagedAgentsStaticBearerCreateParams) =>
-                betaManagedAgentsStaticBearerCreateParams.Validate()
+                betaManagedAgentsStaticBearerCreateParams.Validate(),
+            (betaManagedAgentsEnvironmentVariableCreateParams) =>
+                betaManagedAgentsEnvironmentVariableCreateParams.Validate()
         );
     }
 
@@ -457,6 +504,7 @@ public record class Auth : ModelBase
         {
             BetaManagedAgentsMcpOAuthCreateParams _ => 0,
             BetaManagedAgentsStaticBearerCreateParams _ => 1,
+            BetaManagedAgentsEnvironmentVariableCreateParams _ => 2,
             _ => -1,
         };
     }
@@ -510,6 +558,27 @@ sealed class AuthConverter : JsonConverter<Auth>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaManagedAgentsStaticBearerCreateParams>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "environment_variable":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsEnvironmentVariableCreateParams>(
                             element,
                             options
                         );

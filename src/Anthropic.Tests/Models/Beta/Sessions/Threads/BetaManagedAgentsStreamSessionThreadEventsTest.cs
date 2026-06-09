@@ -751,6 +751,26 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
     }
 
     [Fact]
+    public void SystemMessageEventValidationWorks()
+    {
+        BetaManagedAgentsStreamSessionThreadEvents value = new BetaManagedAgentsSystemMessageEvent()
+        {
+            ID = "id",
+            Content =
+            [
+                new()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = BetaManagedAgentsSystemContentBlockType.Text,
+                },
+            ],
+            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void UserMessageEventSerializationRoundtripWorks()
     {
         BetaManagedAgentsStreamSessionThreadEvents value =
@@ -1678,6 +1698,32 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                 Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                 Title = "title",
             };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsStreamSessionThreadEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void SystemMessageEventSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsStreamSessionThreadEvents value = new BetaManagedAgentsSystemMessageEvent()
+        {
+            ID = "id",
+            Content =
+            [
+                new()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = BetaManagedAgentsSystemContentBlockType.Text,
+                },
+            ],
+            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsStreamSessionThreadEvents>(
             element,

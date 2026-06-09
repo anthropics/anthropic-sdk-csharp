@@ -156,7 +156,8 @@ public record class Error : ModelBase
                 betaManagedAgentsModelRequestFailed: (x) => x.Message,
                 betaManagedAgentsMcpConnectionFailed: (x) => x.Message,
                 betaManagedAgentsMcpAuthenticationFailed: (x) => x.Message,
-                betaManagedAgentsBilling: (x) => x.Message
+                betaManagedAgentsBilling: (x) => x.Message,
+                betaManagedAgentsCredentialHostUnreachable: (x) => x.Message
             );
         }
     }
@@ -172,7 +173,8 @@ public record class Error : ModelBase
                 betaManagedAgentsModelRequestFailed: (_) => null,
                 betaManagedAgentsMcpConnectionFailed: (x) => x.McpServerName,
                 betaManagedAgentsMcpAuthenticationFailed: (x) => x.McpServerName,
-                betaManagedAgentsBilling: (_) => null
+                betaManagedAgentsBilling: (_) => null,
+                betaManagedAgentsCredentialHostUnreachable: (_) => null
             );
         }
     }
@@ -214,6 +216,12 @@ public record class Error : ModelBase
     }
 
     public Error(BetaManagedAgentsBillingError value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Error(BetaManagedAgentsCredentialHostUnreachableError value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -386,6 +394,29 @@ public record class Error : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsCredentialHostUnreachableError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsCredentialHostUnreachable(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsCredentialHostUnreachableError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsCredentialHostUnreachable(
+        [NotNullWhen(true)] out BetaManagedAgentsCredentialHostUnreachableError? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsCredentialHostUnreachableError;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -405,7 +436,8 @@ public record class Error : ModelBase
     ///     (BetaManagedAgentsModelRequestFailedError value) =&gt; {...},
     ///     (BetaManagedAgentsMcpConnectionFailedError value) =&gt; {...},
     ///     (BetaManagedAgentsMcpAuthenticationFailedError value) =&gt; {...},
-    ///     (BetaManagedAgentsBillingError value) =&gt; {...}
+    ///     (BetaManagedAgentsBillingError value) =&gt; {...},
+    ///     (BetaManagedAgentsCredentialHostUnreachableError value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -417,7 +449,8 @@ public record class Error : ModelBase
         System::Action<BetaManagedAgentsModelRequestFailedError> betaManagedAgentsModelRequestFailed,
         System::Action<BetaManagedAgentsMcpConnectionFailedError> betaManagedAgentsMcpConnectionFailed,
         System::Action<BetaManagedAgentsMcpAuthenticationFailedError> betaManagedAgentsMcpAuthenticationFailed,
-        System::Action<BetaManagedAgentsBillingError> betaManagedAgentsBilling
+        System::Action<BetaManagedAgentsBillingError> betaManagedAgentsBilling,
+        System::Action<BetaManagedAgentsCredentialHostUnreachableError> betaManagedAgentsCredentialHostUnreachable
     )
     {
         switch (this.Value)
@@ -442,6 +475,9 @@ public record class Error : ModelBase
                 break;
             case BetaManagedAgentsBillingError value:
                 betaManagedAgentsBilling(value);
+                break;
+            case BetaManagedAgentsCredentialHostUnreachableError value:
+                betaManagedAgentsCredentialHostUnreachable(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Error");
@@ -469,7 +505,8 @@ public record class Error : ModelBase
     ///     (BetaManagedAgentsModelRequestFailedError value) =&gt; {...},
     ///     (BetaManagedAgentsMcpConnectionFailedError value) =&gt; {...},
     ///     (BetaManagedAgentsMcpAuthenticationFailedError value) =&gt; {...},
-    ///     (BetaManagedAgentsBillingError value) =&gt; {...}
+    ///     (BetaManagedAgentsBillingError value) =&gt; {...},
+    ///     (BetaManagedAgentsCredentialHostUnreachableError value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -490,7 +527,11 @@ public record class Error : ModelBase
             BetaManagedAgentsMcpAuthenticationFailedError,
             T
         > betaManagedAgentsMcpAuthenticationFailed,
-        System::Func<BetaManagedAgentsBillingError, T> betaManagedAgentsBilling
+        System::Func<BetaManagedAgentsBillingError, T> betaManagedAgentsBilling,
+        System::Func<
+            BetaManagedAgentsCredentialHostUnreachableError,
+            T
+        > betaManagedAgentsCredentialHostUnreachable
     )
     {
         return this.Value switch
@@ -509,6 +550,8 @@ public record class Error : ModelBase
             BetaManagedAgentsMcpAuthenticationFailedError value =>
                 betaManagedAgentsMcpAuthenticationFailed(value),
             BetaManagedAgentsBillingError value => betaManagedAgentsBilling(value),
+            BetaManagedAgentsCredentialHostUnreachableError value =>
+                betaManagedAgentsCredentialHostUnreachable(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Error"),
         };
     }
@@ -531,6 +574,9 @@ public record class Error : ModelBase
         new(value);
 
     public static implicit operator Error(BetaManagedAgentsBillingError value) => new(value);
+
+    public static implicit operator Error(BetaManagedAgentsCredentialHostUnreachableError value) =>
+        new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -557,7 +603,9 @@ public record class Error : ModelBase
                 betaManagedAgentsMcpConnectionFailed.Validate(),
             (betaManagedAgentsMcpAuthenticationFailed) =>
                 betaManagedAgentsMcpAuthenticationFailed.Validate(),
-            (betaManagedAgentsBilling) => betaManagedAgentsBilling.Validate()
+            (betaManagedAgentsBilling) => betaManagedAgentsBilling.Validate(),
+            (betaManagedAgentsCredentialHostUnreachable) =>
+                betaManagedAgentsCredentialHostUnreachable.Validate()
         );
     }
 
@@ -588,6 +636,7 @@ public record class Error : ModelBase
             BetaManagedAgentsMcpConnectionFailedError _ => 4,
             BetaManagedAgentsMcpAuthenticationFailedError _ => 5,
             BetaManagedAgentsBillingError _ => 6,
+            BetaManagedAgentsCredentialHostUnreachableError _ => 7,
             _ => -1,
         };
     }
@@ -747,6 +796,27 @@ sealed class ErrorConverter : JsonConverter<Error>
                         element,
                         options
                     );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "credential_host_unreachable_error":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsCredentialHostUnreachableError>(
+                            element,
+                            options
+                        );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);

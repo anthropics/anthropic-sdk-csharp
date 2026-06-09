@@ -283,6 +283,15 @@ public record class CredentialUpdateParamsAuth : ModelBase
         this._element = element;
     }
 
+    public CredentialUpdateParamsAuth(
+        BetaManagedAgentsEnvironmentVariableUpdateParams value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
     public CredentialUpdateParamsAuth(JsonElement element)
     {
         this._element = element;
@@ -335,6 +344,29 @@ public record class CredentialUpdateParamsAuth : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsEnvironmentVariableUpdateParams"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsEnvironmentVariableUpdateParams(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsEnvironmentVariableUpdateParams`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsEnvironmentVariableUpdateParams(
+        [NotNullWhen(true)] out BetaManagedAgentsEnvironmentVariableUpdateParams? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsEnvironmentVariableUpdateParams;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -349,14 +381,16 @@ public record class CredentialUpdateParamsAuth : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (BetaManagedAgentsMcpOAuthUpdateParams value) =&gt; {...},
-    ///     (BetaManagedAgentsStaticBearerUpdateParams value) =&gt; {...}
+    ///     (BetaManagedAgentsStaticBearerUpdateParams value) =&gt; {...},
+    ///     (BetaManagedAgentsEnvironmentVariableUpdateParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<BetaManagedAgentsMcpOAuthUpdateParams> betaManagedAgentsMcpOAuthUpdateParams,
-        System::Action<BetaManagedAgentsStaticBearerUpdateParams> betaManagedAgentsStaticBearerUpdateParams
+        System::Action<BetaManagedAgentsStaticBearerUpdateParams> betaManagedAgentsStaticBearerUpdateParams,
+        System::Action<BetaManagedAgentsEnvironmentVariableUpdateParams> betaManagedAgentsEnvironmentVariableUpdateParams
     )
     {
         switch (this.Value)
@@ -366,6 +400,9 @@ public record class CredentialUpdateParamsAuth : ModelBase
                 break;
             case BetaManagedAgentsStaticBearerUpdateParams value:
                 betaManagedAgentsStaticBearerUpdateParams(value);
+                break;
+            case BetaManagedAgentsEnvironmentVariableUpdateParams value:
+                betaManagedAgentsEnvironmentVariableUpdateParams(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -390,7 +427,8 @@ public record class CredentialUpdateParamsAuth : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (BetaManagedAgentsMcpOAuthUpdateParams value) =&gt; {...},
-    ///     (BetaManagedAgentsStaticBearerUpdateParams value) =&gt; {...}
+    ///     (BetaManagedAgentsStaticBearerUpdateParams value) =&gt; {...},
+    ///     (BetaManagedAgentsEnvironmentVariableUpdateParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -403,7 +441,11 @@ public record class CredentialUpdateParamsAuth : ModelBase
         System::Func<
             BetaManagedAgentsStaticBearerUpdateParams,
             T
-        > betaManagedAgentsStaticBearerUpdateParams
+        > betaManagedAgentsStaticBearerUpdateParams,
+        System::Func<
+            BetaManagedAgentsEnvironmentVariableUpdateParams,
+            T
+        > betaManagedAgentsEnvironmentVariableUpdateParams
     )
     {
         return this.Value switch
@@ -413,6 +455,8 @@ public record class CredentialUpdateParamsAuth : ModelBase
             ),
             BetaManagedAgentsStaticBearerUpdateParams value =>
                 betaManagedAgentsStaticBearerUpdateParams(value),
+            BetaManagedAgentsEnvironmentVariableUpdateParams value =>
+                betaManagedAgentsEnvironmentVariableUpdateParams(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of CredentialUpdateParamsAuth"
             ),
@@ -425,6 +469,10 @@ public record class CredentialUpdateParamsAuth : ModelBase
 
     public static implicit operator CredentialUpdateParamsAuth(
         BetaManagedAgentsStaticBearerUpdateParams value
+    ) => new(value);
+
+    public static implicit operator CredentialUpdateParamsAuth(
+        BetaManagedAgentsEnvironmentVariableUpdateParams value
     ) => new(value);
 
     /// <summary>
@@ -449,7 +497,9 @@ public record class CredentialUpdateParamsAuth : ModelBase
             (betaManagedAgentsMcpOAuthUpdateParams) =>
                 betaManagedAgentsMcpOAuthUpdateParams.Validate(),
             (betaManagedAgentsStaticBearerUpdateParams) =>
-                betaManagedAgentsStaticBearerUpdateParams.Validate()
+                betaManagedAgentsStaticBearerUpdateParams.Validate(),
+            (betaManagedAgentsEnvironmentVariableUpdateParams) =>
+                betaManagedAgentsEnvironmentVariableUpdateParams.Validate()
         );
     }
 
@@ -475,6 +525,7 @@ public record class CredentialUpdateParamsAuth : ModelBase
         {
             BetaManagedAgentsMcpOAuthUpdateParams _ => 0,
             BetaManagedAgentsStaticBearerUpdateParams _ => 1,
+            BetaManagedAgentsEnvironmentVariableUpdateParams _ => 2,
             _ => -1,
         };
     }
@@ -528,6 +579,27 @@ sealed class CredentialUpdateParamsAuthConverter : JsonConverter<CredentialUpdat
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaManagedAgentsStaticBearerUpdateParams>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "environment_variable":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsEnvironmentVariableUpdateParams>(
                             element,
                             options
                         );
