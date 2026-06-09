@@ -1,5 +1,13 @@
 # Changelog
 
+## 12.29.0 (2026-06-09)
+
+Full Changelog: [Anthropic-v12.28.0...Anthropic-v12.29.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.28.0...Anthropic-v12.29.0)
+
+### Features
+
+* **api:** add support for Managed Agents deployments and environment variable credentials ([01bc60a](https://github.com/anthropics/anthropic-sdk-csharp/commit/01bc60a83bf0bf95ae00d88ca48f9587644733a1))
+
 ## 12.28.0 (2026-06-09)
 
 Full Changelog: [Anthropic-v12.27.0...Anthropic-v12.28.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.27.0...Anthropic-v12.28.0)
