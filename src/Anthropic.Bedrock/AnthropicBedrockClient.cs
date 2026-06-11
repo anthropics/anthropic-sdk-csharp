@@ -22,6 +22,12 @@ public sealed class AnthropicBedrockClient : AnthropicClient
         : base()
     {
         _bedrockCredentials = bedrockCredentials;
+        // Bedrock auth comes solely from the credentials provider. Suppress the base
+        // client's ANTHROPIC_API_KEY / ANTHROPIC_AUTH_TOKEN env fallbacks so first-party
+        // credentials are never signed and sent to AWS (mirrors the Mantle/AWS clients;
+        // an ambient Bearer token would also conflict with the signed Authorization).
+        ApiKey = null;
+        AuthToken = null;
         BaseUrl = $"https://{ServiceName}.{_bedrockCredentials.Region}.amazonaws.com";
         BackendAdaptationHandler = () => new BedrockAdaptationHandler(bedrockCredentials);
     }
