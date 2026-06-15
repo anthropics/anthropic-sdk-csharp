@@ -635,7 +635,7 @@ public class StructuredOutputTest
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "", Role = Anthropic.Models.Messages.Role.User }],
-                Model = Model.ClaudeSonnet4_0,
+                Model = Model.ClaudeSonnet4_5,
             },
             TestContext.Current.CancellationToken
         );
@@ -664,7 +664,7 @@ public class StructuredOutputTest
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "", Role = Anthropic.Models.Messages.Role.User }],
-                Model = Model.ClaudeSonnet4_0,
+                Model = Model.ClaudeSonnet4_5,
             },
             TestContext.Current.CancellationToken
         );
@@ -693,7 +693,7 @@ public class StructuredOutputTest
                 [
                     new() { Content = "", Role = Anthropic.Models.Beta.Messages.Role.User },
                 ],
-                Model = Model.ClaudeSonnet4_0,
+                Model = Model.ClaudeSonnet4_5,
             },
             TestContext.Current.CancellationToken
         );
@@ -725,7 +725,7 @@ public class StructuredOutputTest
                 [
                     new() { Content = "", Role = Anthropic.Models.Beta.Messages.Role.User },
                 ],
-                Model = Model.ClaudeSonnet4_0,
+                Model = Model.ClaudeSonnet4_5,
             },
             TestContext.Current.CancellationToken
         );
@@ -760,7 +760,7 @@ public class StructuredOutputTest
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "", Role = Anthropic.Models.Messages.Role.User }],
-                Model = Model.ClaudeSonnet4_0,
+                Model = Model.ClaudeSonnet4_5,
             },
             TestContext.Current.CancellationToken
         );
@@ -809,7 +809,7 @@ public class StructuredOutputTest
                 [
                     new() { Content = "", Role = Anthropic.Models.Beta.Messages.Role.User },
                 ],
-                Model = Model.ClaudeSonnet4_0,
+                Model = Model.ClaudeSonnet4_5,
             },
             TestContext.Current.CancellationToken
         );
