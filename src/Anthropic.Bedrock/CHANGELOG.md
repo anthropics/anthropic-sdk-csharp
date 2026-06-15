@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.1 (2026-06-15)
+
+Full Changelog: [Bedrock-v0.10.0...Bedrock-v0.10.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.10.0...Bedrock-v0.10.1)
+
+### Bug Fixes
+
+* **bedrock:** never send first-party env credentials to AWS ([#43](https://github.com/anthropics/anthropic-sdk-csharp/issues/43)) ([a22084e](https://github.com/anthropics/anthropic-sdk-csharp/commit/a22084e557ee826c887ab5241b742a79caecdc9a))
+
 ## 0.10.0 (2026-06-09)
 
 Full Changelog: [Bedrock-v0.9.0...Bedrock-v0.10.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.9.0...Bedrock-v0.10.0)
