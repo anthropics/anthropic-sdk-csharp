@@ -40,7 +40,7 @@ public class BetaMessageDeltaUsageTest : TestBase
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
         long expectedInputTokens = 2095;
-        List<BetaIterationsUsageItems> expectedIterations =
+        List<Iteration> expectedIterations =
         [
             new BetaMessageIterationUsage()
             {
@@ -151,7 +151,7 @@ public class BetaMessageDeltaUsageTest : TestBase
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
         long expectedInputTokens = 2095;
-        List<BetaIterationsUsageItems> expectedIterations =
+        List<Iteration> expectedIterations =
         [
             new BetaMessageIterationUsage()
             {
@@ -249,5 +249,150 @@ public class BetaMessageDeltaUsageTest : TestBase
         BetaMessageDeltaUsage copied = new(model);
 
         Assert.Equal(model, copied);
+    }
+}
+
+public class IterationTest : TestBase
+{
+    [Fact]
+    public void BetaMessageIterationUsageValidationWorks()
+    {
+        Iteration value = new BetaMessageIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            Model = Model.ClaudeFable5,
+            OutputTokens = 0,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaCompactionIterationUsageValidationWorks()
+    {
+        Iteration value = new BetaCompactionIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            OutputTokens = 0,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaAdvisorMessageIterationUsageValidationWorks()
+    {
+        Iteration value = new BetaAdvisorMessageIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            Model = Model.ClaudeFable5,
+            OutputTokens = 0,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaFallbackMessageIterationUsageValidationWorks()
+    {
+        Iteration value = new BetaFallbackMessageIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            Model = Model.ClaudeFable5,
+            OutputTokens = 0,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaMessageIterationUsageSerializationRoundtripWorks()
+    {
+        Iteration value = new BetaMessageIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            Model = Model.ClaudeFable5,
+            OutputTokens = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Iteration>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaCompactionIterationUsageSerializationRoundtripWorks()
+    {
+        Iteration value = new BetaCompactionIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            OutputTokens = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Iteration>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaAdvisorMessageIterationUsageSerializationRoundtripWorks()
+    {
+        Iteration value = new BetaAdvisorMessageIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            Model = Model.ClaudeFable5,
+            OutputTokens = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Iteration>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaFallbackMessageIterationUsageSerializationRoundtripWorks()
+    {
+        Iteration value = new BetaFallbackMessageIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            Model = Model.ClaudeFable5,
+            OutputTokens = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Iteration>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
