@@ -635,7 +635,10 @@ public static class AnthropicClientExtensions
                         {
                             // https://platform.claude.com/docs/en/build-with-claude/streaming
                             // "The token counts shown in the usage field of the message_delta event are cumulative."
-                            usageDetails = ToUsageDetails(deltaUsage);
+                            // The cache token fields are nullable and are usually omitted on the
+                            // terminal message_delta, so merge them with the values already
+                            // populated from message_start instead of replacing wholesale.
+                            usageDetails = ToUsageDetails(deltaUsage, usageDetails);
                         }
                         break;
 
@@ -1541,6 +1544,27 @@ public static class AnthropicClientExtensions
                 usage.CacheReadInputTokens,
                 usage.ServerToolUse
             );
+
+        private static UsageDetails ToUsageDetails(
+            MessageDeltaUsage usage,
+            UsageDetails? previous
+        ) =>
+            // The cache token fields on message_delta are nullable and usually omitted on the
+            // terminal event. Fall back to the values already populated from message_start so
+            // the cached token counts are not wiped out (mirrors MessageContentAggregator).
+            ToUsageDetails(
+                usage.InputTokens,
+                usage.OutputTokens,
+                usage.CacheCreationInputTokens ?? GetCacheCreationInputTokens(previous),
+                usage.CacheReadInputTokens ?? previous?.CachedInputTokenCount,
+                usage.ServerToolUse
+            );
+
+        private static long? GetCacheCreationInputTokens(UsageDetails? usageDetails) =>
+            usageDetails?.AdditionalCounts is { } counts
+            && counts.TryGetValue(nameof(Usage.CacheCreationInputTokens), out long value)
+                ? value
+                : null;
 
         private static UsageDetails ToUsageDetails(
             long? inputTokens,
