@@ -746,6 +746,7 @@ public class ToolAllowedCallerTest : TestBase
     [InlineData(ToolAllowedCaller.Direct)]
     [InlineData(ToolAllowedCaller.CodeExecution20250825)]
     [InlineData(ToolAllowedCaller.CodeExecution20260120)]
+    [InlineData(ToolAllowedCaller.CodeExecution20260521)]
     public void Validation_Works(ToolAllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -769,6 +770,7 @@ public class ToolAllowedCallerTest : TestBase
     [InlineData(ToolAllowedCaller.Direct)]
     [InlineData(ToolAllowedCaller.CodeExecution20250825)]
     [InlineData(ToolAllowedCaller.CodeExecution20260120)]
+    [InlineData(ToolAllowedCaller.CodeExecution20260521)]
     public void SerializationRoundtrip_Works(ToolAllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us

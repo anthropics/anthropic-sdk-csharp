@@ -424,6 +424,7 @@ public class WebSearchTool20250305AllowedCallerTest : TestBase
     [InlineData(WebSearchTool20250305AllowedCaller.Direct)]
     [InlineData(WebSearchTool20250305AllowedCaller.CodeExecution20250825)]
     [InlineData(WebSearchTool20250305AllowedCaller.CodeExecution20260120)]
+    [InlineData(WebSearchTool20250305AllowedCaller.CodeExecution20260521)]
     public void Validation_Works(WebSearchTool20250305AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -447,6 +448,7 @@ public class WebSearchTool20250305AllowedCallerTest : TestBase
     [InlineData(WebSearchTool20250305AllowedCaller.Direct)]
     [InlineData(WebSearchTool20250305AllowedCaller.CodeExecution20250825)]
     [InlineData(WebSearchTool20250305AllowedCaller.CodeExecution20260120)]
+    [InlineData(WebSearchTool20250305AllowedCaller.CodeExecution20260521)]
     public void SerializationRoundtrip_Works(WebSearchTool20250305AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us

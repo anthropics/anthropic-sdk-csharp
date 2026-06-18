@@ -100,6 +100,19 @@ public class MessageCountTokensToolTest : TestBase
     }
 
     [Fact]
+    public void CodeExecutionTool20260521ValidationWorks()
+    {
+        MessageCountTokensTool value = new CodeExecutionTool20260521()
+        {
+            AllowedCallers = [CodeExecutionTool20260521AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void MemoryTool20250818ValidationWorks()
     {
         MessageCountTokensTool value = new MemoryTool20250818()
@@ -418,6 +431,25 @@ public class MessageCountTokensToolTest : TestBase
         MessageCountTokensTool value = new CodeExecutionTool20260120()
         {
             AllowedCallers = [CodeExecutionTool20260120AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void CodeExecutionTool20260521SerializationRoundtripWorks()
+    {
+        MessageCountTokensTool value = new CodeExecutionTool20260521()
+        {
+            AllowedCallers = [CodeExecutionTool20260521AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,

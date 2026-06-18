@@ -51,7 +51,8 @@ public record class BetaWebhookEventData : ModelBase
                 vaultCredentialCreated: (x) => x.ID,
                 vaultCredentialArchived: (x) => x.ID,
                 vaultCredentialDeleted: (x) => x.ID,
-                vaultCredentialRefreshFailed: (x) => x.ID
+                vaultCredentialRefreshFailed: (x) => x.ID,
+                sessionUpdated: (x) => x.ID
             );
         }
     }
@@ -82,7 +83,8 @@ public record class BetaWebhookEventData : ModelBase
                 vaultCredentialCreated: (x) => x.OrganizationID,
                 vaultCredentialArchived: (x) => x.OrganizationID,
                 vaultCredentialDeleted: (x) => x.OrganizationID,
-                vaultCredentialRefreshFailed: (x) => x.OrganizationID
+                vaultCredentialRefreshFailed: (x) => x.OrganizationID,
+                sessionUpdated: (x) => x.OrganizationID
             );
         }
     }
@@ -113,7 +115,8 @@ public record class BetaWebhookEventData : ModelBase
                 vaultCredentialCreated: (x) => x.Type,
                 vaultCredentialArchived: (x) => x.Type,
                 vaultCredentialDeleted: (x) => x.Type,
-                vaultCredentialRefreshFailed: (x) => x.Type
+                vaultCredentialRefreshFailed: (x) => x.Type,
+                sessionUpdated: (x) => x.Type
             );
         }
     }
@@ -144,7 +147,8 @@ public record class BetaWebhookEventData : ModelBase
                 vaultCredentialCreated: (x) => x.WorkspaceID,
                 vaultCredentialArchived: (x) => x.WorkspaceID,
                 vaultCredentialDeleted: (x) => x.WorkspaceID,
-                vaultCredentialRefreshFailed: (x) => x.WorkspaceID
+                vaultCredentialRefreshFailed: (x) => x.WorkspaceID,
+                sessionUpdated: (x) => x.WorkspaceID
             );
         }
     }
@@ -175,7 +179,8 @@ public record class BetaWebhookEventData : ModelBase
                 vaultCredentialCreated: (_) => null,
                 vaultCredentialArchived: (_) => null,
                 vaultCredentialDeleted: (_) => null,
-                vaultCredentialRefreshFailed: (_) => null
+                vaultCredentialRefreshFailed: (_) => null,
+                sessionUpdated: (_) => null
             );
         }
     }
@@ -206,7 +211,8 @@ public record class BetaWebhookEventData : ModelBase
                 vaultCredentialCreated: (x) => x.VaultID,
                 vaultCredentialArchived: (x) => x.VaultID,
                 vaultCredentialDeleted: (x) => x.VaultID,
-                vaultCredentialRefreshFailed: (x) => x.VaultID
+                vaultCredentialRefreshFailed: (x) => x.VaultID,
+                sessionUpdated: (_) => null
             );
         }
     }
@@ -393,6 +399,15 @@ public record class BetaWebhookEventData : ModelBase
 
     public BetaWebhookEventData(
         BetaWebhookVaultCredentialRefreshFailedEventData value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaWebhookEventData(
+        BetaWebhookSessionUpdatedEventData value,
         JsonElement? element = null
     )
     {
@@ -906,6 +921,29 @@ public record class BetaWebhookEventData : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebhookSessionUpdatedEventData"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickSessionUpdated(out var value)) {
+    ///     // `value` is of type `BetaWebhookSessionUpdatedEventData`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickSessionUpdated(
+        [NotNullWhen(true)] out BetaWebhookSessionUpdatedEventData? value
+    )
+    {
+        value = this.Value as BetaWebhookSessionUpdatedEventData;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -940,7 +978,8 @@ public record class BetaWebhookEventData : ModelBase
     ///     (BetaWebhookVaultCredentialCreatedEventData value) =&gt; {...},
     ///     (BetaWebhookVaultCredentialArchivedEventData value) =&gt; {...},
     ///     (BetaWebhookVaultCredentialDeletedEventData value) =&gt; {...},
-    ///     (BetaWebhookVaultCredentialRefreshFailedEventData value) =&gt; {...}
+    ///     (BetaWebhookVaultCredentialRefreshFailedEventData value) =&gt; {...},
+    ///     (BetaWebhookSessionUpdatedEventData value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -967,7 +1006,8 @@ public record class BetaWebhookEventData : ModelBase
         Action<BetaWebhookVaultCredentialCreatedEventData> vaultCredentialCreated,
         Action<BetaWebhookVaultCredentialArchivedEventData> vaultCredentialArchived,
         Action<BetaWebhookVaultCredentialDeletedEventData> vaultCredentialDeleted,
-        Action<BetaWebhookVaultCredentialRefreshFailedEventData> vaultCredentialRefreshFailed
+        Action<BetaWebhookVaultCredentialRefreshFailedEventData> vaultCredentialRefreshFailed,
+        Action<BetaWebhookSessionUpdatedEventData> sessionUpdated
     )
     {
         switch (this.Value)
@@ -1038,6 +1078,9 @@ public record class BetaWebhookEventData : ModelBase
             case BetaWebhookVaultCredentialRefreshFailedEventData value:
                 vaultCredentialRefreshFailed(value);
                 break;
+            case BetaWebhookSessionUpdatedEventData value:
+                sessionUpdated(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of BetaWebhookEventData"
@@ -1081,7 +1124,8 @@ public record class BetaWebhookEventData : ModelBase
     ///     (BetaWebhookVaultCredentialCreatedEventData value) =&gt; {...},
     ///     (BetaWebhookVaultCredentialArchivedEventData value) =&gt; {...},
     ///     (BetaWebhookVaultCredentialDeletedEventData value) =&gt; {...},
-    ///     (BetaWebhookVaultCredentialRefreshFailedEventData value) =&gt; {...}
+    ///     (BetaWebhookVaultCredentialRefreshFailedEventData value) =&gt; {...},
+    ///     (BetaWebhookSessionUpdatedEventData value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -1108,7 +1152,8 @@ public record class BetaWebhookEventData : ModelBase
         Func<BetaWebhookVaultCredentialCreatedEventData, T> vaultCredentialCreated,
         Func<BetaWebhookVaultCredentialArchivedEventData, T> vaultCredentialArchived,
         Func<BetaWebhookVaultCredentialDeletedEventData, T> vaultCredentialDeleted,
-        Func<BetaWebhookVaultCredentialRefreshFailedEventData, T> vaultCredentialRefreshFailed
+        Func<BetaWebhookVaultCredentialRefreshFailedEventData, T> vaultCredentialRefreshFailed,
+        Func<BetaWebhookSessionUpdatedEventData, T> sessionUpdated
     )
     {
         return this.Value switch
@@ -1138,6 +1183,7 @@ public record class BetaWebhookEventData : ModelBase
             BetaWebhookVaultCredentialRefreshFailedEventData value => vaultCredentialRefreshFailed(
                 value
             ),
+            BetaWebhookSessionUpdatedEventData value => sessionUpdated(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaWebhookEventData"
             ),
@@ -1228,6 +1274,10 @@ public record class BetaWebhookEventData : ModelBase
         BetaWebhookVaultCredentialRefreshFailedEventData value
     ) => new(value);
 
+    public static implicit operator BetaWebhookEventData(
+        BetaWebhookSessionUpdatedEventData value
+    ) => new(value);
+
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -1268,7 +1318,8 @@ public record class BetaWebhookEventData : ModelBase
             (vaultCredentialCreated) => vaultCredentialCreated.Validate(),
             (vaultCredentialArchived) => vaultCredentialArchived.Validate(),
             (vaultCredentialDeleted) => vaultCredentialDeleted.Validate(),
-            (vaultCredentialRefreshFailed) => vaultCredentialRefreshFailed.Validate()
+            (vaultCredentialRefreshFailed) => vaultCredentialRefreshFailed.Validate(),
+            (sessionUpdated) => sessionUpdated.Validate()
         );
     }
 
@@ -1314,6 +1365,7 @@ public record class BetaWebhookEventData : ModelBase
             BetaWebhookVaultCredentialArchivedEventData _ => 19,
             BetaWebhookVaultCredentialDeletedEventData _ => 20,
             BetaWebhookVaultCredentialRefreshFailedEventData _ => 21,
+            BetaWebhookSessionUpdatedEventData _ => 22,
             _ => -1,
         };
     }
@@ -1784,6 +1836,27 @@ sealed class BetaWebhookEventDataConverter : JsonConverter<BetaWebhookEventData>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaWebhookVaultCredentialRefreshFailedEventData>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "session.updated":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaWebhookSessionUpdatedEventData>(
                             element,
                             options
                         );

@@ -193,7 +193,9 @@ class CodeExecutionTool20250825FromRaw : IFromRawJson<CodeExecutionTool20250825>
 ///
 /// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
 /// The tool can be called from the code execution environment (v1).     code_execution_20260120:
-/// The tool can be called from the code execution environment (v2 with persistence).</para>
+/// The tool can be called from the code execution environment (v2 with persistence).
+///     code_execution_20260521: The tool can be called from the code execution environment
+/// (v2 with persistence).</para>
 /// </summary>
 [JsonConverter(typeof(CodeExecutionTool20250825AllowedCallerConverter))]
 public enum CodeExecutionTool20250825AllowedCaller
@@ -201,6 +203,7 @@ public enum CodeExecutionTool20250825AllowedCaller
     Direct,
     CodeExecution20250825,
     CodeExecution20260120,
+    CodeExecution20260521,
 }
 
 sealed class CodeExecutionTool20250825AllowedCallerConverter
@@ -219,6 +222,8 @@ sealed class CodeExecutionTool20250825AllowedCallerConverter
                 CodeExecutionTool20250825AllowedCaller.CodeExecution20250825,
             "code_execution_20260120" =>
                 CodeExecutionTool20250825AllowedCaller.CodeExecution20260120,
+            "code_execution_20260521" =>
+                CodeExecutionTool20250825AllowedCaller.CodeExecution20260521,
             _ => (CodeExecutionTool20250825AllowedCaller)(-1),
         };
     }
@@ -238,6 +243,8 @@ sealed class CodeExecutionTool20250825AllowedCallerConverter
                     "code_execution_20250825",
                 CodeExecutionTool20250825AllowedCaller.CodeExecution20260120 =>
                     "code_execution_20260120",
+                CodeExecutionTool20250825AllowedCaller.CodeExecution20260521 =>
+                    "code_execution_20260521",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

@@ -80,6 +80,7 @@ public class BetaToolRunnerTest
                 type = "fallback",
                 from = new { model = "model-a" },
                 to = new { model = "model-b" },
+                trigger = new { type = "refusal", category = (string?)null },
             }
         );
         return JsonSerializer.Deserialize<BetaContentBlock>(json, s_jsonOptions)!;

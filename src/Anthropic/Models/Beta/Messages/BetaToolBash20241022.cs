@@ -219,7 +219,9 @@ class BetaToolBash20241022FromRaw : IFromRawJson<BetaToolBash20241022>
 ///
 /// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
 /// The tool can be called from the code execution environment (v1).     code_execution_20260120:
-/// The tool can be called from the code execution environment (v2 with persistence).</para>
+/// The tool can be called from the code execution environment (v2 with persistence).
+///     code_execution_20260521: The tool can be called from the code execution environment
+/// (v2 with persistence).</para>
 /// </summary>
 [JsonConverter(typeof(BetaToolBash20241022AllowedCallerConverter))]
 public enum BetaToolBash20241022AllowedCaller
@@ -227,6 +229,7 @@ public enum BetaToolBash20241022AllowedCaller
     Direct,
     CodeExecution20250825,
     CodeExecution20260120,
+    CodeExecution20260521,
 }
 
 sealed class BetaToolBash20241022AllowedCallerConverter
@@ -243,6 +246,7 @@ sealed class BetaToolBash20241022AllowedCallerConverter
             "direct" => BetaToolBash20241022AllowedCaller.Direct,
             "code_execution_20250825" => BetaToolBash20241022AllowedCaller.CodeExecution20250825,
             "code_execution_20260120" => BetaToolBash20241022AllowedCaller.CodeExecution20260120,
+            "code_execution_20260521" => BetaToolBash20241022AllowedCaller.CodeExecution20260521,
             _ => (BetaToolBash20241022AllowedCaller)(-1),
         };
     }
@@ -262,6 +266,8 @@ sealed class BetaToolBash20241022AllowedCallerConverter
                     "code_execution_20250825",
                 BetaToolBash20241022AllowedCaller.CodeExecution20260120 =>
                     "code_execution_20260120",
+                BetaToolBash20241022AllowedCaller.CodeExecution20260521 =>
+                    "code_execution_20260521",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

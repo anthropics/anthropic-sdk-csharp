@@ -16,9 +16,7 @@ namespace Anthropic.Models.Beta.Messages;
 public sealed record class BetaRefusalStopDetails : JsonModel
 {
     /// <summary>
-    /// The policy category that triggered the refusal.
-    ///
-    /// <para>`null` when the refusal doesn't map to a named category.</para>
+    /// The policy category that triggered a refusal.
     /// </summary>
     public required ApiEnum<string, Category>? Category
     {
@@ -190,9 +188,7 @@ class BetaRefusalStopDetailsFromRaw : IFromRawJson<BetaRefusalStopDetails>
 }
 
 /// <summary>
-/// The policy category that triggered the refusal.
-///
-/// <para>`null` when the refusal doesn't map to a named category.</para>
+/// The policy category that triggered a refusal.
 /// </summary>
 [JsonConverter(typeof(CategoryConverter))]
 public enum Category

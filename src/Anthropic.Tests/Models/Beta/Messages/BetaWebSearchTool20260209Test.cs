@@ -424,6 +424,7 @@ public class BetaWebSearchTool20260209AllowedCallerTest : TestBase
     [InlineData(BetaWebSearchTool20260209AllowedCaller.Direct)]
     [InlineData(BetaWebSearchTool20260209AllowedCaller.CodeExecution20250825)]
     [InlineData(BetaWebSearchTool20260209AllowedCaller.CodeExecution20260120)]
+    [InlineData(BetaWebSearchTool20260209AllowedCaller.CodeExecution20260521)]
     public void Validation_Works(BetaWebSearchTool20260209AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -446,6 +447,7 @@ public class BetaWebSearchTool20260209AllowedCallerTest : TestBase
     [InlineData(BetaWebSearchTool20260209AllowedCaller.Direct)]
     [InlineData(BetaWebSearchTool20260209AllowedCaller.CodeExecution20250825)]
     [InlineData(BetaWebSearchTool20260209AllowedCaller.CodeExecution20260120)]
+    [InlineData(BetaWebSearchTool20260209AllowedCaller.CodeExecution20260521)]
     public void SerializationRoundtrip_Works(BetaWebSearchTool20260209AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us

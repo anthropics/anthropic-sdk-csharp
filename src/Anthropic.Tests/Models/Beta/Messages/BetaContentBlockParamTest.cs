@@ -358,6 +358,7 @@ public class BetaContentBlockParamTest : TestBase
         {
             From = new(Messages::Model.ClaudeFable5),
             To = new(Messages::Model.ClaudeFable5),
+            Trigger = JsonSerializer.Deserialize<JsonElement>("{}"),
         };
         value.Validate();
     }
@@ -838,6 +839,7 @@ public class BetaContentBlockParamTest : TestBase
         {
             From = new(Messages::Model.ClaudeFable5),
             To = new(Messages::Model.ClaudeFable5),
+            Trigger = JsonSerializer.Deserialize<JsonElement>("{}"),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(

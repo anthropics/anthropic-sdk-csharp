@@ -197,7 +197,9 @@ class BetaCodeExecutionTool20250522FromRaw : IFromRawJson<BetaCodeExecutionTool2
 ///
 /// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
 /// The tool can be called from the code execution environment (v1).     code_execution_20260120:
-/// The tool can be called from the code execution environment (v2 with persistence).</para>
+/// The tool can be called from the code execution environment (v2 with persistence).
+///     code_execution_20260521: The tool can be called from the code execution environment
+/// (v2 with persistence).</para>
 /// </summary>
 [JsonConverter(typeof(BetaCodeExecutionTool20250522AllowedCallerConverter))]
 public enum BetaCodeExecutionTool20250522AllowedCaller
@@ -205,6 +207,7 @@ public enum BetaCodeExecutionTool20250522AllowedCaller
     Direct,
     CodeExecution20250825,
     CodeExecution20260120,
+    CodeExecution20260521,
 }
 
 sealed class BetaCodeExecutionTool20250522AllowedCallerConverter
@@ -223,6 +226,8 @@ sealed class BetaCodeExecutionTool20250522AllowedCallerConverter
                 BetaCodeExecutionTool20250522AllowedCaller.CodeExecution20250825,
             "code_execution_20260120" =>
                 BetaCodeExecutionTool20250522AllowedCaller.CodeExecution20260120,
+            "code_execution_20260521" =>
+                BetaCodeExecutionTool20250522AllowedCaller.CodeExecution20260521,
             _ => (BetaCodeExecutionTool20250522AllowedCaller)(-1),
         };
     }
@@ -242,6 +247,8 @@ sealed class BetaCodeExecutionTool20250522AllowedCallerConverter
                     "code_execution_20250825",
                 BetaCodeExecutionTool20250522AllowedCaller.CodeExecution20260120 =>
                     "code_execution_20260120",
+                BetaCodeExecutionTool20250522AllowedCaller.CodeExecution20260521 =>
+                    "code_execution_20260521",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

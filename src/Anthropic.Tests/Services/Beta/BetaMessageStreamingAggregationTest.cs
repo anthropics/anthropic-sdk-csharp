@@ -315,6 +315,7 @@ public class BetaMessageStreamingAggregationTest
                         {
                             From = new(Messages::Model.ClaudeOpus4_6),
                             To = new(Messages::Model.ClaudeSonnet4_6),
+                            Trigger = new BetaFallbackRefusalTrigger { Category = null },
                         }
                     ),
                 }

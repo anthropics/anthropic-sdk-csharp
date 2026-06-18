@@ -392,7 +392,7 @@ sealed class FallbackStreamSplicer
             // the next attempt emits its own (still `from: fromModel` — the last model that
             // contributed output).
             var boundaryIndex = nextIndex++;
-            yield return FallbackBlockStart(boundaryIndex, fromModel, model);
+            yield return FallbackBlockStart(boundaryIndex, fromModel, model, refusal.Category);
             yield return ContentBlockStop(boundaryIndex);
 
             // --- build the request: appended-assistant continuation ---
@@ -635,6 +635,10 @@ sealed class FallbackStreamSplicer
                             // suppress this hop's message_delta + message_stop
                             result.Refusal = new Refusal(
                                 token,
+                                details!["category"] is JsonValue cat
+                                && cat.TryGetValue(out string? categoryStr)
+                                    ? categoryStr
+                                    : null,
                                 details!["fallback_has_prefill_claim"] is JsonValue claim
                                     && claim.TryGetValue(out bool hasClaim)
                                     && hasClaim,
@@ -724,7 +728,12 @@ sealed class FallbackStreamSplicer
 
     // --- event synthesis & serialization ---
 
-    static byte[] FallbackBlockStart(int index, string fromModel, string toModel) =>
+    static byte[] FallbackBlockStart(
+        int index,
+        string fromModel,
+        string toModel,
+        string? category
+    ) =>
         Emit(
             "content_block_start",
             JsonSerializer.Serialize(
@@ -735,6 +744,12 @@ sealed class FallbackStreamSplicer
                     {
                         From = new BetaFallbackInfo { Model = fromModel },
                         To = new BetaFallbackInfo { Model = toModel },
+                        Trigger = new BetaFallbackRefusalTrigger
+                        {
+                            Category = category is { } c
+                                ? (ApiEnum<string, BetaFallbackRefusalTriggerCategory>)c
+                                : null,
+                        },
                     },
                 },
                 ModelBase.SerializerOptions
@@ -956,15 +971,27 @@ sealed class FallbackStreamSplicer
 
     sealed class Refusal
     {
-        public Refusal(string token, bool hasPrefillClaim, JsonObject usage, JsonObject @event)
+        public Refusal(
+            string token,
+            string? category,
+            bool hasPrefillClaim,
+            JsonObject usage,
+            JsonObject @event
+        )
         {
             Token = token;
+            Category = category;
             HasPrefillClaim = hasPrefillClaim;
             Usage = usage;
             Event = @event;
         }
 
         public string Token { get; }
+
+        /// <summary>The policy category that triggered the refusal; <c>null</c> when none was
+        /// surfaced.</summary>
+        public string? Category { get; }
+
         public bool HasPrefillClaim { get; }
         public JsonObject Usage { get; }
 

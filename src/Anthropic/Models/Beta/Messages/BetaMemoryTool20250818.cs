@@ -220,7 +220,9 @@ class BetaMemoryTool20250818FromRaw : IFromRawJson<BetaMemoryTool20250818>
 ///
 /// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
 /// The tool can be called from the code execution environment (v1).     code_execution_20260120:
-/// The tool can be called from the code execution environment (v2 with persistence).</para>
+/// The tool can be called from the code execution environment (v2 with persistence).
+///     code_execution_20260521: The tool can be called from the code execution environment
+/// (v2 with persistence).</para>
 /// </summary>
 [JsonConverter(typeof(BetaMemoryTool20250818AllowedCallerConverter))]
 public enum BetaMemoryTool20250818AllowedCaller
@@ -228,6 +230,7 @@ public enum BetaMemoryTool20250818AllowedCaller
     Direct,
     CodeExecution20250825,
     CodeExecution20260120,
+    CodeExecution20260521,
 }
 
 sealed class BetaMemoryTool20250818AllowedCallerConverter
@@ -244,6 +247,7 @@ sealed class BetaMemoryTool20250818AllowedCallerConverter
             "direct" => BetaMemoryTool20250818AllowedCaller.Direct,
             "code_execution_20250825" => BetaMemoryTool20250818AllowedCaller.CodeExecution20250825,
             "code_execution_20260120" => BetaMemoryTool20250818AllowedCaller.CodeExecution20260120,
+            "code_execution_20260521" => BetaMemoryTool20250818AllowedCaller.CodeExecution20260521,
             _ => (BetaMemoryTool20250818AllowedCaller)(-1),
         };
     }
@@ -263,6 +267,8 @@ sealed class BetaMemoryTool20250818AllowedCallerConverter
                     "code_execution_20250825",
                 BetaMemoryTool20250818AllowedCaller.CodeExecution20260120 =>
                     "code_execution_20260120",
+                BetaMemoryTool20250818AllowedCaller.CodeExecution20260521 =>
+                    "code_execution_20260521",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

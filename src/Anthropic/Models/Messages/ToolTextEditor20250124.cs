@@ -228,7 +228,9 @@ class ToolTextEditor20250124FromRaw : IFromRawJson<ToolTextEditor20250124>
 ///
 /// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
 /// The tool can be called from the code execution environment (v1).     code_execution_20260120:
-/// The tool can be called from the code execution environment (v2 with persistence).</para>
+/// The tool can be called from the code execution environment (v2 with persistence).
+///     code_execution_20260521: The tool can be called from the code execution environment
+/// (v2 with persistence).</para>
 /// </summary>
 [JsonConverter(typeof(ToolTextEditor20250124AllowedCallerConverter))]
 public enum ToolTextEditor20250124AllowedCaller
@@ -236,6 +238,7 @@ public enum ToolTextEditor20250124AllowedCaller
     Direct,
     CodeExecution20250825,
     CodeExecution20260120,
+    CodeExecution20260521,
 }
 
 sealed class ToolTextEditor20250124AllowedCallerConverter
@@ -252,6 +255,7 @@ sealed class ToolTextEditor20250124AllowedCallerConverter
             "direct" => ToolTextEditor20250124AllowedCaller.Direct,
             "code_execution_20250825" => ToolTextEditor20250124AllowedCaller.CodeExecution20250825,
             "code_execution_20260120" => ToolTextEditor20250124AllowedCaller.CodeExecution20260120,
+            "code_execution_20260521" => ToolTextEditor20250124AllowedCaller.CodeExecution20260521,
             _ => (ToolTextEditor20250124AllowedCaller)(-1),
         };
     }
@@ -271,6 +275,8 @@ sealed class ToolTextEditor20250124AllowedCallerConverter
                     "code_execution_20250825",
                 ToolTextEditor20250124AllowedCaller.CodeExecution20260120 =>
                     "code_execution_20260120",
+                ToolTextEditor20250124AllowedCaller.CodeExecution20260521 =>
+                    "code_execution_20260521",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

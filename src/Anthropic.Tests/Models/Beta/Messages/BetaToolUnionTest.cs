@@ -121,6 +121,19 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
+    public void CodeExecutionTool20260521ValidationWorks()
+    {
+        BetaToolUnion value = new BetaCodeExecutionTool20260521()
+        {
+            AllowedCallers = [BetaCodeExecutionTool20260521AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void ComputerUse20241022ValidationWorks()
     {
         BetaToolUnion value = new BetaToolComputerUse20241022()
@@ -591,6 +604,25 @@ public class BetaToolUnionTest : TestBase
         BetaToolUnion value = new BetaCodeExecutionTool20260120()
         {
             AllowedCallers = [BetaCodeExecutionTool20260120AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void CodeExecutionTool20260521SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaCodeExecutionTool20260521()
+        {
+            AllowedCallers = [BetaCodeExecutionTool20260521AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,

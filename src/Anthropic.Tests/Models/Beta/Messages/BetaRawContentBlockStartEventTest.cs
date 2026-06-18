@@ -423,6 +423,7 @@ public class ContentBlockTest : TestBase
         {
             From = new(Messages::Model.ClaudeFable5),
             To = new(Messages::Model.ClaudeFable5),
+            Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
         value.Validate();
     }
@@ -743,6 +744,7 @@ public class ContentBlockTest : TestBase
         {
             From = new(Messages::Model.ClaudeFable5),
             To = new(Messages::Model.ClaudeFable5),
+            Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(

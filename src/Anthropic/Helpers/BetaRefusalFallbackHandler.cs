@@ -137,12 +137,13 @@ public sealed class BetaRefusalFallbackHandler : DelegatingHandler
         // Every entry whose request refused, in order — each consecutive pair (and the final
         // pair into the serving entry) spells one seam block.
         var refusedIndices = new List<int>();
+        var refusedCategories = new List<string?>();
 
         // Only a successful response can be a refusal; errors get normal handling. Hop errors
         // are skipped inside the loop, so one only reaches here when the chain stopped at it.
         while (response.IsSuccessStatusCode)
         {
-            (bool IsRefusal, string? FallbackCreditToken) refusal;
+            (bool IsRefusal, string? FallbackCreditToken, string? Category) refusal;
             try
             {
                 refusal = await RefusalCreditToken(response, cancellationToken)
@@ -169,11 +170,13 @@ public sealed class BetaRefusalFallbackHandler : DelegatingHandler
                 var boundaries = refusedIndices.Append(index).ToList();
                 var seams = boundaries
                     .Zip(boundaries.Skip(1), (from, to) => (from, to))
-                    .Select(pair =>
-                        (
-                            From: preparedRequest.ModelAt(pair.from),
-                            To: preparedRequest.ModelAt(pair.to)
-                        )
+                    .Select(
+                        (pair, i) =>
+                            (
+                                From: preparedRequest.ModelAt(pair.from),
+                                To: preparedRequest.ModelAt(pair.to),
+                                Category: refusedCategories[i]
+                            )
                     )
                     .ToList();
                 await PrependFallbackBlocks(response, seams, cancellationToken)
@@ -198,6 +201,7 @@ public sealed class BetaRefusalFallbackHandler : DelegatingHandler
             // to the refused request.
             var mintedIndex = index;
             refusedIndices.Add(index);
+            refusedCategories.Add(refusal.Category);
             response.Dispose();
 
             while (true)
@@ -590,10 +594,11 @@ public sealed class BetaRefusalFallbackHandler : DelegatingHandler
     /// Returns the refusal's <c>fallback_credit_token</c> if the response is a refused message,
     /// or a non-refusal if the response isn't one and should be returned as-is.
     /// </summary>
-    static async Task<(bool IsRefusal, string? FallbackCreditToken)> RefusalCreditToken(
-        HttpResponseMessage response,
-        CancellationToken cancellationToken
-    )
+    static async Task<(
+        bool IsRefusal,
+        string? FallbackCreditToken,
+        string? Category
+    )> RefusalCreditToken(HttpResponseMessage response, CancellationToken cancellationToken)
     {
         // Reading the content buffers it, so a non-refusal response stays fully readable.
         var body = await response
@@ -614,14 +619,18 @@ public sealed class BetaRefusalFallbackHandler : DelegatingHandler
                 || stopReason.Value() != BetaStopReason.Refusal
             )
             {
-                return (false, null);
+                return (false, null, null);
             }
-            return (true, message.StopDetails?.FallbackCreditToken);
+            return (
+                true,
+                message.StopDetails?.FallbackCreditToken,
+                message.StopDetails?.Category?.Raw()
+            );
         }
         catch (Exception e) when (e is JsonException or AnthropicInvalidDataException)
         {
             // Pass unexpected response shapes (e.g. errors) through for normal handling.
-            return (false, null);
+            return (false, null, null);
         }
     }
 
@@ -633,7 +642,7 @@ public sealed class BetaRefusalFallbackHandler : DelegatingHandler
     /// </summary>
     static async Task PrependFallbackBlocks(
         HttpResponseMessage response,
-        List<(string From, string To)> seams,
+        List<(string From, string To, string? Category)> seams,
         CancellationToken cancellationToken
     )
     {
@@ -670,6 +679,12 @@ public sealed class BetaRefusalFallbackHandler : DelegatingHandler
                     {
                         From = new BetaFallbackInfo { Model = seams[i].From },
                         To = new BetaFallbackInfo { Model = seams[i].To },
+                        Trigger = new BetaFallbackRefusalTrigger
+                        {
+                            Category = seams[i].Category is { } c
+                                ? (ApiEnum<string, BetaFallbackRefusalTriggerCategory>)c
+                                : null,
+                        },
                     },
                     ModelBase.SerializerOptions
                 )
