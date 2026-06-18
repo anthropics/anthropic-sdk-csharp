@@ -108,7 +108,24 @@ public sealed class BetaMessageContentAggregator
                 // the latest delta supersedes prior values.
                 if (delta.Usage.Iterations != null)
                 {
-                    usage = usage with { Iterations = delta.Usage.Iterations };
+                    usage = usage with
+                    {
+                        Iterations =
+                        [
+                            .. delta.Usage.Iterations.Select(static it =>
+                                it.Value switch
+                                {
+                                    BetaMessageIterationUsage v => new BetaUsageIteration(v),
+                                    BetaCompactionIterationUsage v => new BetaUsageIteration(v),
+                                    BetaAdvisorMessageIterationUsage v => new BetaUsageIteration(v),
+                                    BetaFallbackMessageIterationUsage v => new BetaUsageIteration(
+                                        v
+                                    ),
+                                    _ => new BetaUsageIteration(it.Json),
+                                }
+                            ),
+                        ],
+                    };
                 }
             }
         }
