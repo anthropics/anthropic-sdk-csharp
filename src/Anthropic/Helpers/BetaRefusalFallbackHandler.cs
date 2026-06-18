@@ -358,7 +358,7 @@ public sealed class BetaRefusalFallbackHandler : DelegatingHandler
         }
 
         // Send the configured betas on this and every hop request derived from it.
-        var headers = AppendBetas(
+        var headers = WithHandlerHeaders(
             request.Headers.Select(header => new KeyValuePair<string, string[]>(
                 header.Key,
                 [.. header.Value]
@@ -560,33 +560,56 @@ public sealed class BetaRefusalFallbackHandler : DelegatingHandler
         obj[key] is JsonValue value && value.TryGetValue(out string? text) ? text : null;
 
     /// <summary>
-    /// Returns a copy of the headers with <see cref="Betas"/> appended to <c>anthropic-beta</c>,
-    /// skipping values already present (set by the caller or another handler).
+    /// Returns a copy of the headers with <see cref="Betas"/> appended to <c>anthropic-beta</c>
+    /// (skipping values already present) and the handler's helper-telemetry tag appended to
+    /// <c>x-stainless-helper</c>.
     /// </summary>
-    List<KeyValuePair<string, string[]>> AppendBetas(
+    List<KeyValuePair<string, string[]>> WithHandlerHeaders(
         IEnumerable<KeyValuePair<string, string[]>> headers
     )
     {
-        var copied = headers.ToList();
-        if (Betas.Count == 0)
-        {
-            return copied;
-        }
-        HashSet<string> existing =
-        [
-            .. copied
-                .Where(header =>
-                    string.Equals(header.Key, "anthropic-beta", StringComparison.OrdinalIgnoreCase)
+        var copied = headers
+            .Where(header =>
+                !string.Equals(
+                    header.Key,
+                    StainlessHelperHeader.Name,
+                    StringComparison.OrdinalIgnoreCase
                 )
-                .SelectMany(header => header.Value)
-                .SelectMany(value => value.Split(','))
-                .Select(value => value.Trim()),
-        ];
-        var missing = Betas.Select(beta => beta.Raw()).Where(existing.Add).ToArray();
-        if (missing.Length > 0)
+            )
+            .ToList();
+        if (Betas.Count > 0)
         {
-            copied.Add(new KeyValuePair<string, string[]>("anthropic-beta", missing));
+            HashSet<string> existing =
+            [
+                .. copied
+                    .Where(header =>
+                        string.Equals(
+                            header.Key,
+                            "anthropic-beta",
+                            StringComparison.OrdinalIgnoreCase
+                        )
+                    )
+                    .SelectMany(header => header.Value)
+                    .SelectMany(value => value.Split(','))
+                    .Select(value => value.Trim()),
+            ];
+            var missing = Betas.Select(beta => beta.Raw()).Where(existing.Add).ToArray();
+            if (missing.Length > 0)
+            {
+                copied.Add(new KeyValuePair<string, string[]>("anthropic-beta", missing));
+            }
         }
+        copied.Add(
+            new KeyValuePair<string, string[]>(
+                StainlessHelperHeader.Name,
+                [
+                    StainlessHelperHeader.MergedValue(
+                        headers,
+                        StainlessHelperHeader.FallbackRefusalMiddleware
+                    ),
+                ]
+            )
+        );
         return copied;
     }
 

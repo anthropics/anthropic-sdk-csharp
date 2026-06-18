@@ -11,6 +11,7 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Helpers;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Helpers;
@@ -45,6 +46,19 @@ sealed class FakeTransport : HttpMessageHandler
             .. RequestHeaders[index]
                 .Where(header =>
                     string.Equals(header.Key, "anthropic-beta", StringComparison.OrdinalIgnoreCase)
+                )
+                .SelectMany(header => header.Value),
+        ];
+
+    public string[] HelperHeaderValues(int index) =>
+        [
+            .. RequestHeaders[index]
+                .Where(header =>
+                    string.Equals(
+                        header.Key,
+                        StainlessHelperHeader.Name,
+                        StringComparison.OrdinalIgnoreCase
+                    )
                 )
                 .SelectMany(header => header.Value),
         ];

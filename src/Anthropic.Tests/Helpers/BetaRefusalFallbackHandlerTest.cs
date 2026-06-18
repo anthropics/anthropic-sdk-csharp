@@ -113,6 +113,61 @@ public class BetaRefusalFallbackHandlerTest
     }
 
     [Fact]
+    public async Task TagsTheOriginalAndFallbackRequests()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(200, Message("fallback-model"));
+        using var invoker = Intercepted(transport, "fallback-model");
+
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(MessagesRequest(), TestContext.Current.CancellationToken);
+
+        Assert.Equal(["fallback-refusal-middleware"], transport.HelperHeaderValues(0));
+        Assert.Equal(["fallback-refusal-middleware"], transport.HelperHeaderValues(1));
+    }
+
+    [Fact]
+    public async Task AppendsToAHelperTagAlreadyOnTheRequest()
+    {
+        var transport = new FakeTransport().EnqueueJson(200, Message("primary-model"));
+        using var invoker = Intercepted(transport, "fallback-model");
+
+        var request = MessagesRequest();
+        request.Headers.TryAddWithoutValidation("X-Stainless-Helper", "BetaToolRunner");
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(request, TestContext.Current.CancellationToken);
+
+        Assert.Equal(
+            ["BetaToolRunner, fallback-refusal-middleware"],
+            transport.HelperHeaderValues(0)
+        );
+    }
+
+    [Fact]
+    public async Task DoesNotTagRequestsItPassesThrough()
+    {
+        var transport = new FakeTransport().EnqueueJson(200, Message("primary-model"));
+        using var invoker = Intercepted(transport, "fallback-model");
+
+        // the GA surface (no ?beta=true) is not applicable to this handler
+        var gaRequest = new HttpRequestMessage(
+            HttpMethod.Post,
+            "https://api.example.com/v1/messages"
+        )
+        {
+            Content = new StringContent(
+                JsonSerializer.Serialize(MessagesBody()),
+                Encoding.UTF8,
+                "application/json"
+            ),
+        };
+        await invoker.SendAsync(gaRequest, TestContext.Current.CancellationToken);
+
+        Assert.Empty(transport.HelperHeaderValues(0));
+    }
+
+    [Fact]
     public async Task PinsToAcceptedFallbackViaFallbackState()
     {
         var transport = new FakeTransport()

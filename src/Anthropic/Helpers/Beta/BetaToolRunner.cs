@@ -402,7 +402,9 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
     private static MessageCreateParams InjectHelperHeader(MessageCreateParams parameters)
     {
         var rawHeaderData = parameters.RawHeaderData.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-        rawHeaderData["x-stainless-helper"] = JsonSerializer.SerializeToElement("BetaToolRunner");
+        rawHeaderData[StainlessHelperHeader.Name] = JsonSerializer.SerializeToElement(
+            StainlessHelperHeader.BetaToolRunner
+        );
         return MessageCreateParams.FromRawUnchecked(
             rawHeaderData,
             parameters.RawQueryData,
