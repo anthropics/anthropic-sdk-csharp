@@ -116,7 +116,18 @@ public sealed class BetaMessageContentAggregator
                     {
                         Iterations =
                         [
-                            .. delta.Usage.Iterations.Select(i => new BetaUsageIteration(i.Json)),
+                            .. delta.Usage.Iterations.Select(i =>
+                                i.Value switch
+                                {
+                                    BetaMessageIterationUsage v => new BetaUsageIteration(v),
+                                    BetaCompactionIterationUsage v => new BetaUsageIteration(v),
+                                    BetaAdvisorMessageIterationUsage v => new BetaUsageIteration(v),
+                                    BetaFallbackMessageIterationUsage v => new BetaUsageIteration(
+                                        v
+                                    ),
+                                    _ => new BetaUsageIteration(i.Json),
+                                }
+                            ),
                         ],
                     };
                 }
