@@ -270,7 +270,9 @@ class BetaAdvisorTool20260301FromRaw : IFromRawJson<BetaAdvisorTool20260301>
 ///
 /// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
 /// The tool can be called from the code execution environment (v1).     code_execution_20260120:
-/// The tool can be called from the code execution environment (v2 with persistence).</para>
+/// The tool can be called from the code execution environment (v2 with persistence).
+///     code_execution_20260521: The tool can be called from the code execution environment
+/// (v2 with persistence).</para>
 /// </summary>
 [JsonConverter(typeof(global::Anthropic.Models.Beta.Messages.AllowedCallerConverter))]
 public enum AllowedCaller
@@ -278,6 +280,7 @@ public enum AllowedCaller
     Direct,
     CodeExecution20250825,
     CodeExecution20260120,
+    CodeExecution20260521,
 }
 
 sealed class AllowedCallerConverter
@@ -304,6 +307,12 @@ sealed class AllowedCallerConverter
                 .Messages
                 .AllowedCaller
                 .CodeExecution20260120,
+            "code_execution_20260521" => global::Anthropic
+                .Models
+                .Beta
+                .Messages
+                .AllowedCaller
+                .CodeExecution20260521,
             _ => (global::Anthropic.Models.Beta.Messages.AllowedCaller)(-1),
         };
     }
@@ -323,6 +332,8 @@ sealed class AllowedCallerConverter
                     "code_execution_20250825",
                 global::Anthropic.Models.Beta.Messages.AllowedCaller.CodeExecution20260120 =>
                     "code_execution_20260120",
+                global::Anthropic.Models.Beta.Messages.AllowedCaller.CodeExecution20260521 =>
+                    "code_execution_20260521",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

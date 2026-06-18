@@ -377,6 +377,7 @@ public class BetaWebFetchTool20260209AllowedCallerTest : TestBase
     [InlineData(BetaWebFetchTool20260209AllowedCaller.Direct)]
     [InlineData(BetaWebFetchTool20260209AllowedCaller.CodeExecution20250825)]
     [InlineData(BetaWebFetchTool20260209AllowedCaller.CodeExecution20260120)]
+    [InlineData(BetaWebFetchTool20260209AllowedCaller.CodeExecution20260521)]
     public void Validation_Works(BetaWebFetchTool20260209AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -399,6 +400,7 @@ public class BetaWebFetchTool20260209AllowedCallerTest : TestBase
     [InlineData(BetaWebFetchTool20260209AllowedCaller.Direct)]
     [InlineData(BetaWebFetchTool20260209AllowedCaller.CodeExecution20250825)]
     [InlineData(BetaWebFetchTool20260209AllowedCaller.CodeExecution20260120)]
+    [InlineData(BetaWebFetchTool20260209AllowedCaller.CodeExecution20260521)]
     public void SerializationRoundtrip_Works(BetaWebFetchTool20260209AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us

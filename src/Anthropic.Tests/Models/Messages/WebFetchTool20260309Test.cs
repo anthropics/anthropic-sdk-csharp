@@ -396,6 +396,7 @@ public class WebFetchTool20260309AllowedCallerTest : TestBase
     [InlineData(WebFetchTool20260309AllowedCaller.Direct)]
     [InlineData(WebFetchTool20260309AllowedCaller.CodeExecution20250825)]
     [InlineData(WebFetchTool20260309AllowedCaller.CodeExecution20260120)]
+    [InlineData(WebFetchTool20260309AllowedCaller.CodeExecution20260521)]
     public void Validation_Works(WebFetchTool20260309AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -419,6 +420,7 @@ public class WebFetchTool20260309AllowedCallerTest : TestBase
     [InlineData(WebFetchTool20260309AllowedCaller.Direct)]
     [InlineData(WebFetchTool20260309AllowedCaller.CodeExecution20250825)]
     [InlineData(WebFetchTool20260309AllowedCaller.CodeExecution20260120)]
+    [InlineData(WebFetchTool20260309AllowedCaller.CodeExecution20260521)]
     public void SerializationRoundtrip_Works(WebFetchTool20260309AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us

@@ -12,7 +12,7 @@ namespace Anthropic.Models.Beta.Messages;
 /// Marks the point in `content` where one model's output gives way to the next.
 ///
 /// <para>One block appears per hop where a preceding model actually ran this turn
-/// and declined. A turn routed directly by the sticky decision has no such boundary
+/// and declined. A turn where no preceding model ran and declined has no such boundary
 /// and carries no block — the signal for whether a fallback model served the response
 /// is the presence of a `fallback_message` entry in `usage.iterations`, not this block.</para>
 ///
@@ -53,6 +53,19 @@ public sealed record class BetaFallbackBlock : JsonModel
         init { this._rawData.Set("to", value); }
     }
 
+    /// <summary>
+    /// What caused the `from` model to hand over at this hop.
+    /// </summary>
+    public required BetaFallbackRefusalTrigger Trigger
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaFallbackRefusalTrigger>("trigger");
+        }
+        init { this._rawData.Set("trigger", value); }
+    }
+
     public JsonElement Type
     {
         get
@@ -68,6 +81,7 @@ public sealed record class BetaFallbackBlock : JsonModel
     {
         this.From.Validate();
         this.To.Validate();
+        this.Trigger.Validate();
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("fallback")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");

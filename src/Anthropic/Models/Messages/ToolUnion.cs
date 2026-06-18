@@ -38,6 +38,7 @@ public record class ToolUnion : ModelBase
                 codeExecutionTool20250522: (x) => x.CacheControl,
                 codeExecutionTool20250825: (x) => x.CacheControl,
                 codeExecutionTool20260120: (x) => x.CacheControl,
+                codeExecutionTool20260521: (x) => x.CacheControl,
                 memoryTool20250818: (x) => x.CacheControl,
                 textEditor20250124: (x) => x.CacheControl,
                 textEditor20250429: (x) => x.CacheControl,
@@ -63,6 +64,7 @@ public record class ToolUnion : ModelBase
                 codeExecutionTool20250522: (x) => x.DeferLoading,
                 codeExecutionTool20250825: (x) => x.DeferLoading,
                 codeExecutionTool20260120: (x) => x.DeferLoading,
+                codeExecutionTool20260521: (x) => x.DeferLoading,
                 memoryTool20250818: (x) => x.DeferLoading,
                 textEditor20250124: (x) => x.DeferLoading,
                 textEditor20250429: (x) => x.DeferLoading,
@@ -88,6 +90,7 @@ public record class ToolUnion : ModelBase
                 codeExecutionTool20250522: (x) => x.Strict,
                 codeExecutionTool20250825: (x) => x.Strict,
                 codeExecutionTool20260120: (x) => x.Strict,
+                codeExecutionTool20260521: (x) => x.Strict,
                 memoryTool20250818: (x) => x.Strict,
                 textEditor20250124: (x) => x.Strict,
                 textEditor20250429: (x) => x.Strict,
@@ -113,6 +116,7 @@ public record class ToolUnion : ModelBase
                 codeExecutionTool20250522: (_) => null,
                 codeExecutionTool20250825: (_) => null,
                 codeExecutionTool20260120: (_) => null,
+                codeExecutionTool20260521: (_) => null,
                 memoryTool20250818: (_) => null,
                 textEditor20250124: (_) => null,
                 textEditor20250429: (_) => null,
@@ -138,6 +142,7 @@ public record class ToolUnion : ModelBase
                 codeExecutionTool20250522: (_) => null,
                 codeExecutionTool20250825: (_) => null,
                 codeExecutionTool20260120: (_) => null,
+                codeExecutionTool20260521: (_) => null,
                 memoryTool20250818: (_) => null,
                 textEditor20250124: (_) => null,
                 textEditor20250429: (_) => null,
@@ -163,6 +168,7 @@ public record class ToolUnion : ModelBase
                 codeExecutionTool20250522: (_) => null,
                 codeExecutionTool20250825: (_) => null,
                 codeExecutionTool20260120: (_) => null,
+                codeExecutionTool20260521: (_) => null,
                 memoryTool20250818: (_) => null,
                 textEditor20250124: (_) => null,
                 textEditor20250429: (_) => null,
@@ -188,6 +194,7 @@ public record class ToolUnion : ModelBase
                 codeExecutionTool20250522: (_) => null,
                 codeExecutionTool20250825: (_) => null,
                 codeExecutionTool20260120: (_) => null,
+                codeExecutionTool20260521: (_) => null,
                 memoryTool20250818: (_) => null,
                 textEditor20250124: (_) => null,
                 textEditor20250429: (_) => null,
@@ -228,6 +235,12 @@ public record class ToolUnion : ModelBase
     }
 
     public ToolUnion(CodeExecutionTool20260120 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ToolUnion(CodeExecutionTool20260521 value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -412,6 +425,29 @@ public record class ToolUnion : ModelBase
     )
     {
         value = this.Value as CodeExecutionTool20260120;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="CodeExecutionTool20260521"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCodeExecutionTool20260521(out var value)) {
+    ///     // `value` is of type `CodeExecutionTool20260521`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickCodeExecutionTool20260521(
+        [NotNullWhen(true)] out CodeExecutionTool20260521? value
+    )
+    {
+        value = this.Value as CodeExecutionTool20260521;
         return value != null;
     }
 
@@ -669,6 +705,7 @@ public record class ToolUnion : ModelBase
     ///     (CodeExecutionTool20250522 value) =&gt; {...},
     ///     (CodeExecutionTool20250825 value) =&gt; {...},
     ///     (CodeExecutionTool20260120 value) =&gt; {...},
+    ///     (CodeExecutionTool20260521 value) =&gt; {...},
     ///     (MemoryTool20250818 value) =&gt; {...},
     ///     (ToolTextEditor20250124 value) =&gt; {...},
     ///     (ToolTextEditor20250429 value) =&gt; {...},
@@ -690,6 +727,7 @@ public record class ToolUnion : ModelBase
         System::Action<CodeExecutionTool20250522> codeExecutionTool20250522,
         System::Action<CodeExecutionTool20250825> codeExecutionTool20250825,
         System::Action<CodeExecutionTool20260120> codeExecutionTool20260120,
+        System::Action<CodeExecutionTool20260521> codeExecutionTool20260521,
         System::Action<MemoryTool20250818> memoryTool20250818,
         System::Action<ToolTextEditor20250124> textEditor20250124,
         System::Action<ToolTextEditor20250429> textEditor20250429,
@@ -719,6 +757,9 @@ public record class ToolUnion : ModelBase
                 break;
             case CodeExecutionTool20260120 value:
                 codeExecutionTool20260120(value);
+                break;
+            case CodeExecutionTool20260521 value:
+                codeExecutionTool20260521(value);
                 break;
             case MemoryTool20250818 value:
                 memoryTool20250818(value);
@@ -780,6 +821,7 @@ public record class ToolUnion : ModelBase
     ///     (CodeExecutionTool20250522 value) =&gt; {...},
     ///     (CodeExecutionTool20250825 value) =&gt; {...},
     ///     (CodeExecutionTool20260120 value) =&gt; {...},
+    ///     (CodeExecutionTool20260521 value) =&gt; {...},
     ///     (MemoryTool20250818 value) =&gt; {...},
     ///     (ToolTextEditor20250124 value) =&gt; {...},
     ///     (ToolTextEditor20250429 value) =&gt; {...},
@@ -801,6 +843,7 @@ public record class ToolUnion : ModelBase
         System::Func<CodeExecutionTool20250522, T> codeExecutionTool20250522,
         System::Func<CodeExecutionTool20250825, T> codeExecutionTool20250825,
         System::Func<CodeExecutionTool20260120, T> codeExecutionTool20260120,
+        System::Func<CodeExecutionTool20260521, T> codeExecutionTool20260521,
         System::Func<MemoryTool20250818, T> memoryTool20250818,
         System::Func<ToolTextEditor20250124, T> textEditor20250124,
         System::Func<ToolTextEditor20250429, T> textEditor20250429,
@@ -821,6 +864,7 @@ public record class ToolUnion : ModelBase
             CodeExecutionTool20250522 value => codeExecutionTool20250522(value),
             CodeExecutionTool20250825 value => codeExecutionTool20250825(value),
             CodeExecutionTool20260120 value => codeExecutionTool20260120(value),
+            CodeExecutionTool20260521 value => codeExecutionTool20260521(value),
             MemoryTool20250818 value => memoryTool20250818(value),
             ToolTextEditor20250124 value => textEditor20250124(value),
             ToolTextEditor20250429 value => textEditor20250429(value),
@@ -847,6 +891,8 @@ public record class ToolUnion : ModelBase
     public static implicit operator ToolUnion(CodeExecutionTool20250825 value) => new(value);
 
     public static implicit operator ToolUnion(CodeExecutionTool20260120 value) => new(value);
+
+    public static implicit operator ToolUnion(CodeExecutionTool20260521 value) => new(value);
 
     public static implicit operator ToolUnion(MemoryTool20250818 value) => new(value);
 
@@ -892,6 +938,7 @@ public record class ToolUnion : ModelBase
             (codeExecutionTool20250522) => codeExecutionTool20250522.Validate(),
             (codeExecutionTool20250825) => codeExecutionTool20250825.Validate(),
             (codeExecutionTool20260120) => codeExecutionTool20260120.Validate(),
+            (codeExecutionTool20260521) => codeExecutionTool20260521.Validate(),
             (memoryTool20250818) => memoryTool20250818.Validate(),
             (textEditor20250124) => textEditor20250124.Validate(),
             (textEditor20250429) => textEditor20250429.Validate(),
@@ -931,17 +978,18 @@ public record class ToolUnion : ModelBase
             CodeExecutionTool20250522 _ => 2,
             CodeExecutionTool20250825 _ => 3,
             CodeExecutionTool20260120 _ => 4,
-            MemoryTool20250818 _ => 5,
-            ToolTextEditor20250124 _ => 6,
-            ToolTextEditor20250429 _ => 7,
-            ToolTextEditor20250728 _ => 8,
-            WebSearchTool20250305 _ => 9,
-            WebFetchTool20250910 _ => 10,
-            WebSearchTool20260209 _ => 11,
-            WebFetchTool20260209 _ => 12,
-            WebFetchTool20260309 _ => 13,
-            ToolSearchToolBm25_20251119 _ => 14,
-            ToolSearchToolRegex20251119 _ => 15,
+            CodeExecutionTool20260521 _ => 5,
+            MemoryTool20250818 _ => 6,
+            ToolTextEditor20250124 _ => 7,
+            ToolTextEditor20250429 _ => 8,
+            ToolTextEditor20250728 _ => 9,
+            WebSearchTool20250305 _ => 10,
+            WebFetchTool20250910 _ => 11,
+            WebSearchTool20260209 _ => 12,
+            WebFetchTool20260209 _ => 13,
+            WebFetchTool20260309 _ => 14,
+            ToolSearchToolBm25_20251119 _ => 15,
+            ToolSearchToolRegex20251119 _ => 16,
             _ => -1,
         };
     }
@@ -1021,6 +1069,23 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         try
         {
             var deserialized = JsonSerializer.Deserialize<CodeExecutionTool20260120>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<CodeExecutionTool20260521>(
                 element,
                 options
             );

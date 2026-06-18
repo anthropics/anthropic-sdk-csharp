@@ -244,7 +244,9 @@ sealed class ToolSearchToolRegex20251119TypeConverter
 ///
 /// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
 /// The tool can be called from the code execution environment (v1).     code_execution_20260120:
-/// The tool can be called from the code execution environment (v2 with persistence).</para>
+/// The tool can be called from the code execution environment (v2 with persistence).
+///     code_execution_20260521: The tool can be called from the code execution environment
+/// (v2 with persistence).</para>
 /// </summary>
 [JsonConverter(typeof(ToolSearchToolRegex20251119AllowedCallerConverter))]
 public enum ToolSearchToolRegex20251119AllowedCaller
@@ -252,6 +254,7 @@ public enum ToolSearchToolRegex20251119AllowedCaller
     Direct,
     CodeExecution20250825,
     CodeExecution20260120,
+    CodeExecution20260521,
 }
 
 sealed class ToolSearchToolRegex20251119AllowedCallerConverter
@@ -270,6 +273,8 @@ sealed class ToolSearchToolRegex20251119AllowedCallerConverter
                 ToolSearchToolRegex20251119AllowedCaller.CodeExecution20250825,
             "code_execution_20260120" =>
                 ToolSearchToolRegex20251119AllowedCaller.CodeExecution20260120,
+            "code_execution_20260521" =>
+                ToolSearchToolRegex20251119AllowedCaller.CodeExecution20260521,
             _ => (ToolSearchToolRegex20251119AllowedCaller)(-1),
         };
     }
@@ -289,6 +294,8 @@ sealed class ToolSearchToolRegex20251119AllowedCallerConverter
                     "code_execution_20250825",
                 ToolSearchToolRegex20251119AllowedCaller.CodeExecution20260120 =>
                     "code_execution_20260120",
+                ToolSearchToolRegex20251119AllowedCaller.CodeExecution20260521 =>
+                    "code_execution_20260521",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

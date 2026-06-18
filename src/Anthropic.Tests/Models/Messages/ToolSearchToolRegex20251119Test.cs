@@ -333,6 +333,7 @@ public class ToolSearchToolRegex20251119AllowedCallerTest : TestBase
     [InlineData(ToolSearchToolRegex20251119AllowedCaller.Direct)]
     [InlineData(ToolSearchToolRegex20251119AllowedCaller.CodeExecution20250825)]
     [InlineData(ToolSearchToolRegex20251119AllowedCaller.CodeExecution20260120)]
+    [InlineData(ToolSearchToolRegex20251119AllowedCaller.CodeExecution20260521)]
     public void Validation_Works(ToolSearchToolRegex20251119AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -355,6 +356,7 @@ public class ToolSearchToolRegex20251119AllowedCallerTest : TestBase
     [InlineData(ToolSearchToolRegex20251119AllowedCaller.Direct)]
     [InlineData(ToolSearchToolRegex20251119AllowedCaller.CodeExecution20250825)]
     [InlineData(ToolSearchToolRegex20251119AllowedCaller.CodeExecution20260120)]
+    [InlineData(ToolSearchToolRegex20251119AllowedCaller.CodeExecution20260521)]
     public void SerializationRoundtrip_Works(ToolSearchToolRegex20251119AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us

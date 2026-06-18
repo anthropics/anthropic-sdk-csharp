@@ -14,14 +14,17 @@ public class BetaFallbackBlockTest : TestBase
         {
             From = new(Model.ClaudeFable5),
             To = new(Model.ClaudeFable5),
+            Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
 
         BetaFallbackInfo expectedFrom = new(Model.ClaudeFable5);
         BetaFallbackInfo expectedTo = new(Model.ClaudeFable5);
+        BetaFallbackRefusalTrigger expectedTrigger = new(BetaFallbackRefusalTriggerCategory.Cyber);
         JsonElement expectedType = JsonSerializer.SerializeToElement("fallback");
 
         Assert.Equal(expectedFrom, model.From);
         Assert.Equal(expectedTo, model.To);
+        Assert.Equal(expectedTrigger, model.Trigger);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
@@ -32,6 +35,7 @@ public class BetaFallbackBlockTest : TestBase
         {
             From = new(Model.ClaudeFable5),
             To = new(Model.ClaudeFable5),
+            Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -50,6 +54,7 @@ public class BetaFallbackBlockTest : TestBase
         {
             From = new(Model.ClaudeFable5),
             To = new(Model.ClaudeFable5),
+            Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -61,10 +66,12 @@ public class BetaFallbackBlockTest : TestBase
 
         BetaFallbackInfo expectedFrom = new(Model.ClaudeFable5);
         BetaFallbackInfo expectedTo = new(Model.ClaudeFable5);
+        BetaFallbackRefusalTrigger expectedTrigger = new(BetaFallbackRefusalTriggerCategory.Cyber);
         JsonElement expectedType = JsonSerializer.SerializeToElement("fallback");
 
         Assert.Equal(expectedFrom, deserialized.From);
         Assert.Equal(expectedTo, deserialized.To);
+        Assert.Equal(expectedTrigger, deserialized.Trigger);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
@@ -75,6 +82,7 @@ public class BetaFallbackBlockTest : TestBase
         {
             From = new(Model.ClaudeFable5),
             To = new(Model.ClaudeFable5),
+            Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
 
         model.Validate();
@@ -87,6 +95,7 @@ public class BetaFallbackBlockTest : TestBase
         {
             From = new(Model.ClaudeFable5),
             To = new(Model.ClaudeFable5),
+            Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
 
         BetaFallbackBlock copied = new(model);

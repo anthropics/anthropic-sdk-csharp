@@ -968,6 +968,19 @@ public class ToolTest : TestBase
     }
 
     [Fact]
+    public void BetaCodeExecutionTool20260521ValidationWorks()
+    {
+        Tool value = new BetaCodeExecutionTool20260521()
+        {
+            AllowedCallers = [BetaCodeExecutionTool20260521AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaToolComputerUse20241022ValidationWorks()
     {
         Tool value = new BetaToolComputerUse20241022()
@@ -1423,6 +1436,22 @@ public class ToolTest : TestBase
         Tool value = new BetaCodeExecutionTool20260120()
         {
             AllowedCallers = [BetaCodeExecutionTool20260120AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaCodeExecutionTool20260521SerializationRoundtripWorks()
+    {
+        Tool value = new BetaCodeExecutionTool20260521()
+        {
+            AllowedCallers = [BetaCodeExecutionTool20260521AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,

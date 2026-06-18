@@ -8,15 +8,15 @@ using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
-namespace Anthropic.Models.Messages;
+namespace Anthropic.Models.Beta.Messages;
 
 /// <summary>
-/// Code execution tool with REPL state persistence (daemon mode + gVisor checkpoint).
+/// Code execution tool with REPL state persistence.
 /// </summary>
 [JsonConverter(
-    typeof(JsonModelConverter<CodeExecutionTool20260120, CodeExecutionTool20260120FromRaw>)
+    typeof(JsonModelConverter<BetaCodeExecutionTool20260521, BetaCodeExecutionTool20260521FromRaw>)
 )]
-public sealed record class CodeExecutionTool20260120 : JsonModel
+public sealed record class BetaCodeExecutionTool20260521 : JsonModel
 {
     /// <summary>
     /// Name of the tool.
@@ -43,13 +43,15 @@ public sealed record class CodeExecutionTool20260120 : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
-    public IReadOnlyList<ApiEnum<string, CodeExecutionTool20260120AllowedCaller>>? AllowedCallers
+    public IReadOnlyList<
+        ApiEnum<string, BetaCodeExecutionTool20260521AllowedCaller>
+    >? AllowedCallers
     {
         get
         {
             this._rawData.Freeze();
             return this._rawData.GetNullableStruct<
-                ImmutableArray<ApiEnum<string, CodeExecutionTool20260120AllowedCaller>>
+                ImmutableArray<ApiEnum<string, BetaCodeExecutionTool20260521AllowedCaller>>
             >("allowed_callers");
         }
         init
@@ -60,7 +62,7 @@ public sealed record class CodeExecutionTool20260120 : JsonModel
             }
 
             this._rawData.Set<ImmutableArray<
-                ApiEnum<string, CodeExecutionTool20260120AllowedCaller>
+                ApiEnum<string, BetaCodeExecutionTool20260521AllowedCaller>
             >?>("allowed_callers", value == null ? null : ImmutableArray.ToImmutableArray(value));
         }
     }
@@ -68,12 +70,12 @@ public sealed record class CodeExecutionTool20260120 : JsonModel
     /// <summary>
     /// Create a cache control breakpoint at this content block.
     /// </summary>
-    public CacheControlEphemeral? CacheControl
+    public BetaCacheControlEphemeral? CacheControl
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
         init { this._rawData.Set("cache_control", value); }
     }
@@ -131,7 +133,7 @@ public sealed record class CodeExecutionTool20260120 : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.SerializeToElement("code_execution_20260120")
+                JsonSerializer.SerializeToElement("code_execution_20260521")
             )
         )
         {
@@ -146,36 +148,38 @@ public sealed record class CodeExecutionTool20260120 : JsonModel
         _ = this.Strict;
     }
 
-    public CodeExecutionTool20260120()
+    public BetaCodeExecutionTool20260521()
     {
         this.Name = JsonSerializer.SerializeToElement("code_execution");
-        this.Type = JsonSerializer.SerializeToElement("code_execution_20260120");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_20260521");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    public CodeExecutionTool20260120(CodeExecutionTool20260120 codeExecutionTool20260120)
-        : base(codeExecutionTool20260120) { }
+    public BetaCodeExecutionTool20260521(
+        BetaCodeExecutionTool20260521 betaCodeExecutionTool20260521
+    )
+        : base(betaCodeExecutionTool20260521) { }
 #pragma warning restore CS8618
 
-    public CodeExecutionTool20260120(IReadOnlyDictionary<string, JsonElement> rawData)
+    public BetaCodeExecutionTool20260521(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
 
         this.Name = JsonSerializer.SerializeToElement("code_execution");
-        this.Type = JsonSerializer.SerializeToElement("code_execution_20260120");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_20260521");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    CodeExecutionTool20260120(FrozenDictionary<string, JsonElement> rawData)
+    BetaCodeExecutionTool20260521(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="CodeExecutionTool20260120FromRaw.FromRawUnchecked"/>
-    public static CodeExecutionTool20260120 FromRawUnchecked(
+    /// <inheritdoc cref="BetaCodeExecutionTool20260521FromRaw.FromRawUnchecked"/>
+    public static BetaCodeExecutionTool20260521 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -183,12 +187,12 @@ public sealed record class CodeExecutionTool20260120 : JsonModel
     }
 }
 
-class CodeExecutionTool20260120FromRaw : IFromRawJson<CodeExecutionTool20260120>
+class BetaCodeExecutionTool20260521FromRaw : IFromRawJson<BetaCodeExecutionTool20260521>
 {
     /// <inheritdoc/>
-    public CodeExecutionTool20260120 FromRawUnchecked(
+    public BetaCodeExecutionTool20260521 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
-    ) => CodeExecutionTool20260120.FromRawUnchecked(rawData);
+    ) => BetaCodeExecutionTool20260521.FromRawUnchecked(rawData);
 }
 
 /// <summary>
@@ -200,8 +204,8 @@ class CodeExecutionTool20260120FromRaw : IFromRawJson<CodeExecutionTool20260120>
 ///     code_execution_20260521: The tool can be called from the code execution environment
 /// (v2 with persistence).</para>
 /// </summary>
-[JsonConverter(typeof(CodeExecutionTool20260120AllowedCallerConverter))]
-public enum CodeExecutionTool20260120AllowedCaller
+[JsonConverter(typeof(BetaCodeExecutionTool20260521AllowedCallerConverter))]
+public enum BetaCodeExecutionTool20260521AllowedCaller
 {
     Direct,
     CodeExecution20250825,
@@ -209,10 +213,10 @@ public enum CodeExecutionTool20260120AllowedCaller
     CodeExecution20260521,
 }
 
-sealed class CodeExecutionTool20260120AllowedCallerConverter
-    : JsonConverter<CodeExecutionTool20260120AllowedCaller>
+sealed class BetaCodeExecutionTool20260521AllowedCallerConverter
+    : JsonConverter<BetaCodeExecutionTool20260521AllowedCaller>
 {
-    public override CodeExecutionTool20260120AllowedCaller Read(
+    public override BetaCodeExecutionTool20260521AllowedCaller Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -220,20 +224,20 @@ sealed class CodeExecutionTool20260120AllowedCallerConverter
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "direct" => CodeExecutionTool20260120AllowedCaller.Direct,
+            "direct" => BetaCodeExecutionTool20260521AllowedCaller.Direct,
             "code_execution_20250825" =>
-                CodeExecutionTool20260120AllowedCaller.CodeExecution20250825,
+                BetaCodeExecutionTool20260521AllowedCaller.CodeExecution20250825,
             "code_execution_20260120" =>
-                CodeExecutionTool20260120AllowedCaller.CodeExecution20260120,
+                BetaCodeExecutionTool20260521AllowedCaller.CodeExecution20260120,
             "code_execution_20260521" =>
-                CodeExecutionTool20260120AllowedCaller.CodeExecution20260521,
-            _ => (CodeExecutionTool20260120AllowedCaller)(-1),
+                BetaCodeExecutionTool20260521AllowedCaller.CodeExecution20260521,
+            _ => (BetaCodeExecutionTool20260521AllowedCaller)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        CodeExecutionTool20260120AllowedCaller value,
+        BetaCodeExecutionTool20260521AllowedCaller value,
         JsonSerializerOptions options
     )
     {
@@ -241,12 +245,12 @@ sealed class CodeExecutionTool20260120AllowedCallerConverter
             writer,
             value switch
             {
-                CodeExecutionTool20260120AllowedCaller.Direct => "direct",
-                CodeExecutionTool20260120AllowedCaller.CodeExecution20250825 =>
+                BetaCodeExecutionTool20260521AllowedCaller.Direct => "direct",
+                BetaCodeExecutionTool20260521AllowedCaller.CodeExecution20250825 =>
                     "code_execution_20250825",
-                CodeExecutionTool20260120AllowedCaller.CodeExecution20260120 =>
+                BetaCodeExecutionTool20260521AllowedCaller.CodeExecution20260120 =>
                     "code_execution_20260120",
-                CodeExecutionTool20260120AllowedCaller.CodeExecution20260521 =>
+                BetaCodeExecutionTool20260521AllowedCaller.CodeExecution20260521 =>
                     "code_execution_20260521",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))

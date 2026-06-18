@@ -275,7 +275,9 @@ class WebFetchTool20250910FromRaw : IFromRawJson<WebFetchTool20250910>
 ///
 /// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
 /// The tool can be called from the code execution environment (v1).     code_execution_20260120:
-/// The tool can be called from the code execution environment (v2 with persistence).</para>
+/// The tool can be called from the code execution environment (v2 with persistence).
+///     code_execution_20260521: The tool can be called from the code execution environment
+/// (v2 with persistence).</para>
 /// </summary>
 [JsonConverter(typeof(WebFetchTool20250910AllowedCallerConverter))]
 public enum WebFetchTool20250910AllowedCaller
@@ -283,6 +285,7 @@ public enum WebFetchTool20250910AllowedCaller
     Direct,
     CodeExecution20250825,
     CodeExecution20260120,
+    CodeExecution20260521,
 }
 
 sealed class WebFetchTool20250910AllowedCallerConverter
@@ -299,6 +302,7 @@ sealed class WebFetchTool20250910AllowedCallerConverter
             "direct" => WebFetchTool20250910AllowedCaller.Direct,
             "code_execution_20250825" => WebFetchTool20250910AllowedCaller.CodeExecution20250825,
             "code_execution_20260120" => WebFetchTool20250910AllowedCaller.CodeExecution20260120,
+            "code_execution_20260521" => WebFetchTool20250910AllowedCaller.CodeExecution20260521,
             _ => (WebFetchTool20250910AllowedCaller)(-1),
         };
     }
@@ -318,6 +322,8 @@ sealed class WebFetchTool20250910AllowedCallerConverter
                     "code_execution_20250825",
                 WebFetchTool20250910AllowedCaller.CodeExecution20260120 =>
                     "code_execution_20260120",
+                WebFetchTool20250910AllowedCaller.CodeExecution20260521 =>
+                    "code_execution_20260521",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

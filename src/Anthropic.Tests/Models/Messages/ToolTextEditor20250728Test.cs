@@ -388,6 +388,7 @@ public class ToolTextEditor20250728AllowedCallerTest : TestBase
     [InlineData(ToolTextEditor20250728AllowedCaller.Direct)]
     [InlineData(ToolTextEditor20250728AllowedCaller.CodeExecution20250825)]
     [InlineData(ToolTextEditor20250728AllowedCaller.CodeExecution20260120)]
+    [InlineData(ToolTextEditor20250728AllowedCaller.CodeExecution20260521)]
     public void Validation_Works(ToolTextEditor20250728AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -410,6 +411,7 @@ public class ToolTextEditor20250728AllowedCallerTest : TestBase
     [InlineData(ToolTextEditor20250728AllowedCaller.Direct)]
     [InlineData(ToolTextEditor20250728AllowedCaller.CodeExecution20250825)]
     [InlineData(ToolTextEditor20250728AllowedCaller.CodeExecution20260120)]
+    [InlineData(ToolTextEditor20250728AllowedCaller.CodeExecution20260521)]
     public void SerializationRoundtrip_Works(ToolTextEditor20250728AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us

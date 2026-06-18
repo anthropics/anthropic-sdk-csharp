@@ -329,6 +329,7 @@ public class BetaToolSearchToolRegex20251119AllowedCallerTest : TestBase
     [InlineData(BetaToolSearchToolRegex20251119AllowedCaller.Direct)]
     [InlineData(BetaToolSearchToolRegex20251119AllowedCaller.CodeExecution20250825)]
     [InlineData(BetaToolSearchToolRegex20251119AllowedCaller.CodeExecution20260120)]
+    [InlineData(BetaToolSearchToolRegex20251119AllowedCaller.CodeExecution20260521)]
     public void Validation_Works(BetaToolSearchToolRegex20251119AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -351,6 +352,7 @@ public class BetaToolSearchToolRegex20251119AllowedCallerTest : TestBase
     [InlineData(BetaToolSearchToolRegex20251119AllowedCaller.Direct)]
     [InlineData(BetaToolSearchToolRegex20251119AllowedCaller.CodeExecution20250825)]
     [InlineData(BetaToolSearchToolRegex20251119AllowedCaller.CodeExecution20260120)]
+    [InlineData(BetaToolSearchToolRegex20251119AllowedCaller.CodeExecution20260521)]
     public void SerializationRoundtrip_Works(BetaToolSearchToolRegex20251119AllowedCaller rawValue)
     {
         // force implicit conversion because Theory can't do that for us
