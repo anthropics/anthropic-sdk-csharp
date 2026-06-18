@@ -108,7 +108,16 @@ public sealed class BetaMessageContentAggregator
                 // the latest delta supersedes prior values.
                 if (delta.Usage.Iterations != null)
                 {
-                    usage = usage with { Iterations = delta.Usage.Iterations };
+                    // BetaMessageDeltaUsage.Iterations and BetaUsage.Iterations are the
+                    // same union schema but the generator currently inlines them under two
+                    // distinct C# types (Iteration / BetaUsageIteration); rewrap via the
+                    // raw JSON until the shared type is restored upstream.
+                    usage = usage with
+                    {
+                        Iterations = delta
+                            .Usage.Iterations.Select(i => new BetaUsageIteration(i.Json))
+                            .ToList(),
+                    };
                 }
             }
         }
