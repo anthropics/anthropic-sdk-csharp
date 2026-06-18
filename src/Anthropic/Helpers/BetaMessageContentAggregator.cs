@@ -114,9 +114,10 @@ public sealed class BetaMessageContentAggregator
                     // raw JSON until the shared type is restored upstream.
                     usage = usage with
                     {
-                        Iterations = delta
-                            .Usage.Iterations.Select(i => new BetaUsageIteration(i.Json))
-                            .ToList(),
+                        Iterations =
+                        [
+                            .. delta.Usage.Iterations.Select(i => new BetaUsageIteration(i.Json)),
+                        ],
                     };
                 }
             }
