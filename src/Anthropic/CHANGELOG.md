@@ -1,5 +1,18 @@
 # Changelog
 
+## 12.30.0 (2026-06-18)
+
+Full Changelog: [Anthropic-v12.29.1...Anthropic-v12.30.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.29.1...Anthropic-v12.30.0)
+
+### Features
+
+* **api:** add support for new code_execution_20260120 tool ([7943727](https://github.com/anthropics/anthropic-sdk-csharp/commit/794372758fb03b41da3699b4ac0fa75322497f1d))
+
+
+### Bug Fixes
+
+* **client:** bad model definitions ([050cd3c](https://github.com/anthropics/anthropic-sdk-csharp/commit/050cd3ccf48ac843dd334175606c226820722623))
+
 ## 12.29.1 (2026-06-15)
 
 Full Changelog: [Anthropic-v12.29.0...Anthropic-v12.29.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.29.0...Anthropic-v12.29.1)
