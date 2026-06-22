@@ -11,7 +11,24 @@ echo "==> Detecting breaking changes"
 # and compile them against the current SDK. If a public type or member was
 # removed or changed incompatibly, the old tests will no longer build,
 # surfacing the breaking change.
-git checkout "$1" -- src/Anthropic.Tests/Services src/Anthropic.Tests/Models 2>/dev/null || true
+#
+# Wipe the directories first so test files that are new on this branch don't
+# survive the checkout and collide with the restored old tests (git checkout
+# <ref> -- <path> does not delete files absent at <ref>).
+TEST_DIRS=(src/Anthropic.Tests/Services src/Anthropic.Tests/Models)
+
+# Failsafe: refuse to wipe if there are untracked (non-ignored) files in the
+# test directories, so a local run can't silently delete work-in-progress.
+UNTRACKED=$(git ls-files --others --exclude-standard -- "${TEST_DIRS[@]}")
+if [ -n "$UNTRACKED" ]; then
+    echo "error: refusing to wipe test directories — untracked files present:" >&2
+    printf '  %s\n' $UNTRACKED >&2
+    echo "Commit, stash, or remove them and re-run." >&2
+    exit 1
+fi
+
+rm -rf "${TEST_DIRS[@]}"
+git checkout "$1" -- "${TEST_DIRS[@]}" 2>/dev/null || true
 
 # Compile only (don't run the tests): a clean build proves the previous tests
 # still bind to the current public API. The test project references the SDK
