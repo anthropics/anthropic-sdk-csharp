@@ -71,6 +71,7 @@ static class Sse
                 case "session.thread_status_idle":
                 case "session.thread_status_rescheduled":
                 case "session.thread_status_terminated":
+                case "system.message":
                     T? message;
                     try
                     {
