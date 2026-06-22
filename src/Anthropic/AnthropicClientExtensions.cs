@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -802,6 +803,43 @@ public static class AnthropicClientExtensions
             }
         }
 
+        /// <summary>
+        /// Merges runs of consecutive <see cref="ChatRole.System"/> messages into a single
+        /// message. The API does not allow consecutive mid-conversation system messages, so
+        /// adjacent system instructions are combined before mapping.
+        /// </summary>
+        private static List<ChatMessage> NormalizeConsecutiveSystemMessages(
+            IEnumerable<ChatMessage> messages
+        )
+        {
+            List<ChatMessage> normalized = [];
+            List<AIContent>? pendingSystem = null;
+            foreach (ChatMessage message in messages)
+            {
+                if (message.Role == ChatRole.System)
+                {
+                    // Accumulate consecutive system instructions into a single message.
+                    (pendingSystem ??= []).AddRange(message.Contents);
+                    continue;
+                }
+
+                if (pendingSystem is not null)
+                {
+                    normalized.Add(new ChatMessage(ChatRole.System, pendingSystem));
+                    pendingSystem = null;
+                }
+
+                normalized.Add(message);
+            }
+
+            if (pendingSystem is not null)
+            {
+                normalized.Add(new ChatMessage(ChatRole.System, pendingSystem));
+            }
+
+            return normalized;
+        }
+
         private static List<MessageParam> CreateMessageParams(
             IEnumerable<ChatMessage> messages,
             out List<TextBlockParam>? systemMessages
@@ -810,22 +848,49 @@ public static class AnthropicClientExtensions
             List<MessageParam> messageParams = [];
             systemMessages = null;
 
-            foreach (ChatMessage message in messages)
+            foreach (ChatMessage message in NormalizeConsecutiveSystemMessages(messages))
             {
                 if (message.Role == ChatRole.System)
                 {
+                    List<TextBlockParam> systemBlocks = [];
                     foreach (AIContent content in message.Contents)
                     {
                         switch (content)
                         {
                             case AIContent ac when ac.RawRepresentation is TextBlockParam raw:
-                                (systemMessages ??= []).Add(raw);
+                                systemBlocks.Add(raw);
                                 break;
 
                             case TextContent tc:
                                 var block = new TextBlockParam { Text = tc.Text };
-                                (systemMessages ??= []).Add(WithCacheControlFrom(block, tc));
+                                systemBlocks.Add(WithCacheControlFrom(block, tc));
                                 break;
+                        }
+                    }
+
+                    if (systemBlocks.Count > 0)
+                    {
+                        if (messageParams.Count == 0)
+                        {
+                            // A system message cannot be the first entry in `messages`; leading
+                            // system instructions go to the top-level `system` property.
+                            (systemMessages ??= []).AddRange(systemBlocks);
+                        }
+                        else
+                        {
+                            // A system message that appears mid-conversation is emitted as a
+                            // `{ "role": "system" }` message at its position. GetMessageCreateParams
+                            // validates the placement (and the model) once the model is resolved,
+                            // hoisting it to the top-level `system` property when it isn't allowed.
+                            messageParams.Add(
+                                new()
+                                {
+                                    Role = Role.System,
+                                    Content = systemBlocks
+                                        .Select(static b => (ContentBlockParam)b)
+                                        .ToList(),
+                                }
+                            );
                         }
                     }
 
@@ -1487,6 +1552,55 @@ public static class AnthropicClientExtensions
                 }
             }
 
+            // A mid-conversation system message is only valid on supporting models (Opus 4.8+),
+            // and only when it immediately follows a user turn and either ends the array or
+            // precedes an assistant turn. Any system message that doesn't qualify is hoisted into
+            // the top-level `system` property (the pre-4.8 behavior). Consecutive system messages
+            // were already merged, so each system message's neighbors here are user/assistant
+            // turns and every placement can be judged independently.
+            {
+                bool supportsMidConversationSystem = ModelSupportsMidConversationSystem(
+                    createParams
+                );
+                IReadOnlyList<MessageParam> builtMessages = createParams.Messages;
+                List<MessageParam> rewritten = [];
+                bool hoistedAny = false;
+                for (int i = 0; i < builtMessages.Count; i++)
+                {
+                    MessageParam message = builtMessages[i];
+                    if (TryGetSystemMessageBlocks(message, out var blocks))
+                    {
+                        bool validPlacement =
+                            supportsMidConversationSystem
+                            && i > 0
+                            && IsRole(builtMessages[i - 1], "user")
+                            && (
+                                i == builtMessages.Count - 1
+                                || IsRole(builtMessages[i + 1], "assistant")
+                            );
+
+                        if (validPlacement)
+                        {
+                            rewritten.Add(message);
+                        }
+                        else
+                        {
+                            (systemMessages ??= []).AddRange(blocks);
+                            hoistedAny = true;
+                        }
+                    }
+                    else
+                    {
+                        rewritten.Add(message);
+                    }
+                }
+
+                if (hoistedAny)
+                {
+                    createParams = createParams with { Messages = rewritten };
+                }
+            }
+
             if (systemMessages is not null)
             {
                 if (createParams.System is { } existingSystem)
@@ -1506,6 +1620,69 @@ public static class AnthropicClientExtensions
 
             // Merge the MEAI user-agent header with existing headers
             return AddMeaiHeaders(createParams);
+        }
+
+        /// <summary>
+        /// Determines whether the resolved model supports mid-conversation system messages.
+        /// This is a capability allowlist; extend it as additional models gain support. Note
+        /// that the feature is unavailable on Bedrock, Vertex, and Foundry regardless of model.
+        /// </summary>
+        private static bool ModelSupportsMidConversationSystem(MessageCreateParams createParams) =>
+            createParams.Model.Raw() is { } modelId
+            && modelId.StartsWith("claude-opus-4-8", StringComparison.Ordinal);
+
+        private static bool IsRole(MessageParam message, string role) =>
+            string.Equals(message.Role.Raw(), role, StringComparison.Ordinal);
+
+        /// <summary>
+        /// Returns the text blocks of <paramref name="message"/> if it is a system-role message
+        /// (one generated by <see cref="CreateMessageParams"/> for a mid-conversation system
+        /// message). User/assistant content is left untouched.
+        /// </summary>
+        private static bool TryGetSystemMessageBlocks(
+            MessageParam message,
+            [NotNullWhen(true)] out List<TextBlockParam>? blocks
+        )
+        {
+            blocks = null;
+
+            if (!IsRole(message, "system"))
+            {
+                return false;
+            }
+
+            List<TextBlockParam> result = [];
+            if (message.Content.TryPickContentBlockParams(out var contentBlocks))
+            {
+                foreach (ContentBlockParam contentBlock in contentBlocks)
+                {
+                    if (contentBlock.TryPickText(out var text))
+                    {
+                        result.Add(text);
+                    }
+                    else
+                    {
+                        // Unexpected non-text content in a system message; leave it untouched.
+                        return false;
+                    }
+                }
+            }
+            else if (message.Content.TryPickString(out var stringContent))
+            {
+                result.Add(new TextBlockParam() { Text = stringContent });
+            }
+            else
+            {
+                return false;
+            }
+
+            if (result.Count == 0)
+            {
+                return false;
+            }
+
+            blocks = result;
+            return true;
         }
 
         private static MessageCreateParams AddMeaiHeaders(MessageCreateParams createParams)

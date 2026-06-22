@@ -2061,6 +2061,392 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetResponseAsync_MidConversationSystemMessage_TrailingAfterUser_OnOpus48()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-opus-4-8",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Review the process function." }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{ "type": "text", "text": "Looks fine for small inputs." }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Now review the caller." }]
+                    },
+                    {
+                        "role": "system",
+                        "content": [{ "type": "text", "text": "From now on, require type annotations." }]
+                    }
+                ],
+                "max_tokens": 1024,
+                "system": [{ "type": "text", "text": "You are a code reviewer." }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mid_conv_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-opus-4-8",
+                "content": [{ "type": "text", "text": "Reviewing..." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 30, "output_tokens": 10 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-opus-4-8");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.System, "You are a code reviewer."),
+            new(ChatRole.User, "Review the process function."),
+            new(ChatRole.Assistant, "Looks fine for small inputs."),
+            new(ChatRole.User, "Now review the caller."),
+            new(ChatRole.System, "From now on, require type annotations."),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_MidConversationSystemMessage_BetweenUserAndAssistant_OnOpus48()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-opus-4-8",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Review this." }]
+                    },
+                    {
+                        "role": "system",
+                        "content": [{ "type": "text", "text": "Be concise." }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{ "type": "text", "text": "Looks good." }]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mid_conv_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-opus-4-8",
+                "content": [{ "type": "text", "text": "Done." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 15, "output_tokens": 5 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-opus-4-8");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Review this."),
+            new(ChatRole.System, "Be concise."),
+            new(ChatRole.Assistant, "Looks good."),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_MidConversationSystemMessage_OnUnsupportedModel_HoistsToTopLevel()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Review the process function." }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{ "type": "text", "text": "Looks fine for small inputs." }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Now review the caller." }]
+                    }
+                ],
+                "max_tokens": 1024,
+                "system": [
+                    { "type": "text", "text": "You are a code reviewer." },
+                    { "type": "text", "text": "From now on, require type annotations." }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mid_conv_03",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{ "type": "text", "text": "Reviewing..." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 30, "output_tokens": 10 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.System, "You are a code reviewer."),
+            new(ChatRole.User, "Review the process function."),
+            new(ChatRole.Assistant, "Looks fine for small inputs."),
+            new(ChatRole.User, "Now review the caller."),
+            new(ChatRole.System, "From now on, require type annotations."),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_SystemMessageAfterAssistant_OnOpus48_IsHoisted()
+    {
+        // A system message that follows an assistant turn is an invalid mid-conversation
+        // position, so it is hoisted to the top-level `system` property even on Opus 4.8.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-opus-4-8",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Hello" }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{ "type": "text", "text": "Hi!" }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Tell me about AI" }]
+                    }
+                ],
+                "max_tokens": 1024,
+                "system": [{ "type": "text", "text": "Be concise." }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mid_conv_04",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-opus-4-8",
+                "content": [{ "type": "text", "text": "AI is..." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 20, "output_tokens": 10 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-opus-4-8");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Hello"),
+            new(ChatRole.Assistant, "Hi!"),
+            new(ChatRole.System, "Be concise."),
+            new(ChatRole.User, "Tell me about AI"),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ConsecutiveSystemMessages_AreMerged_OnOpus48()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-opus-4-8",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Hello" }]
+                    },
+                    {
+                        "role": "system",
+                        "content": [
+                            { "type": "text", "text": "Rule A." },
+                            { "type": "text", "text": "Rule B." }
+                        ]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mid_conv_05",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-opus-4-8",
+                "content": [{ "type": "text", "text": "Understood." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 15, "output_tokens": 5 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-opus-4-8");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Hello"),
+            new(ChatRole.System, "Rule A."),
+            new(ChatRole.System, "Rule B."),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_LeadingSystemMessage_OnOpus48_StaysTopLevel()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-opus-4-8",
+                "messages": [{
+                    "role": "user",
+                    "content": [{ "type": "text", "text": "Tell me about AI" }]
+                }],
+                "max_tokens": 1024,
+                "system": [{ "type": "text", "text": "You are helpful." }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mid_conv_06",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-opus-4-8",
+                "content": [{ "type": "text", "text": "AI is..." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 20, "output_tokens": 10 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-opus-4-8");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.System, "You are helpful."),
+            new(ChatRole.User, "Tell me about AI"),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithCacheControlOnMidConversationSystemMessage()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-opus-4-8",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Hello" }]
+                    },
+                    {
+                        "role": "system",
+                        "content": [{
+                            "type": "text",
+                            "text": "Remember the rules.",
+                            "cache_control": { "type": "ephemeral", "ttl": "1h" }
+                        }]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mid_conv_07",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-opus-4-8",
+                "content": [{ "type": "text", "text": "Understood." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 15, "output_tokens": 5 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-opus-4-8");
+
+        var systemContent = new TextContent("Remember the rules.").WithCacheControl(
+            Anthropic.Models.Messages.Ttl.Ttl1h
+        );
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Hello"),
+            new(ChatRole.System, [systemContent]),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_WithMixedContentTypes()
     {
         VerbatimHttpHandler handler = new(
