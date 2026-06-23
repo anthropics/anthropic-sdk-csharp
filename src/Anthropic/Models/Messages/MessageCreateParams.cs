@@ -510,6 +510,28 @@ public record class MessageCreateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// The user profile ID to attribute this request to. Use when acting on behalf
+    /// of a party other than your organization. Requires the `user-profiles` beta header.
+    /// </summary>
+    public string? UserProfileID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-user-profile-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-user-profile-id", value);
+        }
+    }
+
     public MessageCreateParams() { }
 
 #pragma warning disable CS8618

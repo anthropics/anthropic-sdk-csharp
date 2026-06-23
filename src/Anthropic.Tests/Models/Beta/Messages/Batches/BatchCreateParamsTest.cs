@@ -122,7 +122,7 @@ public class BatchCreateParamsTest : TestBase
                         ServiceTier = ServiceTier.Auto,
                         Speed = Speed.Standard,
                         StopSequences = ["string"],
-                        Stream = true,
+                        Stream = false,
                         System = new(
                             [
                                 new Messages::BetaTextBlockParam()
@@ -184,11 +184,11 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         TopK = 5,
                         TopP = 0.7,
-                        UserProfileID = "user_profile_id",
                     },
                 },
             ],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            UserProfileID = "anthropic-user-profile-id",
         };
 
         List<Request> expectedRequests =
@@ -291,7 +291,7 @@ public class BatchCreateParamsTest : TestBase
                     ServiceTier = ServiceTier.Auto,
                     Speed = Speed.Standard,
                     StopSequences = ["string"],
-                    Stream = true,
+                    Stream = false,
                     System = new(
                         [
                             new Messages::BetaTextBlockParam()
@@ -353,7 +353,6 @@ public class BatchCreateParamsTest : TestBase
                     ],
                     TopK = 5,
                     TopP = 0.7,
-                    UserProfileID = "user_profile_id",
                 },
             },
         ];
@@ -361,6 +360,7 @@ public class BatchCreateParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedUserProfileID = "anthropic-user-profile-id";
 
         Assert.Equal(expectedRequests.Count, parameters.Requests.Count);
         for (int i = 0; i < expectedRequests.Count; i++)
@@ -373,6 +373,7 @@ public class BatchCreateParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
     }
 
     [Fact]
@@ -484,7 +485,7 @@ public class BatchCreateParamsTest : TestBase
                         ServiceTier = ServiceTier.Auto,
                         Speed = Speed.Standard,
                         StopSequences = ["string"],
-                        Stream = true,
+                        Stream = false,
                         System = new(
                             [
                                 new Messages::BetaTextBlockParam()
@@ -546,7 +547,6 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         TopK = 5,
                         TopP = 0.7,
-                        UserProfileID = "user_profile_id",
                     },
                 },
             ],
@@ -554,6 +554,8 @@ public class BatchCreateParamsTest : TestBase
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
     }
 
     [Fact]
@@ -665,7 +667,7 @@ public class BatchCreateParamsTest : TestBase
                         ServiceTier = ServiceTier.Auto,
                         Speed = Speed.Standard,
                         StopSequences = ["string"],
-                        Stream = true,
+                        Stream = false,
                         System = new(
                             [
                                 new Messages::BetaTextBlockParam()
@@ -727,17 +729,19 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         TopK = 5,
                         TopP = 0.7,
-                        UserProfileID = "user_profile_id",
                     },
                 },
             ],
 
             // Null should be interpreted as omitted for these properties
             Betas = null,
+            UserProfileID = null,
         };
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
     }
 
     [Fact]
@@ -849,7 +853,7 @@ public class BatchCreateParamsTest : TestBase
                         ServiceTier = ServiceTier.Auto,
                         Speed = Speed.Standard,
                         StopSequences = ["string"],
-                        Stream = true,
+                        Stream = false,
                         System = new(
                             [
                                 new Messages::BetaTextBlockParam()
@@ -911,7 +915,6 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         TopK = 5,
                         TopP = 0.7,
-                        UserProfileID = "user_profile_id",
                     },
                 },
             ],
@@ -1037,7 +1040,7 @@ public class BatchCreateParamsTest : TestBase
                         ServiceTier = ServiceTier.Auto,
                         Speed = Speed.Standard,
                         StopSequences = ["string"],
-                        Stream = true,
+                        Stream = false,
                         System = new(
                             [
                                 new Messages::BetaTextBlockParam()
@@ -1099,11 +1102,11 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         TopK = 5,
                         TopP = 0.7,
-                        UserProfileID = "user_profile_id",
                     },
                 },
             ],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            UserProfileID = "anthropic-user-profile-id",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -1111,6 +1114,10 @@ public class BatchCreateParamsTest : TestBase
         Assert.Equal(
             ["message-batches-2024-09-24", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["anthropic-user-profile-id"],
+            requestMessage.Headers.GetValues("anthropic-user-profile-id")
         );
     }
 
@@ -1223,7 +1230,7 @@ public class BatchCreateParamsTest : TestBase
                         ServiceTier = ServiceTier.Auto,
                         Speed = Speed.Standard,
                         StopSequences = ["string"],
-                        Stream = true,
+                        Stream = false,
                         System = new(
                             [
                                 new Messages::BetaTextBlockParam()
@@ -1285,11 +1292,11 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         TopK = 5,
                         TopP = 0.7,
-                        UserProfileID = "user_profile_id",
                     },
                 },
             ],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            UserProfileID = "anthropic-user-profile-id",
         };
 
         BatchCreateParams copied = new(parameters);
@@ -1401,7 +1408,7 @@ public class RequestTest : TestBase
                 ServiceTier = ServiceTier.Auto,
                 Speed = Speed.Standard,
                 StopSequences = ["string"],
-                Stream = true,
+                Stream = false,
                 System = new(
                     [
                         new Messages::BetaTextBlockParam()
@@ -1460,7 +1467,6 @@ public class RequestTest : TestBase
                 ],
                 TopK = 5,
                 TopP = 0.7,
-                UserProfileID = "user_profile_id",
             },
         };
 
@@ -1560,7 +1566,7 @@ public class RequestTest : TestBase
             ServiceTier = ServiceTier.Auto,
             Speed = Speed.Standard,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::BetaTextBlockParam()
@@ -1619,7 +1625,6 @@ public class RequestTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         Assert.Equal(expectedCustomID, model.CustomID);
@@ -1727,7 +1732,7 @@ public class RequestTest : TestBase
                 ServiceTier = ServiceTier.Auto,
                 Speed = Speed.Standard,
                 StopSequences = ["string"],
-                Stream = true,
+                Stream = false,
                 System = new(
                     [
                         new Messages::BetaTextBlockParam()
@@ -1786,7 +1791,6 @@ public class RequestTest : TestBase
                 ],
                 TopK = 5,
                 TopP = 0.7,
-                UserProfileID = "user_profile_id",
             },
         };
 
@@ -1897,7 +1901,7 @@ public class RequestTest : TestBase
                 ServiceTier = ServiceTier.Auto,
                 Speed = Speed.Standard,
                 StopSequences = ["string"],
-                Stream = true,
+                Stream = false,
                 System = new(
                     [
                         new Messages::BetaTextBlockParam()
@@ -1956,7 +1960,6 @@ public class RequestTest : TestBase
                 ],
                 TopK = 5,
                 TopP = 0.7,
-                UserProfileID = "user_profile_id",
             },
         };
 
@@ -2063,7 +2066,7 @@ public class RequestTest : TestBase
             ServiceTier = ServiceTier.Auto,
             Speed = Speed.Standard,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::BetaTextBlockParam()
@@ -2122,7 +2125,6 @@ public class RequestTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         Assert.Equal(expectedCustomID, deserialized.CustomID);
@@ -2230,7 +2232,7 @@ public class RequestTest : TestBase
                 ServiceTier = ServiceTier.Auto,
                 Speed = Speed.Standard,
                 StopSequences = ["string"],
-                Stream = true,
+                Stream = false,
                 System = new(
                     [
                         new Messages::BetaTextBlockParam()
@@ -2289,7 +2291,6 @@ public class RequestTest : TestBase
                 ],
                 TopK = 5,
                 TopP = 0.7,
-                UserProfileID = "user_profile_id",
             },
         };
 
@@ -2397,7 +2398,7 @@ public class RequestTest : TestBase
                 ServiceTier = ServiceTier.Auto,
                 Speed = Speed.Standard,
                 StopSequences = ["string"],
-                Stream = true,
+                Stream = false,
                 System = new(
                     [
                         new Messages::BetaTextBlockParam()
@@ -2456,7 +2457,6 @@ public class RequestTest : TestBase
                 ],
                 TopK = 5,
                 TopP = 0.7,
-                UserProfileID = "user_profile_id",
             },
         };
 
@@ -2566,7 +2566,7 @@ public class ParamsTest : TestBase
             ServiceTier = ServiceTier.Auto,
             Speed = Speed.Standard,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::BetaTextBlockParam()
@@ -2625,7 +2625,6 @@ public class ParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         long expectedMaxTokens = 1024;
@@ -2733,7 +2732,7 @@ public class ParamsTest : TestBase
         ApiEnum<string, ServiceTier> expectedServiceTier = ServiceTier.Auto;
         ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
         List<string> expectedStopSequences = ["string"];
-        bool expectedStream = true;
+        bool expectedStream = false;
         ParamsSystem expectedSystem = new(
             [
                 new Messages::BetaTextBlockParam()
@@ -2793,7 +2792,6 @@ public class ParamsTest : TestBase
         ];
         long expectedTopK = 5;
         double expectedTopP = 0.7;
-        string expectedUserProfileID = "user_profile_id";
 
         Assert.Equal(expectedMaxTokens, model.MaxTokens);
         Assert.Equal(expectedMessages.Count, model.Messages.Count);
@@ -2844,7 +2842,6 @@ public class ParamsTest : TestBase
         }
         Assert.Equal(expectedTopK, model.TopK);
         Assert.Equal(expectedTopP, model.TopP);
-        Assert.Equal(expectedUserProfileID, model.UserProfileID);
     }
 
     [Fact]
@@ -2945,7 +2942,7 @@ public class ParamsTest : TestBase
             ServiceTier = ServiceTier.Auto,
             Speed = Speed.Standard,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::BetaTextBlockParam()
@@ -3004,7 +3001,6 @@ public class ParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -3111,7 +3107,7 @@ public class ParamsTest : TestBase
             ServiceTier = ServiceTier.Auto,
             Speed = Speed.Standard,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::BetaTextBlockParam()
@@ -3170,7 +3166,6 @@ public class ParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -3282,7 +3277,7 @@ public class ParamsTest : TestBase
         ApiEnum<string, ServiceTier> expectedServiceTier = ServiceTier.Auto;
         ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
         List<string> expectedStopSequences = ["string"];
-        bool expectedStream = true;
+        bool expectedStream = false;
         ParamsSystem expectedSystem = new(
             [
                 new Messages::BetaTextBlockParam()
@@ -3342,7 +3337,6 @@ public class ParamsTest : TestBase
         ];
         long expectedTopK = 5;
         double expectedTopP = 0.7;
-        string expectedUserProfileID = "user_profile_id";
 
         Assert.Equal(expectedMaxTokens, deserialized.MaxTokens);
         Assert.Equal(expectedMessages.Count, deserialized.Messages.Count);
@@ -3393,7 +3387,6 @@ public class ParamsTest : TestBase
         }
         Assert.Equal(expectedTopK, deserialized.TopK);
         Assert.Equal(expectedTopP, deserialized.TopP);
-        Assert.Equal(expectedUserProfileID, deserialized.UserProfileID);
     }
 
     [Fact]
@@ -3494,7 +3487,7 @@ public class ParamsTest : TestBase
             ServiceTier = ServiceTier.Auto,
             Speed = Speed.Standard,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::BetaTextBlockParam()
@@ -3553,7 +3546,6 @@ public class ParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         model.Validate();
@@ -3632,7 +3624,6 @@ public class ParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
-            UserProfileID = "user_profile_id",
         };
 
         Assert.Null(model.McpServers);
@@ -3736,7 +3727,6 @@ public class ParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
-            UserProfileID = "user_profile_id",
         };
 
         model.Validate();
@@ -3815,7 +3805,6 @@ public class ParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
-            UserProfileID = "user_profile_id",
 
             // Null should be interpreted as omitted for these properties
             McpServers = null,
@@ -3934,7 +3923,6 @@ public class ParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
-            UserProfileID = "user_profile_id",
 
             // Null should be interpreted as omitted for these properties
             McpServers = null,
@@ -3988,7 +3976,7 @@ public class ParamsTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::BetaTextBlockParam()
@@ -4067,8 +4055,6 @@ public class ParamsTest : TestBase
         Assert.False(model.RawData.ContainsKey("output_format"));
         Assert.Null(model.Speed);
         Assert.False(model.RawData.ContainsKey("speed"));
-        Assert.Null(model.UserProfileID);
-        Assert.False(model.RawData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -4104,7 +4090,7 @@ public class ParamsTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::BetaTextBlockParam()
@@ -4201,7 +4187,7 @@ public class ParamsTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::BetaTextBlockParam()
@@ -4270,7 +4256,6 @@ public class ParamsTest : TestBase
             InferenceGeo = null,
             OutputFormat = null,
             Speed = null,
-            UserProfileID = null,
         };
 
         Assert.Null(model.CacheControl);
@@ -4291,8 +4276,6 @@ public class ParamsTest : TestBase
         Assert.True(model.RawData.ContainsKey("output_format"));
         Assert.Null(model.Speed);
         Assert.True(model.RawData.ContainsKey("speed"));
-        Assert.Null(model.UserProfileID);
-        Assert.True(model.RawData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -4328,7 +4311,7 @@ public class ParamsTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::BetaTextBlockParam()
@@ -4397,7 +4380,6 @@ public class ParamsTest : TestBase
             InferenceGeo = null,
             OutputFormat = null,
             Speed = null,
-            UserProfileID = null,
         };
 
         model.Validate();
@@ -4501,7 +4483,7 @@ public class ParamsTest : TestBase
             ServiceTier = ServiceTier.Auto,
             Speed = Speed.Standard,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::BetaTextBlockParam()
@@ -4560,7 +4542,6 @@ public class ParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
-            UserProfileID = "user_profile_id",
         };
 
         Params copied = new(model);

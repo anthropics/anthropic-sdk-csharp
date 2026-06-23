@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
@@ -92,6 +93,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
+            UserProfileID = "anthropic-user-profile-id",
         };
 
         long expectedMaxTokens = 1024;
@@ -181,6 +183,7 @@ public class MessageCreateParamsTest : TestBase
         ];
         long expectedTopK = 5;
         double expectedTopP = 0.7;
+        string expectedUserProfileID = "anthropic-user-profile-id";
 
         Assert.Equal(expectedMaxTokens, parameters.MaxTokens);
         Assert.Equal(expectedMessages.Count, parameters.Messages.Count);
@@ -213,6 +216,7 @@ public class MessageCreateParamsTest : TestBase
         }
         Assert.Equal(expectedTopK, parameters.TopK);
         Assert.Equal(expectedTopP, parameters.TopP);
+        Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
     }
 
     [Fact]
@@ -250,6 +254,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("top_k"));
         Assert.Null(parameters.TopP);
         Assert.False(parameters.RawBodyData.ContainsKey("top_p"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
     }
 
     [Fact]
@@ -276,6 +282,7 @@ public class MessageCreateParamsTest : TestBase
             Tools = null,
             TopK = null,
             TopP = null,
+            UserProfileID = null,
         };
 
         Assert.Null(parameters.Metadata);
@@ -300,6 +307,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("top_k"));
         Assert.Null(parameters.TopP);
         Assert.False(parameters.RawBodyData.ContainsKey("top_p"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
     }
 
     [Fact]
@@ -382,6 +391,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
+            UserProfileID = "anthropic-user-profile-id",
         };
 
         Assert.Null(parameters.CacheControl);
@@ -472,6 +482,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
+            UserProfileID = "anthropic-user-profile-id",
 
             CacheControl = null,
             Container = null,
@@ -499,6 +510,26 @@ public class MessageCreateParamsTest : TestBase
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.True(TestBase.UrisEqual(new Uri("https://api.anthropic.com/v1/messages"), url));
+    }
+
+    [Fact]
+    public void AddHeadersToRequest_Works()
+    {
+        HttpRequestMessage requestMessage = new();
+        Messages::MessageCreateParams parameters = new()
+        {
+            MaxTokens = 1024,
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus4_6,
+            UserProfileID = "anthropic-user-profile-id",
+        };
+
+        parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.Equal(
+            ["anthropic-user-profile-id"],
+            requestMessage.Headers.GetValues("anthropic-user-profile-id")
+        );
     }
 
     [Fact]
@@ -584,6 +615,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             TopK = 5,
             TopP = 0.7,
+            UserProfileID = "anthropic-user-profile-id",
         };
 
         Messages::MessageCreateParams copied = new(parameters);

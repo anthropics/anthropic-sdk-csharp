@@ -118,7 +118,7 @@ public class BatchServiceTest : TestBase
                             ServiceTier = Batches::ServiceTier.Auto,
                             Speed = Batches::Speed.Standard,
                             StopSequences = ["string"],
-                            Stream = true,
+                            Stream = false,
                             System = new(
                                 [
                                     new BetaTextBlockParam()
@@ -180,7 +180,6 @@ public class BatchServiceTest : TestBase
                             ],
                             TopK = 5,
                             TopP = 0.7,
-                            UserProfileID = "user_profile_id",
                         },
                     },
                 ],
