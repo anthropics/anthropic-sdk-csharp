@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
@@ -42,7 +43,206 @@ public class BatchCreateParamsTest : TestBase
                         },
                         ServiceTier = ServiceTier.Auto,
                         StopSequences = ["string"],
-                        Stream = true,
+                        Stream = false,
+                        System = new(
+                            [
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ]
+                        ),
+                        Temperature = 1,
+                        Thinking = new Messages::ThinkingConfigAdaptive()
+                        {
+                            Display = Messages::Display.Summarized,
+                        },
+                        ToolChoice = new Messages::ToolChoiceAuto()
+                        {
+                            DisableParallelToolUse = true,
+                        },
+                        Tools =
+                        [
+                            new Messages::Tool()
+                            {
+                                InputSchema = new()
+                                {
+                                    Properties = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "location", JsonSerializer.SerializeToElement("bar") },
+                                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                    Required = ["location"],
+                                },
+                                Name = "name",
+                                AllowedCallers = [Messages::ToolAllowedCaller.Direct],
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                DeferLoading = true,
+                                Description = "Get the current weather in a given location",
+                                EagerInputStreaming = true,
+                                InputExamples =
+                                [
+                                    new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                ],
+                                Strict = true,
+                                Type = Messages::Type.Custom,
+                            },
+                        ],
+                        TopK = 5,
+                        TopP = 0.7,
+                    },
+                },
+            ],
+            UserProfileID = "anthropic-user-profile-id",
+        };
+
+        List<Request> expectedRequests =
+        [
+            new()
+            {
+                CustomID = "my-custom-id-1",
+                Params = new()
+                {
+                    MaxTokens = 1024,
+                    Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                    Model = Messages::Model.ClaudeOpus4_6,
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    Container = "container",
+                    InferenceGeo = "inference_geo",
+                    Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                    },
+                    ServiceTier = ServiceTier.Auto,
+                    StopSequences = ["string"],
+                    Stream = false,
+                    System = new(
+                        [
+                            new Messages::TextBlockParam()
+                            {
+                                Text = "Today's date is 2024-06-01.",
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                Citations =
+                                [
+                                    new Messages::CitationCharLocationParam()
+                                    {
+                                        CitedText = "cited_text",
+                                        DocumentIndex = 0,
+                                        DocumentTitle = "x",
+                                        EndCharIndex = 0,
+                                        StartCharIndex = 0,
+                                    },
+                                ],
+                            },
+                        ]
+                    ),
+                    Temperature = 1,
+                    Thinking = new Messages::ThinkingConfigAdaptive()
+                    {
+                        Display = Messages::Display.Summarized,
+                    },
+                    ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+                    Tools =
+                    [
+                        new Messages::Tool()
+                        {
+                            InputSchema = new()
+                            {
+                                Properties = new Dictionary<string, JsonElement>()
+                                {
+                                    { "location", JsonSerializer.SerializeToElement("bar") },
+                                    { "unit", JsonSerializer.SerializeToElement("bar") },
+                                },
+                                Required = ["location"],
+                            },
+                            Name = "name",
+                            AllowedCallers = [Messages::ToolAllowedCaller.Direct],
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                            DeferLoading = true,
+                            Description = "Get the current weather in a given location",
+                            EagerInputStreaming = true,
+                            InputExamples =
+                            [
+                                new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            ],
+                            Strict = true,
+                            Type = Messages::Type.Custom,
+                        },
+                    ],
+                    TopK = 5,
+                    TopP = 0.7,
+                },
+            },
+        ];
+        string expectedUserProfileID = "anthropic-user-profile-id";
+
+        Assert.Equal(expectedRequests.Count, parameters.Requests.Count);
+        for (int i = 0; i < expectedRequests.Count; i++)
+        {
+            Assert.Equal(expectedRequests[i], parameters.Requests[i]);
+        }
+        Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsUnsetAreNotSet_Works()
+    {
+        var parameters = new BatchCreateParams
+        {
+            Requests =
+            [
+                new()
+                {
+                    CustomID = "my-custom-id-1",
+                    Params = new()
+                    {
+                        MaxTokens = 1024,
+                        Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                        Model = Messages::Model.ClaudeOpus4_6,
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Container = "container",
+                        InferenceGeo = "inference_geo",
+                        Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
+                        ServiceTier = ServiceTier.Auto,
+                        StopSequences = ["string"],
+                        Stream = false,
                         System = new(
                             [
                                 new Messages::TextBlockParam()
@@ -109,101 +309,114 @@ public class BatchCreateParamsTest : TestBase
             ],
         };
 
-        List<Request> expectedRequests =
-        [
-            new()
-            {
-                CustomID = "my-custom-id-1",
-                Params = new()
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
+    {
+        var parameters = new BatchCreateParams
+        {
+            Requests =
+            [
+                new()
                 {
-                    MaxTokens = 1024,
-                    Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                    Model = Messages::Model.ClaudeOpus4_6,
-                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
-                    Container = "container",
-                    InferenceGeo = "inference_geo",
-                    Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                    OutputConfig = new()
+                    CustomID = "my-custom-id-1",
+                    Params = new()
                     {
-                        Effort = Messages::Effort.Low,
-                        Format = new()
+                        MaxTokens = 1024,
+                        Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                        Model = Messages::Model.ClaudeOpus4_6,
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Container = "container",
+                        InferenceGeo = "inference_geo",
+                        Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        OutputConfig = new()
                         {
-                            Schema = new Dictionary<string, JsonElement>()
+                            Effort = Messages::Effort.Low,
+                            Format = new()
                             {
-                                { "foo", JsonSerializer.SerializeToElement("bar") },
-                            },
-                        },
-                    },
-                    ServiceTier = ServiceTier.Auto,
-                    StopSequences = ["string"],
-                    Stream = true,
-                    System = new(
-                        [
-                            new Messages::TextBlockParam()
-                            {
-                                Text = "Today's date is 2024-06-01.",
-                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
-                                Citations =
-                                [
-                                    new Messages::CitationCharLocationParam()
-                                    {
-                                        CitedText = "cited_text",
-                                        DocumentIndex = 0,
-                                        DocumentTitle = "x",
-                                        EndCharIndex = 0,
-                                        StartCharIndex = 0,
-                                    },
-                                ],
-                            },
-                        ]
-                    ),
-                    Temperature = 1,
-                    Thinking = new Messages::ThinkingConfigAdaptive()
-                    {
-                        Display = Messages::Display.Summarized,
-                    },
-                    ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
-                    Tools =
-                    [
-                        new Messages::Tool()
-                        {
-                            InputSchema = new()
-                            {
-                                Properties = new Dictionary<string, JsonElement>()
-                                {
-                                    { "location", JsonSerializer.SerializeToElement("bar") },
-                                    { "unit", JsonSerializer.SerializeToElement("bar") },
-                                },
-                                Required = ["location"],
-                            },
-                            Name = "name",
-                            AllowedCallers = [Messages::ToolAllowedCaller.Direct],
-                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
-                            DeferLoading = true,
-                            Description = "Get the current weather in a given location",
-                            EagerInputStreaming = true,
-                            InputExamples =
-                            [
-                                new Dictionary<string, JsonElement>()
+                                Schema = new Dictionary<string, JsonElement>()
                                 {
                                     { "foo", JsonSerializer.SerializeToElement("bar") },
                                 },
-                            ],
-                            Strict = true,
-                            Type = Messages::Type.Custom,
+                            },
                         },
-                    ],
-                    TopK = 5,
-                    TopP = 0.7,
+                        ServiceTier = ServiceTier.Auto,
+                        StopSequences = ["string"],
+                        Stream = false,
+                        System = new(
+                            [
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ]
+                        ),
+                        Temperature = 1,
+                        Thinking = new Messages::ThinkingConfigAdaptive()
+                        {
+                            Display = Messages::Display.Summarized,
+                        },
+                        ToolChoice = new Messages::ToolChoiceAuto()
+                        {
+                            DisableParallelToolUse = true,
+                        },
+                        Tools =
+                        [
+                            new Messages::Tool()
+                            {
+                                InputSchema = new()
+                                {
+                                    Properties = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "location", JsonSerializer.SerializeToElement("bar") },
+                                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                    Required = ["location"],
+                                },
+                                Name = "name",
+                                AllowedCallers = [Messages::ToolAllowedCaller.Direct],
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                DeferLoading = true,
+                                Description = "Get the current weather in a given location",
+                                EagerInputStreaming = true,
+                                InputExamples =
+                                [
+                                    new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                ],
+                                Strict = true,
+                                Type = Messages::Type.Custom,
+                            },
+                        ],
+                        TopK = 5,
+                        TopP = 0.7,
+                    },
                 },
-            },
-        ];
+            ],
 
-        Assert.Equal(expectedRequests.Count, parameters.Requests.Count);
-        for (int i = 0; i < expectedRequests.Count; i++)
-        {
-            Assert.Equal(expectedRequests[i], parameters.Requests[i]);
-        }
+            // Null should be interpreted as omitted for these properties
+            UserProfileID = null,
+        };
+
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
     }
 
     [Fact]
@@ -238,7 +451,7 @@ public class BatchCreateParamsTest : TestBase
                         },
                         ServiceTier = ServiceTier.Auto,
                         StopSequences = ["string"],
-                        Stream = true,
+                        Stream = false,
                         System = new(
                             [
                                 new Messages::TextBlockParam()
@@ -313,9 +526,10 @@ public class BatchCreateParamsTest : TestBase
     }
 
     [Fact]
-    public void CopyConstructor_Works()
+    public void AddHeadersToRequest_Works()
     {
-        var parameters = new BatchCreateParams
+        HttpRequestMessage requestMessage = new();
+        BatchCreateParams parameters = new()
         {
             Requests =
             [
@@ -344,7 +558,7 @@ public class BatchCreateParamsTest : TestBase
                         },
                         ServiceTier = ServiceTier.Auto,
                         StopSequences = ["string"],
-                        Stream = true,
+                        Stream = false,
                         System = new(
                             [
                                 new Messages::TextBlockParam()
@@ -409,6 +623,115 @@ public class BatchCreateParamsTest : TestBase
                     },
                 },
             ],
+            UserProfileID = "anthropic-user-profile-id",
+        };
+
+        parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.Equal(
+            ["anthropic-user-profile-id"],
+            requestMessage.Headers.GetValues("anthropic-user-profile-id")
+        );
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new BatchCreateParams
+        {
+            Requests =
+            [
+                new()
+                {
+                    CustomID = "my-custom-id-1",
+                    Params = new()
+                    {
+                        MaxTokens = 1024,
+                        Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                        Model = Messages::Model.ClaudeOpus4_6,
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Container = "container",
+                        InferenceGeo = "inference_geo",
+                        Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
+                        ServiceTier = ServiceTier.Auto,
+                        StopSequences = ["string"],
+                        Stream = false,
+                        System = new(
+                            [
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ]
+                        ),
+                        Temperature = 1,
+                        Thinking = new Messages::ThinkingConfigAdaptive()
+                        {
+                            Display = Messages::Display.Summarized,
+                        },
+                        ToolChoice = new Messages::ToolChoiceAuto()
+                        {
+                            DisableParallelToolUse = true,
+                        },
+                        Tools =
+                        [
+                            new Messages::Tool()
+                            {
+                                InputSchema = new()
+                                {
+                                    Properties = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "location", JsonSerializer.SerializeToElement("bar") },
+                                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                    Required = ["location"],
+                                },
+                                Name = "name",
+                                AllowedCallers = [Messages::ToolAllowedCaller.Direct],
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                DeferLoading = true,
+                                Description = "Get the current weather in a given location",
+                                EagerInputStreaming = true,
+                                InputExamples =
+                                [
+                                    new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                ],
+                                Strict = true,
+                                Type = Messages::Type.Custom,
+                            },
+                        ],
+                        TopK = 5,
+                        TopP = 0.7,
+                    },
+                },
+            ],
+            UserProfileID = "anthropic-user-profile-id",
         };
 
         BatchCreateParams copied = new(parameters);
@@ -447,7 +770,7 @@ public class RequestTest : TestBase
                 },
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
-                Stream = true,
+                Stream = false,
                 System = new(
                     [
                         new Messages::TextBlockParam()
@@ -532,7 +855,7 @@ public class RequestTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::TextBlockParam()
@@ -625,7 +948,7 @@ public class RequestTest : TestBase
                 },
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
-                Stream = true,
+                Stream = false,
                 System = new(
                     [
                         new Messages::TextBlockParam()
@@ -721,7 +1044,7 @@ public class RequestTest : TestBase
                 },
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
-                Stream = true,
+                Stream = false,
                 System = new(
                     [
                         new Messages::TextBlockParam()
@@ -813,7 +1136,7 @@ public class RequestTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::TextBlockParam()
@@ -906,7 +1229,7 @@ public class RequestTest : TestBase
                 },
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
-                Stream = true,
+                Stream = false,
                 System = new(
                     [
                         new Messages::TextBlockParam()
@@ -999,7 +1322,7 @@ public class RequestTest : TestBase
                 },
                 ServiceTier = ServiceTier.Auto,
                 StopSequences = ["string"],
-                Stream = true,
+                Stream = false,
                 System = new(
                     [
                         new Messages::TextBlockParam()
@@ -1094,7 +1417,7 @@ public class ParamsTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::TextBlockParam()
@@ -1181,7 +1504,7 @@ public class ParamsTest : TestBase
         };
         ApiEnum<string, ServiceTier> expectedServiceTier = ServiceTier.Auto;
         List<string> expectedStopSequences = ["string"];
-        bool expectedStream = true;
+        bool expectedStream = false;
         ParamsSystem expectedSystem = new(
             [
                 new Messages::TextBlockParam()
@@ -1303,7 +1626,7 @@ public class ParamsTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::TextBlockParam()
@@ -1395,7 +1718,7 @@ public class ParamsTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::TextBlockParam()
@@ -1486,7 +1809,7 @@ public class ParamsTest : TestBase
         };
         ApiEnum<string, ServiceTier> expectedServiceTier = ServiceTier.Auto;
         List<string> expectedStopSequences = ["string"];
-        bool expectedStream = true;
+        bool expectedStream = false;
         ParamsSystem expectedSystem = new(
             [
                 new Messages::TextBlockParam()
@@ -1608,7 +1931,7 @@ public class ParamsTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::TextBlockParam()
@@ -1832,7 +2155,7 @@ public class ParamsTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::TextBlockParam()
@@ -1923,7 +2246,7 @@ public class ParamsTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::TextBlockParam()
@@ -2009,7 +2332,7 @@ public class ParamsTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::TextBlockParam()
@@ -2104,7 +2427,7 @@ public class ParamsTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::TextBlockParam()
@@ -2197,7 +2520,7 @@ public class ParamsTest : TestBase
             },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
-            Stream = true,
+            Stream = false,
             System = new(
                 [
                     new Messages::TextBlockParam()

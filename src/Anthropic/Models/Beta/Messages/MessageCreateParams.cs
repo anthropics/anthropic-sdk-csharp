@@ -654,20 +654,6 @@ public record class MessageCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// The user profile ID to attribute this request to. Use when acting on behalf
-    /// of a party other than your organization.
-    /// </summary>
-    public string? UserProfileID
-    {
-        get
-        {
-            this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableClass<string>("user_profile_id");
-        }
-        init { this._rawBodyData.Set("user_profile_id", value); }
-    }
-
-    /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
@@ -690,6 +676,28 @@ public record class MessageCreateParams : ParamsBase
                 "anthropic-beta",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
+        }
+    }
+
+    /// <summary>
+    /// The user profile ID to attribute this request to. Use when acting on behalf
+    /// of a party other than your organization. Requires the `user-profiles` beta header.
+    /// </summary>
+    public string? UserProfileID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-user-profile-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-user-profile-id", value);
         }
     }
 

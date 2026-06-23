@@ -71,7 +71,8 @@ public record class AgentCreateParams : ParamsBase
 
     /// <summary>
     /// MCP servers this agent connects to. Maximum 20. Names must be unique within
-    /// the array.
+    /// the array. Every server must be referenced by an `mcp_toolset` in `tools`;
+    /// unreferenced servers are rejected. See the [MCP connector guide](https://platform.claude.com/docs/en/managed-agents/mcp-connector).
     /// </summary>
     public IReadOnlyList<BetaManagedAgentsUrlMcpServerParams>? McpServers
     {

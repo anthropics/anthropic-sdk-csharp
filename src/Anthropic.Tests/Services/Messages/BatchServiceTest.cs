@@ -41,7 +41,7 @@ public class BatchServiceTest : TestBase
                             },
                             ServiceTier = Batches::ServiceTier.Auto,
                             StopSequences = ["string"],
-                            Stream = true,
+                            Stream = false,
                             System = new(
                                 [
                                     new TextBlockParam()
