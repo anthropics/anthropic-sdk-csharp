@@ -21,6 +21,11 @@ public class AnthropicFoundryClient : AnthropicClient
     {
         _azureCredentials =
             azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));
+        // Foundry auth comes solely from the credentials provider. Suppress the base
+        // client's ANTHROPIC_API_KEY / ANTHROPIC_AUTH_TOKEN env fallbacks so first-party
+        // credentials are never sent to Azure alongside the Foundry credential.
+        base.ApiKey = null;
+        AuthToken = null;
         BaseUrl = $"https://{azureCredentials.ResourceName}.services.ai.azure.com/anthropic";
         BackendAdaptationHandler = () => CreateAdaptationHandler(azureCredentials);
     }
