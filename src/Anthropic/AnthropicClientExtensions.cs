@@ -591,6 +591,12 @@ public static class AnthropicClientExtensions
             string? messageId = null;
             string? modelID = null;
             UsageDetails? usageDetails = null;
+            // The cache/input token fields are nullable and are usually omitted on the terminal
+            // message_delta, so remember the values reported on message_start to fall back on.
+            long? startInputTokens = null;
+            long? startCacheCreationInputTokens = null;
+            long? startCacheReadInputTokens = null;
+            ServerToolUsage? startServerToolUse = null;
             ChatFinishReason? finishReason = null;
             Dictionary<long, StreamingFunctionData>? streamingFunctions = null;
 
@@ -617,6 +623,10 @@ public static class AnthropicClientExtensions
 
                         if (rawMessageStart.Message.Usage is { } usage)
                         {
+                            startInputTokens = usage.InputTokens;
+                            startCacheCreationInputTokens = usage.CacheCreationInputTokens;
+                            startCacheReadInputTokens = usage.CacheReadInputTokens;
+                            startServerToolUse = usage.ServerToolUse;
                             UsageDetails current = ToUsageDetails(usage);
                             if (usageDetails is null)
                             {
@@ -635,7 +645,17 @@ public static class AnthropicClientExtensions
                         {
                             // https://platform.claude.com/docs/en/build-with-claude/streaming
                             // "The token counts shown in the usage field of the message_delta event are cumulative."
-                            usageDetails = ToUsageDetails(deltaUsage);
+                            // These fields are nullable and usually omitted on the terminal
+                            // message_delta, so fall back to the message_start values instead of
+                            // wiping them out.
+                            usageDetails = ToUsageDetails(
+                                deltaUsage.InputTokens ?? startInputTokens,
+                                deltaUsage.OutputTokens,
+                                deltaUsage.CacheCreationInputTokens
+                                    ?? startCacheCreationInputTokens,
+                                deltaUsage.CacheReadInputTokens ?? startCacheReadInputTokens,
+                                deltaUsage.ServerToolUse ?? startServerToolUse
+                            );
                         }
                         break;
 
@@ -1525,15 +1545,6 @@ public static class AnthropicClientExtensions
         }
 
         private static UsageDetails ToUsageDetails(Usage usage) =>
-            ToUsageDetails(
-                usage.InputTokens,
-                usage.OutputTokens,
-                usage.CacheCreationInputTokens,
-                usage.CacheReadInputTokens,
-                usage.ServerToolUse
-            );
-
-        private static UsageDetails ToUsageDetails(MessageDeltaUsage usage) =>
             ToUsageDetails(
                 usage.InputTokens,
                 usage.OutputTokens,
