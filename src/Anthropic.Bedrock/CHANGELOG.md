@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.2 (2026-06-24)
+
+Full Changelog: [Bedrock-v0.10.1...Bedrock-v0.10.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.10.1...Bedrock-v0.10.2)
+
+### Chores
+
+* **internal:** add lock file ([#63](https://github.com/anthropics/anthropic-sdk-csharp/issues/63)) ([6a75efb](https://github.com/anthropics/anthropic-sdk-csharp/commit/6a75efbe17fc5741cd809bcb6d4ce4514eb0fd37))
+
 ## 0.10.1 (2026-06-15)
 
 Full Changelog: [Bedrock-v0.10.0...Bedrock-v0.10.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.10.0...Bedrock-v0.10.1)
