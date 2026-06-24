@@ -32,6 +32,7 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <ImplicitUsings>disable</ImplicitUsings>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <!-- Disable deprecation warnings since we may reference our own deprecated symbols. -->
     <NoWarn>$(NoWarn),0618</NoWarn>
   </PropertyGroup>
