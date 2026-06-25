@@ -842,6 +842,22 @@ public static class AnthropicClientExtensions
                             contents.Add(rawContent);
                             break;
 
+                        case AIContent ac
+                            when ac.RawRepresentation is ServerToolUseBlock serverToolUseBlock:
+                            contents.Add(
+                                ServerToolUseBlockParam.FromRawUnchecked(serverToolUseBlock.RawData)
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation is ToolSearchToolResultBlock toolSearchResultBlock:
+                            contents.Add(
+                                ToolSearchToolResultBlockParam.FromRawUnchecked(
+                                    toolSearchResultBlock.RawData
+                                )
+                            );
+                            break;
+
                         case TextContent tc:
                             string text = tc.Text;
                             if (message.Role == ChatRole.Assistant)
@@ -1327,6 +1343,18 @@ public static class AnthropicClientExtensions
 
                 if (options.Tools is { } tools)
                 {
+                    // Pre-scan for HostedToolSearchTool to determine which tools should be deferred.
+                    // A tool-search tool with no DeferredTools defers every function tool; otherwise
+                    // it defers only the named tools.
+                    var toolSearchTools = tools.OfType<HostedToolSearchTool>().ToList();
+                    bool deferAll = toolSearchTools.Any(t => t.DeferredTools is null);
+                    HashSet<string>? deferredToolNames = deferAll
+                        ? null
+                        : new HashSet<string>(
+                            toolSearchTools.SelectMany(t => t.DeferredTools!),
+                            StringComparer.Ordinal
+                        );
+
                     List<ToolUnion>? createdTools = createParams.Tools?.ToList();
                     foreach (var tool in tools)
                     {
@@ -1348,16 +1376,20 @@ public static class AnthropicClientExtensions
                                     }
                                 }
 
+                                bool? deferLoading =
+                                    GetValue<bool?>(af, nameof(Tool.DeferLoading))
+                                    ?? (deferAll
+                                        || deferredToolNames?.Contains(af.Name) == true
+                                            ? true
+                                            : null);
+
                                 (createdTools ??= []).Add(
                                     new Tool()
                                     {
                                         Name = af.Name,
                                         Description = af.Description,
                                         InputSchema = new InputSchema(schemaData),
-                                        DeferLoading = GetValue<bool?>(
-                                            af,
-                                            nameof(Tool.DeferLoading)
-                                        ),
+                                        DeferLoading = deferLoading,
                                         Strict = GetValue<bool?>(af, nameof(Tool.Strict)),
                                         InputExamples = GetValue<
                                             List<Dictionary<string, JsonElement>>
@@ -1374,6 +1406,18 @@ public static class AnthropicClientExtensions
                                     && value is T tValue
                                         ? tValue
                                         : default;
+                                break;
+
+                            case HostedToolSearchTool toolSearch:
+                                (createdTools ??= []).Add(
+                                    toolSearch is HostedToolSearchToolExtensions.Bm25HostedToolSearchTool
+                                        ? new ToolSearchToolBm25_20251119(
+                                            ToolSearchToolBm25_20251119Type.ToolSearchToolBm25
+                                        )
+                                        : new ToolSearchToolRegex20251119(
+                                            ToolSearchToolRegex20251119Type.ToolSearchToolRegex
+                                        )
+                                );
                                 break;
 
                             case HostedWebSearchTool:
