@@ -2566,4 +2566,24 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.Equal("application/pdf", files[1].MediaType);
         Assert.Equal(2000, files[1].SizeInBytes);
     }
+
+    protected override object CreateServerToolUseBlock(string id, string name)
+    {
+        return new BetaServerToolUseBlock()
+        {
+            ID = id,
+            Name = Anthropic.Models.Beta.Messages.Name.ToolSearchToolBm25,
+            Input = new Dictionary<string, JsonElement>(),
+            Caller = new BetaDirectCaller(),
+        };
+    }
+
+    protected override object CreateToolSearchToolResultBlock(string toolUseId)
+    {
+        return new BetaToolSearchToolResultBlock()
+        {
+            ToolUseID = toolUseId,
+            Content = new BetaToolSearchToolSearchResultBlock() { ToolReferences = [] },
+        };
+    }
 }

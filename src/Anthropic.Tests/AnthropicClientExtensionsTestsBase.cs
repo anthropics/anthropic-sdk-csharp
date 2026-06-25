@@ -8457,4 +8457,454 @@ public abstract class AnthropicClientExtensionsTestsBase
             AnthropicClientExtensions.InferExtensionFromMediaType(mediaType)
         );
     }
+
+    [Fact]
+    public async Task GetResponseAsync_WithHostedToolSearchTool_ProducesToolSearchTool()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search for a tool"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [
+                    {
+                        "name": "tool_search_tool_regex",
+                        "type": "tool_search_tool_regex"
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_ts_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "I found the tool."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 10
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new() { Tools = [new HostedToolSearchTool()] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Search for a tool",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithBm25HostedToolSearchTool_ProducesBm25ToolSearchTool()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search for a tool"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [
+                    {
+                        "name": "tool_search_tool_bm25",
+                        "type": "tool_search_tool_bm25"
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_ts_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "I found the tool."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 10
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new() { Tools = [new HostedToolSearchTool().AsBm25()] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Search for a tool",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithHostedToolSearchTool_DeferAll_SetsDeferLoadingOnFunctions()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "hello"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [
+                    {
+                        "name": "tool_search_tool_regex",
+                        "type": "tool_search_tool_regex"
+                    },
+                    {
+                        "name": "GetWeather",
+                        "description": "Gets the weather.",
+                        "input_schema": {
+                            "type": "object",
+                            "properties": {},
+                            "additionalProperties": false
+                        },
+                        "defer_loading": true
+                    },
+                    {
+                        "name": "GetTime",
+                        "description": "Gets the time.",
+                        "input_schema": {
+                            "type": "object",
+                            "properties": {},
+                            "additionalProperties": false
+                        },
+                        "defer_loading": true
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_ts_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Hello!"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var getWeather = AIFunctionFactory.Create(() => "Sunny", "GetWeather", "Gets the weather.");
+        var getTime = AIFunctionFactory.Create(() => "3 PM", "GetTime", "Gets the time.");
+
+        ChatOptions options = new()
+        {
+            Tools = [new HostedToolSearchTool(), getWeather, getTime],
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "hello",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+        Assert.Equal("Hello!", response.Text);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithHostedToolSearchTool_SpecificDeferredTools_OnlyDefersNamed()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "hello"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [
+                    {
+                        "name": "tool_search_tool_regex",
+                        "type": "tool_search_tool_regex"
+                    },
+                    {
+                        "name": "GetWeather",
+                        "description": "Gets the weather.",
+                        "input_schema": {
+                            "type": "object",
+                            "properties": {},
+                            "additionalProperties": false
+                        },
+                        "defer_loading": true
+                    },
+                    {
+                        "name": "ImportantTool",
+                        "description": "An important tool.",
+                        "input_schema": {
+                            "type": "object",
+                            "properties": {},
+                            "additionalProperties": false
+                        }
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_ts_03",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Hello!"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var getWeather = AIFunctionFactory.Create(() => "Sunny", "GetWeather", "Gets the weather.");
+        var importantTool = AIFunctionFactory.Create(
+            () => "Done",
+            "ImportantTool",
+            "An important tool."
+        );
+
+        ChatOptions options = new()
+        {
+            Tools =
+            [
+                new HostedToolSearchTool { DeferredTools = ["GetWeather"] },
+                getWeather,
+                importantTool,
+            ],
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "hello",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+        Assert.Equal("Hello!", response.Text);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ServerToolUseBlock_RoundTripsAsContentBlockParam()
+    {
+        // When a previous response included a server_tool_use block (e.g. tool_search),
+        // it must be converted to a ContentBlockParam for the next request.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Search for weather" }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [
+                            { "type": "text", "text": "Let me search." },
+                            {
+                                "type": "server_tool_use",
+                                "id": "srvtoolu_01ABC",
+                                "name": "tool_search_tool_bm25",
+                                "input": {},
+                                "caller": { "type": "direct" }
+                            }
+                        ]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Continue" }]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_rt_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{ "type": "text", "text": "Done." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 30, "output_tokens": 5 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var toolCallContent = new ToolCallContent("srvtoolu_01ABC")
+        {
+            RawRepresentation = CreateServerToolUseBlock(
+                "srvtoolu_01ABC",
+                "tool_search_tool_bm25"
+            ),
+        };
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Search for weather"),
+            new(ChatRole.Assistant, [new TextContent("Let me search."), toolCallContent]),
+            new(ChatRole.User, "Continue"),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+        Assert.Equal("Done.", response.Text);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ToolSearchToolResultBlock_RoundTripsAsContentBlockParam()
+    {
+        // When a previous response included a tool_search_tool_result block, it must be converted
+        // back to a ContentBlockParam for the next request.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Search for weather" }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [
+                            { "type": "text", "text": "Here are the tools." },
+                            {
+                                "type": "tool_search_tool_result",
+                                "tool_use_id": "srvtoolu_ts_01",
+                                "content": {
+                                    "type": "tool_search_tool_search_result",
+                                    "tool_references": []
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Continue" }]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_rt_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{ "type": "text", "text": "Done." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 30, "output_tokens": 5 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var toolResultContent = new ToolResultContent("srvtoolu_ts_01")
+        {
+            RawRepresentation = CreateToolSearchToolResultBlock("srvtoolu_ts_01"),
+        };
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Search for weather"),
+            new(ChatRole.Assistant, [new TextContent("Here are the tools."), toolResultContent]),
+            new(ChatRole.User, "Continue"),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+        Assert.Equal("Done.", response.Text);
+    }
+
+    /// <summary>
+    /// Creates a server_tool_use response block for round-trip testing.
+    /// Overridden by the beta adapter tests to use Beta types.
+    /// </summary>
+    protected virtual object CreateServerToolUseBlock(string id, string name)
+    {
+        return new ServerToolUseBlock()
+        {
+            ID = id,
+            Name = Name.ToolSearchToolBm25,
+            Input = new Dictionary<string, JsonElement>(),
+            Caller = new DirectCaller(),
+        };
+    }
+
+    /// <summary>
+    /// Creates a tool_search_tool_result response block for round-trip testing.
+    /// Overridden by the beta adapter tests to use Beta types.
+    /// </summary>
+    protected virtual object CreateToolSearchToolResultBlock(string toolUseId)
+    {
+        return new ToolSearchToolResultBlock()
+        {
+            ToolUseID = toolUseId,
+            Content = new ToolSearchToolSearchResultBlock() { ToolReferences = [] },
+        };
+    }
 }
