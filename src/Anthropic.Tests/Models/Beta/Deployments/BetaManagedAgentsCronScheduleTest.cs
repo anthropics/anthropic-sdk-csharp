@@ -14,21 +14,26 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
     {
         var model = new BetaManagedAgentsCronSchedule
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleType.Cron,
-            LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+            LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+            UpcomingRunsAt =
+            [
+                DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+            ],
         };
 
-        string expectedExpression = "x";
-        string expectedTimezone = "x";
+        string expectedExpression = "0 9 * * 1-5";
+        string expectedTimezone = "America/Los_Angeles";
         ApiEnum<string, BetaManagedAgentsCronScheduleType> expectedType =
             BetaManagedAgentsCronScheduleType.Cron;
-        DateTimeOffset expectedLastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        DateTimeOffset expectedLastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z");
         List<DateTimeOffset> expectedUpcomingRunsAt =
         [
-            DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+            DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
         ];
 
         Assert.Equal(expectedExpression, model.Expression);
@@ -48,11 +53,15 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
     {
         var model = new BetaManagedAgentsCronSchedule
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleType.Cron,
-            LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+            LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+            UpcomingRunsAt =
+            [
+                DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+            ],
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -69,11 +78,15 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
     {
         var model = new BetaManagedAgentsCronSchedule
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleType.Cron,
-            LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+            LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+            UpcomingRunsAt =
+            [
+                DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+            ],
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -83,14 +96,15 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedExpression = "x";
-        string expectedTimezone = "x";
+        string expectedExpression = "0 9 * * 1-5";
+        string expectedTimezone = "America/Los_Angeles";
         ApiEnum<string, BetaManagedAgentsCronScheduleType> expectedType =
             BetaManagedAgentsCronScheduleType.Cron;
-        DateTimeOffset expectedLastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        DateTimeOffset expectedLastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z");
         List<DateTimeOffset> expectedUpcomingRunsAt =
         [
-            DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+            DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
         ];
 
         Assert.Equal(expectedExpression, deserialized.Expression);
@@ -110,11 +124,15 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
     {
         var model = new BetaManagedAgentsCronSchedule
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleType.Cron,
-            LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+            LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+            UpcomingRunsAt =
+            [
+                DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+            ],
         };
 
         model.Validate();
@@ -125,10 +143,10 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
     {
         var model = new BetaManagedAgentsCronSchedule
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleType.Cron,
-            LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
         };
 
         Assert.Null(model.UpcomingRunsAt);
@@ -140,10 +158,10 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
     {
         var model = new BetaManagedAgentsCronSchedule
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleType.Cron,
-            LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
         };
 
         model.Validate();
@@ -154,10 +172,10 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
     {
         var model = new BetaManagedAgentsCronSchedule
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleType.Cron,
-            LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
 
             // Null should be interpreted as omitted for these properties
             UpcomingRunsAt = null,
@@ -172,10 +190,10 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
     {
         var model = new BetaManagedAgentsCronSchedule
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleType.Cron,
-            LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
 
             // Null should be interpreted as omitted for these properties
             UpcomingRunsAt = null,
@@ -189,10 +207,14 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
     {
         var model = new BetaManagedAgentsCronSchedule
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleType.Cron,
-            UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+            UpcomingRunsAt =
+            [
+                DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+            ],
         };
 
         Assert.Null(model.LastRunAt);
@@ -204,10 +226,14 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
     {
         var model = new BetaManagedAgentsCronSchedule
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleType.Cron,
-            UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+            UpcomingRunsAt =
+            [
+                DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+            ],
         };
 
         model.Validate();
@@ -218,10 +244,14 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
     {
         var model = new BetaManagedAgentsCronSchedule
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleType.Cron,
-            UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+            UpcomingRunsAt =
+            [
+                DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+            ],
 
             LastRunAt = null,
         };
@@ -235,10 +265,14 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
     {
         var model = new BetaManagedAgentsCronSchedule
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleType.Cron,
-            UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+            UpcomingRunsAt =
+            [
+                DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+            ],
 
             LastRunAt = null,
         };
@@ -251,11 +285,15 @@ public class BetaManagedAgentsCronScheduleTest : TestBase
     {
         var model = new BetaManagedAgentsCronSchedule
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleType.Cron,
-            LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+            LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+            UpcomingRunsAt =
+            [
+                DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+            ],
         };
 
         BetaManagedAgentsCronSchedule copied = new(model);

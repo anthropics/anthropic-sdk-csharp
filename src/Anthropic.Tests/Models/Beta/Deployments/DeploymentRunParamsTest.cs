@@ -14,11 +14,11 @@ public class DeploymentRunParamsTest : TestBase
     {
         var parameters = new DeploymentRunParams
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
-        string expectedDeploymentID = "deployment_id";
+        string expectedDeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -36,7 +36,7 @@ public class DeploymentRunParamsTest : TestBase
     [Fact]
     public void OptionalNonNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new DeploymentRunParams { DeploymentID = "deployment_id" };
+        var parameters = new DeploymentRunParams { DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai" };
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
@@ -47,7 +47,7 @@ public class DeploymentRunParamsTest : TestBase
     {
         var parameters = new DeploymentRunParams
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
 
             // Null should be interpreted as omitted for these properties
             Betas = null,
@@ -60,13 +60,15 @@ public class DeploymentRunParamsTest : TestBase
     [Fact]
     public void Url_Works()
     {
-        DeploymentRunParams parameters = new() { DeploymentID = "deployment_id" };
+        DeploymentRunParams parameters = new() { DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai" };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/deployments/deployment_id/run?beta=true"),
+                new Uri(
+                    "https://api.anthropic.com/v1/deployments/depl_011CZkZcDH3vPqd7xnEfwTai/run?beta=true"
+                ),
                 url
             )
         );
@@ -78,7 +80,7 @@ public class DeploymentRunParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         DeploymentRunParams parameters = new()
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -95,7 +97,7 @@ public class DeploymentRunParamsTest : TestBase
     {
         var parameters = new DeploymentRunParams
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
