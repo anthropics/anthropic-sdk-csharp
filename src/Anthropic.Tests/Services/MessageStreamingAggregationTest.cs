@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Helpers;
@@ -361,5 +362,74 @@ public class MessageStreamingAggregationTest
         Assert.NotNull(((TextBlock)stream.Content[0].Value!).Citations);
         Assert.NotEmpty(((TextBlock)stream.Content[0].Value!).Citations!);
         Assert.Equal("Other Test", ((ThinkingBlock)stream.Content[1].Value!).Thinking);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_ReassemblesToolUseInputFromInputJsonDeltas()
+    {
+        // Arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new RawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(
+                        new ToolUseBlock()
+                        {
+                            ID = "toolu_01",
+                            Caller = new DirectCaller(),
+                            Input = new Dictionary<string, JsonElement>(),
+                            Name = "get_weather",
+                        }
+                    ),
+                }
+            );
+            yield return new(
+                new RawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new InputJsonDelta("{\"location\":\"Pa")),
+                }
+            );
+            yield return new(
+                new RawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new InputJsonDelta("ris\"}")),
+                }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(
+                    It.IsAny<Anthropic.Models.Messages.MessageCreateParams>(),
+                    It.IsAny<CancellationToken>()
+                )
+            )
+            .Returns(GetTestValues);
+
+        // Act
+
+        var stream = await messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .Aggregate();
+
+        // Assert
+
+        Assert.NotNull(stream);
+        stream.Validate();
+        Assert.Single(stream.Content);
+        var toolUse = Assert.IsType<ToolUseBlock>(stream.Content[0].Value);
+        Assert.Equal("toolu_01", toolUse.ID);
+        Assert.Equal("get_weather", toolUse.Name);
+        Assert.Equal("Paris", toolUse.Input["location"].GetString());
+        Assert.IsType<DirectCaller>(toolUse.Caller.Value);
     }
 }
