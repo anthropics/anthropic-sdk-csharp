@@ -20,17 +20,18 @@ public class DeploymentListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
+                    ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
                     Agent = new()
                     {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
                         Type = BetaManagedAgentsAgentReferenceType.Agent,
                         Version = 1,
                     },
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    EnvironmentID = "environment_id",
+                    ArchivedAt = null,
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    Description =
+                        "Compiles yesterday's orders into a report every weekday morning.",
+                    EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
                         new BetaManagedAgentsDeploymentUserMessageEvent()
@@ -39,15 +40,15 @@ public class DeploymentListPageResponseTest : TestBase
                             [
                                 new BetaManagedAgentsTextBlock()
                                 {
-                                    Text = "Where is my order #1234?",
+                                    Text = "Compile yesterday's orders into report.md.",
                                     Type = BetaManagedAgentsTextBlockType.Text,
                                 },
                             ],
                             Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
                         },
                     ],
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-                    Name = "name",
+                    Metadata = new Dictionary<string, string>(),
+                    Name = "Daily order report",
                     PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
                         BetaManagedAgentsManualDeploymentPausedReasonType.Manual
                     ),
@@ -68,36 +69,40 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Schedule = new()
                     {
-                        Expression = "x",
-                        Timezone = "x",
+                        Expression = "0 9 * * 1-5",
+                        Timezone = "America/Los_Angeles",
                         Type = BetaManagedAgentsScheduleType.Cron,
-                        LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+                        LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+                        UpcomingRunsAt =
+                        [
+                            DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                            DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+                        ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
                     Type = BetaManagedAgentsDeploymentType.Deployment,
-                    UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    VaultIds = ["string"],
+                    UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                 },
             ],
-            NextPage = "next_page",
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
         List<BetaManagedAgentsDeployment> expectedData =
         [
             new()
             {
-                ID = "id",
+                ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
                 Agent = new()
                 {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    ID = "agent_011CZkYpogX7uDKUyvBTophP",
                     Type = BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
-                ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Description = "description",
-                EnvironmentID = "environment_id",
+                ArchivedAt = null,
+                CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                Description = "Compiles yesterday's orders into a report every weekday morning.",
+                EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                 InitialEvents =
                 [
                     new BetaManagedAgentsDeploymentUserMessageEvent()
@@ -106,15 +111,15 @@ public class DeploymentListPageResponseTest : TestBase
                         [
                             new BetaManagedAgentsTextBlock()
                             {
-                                Text = "Where is my order #1234?",
+                                Text = "Compile yesterday's orders into report.md.",
                                 Type = BetaManagedAgentsTextBlockType.Text,
                             },
                         ],
                         Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
                     },
                 ],
-                Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-                Name = "name",
+                Metadata = new Dictionary<string, string>(),
+                Name = "Daily order report",
                 PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
                     BetaManagedAgentsManualDeploymentPausedReasonType.Manual
                 ),
@@ -134,19 +139,23 @@ public class DeploymentListPageResponseTest : TestBase
                 ],
                 Schedule = new()
                 {
-                    Expression = "x",
-                    Timezone = "x",
+                    Expression = "0 9 * * 1-5",
+                    Timezone = "America/Los_Angeles",
                     Type = BetaManagedAgentsScheduleType.Cron,
-                    LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+                    LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+                    UpcomingRunsAt =
+                    [
+                        DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                        DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+                    ],
                 },
                 Status = BetaManagedAgentsDeploymentStatus.Active,
                 Type = BetaManagedAgentsDeploymentType.Deployment,
-                UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                VaultIds = ["string"],
+                UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
             },
         ];
-        string expectedNextPage = "next_page";
+        string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
 
         Assert.Equal(expectedData.Count, model.Data.Count);
         for (int i = 0; i < expectedData.Count; i++)
@@ -165,17 +174,18 @@ public class DeploymentListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
+                    ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
                     Agent = new()
                     {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
                         Type = BetaManagedAgentsAgentReferenceType.Agent,
                         Version = 1,
                     },
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    EnvironmentID = "environment_id",
+                    ArchivedAt = null,
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    Description =
+                        "Compiles yesterday's orders into a report every weekday morning.",
+                    EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
                         new BetaManagedAgentsDeploymentUserMessageEvent()
@@ -184,15 +194,15 @@ public class DeploymentListPageResponseTest : TestBase
                             [
                                 new BetaManagedAgentsTextBlock()
                                 {
-                                    Text = "Where is my order #1234?",
+                                    Text = "Compile yesterday's orders into report.md.",
                                     Type = BetaManagedAgentsTextBlockType.Text,
                                 },
                             ],
                             Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
                         },
                     ],
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-                    Name = "name",
+                    Metadata = new Dictionary<string, string>(),
+                    Name = "Daily order report",
                     PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
                         BetaManagedAgentsManualDeploymentPausedReasonType.Manual
                     ),
@@ -213,19 +223,23 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Schedule = new()
                     {
-                        Expression = "x",
-                        Timezone = "x",
+                        Expression = "0 9 * * 1-5",
+                        Timezone = "America/Los_Angeles",
                         Type = BetaManagedAgentsScheduleType.Cron,
-                        LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+                        LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+                        UpcomingRunsAt =
+                        [
+                            DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                            DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+                        ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
                     Type = BetaManagedAgentsDeploymentType.Deployment,
-                    UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    VaultIds = ["string"],
+                    UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                 },
             ],
-            NextPage = "next_page",
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -246,17 +260,18 @@ public class DeploymentListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
+                    ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
                     Agent = new()
                     {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
                         Type = BetaManagedAgentsAgentReferenceType.Agent,
                         Version = 1,
                     },
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    EnvironmentID = "environment_id",
+                    ArchivedAt = null,
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    Description =
+                        "Compiles yesterday's orders into a report every weekday morning.",
+                    EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
                         new BetaManagedAgentsDeploymentUserMessageEvent()
@@ -265,15 +280,15 @@ public class DeploymentListPageResponseTest : TestBase
                             [
                                 new BetaManagedAgentsTextBlock()
                                 {
-                                    Text = "Where is my order #1234?",
+                                    Text = "Compile yesterday's orders into report.md.",
                                     Type = BetaManagedAgentsTextBlockType.Text,
                                 },
                             ],
                             Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
                         },
                     ],
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-                    Name = "name",
+                    Metadata = new Dictionary<string, string>(),
+                    Name = "Daily order report",
                     PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
                         BetaManagedAgentsManualDeploymentPausedReasonType.Manual
                     ),
@@ -294,19 +309,23 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Schedule = new()
                     {
-                        Expression = "x",
-                        Timezone = "x",
+                        Expression = "0 9 * * 1-5",
+                        Timezone = "America/Los_Angeles",
                         Type = BetaManagedAgentsScheduleType.Cron,
-                        LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+                        LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+                        UpcomingRunsAt =
+                        [
+                            DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                            DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+                        ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
                     Type = BetaManagedAgentsDeploymentType.Deployment,
-                    UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    VaultIds = ["string"],
+                    UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                 },
             ],
-            NextPage = "next_page",
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -320,17 +339,17 @@ public class DeploymentListPageResponseTest : TestBase
         [
             new()
             {
-                ID = "id",
+                ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
                 Agent = new()
                 {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    ID = "agent_011CZkYpogX7uDKUyvBTophP",
                     Type = BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
-                ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Description = "description",
-                EnvironmentID = "environment_id",
+                ArchivedAt = null,
+                CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                Description = "Compiles yesterday's orders into a report every weekday morning.",
+                EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                 InitialEvents =
                 [
                     new BetaManagedAgentsDeploymentUserMessageEvent()
@@ -339,15 +358,15 @@ public class DeploymentListPageResponseTest : TestBase
                         [
                             new BetaManagedAgentsTextBlock()
                             {
-                                Text = "Where is my order #1234?",
+                                Text = "Compile yesterday's orders into report.md.",
                                 Type = BetaManagedAgentsTextBlockType.Text,
                             },
                         ],
                         Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
                     },
                 ],
-                Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-                Name = "name",
+                Metadata = new Dictionary<string, string>(),
+                Name = "Daily order report",
                 PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
                     BetaManagedAgentsManualDeploymentPausedReasonType.Manual
                 ),
@@ -367,19 +386,23 @@ public class DeploymentListPageResponseTest : TestBase
                 ],
                 Schedule = new()
                 {
-                    Expression = "x",
-                    Timezone = "x",
+                    Expression = "0 9 * * 1-5",
+                    Timezone = "America/Los_Angeles",
                     Type = BetaManagedAgentsScheduleType.Cron,
-                    LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+                    LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+                    UpcomingRunsAt =
+                    [
+                        DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                        DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+                    ],
                 },
                 Status = BetaManagedAgentsDeploymentStatus.Active,
                 Type = BetaManagedAgentsDeploymentType.Deployment,
-                UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                VaultIds = ["string"],
+                UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
             },
         ];
-        string expectedNextPage = "next_page";
+        string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
 
         Assert.Equal(expectedData.Count, deserialized.Data.Count);
         for (int i = 0; i < expectedData.Count; i++)
@@ -398,17 +421,18 @@ public class DeploymentListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
+                    ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
                     Agent = new()
                     {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
                         Type = BetaManagedAgentsAgentReferenceType.Agent,
                         Version = 1,
                     },
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    EnvironmentID = "environment_id",
+                    ArchivedAt = null,
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    Description =
+                        "Compiles yesterday's orders into a report every weekday morning.",
+                    EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
                         new BetaManagedAgentsDeploymentUserMessageEvent()
@@ -417,15 +441,15 @@ public class DeploymentListPageResponseTest : TestBase
                             [
                                 new BetaManagedAgentsTextBlock()
                                 {
-                                    Text = "Where is my order #1234?",
+                                    Text = "Compile yesterday's orders into report.md.",
                                     Type = BetaManagedAgentsTextBlockType.Text,
                                 },
                             ],
                             Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
                         },
                     ],
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-                    Name = "name",
+                    Metadata = new Dictionary<string, string>(),
+                    Name = "Daily order report",
                     PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
                         BetaManagedAgentsManualDeploymentPausedReasonType.Manual
                     ),
@@ -446,19 +470,23 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Schedule = new()
                     {
-                        Expression = "x",
-                        Timezone = "x",
+                        Expression = "0 9 * * 1-5",
+                        Timezone = "America/Los_Angeles",
                         Type = BetaManagedAgentsScheduleType.Cron,
-                        LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+                        LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+                        UpcomingRunsAt =
+                        [
+                            DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                            DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+                        ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
                     Type = BetaManagedAgentsDeploymentType.Deployment,
-                    UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    VaultIds = ["string"],
+                    UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                 },
             ],
-            NextPage = "next_page",
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
         model.Validate();
@@ -473,17 +501,18 @@ public class DeploymentListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
+                    ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
                     Agent = new()
                     {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
                         Type = BetaManagedAgentsAgentReferenceType.Agent,
                         Version = 1,
                     },
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    EnvironmentID = "environment_id",
+                    ArchivedAt = null,
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    Description =
+                        "Compiles yesterday's orders into a report every weekday morning.",
+                    EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
                         new BetaManagedAgentsDeploymentUserMessageEvent()
@@ -492,15 +521,15 @@ public class DeploymentListPageResponseTest : TestBase
                             [
                                 new BetaManagedAgentsTextBlock()
                                 {
-                                    Text = "Where is my order #1234?",
+                                    Text = "Compile yesterday's orders into report.md.",
                                     Type = BetaManagedAgentsTextBlockType.Text,
                                 },
                             ],
                             Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
                         },
                     ],
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-                    Name = "name",
+                    Metadata = new Dictionary<string, string>(),
+                    Name = "Daily order report",
                     PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
                         BetaManagedAgentsManualDeploymentPausedReasonType.Manual
                     ),
@@ -521,16 +550,20 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Schedule = new()
                     {
-                        Expression = "x",
-                        Timezone = "x",
+                        Expression = "0 9 * * 1-5",
+                        Timezone = "America/Los_Angeles",
                         Type = BetaManagedAgentsScheduleType.Cron,
-                        LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+                        LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+                        UpcomingRunsAt =
+                        [
+                            DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                            DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+                        ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
                     Type = BetaManagedAgentsDeploymentType.Deployment,
-                    UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    VaultIds = ["string"],
+                    UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                 },
             ],
         };
@@ -548,17 +581,18 @@ public class DeploymentListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
+                    ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
                     Agent = new()
                     {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
                         Type = BetaManagedAgentsAgentReferenceType.Agent,
                         Version = 1,
                     },
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    EnvironmentID = "environment_id",
+                    ArchivedAt = null,
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    Description =
+                        "Compiles yesterday's orders into a report every weekday morning.",
+                    EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
                         new BetaManagedAgentsDeploymentUserMessageEvent()
@@ -567,15 +601,15 @@ public class DeploymentListPageResponseTest : TestBase
                             [
                                 new BetaManagedAgentsTextBlock()
                                 {
-                                    Text = "Where is my order #1234?",
+                                    Text = "Compile yesterday's orders into report.md.",
                                     Type = BetaManagedAgentsTextBlockType.Text,
                                 },
                             ],
                             Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
                         },
                     ],
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-                    Name = "name",
+                    Metadata = new Dictionary<string, string>(),
+                    Name = "Daily order report",
                     PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
                         BetaManagedAgentsManualDeploymentPausedReasonType.Manual
                     ),
@@ -596,16 +630,20 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Schedule = new()
                     {
-                        Expression = "x",
-                        Timezone = "x",
+                        Expression = "0 9 * * 1-5",
+                        Timezone = "America/Los_Angeles",
                         Type = BetaManagedAgentsScheduleType.Cron,
-                        LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+                        LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+                        UpcomingRunsAt =
+                        [
+                            DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                            DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+                        ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
                     Type = BetaManagedAgentsDeploymentType.Deployment,
-                    UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    VaultIds = ["string"],
+                    UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                 },
             ],
         };
@@ -622,17 +660,18 @@ public class DeploymentListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
+                    ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
                     Agent = new()
                     {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
                         Type = BetaManagedAgentsAgentReferenceType.Agent,
                         Version = 1,
                     },
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    EnvironmentID = "environment_id",
+                    ArchivedAt = null,
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    Description =
+                        "Compiles yesterday's orders into a report every weekday morning.",
+                    EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
                         new BetaManagedAgentsDeploymentUserMessageEvent()
@@ -641,15 +680,15 @@ public class DeploymentListPageResponseTest : TestBase
                             [
                                 new BetaManagedAgentsTextBlock()
                                 {
-                                    Text = "Where is my order #1234?",
+                                    Text = "Compile yesterday's orders into report.md.",
                                     Type = BetaManagedAgentsTextBlockType.Text,
                                 },
                             ],
                             Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
                         },
                     ],
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-                    Name = "name",
+                    Metadata = new Dictionary<string, string>(),
+                    Name = "Daily order report",
                     PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
                         BetaManagedAgentsManualDeploymentPausedReasonType.Manual
                     ),
@@ -670,16 +709,20 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Schedule = new()
                     {
-                        Expression = "x",
-                        Timezone = "x",
+                        Expression = "0 9 * * 1-5",
+                        Timezone = "America/Los_Angeles",
                         Type = BetaManagedAgentsScheduleType.Cron,
-                        LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+                        LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+                        UpcomingRunsAt =
+                        [
+                            DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                            DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+                        ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
                     Type = BetaManagedAgentsDeploymentType.Deployment,
-                    UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    VaultIds = ["string"],
+                    UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                 },
             ],
 
@@ -699,17 +742,18 @@ public class DeploymentListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
+                    ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
                     Agent = new()
                     {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
                         Type = BetaManagedAgentsAgentReferenceType.Agent,
                         Version = 1,
                     },
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    EnvironmentID = "environment_id",
+                    ArchivedAt = null,
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    Description =
+                        "Compiles yesterday's orders into a report every weekday morning.",
+                    EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
                         new BetaManagedAgentsDeploymentUserMessageEvent()
@@ -718,15 +762,15 @@ public class DeploymentListPageResponseTest : TestBase
                             [
                                 new BetaManagedAgentsTextBlock()
                                 {
-                                    Text = "Where is my order #1234?",
+                                    Text = "Compile yesterday's orders into report.md.",
                                     Type = BetaManagedAgentsTextBlockType.Text,
                                 },
                             ],
                             Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
                         },
                     ],
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-                    Name = "name",
+                    Metadata = new Dictionary<string, string>(),
+                    Name = "Daily order report",
                     PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
                         BetaManagedAgentsManualDeploymentPausedReasonType.Manual
                     ),
@@ -747,16 +791,20 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Schedule = new()
                     {
-                        Expression = "x",
-                        Timezone = "x",
+                        Expression = "0 9 * * 1-5",
+                        Timezone = "America/Los_Angeles",
                         Type = BetaManagedAgentsScheduleType.Cron,
-                        LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+                        LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+                        UpcomingRunsAt =
+                        [
+                            DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                            DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+                        ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
                     Type = BetaManagedAgentsDeploymentType.Deployment,
-                    UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    VaultIds = ["string"],
+                    UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                 },
             ],
 
@@ -775,17 +823,18 @@ public class DeploymentListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
+                    ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
                     Agent = new()
                     {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
                         Type = BetaManagedAgentsAgentReferenceType.Agent,
                         Version = 1,
                     },
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    EnvironmentID = "environment_id",
+                    ArchivedAt = null,
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    Description =
+                        "Compiles yesterday's orders into a report every weekday morning.",
+                    EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
                         new BetaManagedAgentsDeploymentUserMessageEvent()
@@ -794,15 +843,15 @@ public class DeploymentListPageResponseTest : TestBase
                             [
                                 new BetaManagedAgentsTextBlock()
                                 {
-                                    Text = "Where is my order #1234?",
+                                    Text = "Compile yesterday's orders into report.md.",
                                     Type = BetaManagedAgentsTextBlockType.Text,
                                 },
                             ],
                             Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
                         },
                     ],
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-                    Name = "name",
+                    Metadata = new Dictionary<string, string>(),
+                    Name = "Daily order report",
                     PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
                         BetaManagedAgentsManualDeploymentPausedReasonType.Manual
                     ),
@@ -823,19 +872,23 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Schedule = new()
                     {
-                        Expression = "x",
-                        Timezone = "x",
+                        Expression = "0 9 * * 1-5",
+                        Timezone = "America/Los_Angeles",
                         Type = BetaManagedAgentsScheduleType.Cron,
-                        LastRunAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        UpcomingRunsAt = [DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")],
+                        LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+                        UpcomingRunsAt =
+                        [
+                            DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                            DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+                        ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
                     Type = BetaManagedAgentsDeploymentType.Deployment,
-                    UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    VaultIds = ["string"],
+                    UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                 },
             ],
-            NextPage = "next_page",
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
         DeploymentListPageResponse copied = new(model);
