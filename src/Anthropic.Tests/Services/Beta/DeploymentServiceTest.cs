@@ -39,7 +39,7 @@ public class DeploymentServiceTest : TestBase
     public async Task Retrieve_Works()
     {
         var betaManagedAgentsDeployment = await this.client.Beta.Deployments.Retrieve(
-            "deployment_id",
+            "depl_011CZkZcDH3vPqd7xnEfwTai",
             new(),
             TestContext.Current.CancellationToken
         );
@@ -50,7 +50,7 @@ public class DeploymentServiceTest : TestBase
     public async Task Update_Works()
     {
         var betaManagedAgentsDeployment = await this.client.Beta.Deployments.Update(
-            "deployment_id",
+            "depl_011CZkZcDH3vPqd7xnEfwTai",
             new(),
             TestContext.Current.CancellationToken
         );
@@ -71,7 +71,7 @@ public class DeploymentServiceTest : TestBase
     public async Task Archive_Works()
     {
         var betaManagedAgentsDeployment = await this.client.Beta.Deployments.Archive(
-            "deployment_id",
+            "depl_011CZkZcDH3vPqd7xnEfwTai",
             new(),
             TestContext.Current.CancellationToken
         );
@@ -82,7 +82,7 @@ public class DeploymentServiceTest : TestBase
     public async Task Pause_Works()
     {
         var betaManagedAgentsDeployment = await this.client.Beta.Deployments.Pause(
-            "deployment_id",
+            "depl_011CZkZcDH3vPqd7xnEfwTai",
             new(),
             TestContext.Current.CancellationToken
         );
@@ -93,7 +93,7 @@ public class DeploymentServiceTest : TestBase
     public async Task Run_Works()
     {
         var betaManagedAgentsDeploymentRun = await this.client.Beta.Deployments.Run(
-            "deployment_id",
+            "depl_011CZkZcDH3vPqd7xnEfwTai",
             new(),
             TestContext.Current.CancellationToken
         );
@@ -104,7 +104,7 @@ public class DeploymentServiceTest : TestBase
     public async Task Unpause_Works()
     {
         var betaManagedAgentsDeployment = await this.client.Beta.Deployments.Unpause(
-            "deployment_id",
+            "depl_011CZkZcDH3vPqd7xnEfwTai",
             new(),
             TestContext.Current.CancellationToken
         );

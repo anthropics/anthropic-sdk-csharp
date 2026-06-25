@@ -17,7 +17,7 @@ public class DeploymentUpdateParamsTest : TestBase
     {
         var parameters = new DeploymentUpdateParams
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Agent = "string",
             Description = "description",
             EnvironmentID = "environment_id",
@@ -49,15 +49,15 @@ public class DeploymentUpdateParamsTest : TestBase
             ],
             Schedule = new()
             {
-                Expression = "x",
-                Timezone = "x",
+                Expression = "0 9 * * 1-5",
+                Timezone = "America/Los_Angeles",
                 Type = BetaManagedAgentsScheduleParamsType.Cron,
             },
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
-        string expectedDeploymentID = "deployment_id";
+        string expectedDeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai";
         DeploymentUpdateParamsAgent expectedAgent = "string";
         string expectedDescription = "description";
         string expectedEnvironmentID = "environment_id";
@@ -89,8 +89,8 @@ public class DeploymentUpdateParamsTest : TestBase
         ];
         BetaManagedAgentsScheduleParams expectedSchedule = new()
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsScheduleParamsType.Cron,
         };
         List<string> expectedVaultIds = ["string"];
@@ -144,7 +144,7 @@ public class DeploymentUpdateParamsTest : TestBase
     {
         var parameters = new DeploymentUpdateParams
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Description = "description",
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Resources =
@@ -158,8 +158,8 @@ public class DeploymentUpdateParamsTest : TestBase
             ],
             Schedule = new()
             {
-                Expression = "x",
-                Timezone = "x",
+                Expression = "0 9 * * 1-5",
+                Timezone = "America/Los_Angeles",
                 Type = BetaManagedAgentsScheduleParamsType.Cron,
             },
             VaultIds = ["string"],
@@ -182,7 +182,7 @@ public class DeploymentUpdateParamsTest : TestBase
     {
         var parameters = new DeploymentUpdateParams
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Description = "description",
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Resources =
@@ -196,8 +196,8 @@ public class DeploymentUpdateParamsTest : TestBase
             ],
             Schedule = new()
             {
-                Expression = "x",
-                Timezone = "x",
+                Expression = "0 9 * * 1-5",
+                Timezone = "America/Los_Angeles",
                 Type = BetaManagedAgentsScheduleParamsType.Cron,
             },
             VaultIds = ["string"],
@@ -227,7 +227,7 @@ public class DeploymentUpdateParamsTest : TestBase
     {
         var parameters = new DeploymentUpdateParams
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Agent = "string",
             EnvironmentID = "environment_id",
             InitialEvents =
@@ -266,7 +266,7 @@ public class DeploymentUpdateParamsTest : TestBase
     {
         var parameters = new DeploymentUpdateParams
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Agent = "string",
             EnvironmentID = "environment_id",
             InitialEvents =
@@ -309,13 +309,18 @@ public class DeploymentUpdateParamsTest : TestBase
     [Fact]
     public void Url_Works()
     {
-        DeploymentUpdateParams parameters = new() { DeploymentID = "deployment_id" };
+        DeploymentUpdateParams parameters = new()
+        {
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
+        };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/deployments/deployment_id?beta=true"),
+                new Uri(
+                    "https://api.anthropic.com/v1/deployments/depl_011CZkZcDH3vPqd7xnEfwTai?beta=true"
+                ),
                 url
             )
         );
@@ -327,7 +332,7 @@ public class DeploymentUpdateParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         DeploymentUpdateParams parameters = new()
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -344,7 +349,7 @@ public class DeploymentUpdateParamsTest : TestBase
     {
         var parameters = new DeploymentUpdateParams
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Agent = "string",
             Description = "description",
             EnvironmentID = "environment_id",
@@ -376,8 +381,8 @@ public class DeploymentUpdateParamsTest : TestBase
             ],
             Schedule = new()
             {
-                Expression = "x",
-                Timezone = "x",
+                Expression = "0 9 * * 1-5",
+                Timezone = "America/Los_Angeles",
                 Type = BetaManagedAgentsScheduleParamsType.Cron,
             },
             VaultIds = ["string"],

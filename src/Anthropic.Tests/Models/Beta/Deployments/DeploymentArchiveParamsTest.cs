@@ -14,11 +14,11 @@ public class DeploymentArchiveParamsTest : TestBase
     {
         var parameters = new DeploymentArchiveParams
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
-        string expectedDeploymentID = "deployment_id";
+        string expectedDeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -36,7 +36,10 @@ public class DeploymentArchiveParamsTest : TestBase
     [Fact]
     public void OptionalNonNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new DeploymentArchiveParams { DeploymentID = "deployment_id" };
+        var parameters = new DeploymentArchiveParams
+        {
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
+        };
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
@@ -47,7 +50,7 @@ public class DeploymentArchiveParamsTest : TestBase
     {
         var parameters = new DeploymentArchiveParams
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
 
             // Null should be interpreted as omitted for these properties
             Betas = null,
@@ -60,13 +63,18 @@ public class DeploymentArchiveParamsTest : TestBase
     [Fact]
     public void Url_Works()
     {
-        DeploymentArchiveParams parameters = new() { DeploymentID = "deployment_id" };
+        DeploymentArchiveParams parameters = new()
+        {
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
+        };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/deployments/deployment_id/archive?beta=true"),
+                new Uri(
+                    "https://api.anthropic.com/v1/deployments/depl_011CZkZcDH3vPqd7xnEfwTai/archive?beta=true"
+                ),
                 url
             )
         );
@@ -78,7 +86,7 @@ public class DeploymentArchiveParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         DeploymentArchiveParams parameters = new()
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -95,7 +103,7 @@ public class DeploymentArchiveParamsTest : TestBase
     {
         var parameters = new DeploymentArchiveParams
         {
-            DeploymentID = "deployment_id",
+            DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 

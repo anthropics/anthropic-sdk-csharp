@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Helpers;
@@ -527,5 +528,69 @@ public class BetaMessageStreamingAggregationTest
         Assert.NotEmpty(((BetaTextBlock)stream.Content[0].Value!).Citations!);
         Assert.Equal("Other Test", ((BetaThinkingBlock)stream.Content[1].Value!).Thinking);
         Assert.Equal(Messages::Model.ClaudeOpus4_6, stream.Model.Value());
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_ReassemblesToolUseInputFromInputJsonDeltas()
+    {
+        // Arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<BetaRawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new BetaRawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new BetaRawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(
+                        new BetaToolUseBlock()
+                        {
+                            ID = "toolu_01",
+                            Input = new Dictionary<string, JsonElement>(),
+                            Name = "get_weather",
+                        }
+                    ),
+                }
+            );
+            yield return new(
+                new BetaRawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new BetaInputJsonDelta("{\"location\":\"Pa")),
+                }
+            );
+            yield return new(
+                new BetaRawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new BetaInputJsonDelta("ris\"}")),
+                }
+            );
+            yield return new(new BetaRawContentBlockStopEvent() { Index = 0 });
+            yield return new(new BetaRawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
+            )
+            .Returns(GetTestValues);
+
+        // Act
+
+        var stream = await messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .Aggregate();
+
+        // Assert
+
+        Assert.NotNull(stream);
+        stream.Validate();
+        Assert.Single(stream.Content);
+        var toolUse = Assert.IsType<BetaToolUseBlock>(stream.Content[0].Value);
+        Assert.Equal("toolu_01", toolUse.ID);
+        Assert.Equal("get_weather", toolUse.Name);
+        Assert.Equal("Paris", toolUse.Input["location"].GetString());
     }
 }

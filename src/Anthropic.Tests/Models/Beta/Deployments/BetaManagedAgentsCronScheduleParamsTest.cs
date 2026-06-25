@@ -12,13 +12,13 @@ public class BetaManagedAgentsCronScheduleParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCronScheduleParams
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleParamsType.Cron,
         };
 
-        string expectedExpression = "x";
-        string expectedTimezone = "x";
+        string expectedExpression = "0 9 * * 1-5";
+        string expectedTimezone = "America/Los_Angeles";
         ApiEnum<string, BetaManagedAgentsCronScheduleParamsType> expectedType =
             BetaManagedAgentsCronScheduleParamsType.Cron;
 
@@ -32,8 +32,8 @@ public class BetaManagedAgentsCronScheduleParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCronScheduleParams
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleParamsType.Cron,
         };
 
@@ -51,8 +51,8 @@ public class BetaManagedAgentsCronScheduleParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCronScheduleParams
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleParamsType.Cron,
         };
 
@@ -63,8 +63,8 @@ public class BetaManagedAgentsCronScheduleParamsTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedExpression = "x";
-        string expectedTimezone = "x";
+        string expectedExpression = "0 9 * * 1-5";
+        string expectedTimezone = "America/Los_Angeles";
         ApiEnum<string, BetaManagedAgentsCronScheduleParamsType> expectedType =
             BetaManagedAgentsCronScheduleParamsType.Cron;
 
@@ -78,8 +78,8 @@ public class BetaManagedAgentsCronScheduleParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCronScheduleParams
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleParamsType.Cron,
         };
 
@@ -91,8 +91,8 @@ public class BetaManagedAgentsCronScheduleParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCronScheduleParams
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsCronScheduleParamsType.Cron,
         };
 

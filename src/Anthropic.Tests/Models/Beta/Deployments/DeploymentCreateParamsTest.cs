@@ -48,8 +48,8 @@ public class DeploymentCreateParamsTest : TestBase
             ],
             Schedule = new()
             {
-                Expression = "x",
-                Timezone = "x",
+                Expression = "0 9 * * 1-5",
+                Timezone = "America/Los_Angeles",
                 Type = BetaManagedAgentsScheduleParamsType.Cron,
             },
             VaultIds = ["string"],
@@ -87,8 +87,8 @@ public class DeploymentCreateParamsTest : TestBase
         ];
         BetaManagedAgentsScheduleParams expectedSchedule = new()
         {
-            Expression = "x",
-            Timezone = "x",
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
             Type = BetaManagedAgentsScheduleParamsType.Cron,
         };
         List<string> expectedVaultIds = ["string"];
@@ -161,8 +161,8 @@ public class DeploymentCreateParamsTest : TestBase
             Description = "description",
             Schedule = new()
             {
-                Expression = "x",
-                Timezone = "x",
+                Expression = "0 9 * * 1-5",
+                Timezone = "America/Los_Angeles",
                 Type = BetaManagedAgentsScheduleParamsType.Cron,
             },
         };
@@ -203,8 +203,8 @@ public class DeploymentCreateParamsTest : TestBase
             Description = "description",
             Schedule = new()
             {
-                Expression = "x",
-                Timezone = "x",
+                Expression = "0 9 * * 1-5",
+                Timezone = "America/Los_Angeles",
                 Type = BetaManagedAgentsScheduleParamsType.Cron,
             },
 
@@ -417,8 +417,8 @@ public class DeploymentCreateParamsTest : TestBase
             ],
             Schedule = new()
             {
-                Expression = "x",
-                Timezone = "x",
+                Expression = "0 9 * * 1-5",
+                Timezone = "America/Los_Angeles",
                 Type = BetaManagedAgentsScheduleParamsType.Cron,
             },
             VaultIds = ["string"],

@@ -117,6 +117,7 @@ public class MessageCountTokensParamsTest : TestBase
                 },
             ],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            UserProfileID = "anthropic-user-profile-id",
         };
 
         List<BetaMessageParam> expectedMessages =
@@ -232,6 +233,7 @@ public class MessageCountTokensParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedUserProfileID = "anthropic-user-profile-id";
 
         Assert.Equal(expectedMessages.Count, parameters.Messages.Count);
         for (int i = 0; i < expectedMessages.Count; i++)
@@ -265,6 +267,7 @@ public class MessageCountTokensParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
     }
 
     [Fact]
@@ -313,6 +316,8 @@ public class MessageCountTokensParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("tools"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
     }
 
     [Fact]
@@ -354,6 +359,7 @@ public class MessageCountTokensParamsTest : TestBase
             ToolChoice = null,
             Tools = null,
             Betas = null,
+            UserProfileID = null,
         };
 
         Assert.Null(parameters.McpServers);
@@ -370,6 +376,8 @@ public class MessageCountTokensParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("tools"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
     }
 
     [Fact]
@@ -454,6 +462,7 @@ public class MessageCountTokensParamsTest : TestBase
                 },
             ],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            UserProfileID = "anthropic-user-profile-id",
         };
 
         Assert.Null(parameters.CacheControl);
@@ -548,6 +557,7 @@ public class MessageCountTokensParamsTest : TestBase
                 },
             ],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            UserProfileID = "anthropic-user-profile-id",
 
             CacheControl = null,
             ContextManagement = null,
@@ -593,6 +603,7 @@ public class MessageCountTokensParamsTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
             Model = Messages::Model.ClaudeOpus4_6,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            UserProfileID = "anthropic-user-profile-id",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -600,6 +611,10 @@ public class MessageCountTokensParamsTest : TestBase
         Assert.Equal(
             ["message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["anthropic-user-profile-id"],
+            requestMessage.Headers.GetValues("anthropic-user-profile-id")
         );
     }
 
@@ -708,6 +723,7 @@ public class MessageCountTokensParamsTest : TestBase
                 },
             ],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            UserProfileID = "anthropic-user-profile-id",
         };
 
         MessageCountTokensParams copied = new(parameters);
