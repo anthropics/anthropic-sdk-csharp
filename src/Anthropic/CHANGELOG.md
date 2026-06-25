@@ -1,5 +1,13 @@
 # Changelog
 
+## 12.31.1 (2026-06-25)
+
+Full Changelog: [Anthropic-v12.31.0...Anthropic-v12.31.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.31.0...Anthropic-v12.31.1)
+
+### Chores
+
+* **api:** accept user profile ID's when counting tokens ([4ffbe1e](https://github.com/anthropics/anthropic-sdk-csharp/commit/4ffbe1ea7f7aef72ef8a1800ca363c709a98500d))
+
 ## 12.31.0 (2026-06-24)
 
 Full Changelog: [Anthropic-v12.30.0...Anthropic-v12.31.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.30.0...Anthropic-v12.31.0)
