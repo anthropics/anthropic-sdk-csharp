@@ -29,7 +29,7 @@ public sealed record class BetaCacheControlEphemeral : JsonModel
     ///
     /// <para>This may be one the following values: - `5m`: 5 minutes - `1h`: 1 hour</para>
     ///
-    /// <para>Defaults to `5m`. See [prompt caching pricing](https://docs.claude.com/en/docs/build-with-claude/prompt-caching)
+    /// <para>Defaults to `5m`. See [prompt caching pricing](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
     /// for details.</para>
     /// </summary>
     public ApiEnum<string, Ttl>? Ttl
@@ -108,7 +108,7 @@ class BetaCacheControlEphemeralFromRaw : IFromRawJson<BetaCacheControlEphemeral>
 ///
 /// <para>This may be one the following values: - `5m`: 5 minutes - `1h`: 1 hour</para>
 ///
-/// <para>Defaults to `5m`. See [prompt caching pricing](https://docs.claude.com/en/docs/build-with-claude/prompt-caching)
+/// <para>Defaults to `5m`. See [prompt caching pricing](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
 /// for details.</para>
 /// </summary>
 [JsonConverter(typeof(TtlConverter))]

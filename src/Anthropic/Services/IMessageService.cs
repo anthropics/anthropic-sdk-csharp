@@ -38,7 +38,7 @@ public interface IMessageService
     /// multi-turn conversations.</para>
     ///
     /// <para>Learn more about the Messages API in our [user
-    /// guide](https://docs.claude.com/en/docs/initial-setup)</para>
+    /// guide](https://platform.claude.com/docs/en/get-started)</para>
     /// </summary>
     Task<Message> Create(
         MessageCreateParams parameters,
@@ -53,7 +53,7 @@ public interface IMessageService
     /// multi-turn conversations.</para>
     ///
     /// <para>Learn more about the Messages API in our [user
-    /// guide](https://docs.claude.com/en/docs/initial-setup)</para>
+    /// guide](https://platform.claude.com/docs/en/get-started)</para>
     /// </summary>
     IAsyncEnumerable<RawMessageStreamEvent> CreateStreaming(
         MessageCreateParams parameters,
@@ -67,7 +67,7 @@ public interface IMessageService
     /// Message, including tools, images, and documents, without creating it.</para>
     ///
     /// <para>Learn more about token counting in our [user
-    /// guide](https://docs.claude.com/en/docs/build-with-claude/token-counting)</para>
+    /// guide](https://platform.claude.com/docs/en/build-with-claude/token-counting)</para>
     /// </summary>
     Task<MessageTokensCount> CountTokens(
         MessageCountTokensParams parameters,
