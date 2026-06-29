@@ -295,6 +295,50 @@ public class MessageCountTokensToolTest : TestBase
     }
 
     [Fact]
+    public void WebSearchTool20260318ValidationWorks()
+    {
+        MessageCountTokensTool value = new WebSearchTool20260318()
+        {
+            AllowedCallers = [WebSearchTool20260318AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxUses = 1,
+            ResponseInclusion = WebSearchTool20260318ResponseInclusion.Full,
+            Strict = true,
+            UserLocation = new()
+            {
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void WebFetchTool20260318ValidationWorks()
+    {
+        MessageCountTokensTool value = new WebFetchTool20260318()
+        {
+            AllowedCallers = [WebFetchTool20260318AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            DeferLoading = true,
+            MaxContentTokens = 1,
+            MaxUses = 1,
+            ResponseInclusion = ResponseInclusion.Full,
+            Strict = true,
+            UseCache = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void ToolSearchToolBm25_20251119ValidationWorks()
     {
         MessageCountTokensTool value = new ToolSearchToolBm25_20251119()
@@ -687,6 +731,62 @@ public class MessageCountTokensToolTest : TestBase
             DeferLoading = true,
             MaxContentTokens = 1,
             MaxUses = 1,
+            Strict = true,
+            UseCache = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WebSearchTool20260318SerializationRoundtripWorks()
+    {
+        MessageCountTokensTool value = new WebSearchTool20260318()
+        {
+            AllowedCallers = [WebSearchTool20260318AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxUses = 1,
+            ResponseInclusion = WebSearchTool20260318ResponseInclusion.Full,
+            Strict = true,
+            UserLocation = new()
+            {
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WebFetchTool20260318SerializationRoundtripWorks()
+    {
+        MessageCountTokensTool value = new WebFetchTool20260318()
+        {
+            AllowedCallers = [WebFetchTool20260318AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            DeferLoading = true,
+            MaxContentTokens = 1,
+            MaxUses = 1,
+            ResponseInclusion = ResponseInclusion.Full,
             Strict = true,
             UseCache = true,
         };

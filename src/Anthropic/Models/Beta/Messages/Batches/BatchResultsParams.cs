@@ -17,7 +17,7 @@ namespace Anthropic.Models.Beta.Messages.Batches;
 /// request in the Message Batch. Results are not guaranteed to be in the same order
 /// as requests. Use the `custom_id` field to match results to requests.</para>
 ///
-/// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
+/// <para>Learn more about the Message Batches API in our [user guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
