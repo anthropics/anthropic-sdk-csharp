@@ -19,7 +19,7 @@ public sealed record class ThinkingConfigEnabled : JsonModel
     ///
     /// <para>Must be ≥1024 and less than `max_tokens`.</para>
     ///
-    /// <para>See [extended thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking)
+    /// <para>See [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
     /// for details.</para>
     /// </summary>
     public required long BudgetTokens

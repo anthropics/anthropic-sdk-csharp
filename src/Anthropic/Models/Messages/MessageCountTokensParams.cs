@@ -18,7 +18,7 @@ namespace Anthropic.Models.Messages;
 /// <para>The Token Count API can be used to count the number of tokens in a Message,
 /// including tools, images, and documents, without creating it.</para>
 ///
-/// <para>Learn more about token counting in our [user guide](https://docs.claude.com/en/docs/build-with-claude/token-counting)</para>
+/// <para>Learn more about token counting in our [user guide](https://platform.claude.com/docs/en/build-with-claude/token-counting)</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -75,9 +75,9 @@ public record class MessageCountTokensParams : ParamsBase
     /// <para>```json {"role": "user", "content": [{"type": "text", "text": "Hello,
     /// Claude"}]} ```</para>
     ///
-    /// <para>See [input examples](https://docs.claude.com/en/api/messages-examples).</para>
+    /// <para>See [input examples](https://platform.claude.com/docs/en/build-with-claude/working-with-messages).</para>
     ///
-    /// <para>Note that if you want to include a [system prompt](https://docs.claude.com/en/docs/system-prompts),
+    /// <para>Note that if you want to include a [system prompt](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role),
     /// you can use the top-level `system` parameter — there is no `"system"` role
     /// for input messages in the Messages API.</para>
     ///
@@ -154,7 +154,7 @@ public record class MessageCountTokensParams : ParamsBase
     /// System prompt.
     ///
     /// <para>A system prompt is a way of providing context and instructions to Claude,
-    /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
+    /// such as specifying a particular goal or role. See our [guide to system prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role).</para>
     /// </summary>
     public MessageCountTokensParamsSystem? System
     {
@@ -181,7 +181,7 @@ public record class MessageCountTokensParams : ParamsBase
     /// thinking process before the final answer. Requires a minimum budget of 1,024
     /// tokens and counts towards your `max_tokens` limit.</para>
     ///
-    /// <para>See [extended thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking)
+    /// <para>See [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
     /// for details.</para>
     /// </summary>
     public ThinkingConfigParam? Thinking
@@ -233,9 +233,9 @@ public record class MessageCountTokensParams : ParamsBase
     /// return results back to the model using `tool_result` content blocks.</para>
     ///
     /// <para>There are two types of tools: **client tools** and **server tools**.
-    /// The behavior described below applies to client tools. For [server tools](https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview#server-tools),
+    /// The behavior described below applies to client tools. For [server tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools),
     /// see their individual documentation as each has its own behavior (e.g., the
-    /// [web search tool](https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool)).</para>
+    /// [web search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool)).</para>
     ///
     /// <para>Each tool definition includes:</para>
     ///
@@ -269,7 +269,8 @@ public record class MessageCountTokensParams : ParamsBase
     /// and functions, or more generally whenever you want the model to produce a
     /// particular JSON structure of output.</para>
     ///
-    /// <para>See our [guide](https://docs.claude.com/en/docs/tool-use) for more details.</para>
+    /// <para>See our [guide](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
+    /// for more details.</para>
     /// </summary>
     public IReadOnlyList<MessageCountTokensTool>? Tools
     {
@@ -432,7 +433,7 @@ public record class MessageCountTokensParams : ParamsBase
 /// System prompt.
 ///
 /// <para>A system prompt is a way of providing context and instructions to Claude,
-/// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
+/// such as specifying a particular goal or role. See our [guide to system prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role).</para>
 /// </summary>
 [JsonConverter(typeof(MessageCountTokensParamsSystemConverter))]
 public record class MessageCountTokensParamsSystem : ModelBase

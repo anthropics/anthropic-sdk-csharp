@@ -19,7 +19,7 @@ namespace Anthropic.Models.Messages.Batches;
 /// at once. Once a Message Batch is created, it begins processing immediately. Batches
 /// can take up to 24 hours to complete.</para>
 ///
-/// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
+/// <para>Learn more about the Message Batches API in our [user guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -211,7 +211,7 @@ public sealed record class Request : JsonModel
     /// <summary>
     /// Messages API creation parameters for the individual request.
     ///
-    /// <para>See the [Messages API reference](https://docs.claude.com/en/api/messages)
+    /// <para>See the [Messages API reference](https://platform.claude.com/docs/en/api/messages)
     /// for full documentation on available parameters.</para>
     /// </summary>
     public required Params Params
@@ -269,7 +269,7 @@ class RequestFromRaw : IFromRawJson<Request>
 /// <summary>
 /// Messages API creation parameters for the individual request.
 ///
-/// <para>See the [Messages API reference](https://docs.claude.com/en/api/messages)
+/// <para>See the [Messages API reference](https://platform.claude.com/docs/en/api/messages)
 /// for full documentation on available parameters.</para>
 /// </summary>
 [JsonConverter(typeof(JsonModelConverter<Params, ParamsFromRaw>))]
@@ -281,11 +281,12 @@ public sealed record class Params : JsonModel
     /// <para>Note that our models may stop _before_ reaching this maximum. This parameter
     /// only specifies the absolute maximum number of tokens to generate.</para>
     ///
-    /// <para>Set to `0` to populate the [prompt cache](https://docs.claude.com/en/docs/build-with-claude/prompt-caching#pre-warming-the-cache)
+    /// <para>Set to `0` to populate the [prompt cache](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache)
     /// without generating a response.</para>
     ///
     /// <para>Different models have different maximum values for this parameter.
-    /// See [models](https://docs.claude.com/en/docs/models-overview) for details.</para>
+    /// See [models](https://platform.claude.com/docs/en/about-claude/models/overview)
+    /// for details.</para>
     /// </summary>
     public required long MaxTokens
     {
@@ -340,9 +341,9 @@ public sealed record class Params : JsonModel
     /// <para>```json {"role": "user", "content": [{"type": "text", "text": "Hello,
     /// Claude"}]} ```</para>
     ///
-    /// <para>See [input examples](https://docs.claude.com/en/api/messages-examples).</para>
+    /// <para>See [input examples](https://platform.claude.com/docs/en/build-with-claude/working-with-messages).</para>
     ///
-    /// <para>Note that if you want to include a [system prompt](https://docs.claude.com/en/docs/system-prompts),
+    /// <para>Note that if you want to include a [system prompt](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role),
     /// you can use the top-level `system` parameter — there is no `"system"` role
     /// for input messages in the Messages API.</para>
     ///
@@ -468,7 +469,8 @@ public sealed record class Params : JsonModel
     /// for this request.
     ///
     /// <para>Anthropic offers different levels of service for your API requests.
-    /// See [service-tiers](https://docs.claude.com/en/api/service-tiers) for details.</para>
+    /// See [service-tiers](https://platform.claude.com/docs/en/api/service-tiers)
+    /// for details.</para>
     /// </summary>
     public ApiEnum<string, ServiceTier>? ServiceTier
     {
@@ -524,7 +526,7 @@ public sealed record class Params : JsonModel
     /// <summary>
     /// Whether to incrementally stream the response using server-sent events.
     ///
-    /// <para>See [streaming](https://docs.claude.com/en/api/messages-streaming)
+    /// <para>See [streaming](https://platform.claude.com/docs/en/build-with-claude/streaming)
     /// for details.</para>
     /// </summary>
     public bool? Stream
@@ -549,7 +551,7 @@ public sealed record class Params : JsonModel
     /// System prompt.
     ///
     /// <para>A system prompt is a way of providing context and instructions to Claude,
-    /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
+    /// such as specifying a particular goal or role. See our [guide to system prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role).</para>
     /// </summary>
     public ParamsSystem? System
     {
@@ -607,7 +609,7 @@ public sealed record class Params : JsonModel
     /// thinking process before the final answer. Requires a minimum budget of 1,024
     /// tokens and counts towards your `max_tokens` limit.</para>
     ///
-    /// <para>See [extended thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking)
+    /// <para>See [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
     /// for details.</para>
     /// </summary>
     public ThinkingConfigParam? Thinking
@@ -659,9 +661,9 @@ public sealed record class Params : JsonModel
     /// return results back to the model using `tool_result` content blocks.</para>
     ///
     /// <para>There are two types of tools: **client tools** and **server tools**.
-    /// The behavior described below applies to client tools. For [server tools](https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview#server-tools),
+    /// The behavior described below applies to client tools. For [server tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools),
     /// see their individual documentation as each has its own behavior (e.g., the
-    /// [web search tool](https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool)).</para>
+    /// [web search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool)).</para>
     ///
     /// <para>Each tool definition includes:</para>
     ///
@@ -695,7 +697,8 @@ public sealed record class Params : JsonModel
     /// and functions, or more generally whenever you want the model to produce a
     /// particular JSON structure of output.</para>
     ///
-    /// <para>See our [guide](https://docs.claude.com/en/docs/tool-use) for more details.</para>
+    /// <para>See our [guide](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
+    /// for more details.</para>
     /// </summary>
     public IReadOnlyList<ToolUnion>? Tools
     {
@@ -846,7 +849,7 @@ class ParamsFromRaw : IFromRawJson<Params>
 /// for this request.
 ///
 /// <para>Anthropic offers different levels of service for your API requests. See
-/// [service-tiers](https://docs.claude.com/en/api/service-tiers) for details.</para>
+/// [service-tiers](https://platform.claude.com/docs/en/api/service-tiers) for details.</para>
 /// </summary>
 [JsonConverter(typeof(ServiceTierConverter))]
 public enum ServiceTier
@@ -896,7 +899,7 @@ sealed class ServiceTierConverter : JsonConverter<ServiceTier>
 /// System prompt.
 ///
 /// <para>A system prompt is a way of providing context and instructions to Claude,
-/// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
+/// such as specifying a particular goal or role. See our [guide to system prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role).</para>
 /// </summary>
 [JsonConverter(typeof(ParamsSystemConverter))]
 public record class ParamsSystem : ModelBase

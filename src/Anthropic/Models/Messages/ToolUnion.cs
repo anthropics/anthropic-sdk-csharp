@@ -48,6 +48,8 @@ public record class ToolUnion : ModelBase
                 webSearchTool20260209: (x) => x.CacheControl,
                 webFetchTool20260209: (x) => x.CacheControl,
                 webFetchTool20260309: (x) => x.CacheControl,
+                webSearchTool20260318: (x) => x.CacheControl,
+                webFetchTool20260318: (x) => x.CacheControl,
                 searchToolBm25_20251119: (x) => x.CacheControl,
                 searchToolRegex20251119: (x) => x.CacheControl
             );
@@ -74,6 +76,8 @@ public record class ToolUnion : ModelBase
                 webSearchTool20260209: (x) => x.DeferLoading,
                 webFetchTool20260209: (x) => x.DeferLoading,
                 webFetchTool20260309: (x) => x.DeferLoading,
+                webSearchTool20260318: (x) => x.DeferLoading,
+                webFetchTool20260318: (x) => x.DeferLoading,
                 searchToolBm25_20251119: (x) => x.DeferLoading,
                 searchToolRegex20251119: (x) => x.DeferLoading
             );
@@ -100,6 +104,8 @@ public record class ToolUnion : ModelBase
                 webSearchTool20260209: (x) => x.Strict,
                 webFetchTool20260209: (x) => x.Strict,
                 webFetchTool20260309: (x) => x.Strict,
+                webSearchTool20260318: (x) => x.Strict,
+                webFetchTool20260318: (x) => x.Strict,
                 searchToolBm25_20251119: (x) => x.Strict,
                 searchToolRegex20251119: (x) => x.Strict
             );
@@ -126,6 +132,8 @@ public record class ToolUnion : ModelBase
                 webSearchTool20260209: (x) => x.MaxUses,
                 webFetchTool20260209: (x) => x.MaxUses,
                 webFetchTool20260309: (x) => x.MaxUses,
+                webSearchTool20260318: (x) => x.MaxUses,
+                webFetchTool20260318: (x) => x.MaxUses,
                 searchToolBm25_20251119: (_) => null,
                 searchToolRegex20251119: (_) => null
             );
@@ -152,6 +160,8 @@ public record class ToolUnion : ModelBase
                 webSearchTool20260209: (x) => x.UserLocation,
                 webFetchTool20260209: (_) => null,
                 webFetchTool20260309: (_) => null,
+                webSearchTool20260318: (x) => x.UserLocation,
+                webFetchTool20260318: (_) => null,
                 searchToolBm25_20251119: (_) => null,
                 searchToolRegex20251119: (_) => null
             );
@@ -178,6 +188,8 @@ public record class ToolUnion : ModelBase
                 webSearchTool20260209: (_) => null,
                 webFetchTool20260209: (x) => x.Citations,
                 webFetchTool20260309: (x) => x.Citations,
+                webSearchTool20260318: (_) => null,
+                webFetchTool20260318: (x) => x.Citations,
                 searchToolBm25_20251119: (_) => null,
                 searchToolRegex20251119: (_) => null
             );
@@ -204,6 +216,36 @@ public record class ToolUnion : ModelBase
                 webSearchTool20260209: (_) => null,
                 webFetchTool20260209: (x) => x.MaxContentTokens,
                 webFetchTool20260309: (x) => x.MaxContentTokens,
+                webSearchTool20260318: (_) => null,
+                webFetchTool20260318: (x) => x.MaxContentTokens,
+                searchToolBm25_20251119: (_) => null,
+                searchToolRegex20251119: (_) => null
+            );
+        }
+    }
+
+    public bool? UseCache
+    {
+        get
+        {
+            return Match<bool?>(
+                tool: (_) => null,
+                bash20250124: (_) => null,
+                codeExecutionTool20250522: (_) => null,
+                codeExecutionTool20250825: (_) => null,
+                codeExecutionTool20260120: (_) => null,
+                codeExecutionTool20260521: (_) => null,
+                memoryTool20250818: (_) => null,
+                textEditor20250124: (_) => null,
+                textEditor20250429: (_) => null,
+                textEditor20250728: (_) => null,
+                webSearchTool20250305: (_) => null,
+                webFetchTool20250910: (_) => null,
+                webSearchTool20260209: (_) => null,
+                webFetchTool20260209: (_) => null,
+                webFetchTool20260309: (x) => x.UseCache,
+                webSearchTool20260318: (_) => null,
+                webFetchTool20260318: (x) => x.UseCache,
                 searchToolBm25_20251119: (_) => null,
                 searchToolRegex20251119: (_) => null
             );
@@ -295,6 +337,18 @@ public record class ToolUnion : ModelBase
     }
 
     public ToolUnion(WebFetchTool20260309 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ToolUnion(WebSearchTool20260318 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ToolUnion(WebFetchTool20260318 value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -642,6 +696,48 @@ public record class ToolUnion : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="WebSearchTool20260318"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebSearchTool20260318(out var value)) {
+    ///     // `value` is of type `WebSearchTool20260318`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebSearchTool20260318([NotNullWhen(true)] out WebSearchTool20260318? value)
+    {
+        value = this.Value as WebSearchTool20260318;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="WebFetchTool20260318"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebFetchTool20260318(out var value)) {
+    ///     // `value` is of type `WebFetchTool20260318`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebFetchTool20260318([NotNullWhen(true)] out WebFetchTool20260318? value)
+    {
+        value = this.Value as WebFetchTool20260318;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ToolSearchToolBm25_20251119"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -715,6 +811,8 @@ public record class ToolUnion : ModelBase
     ///     (WebSearchTool20260209 value) =&gt; {...},
     ///     (WebFetchTool20260209 value) =&gt; {...},
     ///     (WebFetchTool20260309 value) =&gt; {...},
+    ///     (WebSearchTool20260318 value) =&gt; {...},
+    ///     (WebFetchTool20260318 value) =&gt; {...},
     ///     (ToolSearchToolBm25_20251119 value) =&gt; {...},
     ///     (ToolSearchToolRegex20251119 value) =&gt; {...}
     /// );
@@ -737,6 +835,8 @@ public record class ToolUnion : ModelBase
         System::Action<WebSearchTool20260209> webSearchTool20260209,
         System::Action<WebFetchTool20260209> webFetchTool20260209,
         System::Action<WebFetchTool20260309> webFetchTool20260309,
+        System::Action<WebSearchTool20260318> webSearchTool20260318,
+        System::Action<WebFetchTool20260318> webFetchTool20260318,
         System::Action<ToolSearchToolBm25_20251119> searchToolBm25_20251119,
         System::Action<ToolSearchToolRegex20251119> searchToolRegex20251119
     )
@@ -788,6 +888,12 @@ public record class ToolUnion : ModelBase
             case WebFetchTool20260309 value:
                 webFetchTool20260309(value);
                 break;
+            case WebSearchTool20260318 value:
+                webSearchTool20260318(value);
+                break;
+            case WebFetchTool20260318 value:
+                webFetchTool20260318(value);
+                break;
             case ToolSearchToolBm25_20251119 value:
                 searchToolBm25_20251119(value);
                 break;
@@ -831,6 +937,8 @@ public record class ToolUnion : ModelBase
     ///     (WebSearchTool20260209 value) =&gt; {...},
     ///     (WebFetchTool20260209 value) =&gt; {...},
     ///     (WebFetchTool20260309 value) =&gt; {...},
+    ///     (WebSearchTool20260318 value) =&gt; {...},
+    ///     (WebFetchTool20260318 value) =&gt; {...},
     ///     (ToolSearchToolBm25_20251119 value) =&gt; {...},
     ///     (ToolSearchToolRegex20251119 value) =&gt; {...}
     /// );
@@ -853,6 +961,8 @@ public record class ToolUnion : ModelBase
         System::Func<WebSearchTool20260209, T> webSearchTool20260209,
         System::Func<WebFetchTool20260209, T> webFetchTool20260209,
         System::Func<WebFetchTool20260309, T> webFetchTool20260309,
+        System::Func<WebSearchTool20260318, T> webSearchTool20260318,
+        System::Func<WebFetchTool20260318, T> webFetchTool20260318,
         System::Func<ToolSearchToolBm25_20251119, T> searchToolBm25_20251119,
         System::Func<ToolSearchToolRegex20251119, T> searchToolRegex20251119
     )
@@ -874,6 +984,8 @@ public record class ToolUnion : ModelBase
             WebSearchTool20260209 value => webSearchTool20260209(value),
             WebFetchTool20260209 value => webFetchTool20260209(value),
             WebFetchTool20260309 value => webFetchTool20260309(value),
+            WebSearchTool20260318 value => webSearchTool20260318(value),
+            WebFetchTool20260318 value => webFetchTool20260318(value),
             ToolSearchToolBm25_20251119 value => searchToolBm25_20251119(value),
             ToolSearchToolRegex20251119 value => searchToolRegex20251119(value),
             _ => throw new AnthropicInvalidDataException(
@@ -912,6 +1024,10 @@ public record class ToolUnion : ModelBase
 
     public static implicit operator ToolUnion(WebFetchTool20260309 value) => new(value);
 
+    public static implicit operator ToolUnion(WebSearchTool20260318 value) => new(value);
+
+    public static implicit operator ToolUnion(WebFetchTool20260318 value) => new(value);
+
     public static implicit operator ToolUnion(ToolSearchToolBm25_20251119 value) => new(value);
 
     public static implicit operator ToolUnion(ToolSearchToolRegex20251119 value) => new(value);
@@ -948,6 +1064,8 @@ public record class ToolUnion : ModelBase
             (webSearchTool20260209) => webSearchTool20260209.Validate(),
             (webFetchTool20260209) => webFetchTool20260209.Validate(),
             (webFetchTool20260309) => webFetchTool20260309.Validate(),
+            (webSearchTool20260318) => webSearchTool20260318.Validate(),
+            (webFetchTool20260318) => webFetchTool20260318.Validate(),
             (searchToolBm25_20251119) => searchToolBm25_20251119.Validate(),
             (searchToolRegex20251119) => searchToolRegex20251119.Validate()
         );
@@ -988,8 +1106,10 @@ public record class ToolUnion : ModelBase
             WebSearchTool20260209 _ => 12,
             WebFetchTool20260209 _ => 13,
             WebFetchTool20260309 _ => 14,
-            ToolSearchToolBm25_20251119 _ => 15,
-            ToolSearchToolRegex20251119 _ => 16,
+            WebSearchTool20260318 _ => 15,
+            WebFetchTool20260318 _ => 16,
+            ToolSearchToolBm25_20251119 _ => 17,
+            ToolSearchToolRegex20251119 _ => 18,
             _ => -1,
         };
     }
@@ -1215,6 +1335,34 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         try
         {
             var deserialized = JsonSerializer.Deserialize<WebFetchTool20260309>(element, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<WebSearchTool20260318>(element, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<WebFetchTool20260318>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();

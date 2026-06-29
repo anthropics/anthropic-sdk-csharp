@@ -17,7 +17,7 @@ namespace Anthropic.Models.Messages.Batches;
 /// which requests were canceled, check the individual results within the batch.
 /// Note that cancellation may not result in any canceled requests if they were non-interruptible.</para>
 ///
-/// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
+/// <para>Learn more about the Message Batches API in our [user guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
