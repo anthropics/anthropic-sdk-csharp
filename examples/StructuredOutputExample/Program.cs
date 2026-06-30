@@ -14,7 +14,7 @@ Console.WriteLine("--- Example 1: Extract Person Information ---\n");
 var personMessage = await client.Messages.Create<PersonInfo>(
     new MessageCreateParams
     {
-        Model = "claude-sonnet-4-5",
+        Model = "claude-sonnet-5",
         MaxTokens = 1024,
         Messages =
         [
@@ -46,7 +46,7 @@ Console.WriteLine("--- Example 2: Extract Company Information (Nested Objects & 
 var companyMessage = await client.Messages.Create<CompanyInfo>(
     new MessageCreateParams
     {
-        Model = "claude-sonnet-4-5",
+        Model = "claude-sonnet-5",
         MaxTokens = 2048,
         Messages =
         [
@@ -92,7 +92,7 @@ Console.WriteLine("--- Example 3: Full Message with Structured Parsing ---\n");
 var sentimentMessage = await client.Messages.Create<SentimentResult>(
     new MessageCreateParams
     {
-        Model = "claude-sonnet-4-5",
+        Model = "claude-sonnet-5",
         MaxTokens = 256,
         Messages =
         [
@@ -139,7 +139,7 @@ Console.WriteLine("--- Example 5: Plain Class (No Base Class Required) ---\n");
 var productMessage = await client.Messages.Create<Product>(
     new MessageCreateParams
     {
-        Model = "claude-sonnet-4-5",
+        Model = "claude-sonnet-5",
         MaxTokens = 1024,
         Messages =
         [

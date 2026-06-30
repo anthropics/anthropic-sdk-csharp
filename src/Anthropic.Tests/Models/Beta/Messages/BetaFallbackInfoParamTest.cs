@@ -10,9 +10,9 @@ public class BetaFallbackInfoParamTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaFallbackInfoParam { Model = Model.ClaudeFable5 };
+        var model = new BetaFallbackInfoParam { Model = Model.ClaudeSonnet5 };
 
-        ApiEnum<string, Model> expectedModel = Model.ClaudeFable5;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeSonnet5;
 
         Assert.Equal(expectedModel, model.Model);
     }
@@ -20,7 +20,7 @@ public class BetaFallbackInfoParamTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaFallbackInfoParam { Model = Model.ClaudeFable5 };
+        var model = new BetaFallbackInfoParam { Model = Model.ClaudeSonnet5 };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaFallbackInfoParam>(
@@ -34,7 +34,7 @@ public class BetaFallbackInfoParamTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaFallbackInfoParam { Model = Model.ClaudeFable5 };
+        var model = new BetaFallbackInfoParam { Model = Model.ClaudeSonnet5 };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaFallbackInfoParam>(
@@ -43,7 +43,7 @@ public class BetaFallbackInfoParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, Model> expectedModel = Model.ClaudeFable5;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeSonnet5;
 
         Assert.Equal(expectedModel, deserialized.Model);
     }
@@ -51,7 +51,7 @@ public class BetaFallbackInfoParamTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaFallbackInfoParam { Model = Model.ClaudeFable5 };
+        var model = new BetaFallbackInfoParam { Model = Model.ClaudeSonnet5 };
 
         model.Validate();
     }
@@ -59,7 +59,7 @@ public class BetaFallbackInfoParamTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaFallbackInfoParam { Model = Model.ClaudeFable5 };
+        var model = new BetaFallbackInfoParam { Model = Model.ClaudeSonnet5 };
 
         BetaFallbackInfoParam copied = new(model);
 

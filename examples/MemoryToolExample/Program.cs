@@ -39,7 +39,7 @@ static async Task Converse(string userMessage, string memoryRoot)
     var runner = client.Beta.Messages.ToolRunner(
         new MessageCreateParams
         {
-            Model = Anthropic.Models.Messages.Model.ClaudeSonnet4_5,
+            Model = Anthropic.Models.Messages.Model.ClaudeSonnet5,
             MaxTokens = 2048,
             Betas = ["context-management-2025-06-27"],
             Messages = [new() { Role = Role.User, Content = userMessage }],

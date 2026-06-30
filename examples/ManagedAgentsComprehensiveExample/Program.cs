@@ -76,7 +76,7 @@ var agentV1 = await client.Beta.Agents.Create(
     new AgentCreateParams
     {
         Name = "comprehensive-example-agent",
-        Model = BetaManagedAgentsModel.ClaudeSonnet4_6,
+        Model = BetaManagedAgentsModel.ClaudeSonnet5,
         System = "You are a helpful assistant.",
         McpServers =
         [

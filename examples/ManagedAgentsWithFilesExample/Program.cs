@@ -20,7 +20,7 @@ var agent = await client.Beta.Agents.Create(
     new AgentCreateParams
     {
         Name = "files-example-agent",
-        Model = BetaManagedAgentsModel.ClaudeSonnet4_6,
+        Model = BetaManagedAgentsModel.ClaudeSonnet5,
         Tools =
         [
             new BetaManagedAgentsAgentToolset20260401Params

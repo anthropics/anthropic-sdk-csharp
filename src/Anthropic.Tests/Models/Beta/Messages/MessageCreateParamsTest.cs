@@ -54,7 +54,7 @@ public class MessageCreateParamsTest : TestBase
             [
                 new()
                 {
-                    Model = Messages::Model.ClaudeFable5,
+                    Model = Messages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -212,7 +212,7 @@ public class MessageCreateParamsTest : TestBase
         [
             new()
             {
-                Model = Messages::Model.ClaudeFable5,
+                Model = Messages::Model.ClaudeSonnet5,
                 MaxTokens = 0,
                 OutputConfig = new()
                 {
@@ -434,7 +434,7 @@ public class MessageCreateParamsTest : TestBase
             [
                 new()
                 {
-                    Model = Messages::Model.ClaudeFable5,
+                    Model = Messages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -539,7 +539,7 @@ public class MessageCreateParamsTest : TestBase
             [
                 new()
                 {
-                    Model = Messages::Model.ClaudeFable5,
+                    Model = Messages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -936,7 +936,7 @@ public class MessageCreateParamsTest : TestBase
             [
                 new()
                 {
-                    Model = Messages::Model.ClaudeFable5,
+                    Model = Messages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {

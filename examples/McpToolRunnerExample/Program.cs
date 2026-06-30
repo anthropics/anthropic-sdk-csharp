@@ -48,7 +48,7 @@ Console.WriteLine();
 var runner = anthropic.Beta.Messages.ToolRunner(
     new MessageCreateParams
     {
-        Model = Messages::Model.ClaudeSonnet4_5,
+        Model = Messages::Model.ClaudeSonnet5,
         MaxTokens = 1024,
         Messages =
         [

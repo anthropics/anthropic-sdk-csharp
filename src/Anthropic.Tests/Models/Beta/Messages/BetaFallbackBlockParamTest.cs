@@ -12,13 +12,13 @@ public class BetaFallbackBlockParamTest : TestBase
     {
         var model = new BetaFallbackBlockParam
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
             Trigger = JsonSerializer.Deserialize<JsonElement>("{}"),
         };
 
-        BetaFallbackInfoParam expectedFrom = new(Model.ClaudeFable5);
-        BetaFallbackInfoParam expectedTo = new(Model.ClaudeFable5);
+        BetaFallbackInfoParam expectedFrom = new(Model.ClaudeSonnet5);
+        BetaFallbackInfoParam expectedTo = new(Model.ClaudeSonnet5);
         JsonElement expectedType = JsonSerializer.SerializeToElement("fallback");
         JsonElement expectedTrigger = JsonSerializer.Deserialize<JsonElement>("{}");
 
@@ -34,8 +34,8 @@ public class BetaFallbackBlockParamTest : TestBase
     {
         var model = new BetaFallbackBlockParam
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
             Trigger = JsonSerializer.Deserialize<JsonElement>("{}"),
         };
 
@@ -53,8 +53,8 @@ public class BetaFallbackBlockParamTest : TestBase
     {
         var model = new BetaFallbackBlockParam
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
             Trigger = JsonSerializer.Deserialize<JsonElement>("{}"),
         };
 
@@ -65,8 +65,8 @@ public class BetaFallbackBlockParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        BetaFallbackInfoParam expectedFrom = new(Model.ClaudeFable5);
-        BetaFallbackInfoParam expectedTo = new(Model.ClaudeFable5);
+        BetaFallbackInfoParam expectedFrom = new(Model.ClaudeSonnet5);
+        BetaFallbackInfoParam expectedTo = new(Model.ClaudeSonnet5);
         JsonElement expectedType = JsonSerializer.SerializeToElement("fallback");
         JsonElement expectedTrigger = JsonSerializer.Deserialize<JsonElement>("{}");
 
@@ -82,8 +82,8 @@ public class BetaFallbackBlockParamTest : TestBase
     {
         var model = new BetaFallbackBlockParam
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
             Trigger = JsonSerializer.Deserialize<JsonElement>("{}"),
         };
 
@@ -95,8 +95,8 @@ public class BetaFallbackBlockParamTest : TestBase
     {
         var model = new BetaFallbackBlockParam
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
         };
 
         Assert.Null(model.Trigger);
@@ -108,8 +108,8 @@ public class BetaFallbackBlockParamTest : TestBase
     {
         var model = new BetaFallbackBlockParam
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
         };
 
         model.Validate();
@@ -120,8 +120,8 @@ public class BetaFallbackBlockParamTest : TestBase
     {
         var model = new BetaFallbackBlockParam
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
 
             // Null should be interpreted as omitted for these properties
             Trigger = null,
@@ -136,8 +136,8 @@ public class BetaFallbackBlockParamTest : TestBase
     {
         var model = new BetaFallbackBlockParam
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
 
             // Null should be interpreted as omitted for these properties
             Trigger = null,
@@ -151,8 +151,8 @@ public class BetaFallbackBlockParamTest : TestBase
     {
         var model = new BetaFallbackBlockParam
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
             Trigger = JsonSerializer.Deserialize<JsonElement>("{}"),
         };
 

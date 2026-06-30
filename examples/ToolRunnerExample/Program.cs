@@ -85,7 +85,7 @@ var currencyTool = new BetaRunnableTool
 var runner = client.Beta.Messages.ToolRunner(
     new MessageCreateParams
     {
-        Model = Anthropic.Models.Messages.Model.ClaudeSonnet4_5,
+        Model = Anthropic.Models.Messages.Model.ClaudeSonnet5,
         MaxTokens = 1024,
         Messages =
         [

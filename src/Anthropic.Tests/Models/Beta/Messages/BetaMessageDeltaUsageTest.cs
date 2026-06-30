@@ -28,7 +28,7 @@ public class BetaMessageDeltaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeFable5,
+                    Model = Model.ClaudeSonnet5,
                     OutputTokens = 0,
                 },
             ],
@@ -48,7 +48,7 @@ public class BetaMessageDeltaUsageTest : TestBase
                 CacheCreationInputTokens = 0,
                 CacheReadInputTokens = 0,
                 InputTokens = 0,
-                Model = Model.ClaudeFable5,
+                Model = Model.ClaudeSonnet5,
                 OutputTokens = 0,
             },
         ];
@@ -94,7 +94,7 @@ public class BetaMessageDeltaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeFable5,
+                    Model = Model.ClaudeSonnet5,
                     OutputTokens = 0,
                 },
             ],
@@ -132,7 +132,7 @@ public class BetaMessageDeltaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeFable5,
+                    Model = Model.ClaudeSonnet5,
                     OutputTokens = 0,
                 },
             ],
@@ -159,7 +159,7 @@ public class BetaMessageDeltaUsageTest : TestBase
                 CacheCreationInputTokens = 0,
                 CacheReadInputTokens = 0,
                 InputTokens = 0,
-                Model = Model.ClaudeFable5,
+                Model = Model.ClaudeSonnet5,
                 OutputTokens = 0,
             },
         ];
@@ -205,7 +205,7 @@ public class BetaMessageDeltaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeFable5,
+                    Model = Model.ClaudeSonnet5,
                     OutputTokens = 0,
                 },
             ],
@@ -237,7 +237,7 @@ public class BetaMessageDeltaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeFable5,
+                    Model = Model.ClaudeSonnet5,
                     OutputTokens = 0,
                 },
             ],
@@ -263,7 +263,7 @@ public class IterationTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeFable5,
+            Model = Model.ClaudeSonnet5,
             OutputTokens = 0,
         };
         value.Validate();
@@ -292,7 +292,7 @@ public class IterationTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeFable5,
+            Model = Model.ClaudeSonnet5,
             OutputTokens = 0,
         };
         value.Validate();
@@ -307,7 +307,7 @@ public class IterationTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeFable5,
+            Model = Model.ClaudeSonnet5,
             OutputTokens = 0,
         };
         value.Validate();
@@ -322,7 +322,7 @@ public class IterationTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeFable5,
+            Model = Model.ClaudeSonnet5,
             OutputTokens = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -363,7 +363,7 @@ public class IterationTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeFable5,
+            Model = Model.ClaudeSonnet5,
             OutputTokens = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -384,7 +384,7 @@ public class IterationTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeFable5,
+            Model = Model.ClaudeSonnet5,
             OutputTokens = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

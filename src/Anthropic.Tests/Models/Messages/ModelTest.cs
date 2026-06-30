@@ -8,6 +8,7 @@ namespace Anthropic.Tests.Models.Messages;
 public class ModelTest : TestBase
 {
     [Theory]
+    [InlineData(Model.ClaudeSonnet5)]
     [InlineData(Model.ClaudeFable5)]
     [InlineData(Model.ClaudeMythos5)]
     [InlineData(Model.ClaudeOpus4_8)]
@@ -43,6 +44,7 @@ public class ModelTest : TestBase
     }
 
     [Theory]
+    [InlineData(Model.ClaudeSonnet5)]
     [InlineData(Model.ClaudeFable5)]
     [InlineData(Model.ClaudeMythos5)]
     [InlineData(Model.ClaudeOpus4_8)]

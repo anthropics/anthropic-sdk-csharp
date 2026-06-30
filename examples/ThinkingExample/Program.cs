@@ -11,7 +11,7 @@ MessageCreateParams parameters = new()
     [
         new() { Content = "Tell me a story about building the best SDK!", Role = Role.User },
     ],
-    Model = Model.ClaudeSonnet4_5,
+    Model = Model.ClaudeSonnet5,
     Thinking = new ThinkingConfigEnabled() { BudgetTokens = 1024 },
 };
 
