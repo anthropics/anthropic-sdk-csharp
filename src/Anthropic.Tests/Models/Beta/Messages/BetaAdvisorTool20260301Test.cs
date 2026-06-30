@@ -14,7 +14,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -24,7 +24,7 @@ public class BetaAdvisorTool20260301Test : TestBase
             Strict = true,
         };
 
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeFable5;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeSonnet5;
         JsonElement expectedName = JsonSerializer.SerializeToElement("advisor");
         JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_20260301");
         List<ApiEnum<string, AllowedCaller>> expectedAllowedCallers = [AllowedCaller.Direct];
@@ -57,7 +57,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -81,7 +81,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -98,7 +98,7 @@ public class BetaAdvisorTool20260301Test : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeFable5;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeSonnet5;
         JsonElement expectedName = JsonSerializer.SerializeToElement("advisor");
         JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_20260301");
         List<ApiEnum<string, AllowedCaller>> expectedAllowedCallers = [AllowedCaller.Direct];
@@ -131,7 +131,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -149,7 +149,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             MaxTokens = 1024,
@@ -169,7 +169,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             MaxTokens = 1024,
@@ -184,7 +184,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             MaxTokens = 1024,
@@ -209,7 +209,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             MaxTokens = 1024,
@@ -229,7 +229,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             AllowedCallers = [AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
@@ -250,7 +250,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             AllowedCallers = [AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
@@ -264,7 +264,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             AllowedCallers = [AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
@@ -290,7 +290,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             AllowedCallers = [AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
@@ -309,7 +309,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },

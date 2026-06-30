@@ -62,7 +62,7 @@ public class BatchCreateParamsTest : TestBase
                         [
                             new()
                             {
-                                Model = ModelsMessages::Model.ClaudeFable5,
+                                Model = ModelsMessages::Model.ClaudeSonnet5,
                                 MaxTokens = 0,
                                 OutputConfig = new()
                                 {
@@ -235,7 +235,7 @@ public class BatchCreateParamsTest : TestBase
                     [
                         new()
                         {
-                            Model = ModelsMessages::Model.ClaudeFable5,
+                            Model = ModelsMessages::Model.ClaudeSonnet5,
                             MaxTokens = 0,
                             OutputConfig = new()
                             {
@@ -425,7 +425,7 @@ public class BatchCreateParamsTest : TestBase
                         [
                             new()
                             {
-                                Model = ModelsMessages::Model.ClaudeFable5,
+                                Model = ModelsMessages::Model.ClaudeSonnet5,
                                 MaxTokens = 0,
                                 OutputConfig = new()
                                 {
@@ -607,7 +607,7 @@ public class BatchCreateParamsTest : TestBase
                         [
                             new()
                             {
-                                Model = ModelsMessages::Model.ClaudeFable5,
+                                Model = ModelsMessages::Model.ClaudeSonnet5,
                                 MaxTokens = 0,
                                 OutputConfig = new()
                                 {
@@ -793,7 +793,7 @@ public class BatchCreateParamsTest : TestBase
                         [
                             new()
                             {
-                                Model = ModelsMessages::Model.ClaudeFable5,
+                                Model = ModelsMessages::Model.ClaudeSonnet5,
                                 MaxTokens = 0,
                                 OutputConfig = new()
                                 {
@@ -980,7 +980,7 @@ public class BatchCreateParamsTest : TestBase
                         [
                             new()
                             {
-                                Model = ModelsMessages::Model.ClaudeFable5,
+                                Model = ModelsMessages::Model.ClaudeSonnet5,
                                 MaxTokens = 0,
                                 OutputConfig = new()
                                 {
@@ -1170,7 +1170,7 @@ public class BatchCreateParamsTest : TestBase
                         [
                             new()
                             {
-                                Model = ModelsMessages::Model.ClaudeFable5,
+                                Model = ModelsMessages::Model.ClaudeSonnet5,
                                 MaxTokens = 0,
                                 OutputConfig = new()
                                 {
@@ -1352,7 +1352,7 @@ public class RequestTest : TestBase
                 [
                     new()
                     {
-                        Model = ModelsMessages::Model.ClaudeFable5,
+                        Model = ModelsMessages::Model.ClaudeSonnet5,
                         MaxTokens = 0,
                         OutputConfig = new()
                         {
@@ -1510,7 +1510,7 @@ public class RequestTest : TestBase
             [
                 new()
                 {
-                    Model = ModelsMessages::Model.ClaudeFable5,
+                    Model = ModelsMessages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -1676,7 +1676,7 @@ public class RequestTest : TestBase
                 [
                     new()
                     {
-                        Model = ModelsMessages::Model.ClaudeFable5,
+                        Model = ModelsMessages::Model.ClaudeSonnet5,
                         MaxTokens = 0,
                         OutputConfig = new()
                         {
@@ -1845,7 +1845,7 @@ public class RequestTest : TestBase
                 [
                     new()
                     {
-                        Model = ModelsMessages::Model.ClaudeFable5,
+                        Model = ModelsMessages::Model.ClaudeSonnet5,
                         MaxTokens = 0,
                         OutputConfig = new()
                         {
@@ -2010,7 +2010,7 @@ public class RequestTest : TestBase
             [
                 new()
                 {
-                    Model = ModelsMessages::Model.ClaudeFable5,
+                    Model = ModelsMessages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -2176,7 +2176,7 @@ public class RequestTest : TestBase
                 [
                     new()
                     {
-                        Model = ModelsMessages::Model.ClaudeFable5,
+                        Model = ModelsMessages::Model.ClaudeSonnet5,
                         MaxTokens = 0,
                         OutputConfig = new()
                         {
@@ -2342,7 +2342,7 @@ public class RequestTest : TestBase
                 [
                     new()
                     {
-                        Model = ModelsMessages::Model.ClaudeFable5,
+                        Model = ModelsMessages::Model.ClaudeSonnet5,
                         MaxTokens = 0,
                         OutputConfig = new()
                         {
@@ -2510,7 +2510,7 @@ public class ParamsTest : TestBase
             [
                 new()
                 {
-                    Model = ModelsMessages::Model.ClaudeFable5,
+                    Model = ModelsMessages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -2673,7 +2673,7 @@ public class ParamsTest : TestBase
         [
             new()
             {
-                Model = ModelsMessages::Model.ClaudeFable5,
+                Model = ModelsMessages::Model.ClaudeSonnet5,
                 MaxTokens = 0,
                 OutputConfig = new()
                 {
@@ -2886,7 +2886,7 @@ public class ParamsTest : TestBase
             [
                 new()
                 {
-                    Model = ModelsMessages::Model.ClaudeFable5,
+                    Model = ModelsMessages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -3051,7 +3051,7 @@ public class ParamsTest : TestBase
             [
                 new()
                 {
-                    Model = ModelsMessages::Model.ClaudeFable5,
+                    Model = ModelsMessages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -3218,7 +3218,7 @@ public class ParamsTest : TestBase
         [
             new()
             {
-                Model = ModelsMessages::Model.ClaudeFable5,
+                Model = ModelsMessages::Model.ClaudeSonnet5,
                 MaxTokens = 0,
                 OutputConfig = new()
                 {
@@ -3431,7 +3431,7 @@ public class ParamsTest : TestBase
             [
                 new()
                 {
-                    Model = ModelsMessages::Model.ClaudeFable5,
+                    Model = ModelsMessages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -3593,7 +3593,7 @@ public class ParamsTest : TestBase
             [
                 new()
                 {
-                    Model = ModelsMessages::Model.ClaudeFable5,
+                    Model = ModelsMessages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -3696,7 +3696,7 @@ public class ParamsTest : TestBase
             [
                 new()
                 {
-                    Model = ModelsMessages::Model.ClaudeFable5,
+                    Model = ModelsMessages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -3774,7 +3774,7 @@ public class ParamsTest : TestBase
             [
                 new()
                 {
-                    Model = ModelsMessages::Model.ClaudeFable5,
+                    Model = ModelsMessages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -3892,7 +3892,7 @@ public class ParamsTest : TestBase
             [
                 new()
                 {
-                    Model = ModelsMessages::Model.ClaudeFable5,
+                    Model = ModelsMessages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -4427,7 +4427,7 @@ public class ParamsTest : TestBase
             [
                 new()
                 {
-                    Model = ModelsMessages::Model.ClaudeFable5,
+                    Model = ModelsMessages::Model.ClaudeSonnet5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {

@@ -454,7 +454,7 @@ public class BetaToolUnionTest : TestBase
     {
         BetaToolUnion value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -1091,7 +1091,7 @@ public class BetaToolUnionTest : TestBase
     {
         BetaToolUnion value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeSonnet5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },

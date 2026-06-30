@@ -38,7 +38,7 @@ MessageCreateParams parameters = new()
             Content = "Hello, Claude",
         },
     ],
-    Model = Model.ClaudeSonnet4_5_20250929,
+    Model = Model.ClaudeSonnet5,
 };
 
 var message = await client.Messages.Create(parameters);
@@ -129,7 +129,7 @@ MessageCreateParams parameters = new()
             Content = "Hello, Claude",
         },
     ],
-    Model = Model.ClaudeSonnet4_5_20250929,
+    Model = Model.ClaudeSonnet5,
 };
 
 await foreach (var message in client.Messages.CreateStreaming(parameters))

@@ -12,13 +12,13 @@ public class BetaFallbackBlockTest : TestBase
     {
         var model = new BetaFallbackBlock
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
 
-        BetaFallbackInfo expectedFrom = new(Model.ClaudeFable5);
-        BetaFallbackInfo expectedTo = new(Model.ClaudeFable5);
+        BetaFallbackInfo expectedFrom = new(Model.ClaudeSonnet5);
+        BetaFallbackInfo expectedTo = new(Model.ClaudeSonnet5);
         BetaFallbackRefusalTrigger expectedTrigger = new(BetaFallbackRefusalTriggerCategory.Cyber);
         JsonElement expectedType = JsonSerializer.SerializeToElement("fallback");
 
@@ -33,8 +33,8 @@ public class BetaFallbackBlockTest : TestBase
     {
         var model = new BetaFallbackBlock
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
 
@@ -52,8 +52,8 @@ public class BetaFallbackBlockTest : TestBase
     {
         var model = new BetaFallbackBlock
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
 
@@ -64,8 +64,8 @@ public class BetaFallbackBlockTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        BetaFallbackInfo expectedFrom = new(Model.ClaudeFable5);
-        BetaFallbackInfo expectedTo = new(Model.ClaudeFable5);
+        BetaFallbackInfo expectedFrom = new(Model.ClaudeSonnet5);
+        BetaFallbackInfo expectedTo = new(Model.ClaudeSonnet5);
         BetaFallbackRefusalTrigger expectedTrigger = new(BetaFallbackRefusalTriggerCategory.Cyber);
         JsonElement expectedType = JsonSerializer.SerializeToElement("fallback");
 
@@ -80,8 +80,8 @@ public class BetaFallbackBlockTest : TestBase
     {
         var model = new BetaFallbackBlock
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
 
@@ -93,8 +93,8 @@ public class BetaFallbackBlockTest : TestBase
     {
         var model = new BetaFallbackBlock
         {
-            From = new(Model.ClaudeFable5),
-            To = new(Model.ClaudeFable5),
+            From = new(Model.ClaudeSonnet5),
+            To = new(Model.ClaudeSonnet5),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
 
