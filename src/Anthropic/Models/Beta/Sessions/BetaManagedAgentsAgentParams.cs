@@ -31,14 +31,14 @@ public sealed record class BetaManagedAgentsAgentParams : JsonModel
         init { this._rawData.Set("id", value); }
     }
 
-    public required ApiEnum<string, global::Anthropic.Models.Beta.Sessions.Type> Type
+    public required ApiEnum<string, BetaManagedAgentsAgentParamsType> Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, global::Anthropic.Models.Beta.Sessions.Type>
-            >("type");
+            return this._rawData.GetNotNullClass<ApiEnum<string, BetaManagedAgentsAgentParamsType>>(
+                "type"
+            );
         }
         init { this._rawData.Set("type", value); }
     }
@@ -111,15 +111,16 @@ class BetaManagedAgentsAgentParamsFromRaw : IFromRawJson<BetaManagedAgentsAgentP
     ) => BetaManagedAgentsAgentParams.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(TypeConverter))]
-public enum Type
+[JsonConverter(typeof(BetaManagedAgentsAgentParamsTypeConverter))]
+public enum BetaManagedAgentsAgentParamsType
 {
     Agent,
 }
 
-sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Sessions.Type>
+sealed class BetaManagedAgentsAgentParamsTypeConverter
+    : JsonConverter<BetaManagedAgentsAgentParamsType>
 {
-    public override global::Anthropic.Models.Beta.Sessions.Type Read(
+    public override BetaManagedAgentsAgentParamsType Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -127,14 +128,14 @@ sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Session
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "agent" => global::Anthropic.Models.Beta.Sessions.Type.Agent,
-            _ => (global::Anthropic.Models.Beta.Sessions.Type)(-1),
+            "agent" => BetaManagedAgentsAgentParamsType.Agent,
+            _ => (BetaManagedAgentsAgentParamsType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Sessions.Type value,
+        BetaManagedAgentsAgentParamsType value,
         JsonSerializerOptions options
     )
     {
@@ -142,7 +143,7 @@ sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Session
             writer,
             value switch
             {
-                global::Anthropic.Models.Beta.Sessions.Type.Agent => "agent",
+                BetaManagedAgentsAgentParamsType.Agent => "agent",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

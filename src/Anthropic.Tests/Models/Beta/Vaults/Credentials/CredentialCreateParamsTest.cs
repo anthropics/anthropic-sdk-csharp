@@ -270,6 +270,7 @@ public class AuthTest : TestBase
             SecretName = "x",
             SecretValue = "x",
             Type = BetaManagedAgentsEnvironmentVariableCreateParamsType.EnvironmentVariable,
+            InjectionLocation = new() { Body = true, Header = true },
         };
         value.Validate();
     }
@@ -327,6 +328,7 @@ public class AuthTest : TestBase
             SecretName = "x",
             SecretValue = "x",
             Type = BetaManagedAgentsEnvironmentVariableCreateParamsType.EnvironmentVariable,
+            InjectionLocation = new() { Body = true, Header = true },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Auth>(element, ModelBase.SerializerOptions);

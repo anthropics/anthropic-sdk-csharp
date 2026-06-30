@@ -21,6 +21,21 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class BetaManagedAgentsEnvironmentVariableAuthResponse : JsonModel
 {
     /// <summary>
+    /// Where in the outbound request the secret value is substituted.
+    /// </summary>
+    public required BetaManagedAgentsInjectionLocationResponse InjectionLocation
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaManagedAgentsInjectionLocationResponse>(
+                "injection_location"
+            );
+        }
+        init { this._rawData.Set("injection_location", value); }
+    }
+
+    /// <summary>
     /// Outbound hosts the secret value is substituted on.
     /// </summary>
     public required Networking Networking
@@ -61,6 +76,7 @@ public sealed record class BetaManagedAgentsEnvironmentVariableAuthResponse : Js
     /// <inheritdoc/>
     public override void Validate()
     {
+        this.InjectionLocation.Validate();
         this.Networking.Validate();
         _ = this.SecretName;
         this.Type.Validate();

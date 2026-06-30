@@ -124,18 +124,18 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
         init { this._rawData.Set("system", value); }
     }
 
-    public required IReadOnlyList<global::Anthropic.Models.Beta.Sessions.Tool> Tools
+    public required IReadOnlyList<BetaManagedAgentsSessionAgentTool> Tools
     {
         get
         {
             this._rawData.Freeze();
             return this._rawData.GetNotNullStruct<
-                ImmutableArray<global::Anthropic.Models.Beta.Sessions.Tool>
+                ImmutableArray<BetaManagedAgentsSessionAgentTool>
             >("tools");
         }
         init
         {
-            this._rawData.Set<ImmutableArray<global::Anthropic.Models.Beta.Sessions.Tool>>(
+            this._rawData.Set<ImmutableArray<BetaManagedAgentsSessionAgentTool>>(
                 "tools",
                 ImmutableArray.ToImmutableArray(value)
             );
@@ -545,8 +545,8 @@ sealed class SkillConverter : JsonConverter<global::Anthropic.Models.Beta.Sessio
 /// <summary>
 /// Union type for tool configurations returned in API responses.
 /// </summary>
-[JsonConverter(typeof(global::Anthropic.Models.Beta.Sessions.ToolConverter))]
-public record class Tool : ModelBase
+[JsonConverter(typeof(BetaManagedAgentsSessionAgentToolConverter))]
+public record class BetaManagedAgentsSessionAgentTool : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -563,25 +563,34 @@ public record class Tool : ModelBase
         }
     }
 
-    public Tool(BetaManagedAgentsAgentToolset20260401 value, JsonElement? element = null)
+    public BetaManagedAgentsSessionAgentTool(
+        BetaManagedAgentsAgentToolset20260401 value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Tool(BetaManagedAgentsMcpToolset value, JsonElement? element = null)
+    public BetaManagedAgentsSessionAgentTool(
+        BetaManagedAgentsMcpToolset value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Tool(BetaManagedAgentsCustomTool value, JsonElement? element = null)
+    public BetaManagedAgentsSessionAgentTool(
+        BetaManagedAgentsCustomTool value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Tool(JsonElement element)
+    public BetaManagedAgentsSessionAgentTool(JsonElement element)
     {
         this._element = element;
     }
@@ -694,7 +703,9 @@ public record class Tool : ModelBase
                 betaManagedAgentsCustom(value);
                 break;
             default:
-                throw new AnthropicInvalidDataException("Data did not match any variant of Tool");
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaManagedAgentsSessionAgentTool"
+                );
         }
     }
 
@@ -736,19 +747,21 @@ public record class Tool : ModelBase
             ),
             BetaManagedAgentsMcpToolset value => betaManagedAgentsMcpToolset(value),
             BetaManagedAgentsCustomTool value => betaManagedAgentsCustom(value),
-            _ => throw new AnthropicInvalidDataException("Data did not match any variant of Tool"),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaManagedAgentsSessionAgentTool"
+            ),
         };
     }
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Tool(
+    public static implicit operator BetaManagedAgentsSessionAgentTool(
         BetaManagedAgentsAgentToolset20260401 value
     ) => new(value);
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Tool(
+    public static implicit operator BetaManagedAgentsSessionAgentTool(
         BetaManagedAgentsMcpToolset value
     ) => new(value);
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Tool(
+    public static implicit operator BetaManagedAgentsSessionAgentTool(
         BetaManagedAgentsCustomTool value
     ) => new(value);
 
@@ -766,7 +779,9 @@ public record class Tool : ModelBase
     {
         if (this.Value == null)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of Tool");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaManagedAgentsSessionAgentTool"
+            );
         }
         this.Switch(
             (betaManagedAgentsAgentToolset20260401) =>
@@ -776,7 +791,7 @@ public record class Tool : ModelBase
         );
     }
 
-    public virtual bool Equals(global::Anthropic.Models.Beta.Sessions.Tool? other) =>
+    public virtual bool Equals(BetaManagedAgentsSessionAgentTool? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -804,9 +819,10 @@ public record class Tool : ModelBase
     }
 }
 
-sealed class ToolConverter : JsonConverter<global::Anthropic.Models.Beta.Sessions.Tool>
+sealed class BetaManagedAgentsSessionAgentToolConverter
+    : JsonConverter<BetaManagedAgentsSessionAgentTool>
 {
-    public override global::Anthropic.Models.Beta.Sessions.Tool? Read(
+    public override BetaManagedAgentsSessionAgentTool? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -888,14 +904,14 @@ sealed class ToolConverter : JsonConverter<global::Anthropic.Models.Beta.Session
             }
             default:
             {
-                return new global::Anthropic.Models.Beta.Sessions.Tool(element);
+                return new BetaManagedAgentsSessionAgentTool(element);
             }
         }
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Sessions.Tool value,
+        BetaManagedAgentsSessionAgentTool value,
         JsonSerializerOptions options
     )
     {

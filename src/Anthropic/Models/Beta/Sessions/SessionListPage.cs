@@ -25,6 +25,26 @@ public sealed class SessionListPage(
         get { return response.Data ?? []; }
     }
 
+    /// <summary>
+    /// The response that this page was parsed from.
+    /// </summary>
+    public SessionListPageResponse Response
+    {
+        get { return response; }
+    }
+
+    /// <inheritdoc cref="SessionListPageResponse.NextPage"/>
+    public string? NextPage
+    {
+        get { return response.NextPage; }
+    }
+
+    /// <inheritdoc cref="SessionListPageResponse.PrevPage"/>
+    public string? PrevPage
+    {
+        get { return response.PrevPage; }
+    }
+
     /// <inheritdoc/>
     public bool HasNext()
     {

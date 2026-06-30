@@ -307,6 +307,7 @@ public class CredentialUpdateParamsAuthTest : TestBase
         CredentialUpdateParamsAuth value = new BetaManagedAgentsEnvironmentVariableUpdateParams()
         {
             Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
+            InjectionLocation = new() { Body = true, Header = true },
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
                 BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
             ),
@@ -366,6 +367,7 @@ public class CredentialUpdateParamsAuthTest : TestBase
         CredentialUpdateParamsAuth value = new BetaManagedAgentsEnvironmentVariableUpdateParams()
         {
             Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
+            InjectionLocation = new() { Body = true, Header = true },
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
                 BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
             ),

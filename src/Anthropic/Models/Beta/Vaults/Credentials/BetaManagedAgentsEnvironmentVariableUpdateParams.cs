@@ -33,6 +33,29 @@ public sealed record class BetaManagedAgentsEnvironmentVariableUpdateParams : Js
     }
 
     /// <summary>
+    /// Updated injection location.
+    /// </summary>
+    public BetaManagedAgentsInjectionLocationUpdateParams? InjectionLocation
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaManagedAgentsInjectionLocationUpdateParams>(
+                "injection_location"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("injection_location", value);
+        }
+    }
+
+    /// <summary>
     /// Updated networking scope. Full replacement.
     /// </summary>
     public BetaManagedAgentsCredentialNetworkingParams? Networking
@@ -64,6 +87,7 @@ public sealed record class BetaManagedAgentsEnvironmentVariableUpdateParams : Js
     public override void Validate()
     {
         this.Type.Validate();
+        this.InjectionLocation?.Validate();
         this.Networking?.Validate();
         _ = this.SecretValue;
     }

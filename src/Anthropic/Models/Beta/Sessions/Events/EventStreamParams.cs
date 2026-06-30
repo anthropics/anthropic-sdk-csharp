@@ -22,6 +22,40 @@ public record class EventStreamParams : ParamsBase
     public string? SessionID { get; init; }
 
     /// <summary>
+    /// When set, this connection also receives streaming deltas (`event_start`, `event_delta`)
+    /// while an event is being produced, before the event itself arrives. Deltas
+    /// are best-effort; when the final event is produced it carries the complete
+    /// content. A model request that ends early (an error or interrupt) produces
+    /// no final event — its terminal `span.model_request_end` closes the preview.
+    /// Accepts one or more event types to preview and may be repeated: `agent.message`
+    /// streams `content_delta` fragments; `agent.thinking` is start-only — a signal
+    /// that the agent has begun extended thinking, concluded by the `agent.thinking`
+    /// event itself. Only previews of the requested event types are sent.
+    /// </summary>
+    public IReadOnlyList<ApiEnum<string, BetaManagedAgentsDeltaType>>? EventDeltas
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaManagedAgentsDeltaType>>
+            >("event_deltas");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set<ImmutableArray<ApiEnum<string, BetaManagedAgentsDeltaType>>?>(
+                "event_deltas",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
+    /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas

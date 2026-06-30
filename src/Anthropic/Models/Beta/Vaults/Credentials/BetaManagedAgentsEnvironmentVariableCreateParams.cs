@@ -73,6 +73,29 @@ public sealed record class BetaManagedAgentsEnvironmentVariableCreateParams : Js
         init { this._rawData.Set("type", value); }
     }
 
+    /// <summary>
+    /// Where in the outbound request the secret value may be substituted.
+    /// </summary>
+    public BetaManagedAgentsInjectionLocationParams? InjectionLocation
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaManagedAgentsInjectionLocationParams>(
+                "injection_location"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("injection_location", value);
+        }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -80,6 +103,7 @@ public sealed record class BetaManagedAgentsEnvironmentVariableCreateParams : Js
         _ = this.SecretName;
         _ = this.SecretValue;
         this.Type.Validate();
+        this.InjectionLocation?.Validate();
     }
 
     public BetaManagedAgentsEnvironmentVariableCreateParams() { }

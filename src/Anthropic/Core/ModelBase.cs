@@ -3,6 +3,7 @@ using Anthropic.Exceptions;
 using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments.Work;
+using Anthropic.Models.Beta.Webhooks;
 using Anthropic.Models.Messages;
 using Agents = Anthropic.Models.Beta.Agents;
 using Batches = Anthropic.Models.Messages.Batches;
@@ -205,9 +206,15 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, State>(),
             new ApiEnumConverter<string, BetaSelfHostedWorkHeartbeatResponseState>(),
             new ApiEnumConverter<string, Sessions::Type>(),
+            new ApiEnumConverter<string, Sessions::BetaManagedAgentsAgentParamsType>(),
+            new ApiEnumConverter<string, Sessions::BetaManagedAgentsAgentThinkingPreviewType>(),
+            new ApiEnumConverter<string, Sessions::BetaManagedAgentsAgentWithOverridesParamsType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsBranchCheckoutType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsCommitCheckoutType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsDeletedSessionType>(),
+            new ApiEnumConverter<string, Sessions::BetaManagedAgentsDeltaContentType>(),
+            new ApiEnumConverter<string, Sessions::BetaManagedAgentsDeltaEventType>(),
+            new ApiEnumConverter<string, Sessions::BetaManagedAgentsDeltaType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsFileResourceParamsType>(),
             new ApiEnumConverter<
                 string,
@@ -228,6 +235,7 @@ public abstract record class ModelBase
                 Sessions::BetaManagedAgentsSessionMultiagentCoordinatorType
             >(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsSessionUpdatedEventType>(),
+            new ApiEnumConverter<string, Sessions::BetaManagedAgentsStartEventType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsSystemContentBlockType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsSystemMessageEventType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsUserToolResultEventType>(),
@@ -642,6 +650,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsSessionActorType>(),
             new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsUserActorType>(),
             new ApiEnumConverter<string, Files::Type>(),
+            new ApiEnumConverter<string, BetaWebhookEnvironmentDeletedEventType>(),
             new ApiEnumConverter<string, UserProfiles::BetaUserProfileRelationship>(),
             new ApiEnumConverter<string, UserProfiles::Type>(),
             new ApiEnumConverter<string, UserProfiles::BetaUserProfileEnrollmentUrlType>(),

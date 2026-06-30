@@ -53,6 +53,20 @@ public sealed record class SessionListPageResponse : JsonModel
         init { this._rawData.Set("next_page", value); }
     }
 
+    /// <summary>
+    /// Opaque cursor for the previous page. Null when on the first page. Pass as
+    /// the `page` parameter to navigate backward.
+    /// </summary>
+    public string? PrevPage
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("prev_page");
+        }
+        init { this._rawData.Set("prev_page", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -61,6 +75,7 @@ public sealed record class SessionListPageResponse : JsonModel
             item.Validate();
         }
         _ = this.NextPage;
+        _ = this.PrevPage;
     }
 
     public SessionListPageResponse() { }

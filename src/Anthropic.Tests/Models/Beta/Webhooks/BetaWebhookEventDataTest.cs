@@ -290,6 +290,247 @@ public class BetaWebhookEventDataTest : TestBase
     }
 
     [Fact]
+    public void AgentCreatedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookAgentCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void AgentArchivedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookAgentArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void AgentDeletedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookAgentDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void DeploymentPausedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentPausedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void DeploymentRunFailedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentRunFailedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void DeploymentCreatedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void DeploymentUpdatedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void DeploymentUnpausedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentUnpausedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void AgentUpdatedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookAgentUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void DeploymentArchivedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void DeploymentRunStartedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentRunStartedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void DeploymentDeletedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void DeploymentRunSucceededValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentRunSucceededEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void EnvironmentCreatedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookEnvironmentCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void EnvironmentUpdatedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookEnvironmentUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void EnvironmentArchivedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookEnvironmentArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void EnvironmentDeletedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookEnvironmentDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            Type = BetaWebhookEnvironmentDeletedEventType.EnvironmentDeleted,
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void MemoryStoreCreatedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookMemoryStoreCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void MemoryStoreArchivedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookMemoryStoreArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void MemoryStoreDeletedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookMemoryStoreDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void SessionCreatedSerializationRoundtripWorks()
     {
         BetaWebhookEventData value = new BetaWebhookSessionCreatedEventData()
@@ -696,6 +937,367 @@ public class BetaWebhookEventDataTest : TestBase
     public void SessionUpdatedSerializationRoundtripWorks()
     {
         BetaWebhookEventData value = new BetaWebhookSessionUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void AgentCreatedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookAgentCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void AgentArchivedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookAgentArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void AgentDeletedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookAgentDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void DeploymentPausedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentPausedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void DeploymentRunFailedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentRunFailedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void DeploymentCreatedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void DeploymentUpdatedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void DeploymentUnpausedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentUnpausedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void AgentUpdatedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookAgentUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void DeploymentArchivedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void DeploymentRunStartedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentRunStartedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void DeploymentDeletedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void DeploymentRunSucceededSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentRunSucceededEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void EnvironmentCreatedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookEnvironmentCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void EnvironmentUpdatedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookEnvironmentUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void EnvironmentArchivedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookEnvironmentArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void EnvironmentDeletedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookEnvironmentDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            Type = BetaWebhookEnvironmentDeletedEventType.EnvironmentDeleted,
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void MemoryStoreCreatedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookMemoryStoreCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void MemoryStoreArchivedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookMemoryStoreArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void MemoryStoreDeletedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookMemoryStoreDeletedEventData()
         {
             ID = "id",
             OrganizationID = "organization_id",

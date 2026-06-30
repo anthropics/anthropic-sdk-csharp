@@ -151,7 +151,7 @@ var session = await client.Beta.Sessions.Create(
     {
         Agent = new BetaManagedAgentsAgentParams
         {
-            Type = global::Anthropic.Models.Beta.Sessions.Type.Agent,
+            Type = global::Anthropic.Models.Beta.Sessions.BetaManagedAgentsAgentParamsType.Agent,
             ID = agent.ID,
             Version = agent.Version,
         },
