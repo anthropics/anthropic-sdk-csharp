@@ -1,5 +1,13 @@
 # Changelog
 
+## 12.34.0 (2026-06-30)
+
+Full Changelog: [Anthropic-v12.33.0...Anthropic-v12.34.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.33.0...Anthropic-v12.34.0)
+
+### Features
+
+* **api:** add support for Managed Agents event delta streaming, agent overrides, reverse pagination, vault credential injection scoping, and agent and deployment webhook events ([78ef01b](https://github.com/anthropics/anthropic-sdk-csharp/commit/78ef01b08683f60e68a1c0f07ac4dfc74d1e4ad4))
+
 ## 12.33.0 (2026-06-30)
 
 Full Changelog: [Anthropic-v12.32.0...Anthropic-v12.33.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.32.0...Anthropic-v12.33.0)
