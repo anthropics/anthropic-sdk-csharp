@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
-using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
 
@@ -20,7 +20,7 @@ public class BetaManagedAgentsMultiagentRosterEntryParamsTest : TestBase
         BetaManagedAgentsMultiagentRosterEntryParams value = new BetaManagedAgentsAgentParams()
         {
             ID = "x",
-            Type = Type.Agent,
+            Type = BetaManagedAgentsAgentParamsType.Agent,
             Version = 0,
         };
         value.Validate();
@@ -30,8 +30,8 @@ public class BetaManagedAgentsMultiagentRosterEntryParamsTest : TestBase
     public void SelfValidationWorks()
     {
         BetaManagedAgentsMultiagentRosterEntryParams value =
-            new Agents::BetaManagedAgentsMultiagentSelfParams(
-                Agents::BetaManagedAgentsMultiagentSelfParamsType.Self
+            new BetaManagedAgentsMultiagentSelfParams(
+                BetaManagedAgentsMultiagentSelfParamsType.Self
             );
         value.Validate();
     }
@@ -55,7 +55,7 @@ public class BetaManagedAgentsMultiagentRosterEntryParamsTest : TestBase
         BetaManagedAgentsMultiagentRosterEntryParams value = new BetaManagedAgentsAgentParams()
         {
             ID = "x",
-            Type = Type.Agent,
+            Type = BetaManagedAgentsAgentParamsType.Agent,
             Version = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -71,8 +71,8 @@ public class BetaManagedAgentsMultiagentRosterEntryParamsTest : TestBase
     public void SelfSerializationRoundtripWorks()
     {
         BetaManagedAgentsMultiagentRosterEntryParams value =
-            new Agents::BetaManagedAgentsMultiagentSelfParams(
-                Agents::BetaManagedAgentsMultiagentSelfParamsType.Self
+            new BetaManagedAgentsMultiagentSelfParams(
+                BetaManagedAgentsMultiagentSelfParamsType.Self
             );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagentRosterEntryParams>(

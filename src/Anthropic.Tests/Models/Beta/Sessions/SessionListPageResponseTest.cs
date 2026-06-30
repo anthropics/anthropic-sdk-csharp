@@ -218,6 +218,7 @@ public class SessionListPageResponseTest : TestBase
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            PrevPage = "page_MjAyNS0wNS0xM1QwMDowMDowMFo=",
         };
 
         List<BetaManagedAgentsSession> expectedData =
@@ -420,6 +421,7 @@ public class SessionListPageResponseTest : TestBase
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
+        string expectedPrevPage = "page_MjAyNS0wNS0xM1QwMDowMDowMFo=";
 
         Assert.NotNull(model.Data);
         Assert.Equal(expectedData.Count, model.Data.Count);
@@ -428,6 +430,7 @@ public class SessionListPageResponseTest : TestBase
             Assert.Equal(expectedData[i], model.Data[i]);
         }
         Assert.Equal(expectedNextPage, model.NextPage);
+        Assert.Equal(expectedPrevPage, model.PrevPage);
     }
 
     [Fact]
@@ -638,6 +641,7 @@ public class SessionListPageResponseTest : TestBase
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            PrevPage = "page_MjAyNS0wNS0xM1QwMDowMDowMFo=",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -857,6 +861,7 @@ public class SessionListPageResponseTest : TestBase
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            PrevPage = "page_MjAyNS0wNS0xM1QwMDowMDowMFo=",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -1066,6 +1071,7 @@ public class SessionListPageResponseTest : TestBase
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
+        string expectedPrevPage = "page_MjAyNS0wNS0xM1QwMDowMDowMFo=";
 
         Assert.NotNull(deserialized.Data);
         Assert.Equal(expectedData.Count, deserialized.Data.Count);
@@ -1074,6 +1080,7 @@ public class SessionListPageResponseTest : TestBase
             Assert.Equal(expectedData[i], deserialized.Data[i]);
         }
         Assert.Equal(expectedNextPage, deserialized.NextPage);
+        Assert.Equal(expectedPrevPage, deserialized.PrevPage);
     }
 
     [Fact]
@@ -1284,6 +1291,7 @@ public class SessionListPageResponseTest : TestBase
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            PrevPage = "page_MjAyNS0wNS0xM1QwMDowMDowMFo=",
         };
 
         model.Validate();
@@ -1292,7 +1300,11 @@ public class SessionListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new SessionListPageResponse { NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=" };
+        var model = new SessionListPageResponse
+        {
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            PrevPage = "page_MjAyNS0wNS0xM1QwMDowMDowMFo=",
+        };
 
         Assert.Null(model.Data);
         Assert.False(model.RawData.ContainsKey("data"));
@@ -1301,7 +1313,11 @@ public class SessionListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new SessionListPageResponse { NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=" };
+        var model = new SessionListPageResponse
+        {
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            PrevPage = "page_MjAyNS0wNS0xM1QwMDowMDowMFo=",
+        };
 
         model.Validate();
     }
@@ -1312,6 +1328,7 @@ public class SessionListPageResponseTest : TestBase
         var model = new SessionListPageResponse
         {
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            PrevPage = "page_MjAyNS0wNS0xM1QwMDowMDowMFo=",
 
             // Null should be interpreted as omitted for these properties
             Data = null,
@@ -1327,6 +1344,7 @@ public class SessionListPageResponseTest : TestBase
         var model = new SessionListPageResponse
         {
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            PrevPage = "page_MjAyNS0wNS0xM1QwMDowMDowMFo=",
 
             // Null should be interpreted as omitted for these properties
             Data = null,
@@ -1546,6 +1564,8 @@ public class SessionListPageResponseTest : TestBase
 
         Assert.Null(model.NextPage);
         Assert.False(model.RawData.ContainsKey("next_page"));
+        Assert.Null(model.PrevPage);
+        Assert.False(model.RawData.ContainsKey("prev_page"));
     }
 
     [Fact]
@@ -1969,10 +1989,13 @@ public class SessionListPageResponseTest : TestBase
             ],
 
             NextPage = null,
+            PrevPage = null,
         };
 
         Assert.Null(model.NextPage);
         Assert.True(model.RawData.ContainsKey("next_page"));
+        Assert.Null(model.PrevPage);
+        Assert.True(model.RawData.ContainsKey("prev_page"));
     }
 
     [Fact]
@@ -2184,6 +2207,7 @@ public class SessionListPageResponseTest : TestBase
             ],
 
             NextPage = null,
+            PrevPage = null,
         };
 
         model.Validate();
@@ -2397,6 +2421,7 @@ public class SessionListPageResponseTest : TestBase
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            PrevPage = "page_MjAyNS0wNS0xM1QwMDowMDowMFo=",
         };
 
         SessionListPageResponse copied = new(model);

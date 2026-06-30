@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Agents;
-using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Threads;
 using Events = Anthropic.Models.Beta.Sessions.Events;
+using Sessions = Anthropic.Models.Beta.Sessions;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Threads;
 
@@ -568,11 +568,11 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
     public void UserToolResultEventValidationWorks()
     {
         BetaManagedAgentsStreamSessionThreadEvents value =
-            new BetaManagedAgentsUserToolResultEvent()
+            new Sessions::BetaManagedAgentsUserToolResultEvent()
             {
                 ID = "id",
                 ToolUseID = "tool_use_id",
-                Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
+                Type = Sessions::BetaManagedAgentsUserToolResultEventType.UserToolResult,
                 Content =
                 [
                     new Events::BetaManagedAgentsTextBlock()
@@ -608,11 +608,11 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
     public void SessionUpdatedEventValidationWorks()
     {
         BetaManagedAgentsStreamSessionThreadEvents value =
-            new BetaManagedAgentsSessionUpdatedEvent()
+            new Sessions::BetaManagedAgentsSessionUpdatedEvent()
             {
                 ID = "id",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Type = BetaManagedAgentsSessionUpdatedEventType.SessionUpdated,
+                Type = Sessions::BetaManagedAgentsSessionUpdatedEventType.SessionUpdated,
                 Agent = new()
                 {
                     ID = "agent_011CZkYpogX7uDKUyvBTophP",
@@ -696,7 +696,8 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                                 Version = 1,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
+                        Type =
+                            Sessions::BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
                     },
                     Name = "My First Agent",
                     Skills =
@@ -741,7 +742,7 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                             Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = BetaManagedAgentsSessionAgentType.Agent,
+                    Type = Sessions::BetaManagedAgentsSessionAgentType.Agent,
                     Version = 1,
                 },
                 Metadata = new Dictionary<string, string>() { { "foo", "string" } },
@@ -751,22 +752,61 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
     }
 
     [Fact]
+    public void StartEventValidationWorks()
+    {
+        BetaManagedAgentsStreamSessionThreadEvents value =
+            new Sessions::BetaManagedAgentsStartEvent()
+            {
+                Event = new Sessions::BetaManagedAgentsAgentMessagePreview()
+                {
+                    ID = "id",
+                    Type = Sessions::Type.AgentMessage,
+                },
+                Type = Sessions::BetaManagedAgentsStartEventType.EventStart,
+            };
+        value.Validate();
+    }
+
+    [Fact]
+    public void DeltaEventValidationWorks()
+    {
+        BetaManagedAgentsStreamSessionThreadEvents value =
+            new Sessions::BetaManagedAgentsDeltaEvent()
+            {
+                Delta = new()
+                {
+                    Content = new()
+                    {
+                        Text = "Where is my order #1234?",
+                        Type = Events::BetaManagedAgentsTextBlockType.Text,
+                    },
+                    Type = Sessions::BetaManagedAgentsDeltaContentType.ContentDelta,
+                    Index = 0,
+                },
+                EventID = "event_id",
+                Type = Sessions::BetaManagedAgentsDeltaEventType.EventDelta,
+            };
+        value.Validate();
+    }
+
+    [Fact]
     public void SystemMessageEventValidationWorks()
     {
-        BetaManagedAgentsStreamSessionThreadEvents value = new BetaManagedAgentsSystemMessageEvent()
-        {
-            ID = "id",
-            Content =
-            [
-                new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsSystemContentBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
-            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-        };
+        BetaManagedAgentsStreamSessionThreadEvents value =
+            new Sessions::BetaManagedAgentsSystemMessageEvent()
+            {
+                ID = "id",
+                Content =
+                [
+                    new()
+                    {
+                        Text = "Where is my order #1234?",
+                        Type = Sessions::BetaManagedAgentsSystemContentBlockType.Text,
+                    },
+                ],
+                Type = Sessions::BetaManagedAgentsSystemMessageEventType.SystemMessage,
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            };
         value.Validate();
     }
 
@@ -1507,11 +1547,11 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
     public void UserToolResultEventSerializationRoundtripWorks()
     {
         BetaManagedAgentsStreamSessionThreadEvents value =
-            new BetaManagedAgentsUserToolResultEvent()
+            new Sessions::BetaManagedAgentsUserToolResultEvent()
             {
                 ID = "id",
                 ToolUseID = "tool_use_id",
-                Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
+                Type = Sessions::BetaManagedAgentsUserToolResultEventType.UserToolResult,
                 Content =
                 [
                     new Events::BetaManagedAgentsTextBlock()
@@ -1559,11 +1599,11 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
     public void SessionUpdatedEventSerializationRoundtripWorks()
     {
         BetaManagedAgentsStreamSessionThreadEvents value =
-            new BetaManagedAgentsSessionUpdatedEvent()
+            new Sessions::BetaManagedAgentsSessionUpdatedEvent()
             {
                 ID = "id",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Type = BetaManagedAgentsSessionUpdatedEventType.SessionUpdated,
+                Type = Sessions::BetaManagedAgentsSessionUpdatedEventType.SessionUpdated,
                 Agent = new()
                 {
                     ID = "agent_011CZkYpogX7uDKUyvBTophP",
@@ -1647,7 +1687,8 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                                 Version = 1,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
+                        Type =
+                            Sessions::BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
                     },
                     Name = "My First Agent",
                     Skills =
@@ -1692,7 +1733,7 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                             Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = BetaManagedAgentsSessionAgentType.Agent,
+                    Type = Sessions::BetaManagedAgentsSessionAgentType.Agent,
                     Version = 1,
                 },
                 Metadata = new Dictionary<string, string>() { { "foo", "string" } },
@@ -1708,22 +1749,73 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
     }
 
     [Fact]
+    public void StartEventSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsStreamSessionThreadEvents value =
+            new Sessions::BetaManagedAgentsStartEvent()
+            {
+                Event = new Sessions::BetaManagedAgentsAgentMessagePreview()
+                {
+                    ID = "id",
+                    Type = Sessions::Type.AgentMessage,
+                },
+                Type = Sessions::BetaManagedAgentsStartEventType.EventStart,
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsStreamSessionThreadEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void DeltaEventSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsStreamSessionThreadEvents value =
+            new Sessions::BetaManagedAgentsDeltaEvent()
+            {
+                Delta = new()
+                {
+                    Content = new()
+                    {
+                        Text = "Where is my order #1234?",
+                        Type = Events::BetaManagedAgentsTextBlockType.Text,
+                    },
+                    Type = Sessions::BetaManagedAgentsDeltaContentType.ContentDelta,
+                    Index = 0,
+                },
+                EventID = "event_id",
+                Type = Sessions::BetaManagedAgentsDeltaEventType.EventDelta,
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsStreamSessionThreadEvents>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void SystemMessageEventSerializationRoundtripWorks()
     {
-        BetaManagedAgentsStreamSessionThreadEvents value = new BetaManagedAgentsSystemMessageEvent()
-        {
-            ID = "id",
-            Content =
-            [
-                new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsSystemContentBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
-            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-        };
+        BetaManagedAgentsStreamSessionThreadEvents value =
+            new Sessions::BetaManagedAgentsSystemMessageEvent()
+            {
+                ID = "id",
+                Content =
+                [
+                    new()
+                    {
+                        Text = "Where is my order #1234?",
+                        Type = Sessions::BetaManagedAgentsSystemContentBlockType.Text,
+                    },
+                ],
+                Type = Sessions::BetaManagedAgentsSystemMessageEventType.SystemMessage,
+                ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsStreamSessionThreadEvents>(
             element,

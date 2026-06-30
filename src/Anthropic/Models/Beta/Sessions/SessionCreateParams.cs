@@ -301,6 +301,30 @@ public record class Agent : ModelBase
         }
     }
 
+    public string? ID
+    {
+        get
+        {
+            return Match<string?>(
+                @string: (_) => null,
+                betaManagedAgentsAgentParams: (x) => x.ID,
+                betaManagedAgentsAgentWithOverridesParams: (x) => x.ID
+            );
+        }
+    }
+
+    public int? Version
+    {
+        get
+        {
+            return Match<int?>(
+                @string: (_) => null,
+                betaManagedAgentsAgentParams: (x) => x.Version,
+                betaManagedAgentsAgentWithOverridesParams: (x) => x.Version
+            );
+        }
+    }
+
     public Agent(string value, JsonElement? element = null)
     {
         this.Value = value;
@@ -308,6 +332,12 @@ public record class Agent : ModelBase
     }
 
     public Agent(BetaManagedAgentsAgentParams value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Agent(BetaManagedAgentsAgentWithOverridesParams value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -363,6 +393,29 @@ public record class Agent : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsAgentWithOverridesParams"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsAgentWithOverridesParams(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsAgentWithOverridesParams`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsAgentWithOverridesParams(
+        [NotNullWhen(true)] out BetaManagedAgentsAgentWithOverridesParams? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsAgentWithOverridesParams;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -377,14 +430,16 @@ public record class Agent : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (string value) =&gt; {...},
-    ///     (BetaManagedAgentsAgentParams value) =&gt; {...}
+    ///     (BetaManagedAgentsAgentParams value) =&gt; {...},
+    ///     (BetaManagedAgentsAgentWithOverridesParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<string> @string,
-        System::Action<BetaManagedAgentsAgentParams> betaManagedAgentsAgentParams
+        System::Action<BetaManagedAgentsAgentParams> betaManagedAgentsAgentParams,
+        System::Action<BetaManagedAgentsAgentWithOverridesParams> betaManagedAgentsAgentWithOverridesParams
     )
     {
         switch (this.Value)
@@ -394,6 +449,9 @@ public record class Agent : ModelBase
                 break;
             case BetaManagedAgentsAgentParams value:
                 betaManagedAgentsAgentParams(value);
+                break;
+            case BetaManagedAgentsAgentWithOverridesParams value:
+                betaManagedAgentsAgentWithOverridesParams(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Agent");
@@ -416,20 +474,27 @@ public record class Agent : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (string value) =&gt; {...},
-    ///     (BetaManagedAgentsAgentParams value) =&gt; {...}
+    ///     (BetaManagedAgentsAgentParams value) =&gt; {...},
+    ///     (BetaManagedAgentsAgentWithOverridesParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
         System::Func<string, T> @string,
-        System::Func<BetaManagedAgentsAgentParams, T> betaManagedAgentsAgentParams
+        System::Func<BetaManagedAgentsAgentParams, T> betaManagedAgentsAgentParams,
+        System::Func<
+            BetaManagedAgentsAgentWithOverridesParams,
+            T
+        > betaManagedAgentsAgentWithOverridesParams
     )
     {
         return this.Value switch
         {
             string value => @string(value),
             BetaManagedAgentsAgentParams value => betaManagedAgentsAgentParams(value),
+            BetaManagedAgentsAgentWithOverridesParams value =>
+                betaManagedAgentsAgentWithOverridesParams(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Agent"),
         };
     }
@@ -437,6 +502,9 @@ public record class Agent : ModelBase
     public static implicit operator Agent(string value) => new(value);
 
     public static implicit operator Agent(BetaManagedAgentsAgentParams value) => new(value);
+
+    public static implicit operator Agent(BetaManagedAgentsAgentWithOverridesParams value) =>
+        new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -456,7 +524,9 @@ public record class Agent : ModelBase
         }
         this.Switch(
             (_) => { },
-            (betaManagedAgentsAgentParams) => betaManagedAgentsAgentParams.Validate()
+            (betaManagedAgentsAgentParams) => betaManagedAgentsAgentParams.Validate(),
+            (betaManagedAgentsAgentWithOverridesParams) =>
+                betaManagedAgentsAgentWithOverridesParams.Validate()
         );
     }
 
@@ -482,6 +552,7 @@ public record class Agent : ModelBase
         {
             string _ => 0,
             BetaManagedAgentsAgentParams _ => 1,
+            BetaManagedAgentsAgentWithOverridesParams _ => 2,
             _ => -1,
         };
     }
@@ -502,6 +573,24 @@ sealed class AgentConverter : JsonConverter<Agent>
                 element,
                 options
             );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized =
+                JsonSerializer.Deserialize<BetaManagedAgentsAgentWithOverridesParams>(
+                    element,
+                    options
+                );
             if (deserialized != null)
             {
                 deserialized.Validate();

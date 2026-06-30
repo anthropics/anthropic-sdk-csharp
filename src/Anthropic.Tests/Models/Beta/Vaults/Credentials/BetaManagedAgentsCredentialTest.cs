@@ -334,6 +334,7 @@ public class BetaManagedAgentsCredentialAuthTest : TestBase
         Credentials::BetaManagedAgentsCredentialAuth value =
             new Credentials::BetaManagedAgentsEnvironmentVariableAuthResponse()
             {
+                InjectionLocation = new() { Body = true, Header = true },
                 Networking =
                     new Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
                         Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
@@ -399,6 +400,7 @@ public class BetaManagedAgentsCredentialAuthTest : TestBase
         Credentials::BetaManagedAgentsCredentialAuth value =
             new Credentials::BetaManagedAgentsEnvironmentVariableAuthResponse()
             {
+                InjectionLocation = new() { Body = true, Header = true },
                 Networking =
                     new Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
                         Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted

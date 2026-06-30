@@ -4,7 +4,8 @@ using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta;
-using Sessions = Anthropic.Models.Beta.Sessions;
+using Anthropic.Models.Beta.Agents;
+using Anthropic.Models.Beta.Sessions;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
 
@@ -13,17 +14,17 @@ public class SessionCreateParamsTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var parameters = new Sessions::SessionCreateParams
+        var parameters = new SessionCreateParams
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
             [
-                new Sessions::BetaManagedAgentsFileResourceParams()
+                new BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
+                    Type = BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
@@ -32,15 +33,15 @@ public class SessionCreateParamsTest : TestBase
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
-        Sessions::Agent expectedAgent = "agent_011CZkYpogX7uDKUyvBTophP";
+        Agent expectedAgent = "agent_011CZkYpogX7uDKUyvBTophP";
         string expectedEnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW";
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
-        List<Sessions::Resource> expectedResources =
+        List<Resource> expectedResources =
         [
-            new Sessions::BetaManagedAgentsFileResourceParams()
+            new BetaManagedAgentsFileResourceParams()
             {
                 FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
+                Type = BetaManagedAgentsFileResourceParamsType.File,
                 MountPath = "/uploads/receipt.pdf",
             },
         ];
@@ -85,7 +86,7 @@ public class SessionCreateParamsTest : TestBase
     [Fact]
     public void OptionalNonNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new Sessions::SessionCreateParams
+        var parameters = new SessionCreateParams
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
@@ -105,7 +106,7 @@ public class SessionCreateParamsTest : TestBase
     [Fact]
     public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
     {
-        var parameters = new Sessions::SessionCreateParams
+        var parameters = new SessionCreateParams
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
@@ -131,17 +132,17 @@ public class SessionCreateParamsTest : TestBase
     [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new Sessions::SessionCreateParams
+        var parameters = new SessionCreateParams
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
             [
-                new Sessions::BetaManagedAgentsFileResourceParams()
+                new BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
+                    Type = BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
@@ -156,17 +157,17 @@ public class SessionCreateParamsTest : TestBase
     [Fact]
     public void OptionalNullableParamsSetToNullAreSetToNull_Works()
     {
-        var parameters = new Sessions::SessionCreateParams
+        var parameters = new SessionCreateParams
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
             [
-                new Sessions::BetaManagedAgentsFileResourceParams()
+                new BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
+                    Type = BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
@@ -183,7 +184,7 @@ public class SessionCreateParamsTest : TestBase
     [Fact]
     public void Url_Works()
     {
-        Sessions::SessionCreateParams parameters = new()
+        SessionCreateParams parameters = new()
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
@@ -200,7 +201,7 @@ public class SessionCreateParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        Sessions::SessionCreateParams parameters = new()
+        SessionCreateParams parameters = new()
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
@@ -218,17 +219,17 @@ public class SessionCreateParamsTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var parameters = new Sessions::SessionCreateParams
+        var parameters = new SessionCreateParams
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
             [
-                new Sessions::BetaManagedAgentsFileResourceParams()
+                new BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
+                    Type = BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
@@ -237,7 +238,7 @@ public class SessionCreateParamsTest : TestBase
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
-        Sessions::SessionCreateParams copied = new(parameters);
+        SessionCreateParams copied = new(parameters);
 
         Assert.Equal(parameters, copied);
     }
@@ -248,17 +249,78 @@ public class AgentTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        Sessions::Agent value = "string";
+        Agent value = "string";
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsAgentParamsValidationWorks()
     {
-        Sessions::Agent value = new Sessions::BetaManagedAgentsAgentParams()
+        Agent value = new BetaManagedAgentsAgentParams()
         {
             ID = "x",
-            Type = Sessions::Type.Agent,
+            Type = BetaManagedAgentsAgentParamsType.Agent,
+            Version = 0,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAgentWithOverridesParamsValidationWorks()
+    {
+        Agent value = new BetaManagedAgentsAgentWithOverridesParams()
+        {
+            ID = "x",
+            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
+            McpServers =
+            [
+                new()
+                {
+                    Name = "example-mcp",
+                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
+                    Url = "https://example-server.modelcontextprotocol.io/sse",
+                },
+            ],
+            Model = new BetaManagedAgentsModelConfigParams()
+            {
+                ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+                Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+            },
+            Skills =
+            [
+                new BetaManagedAgentsAnthropicSkillParams()
+                {
+                    SkillID = "xlsx",
+                    Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
+                    Version = "1",
+                },
+            ],
+            System = "system",
+            Tools =
+            [
+                new BetaManagedAgentsAgentToolset20260401Params()
+                {
+                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                    Configs =
+                    [
+                        new()
+                        {
+                            Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
+                            Enabled = true,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                        },
+                    ],
+                    DefaultConfig = new()
+                    {
+                        Enabled = true,
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        ),
+                    },
+                },
+            ],
             Version = 0,
         };
         value.Validate();
@@ -267,12 +329,9 @@ public class AgentTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        Sessions::Agent value = "string";
+        Agent value = "string";
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Sessions::Agent>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Agent>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -280,17 +339,78 @@ public class AgentTest : TestBase
     [Fact]
     public void BetaManagedAgentsAgentParamsSerializationRoundtripWorks()
     {
-        Sessions::Agent value = new Sessions::BetaManagedAgentsAgentParams()
+        Agent value = new BetaManagedAgentsAgentParams()
         {
             ID = "x",
-            Type = Sessions::Type.Agent,
+            Type = BetaManagedAgentsAgentParamsType.Agent,
             Version = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Sessions::Agent>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Agent>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAgentWithOverridesParamsSerializationRoundtripWorks()
+    {
+        Agent value = new BetaManagedAgentsAgentWithOverridesParams()
+        {
+            ID = "x",
+            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
+            McpServers =
+            [
+                new()
+                {
+                    Name = "example-mcp",
+                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
+                    Url = "https://example-server.modelcontextprotocol.io/sse",
+                },
+            ],
+            Model = new BetaManagedAgentsModelConfigParams()
+            {
+                ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+                Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+            },
+            Skills =
+            [
+                new BetaManagedAgentsAnthropicSkillParams()
+                {
+                    SkillID = "xlsx",
+                    Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
+                    Version = "1",
+                },
+            ],
+            System = "system",
+            Tools =
+            [
+                new BetaManagedAgentsAgentToolset20260401Params()
+                {
+                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                    Configs =
+                    [
+                        new()
+                        {
+                            Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
+                            Enabled = true,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                        },
+                    ],
+                    DefaultConfig = new()
+                    {
+                        Enabled = true,
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        ),
+                    },
+                },
+            ],
+            Version = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Agent>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -301,15 +421,15 @@ public class ResourceTest : TestBase
     [Fact]
     public void BetaManagedAgentsGitHubRepositoryResourceParamsValidationWorks()
     {
-        Sessions::Resource value = new Sessions::BetaManagedAgentsGitHubRepositoryResourceParams()
+        Resource value = new BetaManagedAgentsGitHubRepositoryResourceParams()
         {
             AuthorizationToken = "ghp_exampletoken",
-            Type = Sessions::BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
+            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
-            Checkout = new Sessions::BetaManagedAgentsBranchCheckout()
+            Checkout = new BetaManagedAgentsBranchCheckout()
             {
                 Name = "main",
-                Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
+                Type = BetaManagedAgentsBranchCheckoutType.Branch,
             },
             MountPath = "x",
         };
@@ -319,10 +439,10 @@ public class ResourceTest : TestBase
     [Fact]
     public void BetaManagedAgentsFileResourceParamsValidationWorks()
     {
-        Sessions::Resource value = new Sessions::BetaManagedAgentsFileResourceParams()
+        Resource value = new BetaManagedAgentsFileResourceParams()
         {
             FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-            Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
+            Type = BetaManagedAgentsFileResourceParamsType.File,
             MountPath = "/uploads/receipt.pdf",
         };
         value.Validate();
@@ -331,11 +451,11 @@ public class ResourceTest : TestBase
     [Fact]
     public void BetaManagedAgentsMemoryStoreResourceParamValidationWorks()
     {
-        Sessions::Resource value = new Sessions::BetaManagedAgentsMemoryStoreResourceParam()
+        Resource value = new BetaManagedAgentsMemoryStoreResourceParam()
         {
             MemoryStoreID = "memory_store_id",
-            Type = Sessions::BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
-            Access = Sessions::Access.ReadWrite,
+            Type = BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
+            Access = Access.ReadWrite,
             Instructions = "instructions",
         };
         value.Validate();
@@ -344,20 +464,20 @@ public class ResourceTest : TestBase
     [Fact]
     public void BetaManagedAgentsGitHubRepositoryResourceParamsSerializationRoundtripWorks()
     {
-        Sessions::Resource value = new Sessions::BetaManagedAgentsGitHubRepositoryResourceParams()
+        Resource value = new BetaManagedAgentsGitHubRepositoryResourceParams()
         {
             AuthorizationToken = "ghp_exampletoken",
-            Type = Sessions::BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
+            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
-            Checkout = new Sessions::BetaManagedAgentsBranchCheckout()
+            Checkout = new BetaManagedAgentsBranchCheckout()
             {
                 Name = "main",
-                Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
+                Type = BetaManagedAgentsBranchCheckoutType.Branch,
             },
             MountPath = "x",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Sessions::Resource>(
+        var deserialized = JsonSerializer.Deserialize<Resource>(
             element,
             ModelBase.SerializerOptions
         );
@@ -368,14 +488,14 @@ public class ResourceTest : TestBase
     [Fact]
     public void BetaManagedAgentsFileResourceParamsSerializationRoundtripWorks()
     {
-        Sessions::Resource value = new Sessions::BetaManagedAgentsFileResourceParams()
+        Resource value = new BetaManagedAgentsFileResourceParams()
         {
             FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-            Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
+            Type = BetaManagedAgentsFileResourceParamsType.File,
             MountPath = "/uploads/receipt.pdf",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Sessions::Resource>(
+        var deserialized = JsonSerializer.Deserialize<Resource>(
             element,
             ModelBase.SerializerOptions
         );
@@ -386,15 +506,15 @@ public class ResourceTest : TestBase
     [Fact]
     public void BetaManagedAgentsMemoryStoreResourceParamSerializationRoundtripWorks()
     {
-        Sessions::Resource value = new Sessions::BetaManagedAgentsMemoryStoreResourceParam()
+        Resource value = new BetaManagedAgentsMemoryStoreResourceParam()
         {
             MemoryStoreID = "memory_store_id",
-            Type = Sessions::BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
-            Access = Sessions::Access.ReadWrite,
+            Type = BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
+            Access = Access.ReadWrite,
             Instructions = "instructions",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Sessions::Resource>(
+        var deserialized = JsonSerializer.Deserialize<Resource>(
             element,
             ModelBase.SerializerOptions
         );

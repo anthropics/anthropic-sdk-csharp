@@ -20,6 +20,7 @@ public class BetaSelfHostedWorkTest : TestBase
             EnvironmentID = "environment_id",
             LatestHeartbeatAt = "latest_heartbeat_at",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
+            Secret = "secret",
             StartedAt = "started_at",
             State = State.Queued,
             StopRequestedAt = "stop_requested_at",
@@ -33,6 +34,7 @@ public class BetaSelfHostedWorkTest : TestBase
         string expectedEnvironmentID = "environment_id";
         string expectedLatestHeartbeatAt = "latest_heartbeat_at";
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
+        string expectedSecret = "secret";
         string expectedStartedAt = "started_at";
         ApiEnum<string, State> expectedState = State.Queued;
         string expectedStopRequestedAt = "stop_requested_at";
@@ -52,6 +54,7 @@ public class BetaSelfHostedWorkTest : TestBase
 
             Assert.Equal(value, model.Metadata[item.Key]);
         }
+        Assert.Equal(expectedSecret, model.Secret);
         Assert.Equal(expectedStartedAt, model.StartedAt);
         Assert.Equal(expectedState, model.State);
         Assert.Equal(expectedStopRequestedAt, model.StopRequestedAt);
@@ -71,6 +74,7 @@ public class BetaSelfHostedWorkTest : TestBase
             EnvironmentID = "environment_id",
             LatestHeartbeatAt = "latest_heartbeat_at",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
+            Secret = "secret",
             StartedAt = "started_at",
             State = State.Queued,
             StopRequestedAt = "stop_requested_at",
@@ -98,6 +102,7 @@ public class BetaSelfHostedWorkTest : TestBase
             EnvironmentID = "environment_id",
             LatestHeartbeatAt = "latest_heartbeat_at",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
+            Secret = "secret",
             StartedAt = "started_at",
             State = State.Queued,
             StopRequestedAt = "stop_requested_at",
@@ -118,6 +123,7 @@ public class BetaSelfHostedWorkTest : TestBase
         string expectedEnvironmentID = "environment_id";
         string expectedLatestHeartbeatAt = "latest_heartbeat_at";
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
+        string expectedSecret = "secret";
         string expectedStartedAt = "started_at";
         ApiEnum<string, State> expectedState = State.Queued;
         string expectedStopRequestedAt = "stop_requested_at";
@@ -137,6 +143,7 @@ public class BetaSelfHostedWorkTest : TestBase
 
             Assert.Equal(value, deserialized.Metadata[item.Key]);
         }
+        Assert.Equal(expectedSecret, deserialized.Secret);
         Assert.Equal(expectedStartedAt, deserialized.StartedAt);
         Assert.Equal(expectedState, deserialized.State);
         Assert.Equal(expectedStopRequestedAt, deserialized.StopRequestedAt);
@@ -156,6 +163,7 @@ public class BetaSelfHostedWorkTest : TestBase
             EnvironmentID = "environment_id",
             LatestHeartbeatAt = "latest_heartbeat_at",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
+            Secret = "secret",
             StartedAt = "started_at",
             State = State.Queued,
             StopRequestedAt = "stop_requested_at",
@@ -177,6 +185,7 @@ public class BetaSelfHostedWorkTest : TestBase
             EnvironmentID = "environment_id",
             LatestHeartbeatAt = "latest_heartbeat_at",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
+            Secret = "secret",
             StartedAt = "started_at",
             State = State.Queued,
             StopRequestedAt = "stop_requested_at",

@@ -410,7 +410,7 @@ public class DeploymentUpdateParamsAgentTest : TestBase
         DeploymentUpdateParamsAgent value = new Sessions::BetaManagedAgentsAgentParams()
         {
             ID = "x",
-            Type = Sessions::Type.Agent,
+            Type = Sessions::BetaManagedAgentsAgentParamsType.Agent,
             Version = 0,
         };
         value.Validate();
@@ -435,7 +435,7 @@ public class DeploymentUpdateParamsAgentTest : TestBase
         DeploymentUpdateParamsAgent value = new Sessions::BetaManagedAgentsAgentParams()
         {
             ID = "x",
-            Type = Sessions::Type.Agent,
+            Type = Sessions::BetaManagedAgentsAgentParamsType.Agent,
             Version = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

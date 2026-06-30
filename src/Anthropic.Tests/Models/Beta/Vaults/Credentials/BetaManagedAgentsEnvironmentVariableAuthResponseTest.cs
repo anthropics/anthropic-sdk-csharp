@@ -12,6 +12,7 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableAuthResponse
         {
+            InjectionLocation = new() { Body = true, Header = true },
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
                 BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
             ),
@@ -19,6 +20,11 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
             Type = BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable,
         };
 
+        BetaManagedAgentsInjectionLocationResponse expectedInjectionLocation = new()
+        {
+            Body = true,
+            Header = true,
+        };
         Networking expectedNetworking =
             new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
                 BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
@@ -27,6 +33,7 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
         ApiEnum<string, BetaManagedAgentsEnvironmentVariableAuthResponseType> expectedType =
             BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable;
 
+        Assert.Equal(expectedInjectionLocation, model.InjectionLocation);
         Assert.Equal(expectedNetworking, model.Networking);
         Assert.Equal(expectedSecretName, model.SecretName);
         Assert.Equal(expectedType, model.Type);
@@ -37,6 +44,7 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableAuthResponse
         {
+            InjectionLocation = new() { Body = true, Header = true },
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
                 BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
             ),
@@ -59,6 +67,7 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableAuthResponse
         {
+            InjectionLocation = new() { Body = true, Header = true },
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
                 BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
             ),
@@ -74,6 +83,11 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
             );
         Assert.NotNull(deserialized);
 
+        BetaManagedAgentsInjectionLocationResponse expectedInjectionLocation = new()
+        {
+            Body = true,
+            Header = true,
+        };
         Networking expectedNetworking =
             new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
                 BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
@@ -82,6 +96,7 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
         ApiEnum<string, BetaManagedAgentsEnvironmentVariableAuthResponseType> expectedType =
             BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable;
 
+        Assert.Equal(expectedInjectionLocation, deserialized.InjectionLocation);
         Assert.Equal(expectedNetworking, deserialized.Networking);
         Assert.Equal(expectedSecretName, deserialized.SecretName);
         Assert.Equal(expectedType, deserialized.Type);
@@ -92,6 +107,7 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableAuthResponse
         {
+            InjectionLocation = new() { Body = true, Header = true },
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
                 BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
             ),
@@ -107,6 +123,7 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableAuthResponse
         {
+            InjectionLocation = new() { Body = true, Header = true },
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
                 BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
             ),

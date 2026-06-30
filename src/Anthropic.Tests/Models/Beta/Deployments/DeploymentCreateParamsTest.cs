@@ -446,7 +446,7 @@ public class AgentTest : TestBase
         Agent value = new Sessions::BetaManagedAgentsAgentParams()
         {
             ID = "x",
-            Type = Sessions::Type.Agent,
+            Type = Sessions::BetaManagedAgentsAgentParamsType.Agent,
             Version = 0,
         };
         value.Validate();
@@ -468,7 +468,7 @@ public class AgentTest : TestBase
         Agent value = new Sessions::BetaManagedAgentsAgentParams()
         {
             ID = "x",
-            Type = Sessions::Type.Agent,
+            Type = Sessions::BetaManagedAgentsAgentParamsType.Agent,
             Version = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

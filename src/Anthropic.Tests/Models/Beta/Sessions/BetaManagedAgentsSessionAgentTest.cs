@@ -245,7 +245,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         ];
         string expectedSystem =
             "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.";
-        List<Tool> expectedTools =
+        List<BetaManagedAgentsSessionAgentTool> expectedTools =
         [
             new Agents::BetaManagedAgentsAgentToolset20260401()
             {
@@ -686,7 +686,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         ];
         string expectedSystem =
             "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.";
-        List<Tool> expectedTools =
+        List<BetaManagedAgentsSessionAgentTool> expectedTools =
         [
             new Agents::BetaManagedAgentsAgentToolset20260401()
             {
@@ -1076,40 +1076,41 @@ public class SkillTest : TestBase
     }
 }
 
-public class ToolTest : TestBase
+public class BetaManagedAgentsSessionAgentToolTest : TestBase
 {
     [Fact]
     public void BetaManagedAgentsAgentToolset20260401ValidationWorks()
     {
-        Tool value = new Agents::BetaManagedAgentsAgentToolset20260401()
-        {
-            Configs =
-            [
-                new()
+        BetaManagedAgentsSessionAgentTool value =
+            new Agents::BetaManagedAgentsAgentToolset20260401()
+            {
+                Configs =
+                [
+                    new()
+                    {
+                        Enabled = true,
+                        Name = Agents::Name.Bash,
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        ),
+                    },
+                ],
+                DefaultConfig = new()
                 {
                     Enabled = true,
-                    Name = Agents::Name.Bash,
                     PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                         Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
                 },
-            ],
-            DefaultConfig = new()
-            {
-                Enabled = true,
-                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
-            },
-            Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
-        };
+                Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+            };
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsMcpToolsetValidationWorks()
     {
-        Tool value = new Agents::BetaManagedAgentsMcpToolset()
+        BetaManagedAgentsSessionAgentTool value = new Agents::BetaManagedAgentsMcpToolset()
         {
             Configs =
             [
@@ -1138,7 +1139,7 @@ public class ToolTest : TestBase
     [Fact]
     public void BetaManagedAgentsCustomValidationWorks()
     {
-        Tool value = new Agents::BetaManagedAgentsCustomTool()
+        BetaManagedAgentsSessionAgentTool value = new Agents::BetaManagedAgentsCustomTool()
         {
             Description = "description",
             InputSchema = new()
@@ -1158,30 +1159,34 @@ public class ToolTest : TestBase
     [Fact]
     public void BetaManagedAgentsAgentToolset20260401SerializationRoundtripWorks()
     {
-        Tool value = new Agents::BetaManagedAgentsAgentToolset20260401()
-        {
-            Configs =
-            [
-                new()
+        BetaManagedAgentsSessionAgentTool value =
+            new Agents::BetaManagedAgentsAgentToolset20260401()
+            {
+                Configs =
+                [
+                    new()
+                    {
+                        Enabled = true,
+                        Name = Agents::Name.Bash,
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        ),
+                    },
+                ],
+                DefaultConfig = new()
                 {
                     Enabled = true,
-                    Name = Agents::Name.Bash,
                     PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                         Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
                 },
-            ],
-            DefaultConfig = new()
-            {
-                Enabled = true,
-                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
-            },
-            Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
-        };
+                Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+            };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSessionAgentTool>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -1189,7 +1194,7 @@ public class ToolTest : TestBase
     [Fact]
     public void BetaManagedAgentsMcpToolsetSerializationRoundtripWorks()
     {
-        Tool value = new Agents::BetaManagedAgentsMcpToolset()
+        BetaManagedAgentsSessionAgentTool value = new Agents::BetaManagedAgentsMcpToolset()
         {
             Configs =
             [
@@ -1213,7 +1218,10 @@ public class ToolTest : TestBase
             Type = Agents::BetaManagedAgentsMcpToolsetType.McpToolset,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSessionAgentTool>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -1221,7 +1229,7 @@ public class ToolTest : TestBase
     [Fact]
     public void BetaManagedAgentsCustomSerializationRoundtripWorks()
     {
-        Tool value = new Agents::BetaManagedAgentsCustomTool()
+        BetaManagedAgentsSessionAgentTool value = new Agents::BetaManagedAgentsCustomTool()
         {
             Description = "description",
             InputSchema = new()
@@ -1236,7 +1244,10 @@ public class ToolTest : TestBase
             Type = Agents::BetaManagedAgentsCustomToolType.Custom,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSessionAgentTool>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
