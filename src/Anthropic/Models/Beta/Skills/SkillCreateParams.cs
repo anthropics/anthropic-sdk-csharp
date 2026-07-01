@@ -26,6 +26,28 @@ public record class SkillCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// Files to upload for the skill.
+    ///
+    /// <para>All files must be in the same top-level directory and must include
+    /// a SKILL.md file at the root of that directory.</para>
+    /// </summary>
+    public required IReadOnlyList<BinaryContent> Files
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullStruct<ImmutableArray<BinaryContent>>("files");
+        }
+        init
+        {
+            this._rawBodyData.Set<ImmutableArray<BinaryContent>>(
+                "files",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
+    /// <summary>
     /// Display title for the skill.
     ///
     /// <para>This is a human-readable label that is not included in the prompt sent
@@ -39,28 +61,6 @@ public record class SkillCreateParams : ParamsBase
             return this._rawBodyData.GetNullableClass<string>("display_title");
         }
         init { this._rawBodyData.Set("display_title", value); }
-    }
-
-    /// <summary>
-    /// Files to upload for the skill.
-    ///
-    /// <para>All files must be in the same top-level directory and must include
-    /// a SKILL.md file at the root of that directory.</para>
-    /// </summary>
-    public IReadOnlyList<BinaryContent>? Files
-    {
-        get
-        {
-            this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableStruct<ImmutableArray<BinaryContent>>("files");
-        }
-        init
-        {
-            this._rawBodyData.Set<ImmutableArray<BinaryContent>?>(
-                "files",
-                value == null ? null : ImmutableArray.ToImmutableArray(value)
-            );
-        }
     }
 
     /// <summary>

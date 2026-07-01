@@ -54,12 +54,10 @@ public sealed class VersionService : IVersionService
     /// <inheritdoc/>
     public Task<VersionCreateResponse> Create(
         string skillID,
-        VersionCreateParams? parameters = null,
+        VersionCreateParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        parameters ??= new();
-
         return this.Create(parameters with { SkillID = skillID }, cancellationToken);
     }
 
@@ -203,12 +201,10 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
     /// <inheritdoc/>
     public Task<HttpResponse<VersionCreateResponse>> Create(
         string skillID,
-        VersionCreateParams? parameters = null,
+        VersionCreateParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        parameters ??= new();
-
         return this.Create(parameters with { SkillID = skillID }, cancellationToken);
     }
 

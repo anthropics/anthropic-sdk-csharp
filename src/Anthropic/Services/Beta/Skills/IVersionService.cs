@@ -37,7 +37,7 @@ public interface IVersionService
     /// <inheritdoc cref="Create(VersionCreateParams, CancellationToken)"/>
     Task<VersionCreateResponse> Create(
         string skillID,
-        VersionCreateParams? parameters = null,
+        VersionCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 
@@ -129,7 +129,7 @@ public interface IVersionServiceWithRawResponse
     /// <inheritdoc cref="Create(VersionCreateParams, CancellationToken)"/>
     Task<HttpResponse<VersionCreateResponse>> Create(
         string skillID,
-        VersionCreateParams? parameters = null,
+        VersionCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 

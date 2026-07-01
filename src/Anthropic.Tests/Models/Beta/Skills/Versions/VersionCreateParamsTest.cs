@@ -30,7 +30,6 @@ public class VersionCreateParamsTest : TestBase
         ];
 
         Assert.Equal(expectedSkillID, parameters.SkillID);
-        Assert.NotNull(parameters.Files);
         Assert.Equal(expectedFiles.Count, parameters.Files.Count);
         for (int i = 0; i < expectedFiles.Count; i++)
         {
@@ -74,37 +73,13 @@ public class VersionCreateParamsTest : TestBase
     }
 
     [Fact]
-    public void OptionalNullableParamsUnsetAreNotSet_Works()
-    {
-        var parameters = new VersionCreateParams
-        {
-            SkillID = "skill_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
-        };
-
-        Assert.Null(parameters.Files);
-        Assert.False(parameters.RawBodyData.ContainsKey("files"));
-    }
-
-    [Fact]
-    public void OptionalNullableParamsSetToNullAreSetToNull_Works()
-    {
-        var parameters = new VersionCreateParams
-        {
-            SkillID = "skill_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
-
-            Files = null,
-        };
-
-        Assert.Null(parameters.Files);
-        Assert.True(parameters.RawBodyData.ContainsKey("files"));
-    }
-
-    [Fact]
     public void Url_Works()
     {
-        VersionCreateParams parameters = new() { SkillID = "skill_id" };
+        VersionCreateParams parameters = new()
+        {
+            SkillID = "skill_id",
+            Files = [Encoding.UTF8.GetBytes("Example data")],
+        };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
@@ -123,6 +98,7 @@ public class VersionCreateParamsTest : TestBase
         VersionCreateParams parameters = new()
         {
             SkillID = "skill_id",
+            Files = [Encoding.UTF8.GetBytes("Example data")],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 

@@ -1,3 +1,4 @@
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Anthropic.Tests.Services.Beta;
@@ -8,7 +9,7 @@ public class SkillServiceTest : TestBase
     public async Task Create_Works()
     {
         var skill = await this.client.Beta.Skills.Create(
-            new(),
+            new() { Files = [Encoding.UTF8.GetBytes("Example data")] },
             TestContext.Current.CancellationToken
         );
         skill.Validate();
