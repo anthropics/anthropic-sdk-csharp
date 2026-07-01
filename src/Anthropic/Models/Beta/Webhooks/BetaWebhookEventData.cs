@@ -65,14 +65,7 @@ public record class BetaWebhookEventData : ModelBase
                 deploymentArchived: (x) => x.ID,
                 deploymentRunStarted: (x) => x.ID,
                 deploymentDeleted: (x) => x.ID,
-                deploymentRunSucceeded: (x) => x.ID,
-                environmentCreated: (x) => x.ID,
-                environmentUpdated: (x) => x.ID,
-                environmentArchived: (x) => x.ID,
-                environmentDeleted: (x) => x.ID,
-                memoryStoreCreated: (x) => x.ID,
-                memoryStoreArchived: (x) => x.ID,
-                memoryStoreDeleted: (x) => x.ID
+                deploymentRunSucceeded: (x) => x.ID
             );
         }
     }
@@ -117,14 +110,52 @@ public record class BetaWebhookEventData : ModelBase
                 deploymentArchived: (x) => x.OrganizationID,
                 deploymentRunStarted: (x) => x.OrganizationID,
                 deploymentDeleted: (x) => x.OrganizationID,
-                deploymentRunSucceeded: (x) => x.OrganizationID,
-                environmentCreated: (x) => x.OrganizationID,
-                environmentUpdated: (x) => x.OrganizationID,
-                environmentArchived: (x) => x.OrganizationID,
-                environmentDeleted: (x) => x.OrganizationID,
-                memoryStoreCreated: (x) => x.OrganizationID,
-                memoryStoreArchived: (x) => x.OrganizationID,
-                memoryStoreDeleted: (x) => x.OrganizationID
+                deploymentRunSucceeded: (x) => x.OrganizationID
+            );
+        }
+    }
+
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                sessionCreated: (x) => x.Type,
+                sessionPending: (x) => x.Type,
+                sessionRunning: (x) => x.Type,
+                sessionIdled: (x) => x.Type,
+                sessionRequiresAction: (x) => x.Type,
+                sessionArchived: (x) => x.Type,
+                sessionDeleted: (x) => x.Type,
+                sessionStatusRescheduled: (x) => x.Type,
+                sessionStatusRunStarted: (x) => x.Type,
+                sessionStatusIdled: (x) => x.Type,
+                sessionStatusTerminated: (x) => x.Type,
+                sessionThreadCreated: (x) => x.Type,
+                sessionThreadIdled: (x) => x.Type,
+                sessionThreadTerminated: (x) => x.Type,
+                sessionOutcomeEvaluationEnded: (x) => x.Type,
+                vaultCreated: (x) => x.Type,
+                vaultArchived: (x) => x.Type,
+                vaultDeleted: (x) => x.Type,
+                vaultCredentialCreated: (x) => x.Type,
+                vaultCredentialArchived: (x) => x.Type,
+                vaultCredentialDeleted: (x) => x.Type,
+                vaultCredentialRefreshFailed: (x) => x.Type,
+                sessionUpdated: (x) => x.Type,
+                agentCreated: (x) => x.Type,
+                agentArchived: (x) => x.Type,
+                agentDeleted: (x) => x.Type,
+                deploymentPaused: (x) => x.Type,
+                deploymentRunFailed: (x) => x.Type,
+                deploymentCreated: (x) => x.Type,
+                deploymentUpdated: (x) => x.Type,
+                deploymentUnpaused: (x) => x.Type,
+                agentUpdated: (x) => x.Type,
+                deploymentArchived: (x) => x.Type,
+                deploymentRunStarted: (x) => x.Type,
+                deploymentDeleted: (x) => x.Type,
+                deploymentRunSucceeded: (x) => x.Type
             );
         }
     }
@@ -169,14 +200,7 @@ public record class BetaWebhookEventData : ModelBase
                 deploymentArchived: (x) => x.WorkspaceID,
                 deploymentRunStarted: (x) => x.WorkspaceID,
                 deploymentDeleted: (x) => x.WorkspaceID,
-                deploymentRunSucceeded: (x) => x.WorkspaceID,
-                environmentCreated: (x) => x.WorkspaceID,
-                environmentUpdated: (x) => x.WorkspaceID,
-                environmentArchived: (x) => x.WorkspaceID,
-                environmentDeleted: (x) => x.WorkspaceID,
-                memoryStoreCreated: (x) => x.WorkspaceID,
-                memoryStoreArchived: (x) => x.WorkspaceID,
-                memoryStoreDeleted: (x) => x.WorkspaceID
+                deploymentRunSucceeded: (x) => x.WorkspaceID
             );
         }
     }
@@ -221,14 +245,7 @@ public record class BetaWebhookEventData : ModelBase
                 deploymentArchived: (_) => null,
                 deploymentRunStarted: (_) => null,
                 deploymentDeleted: (_) => null,
-                deploymentRunSucceeded: (_) => null,
-                environmentCreated: (_) => null,
-                environmentUpdated: (_) => null,
-                environmentArchived: (_) => null,
-                environmentDeleted: (_) => null,
-                memoryStoreCreated: (_) => null,
-                memoryStoreArchived: (_) => null,
-                memoryStoreDeleted: (_) => null
+                deploymentRunSucceeded: (_) => null
             );
         }
     }
@@ -273,14 +290,7 @@ public record class BetaWebhookEventData : ModelBase
                 deploymentArchived: (_) => null,
                 deploymentRunStarted: (_) => null,
                 deploymentDeleted: (_) => null,
-                deploymentRunSucceeded: (_) => null,
-                environmentCreated: (_) => null,
-                environmentUpdated: (_) => null,
-                environmentArchived: (_) => null,
-                environmentDeleted: (_) => null,
-                memoryStoreCreated: (_) => null,
-                memoryStoreArchived: (_) => null,
-                memoryStoreDeleted: (_) => null
+                deploymentRunSucceeded: (_) => null
             );
         }
     }
@@ -584,69 +594,6 @@ public record class BetaWebhookEventData : ModelBase
 
     public BetaWebhookEventData(
         BetaWebhookDeploymentRunSucceededEventData value,
-        JsonElement? element = null
-    )
-    {
-        this.Value = value;
-        this._element = element;
-    }
-
-    public BetaWebhookEventData(
-        BetaWebhookEnvironmentCreatedEventData value,
-        JsonElement? element = null
-    )
-    {
-        this.Value = value;
-        this._element = element;
-    }
-
-    public BetaWebhookEventData(
-        BetaWebhookEnvironmentUpdatedEventData value,
-        JsonElement? element = null
-    )
-    {
-        this.Value = value;
-        this._element = element;
-    }
-
-    public BetaWebhookEventData(
-        BetaWebhookEnvironmentArchivedEventData value,
-        JsonElement? element = null
-    )
-    {
-        this.Value = value;
-        this._element = element;
-    }
-
-    public BetaWebhookEventData(
-        BetaWebhookEnvironmentDeletedEventData value,
-        JsonElement? element = null
-    )
-    {
-        this.Value = value;
-        this._element = element;
-    }
-
-    public BetaWebhookEventData(
-        BetaWebhookMemoryStoreCreatedEventData value,
-        JsonElement? element = null
-    )
-    {
-        this.Value = value;
-        this._element = element;
-    }
-
-    public BetaWebhookEventData(
-        BetaWebhookMemoryStoreArchivedEventData value,
-        JsonElement? element = null
-    )
-    {
-        this.Value = value;
-        this._element = element;
-    }
-
-    public BetaWebhookEventData(
-        BetaWebhookMemoryStoreDeletedEventData value,
         JsonElement? element = null
     )
     {
@@ -1476,167 +1423,6 @@ public record class BetaWebhookEventData : ModelBase
     }
 
     /// <summary>
-    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaWebhookEnvironmentCreatedEventData"/>.
-    ///
-    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
-    ///
-    /// <example>
-    /// <code>
-    /// if (instance.TryPickEnvironmentCreated(out var value)) {
-    ///     // `value` is of type `BetaWebhookEnvironmentCreatedEventData`
-    ///     Console.WriteLine(value);
-    /// }
-    /// </code>
-    /// </example>
-    /// </summary>
-    public bool TryPickEnvironmentCreated(
-        [NotNullWhen(true)] out BetaWebhookEnvironmentCreatedEventData? value
-    )
-    {
-        value = this.Value as BetaWebhookEnvironmentCreatedEventData;
-        return value != null;
-    }
-
-    /// <summary>
-    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaWebhookEnvironmentUpdatedEventData"/>.
-    ///
-    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
-    ///
-    /// <example>
-    /// <code>
-    /// if (instance.TryPickEnvironmentUpdated(out var value)) {
-    ///     // `value` is of type `BetaWebhookEnvironmentUpdatedEventData`
-    ///     Console.WriteLine(value);
-    /// }
-    /// </code>
-    /// </example>
-    /// </summary>
-    public bool TryPickEnvironmentUpdated(
-        [NotNullWhen(true)] out BetaWebhookEnvironmentUpdatedEventData? value
-    )
-    {
-        value = this.Value as BetaWebhookEnvironmentUpdatedEventData;
-        return value != null;
-    }
-
-    /// <summary>
-    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaWebhookEnvironmentArchivedEventData"/>.
-    ///
-    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
-    ///
-    /// <example>
-    /// <code>
-    /// if (instance.TryPickEnvironmentArchived(out var value)) {
-    ///     // `value` is of type `BetaWebhookEnvironmentArchivedEventData`
-    ///     Console.WriteLine(value);
-    /// }
-    /// </code>
-    /// </example>
-    /// </summary>
-    public bool TryPickEnvironmentArchived(
-        [NotNullWhen(true)] out BetaWebhookEnvironmentArchivedEventData? value
-    )
-    {
-        value = this.Value as BetaWebhookEnvironmentArchivedEventData;
-        return value != null;
-    }
-
-    /// <summary>
-    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaWebhookEnvironmentDeletedEventData"/>.
-    ///
-    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
-    ///
-    /// <example>
-    /// <code>
-    /// if (instance.TryPickEnvironmentDeleted(out var value)) {
-    ///     // `value` is of type `BetaWebhookEnvironmentDeletedEventData`
-    ///     Console.WriteLine(value);
-    /// }
-    /// </code>
-    /// </example>
-    /// </summary>
-    public bool TryPickEnvironmentDeleted(
-        [NotNullWhen(true)] out BetaWebhookEnvironmentDeletedEventData? value
-    )
-    {
-        value = this.Value as BetaWebhookEnvironmentDeletedEventData;
-        return value != null;
-    }
-
-    /// <summary>
-    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaWebhookMemoryStoreCreatedEventData"/>.
-    ///
-    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
-    ///
-    /// <example>
-    /// <code>
-    /// if (instance.TryPickMemoryStoreCreated(out var value)) {
-    ///     // `value` is of type `BetaWebhookMemoryStoreCreatedEventData`
-    ///     Console.WriteLine(value);
-    /// }
-    /// </code>
-    /// </example>
-    /// </summary>
-    public bool TryPickMemoryStoreCreated(
-        [NotNullWhen(true)] out BetaWebhookMemoryStoreCreatedEventData? value
-    )
-    {
-        value = this.Value as BetaWebhookMemoryStoreCreatedEventData;
-        return value != null;
-    }
-
-    /// <summary>
-    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaWebhookMemoryStoreArchivedEventData"/>.
-    ///
-    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
-    ///
-    /// <example>
-    /// <code>
-    /// if (instance.TryPickMemoryStoreArchived(out var value)) {
-    ///     // `value` is of type `BetaWebhookMemoryStoreArchivedEventData`
-    ///     Console.WriteLine(value);
-    /// }
-    /// </code>
-    /// </example>
-    /// </summary>
-    public bool TryPickMemoryStoreArchived(
-        [NotNullWhen(true)] out BetaWebhookMemoryStoreArchivedEventData? value
-    )
-    {
-        value = this.Value as BetaWebhookMemoryStoreArchivedEventData;
-        return value != null;
-    }
-
-    /// <summary>
-    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaWebhookMemoryStoreDeletedEventData"/>.
-    ///
-    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
-    ///
-    /// <example>
-    /// <code>
-    /// if (instance.TryPickMemoryStoreDeleted(out var value)) {
-    ///     // `value` is of type `BetaWebhookMemoryStoreDeletedEventData`
-    ///     Console.WriteLine(value);
-    /// }
-    /// </code>
-    /// </example>
-    /// </summary>
-    public bool TryPickMemoryStoreDeleted(
-        [NotNullWhen(true)] out BetaWebhookMemoryStoreDeletedEventData? value
-    )
-    {
-        value = this.Value as BetaWebhookMemoryStoreDeletedEventData;
-        return value != null;
-    }
-
-    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -1685,14 +1471,7 @@ public record class BetaWebhookEventData : ModelBase
     ///     (BetaWebhookDeploymentArchivedEventData value) =&gt; {...},
     ///     (BetaWebhookDeploymentRunStartedEventData value) =&gt; {...},
     ///     (BetaWebhookDeploymentDeletedEventData value) =&gt; {...},
-    ///     (BetaWebhookDeploymentRunSucceededEventData value) =&gt; {...},
-    ///     (BetaWebhookEnvironmentCreatedEventData value) =&gt; {...},
-    ///     (BetaWebhookEnvironmentUpdatedEventData value) =&gt; {...},
-    ///     (BetaWebhookEnvironmentArchivedEventData value) =&gt; {...},
-    ///     (BetaWebhookEnvironmentDeletedEventData value) =&gt; {...},
-    ///     (BetaWebhookMemoryStoreCreatedEventData value) =&gt; {...},
-    ///     (BetaWebhookMemoryStoreArchivedEventData value) =&gt; {...},
-    ///     (BetaWebhookMemoryStoreDeletedEventData value) =&gt; {...}
+    ///     (BetaWebhookDeploymentRunSucceededEventData value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -1733,14 +1512,7 @@ public record class BetaWebhookEventData : ModelBase
         Action<BetaWebhookDeploymentArchivedEventData> deploymentArchived,
         Action<BetaWebhookDeploymentRunStartedEventData> deploymentRunStarted,
         Action<BetaWebhookDeploymentDeletedEventData> deploymentDeleted,
-        Action<BetaWebhookDeploymentRunSucceededEventData> deploymentRunSucceeded,
-        Action<BetaWebhookEnvironmentCreatedEventData> environmentCreated,
-        Action<BetaWebhookEnvironmentUpdatedEventData> environmentUpdated,
-        Action<BetaWebhookEnvironmentArchivedEventData> environmentArchived,
-        Action<BetaWebhookEnvironmentDeletedEventData> environmentDeleted,
-        Action<BetaWebhookMemoryStoreCreatedEventData> memoryStoreCreated,
-        Action<BetaWebhookMemoryStoreArchivedEventData> memoryStoreArchived,
-        Action<BetaWebhookMemoryStoreDeletedEventData> memoryStoreDeleted
+        Action<BetaWebhookDeploymentRunSucceededEventData> deploymentRunSucceeded
     )
     {
         switch (this.Value)
@@ -1853,27 +1625,6 @@ public record class BetaWebhookEventData : ModelBase
             case BetaWebhookDeploymentRunSucceededEventData value:
                 deploymentRunSucceeded(value);
                 break;
-            case BetaWebhookEnvironmentCreatedEventData value:
-                environmentCreated(value);
-                break;
-            case BetaWebhookEnvironmentUpdatedEventData value:
-                environmentUpdated(value);
-                break;
-            case BetaWebhookEnvironmentArchivedEventData value:
-                environmentArchived(value);
-                break;
-            case BetaWebhookEnvironmentDeletedEventData value:
-                environmentDeleted(value);
-                break;
-            case BetaWebhookMemoryStoreCreatedEventData value:
-                memoryStoreCreated(value);
-                break;
-            case BetaWebhookMemoryStoreArchivedEventData value:
-                memoryStoreArchived(value);
-                break;
-            case BetaWebhookMemoryStoreDeletedEventData value:
-                memoryStoreDeleted(value);
-                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of BetaWebhookEventData"
@@ -1931,14 +1682,7 @@ public record class BetaWebhookEventData : ModelBase
     ///     (BetaWebhookDeploymentArchivedEventData value) =&gt; {...},
     ///     (BetaWebhookDeploymentRunStartedEventData value) =&gt; {...},
     ///     (BetaWebhookDeploymentDeletedEventData value) =&gt; {...},
-    ///     (BetaWebhookDeploymentRunSucceededEventData value) =&gt; {...},
-    ///     (BetaWebhookEnvironmentCreatedEventData value) =&gt; {...},
-    ///     (BetaWebhookEnvironmentUpdatedEventData value) =&gt; {...},
-    ///     (BetaWebhookEnvironmentArchivedEventData value) =&gt; {...},
-    ///     (BetaWebhookEnvironmentDeletedEventData value) =&gt; {...},
-    ///     (BetaWebhookMemoryStoreCreatedEventData value) =&gt; {...},
-    ///     (BetaWebhookMemoryStoreArchivedEventData value) =&gt; {...},
-    ///     (BetaWebhookMemoryStoreDeletedEventData value) =&gt; {...}
+    ///     (BetaWebhookDeploymentRunSucceededEventData value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -1979,14 +1723,7 @@ public record class BetaWebhookEventData : ModelBase
         Func<BetaWebhookDeploymentArchivedEventData, T> deploymentArchived,
         Func<BetaWebhookDeploymentRunStartedEventData, T> deploymentRunStarted,
         Func<BetaWebhookDeploymentDeletedEventData, T> deploymentDeleted,
-        Func<BetaWebhookDeploymentRunSucceededEventData, T> deploymentRunSucceeded,
-        Func<BetaWebhookEnvironmentCreatedEventData, T> environmentCreated,
-        Func<BetaWebhookEnvironmentUpdatedEventData, T> environmentUpdated,
-        Func<BetaWebhookEnvironmentArchivedEventData, T> environmentArchived,
-        Func<BetaWebhookEnvironmentDeletedEventData, T> environmentDeleted,
-        Func<BetaWebhookMemoryStoreCreatedEventData, T> memoryStoreCreated,
-        Func<BetaWebhookMemoryStoreArchivedEventData, T> memoryStoreArchived,
-        Func<BetaWebhookMemoryStoreDeletedEventData, T> memoryStoreDeleted
+        Func<BetaWebhookDeploymentRunSucceededEventData, T> deploymentRunSucceeded
     )
     {
         return this.Value switch
@@ -2030,13 +1767,6 @@ public record class BetaWebhookEventData : ModelBase
             BetaWebhookDeploymentRunStartedEventData value => deploymentRunStarted(value),
             BetaWebhookDeploymentDeletedEventData value => deploymentDeleted(value),
             BetaWebhookDeploymentRunSucceededEventData value => deploymentRunSucceeded(value),
-            BetaWebhookEnvironmentCreatedEventData value => environmentCreated(value),
-            BetaWebhookEnvironmentUpdatedEventData value => environmentUpdated(value),
-            BetaWebhookEnvironmentArchivedEventData value => environmentArchived(value),
-            BetaWebhookEnvironmentDeletedEventData value => environmentDeleted(value),
-            BetaWebhookMemoryStoreCreatedEventData value => memoryStoreCreated(value),
-            BetaWebhookMemoryStoreArchivedEventData value => memoryStoreArchived(value),
-            BetaWebhookMemoryStoreDeletedEventData value => memoryStoreDeleted(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaWebhookEventData"
             ),
@@ -2179,34 +1909,6 @@ public record class BetaWebhookEventData : ModelBase
         BetaWebhookDeploymentRunSucceededEventData value
     ) => new(value);
 
-    public static implicit operator BetaWebhookEventData(
-        BetaWebhookEnvironmentCreatedEventData value
-    ) => new(value);
-
-    public static implicit operator BetaWebhookEventData(
-        BetaWebhookEnvironmentUpdatedEventData value
-    ) => new(value);
-
-    public static implicit operator BetaWebhookEventData(
-        BetaWebhookEnvironmentArchivedEventData value
-    ) => new(value);
-
-    public static implicit operator BetaWebhookEventData(
-        BetaWebhookEnvironmentDeletedEventData value
-    ) => new(value);
-
-    public static implicit operator BetaWebhookEventData(
-        BetaWebhookMemoryStoreCreatedEventData value
-    ) => new(value);
-
-    public static implicit operator BetaWebhookEventData(
-        BetaWebhookMemoryStoreArchivedEventData value
-    ) => new(value);
-
-    public static implicit operator BetaWebhookEventData(
-        BetaWebhookMemoryStoreDeletedEventData value
-    ) => new(value);
-
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -2261,14 +1963,7 @@ public record class BetaWebhookEventData : ModelBase
             (deploymentArchived) => deploymentArchived.Validate(),
             (deploymentRunStarted) => deploymentRunStarted.Validate(),
             (deploymentDeleted) => deploymentDeleted.Validate(),
-            (deploymentRunSucceeded) => deploymentRunSucceeded.Validate(),
-            (environmentCreated) => environmentCreated.Validate(),
-            (environmentUpdated) => environmentUpdated.Validate(),
-            (environmentArchived) => environmentArchived.Validate(),
-            (environmentDeleted) => environmentDeleted.Validate(),
-            (memoryStoreCreated) => memoryStoreCreated.Validate(),
-            (memoryStoreArchived) => memoryStoreArchived.Validate(),
-            (memoryStoreDeleted) => memoryStoreDeleted.Validate()
+            (deploymentRunSucceeded) => deploymentRunSucceeded.Validate()
         );
     }
 
@@ -2328,13 +2023,6 @@ public record class BetaWebhookEventData : ModelBase
             BetaWebhookDeploymentRunStartedEventData _ => 33,
             BetaWebhookDeploymentDeletedEventData _ => 34,
             BetaWebhookDeploymentRunSucceededEventData _ => 35,
-            BetaWebhookEnvironmentCreatedEventData _ => 36,
-            BetaWebhookEnvironmentUpdatedEventData _ => 37,
-            BetaWebhookEnvironmentArchivedEventData _ => 38,
-            BetaWebhookEnvironmentDeletedEventData _ => 39,
-            BetaWebhookMemoryStoreCreatedEventData _ => 40,
-            BetaWebhookMemoryStoreArchivedEventData _ => 41,
-            BetaWebhookMemoryStoreDeletedEventData _ => 42,
             _ => -1,
         };
     }
@@ -3096,153 +2784,6 @@ sealed class BetaWebhookEventDataConverter : JsonConverter<BetaWebhookEventData>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaWebhookDeploymentRunSucceededEventData>(
-                            element,
-                            options
-                        );
-                    if (deserialized != null)
-                    {
-                        return new(deserialized, element);
-                    }
-                }
-                catch (JsonException)
-                {
-                    // ignore
-                }
-
-                return new(element);
-            }
-            case "environment.created":
-            {
-                try
-                {
-                    var deserialized =
-                        JsonSerializer.Deserialize<BetaWebhookEnvironmentCreatedEventData>(
-                            element,
-                            options
-                        );
-                    if (deserialized != null)
-                    {
-                        return new(deserialized, element);
-                    }
-                }
-                catch (JsonException)
-                {
-                    // ignore
-                }
-
-                return new(element);
-            }
-            case "environment.updated":
-            {
-                try
-                {
-                    var deserialized =
-                        JsonSerializer.Deserialize<BetaWebhookEnvironmentUpdatedEventData>(
-                            element,
-                            options
-                        );
-                    if (deserialized != null)
-                    {
-                        return new(deserialized, element);
-                    }
-                }
-                catch (JsonException)
-                {
-                    // ignore
-                }
-
-                return new(element);
-            }
-            case "environment.archived":
-            {
-                try
-                {
-                    var deserialized =
-                        JsonSerializer.Deserialize<BetaWebhookEnvironmentArchivedEventData>(
-                            element,
-                            options
-                        );
-                    if (deserialized != null)
-                    {
-                        return new(deserialized, element);
-                    }
-                }
-                catch (JsonException)
-                {
-                    // ignore
-                }
-
-                return new(element);
-            }
-            case "environment.deleted":
-            {
-                try
-                {
-                    var deserialized =
-                        JsonSerializer.Deserialize<BetaWebhookEnvironmentDeletedEventData>(
-                            element,
-                            options
-                        );
-                    if (deserialized != null)
-                    {
-                        return new(deserialized, element);
-                    }
-                }
-                catch (JsonException)
-                {
-                    // ignore
-                }
-
-                return new(element);
-            }
-            case "memory_store.created":
-            {
-                try
-                {
-                    var deserialized =
-                        JsonSerializer.Deserialize<BetaWebhookMemoryStoreCreatedEventData>(
-                            element,
-                            options
-                        );
-                    if (deserialized != null)
-                    {
-                        return new(deserialized, element);
-                    }
-                }
-                catch (JsonException)
-                {
-                    // ignore
-                }
-
-                return new(element);
-            }
-            case "memory_store.archived":
-            {
-                try
-                {
-                    var deserialized =
-                        JsonSerializer.Deserialize<BetaWebhookMemoryStoreArchivedEventData>(
-                            element,
-                            options
-                        );
-                    if (deserialized != null)
-                    {
-                        return new(deserialized, element);
-                    }
-                }
-                catch (JsonException)
-                {
-                    // ignore
-                }
-
-                return new(element);
-            }
-            case "memory_store.deleted":
-            {
-                try
-                {
-                    var deserialized =
-                        JsonSerializer.Deserialize<BetaWebhookMemoryStoreDeletedEventData>(
                             element,
                             options
                         );

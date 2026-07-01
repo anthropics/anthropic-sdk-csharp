@@ -33,18 +33,18 @@ public record class VersionCreateParams : ParamsBase
     /// <para>All files must be in the same top-level directory and must include
     /// a SKILL.md file at the root of that directory.</para>
     /// </summary>
-    public IReadOnlyList<BinaryContent>? Files
+    public required IReadOnlyList<BinaryContent> Files
     {
         get
         {
             this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableStruct<ImmutableArray<BinaryContent>>("files");
+            return this._rawBodyData.GetNotNullStruct<ImmutableArray<BinaryContent>>("files");
         }
         init
         {
-            this._rawBodyData.Set<ImmutableArray<BinaryContent>?>(
+            this._rawBodyData.Set<ImmutableArray<BinaryContent>>(
                 "files",
-                value == null ? null : ImmutableArray.ToImmutableArray(value)
+                ImmutableArray.ToImmutableArray(value)
             );
         }
     }

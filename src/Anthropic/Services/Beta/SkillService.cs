@@ -49,7 +49,7 @@ public sealed class SkillService : ISkillService
 
     /// <inheritdoc/>
     public async Task<SkillCreateResponse> Create(
-        SkillCreateParams? parameters = null,
+        SkillCreateParams parameters,
         CancellationToken cancellationToken = default
     )
     {
@@ -146,12 +146,10 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
 
     /// <inheritdoc/>
     public async Task<HttpResponse<SkillCreateResponse>> Create(
-        SkillCreateParams? parameters = null,
+        SkillCreateParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        parameters ??= new();
-
         HttpRequest<SkillCreateParams> request = new()
         {
             Method = HttpMethod.Post,

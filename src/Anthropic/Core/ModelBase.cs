@@ -3,7 +3,6 @@ using Anthropic.Exceptions;
 using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments.Work;
-using Anthropic.Models.Beta.Webhooks;
 using Anthropic.Models.Messages;
 using Agents = Anthropic.Models.Beta.Agents;
 using Batches = Anthropic.Models.Messages.Batches;
@@ -650,7 +649,6 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsSessionActorType>(),
             new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsUserActorType>(),
             new ApiEnumConverter<string, Files::Type>(),
-            new ApiEnumConverter<string, BetaWebhookEnvironmentDeletedEventType>(),
             new ApiEnumConverter<string, UserProfiles::BetaUserProfileRelationship>(),
             new ApiEnumConverter<string, UserProfiles::Type>(),
             new ApiEnumConverter<string, UserProfiles::BetaUserProfileEnrollmentUrlType>(),

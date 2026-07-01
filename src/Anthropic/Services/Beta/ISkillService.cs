@@ -33,7 +33,7 @@ public interface ISkillService
     /// Create Skill
     /// </summary>
     Task<SkillCreateResponse> Create(
-        SkillCreateParams? parameters = null,
+        SkillCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 
@@ -93,10 +93,10 @@ public interface ISkillServiceWithRawResponse
 
     /// <summary>
     /// Returns a raw HTTP response for <c>post /v1/skills?beta=true</c>, but is otherwise the
-    /// same as <see cref="ISkillService.Create(SkillCreateParams?, CancellationToken)"/>.
+    /// same as <see cref="ISkillService.Create(SkillCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<SkillCreateResponse>> Create(
-        SkillCreateParams? parameters = null,
+        SkillCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 

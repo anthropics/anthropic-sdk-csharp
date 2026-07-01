@@ -112,7 +112,6 @@ public enum BetaFallbackRefusalTriggerCategory
     Bio,
     FrontierLlm,
     ReasoningExtraction,
-    MilitaryWeapons,
 }
 
 sealed class BetaFallbackRefusalTriggerCategoryConverter
@@ -130,7 +129,6 @@ sealed class BetaFallbackRefusalTriggerCategoryConverter
             "bio" => BetaFallbackRefusalTriggerCategory.Bio,
             "frontier_llm" => BetaFallbackRefusalTriggerCategory.FrontierLlm,
             "reasoning_extraction" => BetaFallbackRefusalTriggerCategory.ReasoningExtraction,
-            "military_weapons" => BetaFallbackRefusalTriggerCategory.MilitaryWeapons,
             _ => (BetaFallbackRefusalTriggerCategory)(-1),
         };
     }
@@ -149,7 +147,6 @@ sealed class BetaFallbackRefusalTriggerCategoryConverter
                 BetaFallbackRefusalTriggerCategory.Bio => "bio",
                 BetaFallbackRefusalTriggerCategory.FrontierLlm => "frontier_llm",
                 BetaFallbackRefusalTriggerCategory.ReasoningExtraction => "reasoning_extraction",
-                BetaFallbackRefusalTriggerCategory.MilitaryWeapons => "military_weapons",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

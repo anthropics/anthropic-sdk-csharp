@@ -1,3 +1,4 @@
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Anthropic.Tests.Services.Beta.Skills;
@@ -8,7 +9,7 @@ public class VersionServiceTest : TestBase
     {
         var version = await this.client.Beta.Skills.Versions.Create(
             "skill_id",
-            new(),
+            new() { Files = [Encoding.UTF8.GetBytes("Example data")] },
             TestContext.Current.CancellationToken
         );
         version.Validate();

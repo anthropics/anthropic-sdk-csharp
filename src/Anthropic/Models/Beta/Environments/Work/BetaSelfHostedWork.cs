@@ -116,20 +116,6 @@ public sealed record class BetaSelfHostedWork : JsonModel
     }
 
     /// <summary>
-    /// Credential payload used by the environment worker to execute this work item.
-    /// May be populated when polling for work; null on all other retrieval paths.
-    /// </summary>
-    public required string? Secret
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("secret");
-        }
-        init { this._rawData.Set("secret", value); }
-    }
-
-    /// <summary>
     /// RFC 3339 timestamp when work execution started
     /// </summary>
     public required string? StartedAt
@@ -204,7 +190,6 @@ public sealed record class BetaSelfHostedWork : JsonModel
         _ = this.EnvironmentID;
         _ = this.LatestHeartbeatAt;
         _ = this.Metadata;
-        _ = this.Secret;
         _ = this.StartedAt;
         this.State.Validate();
         _ = this.StopRequestedAt;

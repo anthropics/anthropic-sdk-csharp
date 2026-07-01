@@ -95,7 +95,6 @@ public class BetaFallbackRefusalTriggerCategoryTest : TestBase
     [InlineData(BetaFallbackRefusalTriggerCategory.Bio)]
     [InlineData(BetaFallbackRefusalTriggerCategory.FrontierLlm)]
     [InlineData(BetaFallbackRefusalTriggerCategory.ReasoningExtraction)]
-    [InlineData(BetaFallbackRefusalTriggerCategory.MilitaryWeapons)]
     public void Validation_Works(BetaFallbackRefusalTriggerCategory rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -120,7 +119,6 @@ public class BetaFallbackRefusalTriggerCategoryTest : TestBase
     [InlineData(BetaFallbackRefusalTriggerCategory.Bio)]
     [InlineData(BetaFallbackRefusalTriggerCategory.FrontierLlm)]
     [InlineData(BetaFallbackRefusalTriggerCategory.ReasoningExtraction)]
-    [InlineData(BetaFallbackRefusalTriggerCategory.MilitaryWeapons)]
     public void SerializationRoundtrip_Works(BetaFallbackRefusalTriggerCategory rawValue)
     {
         // force implicit conversion because Theory can't do that for us

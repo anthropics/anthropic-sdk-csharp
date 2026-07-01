@@ -117,7 +117,6 @@ public enum Category
     Bio,
     FrontierLlm,
     ReasoningExtraction,
-    MilitaryWeapons,
 }
 
 sealed class CategoryConverter : JsonConverter<Category>
@@ -134,7 +133,6 @@ sealed class CategoryConverter : JsonConverter<Category>
             "bio" => Category.Bio,
             "frontier_llm" => Category.FrontierLlm,
             "reasoning_extraction" => Category.ReasoningExtraction,
-            "military_weapons" => Category.MilitaryWeapons,
             _ => (Category)(-1),
         };
     }
@@ -149,7 +147,6 @@ sealed class CategoryConverter : JsonConverter<Category>
                 Category.Bio => "bio",
                 Category.FrontierLlm => "frontier_llm",
                 Category.ReasoningExtraction => "reasoning_extraction",
-                Category.MilitaryWeapons => "military_weapons",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
