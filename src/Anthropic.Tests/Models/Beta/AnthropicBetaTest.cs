@@ -36,6 +36,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.ThinkingTokenCount2026_05_13)]
     [InlineData(AnthropicBeta.ServerSideFallback2026_06_01)]
     [InlineData(AnthropicBeta.FallbackCredit2026_06_01)]
+    [InlineData(AnthropicBeta.AgentMemory2026_07_22)]
     public void Validation_Works(AnthropicBeta rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -84,6 +85,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.ThinkingTokenCount2026_05_13)]
     [InlineData(AnthropicBeta.ServerSideFallback2026_06_01)]
     [InlineData(AnthropicBeta.FallbackCredit2026_06_01)]
+    [InlineData(AnthropicBeta.AgentMemory2026_07_22)]
     public void SerializationRoundtrip_Works(AnthropicBeta rawValue)
     {
         // force implicit conversion because Theory can't do that for us

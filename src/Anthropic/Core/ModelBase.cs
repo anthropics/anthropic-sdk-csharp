@@ -642,7 +642,6 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Memories::BetaManagedAgentsMemoryPrefixType>(),
             new ApiEnumConverter<string, Memories::BetaManagedAgentsMemoryView>(),
             new ApiEnumConverter<string, Memories::BetaManagedAgentsPreconditionType>(),
-            new ApiEnumConverter<string, Memories::Order>(),
             new ApiEnumConverter<string, MemoryVersions::Type>(),
             new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsMemoryVersionType>(),
             new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsMemoryVersionOperation>(),

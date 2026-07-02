@@ -1,14 +1,12 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Services.Beta.MemoryStores;
-using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
@@ -66,48 +64,6 @@ public record class MemoryListParams : ParamsBase
             }
 
             this._rawQueryData.Set("limit", value);
-        }
-    }
-
-    /// <summary>
-    /// Query parameter for order
-    /// </summary>
-    public ApiEnum<string, Order>? Order
-    {
-        get
-        {
-            this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableClass<ApiEnum<string, Order>>("order");
-        }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawQueryData.Set("order", value);
-        }
-    }
-
-    /// <summary>
-    /// Query parameter for order_by
-    /// </summary>
-    public string? OrderBy
-    {
-        get
-        {
-            this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableClass<string>("order_by");
-        }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawQueryData.Set("order_by", value);
         }
     }
 
@@ -282,10 +238,10 @@ public record class MemoryListParams : ParamsBase
             && this._rawQueryData.Equals(other._rawQueryData);
     }
 
-    public override System::Uri Url(ClientOptions options)
+    public override Uri Url(ClientOptions options)
     {
         var queryString = this.QueryString(options);
-        return new System::UriBuilder(
+        return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format("/v1/memory_stores/{0}/memories", this.MemoryStoreID)
         )
@@ -307,48 +263,5 @@ public record class MemoryListParams : ParamsBase
     public override int GetHashCode()
     {
         return 0;
-    }
-}
-
-/// <summary>
-/// Query parameter for order
-/// </summary>
-[JsonConverter(typeof(OrderConverter))]
-public enum Order
-{
-    Asc,
-    Desc,
-}
-
-sealed class OrderConverter : JsonConverter<Order>
-{
-    public override Order Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "asc" => Order.Asc,
-            "desc" => Order.Desc,
-            _ => (Order)(-1),
-        };
-    }
-
-    public override void Write(Utf8JsonWriter writer, Order value, JsonSerializerOptions options)
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                Order.Asc => "asc",
-                Order.Desc => "desc",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
     }
 }
