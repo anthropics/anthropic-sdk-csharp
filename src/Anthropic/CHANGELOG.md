@@ -1,5 +1,13 @@
 # Changelog
 
+## 12.35.0 (2026-07-02)
+
+Full Changelog: [Anthropic-v12.34.1...Anthropic-v12.35.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.34.1...Anthropic-v12.35.0)
+
+### Features
+
+* **api:** add agent-memory-2026-07-22 beta header ([6e712be](https://github.com/anthropics/anthropic-sdk-csharp/commit/6e712beb5411f5a3f91a62c661c68a6dfc751f64))
+
 ## 12.34.1 (2026-07-01)
 
 Full Changelog: [Anthropic-v12.34.0...Anthropic-v12.34.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.34.0...Anthropic-v12.34.1)
