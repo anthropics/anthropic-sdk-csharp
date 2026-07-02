@@ -16,7 +16,8 @@ public sealed record class MemoryListPageResponse : JsonModel
 {
     /// <summary>
     /// One page of results. Each item is either a `memory` object or, when `depth`
-    /// was set, a `memory_prefix` rollup marker. Items appear in the requested `order_by`/`order`.
+    /// was set, a `memory_prefix` rollup marker. Items are returned in a stable,
+    /// server-defined order.
     /// </summary>
     public IReadOnlyList<BetaManagedAgentsMemoryListItem>? Data
     {

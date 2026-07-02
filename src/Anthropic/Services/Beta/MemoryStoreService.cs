@@ -14,7 +14,7 @@ public sealed class MemoryStoreService : IMemoryStoreService
 {
     internal static void AddDefaultHeaders(HttpRequestMessage request)
     {
-        request.Headers.Add("anthropic-beta", "managed-agents-2026-04-01");
+        request.Headers.Add("anthropic-beta", "agent-memory-2026-07-22");
     }
 
     readonly Lazy<IMemoryStoreServiceWithRawResponse> _withRawResponse;

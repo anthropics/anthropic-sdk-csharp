@@ -109,7 +109,7 @@ public class MemoryDeleteParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
+            ["agent-memory-2026-07-22", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }

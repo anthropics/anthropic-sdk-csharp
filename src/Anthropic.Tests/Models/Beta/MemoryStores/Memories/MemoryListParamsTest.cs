@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.MemoryStores.Memories;
 
@@ -19,8 +17,6 @@ public class MemoryListParamsTest : TestBase
             MemoryStoreID = "memory_store_id",
             Depth = 0,
             Limit = 0,
-            Order = Order.Asc,
-            OrderBy = "order_by",
             Page = "page",
             PathPrefix = "path_prefix",
             View = BetaManagedAgentsMemoryView.Basic,
@@ -30,8 +26,6 @@ public class MemoryListParamsTest : TestBase
         string expectedMemoryStoreID = "memory_store_id";
         int expectedDepth = 0;
         int expectedLimit = 0;
-        ApiEnum<string, Order> expectedOrder = Order.Asc;
-        string expectedOrderBy = "order_by";
         string expectedPage = "page";
         string expectedPathPrefix = "path_prefix";
         ApiEnum<string, BetaManagedAgentsMemoryView> expectedView =
@@ -44,8 +38,6 @@ public class MemoryListParamsTest : TestBase
         Assert.Equal(expectedMemoryStoreID, parameters.MemoryStoreID);
         Assert.Equal(expectedDepth, parameters.Depth);
         Assert.Equal(expectedLimit, parameters.Limit);
-        Assert.Equal(expectedOrder, parameters.Order);
-        Assert.Equal(expectedOrderBy, parameters.OrderBy);
         Assert.Equal(expectedPage, parameters.Page);
         Assert.Equal(expectedPathPrefix, parameters.PathPrefix);
         Assert.Equal(expectedView, parameters.View);
@@ -66,10 +58,6 @@ public class MemoryListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("depth"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
-        Assert.Null(parameters.Order);
-        Assert.False(parameters.RawQueryData.ContainsKey("order"));
-        Assert.Null(parameters.OrderBy);
-        Assert.False(parameters.RawQueryData.ContainsKey("order_by"));
         Assert.Null(parameters.Page);
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
         Assert.Null(parameters.PathPrefix);
@@ -90,8 +78,6 @@ public class MemoryListParamsTest : TestBase
             // Null should be interpreted as omitted for these properties
             Depth = null,
             Limit = null,
-            Order = null,
-            OrderBy = null,
             Page = null,
             PathPrefix = null,
             View = null,
@@ -102,10 +88,6 @@ public class MemoryListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("depth"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
-        Assert.Null(parameters.Order);
-        Assert.False(parameters.RawQueryData.ContainsKey("order"));
-        Assert.Null(parameters.OrderBy);
-        Assert.False(parameters.RawQueryData.ContainsKey("order_by"));
         Assert.Null(parameters.Page);
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
         Assert.Null(parameters.PathPrefix);
@@ -124,8 +106,6 @@ public class MemoryListParamsTest : TestBase
             MemoryStoreID = "memory_store_id",
             Depth = 0,
             Limit = 0,
-            Order = Order.Asc,
-            OrderBy = "order_by",
             Page = "page",
             PathPrefix = "path_prefix",
             View = BetaManagedAgentsMemoryView.Basic,
@@ -136,7 +116,7 @@ public class MemoryListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memories?beta=true&depth=0&limit=0&order=asc&order_by=order_by&page=page&path_prefix=path_prefix&view=basic"
+                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memories?beta=true&depth=0&limit=0&page=page&path_prefix=path_prefix&view=basic"
                 ),
                 url
             )
@@ -156,7 +136,7 @@ public class MemoryListParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
+            ["agent-memory-2026-07-22", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -169,8 +149,6 @@ public class MemoryListParamsTest : TestBase
             MemoryStoreID = "memory_store_id",
             Depth = 0,
             Limit = 0,
-            Order = Order.Asc,
-            OrderBy = "order_by",
             Page = "page",
             PathPrefix = "path_prefix",
             View = BetaManagedAgentsMemoryView.Basic,
@@ -180,63 +158,5 @@ public class MemoryListParamsTest : TestBase
         MemoryListParams copied = new(parameters);
 
         Assert.Equal(parameters, copied);
-    }
-}
-
-public class OrderTest : TestBase
-{
-    [Theory]
-    [InlineData(Order.Asc)]
-    [InlineData(Order.Desc)]
-    public void Validation_Works(Order rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Order> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Order>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(Order.Asc)]
-    [InlineData(Order.Desc)]
-    public void SerializationRoundtrip_Works(Order rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Order> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Order>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Order>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Order>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
     }
 }
