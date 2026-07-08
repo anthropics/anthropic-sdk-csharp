@@ -74,7 +74,7 @@ public class MessageCountTokensParamsTest : TestBase
                         [
                             new BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -181,7 +181,7 @@ public class MessageCountTokensParamsTest : TestBase
                     [
                         new BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
@@ -419,7 +419,7 @@ public class MessageCountTokensParamsTest : TestBase
                         [
                             new BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -514,7 +514,7 @@ public class MessageCountTokensParamsTest : TestBase
                         [
                             new BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -680,7 +680,7 @@ public class MessageCountTokensParamsTest : TestBase
                         [
                             new BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -810,7 +810,7 @@ public class MessageCountTokensParamsSystemTest : TestBase
                     [
                         new BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
@@ -849,7 +849,7 @@ public class MessageCountTokensParamsSystemTest : TestBase
                     [
                         new BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,

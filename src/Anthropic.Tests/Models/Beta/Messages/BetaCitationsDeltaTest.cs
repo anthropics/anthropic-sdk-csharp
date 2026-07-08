@@ -13,22 +13,22 @@ public class BetaCitationsDeltaTest : TestBase
         {
             Citation = new BetaCitationCharLocation()
             {
-                CitedText = "cited_text",
+                CitedText = "The grass is green. The sky is blue.",
                 DocumentIndex = 0,
-                DocumentTitle = "document_title",
+                DocumentTitle = "My Document",
                 EndCharIndex = 0,
-                FileID = "file_id",
+                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                 StartCharIndex = 0,
             },
         };
 
         Citation expectedCitation = new BetaCitationCharLocation()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
-            DocumentTitle = "document_title",
+            DocumentTitle = "My Document",
             EndCharIndex = 0,
-            FileID = "file_id",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             StartCharIndex = 0,
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("citations_delta");
@@ -44,11 +44,11 @@ public class BetaCitationsDeltaTest : TestBase
         {
             Citation = new BetaCitationCharLocation()
             {
-                CitedText = "cited_text",
+                CitedText = "The grass is green. The sky is blue.",
                 DocumentIndex = 0,
-                DocumentTitle = "document_title",
+                DocumentTitle = "My Document",
                 EndCharIndex = 0,
-                FileID = "file_id",
+                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                 StartCharIndex = 0,
             },
         };
@@ -69,11 +69,11 @@ public class BetaCitationsDeltaTest : TestBase
         {
             Citation = new BetaCitationCharLocation()
             {
-                CitedText = "cited_text",
+                CitedText = "The grass is green. The sky is blue.",
                 DocumentIndex = 0,
-                DocumentTitle = "document_title",
+                DocumentTitle = "My Document",
                 EndCharIndex = 0,
-                FileID = "file_id",
+                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                 StartCharIndex = 0,
             },
         };
@@ -87,11 +87,11 @@ public class BetaCitationsDeltaTest : TestBase
 
         Citation expectedCitation = new BetaCitationCharLocation()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
-            DocumentTitle = "document_title",
+            DocumentTitle = "My Document",
             EndCharIndex = 0,
-            FileID = "file_id",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             StartCharIndex = 0,
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("citations_delta");
@@ -107,11 +107,11 @@ public class BetaCitationsDeltaTest : TestBase
         {
             Citation = new BetaCitationCharLocation()
             {
-                CitedText = "cited_text",
+                CitedText = "The grass is green. The sky is blue.",
                 DocumentIndex = 0,
-                DocumentTitle = "document_title",
+                DocumentTitle = "My Document",
                 EndCharIndex = 0,
-                FileID = "file_id",
+                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                 StartCharIndex = 0,
             },
         };
@@ -126,11 +126,11 @@ public class BetaCitationsDeltaTest : TestBase
         {
             Citation = new BetaCitationCharLocation()
             {
-                CitedText = "cited_text",
+                CitedText = "The grass is green. The sky is blue.",
                 DocumentIndex = 0,
-                DocumentTitle = "document_title",
+                DocumentTitle = "My Document",
                 EndCharIndex = 0,
-                FileID = "file_id",
+                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                 StartCharIndex = 0,
             },
         };
@@ -148,11 +148,11 @@ public class CitationTest : TestBase
     {
         Citation value = new BetaCitationCharLocation()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
-            DocumentTitle = "document_title",
+            DocumentTitle = "My Document",
             EndCharIndex = 0,
-            FileID = "file_id",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             StartCharIndex = 0,
         };
         value.Validate();
@@ -163,11 +163,11 @@ public class CitationTest : TestBase
     {
         Citation value = new BetaCitationPageLocation()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
-            DocumentTitle = "document_title",
+            DocumentTitle = "My Document",
             EndPageNumber = 0,
-            FileID = "file_id",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             StartPageNumber = 1,
         };
         value.Validate();
@@ -178,11 +178,11 @@ public class CitationTest : TestBase
     {
         Citation value = new BetaCitationContentBlockLocation()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
-            DocumentTitle = "document_title",
+            DocumentTitle = "My Document",
             EndBlockIndex = 0,
-            FileID = "file_id",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             StartBlockIndex = 0,
         };
         value.Validate();
@@ -193,7 +193,7 @@ public class CitationTest : TestBase
     {
         Citation value = new BetaCitationsWebSearchResultLocation()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "title",
             Url = "url",
@@ -206,7 +206,7 @@ public class CitationTest : TestBase
     {
         Citation value = new BetaCitationSearchResultLocation()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EndBlockIndex = 0,
             SearchResultIndex = 0,
             Source = "source",
@@ -221,11 +221,11 @@ public class CitationTest : TestBase
     {
         Citation value = new BetaCitationCharLocation()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
-            DocumentTitle = "document_title",
+            DocumentTitle = "My Document",
             EndCharIndex = 0,
-            FileID = "file_id",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             StartCharIndex = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -242,11 +242,11 @@ public class CitationTest : TestBase
     {
         Citation value = new BetaCitationPageLocation()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
-            DocumentTitle = "document_title",
+            DocumentTitle = "My Document",
             EndPageNumber = 0,
-            FileID = "file_id",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             StartPageNumber = 1,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -263,11 +263,11 @@ public class CitationTest : TestBase
     {
         Citation value = new BetaCitationContentBlockLocation()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
-            DocumentTitle = "document_title",
+            DocumentTitle = "My Document",
             EndBlockIndex = 0,
-            FileID = "file_id",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             StartBlockIndex = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -284,7 +284,7 @@ public class CitationTest : TestBase
     {
         Citation value = new BetaCitationsWebSearchResultLocation()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "title",
             Url = "url",
@@ -303,7 +303,7 @@ public class CitationTest : TestBase
     {
         Citation value = new BetaCitationSearchResultLocation()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EndBlockIndex = 0,
             SearchResultIndex = 0,
             Source = "source",

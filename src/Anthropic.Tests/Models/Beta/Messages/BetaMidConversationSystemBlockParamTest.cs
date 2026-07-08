@@ -22,7 +22,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
                     [
                         new BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
@@ -44,7 +44,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
                 [
                     new BetaCitationCharLocationParam()
                     {
-                        CitedText = "cited_text",
+                        CitedText = "The grass is green. The sky is blue.",
                         DocumentIndex = 0,
                         DocumentTitle = "x",
                         EndCharIndex = 0,
@@ -80,7 +80,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
                     [
                         new BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
@@ -116,7 +116,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
                     [
                         new BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
@@ -145,7 +145,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
                 [
                     new BetaCitationCharLocationParam()
                     {
-                        CitedText = "cited_text",
+                        CitedText = "The grass is green. The sky is blue.",
                         DocumentIndex = 0,
                         DocumentTitle = "x",
                         EndCharIndex = 0,
@@ -181,7 +181,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
                     [
                         new BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
@@ -211,7 +211,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
                     [
                         new BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
@@ -241,7 +241,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
                     [
                         new BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
@@ -270,7 +270,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
                     [
                         new BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
@@ -302,7 +302,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
                     [
                         new BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
@@ -333,7 +333,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
                     [
                         new BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,

@@ -15,7 +15,7 @@ public class UsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
-            InferenceGeo = "inference_geo",
+            InferenceGeo = "global",
             InputTokens = 2095,
             OutputTokens = 503,
             OutputTokensDetails = new(0),
@@ -30,7 +30,7 @@ public class UsageTest : TestBase
         };
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
-        string expectedInferenceGeo = "inference_geo";
+        string expectedInferenceGeo = "global";
         long expectedInputTokens = 2095;
         long expectedOutputTokens = 503;
         OutputTokensDetails expectedOutputTokensDetails = new(0);
@@ -60,7 +60,7 @@ public class UsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
-            InferenceGeo = "inference_geo",
+            InferenceGeo = "global",
             InputTokens = 2095,
             OutputTokens = 503,
             OutputTokensDetails = new(0),
@@ -82,7 +82,7 @@ public class UsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
-            InferenceGeo = "inference_geo",
+            InferenceGeo = "global",
             InputTokens = 2095,
             OutputTokens = 503,
             OutputTokensDetails = new(0),
@@ -101,7 +101,7 @@ public class UsageTest : TestBase
         };
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
-        string expectedInferenceGeo = "inference_geo";
+        string expectedInferenceGeo = "global";
         long expectedInputTokens = 2095;
         long expectedOutputTokens = 503;
         OutputTokensDetails expectedOutputTokensDetails = new(0);
@@ -131,7 +131,7 @@ public class UsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
-            InferenceGeo = "inference_geo",
+            InferenceGeo = "global",
             InputTokens = 2095,
             OutputTokens = 503,
             OutputTokensDetails = new(0),
@@ -150,7 +150,7 @@ public class UsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
-            InferenceGeo = "inference_geo",
+            InferenceGeo = "global",
             InputTokens = 2095,
             OutputTokens = 503,
             OutputTokensDetails = new(0),

@@ -11,19 +11,19 @@ public class CitationContentBlockLocationTest : TestBase
     {
         var model = new CitationContentBlockLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
-            DocumentTitle = "document_title",
+            DocumentTitle = "My Document",
             EndBlockIndex = 0,
-            FileID = "file_id",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             StartBlockIndex = 0,
         };
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         long expectedDocumentIndex = 0;
-        string expectedDocumentTitle = "document_title";
+        string expectedDocumentTitle = "My Document";
         long expectedEndBlockIndex = 0;
-        string expectedFileID = "file_id";
+        string expectedFileID = "file_011CNha8iCJcU1wXNR6q4V8w";
         long expectedStartBlockIndex = 0;
         JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_location");
 
@@ -41,11 +41,11 @@ public class CitationContentBlockLocationTest : TestBase
     {
         var model = new CitationContentBlockLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
-            DocumentTitle = "document_title",
+            DocumentTitle = "My Document",
             EndBlockIndex = 0,
-            FileID = "file_id",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             StartBlockIndex = 0,
         };
 
@@ -63,11 +63,11 @@ public class CitationContentBlockLocationTest : TestBase
     {
         var model = new CitationContentBlockLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
-            DocumentTitle = "document_title",
+            DocumentTitle = "My Document",
             EndBlockIndex = 0,
-            FileID = "file_id",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             StartBlockIndex = 0,
         };
 
@@ -78,11 +78,11 @@ public class CitationContentBlockLocationTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         long expectedDocumentIndex = 0;
-        string expectedDocumentTitle = "document_title";
+        string expectedDocumentTitle = "My Document";
         long expectedEndBlockIndex = 0;
-        string expectedFileID = "file_id";
+        string expectedFileID = "file_011CNha8iCJcU1wXNR6q4V8w";
         long expectedStartBlockIndex = 0;
         JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_location");
 
@@ -100,11 +100,11 @@ public class CitationContentBlockLocationTest : TestBase
     {
         var model = new CitationContentBlockLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
-            DocumentTitle = "document_title",
+            DocumentTitle = "My Document",
             EndBlockIndex = 0,
-            FileID = "file_id",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             StartBlockIndex = 0,
         };
 
@@ -116,11 +116,11 @@ public class CitationContentBlockLocationTest : TestBase
     {
         var model = new CitationContentBlockLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
-            DocumentTitle = "document_title",
+            DocumentTitle = "My Document",
             EndBlockIndex = 0,
-            FileID = "file_id",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             StartBlockIndex = 0,
         };
 

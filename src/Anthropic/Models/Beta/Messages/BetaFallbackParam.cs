@@ -13,10 +13,9 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// One entry in the `fallbacks` chain on a `/v1/messages` request.
 ///
-/// <para>`model` is required. The four override fields (`max_tokens`, `thinking`,
-/// `output_config`, and `speed`) replace the corresponding top-level field for this
-/// attempt only and are validated as if the request were made to `model`. Any other
-/// key is rejected at parse time.</para>
+/// <para>`model` is required. The override fields (`max_tokens`, `thinking`, `output_config`,
+/// and `speed`) set the corresponding parameter for this attempt only and are validated
+/// as if the request were made to `model`. Any other key is rejected at parse time.</para>
 /// </summary>
 [JsonConverter(typeof(JsonModelConverter<BetaFallbackParam, BetaFallbackParamFromRaw>))]
 public sealed record class BetaFallbackParam : JsonModel

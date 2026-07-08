@@ -133,7 +133,7 @@ public class BatchCreateParamsTest : TestBase
                                     [
                                         new Messages::BetaCitationCharLocationParam()
                                         {
-                                            CitedText = "cited_text",
+                                            CitedText = "The grass is green. The sky is blue.",
                                             DocumentIndex = 0,
                                             DocumentTitle = "x",
                                             EndCharIndex = 0,
@@ -302,7 +302,7 @@ public class BatchCreateParamsTest : TestBase
                                 [
                                     new Messages::BetaCitationCharLocationParam()
                                     {
-                                        CitedText = "cited_text",
+                                        CitedText = "The grass is green. The sky is blue.",
                                         DocumentIndex = 0,
                                         DocumentTitle = "x",
                                         EndCharIndex = 0,
@@ -496,7 +496,7 @@ public class BatchCreateParamsTest : TestBase
                                     [
                                         new Messages::BetaCitationCharLocationParam()
                                         {
-                                            CitedText = "cited_text",
+                                            CitedText = "The grass is green. The sky is blue.",
                                             DocumentIndex = 0,
                                             DocumentTitle = "x",
                                             EndCharIndex = 0,
@@ -678,7 +678,7 @@ public class BatchCreateParamsTest : TestBase
                                     [
                                         new Messages::BetaCitationCharLocationParam()
                                         {
-                                            CitedText = "cited_text",
+                                            CitedText = "The grass is green. The sky is blue.",
                                             DocumentIndex = 0,
                                             DocumentTitle = "x",
                                             EndCharIndex = 0,
@@ -864,7 +864,7 @@ public class BatchCreateParamsTest : TestBase
                                     [
                                         new Messages::BetaCitationCharLocationParam()
                                         {
-                                            CitedText = "cited_text",
+                                            CitedText = "The grass is green. The sky is blue.",
                                             DocumentIndex = 0,
                                             DocumentTitle = "x",
                                             EndCharIndex = 0,
@@ -1051,7 +1051,7 @@ public class BatchCreateParamsTest : TestBase
                                     [
                                         new Messages::BetaCitationCharLocationParam()
                                         {
-                                            CitedText = "cited_text",
+                                            CitedText = "The grass is green. The sky is blue.",
                                             DocumentIndex = 0,
                                             DocumentTitle = "x",
                                             EndCharIndex = 0,
@@ -1241,7 +1241,7 @@ public class BatchCreateParamsTest : TestBase
                                     [
                                         new Messages::BetaCitationCharLocationParam()
                                         {
-                                            CitedText = "cited_text",
+                                            CitedText = "The grass is green. The sky is blue.",
                                             DocumentIndex = 0,
                                             DocumentTitle = "x",
                                             EndCharIndex = 0,
@@ -1419,7 +1419,7 @@ public class RequestTest : TestBase
                             [
                                 new Messages::BetaCitationCharLocationParam()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
                                     DocumentTitle = "x",
                                     EndCharIndex = 0,
@@ -1577,7 +1577,7 @@ public class RequestTest : TestBase
                         [
                             new Messages::BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -1743,7 +1743,7 @@ public class RequestTest : TestBase
                             [
                                 new Messages::BetaCitationCharLocationParam()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
                                     DocumentTitle = "x",
                                     EndCharIndex = 0,
@@ -1912,7 +1912,7 @@ public class RequestTest : TestBase
                             [
                                 new Messages::BetaCitationCharLocationParam()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
                                     DocumentTitle = "x",
                                     EndCharIndex = 0,
@@ -2077,7 +2077,7 @@ public class RequestTest : TestBase
                         [
                             new Messages::BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -2243,7 +2243,7 @@ public class RequestTest : TestBase
                             [
                                 new Messages::BetaCitationCharLocationParam()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
                                     DocumentTitle = "x",
                                     EndCharIndex = 0,
@@ -2409,7 +2409,7 @@ public class RequestTest : TestBase
                             [
                                 new Messages::BetaCitationCharLocationParam()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
                                     DocumentTitle = "x",
                                     EndCharIndex = 0,
@@ -2577,7 +2577,7 @@ public class ParamsTest : TestBase
                         [
                             new Messages::BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -2743,7 +2743,7 @@ public class ParamsTest : TestBase
                     [
                         new Messages::BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
@@ -2953,7 +2953,7 @@ public class ParamsTest : TestBase
                         [
                             new Messages::BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -3118,7 +3118,7 @@ public class ParamsTest : TestBase
                         [
                             new Messages::BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -3288,7 +3288,7 @@ public class ParamsTest : TestBase
                     [
                         new Messages::BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
@@ -3498,7 +3498,7 @@ public class ParamsTest : TestBase
                         [
                             new Messages::BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -3987,7 +3987,7 @@ public class ParamsTest : TestBase
                         [
                             new Messages::BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -4101,7 +4101,7 @@ public class ParamsTest : TestBase
                         [
                             new Messages::BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -4198,7 +4198,7 @@ public class ParamsTest : TestBase
                         [
                             new Messages::BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -4322,7 +4322,7 @@ public class ParamsTest : TestBase
                         [
                             new Messages::BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -4494,7 +4494,7 @@ public class ParamsTest : TestBase
                         [
                             new Messages::BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -4755,7 +4755,7 @@ public class ParamsSystemTest : TestBase
                     [
                         new Messages::BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
@@ -4794,7 +4794,7 @@ public class ParamsSystemTest : TestBase
                     [
                         new Messages::BetaCitationCharLocationParam()
                         {
-                            CitedText = "cited_text",
+                            CitedText = "The grass is green. The sky is blue.",
                             DocumentIndex = 0,
                             DocumentTitle = "x",
                             EndCharIndex = 0,
