@@ -13,17 +13,19 @@ public class BetaRefusalStopDetailsTest : TestBase
         var model = new BetaRefusalStopDetails
         {
             Category = Category.Cyber,
-            Explanation = "explanation",
-            FallbackCreditToken = "fallback_credit_token",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
             FallbackHasPrefillClaim = true,
-            RecommendedModel = "recommended_model",
+            RecommendedModel = "claude-sonnet-4-6",
         };
 
         ApiEnum<string, Category> expectedCategory = Category.Cyber;
-        string expectedExplanation = "explanation";
-        string expectedFallbackCreditToken = "fallback_credit_token";
+        string expectedExplanation =
+            "This request was declined because it conflicts with Anthropic's Usage Policy.";
+        string expectedFallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==";
         bool expectedFallbackHasPrefillClaim = true;
-        string expectedRecommendedModel = "recommended_model";
+        string expectedRecommendedModel = "claude-sonnet-4-6";
         JsonElement expectedType = JsonSerializer.SerializeToElement("refusal");
 
         Assert.Equal(expectedCategory, model.Category);
@@ -40,10 +42,11 @@ public class BetaRefusalStopDetailsTest : TestBase
         var model = new BetaRefusalStopDetails
         {
             Category = Category.Cyber,
-            Explanation = "explanation",
-            FallbackCreditToken = "fallback_credit_token",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
             FallbackHasPrefillClaim = true,
-            RecommendedModel = "recommended_model",
+            RecommendedModel = "claude-sonnet-4-6",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -61,10 +64,11 @@ public class BetaRefusalStopDetailsTest : TestBase
         var model = new BetaRefusalStopDetails
         {
             Category = Category.Cyber,
-            Explanation = "explanation",
-            FallbackCreditToken = "fallback_credit_token",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
             FallbackHasPrefillClaim = true,
-            RecommendedModel = "recommended_model",
+            RecommendedModel = "claude-sonnet-4-6",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -75,10 +79,11 @@ public class BetaRefusalStopDetailsTest : TestBase
         Assert.NotNull(deserialized);
 
         ApiEnum<string, Category> expectedCategory = Category.Cyber;
-        string expectedExplanation = "explanation";
-        string expectedFallbackCreditToken = "fallback_credit_token";
+        string expectedExplanation =
+            "This request was declined because it conflicts with Anthropic's Usage Policy.";
+        string expectedFallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==";
         bool expectedFallbackHasPrefillClaim = true;
-        string expectedRecommendedModel = "recommended_model";
+        string expectedRecommendedModel = "claude-sonnet-4-6";
         JsonElement expectedType = JsonSerializer.SerializeToElement("refusal");
 
         Assert.Equal(expectedCategory, deserialized.Category);
@@ -95,10 +100,11 @@ public class BetaRefusalStopDetailsTest : TestBase
         var model = new BetaRefusalStopDetails
         {
             Category = Category.Cyber,
-            Explanation = "explanation",
-            FallbackCreditToken = "fallback_credit_token",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
             FallbackHasPrefillClaim = true,
-            RecommendedModel = "recommended_model",
+            RecommendedModel = "claude-sonnet-4-6",
         };
 
         model.Validate();
@@ -110,10 +116,11 @@ public class BetaRefusalStopDetailsTest : TestBase
         var model = new BetaRefusalStopDetails
         {
             Category = Category.Cyber,
-            Explanation = "explanation",
-            FallbackCreditToken = "fallback_credit_token",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
             FallbackHasPrefillClaim = true,
-            RecommendedModel = "recommended_model",
+            RecommendedModel = "claude-sonnet-4-6",
         };
 
         BetaRefusalStopDetails copied = new(model);

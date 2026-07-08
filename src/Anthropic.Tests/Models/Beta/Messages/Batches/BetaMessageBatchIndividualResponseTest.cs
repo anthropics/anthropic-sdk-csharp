@@ -21,7 +21,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
                     Container = new()
                     {
-                        ID = "id",
+                        ID = "container_011CpZohnwH4vuy7gazohgSP",
                         ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                         Skills =
                         [
@@ -41,11 +41,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             [
                                 new Messages::BetaCitationCharLocation()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
-                                    DocumentTitle = "document_title",
+                                    DocumentTitle = "My Document",
                                     EndCharIndex = 0,
-                                    FileID = "file_id",
+                                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                                     StartCharIndex = 0,
                                 },
                             ],
@@ -68,10 +68,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     StopDetails = new()
                     {
                         Category = Messages::Category.Cyber,
-                        Explanation = "explanation",
-                        FallbackCreditToken = "fallback_credit_token",
+                        Explanation =
+                            "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                        FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                         FallbackHasPrefillClaim = true,
-                        RecommendedModel = "recommended_model",
+                        RecommendedModel = "claude-sonnet-4-6",
                     },
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
@@ -84,7 +85,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                         CacheCreationInputTokens = 2051,
                         CacheReadInputTokens = 2051,
-                        InferenceGeo = "inference_geo",
+                        InferenceGeo = "global",
                         InputTokens = 2095,
                         Iterations =
                         [
@@ -119,7 +120,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                 ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Skills =
                     [
@@ -139,11 +140,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         [
                             new Messages::BetaCitationCharLocation()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
-                                DocumentTitle = "document_title",
+                                DocumentTitle = "My Document",
                                 EndCharIndex = 0,
-                                FileID = "file_id",
+                                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                                 StartCharIndex = 0,
                             },
                         ],
@@ -166,10 +167,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
-                    Explanation = "explanation",
-                    FallbackCreditToken = "fallback_credit_token",
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                    FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                     FallbackHasPrefillClaim = true,
-                    RecommendedModel = "recommended_model",
+                    RecommendedModel = "claude-sonnet-4-6",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
@@ -182,7 +184,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
-                    InferenceGeo = "inference_geo",
+                    InferenceGeo = "global",
                     InputTokens = 2095,
                     Iterations =
                     [
@@ -225,7 +227,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
                     Container = new()
                     {
-                        ID = "id",
+                        ID = "container_011CpZohnwH4vuy7gazohgSP",
                         ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                         Skills =
                         [
@@ -245,11 +247,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             [
                                 new Messages::BetaCitationCharLocation()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
-                                    DocumentTitle = "document_title",
+                                    DocumentTitle = "My Document",
                                     EndCharIndex = 0,
-                                    FileID = "file_id",
+                                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                                     StartCharIndex = 0,
                                 },
                             ],
@@ -272,10 +274,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     StopDetails = new()
                     {
                         Category = Messages::Category.Cyber,
-                        Explanation = "explanation",
-                        FallbackCreditToken = "fallback_credit_token",
+                        Explanation =
+                            "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                        FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                         FallbackHasPrefillClaim = true,
-                        RecommendedModel = "recommended_model",
+                        RecommendedModel = "claude-sonnet-4-6",
                     },
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
@@ -288,7 +291,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                         CacheCreationInputTokens = 2051,
                         CacheReadInputTokens = 2051,
-                        InferenceGeo = "inference_geo",
+                        InferenceGeo = "global",
                         InputTokens = 2095,
                         Iterations =
                         [
@@ -337,7 +340,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
                     Container = new()
                     {
-                        ID = "id",
+                        ID = "container_011CpZohnwH4vuy7gazohgSP",
                         ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                         Skills =
                         [
@@ -357,11 +360,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             [
                                 new Messages::BetaCitationCharLocation()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
-                                    DocumentTitle = "document_title",
+                                    DocumentTitle = "My Document",
                                     EndCharIndex = 0,
-                                    FileID = "file_id",
+                                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                                     StartCharIndex = 0,
                                 },
                             ],
@@ -384,10 +387,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     StopDetails = new()
                     {
                         Category = Messages::Category.Cyber,
-                        Explanation = "explanation",
-                        FallbackCreditToken = "fallback_credit_token",
+                        Explanation =
+                            "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                        FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                         FallbackHasPrefillClaim = true,
-                        RecommendedModel = "recommended_model",
+                        RecommendedModel = "claude-sonnet-4-6",
                     },
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
@@ -400,7 +404,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                         CacheCreationInputTokens = 2051,
                         CacheReadInputTokens = 2051,
-                        InferenceGeo = "inference_geo",
+                        InferenceGeo = "global",
                         InputTokens = 2095,
                         Iterations =
                         [
@@ -442,7 +446,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                 ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Skills =
                     [
@@ -462,11 +466,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         [
                             new Messages::BetaCitationCharLocation()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
-                                DocumentTitle = "document_title",
+                                DocumentTitle = "My Document",
                                 EndCharIndex = 0,
-                                FileID = "file_id",
+                                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                                 StartCharIndex = 0,
                             },
                         ],
@@ -489,10 +493,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
-                    Explanation = "explanation",
-                    FallbackCreditToken = "fallback_credit_token",
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                    FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                     FallbackHasPrefillClaim = true,
-                    RecommendedModel = "recommended_model",
+                    RecommendedModel = "claude-sonnet-4-6",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
@@ -505,7 +510,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
-                    InferenceGeo = "inference_geo",
+                    InferenceGeo = "global",
                     InputTokens = 2095,
                     Iterations =
                     [
@@ -548,7 +553,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
                     Container = new()
                     {
-                        ID = "id",
+                        ID = "container_011CpZohnwH4vuy7gazohgSP",
                         ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                         Skills =
                         [
@@ -568,11 +573,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             [
                                 new Messages::BetaCitationCharLocation()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
-                                    DocumentTitle = "document_title",
+                                    DocumentTitle = "My Document",
                                     EndCharIndex = 0,
-                                    FileID = "file_id",
+                                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                                     StartCharIndex = 0,
                                 },
                             ],
@@ -595,10 +600,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     StopDetails = new()
                     {
                         Category = Messages::Category.Cyber,
-                        Explanation = "explanation",
-                        FallbackCreditToken = "fallback_credit_token",
+                        Explanation =
+                            "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                        FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                         FallbackHasPrefillClaim = true,
-                        RecommendedModel = "recommended_model",
+                        RecommendedModel = "claude-sonnet-4-6",
                     },
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
@@ -611,7 +617,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                         CacheCreationInputTokens = 2051,
                         CacheReadInputTokens = 2051,
-                        InferenceGeo = "inference_geo",
+                        InferenceGeo = "global",
                         InputTokens = 2095,
                         Iterations =
                         [
@@ -654,7 +660,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
                     Container = new()
                     {
-                        ID = "id",
+                        ID = "container_011CpZohnwH4vuy7gazohgSP",
                         ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                         Skills =
                         [
@@ -674,11 +680,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             [
                                 new Messages::BetaCitationCharLocation()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
-                                    DocumentTitle = "document_title",
+                                    DocumentTitle = "My Document",
                                     EndCharIndex = 0,
-                                    FileID = "file_id",
+                                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                                     StartCharIndex = 0,
                                 },
                             ],
@@ -701,10 +707,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     StopDetails = new()
                     {
                         Category = Messages::Category.Cyber,
-                        Explanation = "explanation",
-                        FallbackCreditToken = "fallback_credit_token",
+                        Explanation =
+                            "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                        FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                         FallbackHasPrefillClaim = true,
-                        RecommendedModel = "recommended_model",
+                        RecommendedModel = "claude-sonnet-4-6",
                     },
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
@@ -717,7 +724,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                         CacheCreationInputTokens = 2051,
                         CacheReadInputTokens = 2051,
-                        InferenceGeo = "inference_geo",
+                        InferenceGeo = "global",
                         InputTokens = 2095,
                         Iterations =
                         [

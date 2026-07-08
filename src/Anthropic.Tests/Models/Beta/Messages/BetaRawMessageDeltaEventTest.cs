@@ -26,7 +26,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
             {
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Skills =
                     [
@@ -41,10 +41,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
-                    Explanation = "explanation",
-                    FallbackCreditToken = "fallback_credit_token",
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                    FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                     FallbackHasPrefillClaim = true,
-                    RecommendedModel = "recommended_model",
+                    RecommendedModel = "claude-sonnet-4-6",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
@@ -89,7 +90,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Skills =
                 [
@@ -104,10 +105,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
-                Explanation = "explanation",
-                FallbackCreditToken = "fallback_credit_token",
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                 FallbackHasPrefillClaim = true,
-                RecommendedModel = "recommended_model",
+                RecommendedModel = "claude-sonnet-4-6",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -163,7 +165,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
             {
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Skills =
                     [
@@ -178,10 +180,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
-                    Explanation = "explanation",
-                    FallbackCreditToken = "fallback_credit_token",
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                    FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                     FallbackHasPrefillClaim = true,
-                    RecommendedModel = "recommended_model",
+                    RecommendedModel = "claude-sonnet-4-6",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
@@ -240,7 +243,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
             {
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Skills =
                     [
@@ -255,10 +258,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
-                    Explanation = "explanation",
-                    FallbackCreditToken = "fallback_credit_token",
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                    FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                     FallbackHasPrefillClaim = true,
-                    RecommendedModel = "recommended_model",
+                    RecommendedModel = "claude-sonnet-4-6",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
@@ -310,7 +314,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Skills =
                 [
@@ -325,10 +329,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
-                Explanation = "explanation",
-                FallbackCreditToken = "fallback_credit_token",
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                 FallbackHasPrefillClaim = true,
-                RecommendedModel = "recommended_model",
+                RecommendedModel = "claude-sonnet-4-6",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -384,7 +389,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
             {
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Skills =
                     [
@@ -399,10 +404,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
-                    Explanation = "explanation",
-                    FallbackCreditToken = "fallback_credit_token",
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                    FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                     FallbackHasPrefillClaim = true,
-                    RecommendedModel = "recommended_model",
+                    RecommendedModel = "claude-sonnet-4-6",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
@@ -455,7 +461,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
             {
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Skills =
                     [
@@ -470,10 +476,11 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
-                    Explanation = "explanation",
-                    FallbackCreditToken = "fallback_credit_token",
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                    FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                     FallbackHasPrefillClaim = true,
-                    RecommendedModel = "recommended_model",
+                    RecommendedModel = "claude-sonnet-4-6",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = "stop_sequence",
@@ -520,7 +527,7 @@ public class DeltaTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Skills =
                 [
@@ -535,10 +542,11 @@ public class DeltaTest : TestBase
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
-                Explanation = "explanation",
-                FallbackCreditToken = "fallback_credit_token",
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                 FallbackHasPrefillClaim = true,
-                RecommendedModel = "recommended_model",
+                RecommendedModel = "claude-sonnet-4-6",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -546,7 +554,7 @@ public class DeltaTest : TestBase
 
         Messages::BetaContainer expectedContainer = new()
         {
-            ID = "id",
+            ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Skills =
             [
@@ -561,10 +569,11 @@ public class DeltaTest : TestBase
         Messages::BetaRefusalStopDetails expectedStopDetails = new()
         {
             Category = Messages::Category.Cyber,
-            Explanation = "explanation",
-            FallbackCreditToken = "fallback_credit_token",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
             FallbackHasPrefillClaim = true,
-            RecommendedModel = "recommended_model",
+            RecommendedModel = "claude-sonnet-4-6",
         };
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
@@ -583,7 +592,7 @@ public class DeltaTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Skills =
                 [
@@ -598,10 +607,11 @@ public class DeltaTest : TestBase
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
-                Explanation = "explanation",
-                FallbackCreditToken = "fallback_credit_token",
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                 FallbackHasPrefillClaim = true,
-                RecommendedModel = "recommended_model",
+                RecommendedModel = "claude-sonnet-4-6",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -623,7 +633,7 @@ public class DeltaTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Skills =
                 [
@@ -638,10 +648,11 @@ public class DeltaTest : TestBase
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
-                Explanation = "explanation",
-                FallbackCreditToken = "fallback_credit_token",
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                 FallbackHasPrefillClaim = true,
-                RecommendedModel = "recommended_model",
+                RecommendedModel = "claude-sonnet-4-6",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -656,7 +667,7 @@ public class DeltaTest : TestBase
 
         Messages::BetaContainer expectedContainer = new()
         {
-            ID = "id",
+            ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Skills =
             [
@@ -671,10 +682,11 @@ public class DeltaTest : TestBase
         Messages::BetaRefusalStopDetails expectedStopDetails = new()
         {
             Category = Messages::Category.Cyber,
-            Explanation = "explanation",
-            FallbackCreditToken = "fallback_credit_token",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
             FallbackHasPrefillClaim = true,
-            RecommendedModel = "recommended_model",
+            RecommendedModel = "claude-sonnet-4-6",
         };
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
@@ -693,7 +705,7 @@ public class DeltaTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Skills =
                 [
@@ -708,10 +720,11 @@ public class DeltaTest : TestBase
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
-                Explanation = "explanation",
-                FallbackCreditToken = "fallback_credit_token",
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                 FallbackHasPrefillClaim = true,
-                RecommendedModel = "recommended_model",
+                RecommendedModel = "claude-sonnet-4-6",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",
@@ -727,7 +740,7 @@ public class DeltaTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Skills =
                 [
@@ -742,10 +755,11 @@ public class DeltaTest : TestBase
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
-                Explanation = "explanation",
-                FallbackCreditToken = "fallback_credit_token",
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                 FallbackHasPrefillClaim = true,
-                RecommendedModel = "recommended_model",
+                RecommendedModel = "claude-sonnet-4-6",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = "stop_sequence",

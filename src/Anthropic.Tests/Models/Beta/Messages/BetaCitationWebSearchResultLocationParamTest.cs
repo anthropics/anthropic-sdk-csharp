@@ -11,13 +11,13 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
     {
         var model = new BetaCitationWebSearchResultLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "x",
             Url = "x",
         };
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         string expectedEncryptedIndex = "encrypted_index";
         string expectedTitle = "x";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result_location");
@@ -35,7 +35,7 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
     {
         var model = new BetaCitationWebSearchResultLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "x",
             Url = "x",
@@ -55,7 +55,7 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
     {
         var model = new BetaCitationWebSearchResultLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "x",
             Url = "x",
@@ -68,7 +68,7 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         string expectedEncryptedIndex = "encrypted_index";
         string expectedTitle = "x";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result_location");
@@ -86,7 +86,7 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
     {
         var model = new BetaCitationWebSearchResultLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "x",
             Url = "x",
@@ -100,7 +100,7 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
     {
         var model = new BetaCitationWebSearchResultLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "x",
             Url = "x",

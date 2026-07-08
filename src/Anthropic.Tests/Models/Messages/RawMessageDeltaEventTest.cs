@@ -16,10 +16,15 @@ public class RawMessageDeltaEventTest : TestBase
             {
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
-                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+                StopDetails = new()
+                {
+                    Category = Category.Cyber,
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                },
                 StopReason = StopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -38,10 +43,15 @@ public class RawMessageDeltaEventTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
-            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+            StopDetails = new()
+            {
+                Category = Category.Cyber,
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -70,10 +80,15 @@ public class RawMessageDeltaEventTest : TestBase
             {
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
-                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+                StopDetails = new()
+                {
+                    Category = Category.Cyber,
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                },
                 StopReason = StopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -106,10 +121,15 @@ public class RawMessageDeltaEventTest : TestBase
             {
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
-                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+                StopDetails = new()
+                {
+                    Category = Category.Cyber,
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                },
                 StopReason = StopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -135,10 +155,15 @@ public class RawMessageDeltaEventTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
-            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+            StopDetails = new()
+            {
+                Category = Category.Cyber,
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -167,10 +192,15 @@ public class RawMessageDeltaEventTest : TestBase
             {
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
-                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+                StopDetails = new()
+                {
+                    Category = Category.Cyber,
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                },
                 StopReason = StopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -197,10 +227,15 @@ public class RawMessageDeltaEventTest : TestBase
             {
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
-                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+                StopDetails = new()
+                {
+                    Category = Category.Cyber,
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                },
                 StopReason = StopReason.EndTurn,
                 StopSequence = "stop_sequence",
             },
@@ -230,23 +265,29 @@ public class DeltaTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
-            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+            StopDetails = new()
+            {
+                Category = Category.Cyber,
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
 
         Container expectedContainer = new()
         {
-            ID = "id",
+            ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
         RefusalStopDetails expectedStopDetails = new()
         {
             Category = Category.Cyber,
-            Explanation = "explanation",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
         };
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         string expectedStopSequence = "stop_sequence";
@@ -264,10 +305,15 @@ public class DeltaTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
-            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+            StopDetails = new()
+            {
+                Category = Category.Cyber,
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -285,10 +331,15 @@ public class DeltaTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
-            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+            StopDetails = new()
+            {
+                Category = Category.Cyber,
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -299,13 +350,14 @@ public class DeltaTest : TestBase
 
         Container expectedContainer = new()
         {
-            ID = "id",
+            ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
         RefusalStopDetails expectedStopDetails = new()
         {
             Category = Category.Cyber,
-            Explanation = "explanation",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
         };
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         string expectedStopSequence = "stop_sequence";
@@ -323,10 +375,15 @@ public class DeltaTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
-            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+            StopDetails = new()
+            {
+                Category = Category.Cyber,
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };
@@ -341,10 +398,15 @@ public class DeltaTest : TestBase
         {
             Container = new()
             {
-                ID = "id",
+                ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             },
-            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+            StopDetails = new()
+            {
+                Category = Category.Cyber,
+                Explanation =
+                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
+            },
             StopReason = StopReason.EndTurn,
             StopSequence = "stop_sequence",
         };

@@ -18,7 +18,7 @@ public class MessageBatchResultTest : TestBase
                 ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
                 Content =
@@ -29,11 +29,11 @@ public class MessageBatchResultTest : TestBase
                         [
                             new CitationCharLocation()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
-                                DocumentTitle = "document_title",
+                                DocumentTitle = "My Document",
                                 EndCharIndex = 0,
-                                FileID = "file_id",
+                                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                                 StartCharIndex = 0,
                             },
                         ],
@@ -41,7 +41,12 @@ public class MessageBatchResultTest : TestBase
                     },
                 ],
                 Model = Model.ClaudeOpus4_6,
-                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+                StopDetails = new()
+                {
+                    Category = Category.Cyber,
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                },
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -53,7 +58,7 @@ public class MessageBatchResultTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
-                    InferenceGeo = "inference_geo",
+                    InferenceGeo = "global",
                     InputTokens = 2095,
                     OutputTokens = 503,
                     OutputTokensDetails = new(0),
@@ -101,7 +106,7 @@ public class MessageBatchResultTest : TestBase
                 ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
                 Container = new()
                 {
-                    ID = "id",
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 },
                 Content =
@@ -112,11 +117,11 @@ public class MessageBatchResultTest : TestBase
                         [
                             new CitationCharLocation()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
-                                DocumentTitle = "document_title",
+                                DocumentTitle = "My Document",
                                 EndCharIndex = 0,
-                                FileID = "file_id",
+                                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                                 StartCharIndex = 0,
                             },
                         ],
@@ -124,7 +129,12 @@ public class MessageBatchResultTest : TestBase
                     },
                 ],
                 Model = Model.ClaudeOpus4_6,
-                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+                StopDetails = new()
+                {
+                    Category = Category.Cyber,
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                },
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -136,7 +146,7 @@ public class MessageBatchResultTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
-                    InferenceGeo = "inference_geo",
+                    InferenceGeo = "global",
                     InputTokens = 2095,
                     OutputTokens = 503,
                     OutputTokensDetails = new(0),

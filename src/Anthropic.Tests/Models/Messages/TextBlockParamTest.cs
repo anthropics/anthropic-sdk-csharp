@@ -18,7 +18,7 @@ public class TextBlockParamTest : TestBase
             [
                 new CitationCharLocationParam()
                 {
-                    CitedText = "cited_text",
+                    CitedText = "The grass is green. The sky is blue.",
                     DocumentIndex = 0,
                     DocumentTitle = "x",
                     EndCharIndex = 0,
@@ -34,7 +34,7 @@ public class TextBlockParamTest : TestBase
         [
             new CitationCharLocationParam()
             {
-                CitedText = "cited_text",
+                CitedText = "The grass is green. The sky is blue.",
                 DocumentIndex = 0,
                 DocumentTitle = "x",
                 EndCharIndex = 0,
@@ -64,7 +64,7 @@ public class TextBlockParamTest : TestBase
             [
                 new CitationCharLocationParam()
                 {
-                    CitedText = "cited_text",
+                    CitedText = "The grass is green. The sky is blue.",
                     DocumentIndex = 0,
                     DocumentTitle = "x",
                     EndCharIndex = 0,
@@ -93,7 +93,7 @@ public class TextBlockParamTest : TestBase
             [
                 new CitationCharLocationParam()
                 {
-                    CitedText = "cited_text",
+                    CitedText = "The grass is green. The sky is blue.",
                     DocumentIndex = 0,
                     DocumentTitle = "x",
                     EndCharIndex = 0,
@@ -116,7 +116,7 @@ public class TextBlockParamTest : TestBase
         [
             new CitationCharLocationParam()
             {
-                CitedText = "cited_text",
+                CitedText = "The grass is green. The sky is blue.",
                 DocumentIndex = 0,
                 DocumentTitle = "x",
                 EndCharIndex = 0,
@@ -146,7 +146,7 @@ public class TextBlockParamTest : TestBase
             [
                 new CitationCharLocationParam()
                 {
-                    CitedText = "cited_text",
+                    CitedText = "The grass is green. The sky is blue.",
                     DocumentIndex = 0,
                     DocumentTitle = "x",
                     EndCharIndex = 0,
@@ -219,7 +219,7 @@ public class TextBlockParamTest : TestBase
             [
                 new CitationCharLocationParam()
                 {
-                    CitedText = "cited_text",
+                    CitedText = "The grass is green. The sky is blue.",
                     DocumentIndex = 0,
                     DocumentTitle = "x",
                     EndCharIndex = 0,

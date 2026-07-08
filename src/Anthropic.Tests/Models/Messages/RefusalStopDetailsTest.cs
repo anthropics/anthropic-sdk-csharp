@@ -13,11 +13,13 @@ public class RefusalStopDetailsTest : TestBase
         var model = new RefusalStopDetails
         {
             Category = Category.Cyber,
-            Explanation = "explanation",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
         };
 
         ApiEnum<string, Category> expectedCategory = Category.Cyber;
-        string expectedExplanation = "explanation";
+        string expectedExplanation =
+            "This request was declined because it conflicts with Anthropic's Usage Policy.";
         JsonElement expectedType = JsonSerializer.SerializeToElement("refusal");
 
         Assert.Equal(expectedCategory, model.Category);
@@ -31,7 +33,8 @@ public class RefusalStopDetailsTest : TestBase
         var model = new RefusalStopDetails
         {
             Category = Category.Cyber,
-            Explanation = "explanation",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -49,7 +52,8 @@ public class RefusalStopDetailsTest : TestBase
         var model = new RefusalStopDetails
         {
             Category = Category.Cyber,
-            Explanation = "explanation",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -60,7 +64,8 @@ public class RefusalStopDetailsTest : TestBase
         Assert.NotNull(deserialized);
 
         ApiEnum<string, Category> expectedCategory = Category.Cyber;
-        string expectedExplanation = "explanation";
+        string expectedExplanation =
+            "This request was declined because it conflicts with Anthropic's Usage Policy.";
         JsonElement expectedType = JsonSerializer.SerializeToElement("refusal");
 
         Assert.Equal(expectedCategory, deserialized.Category);
@@ -74,7 +79,8 @@ public class RefusalStopDetailsTest : TestBase
         var model = new RefusalStopDetails
         {
             Category = Category.Cyber,
-            Explanation = "explanation",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
         };
 
         model.Validate();
@@ -86,7 +92,8 @@ public class RefusalStopDetailsTest : TestBase
         var model = new RefusalStopDetails
         {
             Category = Category.Cyber,
-            Explanation = "explanation",
+            Explanation =
+                "This request was declined because it conflicts with Anthropic's Usage Policy.",
         };
 
         RefusalStopDetails copied = new(model);

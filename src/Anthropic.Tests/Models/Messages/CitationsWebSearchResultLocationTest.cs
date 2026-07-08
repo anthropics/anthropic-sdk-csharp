@@ -11,13 +11,13 @@ public class CitationsWebSearchResultLocationTest : TestBase
     {
         var model = new CitationsWebSearchResultLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "title",
             Url = "url",
         };
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         string expectedEncryptedIndex = "encrypted_index";
         string expectedTitle = "title";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result_location");
@@ -35,7 +35,7 @@ public class CitationsWebSearchResultLocationTest : TestBase
     {
         var model = new CitationsWebSearchResultLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "title",
             Url = "url",
@@ -55,7 +55,7 @@ public class CitationsWebSearchResultLocationTest : TestBase
     {
         var model = new CitationsWebSearchResultLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "title",
             Url = "url",
@@ -68,7 +68,7 @@ public class CitationsWebSearchResultLocationTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         string expectedEncryptedIndex = "encrypted_index";
         string expectedTitle = "title";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result_location");
@@ -86,7 +86,7 @@ public class CitationsWebSearchResultLocationTest : TestBase
     {
         var model = new CitationsWebSearchResultLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "title",
             Url = "url",
@@ -100,7 +100,7 @@ public class CitationsWebSearchResultLocationTest : TestBase
     {
         var model = new CitationsWebSearchResultLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "title",
             Url = "url",
