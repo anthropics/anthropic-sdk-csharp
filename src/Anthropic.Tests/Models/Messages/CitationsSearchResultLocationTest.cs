@@ -11,7 +11,7 @@ public class CitationsSearchResultLocationTest : TestBase
     {
         var model = new CitationsSearchResultLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EndBlockIndex = 0,
             SearchResultIndex = 0,
             Source = "source",
@@ -19,7 +19,7 @@ public class CitationsSearchResultLocationTest : TestBase
             Title = "title",
         };
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         long expectedEndBlockIndex = 0;
         long expectedSearchResultIndex = 0;
         string expectedSource = "source";
@@ -41,7 +41,7 @@ public class CitationsSearchResultLocationTest : TestBase
     {
         var model = new CitationsSearchResultLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EndBlockIndex = 0,
             SearchResultIndex = 0,
             Source = "source",
@@ -63,7 +63,7 @@ public class CitationsSearchResultLocationTest : TestBase
     {
         var model = new CitationsSearchResultLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EndBlockIndex = 0,
             SearchResultIndex = 0,
             Source = "source",
@@ -78,7 +78,7 @@ public class CitationsSearchResultLocationTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         long expectedEndBlockIndex = 0;
         long expectedSearchResultIndex = 0;
         string expectedSource = "source";
@@ -100,7 +100,7 @@ public class CitationsSearchResultLocationTest : TestBase
     {
         var model = new CitationsSearchResultLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EndBlockIndex = 0,
             SearchResultIndex = 0,
             Source = "source",
@@ -116,7 +116,7 @@ public class CitationsSearchResultLocationTest : TestBase
     {
         var model = new CitationsSearchResultLocation
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EndBlockIndex = 0,
             SearchResultIndex = 0,
             Source = "source",

@@ -11,14 +11,14 @@ public class BetaCitationContentBlockLocationParamTest : TestBase
     {
         var model = new BetaCitationContentBlockLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndBlockIndex = 0,
             StartBlockIndex = 0,
         };
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         long expectedDocumentIndex = 0;
         string expectedDocumentTitle = "x";
         long expectedEndBlockIndex = 0;
@@ -38,7 +38,7 @@ public class BetaCitationContentBlockLocationParamTest : TestBase
     {
         var model = new BetaCitationContentBlockLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndBlockIndex = 0,
@@ -59,7 +59,7 @@ public class BetaCitationContentBlockLocationParamTest : TestBase
     {
         var model = new BetaCitationContentBlockLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndBlockIndex = 0,
@@ -73,7 +73,7 @@ public class BetaCitationContentBlockLocationParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         long expectedDocumentIndex = 0;
         string expectedDocumentTitle = "x";
         long expectedEndBlockIndex = 0;
@@ -93,7 +93,7 @@ public class BetaCitationContentBlockLocationParamTest : TestBase
     {
         var model = new BetaCitationContentBlockLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndBlockIndex = 0,
@@ -108,7 +108,7 @@ public class BetaCitationContentBlockLocationParamTest : TestBase
     {
         var model = new BetaCitationContentBlockLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndBlockIndex = 0,

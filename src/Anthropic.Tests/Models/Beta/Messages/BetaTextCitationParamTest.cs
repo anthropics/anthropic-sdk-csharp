@@ -11,7 +11,7 @@ public class BetaTextCitationParamTest : TestBase
     {
         BetaTextCitationParam value = new BetaCitationCharLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndCharIndex = 0,
@@ -25,7 +25,7 @@ public class BetaTextCitationParamTest : TestBase
     {
         BetaTextCitationParam value = new BetaCitationPageLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndPageNumber = 0,
@@ -39,7 +39,7 @@ public class BetaTextCitationParamTest : TestBase
     {
         BetaTextCitationParam value = new BetaCitationContentBlockLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndBlockIndex = 0,
@@ -53,7 +53,7 @@ public class BetaTextCitationParamTest : TestBase
     {
         BetaTextCitationParam value = new BetaCitationWebSearchResultLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "x",
             Url = "x",
@@ -66,7 +66,7 @@ public class BetaTextCitationParamTest : TestBase
     {
         BetaTextCitationParam value = new BetaCitationSearchResultLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EndBlockIndex = 0,
             SearchResultIndex = 0,
             Source = "source",
@@ -81,7 +81,7 @@ public class BetaTextCitationParamTest : TestBase
     {
         BetaTextCitationParam value = new BetaCitationCharLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndCharIndex = 0,
@@ -101,7 +101,7 @@ public class BetaTextCitationParamTest : TestBase
     {
         BetaTextCitationParam value = new BetaCitationPageLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndPageNumber = 0,
@@ -121,7 +121,7 @@ public class BetaTextCitationParamTest : TestBase
     {
         BetaTextCitationParam value = new BetaCitationContentBlockLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndBlockIndex = 0,
@@ -141,7 +141,7 @@ public class BetaTextCitationParamTest : TestBase
     {
         BetaTextCitationParam value = new BetaCitationWebSearchResultLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "x",
             Url = "x",
@@ -160,7 +160,7 @@ public class BetaTextCitationParamTest : TestBase
     {
         BetaTextCitationParam value = new BetaCitationSearchResultLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EndBlockIndex = 0,
             SearchResultIndex = 0,
             Source = "source",

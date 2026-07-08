@@ -23,7 +23,7 @@ public class BetaMessageParamTest : TestBase
                             [
                                 new BetaCitationCharLocationParam()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
                                     DocumentTitle = "x",
                                     EndCharIndex = 0,
@@ -48,7 +48,7 @@ public class BetaMessageParamTest : TestBase
                         [
                             new BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -81,7 +81,7 @@ public class BetaMessageParamTest : TestBase
                             [
                                 new BetaCitationCharLocationParam()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
                                     DocumentTitle = "x",
                                     EndCharIndex = 0,
@@ -120,7 +120,7 @@ public class BetaMessageParamTest : TestBase
                             [
                                 new BetaCitationCharLocationParam()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
                                     DocumentTitle = "x",
                                     EndCharIndex = 0,
@@ -152,7 +152,7 @@ public class BetaMessageParamTest : TestBase
                         [
                             new BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -185,7 +185,7 @@ public class BetaMessageParamTest : TestBase
                             [
                                 new BetaCitationCharLocationParam()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
                                     DocumentTitle = "x",
                                     EndCharIndex = 0,
@@ -218,7 +218,7 @@ public class BetaMessageParamTest : TestBase
                             [
                                 new BetaCitationCharLocationParam()
                                 {
-                                    CitedText = "cited_text",
+                                    CitedText = "The grass is green. The sky is blue.",
                                     DocumentIndex = 0,
                                     DocumentTitle = "x",
                                     EndCharIndex = 0,
@@ -261,7 +261,7 @@ public class BetaMessageParamContentTest : TestBase
                         [
                             new BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,
@@ -302,7 +302,7 @@ public class BetaMessageParamContentTest : TestBase
                         [
                             new BetaCitationCharLocationParam()
                             {
-                                CitedText = "cited_text",
+                                CitedText = "The grass is green. The sky is blue.",
                                 DocumentIndex = 0,
                                 DocumentTitle = "x",
                                 EndCharIndex = 0,

@@ -11,14 +11,14 @@ public class CitationPageLocationParamTest : TestBase
     {
         var model = new CitationPageLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndPageNumber = 0,
             StartPageNumber = 1,
         };
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         long expectedDocumentIndex = 0;
         string expectedDocumentTitle = "x";
         long expectedEndPageNumber = 0;
@@ -38,7 +38,7 @@ public class CitationPageLocationParamTest : TestBase
     {
         var model = new CitationPageLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndPageNumber = 0,
@@ -59,7 +59,7 @@ public class CitationPageLocationParamTest : TestBase
     {
         var model = new CitationPageLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndPageNumber = 0,
@@ -73,7 +73,7 @@ public class CitationPageLocationParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         long expectedDocumentIndex = 0;
         string expectedDocumentTitle = "x";
         long expectedEndPageNumber = 0;
@@ -93,7 +93,7 @@ public class CitationPageLocationParamTest : TestBase
     {
         var model = new CitationPageLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndPageNumber = 0,
@@ -108,7 +108,7 @@ public class CitationPageLocationParamTest : TestBase
     {
         var model = new CitationPageLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndPageNumber = 0,

@@ -11,14 +11,14 @@ public class BetaCitationCharLocationParamTest : TestBase
     {
         var model = new BetaCitationCharLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndCharIndex = 0,
             StartCharIndex = 0,
         };
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         long expectedDocumentIndex = 0;
         string expectedDocumentTitle = "x";
         long expectedEndCharIndex = 0;
@@ -38,7 +38,7 @@ public class BetaCitationCharLocationParamTest : TestBase
     {
         var model = new BetaCitationCharLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndCharIndex = 0,
@@ -59,7 +59,7 @@ public class BetaCitationCharLocationParamTest : TestBase
     {
         var model = new BetaCitationCharLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndCharIndex = 0,
@@ -73,7 +73,7 @@ public class BetaCitationCharLocationParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedCitedText = "cited_text";
+        string expectedCitedText = "The grass is green. The sky is blue.";
         long expectedDocumentIndex = 0;
         string expectedDocumentTitle = "x";
         long expectedEndCharIndex = 0;
@@ -93,7 +93,7 @@ public class BetaCitationCharLocationParamTest : TestBase
     {
         var model = new BetaCitationCharLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndCharIndex = 0,
@@ -108,7 +108,7 @@ public class BetaCitationCharLocationParamTest : TestBase
     {
         var model = new BetaCitationCharLocationParam
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndCharIndex = 0,

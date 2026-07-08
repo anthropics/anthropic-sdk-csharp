@@ -13,7 +13,7 @@ public class BetaContainerTest : TestBase
     {
         var model = new Messages::BetaContainer
         {
-            ID = "id",
+            ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Skills =
             [
@@ -26,7 +26,7 @@ public class BetaContainerTest : TestBase
             ],
         };
 
-        string expectedID = "id";
+        string expectedID = "container_011CpZohnwH4vuy7gazohgSP";
         DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         List<Messages::BetaSkill> expectedSkills =
         [
@@ -53,7 +53,7 @@ public class BetaContainerTest : TestBase
     {
         var model = new Messages::BetaContainer
         {
-            ID = "id",
+            ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Skills =
             [
@@ -80,7 +80,7 @@ public class BetaContainerTest : TestBase
     {
         var model = new Messages::BetaContainer
         {
-            ID = "id",
+            ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Skills =
             [
@@ -100,7 +100,7 @@ public class BetaContainerTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "id";
+        string expectedID = "container_011CpZohnwH4vuy7gazohgSP";
         DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         List<Messages::BetaSkill> expectedSkills =
         [
@@ -127,7 +127,7 @@ public class BetaContainerTest : TestBase
     {
         var model = new Messages::BetaContainer
         {
-            ID = "id",
+            ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Skills =
             [
@@ -148,7 +148,7 @@ public class BetaContainerTest : TestBase
     {
         var model = new Messages::BetaContainer
         {
-            ID = "id",
+            ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Skills =
             [

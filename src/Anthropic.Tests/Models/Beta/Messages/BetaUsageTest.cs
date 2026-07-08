@@ -17,7 +17,7 @@ public class BetaUsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
-            InferenceGeo = "inference_geo",
+            InferenceGeo = "global",
             InputTokens = 2095,
             Iterations =
             [
@@ -49,7 +49,7 @@ public class BetaUsageTest : TestBase
         };
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
-        string expectedInferenceGeo = "inference_geo";
+        string expectedInferenceGeo = "global";
         long expectedInputTokens = 2095;
         List<BetaUsageIteration> expectedIterations =
         [
@@ -99,7 +99,7 @@ public class BetaUsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
-            InferenceGeo = "inference_geo",
+            InferenceGeo = "global",
             InputTokens = 2095,
             Iterations =
             [
@@ -138,7 +138,7 @@ public class BetaUsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
-            InferenceGeo = "inference_geo",
+            InferenceGeo = "global",
             InputTokens = 2095,
             Iterations =
             [
@@ -177,7 +177,7 @@ public class BetaUsageTest : TestBase
         };
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
-        string expectedInferenceGeo = "inference_geo";
+        string expectedInferenceGeo = "global";
         long expectedInputTokens = 2095;
         List<BetaUsageIteration> expectedIterations =
         [
@@ -227,7 +227,7 @@ public class BetaUsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
-            InferenceGeo = "inference_geo",
+            InferenceGeo = "global",
             InputTokens = 2095,
             Iterations =
             [
@@ -263,7 +263,7 @@ public class BetaUsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
-            InferenceGeo = "inference_geo",
+            InferenceGeo = "global",
             InputTokens = 2095,
             Iterations =
             [

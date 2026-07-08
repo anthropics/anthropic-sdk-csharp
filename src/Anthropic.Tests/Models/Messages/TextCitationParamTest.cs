@@ -11,7 +11,7 @@ public class TextCitationParamTest : TestBase
     {
         TextCitationParam value = new CitationCharLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndCharIndex = 0,
@@ -25,7 +25,7 @@ public class TextCitationParamTest : TestBase
     {
         TextCitationParam value = new CitationPageLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndPageNumber = 0,
@@ -39,7 +39,7 @@ public class TextCitationParamTest : TestBase
     {
         TextCitationParam value = new CitationContentBlockLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndBlockIndex = 0,
@@ -53,7 +53,7 @@ public class TextCitationParamTest : TestBase
     {
         TextCitationParam value = new CitationWebSearchResultLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "x",
             Url = "x",
@@ -66,7 +66,7 @@ public class TextCitationParamTest : TestBase
     {
         TextCitationParam value = new CitationSearchResultLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EndBlockIndex = 0,
             SearchResultIndex = 0,
             Source = "source",
@@ -81,7 +81,7 @@ public class TextCitationParamTest : TestBase
     {
         TextCitationParam value = new CitationCharLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndCharIndex = 0,
@@ -101,7 +101,7 @@ public class TextCitationParamTest : TestBase
     {
         TextCitationParam value = new CitationPageLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndPageNumber = 0,
@@ -121,7 +121,7 @@ public class TextCitationParamTest : TestBase
     {
         TextCitationParam value = new CitationContentBlockLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             DocumentIndex = 0,
             DocumentTitle = "x",
             EndBlockIndex = 0,
@@ -141,7 +141,7 @@ public class TextCitationParamTest : TestBase
     {
         TextCitationParam value = new CitationWebSearchResultLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EncryptedIndex = "encrypted_index",
             Title = "x",
             Url = "x",
@@ -160,7 +160,7 @@ public class TextCitationParamTest : TestBase
     {
         TextCitationParam value = new CitationSearchResultLocationParam()
         {
-            CitedText = "cited_text",
+            CitedText = "The grass is green. The sky is blue.",
             EndBlockIndex = 0,
             SearchResultIndex = 0,
             Source = "source",
