@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedAgentsWithFilesExamp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedAgentsComprehensiveExample", "ManagedAgentsComprehensiveExample\ManagedAgentsComprehensiveExample.csproj", "{B2C3D4E5-F6A7-8901-BCDE-F12345678901}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedAgentsStreamingDeltasExample", "ManagedAgentsStreamingDeltasExample\ManagedAgentsStreamingDeltasExample.csproj", "{C3D4E5F6-A7B8-9012-CDEF-123456789012}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StructuredOutputExample", "StructuredOutputExample\StructuredOutputExample.csproj", "{B5C8E7A1-3D4F-4E2B-9A1C-6F8D0E7B2C3A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolRunnerExample", "ToolRunnerExample\ToolRunnerExample.csproj", "{C6D9F2B3-4E5A-4F1C-8B2D-7A0E9F3C1D5B}"
@@ -189,6 +191,18 @@ Global
 		{B2C3D4E5-F6A7-8901-BCDE-F12345678901}.Release|x64.Build.0 = Release|Any CPU
 		{B2C3D4E5-F6A7-8901-BCDE-F12345678901}.Release|x86.ActiveCfg = Release|Any CPU
 		{B2C3D4E5-F6A7-8901-BCDE-F12345678901}.Release|x86.Build.0 = Release|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Debug|x64.Build.0 = Debug|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Debug|x86.Build.0 = Debug|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Release|x64.ActiveCfg = Release|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Release|x64.Build.0 = Release|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Release|x86.ActiveCfg = Release|Any CPU
+		{C3D4E5F6-A7B8-9012-CDEF-123456789012}.Release|x86.Build.0 = Release|Any CPU
 		{B5C8E7A1-3D4F-4E2B-9A1C-6F8D0E7B2C3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B5C8E7A1-3D4F-4E2B-9A1C-6F8D0E7B2C3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5C8E7A1-3D4F-4E2B-9A1C-6F8D0E7B2C3A}.Debug|x64.ActiveCfg = Debug|Any CPU
