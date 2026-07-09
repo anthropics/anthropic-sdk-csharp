@@ -12,11 +12,11 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
 
-        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_6;
+        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_8;
         ApiEnum<string, BetaManagedAgentsModelConfigParamsSpeed> expectedSpeed =
             BetaManagedAgentsModelConfigParamsSpeed.Standard;
 
@@ -29,7 +29,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
 
@@ -47,7 +47,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
 
@@ -58,7 +58,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_6;
+        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_8;
         ApiEnum<string, BetaManagedAgentsModelConfigParamsSpeed> expectedSpeed =
             BetaManagedAgentsModelConfigParamsSpeed.Standard;
 
@@ -71,7 +71,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
 
@@ -83,7 +83,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
         };
 
         Assert.Null(model.Speed);
@@ -95,7 +95,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
         };
 
         model.Validate();
@@ -106,7 +106,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
 
             Speed = null,
         };
@@ -120,7 +120,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
 
             Speed = null,
         };
@@ -133,7 +133,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
 

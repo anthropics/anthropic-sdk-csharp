@@ -511,7 +511,7 @@ public class ModelTest : TestBase
     {
         Model value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         value.Validate();
@@ -532,7 +532,7 @@ public class ModelTest : TestBase
     {
         Model value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

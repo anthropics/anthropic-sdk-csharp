@@ -31,7 +31,7 @@ public class AgentUpdateParamsTest : TestBase
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+                ID = BetaManagedAgentsModel.ClaudeOpus4_8,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Multiagent = new()
@@ -100,7 +100,7 @@ public class AgentUpdateParamsTest : TestBase
         Dictionary<string, string?> expectedMetadata = new() { { "foo", "string" } };
         AgentUpdateParamsModel expectedModel = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         BetaManagedAgentsMultiagentParams expectedMultiagent = new()
@@ -361,7 +361,7 @@ public class AgentUpdateParamsTest : TestBase
             Version = 1,
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+                ID = BetaManagedAgentsModel.ClaudeOpus4_8,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Name = "name",
@@ -393,7 +393,7 @@ public class AgentUpdateParamsTest : TestBase
             Version = 1,
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+                ID = BetaManagedAgentsModel.ClaudeOpus4_8,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Name = "name",
@@ -484,7 +484,7 @@ public class AgentUpdateParamsTest : TestBase
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+                ID = BetaManagedAgentsModel.ClaudeOpus4_8,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Multiagent = new()
@@ -558,7 +558,7 @@ public class AgentUpdateParamsModelTest : TestBase
     {
         AgentUpdateParamsModel value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         value.Validate();
@@ -582,7 +582,7 @@ public class AgentUpdateParamsModelTest : TestBase
     {
         AgentUpdateParamsModel value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
