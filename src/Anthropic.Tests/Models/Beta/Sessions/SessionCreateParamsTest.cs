@@ -283,7 +283,7 @@ public class AgentTest : TestBase
             ],
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+                ID = BetaManagedAgentsModel.ClaudeOpus4_8,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -369,7 +369,7 @@ public class AgentTest : TestBase
             ],
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+                ID = BetaManagedAgentsModel.ClaudeOpus4_8,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =

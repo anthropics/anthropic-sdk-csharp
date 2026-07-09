@@ -12,11 +12,11 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = Speed.Standard,
         };
 
-        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_6;
+        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_8;
         ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
 
         Assert.Equal(expectedID, model.ID);
@@ -28,7 +28,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = Speed.Standard,
         };
 
@@ -46,7 +46,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = Speed.Standard,
         };
 
@@ -57,7 +57,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_6;
+        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_8;
         ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -69,7 +69,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = Speed.Standard,
         };
 
@@ -79,7 +79,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaManagedAgentsModelConfig { ID = BetaManagedAgentsModel.ClaudeOpus4_6 };
+        var model = new BetaManagedAgentsModelConfig { ID = BetaManagedAgentsModel.ClaudeOpus4_8 };
 
         Assert.Null(model.Speed);
         Assert.False(model.RawData.ContainsKey("speed"));
@@ -88,7 +88,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaManagedAgentsModelConfig { ID = BetaManagedAgentsModel.ClaudeOpus4_6 };
+        var model = new BetaManagedAgentsModelConfig { ID = BetaManagedAgentsModel.ClaudeOpus4_8 };
 
         model.Validate();
     }
@@ -98,7 +98,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
 
             // Null should be interpreted as omitted for these properties
             Speed = null,
@@ -113,7 +113,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
 
             // Null should be interpreted as omitted for these properties
             Speed = null,
@@ -127,7 +127,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_6,
+            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Speed = Speed.Standard,
         };
 
