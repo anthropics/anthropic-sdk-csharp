@@ -378,7 +378,9 @@ public record class MessageCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
+    /// Inference speed mode. `fast` provides significantly faster output token generation
+    /// at premium pricing. Not all models support `fast`; invalid combinations are
+    /// rejected at create time.
     /// </summary>
     public ApiEnum<string, Speed>? Speed
     {
@@ -1122,7 +1124,9 @@ sealed class ServiceTierConverter : JsonConverter<ServiceTier>
 }
 
 /// <summary>
-/// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
+/// Inference speed mode. `fast` provides significantly faster output token generation
+/// at premium pricing. Not all models support `fast`; invalid combinations are rejected
+/// at create time.
 /// </summary>
 [JsonConverter(typeof(SpeedConverter))]
 public enum Speed

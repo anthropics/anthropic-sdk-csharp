@@ -213,7 +213,9 @@ public record class MessageCountTokensParams : ParamsBase
     }
 
     /// <summary>
-    /// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
+    /// Inference speed mode. `fast` provides significantly faster output token generation
+    /// at premium pricing. Not all models support `fast`; invalid combinations are
+    /// rejected at create time.
     /// </summary>
     public ApiEnum<string, MessageCountTokensParamsSpeed>? Speed
     {
@@ -532,7 +534,9 @@ public record class MessageCountTokensParams : ParamsBase
 }
 
 /// <summary>
-/// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
+/// Inference speed mode. `fast` provides significantly faster output token generation
+/// at premium pricing. Not all models support `fast`; invalid combinations are rejected
+/// at create time.
 /// </summary>
 [JsonConverter(typeof(MessageCountTokensParamsSpeedConverter))]
 public enum MessageCountTokensParamsSpeed
