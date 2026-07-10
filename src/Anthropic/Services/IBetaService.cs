@@ -49,6 +49,8 @@ public interface IBetaService
     Beta::IWebhookService Webhooks { get; }
 
     Beta::IUserProfileService UserProfiles { get; }
+
+    Beta::IDreamService Dreams { get; }
 }
 
 /// <summary>
@@ -89,4 +91,6 @@ public interface IBetaServiceWithRawResponse
     Beta::IWebhookServiceWithRawResponse Webhooks { get; }
 
     Beta::IUserProfileServiceWithRawResponse UserProfiles { get; }
+
+    Beta::IDreamServiceWithRawResponse Dreams { get; }
 }

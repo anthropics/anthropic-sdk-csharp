@@ -9,6 +9,7 @@ using Batches = Anthropic.Models.Messages.Batches;
 using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
 using DeploymentRuns = Anthropic.Models.Beta.DeploymentRuns;
 using Deployments = Anthropic.Models.Beta.Deployments;
+using Dreams = Anthropic.Models.Beta.Dreams;
 using Environments = Anthropic.Models.Beta.Environments;
 using Events = Anthropic.Models.Beta.Sessions.Events;
 using Files = Anthropic.Models.Beta.Files;
@@ -655,6 +656,14 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, UserProfiles::Relationship>(),
             new ApiEnumConverter<string, UserProfiles::UserProfileUpdateParamsRelationship>(),
             new ApiEnumConverter<string, UserProfiles::Order>(),
+            new ApiEnumConverter<string, Dreams::Type>(),
+            new ApiEnumConverter<string, Dreams::BetaDreamMemoryStoreInputType>(),
+            new ApiEnumConverter<string, Dreams::BetaDreamMemoryStoreOutputType>(),
+            new ApiEnumConverter<string, Dreams::Speed>(),
+            new ApiEnumConverter<string, Dreams::BetaDreamModelConfigParamSpeed>(),
+            new ApiEnumConverter<string, Dreams::BetaDreamOutputType>(),
+            new ApiEnumConverter<string, Dreams::BetaDreamSessionsInputType>(),
+            new ApiEnumConverter<string, Dreams::BetaDreamStatus>(),
         },
     };
 

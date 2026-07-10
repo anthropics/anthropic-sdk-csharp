@@ -56,6 +56,11 @@ public sealed record class BetaFallbackParam : JsonModel
         init { this._rawData.Set("output_config", value); }
     }
 
+    /// <summary>
+    /// Inference speed mode. `fast` provides significantly faster output token generation
+    /// at premium pricing. Not all models support `fast`; invalid combinations are
+    /// rejected at create time.
+    /// </summary>
     public ApiEnum<string, BetaFallbackParamSpeed>? Speed
     {
         get
@@ -130,6 +135,11 @@ class BetaFallbackParamFromRaw : IFromRawJson<BetaFallbackParam>
         BetaFallbackParam.FromRawUnchecked(rawData);
 }
 
+/// <summary>
+/// Inference speed mode. `fast` provides significantly faster output token generation
+/// at premium pricing. Not all models support `fast`; invalid combinations are rejected
+/// at create time.
+/// </summary>
 [JsonConverter(typeof(BetaFallbackParamSpeedConverter))]
 public enum BetaFallbackParamSpeed
 {
