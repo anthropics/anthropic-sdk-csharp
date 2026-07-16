@@ -25,6 +25,7 @@
     <ProjectReference Include="..\Anthropic.Bedrock\Anthropic.Bedrock.csproj" />
     <ProjectReference Include="..\Anthropic.Aws\Anthropic.Aws.csproj" />
     <ProjectReference Include="..\Anthropic.Vertex\Anthropic.Vertex.csproj" />
+    <ProjectReference Include="..\Anthropic.GoogleCloud\Anthropic.GoogleCloud.csproj" />
     <ProjectReference Include="..\Anthropic.Mcp\Anthropic.Mcp.csproj" />
     <EmbeddedResource Include="Helpers\FableFallback\*.sse" />
     <Using Include="Xunit" />

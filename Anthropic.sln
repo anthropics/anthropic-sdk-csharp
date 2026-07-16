@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamingAggregationExample
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anthropic.Mcp", "src\Anthropic.Mcp\Anthropic.Mcp.csproj", "{23BA5888-EBB4-492C-9785-1D765C924D22}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anthropic.GoogleCloud", "src\Anthropic.GoogleCloud\Anthropic.GoogleCloud.csproj", "{5B6E9D18-36FE-4A76-B920-3D29E9B58E07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -130,6 +132,18 @@ Global
 		{23BA5888-EBB4-492C-9785-1D765C924D22}.Release|x64.Build.0 = Release|Any CPU
 		{23BA5888-EBB4-492C-9785-1D765C924D22}.Release|x86.ActiveCfg = Release|Any CPU
 		{23BA5888-EBB4-492C-9785-1D765C924D22}.Release|x86.Build.0 = Release|Any CPU
+		{5B6E9D18-36FE-4A76-B920-3D29E9B58E07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B6E9D18-36FE-4A76-B920-3D29E9B58E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B6E9D18-36FE-4A76-B920-3D29E9B58E07}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5B6E9D18-36FE-4A76-B920-3D29E9B58E07}.Debug|x64.Build.0 = Debug|Any CPU
+		{5B6E9D18-36FE-4A76-B920-3D29E9B58E07}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5B6E9D18-36FE-4A76-B920-3D29E9B58E07}.Debug|x86.Build.0 = Debug|Any CPU
+		{5B6E9D18-36FE-4A76-B920-3D29E9B58E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B6E9D18-36FE-4A76-B920-3D29E9B58E07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B6E9D18-36FE-4A76-B920-3D29E9B58E07}.Release|x64.ActiveCfg = Release|Any CPU
+		{5B6E9D18-36FE-4A76-B920-3D29E9B58E07}.Release|x64.Build.0 = Release|Any CPU
+		{5B6E9D18-36FE-4A76-B920-3D29E9B58E07}.Release|x86.ActiveCfg = Release|Any CPU
+		{5B6E9D18-36FE-4A76-B920-3D29E9B58E07}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -144,5 +158,6 @@ Global
 		{6D5DEC39-3673-615E-54FA-C74C69400686} = {B36A84DF-456D-A817-6EDD-3EC3E7F6E11F}
 		{0E525CB1-B565-4ABE-B477-48C53F9BB258} = {6D5DEC39-3673-615E-54FA-C74C69400686}
 		{23BA5888-EBB4-492C-9785-1D765C924D22} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{5B6E9D18-36FE-4A76-B920-3D29E9B58E07} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 EndGlobal
