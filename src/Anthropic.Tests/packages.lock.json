@@ -650,6 +650,15 @@
           "System.Threading.Tasks.Extensions": "[4.6.3, )"
         }
       },
+      "anthropic.googlecloud": {
+        "type": "Project",
+        "dependencies": {
+          "Anthropic": "[12.30.0, )",
+          "Google.Apis.Oauth2.v2": "[1.68.0.1869, )",
+          "System.Collections.Immutable": "[8.0.0, )",
+          "System.Threading.Tasks.Extensions": "[4.6.3, )"
+        }
+      },
       "anthropic.mcp": {
         "type": "Project",
         "dependencies": {
@@ -1678,6 +1687,13 @@
         "dependencies": {
           "Anthropic": "[12.30.0, )",
           "Azure.Identity": "[1.17.0, )"
+        }
+      },
+      "anthropic.googlecloud": {
+        "type": "Project",
+        "dependencies": {
+          "Anthropic": "[12.30.0, )",
+          "Google.Apis.Oauth2.v2": "[1.68.0.1869, )"
         }
       },
       "anthropic.mcp": {

@@ -3,5 +3,6 @@
   "src/Anthropic.Foundry": "0.7.1",
   "src/Anthropic.Bedrock": "0.10.2",
   "src/Anthropic.Vertex": "0.5.1",
-  "src/Anthropic.Aws": "0.5.1"
+  "src/Anthropic.Aws": "0.5.1",
+  "src/Anthropic.GoogleCloud": "0.1.0"
 }
