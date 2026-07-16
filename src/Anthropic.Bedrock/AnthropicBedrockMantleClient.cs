@@ -250,6 +250,12 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
                 "The Beta.Dreams resource is not supported on Bedrock Mantle. "
                     + "Only Messages and Beta.Messages are available."
             );
+
+        public Beta::ITunnelService Tunnels =>
+            throw new NotSupportedException(
+                "The Beta.Tunnels resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
     }
 
     private sealed class RestrictedBetaServiceWithRawResponse : IBetaServiceWithRawResponse
@@ -340,6 +346,12 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
         public Beta::IDreamServiceWithRawResponse Dreams =>
             throw new NotSupportedException(
                 "The Beta.Dreams resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
+
+        public Beta::ITunnelServiceWithRawResponse Tunnels =>
+            throw new NotSupportedException(
+                "The Beta.Tunnels resource is not supported on Bedrock Mantle. "
                     + "Only Messages and Beta.Messages are available."
             );
     }

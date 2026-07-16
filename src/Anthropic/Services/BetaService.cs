@@ -42,6 +42,7 @@ public sealed class BetaService : IBetaService
         _webhooks = new(() => new Beta::WebhookService(client));
         _userProfiles = new(() => new Beta::UserProfileService(client));
         _dreams = new(() => new Beta::DreamService(client));
+        _tunnels = new(() => new Beta::TunnelService(client));
     }
 
     readonly Lazy<Beta::IModelService> _models;
@@ -127,6 +128,12 @@ public sealed class BetaService : IBetaService
     {
         get { return _dreams.Value; }
     }
+
+    readonly Lazy<Beta::ITunnelService> _tunnels;
+    public Beta::ITunnelService Tunnels
+    {
+        get { return _tunnels.Value; }
+    }
 }
 
 /// <inheritdoc/>
@@ -158,6 +165,7 @@ public sealed class BetaServiceWithRawResponse : IBetaServiceWithRawResponse
         _webhooks = new(() => new Beta::WebhookServiceWithRawResponse(client));
         _userProfiles = new(() => new Beta::UserProfileServiceWithRawResponse(client));
         _dreams = new(() => new Beta::DreamServiceWithRawResponse(client));
+        _tunnels = new(() => new Beta::TunnelServiceWithRawResponse(client));
     }
 
     readonly Lazy<Beta::IModelServiceWithRawResponse> _models;
@@ -242,5 +250,11 @@ public sealed class BetaServiceWithRawResponse : IBetaServiceWithRawResponse
     public Beta::IDreamServiceWithRawResponse Dreams
     {
         get { return _dreams.Value; }
+    }
+
+    readonly Lazy<Beta::ITunnelServiceWithRawResponse> _tunnels;
+    public Beta::ITunnelServiceWithRawResponse Tunnels
+    {
+        get { return _tunnels.Value; }
     }
 }

@@ -51,6 +51,8 @@ public interface IBetaService
     Beta::IUserProfileService UserProfiles { get; }
 
     Beta::IDreamService Dreams { get; }
+
+    Beta::ITunnelService Tunnels { get; }
 }
 
 /// <summary>
@@ -93,4 +95,6 @@ public interface IBetaServiceWithRawResponse
     Beta::IUserProfileServiceWithRawResponse UserProfiles { get; }
 
     Beta::IDreamServiceWithRawResponse Dreams { get; }
+
+    Beta::ITunnelServiceWithRawResponse Tunnels { get; }
 }
