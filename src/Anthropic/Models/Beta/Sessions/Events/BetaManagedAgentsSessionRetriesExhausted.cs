@@ -10,8 +10,8 @@ using System = System;
 namespace Anthropic.Models.Beta.Sessions.Events;
 
 /// <summary>
-/// The turn ended because repeated errors exhausted the automatic retry budget or
-/// the agent reached an internal execution limit.
+/// The turn ended because repeated errors exhausted the retry budget or an error
+/// escalated to `retry_status: 'exhausted'`.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<
