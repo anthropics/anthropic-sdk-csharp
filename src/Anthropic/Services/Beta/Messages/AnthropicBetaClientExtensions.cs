@@ -1089,6 +1089,15 @@ public static class AnthropicBetaClientExtensions
                 (betaHeaders ??= []).Add("files-api-2025-04-14");
             }
 
+            // The context_management parameter is beta-gated: if a raw-representation
+            // template carries it without the beta opt-in, the API rejects the request
+            // with "context_management: Extra inputs are not permitted". This includes a
+            // property explicitly initialized to null, which serializes as JSON null.
+            if (createParams.RawBodyData.ContainsKey("context_management"))
+            {
+                (betaHeaders ??= []).Add("context-management-2025-06-27");
+            }
+
             if (options is not null)
             {
                 if (options.Instructions is { } instructions)
