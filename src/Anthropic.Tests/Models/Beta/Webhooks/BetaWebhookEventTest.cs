@@ -12,7 +12,7 @@ public class BetaWebhookEventTest : TestBase
     {
         var model = new BetaWebhookEvent
         {
-            ID = "wevt_011CZkZYZd9rLmz3ujAcsqEw",
+            ID = "whe_0f1e2d3c4b5a69788796a5b4c3d2e1f0",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Data = new BetaWebhookSessionStatusIdledEventData()
             {
@@ -22,7 +22,7 @@ public class BetaWebhookEventTest : TestBase
             },
         };
 
-        string expectedID = "wevt_011CZkZYZd9rLmz3ujAcsqEw";
+        string expectedID = "whe_0f1e2d3c4b5a69788796a5b4c3d2e1f0";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         BetaWebhookEventData expectedData = new BetaWebhookSessionStatusIdledEventData()
         {
@@ -43,7 +43,7 @@ public class BetaWebhookEventTest : TestBase
     {
         var model = new BetaWebhookEvent
         {
-            ID = "wevt_011CZkZYZd9rLmz3ujAcsqEw",
+            ID = "whe_0f1e2d3c4b5a69788796a5b4c3d2e1f0",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Data = new BetaWebhookSessionStatusIdledEventData()
             {
@@ -67,7 +67,7 @@ public class BetaWebhookEventTest : TestBase
     {
         var model = new BetaWebhookEvent
         {
-            ID = "wevt_011CZkZYZd9rLmz3ujAcsqEw",
+            ID = "whe_0f1e2d3c4b5a69788796a5b4c3d2e1f0",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Data = new BetaWebhookSessionStatusIdledEventData()
             {
@@ -84,7 +84,7 @@ public class BetaWebhookEventTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "wevt_011CZkZYZd9rLmz3ujAcsqEw";
+        string expectedID = "whe_0f1e2d3c4b5a69788796a5b4c3d2e1f0";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         BetaWebhookEventData expectedData = new BetaWebhookSessionStatusIdledEventData()
         {
@@ -105,7 +105,7 @@ public class BetaWebhookEventTest : TestBase
     {
         var model = new BetaWebhookEvent
         {
-            ID = "wevt_011CZkZYZd9rLmz3ujAcsqEw",
+            ID = "whe_0f1e2d3c4b5a69788796a5b4c3d2e1f0",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Data = new BetaWebhookSessionStatusIdledEventData()
             {
@@ -123,7 +123,7 @@ public class BetaWebhookEventTest : TestBase
     {
         var model = new BetaWebhookEvent
         {
-            ID = "wevt_011CZkZYZd9rLmz3ujAcsqEw",
+            ID = "whe_0f1e2d3c4b5a69788796a5b4c3d2e1f0",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Data = new BetaWebhookSessionStatusIdledEventData()
             {

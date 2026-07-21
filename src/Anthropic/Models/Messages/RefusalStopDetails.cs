@@ -137,6 +137,12 @@ public enum Category
     /// text. To get reasoning in a structured form instead, use [adaptive thinking](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking).
     /// </summary>
     ReasoningExtraction,
+
+    /// <summary>
+    /// The request could be related to an area that was determined as harmful. Benign
+    /// work might sometimes trigger this category.
+    /// </summary>
+    GeneralHarms,
 }
 
 sealed class CategoryConverter : JsonConverter<Category>
@@ -153,6 +159,7 @@ sealed class CategoryConverter : JsonConverter<Category>
             "bio" => Category.Bio,
             "frontier_llm" => Category.FrontierLlm,
             "reasoning_extraction" => Category.ReasoningExtraction,
+            "general_harms" => Category.GeneralHarms,
             _ => (Category)(-1),
         };
     }
@@ -167,6 +174,7 @@ sealed class CategoryConverter : JsonConverter<Category>
                 Category.Bio => "bio",
                 Category.FrontierLlm => "frontier_llm",
                 Category.ReasoningExtraction => "reasoning_extraction",
+                Category.GeneralHarms => "general_harms",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
