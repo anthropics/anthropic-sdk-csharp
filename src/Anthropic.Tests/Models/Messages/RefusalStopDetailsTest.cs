@@ -109,6 +109,7 @@ public class CategoryTest : TestBase
     [InlineData(Category.Bio)]
     [InlineData(Category.FrontierLlm)]
     [InlineData(Category.ReasoningExtraction)]
+    [InlineData(Category.GeneralHarms)]
     public void Validation_Works(Category rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -133,6 +134,7 @@ public class CategoryTest : TestBase
     [InlineData(Category.Bio)]
     [InlineData(Category.FrontierLlm)]
     [InlineData(Category.ReasoningExtraction)]
+    [InlineData(Category.GeneralHarms)]
     public void SerializationRoundtrip_Works(Category rawValue)
     {
         // force implicit conversion because Theory can't do that for us

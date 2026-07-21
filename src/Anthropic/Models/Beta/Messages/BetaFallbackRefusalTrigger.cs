@@ -132,6 +132,12 @@ public enum BetaFallbackRefusalTriggerCategory
     /// text. To get reasoning in a structured form instead, use [adaptive thinking](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking).
     /// </summary>
     ReasoningExtraction,
+
+    /// <summary>
+    /// The request could be related to an area that was determined as harmful. Benign
+    /// work might sometimes trigger this category.
+    /// </summary>
+    GeneralHarms,
 }
 
 sealed class BetaFallbackRefusalTriggerCategoryConverter
@@ -149,6 +155,7 @@ sealed class BetaFallbackRefusalTriggerCategoryConverter
             "bio" => BetaFallbackRefusalTriggerCategory.Bio,
             "frontier_llm" => BetaFallbackRefusalTriggerCategory.FrontierLlm,
             "reasoning_extraction" => BetaFallbackRefusalTriggerCategory.ReasoningExtraction,
+            "general_harms" => BetaFallbackRefusalTriggerCategory.GeneralHarms,
             _ => (BetaFallbackRefusalTriggerCategory)(-1),
         };
     }
@@ -167,6 +174,7 @@ sealed class BetaFallbackRefusalTriggerCategoryConverter
                 BetaFallbackRefusalTriggerCategory.Bio => "bio",
                 BetaFallbackRefusalTriggerCategory.FrontierLlm => "frontier_llm",
                 BetaFallbackRefusalTriggerCategory.ReasoningExtraction => "reasoning_extraction",
+                BetaFallbackRefusalTriggerCategory.GeneralHarms => "general_harms",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
