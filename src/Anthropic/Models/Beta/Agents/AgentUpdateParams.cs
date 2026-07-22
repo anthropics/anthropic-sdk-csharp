@@ -32,21 +32,6 @@ public record class AgentUpdateParams : ParamsBase
     public string? AgentID { get; init; }
 
     /// <summary>
-    /// The agent's current version, used to prevent concurrent overwrites. Obtain
-    /// this value from a create or retrieve response. The request fails if this does
-    /// not match the server's current version.
-    /// </summary>
-    public required int Version
-    {
-        get
-        {
-            this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNotNullStruct<int>("version");
-        }
-        init { this._rawBodyData.Set("version", value); }
-    }
-
-    /// <summary>
     /// Description. Omit to preserve; send empty string or null to clear.
     /// </summary>
     public string? Description
@@ -219,6 +204,30 @@ public record class AgentUpdateParams : ParamsBase
                 "tools",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
+        }
+    }
+
+    /// <summary>
+    /// The agent's current version, used to prevent concurrent overwrites. Obtain
+    /// this value from a create or retrieve response. Must be at least 1 if specified.
+    /// When supplied, the request fails if it does not match the server's current
+    /// version; omit to apply the update unconditionally.
+    /// </summary>
+    public int? Version
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<int>("version");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("version", value);
         }
     }
 

@@ -13,13 +13,16 @@ public class BetaManagedAgentsModelConfigTest : TestBase
         var model = new BetaManagedAgentsModelConfig
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
             Speed = Speed.Standard,
         };
 
         ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_8;
+        Effort expectedEffort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low);
         ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
 
         Assert.Equal(expectedID, model.ID);
+        Assert.Equal(expectedEffort, model.Effort);
         Assert.Equal(expectedSpeed, model.Speed);
     }
 
@@ -29,6 +32,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
         var model = new BetaManagedAgentsModelConfig
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
             Speed = Speed.Standard,
         };
 
@@ -47,6 +51,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
         var model = new BetaManagedAgentsModelConfig
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
             Speed = Speed.Standard,
         };
 
@@ -58,9 +63,11 @@ public class BetaManagedAgentsModelConfigTest : TestBase
         Assert.NotNull(deserialized);
 
         ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_8;
+        Effort expectedEffort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low);
         ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
 
         Assert.Equal(expectedID, deserialized.ID);
+        Assert.Equal(expectedEffort, deserialized.Effort);
         Assert.Equal(expectedSpeed, deserialized.Speed);
     }
 
@@ -70,6 +77,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
         var model = new BetaManagedAgentsModelConfig
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
             Speed = Speed.Standard,
         };
 
@@ -81,6 +89,8 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig { ID = BetaManagedAgentsModel.ClaudeOpus4_8 };
 
+        Assert.Null(model.Effort);
+        Assert.False(model.RawData.ContainsKey("effort"));
         Assert.Null(model.Speed);
         Assert.False(model.RawData.ContainsKey("speed"));
     }
@@ -101,9 +111,12 @@ public class BetaManagedAgentsModelConfigTest : TestBase
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
 
             // Null should be interpreted as omitted for these properties
+            Effort = null,
             Speed = null,
         };
 
+        Assert.Null(model.Effort);
+        Assert.False(model.RawData.ContainsKey("effort"));
         Assert.Null(model.Speed);
         Assert.False(model.RawData.ContainsKey("speed"));
     }
@@ -116,6 +129,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
 
             // Null should be interpreted as omitted for these properties
+            Effort = null,
             Speed = null,
         };
 
@@ -128,12 +142,101 @@ public class BetaManagedAgentsModelConfigTest : TestBase
         var model = new BetaManagedAgentsModelConfig
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
             Speed = Speed.Standard,
         };
 
         BetaManagedAgentsModelConfig copied = new(model);
 
         Assert.Equal(model, copied);
+    }
+}
+
+public class EffortTest : TestBase
+{
+    [Fact]
+    public void BetaManagedAgentsEffortLowValidationWorks()
+    {
+        Effort value = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low);
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEffortMediumValidationWorks()
+    {
+        Effort value = new BetaManagedAgentsEffortMedium(BetaManagedAgentsEffortMediumType.Medium);
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEffortHighValidationWorks()
+    {
+        Effort value = new BetaManagedAgentsEffortHigh(BetaManagedAgentsEffortHighType.High);
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEffortXhighValidationWorks()
+    {
+        Effort value = new BetaManagedAgentsEffortXhigh(BetaManagedAgentsEffortXhighType.Xhigh);
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEffortMaxValidationWorks()
+    {
+        Effort value = new BetaManagedAgentsEffortMax(BetaManagedAgentsEffortMaxType.Max);
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEffortLowSerializationRoundtripWorks()
+    {
+        Effort value = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Effort>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEffortMediumSerializationRoundtripWorks()
+    {
+        Effort value = new BetaManagedAgentsEffortMedium(BetaManagedAgentsEffortMediumType.Medium);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Effort>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEffortHighSerializationRoundtripWorks()
+    {
+        Effort value = new BetaManagedAgentsEffortHigh(BetaManagedAgentsEffortHighType.High);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Effort>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEffortXhighSerializationRoundtripWorks()
+    {
+        Effort value = new BetaManagedAgentsEffortXhigh(BetaManagedAgentsEffortXhighType.Xhigh);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Effort>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEffortMaxSerializationRoundtripWorks()
+    {
+        Effort value = new BetaManagedAgentsEffortMax(BetaManagedAgentsEffortMaxType.Max);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Effort>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }
 

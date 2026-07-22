@@ -19,7 +19,7 @@ public class BetaPackagesTest : TestBase
             Go = ["string"],
             Npm = ["string"],
             Pip = ["string"],
-            Type = Type.Packages,
+            Type = BetaPackagesType.Packages,
         };
 
         List<string> expectedApt = ["string"];
@@ -28,7 +28,7 @@ public class BetaPackagesTest : TestBase
         List<string> expectedGo = ["string"];
         List<string> expectedNpm = ["string"];
         List<string> expectedPip = ["string"];
-        ApiEnum<string, Type> expectedType = Type.Packages;
+        ApiEnum<string, BetaPackagesType> expectedType = BetaPackagesType.Packages;
 
         Assert.Equal(expectedApt.Count, model.Apt.Count);
         for (int i = 0; i < expectedApt.Count; i++)
@@ -74,7 +74,7 @@ public class BetaPackagesTest : TestBase
             Go = ["string"],
             Npm = ["string"],
             Pip = ["string"],
-            Type = Type.Packages,
+            Type = BetaPackagesType.Packages,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -97,7 +97,7 @@ public class BetaPackagesTest : TestBase
             Go = ["string"],
             Npm = ["string"],
             Pip = ["string"],
-            Type = Type.Packages,
+            Type = BetaPackagesType.Packages,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -113,7 +113,7 @@ public class BetaPackagesTest : TestBase
         List<string> expectedGo = ["string"];
         List<string> expectedNpm = ["string"];
         List<string> expectedPip = ["string"];
-        ApiEnum<string, Type> expectedType = Type.Packages;
+        ApiEnum<string, BetaPackagesType> expectedType = BetaPackagesType.Packages;
 
         Assert.Equal(expectedApt.Count, deserialized.Apt.Count);
         for (int i = 0; i < expectedApt.Count; i++)
@@ -159,7 +159,7 @@ public class BetaPackagesTest : TestBase
             Go = ["string"],
             Npm = ["string"],
             Pip = ["string"],
-            Type = Type.Packages,
+            Type = BetaPackagesType.Packages,
         };
 
         model.Validate();
@@ -248,7 +248,7 @@ public class BetaPackagesTest : TestBase
             Go = ["string"],
             Npm = ["string"],
             Pip = ["string"],
-            Type = Type.Packages,
+            Type = BetaPackagesType.Packages,
         };
 
         BetaPackages copied = new(model);
@@ -257,21 +257,21 @@ public class BetaPackagesTest : TestBase
     }
 }
 
-public class TypeTest : TestBase
+public class BetaPackagesTypeTest : TestBase
 {
     [Theory]
-    [InlineData(Type.Packages)]
-    public void Validation_Works(Type rawValue)
+    [InlineData(BetaPackagesType.Packages)]
+    public void Validation_Works(BetaPackagesType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Type> value = rawValue;
+        ApiEnum<string, BetaPackagesType> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Type>>(
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaPackagesType>>(
             JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
@@ -281,14 +281,14 @@ public class TypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(Type.Packages)]
-    public void SerializationRoundtrip_Works(Type rawValue)
+    [InlineData(BetaPackagesType.Packages)]
+    public void SerializationRoundtrip_Works(BetaPackagesType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Type> value = rawValue;
+        ApiEnum<string, BetaPackagesType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Type>>(
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaPackagesType>>(
             json,
             ModelBase.SerializerOptions
         );
@@ -299,12 +299,12 @@ public class TypeTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Type>>(
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaPackagesType>>(
             JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Type>>(
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaPackagesType>>(
             json,
             ModelBase.SerializerOptions
         );

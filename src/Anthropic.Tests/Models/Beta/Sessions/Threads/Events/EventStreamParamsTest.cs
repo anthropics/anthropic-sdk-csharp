@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Anthropic.Core;
 using Anthropic.Models.Beta;
+using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Threads.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Threads.Events;
@@ -16,11 +17,16 @@ public class EventStreamParamsTest : TestBase
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            EventDeltas = [BetaManagedAgentsDeltaType.AgentMessage],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         string expectedSessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7";
         string expectedThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
+        List<ApiEnum<string, BetaManagedAgentsDeltaType>> expectedEventDeltas =
+        [
+            BetaManagedAgentsDeltaType.AgentMessage,
+        ];
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -28,6 +34,12 @@ public class EventStreamParamsTest : TestBase
 
         Assert.Equal(expectedSessionID, parameters.SessionID);
         Assert.Equal(expectedThreadID, parameters.ThreadID);
+        Assert.NotNull(parameters.EventDeltas);
+        Assert.Equal(expectedEventDeltas.Count, parameters.EventDeltas.Count);
+        for (int i = 0; i < expectedEventDeltas.Count; i++)
+        {
+            Assert.Equal(expectedEventDeltas[i], parameters.EventDeltas[i]);
+        }
         Assert.NotNull(parameters.Betas);
         Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
         for (int i = 0; i < expectedBetas.Count; i++)
@@ -45,6 +57,8 @@ public class EventStreamParamsTest : TestBase
             ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
         };
 
+        Assert.Null(parameters.EventDeltas);
+        Assert.False(parameters.RawQueryData.ContainsKey("event_deltas"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
@@ -58,9 +72,12 @@ public class EventStreamParamsTest : TestBase
             ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
 
             // Null should be interpreted as omitted for these properties
+            EventDeltas = null,
             Betas = null,
         };
 
+        Assert.Null(parameters.EventDeltas);
+        Assert.False(parameters.RawQueryData.ContainsKey("event_deltas"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
@@ -72,6 +89,7 @@ public class EventStreamParamsTest : TestBase
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            EventDeltas = [BetaManagedAgentsDeltaType.AgentMessage],
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -79,7 +97,7 @@ public class EventStreamParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/threads/sthr_011CZkZVWa6oIjw0rgXZpnBt/stream?beta=true"
+                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/threads/sthr_011CZkZVWa6oIjw0rgXZpnBt/stream?beta=true&event_deltas%5b%5d=agent.message"
                 ),
                 url
             )
@@ -112,6 +130,7 @@ public class EventStreamParamsTest : TestBase
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            EventDeltas = [BetaManagedAgentsDeltaType.AgentMessage],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 

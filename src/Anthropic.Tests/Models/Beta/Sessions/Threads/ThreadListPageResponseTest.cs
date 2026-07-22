@@ -35,6 +35,9 @@ public class ThreadListPageResponseTest : TestBase
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Effort = new BetaManagedAgentsEffortLow(
+                                BetaManagedAgentsEffortLowType.Low
+                            ),
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -128,6 +131,7 @@ public class ThreadListPageResponseTest : TestBase
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
@@ -233,6 +237,9 @@ public class ThreadListPageResponseTest : TestBase
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Effort = new BetaManagedAgentsEffortLow(
+                                BetaManagedAgentsEffortLowType.Low
+                            ),
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -340,6 +347,9 @@ public class ThreadListPageResponseTest : TestBase
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Effort = new BetaManagedAgentsEffortLow(
+                                BetaManagedAgentsEffortLowType.Low
+                            ),
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -440,6 +450,7 @@ public class ThreadListPageResponseTest : TestBase
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
@@ -545,6 +556,9 @@ public class ThreadListPageResponseTest : TestBase
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Effort = new BetaManagedAgentsEffortLow(
+                                BetaManagedAgentsEffortLowType.Low
+                            ),
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -698,6 +712,9 @@ public class ThreadListPageResponseTest : TestBase
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Effort = new BetaManagedAgentsEffortLow(
+                                BetaManagedAgentsEffortLowType.Low
+                            ),
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -799,6 +816,9 @@ public class ThreadListPageResponseTest : TestBase
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Effort = new BetaManagedAgentsEffortLow(
+                                BetaManagedAgentsEffortLowType.Low
+                            ),
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -899,6 +919,9 @@ public class ThreadListPageResponseTest : TestBase
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Effort = new BetaManagedAgentsEffortLow(
+                                BetaManagedAgentsEffortLowType.Low
+                            ),
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -1002,6 +1025,9 @@ public class ThreadListPageResponseTest : TestBase
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Effort = new BetaManagedAgentsEffortLow(
+                                BetaManagedAgentsEffortLowType.Low
+                            ),
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -1104,6 +1130,9 @@ public class ThreadListPageResponseTest : TestBase
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Effort = new BetaManagedAgentsEffortLow(
+                                BetaManagedAgentsEffortLowType.Low
+                            ),
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",

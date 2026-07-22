@@ -98,10 +98,12 @@ public sealed class AgentService : IAgentService
     /// <inheritdoc/>
     public Task<BetaManagedAgentsAgent> Update(
         string agentID,
-        AgentUpdateParams parameters,
+        AgentUpdateParams? parameters = null,
         CancellationToken cancellationToken = default
     )
     {
+        parameters ??= new();
+
         return this.Update(parameters with { AgentID = agentID }, cancellationToken);
     }
 
@@ -275,10 +277,12 @@ public sealed class AgentServiceWithRawResponse : IAgentServiceWithRawResponse
     /// <inheritdoc/>
     public Task<HttpResponse<BetaManagedAgentsAgent>> Update(
         string agentID,
-        AgentUpdateParams parameters,
+        AgentUpdateParams? parameters = null,
         CancellationToken cancellationToken = default
     )
     {
+        parameters ??= new();
+
         return this.Update(parameters with { AgentID = agentID }, cancellationToken);
     }
 

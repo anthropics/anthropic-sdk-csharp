@@ -33,6 +33,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
@@ -55,6 +56,9 @@ public class BetaManagedAgentsSessionTest : TestBase
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                Effort = new BetaManagedAgentsEffortLow(
+                                    BetaManagedAgentsEffortLowType.Low
+                                ),
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -221,7 +225,12 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
-            Model = new() { ID = BetaManagedAgentsModel.ClaudeSonnet4_6, Speed = Speed.Standard },
+            Model = new()
+            {
+                ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                Speed = Speed.Standard,
+            },
             Multiagent = new()
             {
                 Agents =
@@ -242,6 +251,9 @@ public class BetaManagedAgentsSessionTest : TestBase
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Effort = new BetaManagedAgentsEffortLow(
+                                BetaManagedAgentsEffortLowType.Low
+                            ),
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -455,6 +467,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
@@ -477,6 +490,9 @@ public class BetaManagedAgentsSessionTest : TestBase
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                Effort = new BetaManagedAgentsEffortLow(
+                                    BetaManagedAgentsEffortLowType.Low
+                                ),
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -660,6 +676,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
@@ -682,6 +699,9 @@ public class BetaManagedAgentsSessionTest : TestBase
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                Effort = new BetaManagedAgentsEffortLow(
+                                    BetaManagedAgentsEffortLowType.Low
+                                ),
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -855,7 +875,12 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
-            Model = new() { ID = BetaManagedAgentsModel.ClaudeSonnet4_6, Speed = Speed.Standard },
+            Model = new()
+            {
+                ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                Speed = Speed.Standard,
+            },
             Multiagent = new()
             {
                 Agents =
@@ -876,6 +901,9 @@ public class BetaManagedAgentsSessionTest : TestBase
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            Effort = new BetaManagedAgentsEffortLow(
+                                BetaManagedAgentsEffortLowType.Low
+                            ),
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -1089,6 +1117,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
@@ -1111,6 +1140,9 @@ public class BetaManagedAgentsSessionTest : TestBase
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                Effort = new BetaManagedAgentsEffortLow(
+                                    BetaManagedAgentsEffortLowType.Low
+                                ),
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -1288,6 +1320,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
@@ -1310,6 +1343,9 @@ public class BetaManagedAgentsSessionTest : TestBase
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                Effort = new BetaManagedAgentsEffortLow(
+                                    BetaManagedAgentsEffortLowType.Low
+                                ),
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -1487,6 +1523,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
@@ -1509,6 +1546,9 @@ public class BetaManagedAgentsSessionTest : TestBase
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                Effort = new BetaManagedAgentsEffortLow(
+                                    BetaManagedAgentsEffortLowType.Low
+                                ),
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -1685,6 +1725,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
@@ -1707,6 +1748,9 @@ public class BetaManagedAgentsSessionTest : TestBase
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                Effort = new BetaManagedAgentsEffortLow(
+                                    BetaManagedAgentsEffortLowType.Low
+                                ),
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -1886,6 +1930,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
@@ -1908,6 +1953,9 @@ public class BetaManagedAgentsSessionTest : TestBase
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                Effort = new BetaManagedAgentsEffortLow(
+                                    BetaManagedAgentsEffortLowType.Low
+                                ),
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -2086,6 +2134,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
@@ -2108,6 +2157,9 @@ public class BetaManagedAgentsSessionTest : TestBase
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                Effort = new BetaManagedAgentsEffortLow(
+                                    BetaManagedAgentsEffortLowType.Low
+                                ),
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",

@@ -31,7 +31,7 @@ public class AgentServiceTest : TestBase
     {
         var betaManagedAgentsAgent = await this.client.Beta.Agents.Update(
             "agent_011CZkYpogX7uDKUyvBTophP",
-            new() { Version = 1 },
+            new(),
             TestContext.Current.CancellationToken
         );
         betaManagedAgentsAgent.Validate();

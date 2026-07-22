@@ -6,6 +6,7 @@ using Anthropic.Core;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
+using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
 
@@ -18,6 +19,21 @@ public class SessionCreateParamsTest : TestBase
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
+            InitialEvents =
+            [
+                new BetaManagedAgentsUserMessageEventParams()
+                {
+                    Content =
+                    [
+                        new BetaManagedAgentsTextBlock()
+                        {
+                            Text = "Where is my order #1234?",
+                            Type = BetaManagedAgentsTextBlockType.Text,
+                        },
+                    ],
+                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
+                },
+            ],
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
             [
@@ -35,6 +51,21 @@ public class SessionCreateParamsTest : TestBase
 
         Agent expectedAgent = "agent_011CZkYpogX7uDKUyvBTophP";
         string expectedEnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW";
+        List<InitialEvent> expectedInitialEvents =
+        [
+            new BetaManagedAgentsUserMessageEventParams()
+            {
+                Content =
+                [
+                    new BetaManagedAgentsTextBlock()
+                    {
+                        Text = "Where is my order #1234?",
+                        Type = BetaManagedAgentsTextBlockType.Text,
+                    },
+                ],
+                Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
+            },
+        ];
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
         List<Resource> expectedResources =
         [
@@ -54,6 +85,12 @@ public class SessionCreateParamsTest : TestBase
 
         Assert.Equal(expectedAgent, parameters.Agent);
         Assert.Equal(expectedEnvironmentID, parameters.EnvironmentID);
+        Assert.NotNull(parameters.InitialEvents);
+        Assert.Equal(expectedInitialEvents.Count, parameters.InitialEvents.Count);
+        for (int i = 0; i < expectedInitialEvents.Count; i++)
+        {
+            Assert.Equal(expectedInitialEvents[i], parameters.InitialEvents[i]);
+        }
         Assert.NotNull(parameters.Metadata);
         Assert.Equal(expectedMetadata.Count, parameters.Metadata.Count);
         foreach (var item in expectedMetadata)
@@ -93,6 +130,8 @@ public class SessionCreateParamsTest : TestBase
             Title = "Order #1234 inquiry",
         };
 
+        Assert.Null(parameters.InitialEvents);
+        Assert.False(parameters.RawBodyData.ContainsKey("initial_events"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Resources);
@@ -113,12 +152,15 @@ public class SessionCreateParamsTest : TestBase
             Title = "Order #1234 inquiry",
 
             // Null should be interpreted as omitted for these properties
+            InitialEvents = null,
             Metadata = null,
             Resources = null,
             VaultIds = null,
             Betas = null,
         };
 
+        Assert.Null(parameters.InitialEvents);
+        Assert.False(parameters.RawBodyData.ContainsKey("initial_events"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Resources);
@@ -136,6 +178,21 @@ public class SessionCreateParamsTest : TestBase
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
+            InitialEvents =
+            [
+                new BetaManagedAgentsUserMessageEventParams()
+                {
+                    Content =
+                    [
+                        new BetaManagedAgentsTextBlock()
+                        {
+                            Text = "Where is my order #1234?",
+                            Type = BetaManagedAgentsTextBlockType.Text,
+                        },
+                    ],
+                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
+                },
+            ],
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
             [
@@ -161,6 +218,21 @@ public class SessionCreateParamsTest : TestBase
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
+            InitialEvents =
+            [
+                new BetaManagedAgentsUserMessageEventParams()
+                {
+                    Content =
+                    [
+                        new BetaManagedAgentsTextBlock()
+                        {
+                            Text = "Where is my order #1234?",
+                            Type = BetaManagedAgentsTextBlockType.Text,
+                        },
+                    ],
+                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
+                },
+            ],
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
             [
@@ -223,6 +295,21 @@ public class SessionCreateParamsTest : TestBase
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
+            InitialEvents =
+            [
+                new BetaManagedAgentsUserMessageEventParams()
+                {
+                    Content =
+                    [
+                        new BetaManagedAgentsTextBlock()
+                        {
+                            Text = "Where is my order #1234?",
+                            Type = BetaManagedAgentsTextBlockType.Text,
+                        },
+                    ],
+                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
+                },
+            ],
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
             [
@@ -284,6 +371,7 @@ public class AgentTest : TestBase
             Model = new BetaManagedAgentsModelConfigParams()
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = BetaManagedAgentsEffortLevel.Low,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -370,6 +458,7 @@ public class AgentTest : TestBase
             Model = new BetaManagedAgentsModelConfigParams()
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = BetaManagedAgentsEffortLevel.Low,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -411,6 +500,91 @@ public class AgentTest : TestBase
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Agent>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class InitialEventTest : TestBase
+{
+    [Fact]
+    public void BetaManagedAgentsUserMessageEventParamsValidationWorks()
+    {
+        InitialEvent value = new BetaManagedAgentsUserMessageEventParams()
+        {
+            Content =
+            [
+                new BetaManagedAgentsTextBlock()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = BetaManagedAgentsTextBlockType.Text,
+                },
+            ],
+            Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserDefineOutcomeEventParamsValidationWorks()
+    {
+        InitialEvent value = new BetaManagedAgentsUserDefineOutcomeEventParams()
+        {
+            Description = "Produce a 2-page summary as summary.md",
+            Rubric = new BetaManagedAgentsTextRubricParams()
+            {
+                Content = "Must cover all five sections; cite sources inline.",
+                Type = BetaManagedAgentsTextRubricParamsType.Text,
+            },
+            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            MaxIterations = 3,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserMessageEventParamsSerializationRoundtripWorks()
+    {
+        InitialEvent value = new BetaManagedAgentsUserMessageEventParams()
+        {
+            Content =
+            [
+                new BetaManagedAgentsTextBlock()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = BetaManagedAgentsTextBlockType.Text,
+                },
+            ],
+            Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<InitialEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserDefineOutcomeEventParamsSerializationRoundtripWorks()
+    {
+        InitialEvent value = new BetaManagedAgentsUserDefineOutcomeEventParams()
+        {
+            Description = "Produce a 2-page summary as summary.md",
+            Rubric = new BetaManagedAgentsTextRubricParams()
+            {
+                Content = "Must cover all five sections; cite sources inline.",
+                Type = BetaManagedAgentsTextRubricParamsType.Text,
+            },
+            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            MaxIterations = 3,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<InitialEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
