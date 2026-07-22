@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Anthropic.Helpers;
+namespace Anthropic.Core;
 
 /// <summary>
 /// Single source of truth for the <c>x-stainless-helper</c> telemetry header — the key, the

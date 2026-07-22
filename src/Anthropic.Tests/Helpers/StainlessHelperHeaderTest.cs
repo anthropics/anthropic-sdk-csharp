@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Anthropic.Core;
 using Anthropic.Helpers;
 using Xunit;
 
