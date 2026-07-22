@@ -63,7 +63,7 @@ public interface IAgentService
     /// <inheritdoc cref="Update(AgentUpdateParams, CancellationToken)"/>
     Task<BetaManagedAgentsAgent> Update(
         string agentID,
-        AgentUpdateParams parameters,
+        AgentUpdateParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
@@ -143,7 +143,7 @@ public interface IAgentServiceWithRawResponse
     /// <inheritdoc cref="Update(AgentUpdateParams, CancellationToken)"/>
     Task<HttpResponse<BetaManagedAgentsAgent>> Update(
         string agentID,
-        AgentUpdateParams parameters,
+        AgentUpdateParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 

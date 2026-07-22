@@ -25,7 +25,7 @@ public class BetaCloudConfigTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = Type.Packages,
+                Type = BetaPackagesType.Packages,
             },
         };
 
@@ -43,7 +43,7 @@ public class BetaCloudConfigTest : TestBase
             Go = ["string"],
             Npm = ["string"],
             Pip = ["pandas", "numpy"],
-            Type = Type.Packages,
+            Type = BetaPackagesType.Packages,
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("cloud");
 
@@ -71,7 +71,7 @@ public class BetaCloudConfigTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = Type.Packages,
+                Type = BetaPackagesType.Packages,
             },
         };
 
@@ -103,7 +103,7 @@ public class BetaCloudConfigTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = Type.Packages,
+                Type = BetaPackagesType.Packages,
             },
         };
 
@@ -128,7 +128,7 @@ public class BetaCloudConfigTest : TestBase
             Go = ["string"],
             Npm = ["string"],
             Pip = ["pandas", "numpy"],
-            Type = Type.Packages,
+            Type = BetaPackagesType.Packages,
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("cloud");
 
@@ -156,7 +156,7 @@ public class BetaCloudConfigTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = Type.Packages,
+                Type = BetaPackagesType.Packages,
             },
         };
 
@@ -182,7 +182,7 @@ public class BetaCloudConfigTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = Type.Packages,
+                Type = BetaPackagesType.Packages,
             },
         };
 

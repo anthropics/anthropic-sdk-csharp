@@ -17,8 +17,7 @@ public class AgentUpdateParamsTest : TestBase
         var parameters = new AgentUpdateParams
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
-            Version = 1,
-            Description = "description",
+            Description = "updated",
             McpServers =
             [
                 new()
@@ -32,6 +31,7 @@ public class AgentUpdateParamsTest : TestBase
             Model = new BetaManagedAgentsModelConfigParams()
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = BetaManagedAgentsEffortLevel.Low,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Multiagent = new()
@@ -82,12 +82,12 @@ public class AgentUpdateParamsTest : TestBase
                     },
                 },
             ],
+            Version = 1,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         string expectedAgentID = "agent_011CZkYpogX7uDKUyvBTophP";
-        int expectedVersion = 1;
-        string expectedDescription = "description";
+        string expectedDescription = "updated";
         List<BetaManagedAgentsUrlMcpServerParams> expectedMcpServers =
         [
             new()
@@ -101,6 +101,7 @@ public class AgentUpdateParamsTest : TestBase
         AgentUpdateParamsModel expectedModel = new BetaManagedAgentsModelConfigParams()
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            Effort = BetaManagedAgentsEffortLevel.Low,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         BetaManagedAgentsMultiagentParams expectedMultiagent = new()
@@ -151,13 +152,13 @@ public class AgentUpdateParamsTest : TestBase
                 },
             },
         ];
+        int expectedVersion = 1;
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
 
         Assert.Equal(expectedAgentID, parameters.AgentID);
-        Assert.Equal(expectedVersion, parameters.Version);
         Assert.Equal(expectedDescription, parameters.Description);
         Assert.NotNull(parameters.McpServers);
         Assert.Equal(expectedMcpServers.Count, parameters.McpServers.Count);
@@ -189,6 +190,7 @@ public class AgentUpdateParamsTest : TestBase
         {
             Assert.Equal(expectedTools[i], parameters.Tools[i]);
         }
+        Assert.Equal(expectedVersion, parameters.Version);
         Assert.NotNull(parameters.Betas);
         Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
         for (int i = 0; i < expectedBetas.Count; i++)
@@ -203,8 +205,7 @@ public class AgentUpdateParamsTest : TestBase
         var parameters = new AgentUpdateParams
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
-            Version = 1,
-            Description = "description",
+            Description = "updated",
             McpServers =
             [
                 new()
@@ -268,6 +269,8 @@ public class AgentUpdateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("model"));
         Assert.Null(parameters.Name);
         Assert.False(parameters.RawBodyData.ContainsKey("name"));
+        Assert.Null(parameters.Version);
+        Assert.False(parameters.RawBodyData.ContainsKey("version"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
@@ -278,8 +281,7 @@ public class AgentUpdateParamsTest : TestBase
         var parameters = new AgentUpdateParams
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
-            Version = 1,
-            Description = "description",
+            Description = "updated",
             McpServers =
             [
                 new()
@@ -341,6 +343,7 @@ public class AgentUpdateParamsTest : TestBase
             // Null should be interpreted as omitted for these properties
             Model = null,
             Name = null,
+            Version = null,
             Betas = null,
         };
 
@@ -348,6 +351,8 @@ public class AgentUpdateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("model"));
         Assert.Null(parameters.Name);
         Assert.False(parameters.RawBodyData.ContainsKey("name"));
+        Assert.Null(parameters.Version);
+        Assert.False(parameters.RawBodyData.ContainsKey("version"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
@@ -358,13 +363,14 @@ public class AgentUpdateParamsTest : TestBase
         var parameters = new AgentUpdateParams
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
-            Version = 1,
             Model = new BetaManagedAgentsModelConfigParams()
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = BetaManagedAgentsEffortLevel.Low,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Name = "name",
+            Version = 1,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -390,13 +396,14 @@ public class AgentUpdateParamsTest : TestBase
         var parameters = new AgentUpdateParams
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
-            Version = 1,
             Model = new BetaManagedAgentsModelConfigParams()
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = BetaManagedAgentsEffortLevel.Low,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Name = "name",
+            Version = 1,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
             Description = null,
@@ -427,11 +434,7 @@ public class AgentUpdateParamsTest : TestBase
     [Fact]
     public void Url_Works()
     {
-        AgentUpdateParams parameters = new()
-        {
-            AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
-            Version = 1,
-        };
+        AgentUpdateParams parameters = new() { AgentID = "agent_011CZkYpogX7uDKUyvBTophP" };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
@@ -452,7 +455,6 @@ public class AgentUpdateParamsTest : TestBase
         AgentUpdateParams parameters = new()
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
-            Version = 1,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -470,8 +472,7 @@ public class AgentUpdateParamsTest : TestBase
         var parameters = new AgentUpdateParams
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
-            Version = 1,
-            Description = "description",
+            Description = "updated",
             McpServers =
             [
                 new()
@@ -485,6 +486,7 @@ public class AgentUpdateParamsTest : TestBase
             Model = new BetaManagedAgentsModelConfigParams()
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = BetaManagedAgentsEffortLevel.Low,
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Multiagent = new()
@@ -535,6 +537,7 @@ public class AgentUpdateParamsTest : TestBase
                     },
                 },
             ],
+            Version = 1,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -559,6 +562,7 @@ public class AgentUpdateParamsModelTest : TestBase
         AgentUpdateParamsModel value = new BetaManagedAgentsModelConfigParams()
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            Effort = BetaManagedAgentsEffortLevel.Low,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         value.Validate();
@@ -583,6 +587,7 @@ public class AgentUpdateParamsModelTest : TestBase
         AgentUpdateParamsModel value = new BetaManagedAgentsModelConfigParams()
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            Effort = BetaManagedAgentsEffortLevel.Low,
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

@@ -36,6 +36,9 @@ public class VersionListPageResponseTest : TestBase
                     Model = new()
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new Agents::BetaManagedAgentsEffortLow(
+                            Agents::BetaManagedAgentsEffortLowType.Low
+                        ),
                         Speed = Agents::Speed.Standard,
                     },
                     Multiagent = new()
@@ -125,6 +128,9 @@ public class VersionListPageResponseTest : TestBase
                 Model = new()
                 {
                     ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    Effort = new Agents::BetaManagedAgentsEffortLow(
+                        Agents::BetaManagedAgentsEffortLowType.Low
+                    ),
                     Speed = Agents::Speed.Standard,
                 },
                 Multiagent = new()
@@ -225,6 +231,9 @@ public class VersionListPageResponseTest : TestBase
                     Model = new()
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new Agents::BetaManagedAgentsEffortLow(
+                            Agents::BetaManagedAgentsEffortLowType.Low
+                        ),
                         Speed = Agents::Speed.Standard,
                     },
                     Multiagent = new()
@@ -328,6 +337,9 @@ public class VersionListPageResponseTest : TestBase
                     Model = new()
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new Agents::BetaManagedAgentsEffortLow(
+                            Agents::BetaManagedAgentsEffortLowType.Low
+                        ),
                         Speed = Agents::Speed.Standard,
                     },
                     Multiagent = new()
@@ -424,6 +436,9 @@ public class VersionListPageResponseTest : TestBase
                 Model = new()
                 {
                     ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    Effort = new Agents::BetaManagedAgentsEffortLow(
+                        Agents::BetaManagedAgentsEffortLowType.Low
+                    ),
                     Speed = Agents::Speed.Standard,
                 },
                 Multiagent = new()
@@ -524,6 +539,9 @@ public class VersionListPageResponseTest : TestBase
                     Model = new()
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new Agents::BetaManagedAgentsEffortLow(
+                            Agents::BetaManagedAgentsEffortLowType.Low
+                        ),
                         Speed = Agents::Speed.Standard,
                     },
                     Multiagent = new()
@@ -621,6 +639,9 @@ public class VersionListPageResponseTest : TestBase
                     Model = new()
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new Agents::BetaManagedAgentsEffortLow(
+                            Agents::BetaManagedAgentsEffortLowType.Low
+                        ),
                         Speed = Agents::Speed.Standard,
                     },
                     Multiagent = new()
@@ -718,6 +739,9 @@ public class VersionListPageResponseTest : TestBase
                     Model = new()
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new Agents::BetaManagedAgentsEffortLow(
+                            Agents::BetaManagedAgentsEffortLowType.Low
+                        ),
                         Speed = Agents::Speed.Standard,
                     },
                     Multiagent = new()
@@ -814,6 +838,9 @@ public class VersionListPageResponseTest : TestBase
                     Model = new()
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new Agents::BetaManagedAgentsEffortLow(
+                            Agents::BetaManagedAgentsEffortLowType.Low
+                        ),
                         Speed = Agents::Speed.Standard,
                     },
                     Multiagent = new()
@@ -913,6 +940,9 @@ public class VersionListPageResponseTest : TestBase
                     Model = new()
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new Agents::BetaManagedAgentsEffortLow(
+                            Agents::BetaManagedAgentsEffortLowType.Low
+                        ),
                         Speed = Agents::Speed.Standard,
                     },
                     Multiagent = new()
@@ -1011,6 +1041,9 @@ public class VersionListPageResponseTest : TestBase
                     Model = new()
                     {
                         ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new Agents::BetaManagedAgentsEffortLow(
+                            Agents::BetaManagedAgentsEffortLowType.Low
+                        ),
                         Speed = Agents::Speed.Standard,
                     },
                     Multiagent = new()

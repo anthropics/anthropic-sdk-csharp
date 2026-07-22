@@ -28,6 +28,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             Model = new Agents::BetaManagedAgentsModelConfigParams()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = Agents::BetaManagedAgentsEffortLevel.Low,
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -84,6 +85,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         Model expectedModel = new Agents::BetaManagedAgentsModelConfigParams()
         {
             ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+            Effort = Agents::BetaManagedAgentsEffortLevel.Low,
             Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         List<Agents::BetaManagedAgentsSkillParams> expectedSkills =
@@ -167,6 +169,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             Model = new Agents::BetaManagedAgentsModelConfigParams()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = Agents::BetaManagedAgentsEffortLevel.Low,
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -236,6 +239,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             Model = new Agents::BetaManagedAgentsModelConfigParams()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = Agents::BetaManagedAgentsEffortLevel.Low,
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -299,6 +303,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         Model expectedModel = new Agents::BetaManagedAgentsModelConfigParams()
         {
             ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+            Effort = Agents::BetaManagedAgentsEffortLevel.Low,
             Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         List<Agents::BetaManagedAgentsSkillParams> expectedSkills =
@@ -382,6 +387,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             Model = new Agents::BetaManagedAgentsModelConfigParams()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = Agents::BetaManagedAgentsEffortLevel.Low,
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -529,6 +535,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             Model = new Agents::BetaManagedAgentsModelConfigParams()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = Agents::BetaManagedAgentsEffortLevel.Low,
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -592,6 +599,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             Model = new Agents::BetaManagedAgentsModelConfigParams()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = Agents::BetaManagedAgentsEffortLevel.Low,
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -654,6 +662,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             Model = new Agents::BetaManagedAgentsModelConfigParams()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = Agents::BetaManagedAgentsEffortLevel.Low,
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -719,6 +728,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             Model = new Agents::BetaManagedAgentsModelConfigParams()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = Agents::BetaManagedAgentsEffortLevel.Low,
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -783,6 +793,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             Model = new Agents::BetaManagedAgentsModelConfigParams()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = Agents::BetaManagedAgentsEffortLevel.Low,
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -897,6 +908,7 @@ public class ModelTest : TestBase
         Model value = new Agents::BetaManagedAgentsModelConfigParams()
         {
             ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+            Effort = Agents::BetaManagedAgentsEffortLevel.Low,
             Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         value.Validate();
@@ -918,6 +930,7 @@ public class ModelTest : TestBase
         Model value = new Agents::BetaManagedAgentsModelConfigParams()
         {
             ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+            Effort = Agents::BetaManagedAgentsEffortLevel.Low,
             Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
