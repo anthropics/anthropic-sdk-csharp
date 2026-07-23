@@ -24,7 +24,8 @@ public record class EventListParams : ParamsBase
     public string? SessionID { get; init; }
 
     /// <summary>
-    /// Return events created after this time (exclusive).
+    /// Return events created after this time (exclusive). Compared against the event's
+    /// `processed_at` value.
     /// </summary>
     public System::DateTimeOffset? CreatedAtGt
     {
@@ -45,7 +46,8 @@ public record class EventListParams : ParamsBase
     }
 
     /// <summary>
-    /// Return events created at or after this time (inclusive).
+    /// Return events created at or after this time (inclusive). Compared against
+    /// the event's `processed_at` value.
     /// </summary>
     public System::DateTimeOffset? CreatedAtGte
     {
@@ -66,7 +68,8 @@ public record class EventListParams : ParamsBase
     }
 
     /// <summary>
-    /// Return events created before this time (exclusive).
+    /// Return events created before this time (exclusive). Compared against the
+    /// event's `processed_at` value.
     /// </summary>
     public System::DateTimeOffset? CreatedAtLt
     {
@@ -87,7 +90,8 @@ public record class EventListParams : ParamsBase
     }
 
     /// <summary>
-    /// Return events created at or before this time (inclusive).
+    /// Return events created at or before this time (inclusive). Compared against
+    /// the event's `processed_at` value.
     /// </summary>
     public System::DateTimeOffset? CreatedAtLte
     {
@@ -129,7 +133,8 @@ public record class EventListParams : ParamsBase
     }
 
     /// <summary>
-    /// Sort direction for results, ordered by created_at. Defaults to asc (chronological).
+    /// Sort direction for results, ordered by the event's `processed_at`. Defaults
+    /// to asc (chronological).
     /// </summary>
     public ApiEnum<string, Order>? Order
     {
@@ -326,7 +331,8 @@ public record class EventListParams : ParamsBase
 }
 
 /// <summary>
-/// Sort direction for results, ordered by created_at. Defaults to asc (chronological).
+/// Sort direction for results, ordered by the event's `processed_at`. Defaults to
+/// asc (chronological).
 /// </summary>
 [JsonConverter(typeof(OrderConverter))]
 public enum Order
