@@ -1,5 +1,13 @@
 # Changelog
 
+## 12.38.1 (2026-07-23)
+
+Full Changelog: [Anthropic-v12.38.0...Anthropic-v12.38.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.38.0...Anthropic-v12.38.1)
+
+### Bug Fixes
+
+* **client:** streaming parallel tool-use emit logic (issue [#197](https://github.com/anthropics/anthropic-sdk-csharp/issues/197)) ([#200](https://github.com/anthropics/anthropic-sdk-csharp/issues/200)) ([c1373ac](https://github.com/anthropics/anthropic-sdk-csharp/commit/c1373ac4f775973ce0f4070986ea7b7246944084))
+
 ## 12.38.0 (2026-07-23)
 
 Full Changelog: [Anthropic-v12.37.0...Anthropic-v12.38.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.37.0...Anthropic-v12.38.0)
