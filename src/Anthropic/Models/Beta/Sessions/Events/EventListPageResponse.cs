@@ -15,7 +15,7 @@ namespace Anthropic.Models.Beta.Sessions.Events;
 public sealed record class EventListPageResponse : JsonModel
 {
     /// <summary>
-    /// Events for the session, ordered by `created_at`.
+    /// Events for the session, ordered by `processed_at`.
     /// </summary>
     public IReadOnlyList<BetaManagedAgentsSessionEvent>? Data
     {

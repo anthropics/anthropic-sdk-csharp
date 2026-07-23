@@ -14,6 +14,7 @@ public class StopReasonTest : TestBase
     [InlineData(StopReason.ToolUse)]
     [InlineData(StopReason.PauseTurn)]
     [InlineData(StopReason.Refusal)]
+    [InlineData(StopReason.ModelContextWindowExceeded)]
     public void Validation_Works(StopReason rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -40,6 +41,7 @@ public class StopReasonTest : TestBase
     [InlineData(StopReason.ToolUse)]
     [InlineData(StopReason.PauseTurn)]
     [InlineData(StopReason.Refusal)]
+    [InlineData(StopReason.ModelContextWindowExceeded)]
     public void SerializationRoundtrip_Works(StopReason rawValue)
     {
         // force implicit conversion because Theory can't do that for us
