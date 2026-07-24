@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Helpers.Fallbacks;
@@ -75,10 +77,21 @@ internal sealed class RequestSnapshot
         var body = EffectiveBody(index);
         if (fallbackCreditToken != null)
         {
-            body["fallback_credit_token"] = fallbackCreditToken;
+            body["fallback_credit_token"] = CreditTokenNode(fallbackCreditToken);
         }
         return Build(Encoding.UTF8.GetBytes(body.ToJsonString()));
     }
+
+    /// <summary>
+    /// Renders the token in the object form with <c>best_effort</c> mode, so a token-layer
+    /// failure serves the retry at normal price instead of rejecting it — the outcome is
+    /// then reported on the response's <c>usage.fallback_credit</c>.
+    /// </summary>
+    static JsonNode? CreditTokenNode(string token) =>
+        JsonSerializer.SerializeToNode(
+            new BetaFallbackCreditTokenParam { Token = token, Mode = Mode.BestEffort },
+            ModelBase.SerializerOptions
+        );
 
     /// <summary>
     /// Returns the body with the entry at the given index applied (-1 = the original body).
@@ -91,12 +104,59 @@ internal sealed class RequestSnapshot
             return body;
         }
         // The entry's raw fields are exactly its set params (`model`, optional overrides, and
-        // any extra properties), so overlaying them applies the entry.
+        // any extra properties), so overlaying them applies the entry as a patch on the
+        // original request: a set field overrides, a field explicitly set to null unsets the
+        // original param — absent from the retried request, not sent as JSON null.
         foreach (var field in Entries[index].RawData)
         {
-            body[field.Key] = JsonNode.Parse(field.Value.GetRawText());
+            if (field.Key == "output_config" && field.Value.ValueKind == JsonValueKind.Object)
+            {
+                PatchObject(body, field.Key, field.Value);
+            }
+            else
+            {
+                Patch(body, field.Key, field.Value);
+            }
         }
         return body;
+    }
+
+    /// <summary>Applies one patch field: JSON null removes the key, anything else sets
+    /// it.</summary>
+    static void Patch(JsonObject target, string key, JsonElement value)
+    {
+        if (value.ValueKind == JsonValueKind.Null)
+        {
+            target.Remove(key);
+        }
+        else
+        {
+            target[key] = JsonNode.Parse(value.GetRawText());
+        }
+    }
+
+    /// <summary>
+    /// Patches an object-valued param one level deep: each subfield of the entry's object is a
+    /// patch against the original object's subfields — set overrides, null unsets, and subfields
+    /// the entry doesn't mention keep the original values. An original request without the
+    /// object gains one holding just the entry's set subfields. A patch that leaves no subfields
+    /// removes the param whole — never sent as an empty object.
+    /// </summary>
+    static void PatchObject(JsonObject body, string key, JsonElement patch)
+    {
+        var target = body[key] as JsonObject ?? [];
+        foreach (var subfield in patch.EnumerateObject())
+        {
+            Patch(target, subfield.Name, subfield.Value);
+        }
+        if (target.Count == 0)
+        {
+            body.Remove(key);
+        }
+        else
+        {
+            body[key] = target;
+        }
     }
 
     /// <summary>
@@ -115,7 +175,7 @@ internal sealed class RequestSnapshot
         var body = EffectiveBody(InitialIndex);
 
         body["model"] = model;
-        body["fallback_credit_token"] = fallbackCreditToken;
+        body["fallback_credit_token"] = CreditTokenNode(fallbackCreditToken);
 
         // The token is only redeemable against the same body, so model, fallback_credit_token,
         // and the one appended assistant turn are the only permitted deltas; anything else,

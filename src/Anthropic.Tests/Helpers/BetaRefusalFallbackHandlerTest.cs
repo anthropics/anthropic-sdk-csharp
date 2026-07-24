@@ -38,7 +38,13 @@ public class BetaRefusalFallbackHandlerTest
         Assert.Equal(["primary-model", "fallback-model"], transport.Models);
         Assert.Equal(
             "credit-token",
-            transport.JsonBodies[1]["fallback_credit_token"]?.GetValue<string>()
+            transport.JsonBodies[1]["fallback_credit_token"]?["token"]?.GetValue<string>()
+        );
+        // Sent in the object form with best_effort mode, so a token-layer failure serves the
+        // retry at normal price instead of a 400.
+        Assert.Equal(
+            "best_effort",
+            transport.JsonBodies[1]["fallback_credit_token"]?["mode"]?.GetValue<string>()
         );
     }
 
@@ -341,7 +347,7 @@ public class BetaRefusalFallbackHandlerTest
         Assert.Equal(2, transport.RequestCount);
         for (var index = 0; index < transport.RequestCount; index++)
         {
-            Assert.Equal(["fallback-credit-2026-06-01"], transport.BetaHeaderValues(index));
+            Assert.Equal(["fallback-credit-2026-07-01"], transport.BetaHeaderValues(index));
         }
     }
 
@@ -354,11 +360,11 @@ public class BetaRefusalFallbackHandlerTest
         var request = MessagesRequest();
         request.Headers.TryAddWithoutValidation(
             "anthropic-beta",
-            "some-other-beta,fallback-credit-2026-06-01"
+            "some-other-beta,fallback-credit-2026-07-01"
         );
         await invoker.SendAsync(request, TestContext.Current.CancellationToken);
 
-        Assert.Equal(["some-other-beta,fallback-credit-2026-06-01"], transport.BetaHeaderValues(0));
+        Assert.Equal(["some-other-beta,fallback-credit-2026-07-01"], transport.BetaHeaderValues(0));
     }
 
     [Fact]
@@ -441,6 +447,259 @@ public class BetaRefusalFallbackHandlerTest
     }
 
     [Fact]
+    public async Task PatchesSetNullAndAbsentEntryFieldsAgainstTheOriginalRequest()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(200, Message("fallback-model"));
+        var handler = new BetaRefusalFallbackHandler
+        {
+            // `model` is set, `thinking` is explicitly null, `max_tokens` is absent.
+            Fallbacks = [new BetaFallbackParam("fallback-model") { Thinking = null }],
+            InnerHandler = transport,
+        };
+        using HttpMessageInvoker invoker = new(handler);
+
+        var body = MessagesBody();
+        body["thinking"] = ThinkingBody();
+
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(MessagesRequest(body), TestContext.Current.CancellationToken);
+
+        var retried = transport.JsonBodies[1];
+        // Set: overrides the original value.
+        Assert.Equal("fallback-model", retried["model"]?.GetValue<string>());
+        // Explicitly null: unset — absent from the retried request, not sent as JSON null.
+        Assert.False(retried.ContainsKey("thinking"));
+        // Absent: the original value is used unchanged.
+        Assert.Equal(1024, retried["max_tokens"]?.GetValue<int>());
+    }
+
+    [Fact]
+    public async Task EachHopPatchesTheOriginalRequestNotThePreviousHop()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(200, Refusal("mid-model", "fresh-token"))
+            .EnqueueJson(200, Message("last-model"));
+        var handler = new BetaRefusalFallbackHandler
+        {
+            Fallbacks =
+            [
+                new BetaFallbackParam("mid-model") { MaxTokens = 99, Thinking = null },
+                new BetaFallbackParam("last-model"),
+            ],
+            InnerHandler = transport,
+        };
+        using HttpMessageInvoker invoker = new(handler);
+
+        var body = MessagesBody();
+        var thinking = ThinkingBody();
+        body["thinking"] = thinking;
+
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(MessagesRequest(body), TestContext.Current.CancellationToken);
+
+        // Hop 1 applies its entry's patch over the original request.
+        var firstHop = transport.JsonBodies[1];
+        Assert.Equal("mid-model", firstHop["model"]?.GetValue<string>());
+        Assert.Equal(99, firstHop["max_tokens"]?.GetValue<int>());
+        Assert.False(firstHop.ContainsKey("thinking"));
+
+        // Hop 2 patches the ORIGINAL request: hop 1's max_tokens override and thinking unset
+        // must not leak into it.
+        var secondHop = transport.JsonBodies[2];
+        Assert.Equal("last-model", secondHop["model"]?.GetValue<string>());
+        Assert.Equal(1024, secondHop["max_tokens"]?.GetValue<int>());
+        Assert.True(JsonNode.DeepEquals(thinking, secondHop["thinking"]));
+    }
+
+    [Fact]
+    public async Task OutputConfigSubfieldSetMergesIntoTheOriginalOutputConfig()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(200, Message("fallback-model"));
+        var handler = new BetaRefusalFallbackHandler
+        {
+            // Sets only `effort`; the original's `format` must survive.
+            Fallbacks = [OutputConfigFallback("""{"effort": "high"}""")],
+            InnerHandler = transport,
+        };
+        using HttpMessageInvoker invoker = new(handler);
+
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(
+            MessagesRequest(OutputConfigBody()),
+            TestContext.Current.CancellationToken
+        );
+
+        var outputConfig = transport.JsonBodies[1]["output_config"]!;
+        Assert.Equal("high", outputConfig["effort"]?.GetValue<string>());
+        Assert.Equal("json", outputConfig["format"]?["type"]?.GetValue<string>());
+    }
+
+    [Fact]
+    public async Task OutputConfigSubfieldNullUnsetsOnlyThatSubfield()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(200, Message("fallback-model"));
+        var handler = new BetaRefusalFallbackHandler
+        {
+            Fallbacks = [OutputConfigFallback("""{"effort": null}""")],
+            InnerHandler = transport,
+        };
+        using HttpMessageInvoker invoker = new(handler);
+
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(
+            MessagesRequest(OutputConfigBody()),
+            TestContext.Current.CancellationToken
+        );
+
+        var outputConfig = (JsonObject)transport.JsonBodies[1]["output_config"]!;
+        // `effort` is unset, not sent as JSON null; `format` is untouched.
+        Assert.False(outputConfig.ContainsKey("effort"));
+        Assert.Equal("json", outputConfig["format"]?["type"]?.GetValue<string>());
+    }
+
+    [Fact]
+    public async Task WholeOutputConfigNullUnsetsItAndAbsentLeavesIt()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(200, Refusal("mid-model", "fresh-token"))
+            .EnqueueJson(200, Message("last-model"));
+        var handler = new BetaRefusalFallbackHandler
+        {
+            Fallbacks =
+            [
+                // Whole output_config explicitly null: removed from the retried request.
+                new BetaFallbackParam("mid-model") { OutputConfig = null },
+                // output_config absent from the entry: the original object is used unchanged.
+                new BetaFallbackParam("last-model"),
+            ],
+            InnerHandler = transport,
+        };
+        using HttpMessageInvoker invoker = new(handler);
+
+        var body = OutputConfigBody();
+        var original = body["output_config"];
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(MessagesRequest(body), TestContext.Current.CancellationToken);
+
+        Assert.False(transport.JsonBodies[1].ContainsKey("output_config"));
+        Assert.True(JsonNode.DeepEquals(original, transport.JsonBodies[2]["output_config"]));
+    }
+
+    [Fact]
+    public async Task OutputConfigSubfieldsAreCreatedWhenTheOriginalHasNone()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(200, Message("fallback-model"));
+        var handler = new BetaRefusalFallbackHandler
+        {
+            // The original request has no output_config; nulls are dropped, sets are kept.
+            Fallbacks = [OutputConfigFallback("""{"effort": "low", "task_budget": null}""")],
+            InnerHandler = transport,
+        };
+        using HttpMessageInvoker invoker = new(handler);
+
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(MessagesRequest(), TestContext.Current.CancellationToken);
+
+        var outputConfig = (JsonObject)transport.JsonBodies[1]["output_config"]!;
+        Assert.Equal("low", outputConfig["effort"]?.GetValue<string>());
+        Assert.False(outputConfig.ContainsKey("task_budget"));
+    }
+
+    [Fact]
+    public async Task OutputConfigIsRemovedWhenAPatchUnsetsEverySubfield()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(200, Message("fallback-model"));
+        var handler = new BetaRefusalFallbackHandler
+        {
+            // Unsets both of the original's subfields, leaving output_config with none.
+            Fallbacks = [OutputConfigFallback("""{"effort": null, "format": null}""")],
+            InnerHandler = transport,
+        };
+        using HttpMessageInvoker invoker = new(handler);
+
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(
+            MessagesRequest(OutputConfigBody()),
+            TestContext.Current.CancellationToken
+        );
+
+        // An emptied output_config is removed, never sent as an empty object.
+        Assert.False(transport.JsonBodies[1].ContainsKey("output_config"));
+    }
+
+    [Fact]
+    public async Task OutputConfigIsNotAddedWhenAllPatchedSubfieldsAreNull()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(200, Message("fallback-model"));
+        var handler = new BetaRefusalFallbackHandler
+        {
+            Fallbacks = [OutputConfigFallback("""{"effort": null}""")],
+            InnerHandler = transport,
+        };
+        using HttpMessageInvoker invoker = new(handler);
+
+        // The original request has no output_config, and the patch's only subfield is null.
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(MessagesRequest(), TestContext.Current.CancellationToken);
+
+        Assert.False(transport.JsonBodies[1].ContainsKey("output_config"));
+    }
+
+    [Fact]
+    public async Task EachHopPatchesTheOriginalOutputConfigNotThePreviousHop()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(200, Refusal("mid-model", "fresh-token"))
+            .EnqueueJson(200, Message("last-model"));
+        var handler = new BetaRefusalFallbackHandler
+        {
+            Fallbacks =
+            [
+                OutputConfigFallback("""{"effort": "high", "format": null}""", "mid-model"),
+                OutputConfigFallback(
+                    """{"task_budget": {"type": "tokens", "total": 512}}""",
+                    "last-model"
+                ),
+            ],
+            InnerHandler = transport,
+        };
+        using HttpMessageInvoker invoker = new(handler);
+
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(
+            MessagesRequest(OutputConfigBody()),
+            TestContext.Current.CancellationToken
+        );
+
+        // Hop 1 patches the original: effort overridden, format unset.
+        var firstHop = (JsonObject)transport.JsonBodies[1]["output_config"]!;
+        Assert.Equal("high", firstHop["effort"]?.GetValue<string>());
+        Assert.False(firstHop.ContainsKey("format"));
+
+        // Hop 2 patches the ORIGINAL output_config: hop 1's effort override and format unset
+        // must not leak into it.
+        var secondHop = (JsonObject)transport.JsonBodies[2]["output_config"]!;
+        Assert.Equal("low", secondHop["effort"]?.GetValue<string>());
+        Assert.Equal("json", secondHop["format"]?["type"]?.GetValue<string>());
+        Assert.Equal(512, secondHop["task_budget"]?["total"]?.GetValue<int>());
+    }
+
+    [Fact]
     public async Task ThrowsOnRequestsWithServerSideFallbacks()
     {
         var transport = new FakeTransport().EnqueueJson(200, Refusal("primary-model"));
@@ -456,7 +715,7 @@ public class BetaRefusalFallbackHandlerTest
             "Sending the `fallbacks:` request param is not supported when using the "
                 + "`BetaRefusalFallbackHandler`. You should either remove the middleware and "
                 + "send `fallbacks:` with "
-                + "the `server-side-fallback-2026-06-01` beta header to let the API handle "
+                + "the `server-side-fallback-2026-07-01` beta header to let the API handle "
                 + "refusal fallbacks, or omit the "
                 + "`fallbacks:` param if you'd like `BetaRefusalFallbackHandler` to handle "
                 + "fallbacks on the client side.",
@@ -527,11 +786,11 @@ public class BetaRefusalFallbackHandlerTest
         // The failed hop never redeemed the token, so it carries to the next entry.
         Assert.Equal(
             "credit-token",
-            transport.JsonBodies[1]["fallback_credit_token"]?.GetValue<string>()
+            transport.JsonBodies[1]["fallback_credit_token"]?["token"]?.GetValue<string>()
         );
         Assert.Equal(
             "credit-token",
-            transport.JsonBodies[2]["fallback_credit_token"]?.GetValue<string>()
+            transport.JsonBodies[2]["fallback_credit_token"]?["token"]?.GetValue<string>()
         );
         Assert.Equal(1, fallbackState.Index);
     }
@@ -622,7 +881,7 @@ public class BetaRefusalFallbackHandlerTest
         Assert.Equal(99, transport.JsonBodies[0]["max_tokens"]?.GetValue<int>());
         Assert.Equal(
             "credit-token",
-            transport.JsonBodies[1]["fallback_credit_token"]?.GetValue<string>()
+            transport.JsonBodies[1]["fallback_credit_token"]?["token"]?.GetValue<string>()
         );
         Assert.False(transport.JsonBodies[2].ContainsKey("fallback_credit_token"));
         Assert.Equal("plain-model", transport.JsonBodies[2]["model"]?.GetValue<string>());
@@ -813,6 +1072,35 @@ public class BetaRefusalFallbackHandlerTest
         };
         return new HttpMessageInvoker(handler);
     }
+
+    static JsonObject ThinkingBody() => new() { ["type"] = "enabled", ["budget_tokens"] = 512 };
+
+    /// <summary>A messages body carrying an output_config with two subfields, so per-subfield
+    /// patches have something to override, unset, and preserve.</summary>
+    static JsonObject OutputConfigBody()
+    {
+        var body = MessagesBody();
+        body["output_config"] = new JsonObject
+        {
+            ["effort"] = "low",
+            ["format"] = new JsonObject { ["type"] = "json" },
+        };
+        return body;
+    }
+
+    /// <summary>A fallback entry whose output_config is the given raw JSON, so explicit-null
+    /// subfields are expressible.</summary>
+    static BetaFallbackParam OutputConfigFallback(
+        string outputConfigJson,
+        string model = "fallback-model"
+    ) =>
+        BetaFallbackParam.FromRawUnchecked(
+            new System.Collections.Generic.Dictionary<string, JsonElement>
+            {
+                ["model"] = JsonSerializer.SerializeToElement(model),
+                ["output_config"] = JsonDocument.Parse(outputConfigJson).RootElement.Clone(),
+            }
+        );
 
     static JsonObject MessagesBody() =>
         new()

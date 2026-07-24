@@ -318,6 +318,7 @@ public class BetaAbstractMemoryToolTest
                 CacheCreation = null,
                 CacheCreationInputTokens = null,
                 CacheReadInputTokens = null,
+                FallbackCredit = null,
                 InputTokens = 10,
                 OutputTokens = 10,
                 OutputTokensDetails = new(0),

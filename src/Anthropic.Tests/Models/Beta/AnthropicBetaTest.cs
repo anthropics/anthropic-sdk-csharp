@@ -36,7 +36,9 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.Dreaming2026_04_21)]
     [InlineData(AnthropicBeta.ThinkingTokenCount2026_05_13)]
     [InlineData(AnthropicBeta.ServerSideFallback2026_06_01)]
+    [InlineData(AnthropicBeta.ServerSideFallback2026_07_01)]
     [InlineData(AnthropicBeta.FallbackCredit2026_06_01)]
+    [InlineData(AnthropicBeta.FallbackCredit2026_07_01)]
     [InlineData(AnthropicBeta.AgentMemory2026_07_22)]
     public void Validation_Works(AnthropicBeta rawValue)
     {
@@ -86,7 +88,9 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.Dreaming2026_04_21)]
     [InlineData(AnthropicBeta.ThinkingTokenCount2026_05_13)]
     [InlineData(AnthropicBeta.ServerSideFallback2026_06_01)]
+    [InlineData(AnthropicBeta.ServerSideFallback2026_07_01)]
     [InlineData(AnthropicBeta.FallbackCredit2026_06_01)]
+    [InlineData(AnthropicBeta.FallbackCredit2026_07_01)]
     [InlineData(AnthropicBeta.AgentMemory2026_07_22)]
     public void SerializationRoundtrip_Works(AnthropicBeta rawValue)
     {

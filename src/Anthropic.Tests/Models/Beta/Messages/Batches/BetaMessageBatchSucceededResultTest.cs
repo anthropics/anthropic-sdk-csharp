@@ -83,6 +83,9 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
+                    FallbackCredit = new(
+                        new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
+                    ),
                     InferenceGeo = "global",
                     InputTokens = 2095,
                     Iterations =
@@ -175,6 +178,9 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                 CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
+                FallbackCredit = new(
+                    new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
+                ),
                 InferenceGeo = "global",
                 InputTokens = 2095,
                 Iterations =
@@ -280,6 +286,9 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
+                    FallbackCredit = new(
+                        new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
+                    ),
                     InferenceGeo = "global",
                     InputTokens = 2095,
                     Iterations =
@@ -390,6 +399,9 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
+                    FallbackCredit = new(
+                        new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
+                    ),
                     InferenceGeo = "global",
                     InputTokens = 2095,
                     Iterations =
@@ -489,6 +501,9 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                 CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
+                FallbackCredit = new(
+                    new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
+                ),
                 InferenceGeo = "global",
                 InputTokens = 2095,
                 Iterations =
@@ -594,6 +609,9 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
+                    FallbackCredit = new(
+                        new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
+                    ),
                     InferenceGeo = "global",
                     InputTokens = 2095,
                     Iterations =
@@ -698,6 +716,9 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
+                    FallbackCredit = new(
+                        new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
+                    ),
                     InferenceGeo = "global",
                     InputTokens = 2095,
                     Iterations =

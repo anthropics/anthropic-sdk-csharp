@@ -161,8 +161,14 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
             if (toolUseBlocks.Count == 0)
                 yield break;
 
-            // Execute tools in parallel and collect results in order.
-            var toolResults = await ExecuteToolsAsync(toolUseBlocks, cancellationToken)
+            // Execute tools in parallel and collect results in order. Availability is
+            // folded from the live params — not the loop-local snapshot — so a tool_removal
+            // pushed while yielding this turn is honored before dispatch.
+            var toolResults = await ExecuteToolsAsync(
+                    toolUseBlocks,
+                    AvailableToolNames(_currentParams.Messages),
+                    cancellationToken
+                )
                 .ConfigureAwait(false);
 
             // If params were mutated during this iteration (between yield and here),
@@ -258,8 +264,14 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
             if (toolUseBlocks.Count == 0)
                 yield break;
 
-            // Execute tools in parallel and collect results in order.
-            var toolResults = await ExecuteToolsAsync(toolUseBlocks, cancellationToken)
+            // Execute tools in parallel and collect results in order. Availability is
+            // folded from the live params — not the loop-local snapshot — so a tool_removal
+            // pushed while yielding this turn is honored before dispatch.
+            var toolResults = await ExecuteToolsAsync(
+                    toolUseBlocks,
+                    AvailableToolNames(_currentParams.Messages),
+                    cancellationToken
+                )
                 .ConfigureAwait(false);
 
             if (_paramsMutated)
@@ -343,33 +355,115 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         return toolUseBlocks;
     }
 
+    /// <summary>
+    /// Folds mid-conversation <c>tool_removal</c> / <c>tool_addition</c> blocks in
+    /// preceding <c>system</c> messages into the set of runnable tool names currently
+    /// available. Callers pass the live params so a change pushed during the current
+    /// turn is honored at dispatch. MCP references are ignored: those tools execute
+    /// server-side.
+    /// </summary>
+    private HashSet<string> AvailableToolNames(IReadOnlyList<BetaMessageParam> messages)
+    {
+        var available = new HashSet<string>(_toolsByName.Keys, StringComparer.Ordinal);
+        foreach (var message in messages)
+        {
+            if (message.Role.Raw() != "system")
+                continue;
+            if (!message.Content.TryPickBetaContentBlockParams(out var blocks))
+                continue;
+
+            foreach (var block in blocks)
+            {
+                ApplyToolChange(block, available);
+            }
+        }
+
+        return available;
+    }
+
+    private static void ApplyToolChange(BetaContentBlockParam block, HashSet<string> available)
+    {
+        switch (block.Value)
+        {
+            case BetaRequestToolRemovalBlock removal:
+                if (ReferencedToolName(removal.Tool.Value) is { } removedName)
+                    available.Remove(removedName);
+                break;
+            case BetaRequestToolAdditionBlock addition:
+                if (ReferencedToolName(addition.Tool.Value) is { } addedName)
+                    available.Add(addedName);
+                break;
+            case BetaMidConversationSystemBlockParam mid:
+                foreach (var inner in mid.Content)
+                {
+                    ApplyToolChange(inner, available);
+                }
+                break;
+            default:
+                // Other and unknown/newer block types leave the set untouched
+                // (forward compatibility).
+                break;
+        }
+    }
+
+    private static void ApplyToolChange(
+        BetaMidConversationSystemBlockParamContent block,
+        HashSet<string> available
+    )
+    {
+        switch (block.Value)
+        {
+            case BetaRequestToolRemovalBlock removal:
+                if (ReferencedToolName(removal.Tool.Value) is { } removedName)
+                    available.Remove(removedName);
+                break;
+            case BetaRequestToolAdditionBlock addition:
+                if (ReferencedToolName(addition.Tool.Value) is { } addedName)
+                    available.Add(addedName);
+                break;
+            default:
+                // Other and unknown/newer block types leave the set untouched
+                // (forward compatibility).
+                break;
+        }
+    }
+
+    private static string? ReferencedToolName(object? refValue) =>
+        refValue is BetaToolChangeToolReference r ? r.Name : null;
+
     private async Task<List<BetaContentBlockParam>> ExecuteToolsAsync(
         List<BetaToolUseBlock> toolUseBlocks,
+        HashSet<string> availableToolNames,
         CancellationToken cancellationToken
     )
     {
         var tasks = new Task<BetaToolResultBlockParam>[toolUseBlocks.Count];
         for (var i = 0; i < toolUseBlocks.Count; i++)
         {
-            tasks[i] = ExecuteToolAsync(toolUseBlocks[i], cancellationToken);
+            tasks[i] = ExecuteToolAsync(toolUseBlocks[i], availableToolNames, cancellationToken);
         }
 
         var results = await Task.WhenAll(tasks).ConfigureAwait(false);
         return [.. results.Select(r => (BetaContentBlockParam)r)];
     }
 
+    private static BetaToolResultBlockParam ToolNotFoundResult(BetaToolUseBlock toolUse) =>
+        new(toolUse.ID) { Content = $"Tool '{toolUse.Name}' not found", IsError = true };
+
     private async Task<BetaToolResultBlockParam> ExecuteToolAsync(
         BetaToolUseBlock toolUse,
+        HashSet<string> availableToolNames,
         CancellationToken cancellationToken
     )
     {
-        if (!_toolsByName.TryGetValue(toolUse.Name, out var tool))
+        // A tool_removal'ed tool is indistinguishable from one never declared: the
+        // removal is only a hint to the model, which may still emit the call.
+        if (
+            !availableToolNames.Contains(toolUse.Name)
+            || !_toolsByName.TryGetValue(toolUse.Name, out var tool)
+        )
         {
-            return new BetaToolResultBlockParam(toolUse.ID)
-            {
-                Content = $"Tool '{toolUse.Name}' not found",
-                IsError = true,
-            };
+            return ToolNotFoundResult(toolUse);
         }
 
         try

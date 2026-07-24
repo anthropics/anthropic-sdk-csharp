@@ -54,6 +54,8 @@ public record class BetaContentBlockParam : ModelBase
                 containerUpload: (x) => x.Type,
                 compaction: (x) => x.Type,
                 midConversationSystem: (x) => x.Type,
+                requestToolAdditionBlock: (x) => x.Type,
+                requestToolRemovalBlock: (x) => x.Type,
                 fallback: (x) => x.Type
             );
         }
@@ -85,6 +87,8 @@ public record class BetaContentBlockParam : ModelBase
                 containerUpload: (x) => x.CacheControl,
                 compaction: (x) => x.CacheControl,
                 midConversationSystem: (x) => x.CacheControl,
+                requestToolAdditionBlock: (x) => x.CacheControl,
+                requestToolRemovalBlock: (x) => x.CacheControl,
                 fallback: (_) => null
             );
         }
@@ -116,6 +120,8 @@ public record class BetaContentBlockParam : ModelBase
                 containerUpload: (_) => null,
                 compaction: (_) => null,
                 midConversationSystem: (_) => null,
+                requestToolAdditionBlock: (_) => null,
+                requestToolRemovalBlock: (_) => null,
                 fallback: (_) => null
             );
         }
@@ -147,6 +153,8 @@ public record class BetaContentBlockParam : ModelBase
                 containerUpload: (_) => null,
                 compaction: (_) => null,
                 midConversationSystem: (_) => null,
+                requestToolAdditionBlock: (_) => null,
+                requestToolRemovalBlock: (_) => null,
                 fallback: (_) => null
             );
         }
@@ -178,6 +186,8 @@ public record class BetaContentBlockParam : ModelBase
                 containerUpload: (_) => null,
                 compaction: (_) => null,
                 midConversationSystem: (_) => null,
+                requestToolAdditionBlock: (_) => null,
+                requestToolRemovalBlock: (_) => null,
                 fallback: (_) => null
             );
         }
@@ -209,6 +219,8 @@ public record class BetaContentBlockParam : ModelBase
                 containerUpload: (_) => null,
                 compaction: (_) => null,
                 midConversationSystem: (_) => null,
+                requestToolAdditionBlock: (_) => null,
+                requestToolRemovalBlock: (_) => null,
                 fallback: (_) => null
             );
         }
@@ -359,6 +371,18 @@ public record class BetaContentBlockParam : ModelBase
         BetaMidConversationSystemBlockParam value,
         JsonElement? element = null
     )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaContentBlockParam(BetaRequestToolAdditionBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaContentBlockParam(BetaRequestToolRemovalBlock value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -838,6 +862,52 @@ public record class BetaContentBlockParam : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaRequestToolAdditionBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickRequestToolAdditionBlock(out var value)) {
+    ///     // `value` is of type `BetaRequestToolAdditionBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickRequestToolAdditionBlock(
+        [NotNullWhen(true)] out BetaRequestToolAdditionBlock? value
+    )
+    {
+        value = this.Value as BetaRequestToolAdditionBlock;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaRequestToolRemovalBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickRequestToolRemovalBlock(out var value)) {
+    ///     // `value` is of type `BetaRequestToolRemovalBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickRequestToolRemovalBlock(
+        [NotNullWhen(true)] out BetaRequestToolRemovalBlock? value
+    )
+    {
+        value = this.Value as BetaRequestToolRemovalBlock;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaFallbackBlockParam"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -892,6 +962,8 @@ public record class BetaContentBlockParam : ModelBase
     ///     (BetaContainerUploadBlockParam value) =&gt; {...},
     ///     (BetaCompactionBlockParam value) =&gt; {...},
     ///     (BetaMidConversationSystemBlockParam value) =&gt; {...},
+    ///     (BetaRequestToolAdditionBlock value) =&gt; {...},
+    ///     (BetaRequestToolRemovalBlock value) =&gt; {...},
     ///     (BetaFallbackBlockParam value) =&gt; {...}
     /// );
     /// </code>
@@ -919,6 +991,8 @@ public record class BetaContentBlockParam : ModelBase
         System::Action<BetaContainerUploadBlockParam> containerUpload,
         System::Action<BetaCompactionBlockParam> compaction,
         System::Action<BetaMidConversationSystemBlockParam> midConversationSystem,
+        System::Action<BetaRequestToolAdditionBlock> requestToolAdditionBlock,
+        System::Action<BetaRequestToolRemovalBlock> requestToolRemovalBlock,
         System::Action<BetaFallbackBlockParam> fallback
     )
     {
@@ -987,6 +1061,12 @@ public record class BetaContentBlockParam : ModelBase
             case BetaMidConversationSystemBlockParam value:
                 midConversationSystem(value);
                 break;
+            case BetaRequestToolAdditionBlock value:
+                requestToolAdditionBlock(value);
+                break;
+            case BetaRequestToolRemovalBlock value:
+                requestToolRemovalBlock(value);
+                break;
             case BetaFallbackBlockParam value:
                 fallback(value);
                 break;
@@ -1033,6 +1113,8 @@ public record class BetaContentBlockParam : ModelBase
     ///     (BetaContainerUploadBlockParam value) =&gt; {...},
     ///     (BetaCompactionBlockParam value) =&gt; {...},
     ///     (BetaMidConversationSystemBlockParam value) =&gt; {...},
+    ///     (BetaRequestToolAdditionBlock value) =&gt; {...},
+    ///     (BetaRequestToolRemovalBlock value) =&gt; {...},
     ///     (BetaFallbackBlockParam value) =&gt; {...}
     /// );
     /// </code>
@@ -1063,6 +1145,8 @@ public record class BetaContentBlockParam : ModelBase
         System::Func<BetaContainerUploadBlockParam, T> containerUpload,
         System::Func<BetaCompactionBlockParam, T> compaction,
         System::Func<BetaMidConversationSystemBlockParam, T> midConversationSystem,
+        System::Func<BetaRequestToolAdditionBlock, T> requestToolAdditionBlock,
+        System::Func<BetaRequestToolRemovalBlock, T> requestToolRemovalBlock,
         System::Func<BetaFallbackBlockParam, T> fallback
     )
     {
@@ -1090,6 +1174,8 @@ public record class BetaContentBlockParam : ModelBase
             BetaContainerUploadBlockParam value => containerUpload(value),
             BetaCompactionBlockParam value => compaction(value),
             BetaMidConversationSystemBlockParam value => midConversationSystem(value),
+            BetaRequestToolAdditionBlock value => requestToolAdditionBlock(value),
+            BetaRequestToolRemovalBlock value => requestToolRemovalBlock(value),
             BetaFallbackBlockParam value => fallback(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaContentBlockParam"
@@ -1165,6 +1251,12 @@ public record class BetaContentBlockParam : ModelBase
         BetaMidConversationSystemBlockParam value
     ) => new(value);
 
+    public static implicit operator BetaContentBlockParam(BetaRequestToolAdditionBlock value) =>
+        new(value);
+
+    public static implicit operator BetaContentBlockParam(BetaRequestToolRemovalBlock value) =>
+        new(value);
+
     public static implicit operator BetaContentBlockParam(BetaFallbackBlockParam value) =>
         new(value);
 
@@ -1208,6 +1300,8 @@ public record class BetaContentBlockParam : ModelBase
             (containerUpload) => containerUpload.Validate(),
             (compaction) => compaction.Validate(),
             (midConversationSystem) => midConversationSystem.Validate(),
+            (requestToolAdditionBlock) => requestToolAdditionBlock.Validate(),
+            (requestToolRemovalBlock) => requestToolRemovalBlock.Validate(),
             (fallback) => fallback.Validate()
         );
     }
@@ -1253,7 +1347,9 @@ public record class BetaContentBlockParam : ModelBase
             BetaContainerUploadBlockParam _ => 18,
             BetaCompactionBlockParam _ => 19,
             BetaMidConversationSystemBlockParam _ => 20,
-            BetaFallbackBlockParam _ => 21,
+            BetaRequestToolAdditionBlock _ => 21,
+            BetaRequestToolRemovalBlock _ => 22,
+            BetaFallbackBlockParam _ => 23,
             _ => -1,
         };
     }
@@ -1695,6 +1791,46 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                             element,
                             options
                         );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "tool_addition":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaRequestToolAdditionBlock>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "tool_removal":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaRequestToolRemovalBlock>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);

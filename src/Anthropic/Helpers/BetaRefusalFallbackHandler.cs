@@ -95,14 +95,14 @@ public sealed class BetaRefusalFallbackHandler : DelegatingHandler
         }
     }
 
-    IReadOnlyList<ApiEnum<string, AnthropicBeta>> _betas = [AnthropicBeta.FallbackCredit2026_06_01];
+    IReadOnlyList<ApiEnum<string, AnthropicBeta>> _betas = [AnthropicBeta.FallbackCredit2026_07_01];
 
     /// <summary>
     /// The betas added to the <c>anthropic-beta</c> header of every <c>/v1/messages</c> request
     /// this handler handles, including the original, since refusals only carry a
     /// <c>fallback_credit_token</c> when the beta is enabled.
     ///
-    /// <para>Defaults to <see cref="AnthropicBeta.FallbackCredit2026_06_01"/>; set an empty list
+    /// <para>Defaults to <see cref="AnthropicBeta.FallbackCredit2026_07_01"/>; set an empty list
     /// to send none.</para>
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>> Betas
@@ -213,7 +213,7 @@ public sealed class BetaRefusalFallbackHandler : DelegatingHandler
                 "Sending the `fallbacks:` request param is not supported when using the "
                     + "`BetaRefusalFallbackHandler`. You should either remove the middleware "
                     + "and send `fallbacks:` with "
-                    + "the `server-side-fallback-2026-06-01` beta header to let the API handle "
+                    + "the `server-side-fallback-2026-07-01` beta header to let the API handle "
                     + "refusal fallbacks, or omit "
                     + "the `fallbacks:` param if you'd like `BetaRefusalFallbackHandler` to "
                     + "handle fallbacks on the client side."

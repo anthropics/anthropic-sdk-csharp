@@ -103,6 +103,10 @@ public sealed class BetaMessageContentAggregator
                 {
                     usage = usage with { OutputTokensDetails = delta.Usage.OutputTokensDetails };
                 }
+                if (delta.Usage.FallbackCredit != null)
+                {
+                    usage = usage with { FallbackCredit = delta.Usage.FallbackCredit };
+                }
                 // The per-hop usage chain (server-side fallbacks or the fallback handler's
                 // splice) is a cumulative ledger arriving on the terminal message_delta;
                 // the latest delta supersedes prior values.

@@ -1,6 +1,5 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -11,38 +10,29 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 /// <summary>
-/// System instructions that appear mid-conversation.
+/// Mid-conversation directive to withdraw a tool.
 ///
-/// <para>Use this block to provide or update system-level instructions at a specific
-/// point in the conversation, rather than only via the top-level `system` parameter.</para>
+/// <para>``tool`` references a tool (or MCP toolset) by name from the request's
+/// ``tools``; it is no longer offered to the model from this point in the conversation onward.</para>
 /// </summary>
 [JsonConverter(
-    typeof(JsonModelConverter<
-        BetaMidConversationSystemBlockParam,
-        BetaMidConversationSystemBlockParamFromRaw
-    >)
+    typeof(JsonModelConverter<BetaRequestToolRemovalBlock, BetaRequestToolRemovalBlockFromRaw>)
 )]
-public sealed record class BetaMidConversationSystemBlockParam : JsonModel
+public sealed record class BetaRequestToolRemovalBlock : JsonModel
 {
     /// <summary>
-    /// System instruction text blocks.
+    /// Reference to a single tool the caller declared directly in ``tools[]``. Does
+    /// not accept the composed ``{server}_{name}`` form the server assigns to MCP-resolved
+    /// tools — use ``mcp_tool_reference`` or ``mcp_toolset_reference`` for those.
     /// </summary>
-    public required IReadOnlyList<BetaMidConversationSystemBlockParamContent> Content
+    public required BetaRequestToolRemovalBlockTool Tool
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<
-                ImmutableArray<BetaMidConversationSystemBlockParamContent>
-            >("content");
+            return this._rawData.GetNotNullClass<BetaRequestToolRemovalBlockTool>("tool");
         }
-        init
-        {
-            this._rawData.Set<ImmutableArray<BetaMidConversationSystemBlockParamContent>>(
-                "content",
-                ImmutableArray.ToImmutableArray(value)
-            );
-        }
+        init { this._rawData.Set("tool", value); }
     }
 
     public JsonElement Type
@@ -71,49 +61,42 @@ public sealed record class BetaMidConversationSystemBlockParam : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        foreach (var item in this.Content)
-        {
-            item.Validate();
-        }
-        if (
-            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("mid_conv_system"))
-        )
+        this.Tool.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("tool_removal")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         this.CacheControl?.Validate();
     }
 
-    public BetaMidConversationSystemBlockParam()
+    public BetaRequestToolRemovalBlock()
     {
-        this.Type = JsonSerializer.SerializeToElement("mid_conv_system");
+        this.Type = JsonSerializer.SerializeToElement("tool_removal");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    public BetaMidConversationSystemBlockParam(
-        BetaMidConversationSystemBlockParam betaMidConversationSystemBlockParam
-    )
-        : base(betaMidConversationSystemBlockParam) { }
+    public BetaRequestToolRemovalBlock(BetaRequestToolRemovalBlock betaRequestToolRemovalBlock)
+        : base(betaRequestToolRemovalBlock) { }
 #pragma warning restore CS8618
 
-    public BetaMidConversationSystemBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
+    public BetaRequestToolRemovalBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.SerializeToElement("mid_conv_system");
+        this.Type = JsonSerializer.SerializeToElement("tool_removal");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMidConversationSystemBlockParam(FrozenDictionary<string, JsonElement> rawData)
+    BetaRequestToolRemovalBlock(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="BetaMidConversationSystemBlockParamFromRaw.FromRawUnchecked"/>
-    public static BetaMidConversationSystemBlockParam FromRawUnchecked(
+    /// <inheritdoc cref="BetaRequestToolRemovalBlockFromRaw.FromRawUnchecked"/>
+    public static BetaRequestToolRemovalBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -121,31 +104,28 @@ public sealed record class BetaMidConversationSystemBlockParam : JsonModel
     }
 
     [SetsRequiredMembers]
-    public BetaMidConversationSystemBlockParam(
-        IReadOnlyList<BetaMidConversationSystemBlockParamContent> content
-    )
+    public BetaRequestToolRemovalBlock(BetaRequestToolRemovalBlockTool tool)
         : this()
     {
-        this.Content = content;
+        this.Tool = tool;
     }
 }
 
-class BetaMidConversationSystemBlockParamFromRaw : IFromRawJson<BetaMidConversationSystemBlockParam>
+class BetaRequestToolRemovalBlockFromRaw : IFromRawJson<BetaRequestToolRemovalBlock>
 {
     /// <inheritdoc/>
-    public BetaMidConversationSystemBlockParam FromRawUnchecked(
+    public BetaRequestToolRemovalBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
-    ) => BetaMidConversationSystemBlockParam.FromRawUnchecked(rawData);
+    ) => BetaRequestToolRemovalBlock.FromRawUnchecked(rawData);
 }
 
 /// <summary>
-/// Mid-conversation directive to surface a declared tool.
-///
-/// <para>``tool`` references a tool (or MCP toolset) by name from the request's
-/// ``tools``; it is offered to the model from this point in the conversation onward.</para>
+/// Reference to a single tool the caller declared directly in ``tools[]``. Does
+/// not accept the composed ``{server}_{name}`` form the server assigns to MCP-resolved
+/// tools — use ``mcp_tool_reference`` or ``mcp_toolset_reference`` for those.
 /// </summary>
-[JsonConverter(typeof(BetaMidConversationSystemBlockParamContentConverter))]
-public record class BetaMidConversationSystemBlockParamContent : ModelBase
+[JsonConverter(typeof(BetaRequestToolRemovalBlockToolConverter))]
+public record class BetaRequestToolRemovalBlockTool : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -162,32 +142,44 @@ public record class BetaMidConversationSystemBlockParamContent : ModelBase
         }
     }
 
+    public string? Name
+    {
+        get
+        {
+            return Match<string?>(
+                betaToolChangeToolReference: (x) => x.Name,
+                betaToolChangeMcpToolReference: (x) => x.Name,
+                betaToolChangeMcpToolsetReference: (_) => null
+            );
+        }
+    }
+
     public JsonElement Type
     {
         get
         {
             return Match(
-                betaTextBlockParam: (x) => x.Type,
-                betaRequestToolAdditionBlock: (x) => x.Type,
-                betaRequestToolRemovalBlock: (x) => x.Type
+                betaToolChangeToolReference: (x) => x.Type,
+                betaToolChangeMcpToolReference: (x) => x.Type,
+                betaToolChangeMcpToolsetReference: (x) => x.Type
             );
         }
     }
 
-    public BetaCacheControlEphemeral? CacheControl
+    public string? ServerName
     {
         get
         {
-            return Match<BetaCacheControlEphemeral?>(
-                betaTextBlockParam: (x) => x.CacheControl,
-                betaRequestToolAdditionBlock: (x) => x.CacheControl,
-                betaRequestToolRemovalBlock: (x) => x.CacheControl
+            return Match<string?>(
+                betaToolChangeToolReference: (_) => null,
+                betaToolChangeMcpToolReference: (x) => x.ServerName,
+                betaToolChangeMcpToolsetReference: (x) => x.ServerName
             );
         }
     }
 
-    public BetaMidConversationSystemBlockParamContent(
-        BetaTextBlockParam value,
+    public BetaRequestToolRemovalBlockTool(
+        BetaToolChangeToolReference value,
         JsonElement? element = null
     )
     {
@@ -195,8 +187,8 @@ public record class BetaMidConversationSystemBlockParamContent : ModelBase
         this._element = element;
     }
 
-    public BetaMidConversationSystemBlockParamContent(
-        BetaRequestToolAdditionBlock value,
+    public BetaRequestToolRemovalBlockTool(
+        BetaToolChangeMcpToolReference value,
         JsonElement? element = null
     )
     {
@@ -204,8 +196,8 @@ public record class BetaMidConversationSystemBlockParamContent : ModelBase
         this._element = element;
     }
 
-    public BetaMidConversationSystemBlockParamContent(
-        BetaRequestToolRemovalBlock value,
+    public BetaRequestToolRemovalBlockTool(
+        BetaToolChangeMcpToolsetReference value,
         JsonElement? element = null
     )
     {
@@ -213,75 +205,77 @@ public record class BetaMidConversationSystemBlockParamContent : ModelBase
         this._element = element;
     }
 
-    public BetaMidConversationSystemBlockParamContent(JsonElement element)
+    public BetaRequestToolRemovalBlockTool(JsonElement element)
     {
         this._element = element;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaTextBlockParam"/>.
+    /// type <see cref="BetaToolChangeToolReference"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaTextBlockParam(out var value)) {
-    ///     // `value` is of type `BetaTextBlockParam`
+    /// if (instance.TryPickBetaToolChangeToolReference(out var value)) {
+    ///     // `value` is of type `BetaToolChangeToolReference`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaTextBlockParam([NotNullWhen(true)] out BetaTextBlockParam? value)
+    public bool TryPickBetaToolChangeToolReference(
+        [NotNullWhen(true)] out BetaToolChangeToolReference? value
+    )
     {
-        value = this.Value as BetaTextBlockParam;
+        value = this.Value as BetaToolChangeToolReference;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaRequestToolAdditionBlock"/>.
+    /// type <see cref="BetaToolChangeMcpToolReference"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaRequestToolAdditionBlock(out var value)) {
-    ///     // `value` is of type `BetaRequestToolAdditionBlock`
+    /// if (instance.TryPickBetaToolChangeMcpToolReference(out var value)) {
+    ///     // `value` is of type `BetaToolChangeMcpToolReference`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaRequestToolAdditionBlock(
-        [NotNullWhen(true)] out BetaRequestToolAdditionBlock? value
+    public bool TryPickBetaToolChangeMcpToolReference(
+        [NotNullWhen(true)] out BetaToolChangeMcpToolReference? value
     )
     {
-        value = this.Value as BetaRequestToolAdditionBlock;
+        value = this.Value as BetaToolChangeMcpToolReference;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaRequestToolRemovalBlock"/>.
+    /// type <see cref="BetaToolChangeMcpToolsetReference"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaRequestToolRemovalBlock(out var value)) {
-    ///     // `value` is of type `BetaRequestToolRemovalBlock`
+    /// if (instance.TryPickBetaToolChangeMcpToolsetReference(out var value)) {
+    ///     // `value` is of type `BetaToolChangeMcpToolsetReference`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaRequestToolRemovalBlock(
-        [NotNullWhen(true)] out BetaRequestToolRemovalBlock? value
+    public bool TryPickBetaToolChangeMcpToolsetReference(
+        [NotNullWhen(true)] out BetaToolChangeMcpToolsetReference? value
     )
     {
-        value = this.Value as BetaRequestToolRemovalBlock;
+        value = this.Value as BetaToolChangeMcpToolsetReference;
         return value != null;
     }
 
@@ -299,33 +293,33 @@ public record class BetaMidConversationSystemBlockParamContent : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaTextBlockParam value) =&gt; {...},
-    ///     (BetaRequestToolAdditionBlock value) =&gt; {...},
-    ///     (BetaRequestToolRemovalBlock value) =&gt; {...}
+    ///     (BetaToolChangeToolReference value) =&gt; {...},
+    ///     (BetaToolChangeMcpToolReference value) =&gt; {...},
+    ///     (BetaToolChangeMcpToolsetReference value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaTextBlockParam> betaTextBlockParam,
-        System::Action<BetaRequestToolAdditionBlock> betaRequestToolAdditionBlock,
-        System::Action<BetaRequestToolRemovalBlock> betaRequestToolRemovalBlock
+        System::Action<BetaToolChangeToolReference> betaToolChangeToolReference,
+        System::Action<BetaToolChangeMcpToolReference> betaToolChangeMcpToolReference,
+        System::Action<BetaToolChangeMcpToolsetReference> betaToolChangeMcpToolsetReference
     )
     {
         switch (this.Value)
         {
-            case BetaTextBlockParam value:
-                betaTextBlockParam(value);
+            case BetaToolChangeToolReference value:
+                betaToolChangeToolReference(value);
                 break;
-            case BetaRequestToolAdditionBlock value:
-                betaRequestToolAdditionBlock(value);
+            case BetaToolChangeMcpToolReference value:
+                betaToolChangeMcpToolReference(value);
                 break;
-            case BetaRequestToolRemovalBlock value:
-                betaRequestToolRemovalBlock(value);
+            case BetaToolChangeMcpToolsetReference value:
+                betaToolChangeMcpToolsetReference(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of BetaMidConversationSystemBlockParamContent"
+                    "Data did not match any variant of BetaRequestToolRemovalBlockTool"
                 );
         }
     }
@@ -345,40 +339,40 @@ public record class BetaMidConversationSystemBlockParamContent : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaTextBlockParam value) =&gt; {...},
-    ///     (BetaRequestToolAdditionBlock value) =&gt; {...},
-    ///     (BetaRequestToolRemovalBlock value) =&gt; {...}
+    ///     (BetaToolChangeToolReference value) =&gt; {...},
+    ///     (BetaToolChangeMcpToolReference value) =&gt; {...},
+    ///     (BetaToolChangeMcpToolsetReference value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaTextBlockParam, T> betaTextBlockParam,
-        System::Func<BetaRequestToolAdditionBlock, T> betaRequestToolAdditionBlock,
-        System::Func<BetaRequestToolRemovalBlock, T> betaRequestToolRemovalBlock
+        System::Func<BetaToolChangeToolReference, T> betaToolChangeToolReference,
+        System::Func<BetaToolChangeMcpToolReference, T> betaToolChangeMcpToolReference,
+        System::Func<BetaToolChangeMcpToolsetReference, T> betaToolChangeMcpToolsetReference
     )
     {
         return this.Value switch
         {
-            BetaTextBlockParam value => betaTextBlockParam(value),
-            BetaRequestToolAdditionBlock value => betaRequestToolAdditionBlock(value),
-            BetaRequestToolRemovalBlock value => betaRequestToolRemovalBlock(value),
+            BetaToolChangeToolReference value => betaToolChangeToolReference(value),
+            BetaToolChangeMcpToolReference value => betaToolChangeMcpToolReference(value),
+            BetaToolChangeMcpToolsetReference value => betaToolChangeMcpToolsetReference(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaMidConversationSystemBlockParamContent"
+                "Data did not match any variant of BetaRequestToolRemovalBlockTool"
             ),
         };
     }
 
-    public static implicit operator BetaMidConversationSystemBlockParamContent(
-        BetaTextBlockParam value
+    public static implicit operator BetaRequestToolRemovalBlockTool(
+        BetaToolChangeToolReference value
     ) => new(value);
 
-    public static implicit operator BetaMidConversationSystemBlockParamContent(
-        BetaRequestToolAdditionBlock value
+    public static implicit operator BetaRequestToolRemovalBlockTool(
+        BetaToolChangeMcpToolReference value
     ) => new(value);
 
-    public static implicit operator BetaMidConversationSystemBlockParamContent(
-        BetaRequestToolRemovalBlock value
+    public static implicit operator BetaRequestToolRemovalBlockTool(
+        BetaToolChangeMcpToolsetReference value
     ) => new(value);
 
     /// <summary>
@@ -396,17 +390,17 @@ public record class BetaMidConversationSystemBlockParamContent : ModelBase
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaMidConversationSystemBlockParamContent"
+                "Data did not match any variant of BetaRequestToolRemovalBlockTool"
             );
         }
         this.Switch(
-            (betaTextBlockParam) => betaTextBlockParam.Validate(),
-            (betaRequestToolAdditionBlock) => betaRequestToolAdditionBlock.Validate(),
-            (betaRequestToolRemovalBlock) => betaRequestToolRemovalBlock.Validate()
+            (betaToolChangeToolReference) => betaToolChangeToolReference.Validate(),
+            (betaToolChangeMcpToolReference) => betaToolChangeMcpToolReference.Validate(),
+            (betaToolChangeMcpToolsetReference) => betaToolChangeMcpToolsetReference.Validate()
         );
     }
 
-    public virtual bool Equals(BetaMidConversationSystemBlockParamContent? other) =>
+    public virtual bool Equals(BetaRequestToolRemovalBlockTool? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -426,18 +420,18 @@ public record class BetaMidConversationSystemBlockParamContent : ModelBase
     {
         return this.Value switch
         {
-            BetaTextBlockParam _ => 0,
-            BetaRequestToolAdditionBlock _ => 1,
-            BetaRequestToolRemovalBlock _ => 2,
+            BetaToolChangeToolReference _ => 0,
+            BetaToolChangeMcpToolReference _ => 1,
+            BetaToolChangeMcpToolsetReference _ => 2,
             _ => -1,
         };
     }
 }
 
-sealed class BetaMidConversationSystemBlockParamContentConverter
-    : JsonConverter<BetaMidConversationSystemBlockParamContent>
+sealed class BetaRequestToolRemovalBlockToolConverter
+    : JsonConverter<BetaRequestToolRemovalBlockTool>
 {
-    public override BetaMidConversationSystemBlockParamContent? Read(
+    public override BetaRequestToolRemovalBlockTool? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -456,11 +450,11 @@ sealed class BetaMidConversationSystemBlockParamContentConverter
 
         switch (type)
         {
-            case "text":
+            case "tool_reference":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaTextBlockParam>(
+                    var deserialized = JsonSerializer.Deserialize<BetaToolChangeToolReference>(
                         element,
                         options
                     );
@@ -476,11 +470,11 @@ sealed class BetaMidConversationSystemBlockParamContentConverter
 
                 return new(element);
             }
-            case "tool_addition":
+            case "mcp_tool_reference":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaRequestToolAdditionBlock>(
+                    var deserialized = JsonSerializer.Deserialize<BetaToolChangeMcpToolReference>(
                         element,
                         options
                     );
@@ -496,14 +490,15 @@ sealed class BetaMidConversationSystemBlockParamContentConverter
 
                 return new(element);
             }
-            case "tool_removal":
+            case "mcp_toolset_reference":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaRequestToolRemovalBlock>(
-                        element,
-                        options
-                    );
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaToolChangeMcpToolsetReference>(
+                            element,
+                            options
+                        );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);
@@ -518,14 +513,14 @@ sealed class BetaMidConversationSystemBlockParamContentConverter
             }
             default:
             {
-                return new BetaMidConversationSystemBlockParamContent(element);
+                return new BetaRequestToolRemovalBlockTool(element);
             }
         }
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaMidConversationSystemBlockParamContent value,
+        BetaRequestToolRemovalBlockTool value,
         JsonSerializerOptions options
     )
     {

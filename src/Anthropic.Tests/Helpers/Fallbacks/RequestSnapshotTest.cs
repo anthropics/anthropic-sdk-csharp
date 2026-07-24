@@ -84,10 +84,11 @@ public class RequestSnapshotTest
     {
         var snapshot = Snapshot();
 
-        Assert.Equal(
-            "credit",
-            (string?)(await Body(snapshot.Request(0, "credit")))["fallback_credit_token"]
-        );
+        // Sent in the object form with best_effort mode, so a token-layer failure serves the
+        // retry at normal price instead of a 400.
+        var token = (await Body(snapshot.Request(0, "credit")))["fallback_credit_token"];
+        Assert.Equal("credit", (string?)token?["token"]);
+        Assert.Equal("best_effort", (string?)token?["mode"]);
         Assert.False((await Body(snapshot.Request(0))).ContainsKey("fallback_credit_token"));
     }
 
@@ -119,7 +120,8 @@ public class RequestSnapshotTest
         var body = await Body(snapshot.HopRequest("fallback", "token-1", continuation));
 
         Assert.Equal("fallback", (string?)body["model"]);
-        Assert.Equal("token-1", (string?)body["fallback_credit_token"]);
+        Assert.Equal("token-1", (string?)body["fallback_credit_token"]?["token"]);
+        Assert.Equal("best_effort", (string?)body["fallback_credit_token"]?["mode"]);
         var messages = (JsonArray)body["messages"]!;
         Assert.Equal(2, messages.Count);
         Assert.Equal("assistant", (string?)messages[1]!["role"]);

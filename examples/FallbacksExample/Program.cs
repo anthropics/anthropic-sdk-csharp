@@ -19,8 +19,8 @@ BetaMessage served = await client.Beta.Messages.Create(
         Model = Messages::Model.ClaudeFable5,
         MaxTokens = 1024,
         Messages = [new() { Content = "Some prompt that triggers a refusal", Role = Role.User }],
-        Fallbacks = [new(Messages::Model.ClaudeOpus4_8)],
-        Betas = [AnthropicBeta.ServerSideFallback2026_06_01],
+        Fallbacks = new([new(Messages::Model.ClaudeOpus4_8)]),
+        Betas = [AnthropicBeta.ServerSideFallback2026_07_01],
     }
 );
 Console.WriteLine($"server-side, served by: {served.Model.Raw()}");

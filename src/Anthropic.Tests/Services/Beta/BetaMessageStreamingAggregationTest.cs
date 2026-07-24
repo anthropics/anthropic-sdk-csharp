@@ -26,6 +26,7 @@ public class BetaMessageStreamingAggregationTest
                 CacheCreation = null,
                 CacheCreationInputTokens = null,
                 CacheReadInputTokens = null,
+                FallbackCredit = null,
                 InputTokens = 25,
                 OutputTokens = 25,
                 OutputTokensDetails = new(0),
@@ -380,6 +381,7 @@ public class BetaMessageStreamingAggregationTest
                     {
                         CacheCreationInputTokens = null,
                         CacheReadInputTokens = null,
+                        FallbackCredit = null,
                         InputTokens = null,
                         Iterations =
                         [
@@ -445,6 +447,65 @@ public class BetaMessageStreamingAggregationTest
         );
         Assert.Equal(75, second.InputTokens);
         Assert.Equal(40, second.OutputTokens);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_PropagatesFallbackCreditFromMessageDelta()
+    {
+        // arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<BetaRawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new BetaRawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new BetaRawMessageDeltaEvent()
+                {
+                    ContextManagement = null,
+                    Delta = new()
+                    {
+                        Container = null,
+                        StopDetails = null,
+                        StopReason = BetaStopReason.EndTurn,
+                        StopSequence = null,
+                    },
+                    Usage = new()
+                    {
+                        CacheCreationInputTokens = null,
+                        CacheReadInputTokens = null,
+                        FallbackCredit = new BetaFallbackCreditUsage
+                        {
+                            Status = new BetaFallbackCreditRedeemed(),
+                        },
+                        InputTokens = null,
+                        Iterations = null,
+                        OutputTokens = 50,
+                        OutputTokensDetails = null,
+                        ServerToolUse = null,
+                    },
+                }
+            );
+            yield return new(new BetaRawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
+            )
+            .Returns(GetTestValues);
+
+        // act
+
+        var stream = await messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .Aggregate();
+
+        // assert
+
+        Assert.NotNull(stream);
+        stream.Validate();
+        Assert.NotNull(stream.Usage.FallbackCredit);
+        Assert.IsType<BetaFallbackCreditRedeemed>(stream.Usage.FallbackCredit!.Status.Value);
     }
 
     [Fact]
