@@ -36,7 +36,9 @@ public enum AnthropicBeta
     Dreaming2026_04_21,
     ThinkingTokenCount2026_05_13,
     ServerSideFallback2026_06_01,
+    ServerSideFallback2026_07_01,
     FallbackCredit2026_06_01,
+    FallbackCredit2026_07_01,
     AgentMemory2026_07_22,
 }
 
@@ -79,7 +81,9 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "dreaming-2026-04-21" => AnthropicBeta.Dreaming2026_04_21,
             "thinking-token-count-2026-05-13" => AnthropicBeta.ThinkingTokenCount2026_05_13,
             "server-side-fallback-2026-06-01" => AnthropicBeta.ServerSideFallback2026_06_01,
+            "server-side-fallback-2026-07-01" => AnthropicBeta.ServerSideFallback2026_07_01,
             "fallback-credit-2026-06-01" => AnthropicBeta.FallbackCredit2026_06_01,
+            "fallback-credit-2026-07-01" => AnthropicBeta.FallbackCredit2026_07_01,
             "agent-memory-2026-07-22" => AnthropicBeta.AgentMemory2026_07_22,
             _ => (AnthropicBeta)(-1),
         };
@@ -124,7 +128,9 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.Dreaming2026_04_21 => "dreaming-2026-04-21",
                 AnthropicBeta.ThinkingTokenCount2026_05_13 => "thinking-token-count-2026-05-13",
                 AnthropicBeta.ServerSideFallback2026_06_01 => "server-side-fallback-2026-06-01",
+                AnthropicBeta.ServerSideFallback2026_07_01 => "server-side-fallback-2026-07-01",
                 AnthropicBeta.FallbackCredit2026_06_01 => "fallback-credit-2026-06-01",
+                AnthropicBeta.FallbackCredit2026_07_01 => "fallback-credit-2026-07-01",
                 AnthropicBeta.AgentMemory2026_07_22 => "agent-memory-2026-07-22",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))

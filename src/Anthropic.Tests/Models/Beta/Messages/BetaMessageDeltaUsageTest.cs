@@ -15,6 +15,7 @@ public class BetaMessageDeltaUsageTest : TestBase
         {
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            FallbackCredit = new(new Status(new BetaFallbackCreditRedeemed())),
             InputTokens = 2095,
             Iterations =
             [
@@ -39,6 +40,9 @@ public class BetaMessageDeltaUsageTest : TestBase
 
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
+        BetaFallbackCreditUsage expectedFallbackCredit = new(
+            new Status(new BetaFallbackCreditRedeemed())
+        );
         long expectedInputTokens = 2095;
         List<Iteration> expectedIterations =
         [
@@ -62,6 +66,7 @@ public class BetaMessageDeltaUsageTest : TestBase
 
         Assert.Equal(expectedCacheCreationInputTokens, model.CacheCreationInputTokens);
         Assert.Equal(expectedCacheReadInputTokens, model.CacheReadInputTokens);
+        Assert.Equal(expectedFallbackCredit, model.FallbackCredit);
         Assert.Equal(expectedInputTokens, model.InputTokens);
         Assert.NotNull(model.Iterations);
         Assert.Equal(expectedIterations.Count, model.Iterations.Count);
@@ -81,6 +86,7 @@ public class BetaMessageDeltaUsageTest : TestBase
         {
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            FallbackCredit = new(new Status(new BetaFallbackCreditRedeemed())),
             InputTokens = 2095,
             Iterations =
             [
@@ -119,6 +125,7 @@ public class BetaMessageDeltaUsageTest : TestBase
         {
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            FallbackCredit = new(new Status(new BetaFallbackCreditRedeemed())),
             InputTokens = 2095,
             Iterations =
             [
@@ -150,6 +157,9 @@ public class BetaMessageDeltaUsageTest : TestBase
 
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
+        BetaFallbackCreditUsage expectedFallbackCredit = new(
+            new Status(new BetaFallbackCreditRedeemed())
+        );
         long expectedInputTokens = 2095;
         List<Iteration> expectedIterations =
         [
@@ -173,6 +183,7 @@ public class BetaMessageDeltaUsageTest : TestBase
 
         Assert.Equal(expectedCacheCreationInputTokens, deserialized.CacheCreationInputTokens);
         Assert.Equal(expectedCacheReadInputTokens, deserialized.CacheReadInputTokens);
+        Assert.Equal(expectedFallbackCredit, deserialized.FallbackCredit);
         Assert.Equal(expectedInputTokens, deserialized.InputTokens);
         Assert.NotNull(deserialized.Iterations);
         Assert.Equal(expectedIterations.Count, deserialized.Iterations.Count);
@@ -192,6 +203,7 @@ public class BetaMessageDeltaUsageTest : TestBase
         {
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            FallbackCredit = new(new Status(new BetaFallbackCreditRedeemed())),
             InputTokens = 2095,
             Iterations =
             [
@@ -224,6 +236,7 @@ public class BetaMessageDeltaUsageTest : TestBase
         {
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            FallbackCredit = new(new Status(new BetaFallbackCreditRedeemed())),
             InputTokens = 2095,
             Iterations =
             [

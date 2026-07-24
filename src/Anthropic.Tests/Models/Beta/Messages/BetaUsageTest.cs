@@ -17,6 +17,7 @@ public class BetaUsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            FallbackCredit = new(new Status(new BetaFallbackCreditRedeemed())),
             InferenceGeo = "global",
             InputTokens = 2095,
             Iterations =
@@ -49,6 +50,9 @@ public class BetaUsageTest : TestBase
         };
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
+        BetaFallbackCreditUsage expectedFallbackCredit = new(
+            new Status(new BetaFallbackCreditRedeemed())
+        );
         string expectedInferenceGeo = "global";
         long expectedInputTokens = 2095;
         List<BetaUsageIteration> expectedIterations =
@@ -76,6 +80,7 @@ public class BetaUsageTest : TestBase
         Assert.Equal(expectedCacheCreation, model.CacheCreation);
         Assert.Equal(expectedCacheCreationInputTokens, model.CacheCreationInputTokens);
         Assert.Equal(expectedCacheReadInputTokens, model.CacheReadInputTokens);
+        Assert.Equal(expectedFallbackCredit, model.FallbackCredit);
         Assert.Equal(expectedInferenceGeo, model.InferenceGeo);
         Assert.Equal(expectedInputTokens, model.InputTokens);
         Assert.NotNull(model.Iterations);
@@ -99,6 +104,7 @@ public class BetaUsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            FallbackCredit = new(new Status(new BetaFallbackCreditRedeemed())),
             InferenceGeo = "global",
             InputTokens = 2095,
             Iterations =
@@ -138,6 +144,7 @@ public class BetaUsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            FallbackCredit = new(new Status(new BetaFallbackCreditRedeemed())),
             InferenceGeo = "global",
             InputTokens = 2095,
             Iterations =
@@ -177,6 +184,9 @@ public class BetaUsageTest : TestBase
         };
         long expectedCacheCreationInputTokens = 2051;
         long expectedCacheReadInputTokens = 2051;
+        BetaFallbackCreditUsage expectedFallbackCredit = new(
+            new Status(new BetaFallbackCreditRedeemed())
+        );
         string expectedInferenceGeo = "global";
         long expectedInputTokens = 2095;
         List<BetaUsageIteration> expectedIterations =
@@ -204,6 +214,7 @@ public class BetaUsageTest : TestBase
         Assert.Equal(expectedCacheCreation, deserialized.CacheCreation);
         Assert.Equal(expectedCacheCreationInputTokens, deserialized.CacheCreationInputTokens);
         Assert.Equal(expectedCacheReadInputTokens, deserialized.CacheReadInputTokens);
+        Assert.Equal(expectedFallbackCredit, deserialized.FallbackCredit);
         Assert.Equal(expectedInferenceGeo, deserialized.InferenceGeo);
         Assert.Equal(expectedInputTokens, deserialized.InputTokens);
         Assert.NotNull(deserialized.Iterations);
@@ -227,6 +238,7 @@ public class BetaUsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            FallbackCredit = new(new Status(new BetaFallbackCreditRedeemed())),
             InferenceGeo = "global",
             InputTokens = 2095,
             Iterations =
@@ -263,6 +275,7 @@ public class BetaUsageTest : TestBase
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
             CacheCreationInputTokens = 2051,
             CacheReadInputTokens = 2051,
+            FallbackCredit = new(new Status(new BetaFallbackCreditRedeemed())),
             InferenceGeo = "global",
             InputTokens = 2095,
             Iterations =

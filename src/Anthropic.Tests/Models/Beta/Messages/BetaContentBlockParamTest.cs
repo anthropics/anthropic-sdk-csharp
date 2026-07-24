@@ -329,7 +329,7 @@ public class BetaContentBlockParamTest : TestBase
         {
             Content =
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -346,6 +346,28 @@ public class BetaContentBlockParamTest : TestBase
                     ],
                 },
             ],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void RequestToolAdditionBlockValidationWorks()
+    {
+        BetaContentBlockParam value = new BetaRequestToolAdditionBlock()
+        {
+            Tool = new BetaToolChangeToolReference("name"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void RequestToolRemovalBlockValidationWorks()
+    {
+        BetaContentBlockParam value = new BetaRequestToolRemovalBlock()
+        {
+            Tool = new BetaToolChangeToolReference("name"),
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         value.Validate();
@@ -804,7 +826,7 @@ public class BetaContentBlockParamTest : TestBase
         {
             Content =
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -821,6 +843,40 @@ public class BetaContentBlockParamTest : TestBase
                     ],
                 },
             ],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void RequestToolAdditionBlockSerializationRoundtripWorks()
+    {
+        BetaContentBlockParam value = new BetaRequestToolAdditionBlock()
+        {
+            Tool = new BetaToolChangeToolReference("name"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void RequestToolRemovalBlockSerializationRoundtripWorks()
+    {
+        BetaContentBlockParam value = new BetaRequestToolRemovalBlock()
+        {
+            Tool = new BetaToolChangeToolReference("name"),
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

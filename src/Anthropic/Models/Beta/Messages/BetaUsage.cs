@@ -54,6 +54,19 @@ public sealed record class BetaUsage : JsonModel
     }
 
     /// <summary>
+    /// Outcome of the ``fallback_credit_token`` presented on this request.
+    /// </summary>
+    public required BetaFallbackCreditUsage? FallbackCredit
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaFallbackCreditUsage>("fallback_credit");
+        }
+        init { this._rawData.Set("fallback_credit", value); }
+    }
+
+    /// <summary>
     /// The geographic region where inference was performed for this request.
     /// </summary>
     public required string? InferenceGeo
@@ -186,6 +199,7 @@ public sealed record class BetaUsage : JsonModel
         this.CacheCreation?.Validate();
         _ = this.CacheCreationInputTokens;
         _ = this.CacheReadInputTokens;
+        this.FallbackCredit?.Validate();
         _ = this.InferenceGeo;
         _ = this.InputTokens;
         foreach (var item in this.Iterations ?? [])

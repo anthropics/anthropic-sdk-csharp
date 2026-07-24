@@ -30,12 +30,17 @@ public enum Model
     ClaudeMythos5,
 
     /// <summary>
-    /// Frontier intelligence for long-running agents and coding
+    /// Powerful intelligence for long-running agents and coding
+    /// </summary>
+    ClaudeOpus5,
+
+    /// <summary>
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_8,
 
     /// <summary>
-    /// Frontier intelligence for long-running agents and coding
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_7,
 
@@ -48,7 +53,7 @@ public enum Model
     ClaudeMythosPreview,
 
     /// <summary>
-    /// Frontier intelligence for long-running agents and coding
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_6,
 
@@ -68,12 +73,12 @@ public enum Model
     ClaudeHaiku4_5_20251001,
 
     /// <summary>
-    /// Premium model combining maximum intelligence with practical performance
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_5,
 
     /// <summary>
-    /// Premium model combining maximum intelligence with practical performance
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_5_20251101,
 
@@ -88,7 +93,7 @@ public enum Model
     ClaudeSonnet4_5_20250929,
 
     /// <summary>
-    /// Exceptional model for specialized complex tasks
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     [System::Obsolete(
         "Will reach end-of-life on August 5, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
@@ -96,7 +101,7 @@ public enum Model
     ClaudeOpus4_1,
 
     /// <summary>
-    /// Exceptional model for specialized complex tasks
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     [System::Obsolete(
         "Will reach end-of-life on August 5, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
@@ -117,6 +122,7 @@ sealed class ModelConverter : JsonConverter<Model>
             "claude-sonnet-5" => Model.ClaudeSonnet5,
             "claude-fable-5" => Model.ClaudeFable5,
             "claude-mythos-5" => Model.ClaudeMythos5,
+            "claude-opus-5" => Model.ClaudeOpus5,
             "claude-opus-4-8" => Model.ClaudeOpus4_8,
             "claude-opus-4-7" => Model.ClaudeOpus4_7,
             "claude-mythos-preview" => Model.ClaudeMythosPreview,
@@ -143,6 +149,7 @@ sealed class ModelConverter : JsonConverter<Model>
                 Model.ClaudeSonnet5 => "claude-sonnet-5",
                 Model.ClaudeFable5 => "claude-fable-5",
                 Model.ClaudeMythos5 => "claude-mythos-5",
+                Model.ClaudeOpus5 => "claude-opus-5",
                 Model.ClaudeOpus4_8 => "claude-opus-4-8",
                 Model.ClaudeOpus4_7 => "claude-opus-4-7",
                 Model.ClaudeMythosPreview => "claude-mythos-preview",

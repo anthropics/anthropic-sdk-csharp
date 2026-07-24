@@ -25,17 +25,22 @@ public enum BetaManagedAgentsModel
     ClaudeFable5,
 
     /// <summary>
-    /// Frontier intelligence for long-running agents and coding
+    /// Powerful intelligence for long-running agents and coding
+    /// </summary>
+    ClaudeOpus5,
+
+    /// <summary>
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_8,
 
     /// <summary>
-    /// Frontier intelligence for long-running agents and coding
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_7,
 
     /// <summary>
-    /// Most intelligent model for building agents and coding
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_6,
 
@@ -55,12 +60,12 @@ public enum BetaManagedAgentsModel
     ClaudeHaiku4_5_20251001,
 
     /// <summary>
-    /// Premium model combining maximum intelligence with practical performance
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_5,
 
     /// <summary>
-    /// Premium model combining maximum intelligence with practical performance
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_5_20251101,
 
@@ -87,6 +92,7 @@ sealed class BetaManagedAgentsModelConverter : JsonConverter<BetaManagedAgentsMo
         {
             "claude-sonnet-5" => BetaManagedAgentsModel.ClaudeSonnet5,
             "claude-fable-5" => BetaManagedAgentsModel.ClaudeFable5,
+            "claude-opus-5" => BetaManagedAgentsModel.ClaudeOpus5,
             "claude-opus-4-8" => BetaManagedAgentsModel.ClaudeOpus4_8,
             "claude-opus-4-7" => BetaManagedAgentsModel.ClaudeOpus4_7,
             "claude-opus-4-6" => BetaManagedAgentsModel.ClaudeOpus4_6,
@@ -113,6 +119,7 @@ sealed class BetaManagedAgentsModelConverter : JsonConverter<BetaManagedAgentsMo
             {
                 BetaManagedAgentsModel.ClaudeSonnet5 => "claude-sonnet-5",
                 BetaManagedAgentsModel.ClaudeFable5 => "claude-fable-5",
+                BetaManagedAgentsModel.ClaudeOpus5 => "claude-opus-5",
                 BetaManagedAgentsModel.ClaudeOpus4_8 => "claude-opus-4-8",
                 BetaManagedAgentsModel.ClaudeOpus4_7 => "claude-opus-4-7",
                 BetaManagedAgentsModel.ClaudeOpus4_6 => "claude-opus-4-6",
