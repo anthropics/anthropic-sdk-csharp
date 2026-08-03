@@ -35,10 +35,9 @@ public static class HostedToolSearchToolExtensions
             throw new ArgumentNullException(nameof(tool));
         }
 
-        Bm25HostedToolSearchTool result =
-            tool.AdditionalProperties is { } properties
-                ? new Bm25HostedToolSearchTool(properties)
-                : new Bm25HostedToolSearchTool();
+        Bm25HostedToolSearchTool result = tool.AdditionalProperties is { } properties
+            ? new Bm25HostedToolSearchTool(properties)
+            : new Bm25HostedToolSearchTool();
         result.DeferredTools = tool.DeferredTools;
         result.Namespace = tool.Namespace;
         result.NamespaceDescription = tool.NamespaceDescription;

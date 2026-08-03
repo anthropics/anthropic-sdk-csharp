@@ -580,7 +580,8 @@ public static class AnthropicBetaClientExtensions
                             break;
 
                         case AIContent ac
-                            when ac.RawRepresentation is BetaToolSearchToolResultBlock toolSearchResultBlock:
+                            when ac.RawRepresentation
+                                is BetaToolSearchToolResultBlock toolSearchResultBlock:
                             contents.Add(
                                 BetaToolSearchToolResultBlockParam.FromRawUnchecked(
                                     toolSearchResultBlock.RawData
@@ -1237,10 +1238,11 @@ public static class AnthropicBetaClientExtensions
 
                                 bool? betaDeferLoading =
                                     GetValue<bool?>(af, nameof(BetaTool.DeferLoading))
-                                    ?? (deferAll
-                                        || deferredToolNames?.Contains(af.Name) == true
+                                    ?? (
+                                        deferAll || deferredToolNames?.Contains(af.Name) == true
                                             ? true
-                                            : null);
+                                            : null
+                                    );
 
                                 (createdTools ??= []).Add(
                                     new BetaTool()
@@ -1269,7 +1271,8 @@ public static class AnthropicBetaClientExtensions
 
                             case HostedToolSearchTool toolSearch:
                                 (createdTools ??= []).Add(
-                                    toolSearch is HostedToolSearchToolExtensions.Bm25HostedToolSearchTool
+                                    toolSearch
+                                    is HostedToolSearchToolExtensions.Bm25HostedToolSearchTool
                                         ? new BetaToolSearchToolBm25_20251119(
                                             BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25
                                         )

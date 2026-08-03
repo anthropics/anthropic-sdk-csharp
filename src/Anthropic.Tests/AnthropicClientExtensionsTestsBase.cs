@@ -8633,10 +8633,7 @@ public abstract class AnthropicClientExtensionsTestsBase
         var getWeather = AIFunctionFactory.Create(() => "Sunny", "GetWeather", "Gets the weather.");
         var getTime = AIFunctionFactory.Create(() => "3 PM", "GetTime", "Gets the time.");
 
-        ChatOptions options = new()
-        {
-            Tools = [new HostedToolSearchTool(), getWeather, getTime],
-        };
+        ChatOptions options = new() { Tools = [new HostedToolSearchTool(), getWeather, getTime] };
 
         ChatResponse response = await chatClient.GetResponseAsync(
             "hello",
@@ -8788,10 +8785,7 @@ public abstract class AnthropicClientExtensionsTestsBase
 
         var toolCallContent = new ToolCallContent("srvtoolu_01ABC")
         {
-            RawRepresentation = CreateServerToolUseBlock(
-                "srvtoolu_01ABC",
-                "tool_search_tool_bm25"
-            ),
+            RawRepresentation = CreateServerToolUseBlock("srvtoolu_01ABC", "tool_search_tool_bm25"),
         };
 
         List<ChatMessage> messages =

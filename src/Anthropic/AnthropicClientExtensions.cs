@@ -850,7 +850,8 @@ public static class AnthropicClientExtensions
                             break;
 
                         case AIContent ac
-                            when ac.RawRepresentation is ToolSearchToolResultBlock toolSearchResultBlock:
+                            when ac.RawRepresentation
+                                is ToolSearchToolResultBlock toolSearchResultBlock:
                             contents.Add(
                                 ToolSearchToolResultBlockParam.FromRawUnchecked(
                                     toolSearchResultBlock.RawData
@@ -1378,10 +1379,11 @@ public static class AnthropicClientExtensions
 
                                 bool? deferLoading =
                                     GetValue<bool?>(af, nameof(Tool.DeferLoading))
-                                    ?? (deferAll
-                                        || deferredToolNames?.Contains(af.Name) == true
+                                    ?? (
+                                        deferAll || deferredToolNames?.Contains(af.Name) == true
                                             ? true
-                                            : null);
+                                            : null
+                                    );
 
                                 (createdTools ??= []).Add(
                                     new Tool()
@@ -1410,7 +1412,8 @@ public static class AnthropicClientExtensions
 
                             case HostedToolSearchTool toolSearch:
                                 (createdTools ??= []).Add(
-                                    toolSearch is HostedToolSearchToolExtensions.Bm25HostedToolSearchTool
+                                    toolSearch
+                                    is HostedToolSearchToolExtensions.Bm25HostedToolSearchTool
                                         ? new ToolSearchToolBm25_20251119(
                                             ToolSearchToolBm25_20251119Type.ToolSearchToolBm25
                                         )
