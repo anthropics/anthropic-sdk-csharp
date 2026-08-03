@@ -40,6 +40,7 @@ public enum AnthropicBeta
     FallbackCredit2026_06_01,
     FallbackCredit2026_07_01,
     AgentMemory2026_07_22,
+    MidConversationToolChanges2026_07_01,
 }
 
 sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
@@ -85,6 +86,8 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "fallback-credit-2026-06-01" => AnthropicBeta.FallbackCredit2026_06_01,
             "fallback-credit-2026-07-01" => AnthropicBeta.FallbackCredit2026_07_01,
             "agent-memory-2026-07-22" => AnthropicBeta.AgentMemory2026_07_22,
+            "mid-conversation-tool-changes-2026-07-01" =>
+                AnthropicBeta.MidConversationToolChanges2026_07_01,
             _ => (AnthropicBeta)(-1),
         };
     }
@@ -132,6 +135,8 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.FallbackCredit2026_06_01 => "fallback-credit-2026-06-01",
                 AnthropicBeta.FallbackCredit2026_07_01 => "fallback-credit-2026-07-01",
                 AnthropicBeta.AgentMemory2026_07_22 => "agent-memory-2026-07-22",
+                AnthropicBeta.MidConversationToolChanges2026_07_01 =>
+                    "mid-conversation-tool-changes-2026-07-01",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

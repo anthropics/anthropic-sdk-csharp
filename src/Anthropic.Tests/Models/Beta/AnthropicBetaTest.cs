@@ -40,6 +40,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.FallbackCredit2026_06_01)]
     [InlineData(AnthropicBeta.FallbackCredit2026_07_01)]
     [InlineData(AnthropicBeta.AgentMemory2026_07_22)]
+    [InlineData(AnthropicBeta.MidConversationToolChanges2026_07_01)]
     public void Validation_Works(AnthropicBeta rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -92,6 +93,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.FallbackCredit2026_06_01)]
     [InlineData(AnthropicBeta.FallbackCredit2026_07_01)]
     [InlineData(AnthropicBeta.AgentMemory2026_07_22)]
+    [InlineData(AnthropicBeta.MidConversationToolChanges2026_07_01)]
     public void SerializationRoundtrip_Works(AnthropicBeta rawValue)
     {
         // force implicit conversion because Theory can't do that for us
