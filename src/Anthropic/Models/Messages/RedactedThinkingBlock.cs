@@ -11,6 +11,17 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(JsonModelConverter<RedactedThinkingBlock, RedactedThinkingBlockFromRaw>))]
 public sealed record class RedactedThinkingBlock : JsonModel
 {
+    /// <summary>
+    /// The contents of this redacted thinking block, returned when portions of the
+    /// model's thinking were safety-redacted. This field is opaque and encrypted,
+    /// with no readable content.
+    ///
+    /// <para>Pass `redacted_thinking` blocks back to the API unchanged when continuing
+    /// a multi-turn conversation.</para>
+    ///
+    /// <para>See [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking#redacted-thinking-blocks)
+    /// for details.</para>
+    /// </summary>
     public required string Data
     {
         get
