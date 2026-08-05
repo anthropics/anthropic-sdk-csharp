@@ -107,7 +107,7 @@ internal sealed class BedrockAdaptationHandler : DelegatingHandler
                 contentStream.Length.ToString()
             );
             var strUri =
-                $"{requestMessage.RequestUri!.Scheme}://{requestMessage.RequestUri.Host}/model/{modelValue}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
+                $"{requestMessage.RequestUri!.Scheme}://{requestMessage.RequestUri.Authority}/model/{modelValue}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
 
 #if NET6_0_OR_GREATER
             // The UriCreationOptions and DangerousDisablePathAndQueryCanonicalization were added in .NET 6 and allows
