@@ -4,9 +4,9 @@ using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta;
-using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Events;
+using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
 
@@ -19,6 +19,11 @@ public class SessionCreateParamsTest : TestBase
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
+            },
             InitialEvents =
             [
                 new BetaManagedAgentsUserMessageEventParams()
@@ -51,6 +56,11 @@ public class SessionCreateParamsTest : TestBase
 
         Agent expectedAgent = "agent_011CZkYpogX7uDKUyvBTophP";
         string expectedEnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW";
+        BetaManagedAgentsBudgetLimit expectedBudget = new()
+        {
+            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+            Type = BetaManagedAgentsBudgetLimitType.Limit,
+        };
         List<InitialEvent> expectedInitialEvents =
         [
             new BetaManagedAgentsUserMessageEventParams()
@@ -85,6 +95,7 @@ public class SessionCreateParamsTest : TestBase
 
         Assert.Equal(expectedAgent, parameters.Agent);
         Assert.Equal(expectedEnvironmentID, parameters.EnvironmentID);
+        Assert.Equal(expectedBudget, parameters.Budget);
         Assert.NotNull(parameters.InitialEvents);
         Assert.Equal(expectedInitialEvents.Count, parameters.InitialEvents.Count);
         for (int i = 0; i < expectedInitialEvents.Count; i++)
@@ -130,6 +141,8 @@ public class SessionCreateParamsTest : TestBase
             Title = "Order #1234 inquiry",
         };
 
+        Assert.Null(parameters.Budget);
+        Assert.False(parameters.RawBodyData.ContainsKey("budget"));
         Assert.Null(parameters.InitialEvents);
         Assert.False(parameters.RawBodyData.ContainsKey("initial_events"));
         Assert.Null(parameters.Metadata);
@@ -152,6 +165,7 @@ public class SessionCreateParamsTest : TestBase
             Title = "Order #1234 inquiry",
 
             // Null should be interpreted as omitted for these properties
+            Budget = null,
             InitialEvents = null,
             Metadata = null,
             Resources = null,
@@ -159,6 +173,8 @@ public class SessionCreateParamsTest : TestBase
             Betas = null,
         };
 
+        Assert.Null(parameters.Budget);
+        Assert.False(parameters.RawBodyData.ContainsKey("budget"));
         Assert.Null(parameters.InitialEvents);
         Assert.False(parameters.RawBodyData.ContainsKey("initial_events"));
         Assert.Null(parameters.Metadata);
@@ -178,6 +194,11 @@ public class SessionCreateParamsTest : TestBase
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
+            },
             InitialEvents =
             [
                 new BetaManagedAgentsUserMessageEventParams()
@@ -218,6 +239,11 @@ public class SessionCreateParamsTest : TestBase
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
+            },
             InitialEvents =
             [
                 new BetaManagedAgentsUserMessageEventParams()
@@ -295,6 +321,11 @@ public class SessionCreateParamsTest : TestBase
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
+            },
             InitialEvents =
             [
                 new BetaManagedAgentsUserMessageEventParams()
@@ -364,47 +395,49 @@ public class AgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
+                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
-            Model = new BetaManagedAgentsModelConfigParams()
+            Model = new Agents::BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus4_8,
-                Effort = BetaManagedAgentsEffortLevel.Low,
-                Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
+                Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
             [
-                new BetaManagedAgentsAnthropicSkillParams()
+                new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
+                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
             System = "system",
             Tools =
             [
-                new BetaManagedAgentsAgentToolset20260401Params()
+                new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                    Type =
+                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new()
                         {
-                            Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
+                            Name = Agents::BetaManagedAgentsAgentToolConfigParamsName.Bash,
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                         ),
                     },
                 },
@@ -451,47 +484,49 @@ public class AgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
+                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
-            Model = new BetaManagedAgentsModelConfigParams()
+            Model = new Agents::BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus4_8,
-                Effort = BetaManagedAgentsEffortLevel.Low,
-                Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
+                Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
+                Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
             [
-                new BetaManagedAgentsAnthropicSkillParams()
+                new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
+                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
             System = "system",
             Tools =
             [
-                new BetaManagedAgentsAgentToolset20260401Params()
+                new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                    Type =
+                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new()
                         {
-                            Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
+                            Name = Agents::BetaManagedAgentsAgentToolConfigParamsName.Bash,
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                         ),
                     },
                 },

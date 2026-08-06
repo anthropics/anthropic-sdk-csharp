@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Resources;
@@ -39,13 +40,14 @@ public class SessionListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Multiagent = new()
                         {
                             Agents =
                             [
-                                new()
+                                new BetaManagedAgentsSessionThreadAgent()
                                 {
                                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                                     Description = "A focused research subagent.",
@@ -65,6 +67,7 @@ public class SessionListPageResponseTest : TestBase
                                         Effort = new BetaManagedAgentsEffortLow(
                                             BetaManagedAgentsEffortLowType.Low
                                         ),
+                                        InferenceGeo = "inference_geo",
                                         Speed = Speed.Standard,
                                     },
                                     Name = "Researcher",
@@ -161,6 +164,11 @@ public class SessionListPageResponseTest : TestBase
                         Version = 1,
                     },
                     ArchivedAt = null,
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     Metadata = new Dictionary<string, string>(),
@@ -210,6 +218,7 @@ public class SessionListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -217,7 +226,9 @@ public class SessionListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                     DeploymentID = "deployment_id",
@@ -249,13 +260,14 @@ public class SessionListPageResponseTest : TestBase
                     {
                         ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
                     Multiagent = new()
                     {
                         Agents =
                         [
-                            new()
+                            new BetaManagedAgentsSessionThreadAgent()
                             {
                                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                                 Description = "A focused research subagent.",
@@ -274,6 +286,7 @@ public class SessionListPageResponseTest : TestBase
                                     Effort = new BetaManagedAgentsEffortLow(
                                         BetaManagedAgentsEffortLowType.Low
                                     ),
+                                    InferenceGeo = "inference_geo",
                                     Speed = Speed.Standard,
                                 },
                                 Name = "Researcher",
@@ -368,6 +381,11 @@ public class SessionListPageResponseTest : TestBase
                     Version = 1,
                 },
                 ArchivedAt = null,
+                Budget = new()
+                {
+                    MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                    Type = BetaManagedAgentsBudgetLimitType.Limit,
+                },
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                 Metadata = new Dictionary<string, string>(),
@@ -417,6 +435,7 @@ public class SessionListPageResponseTest : TestBase
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Usage = new()
                 {
+                    ActiveSeconds = 0,
                     CacheCreation = new()
                     {
                         Ephemeral1hInputTokens = 0,
@@ -424,7 +443,9 @@ public class SessionListPageResponseTest : TestBase
                     },
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
+                    ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                     OutputTokens = 0,
+                    ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                 },
                 VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                 DeploymentID = "deployment_id",
@@ -472,13 +493,14 @@ public class SessionListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Multiagent = new()
                         {
                             Agents =
                             [
-                                new()
+                                new BetaManagedAgentsSessionThreadAgent()
                                 {
                                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                                     Description = "A focused research subagent.",
@@ -498,6 +520,7 @@ public class SessionListPageResponseTest : TestBase
                                         Effort = new BetaManagedAgentsEffortLow(
                                             BetaManagedAgentsEffortLowType.Low
                                         ),
+                                        InferenceGeo = "inference_geo",
                                         Speed = Speed.Standard,
                                     },
                                     Name = "Researcher",
@@ -594,6 +617,11 @@ public class SessionListPageResponseTest : TestBase
                         Version = 1,
                     },
                     ArchivedAt = null,
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     Metadata = new Dictionary<string, string>(),
@@ -643,6 +671,7 @@ public class SessionListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -650,7 +679,9 @@ public class SessionListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                     DeploymentID = "deployment_id",
@@ -698,13 +729,14 @@ public class SessionListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Multiagent = new()
                         {
                             Agents =
                             [
-                                new()
+                                new BetaManagedAgentsSessionThreadAgent()
                                 {
                                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                                     Description = "A focused research subagent.",
@@ -724,6 +756,7 @@ public class SessionListPageResponseTest : TestBase
                                         Effort = new BetaManagedAgentsEffortLow(
                                             BetaManagedAgentsEffortLowType.Low
                                         ),
+                                        InferenceGeo = "inference_geo",
                                         Speed = Speed.Standard,
                                     },
                                     Name = "Researcher",
@@ -820,6 +853,11 @@ public class SessionListPageResponseTest : TestBase
                         Version = 1,
                     },
                     ArchivedAt = null,
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     Metadata = new Dictionary<string, string>(),
@@ -869,6 +907,7 @@ public class SessionListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -876,7 +915,9 @@ public class SessionListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                     DeploymentID = "deployment_id",
@@ -915,13 +956,14 @@ public class SessionListPageResponseTest : TestBase
                     {
                         ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
                     Multiagent = new()
                     {
                         Agents =
                         [
-                            new()
+                            new BetaManagedAgentsSessionThreadAgent()
                             {
                                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                                 Description = "A focused research subagent.",
@@ -940,6 +982,7 @@ public class SessionListPageResponseTest : TestBase
                                     Effort = new BetaManagedAgentsEffortLow(
                                         BetaManagedAgentsEffortLowType.Low
                                     ),
+                                    InferenceGeo = "inference_geo",
                                     Speed = Speed.Standard,
                                 },
                                 Name = "Researcher",
@@ -1034,6 +1077,11 @@ public class SessionListPageResponseTest : TestBase
                     Version = 1,
                 },
                 ArchivedAt = null,
+                Budget = new()
+                {
+                    MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                    Type = BetaManagedAgentsBudgetLimitType.Limit,
+                },
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                 Metadata = new Dictionary<string, string>(),
@@ -1083,6 +1131,7 @@ public class SessionListPageResponseTest : TestBase
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Usage = new()
                 {
+                    ActiveSeconds = 0,
                     CacheCreation = new()
                     {
                         Ephemeral1hInputTokens = 0,
@@ -1090,7 +1139,9 @@ public class SessionListPageResponseTest : TestBase
                     },
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
+                    ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                     OutputTokens = 0,
+                    ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                 },
                 VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                 DeploymentID = "deployment_id",
@@ -1138,13 +1189,14 @@ public class SessionListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Multiagent = new()
                         {
                             Agents =
                             [
-                                new()
+                                new BetaManagedAgentsSessionThreadAgent()
                                 {
                                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                                     Description = "A focused research subagent.",
@@ -1164,6 +1216,7 @@ public class SessionListPageResponseTest : TestBase
                                         Effort = new BetaManagedAgentsEffortLow(
                                             BetaManagedAgentsEffortLowType.Low
                                         ),
+                                        InferenceGeo = "inference_geo",
                                         Speed = Speed.Standard,
                                     },
                                     Name = "Researcher",
@@ -1260,6 +1313,11 @@ public class SessionListPageResponseTest : TestBase
                         Version = 1,
                     },
                     ArchivedAt = null,
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     Metadata = new Dictionary<string, string>(),
@@ -1309,6 +1367,7 @@ public class SessionListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -1316,7 +1375,9 @@ public class SessionListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                     DeploymentID = "deployment_id",
@@ -1414,13 +1475,14 @@ public class SessionListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Multiagent = new()
                         {
                             Agents =
                             [
-                                new()
+                                new BetaManagedAgentsSessionThreadAgent()
                                 {
                                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                                     Description = "A focused research subagent.",
@@ -1440,6 +1502,7 @@ public class SessionListPageResponseTest : TestBase
                                         Effort = new BetaManagedAgentsEffortLow(
                                             BetaManagedAgentsEffortLowType.Low
                                         ),
+                                        InferenceGeo = "inference_geo",
                                         Speed = Speed.Standard,
                                     },
                                     Name = "Researcher",
@@ -1536,6 +1599,11 @@ public class SessionListPageResponseTest : TestBase
                         Version = 1,
                     },
                     ArchivedAt = null,
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     Metadata = new Dictionary<string, string>(),
@@ -1585,6 +1653,7 @@ public class SessionListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -1592,7 +1661,9 @@ public class SessionListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                     DeploymentID = "deployment_id",
@@ -1635,13 +1706,14 @@ public class SessionListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Multiagent = new()
                         {
                             Agents =
                             [
-                                new()
+                                new BetaManagedAgentsSessionThreadAgent()
                                 {
                                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                                     Description = "A focused research subagent.",
@@ -1661,6 +1733,7 @@ public class SessionListPageResponseTest : TestBase
                                         Effort = new BetaManagedAgentsEffortLow(
                                             BetaManagedAgentsEffortLowType.Low
                                         ),
+                                        InferenceGeo = "inference_geo",
                                         Speed = Speed.Standard,
                                     },
                                     Name = "Researcher",
@@ -1757,6 +1830,11 @@ public class SessionListPageResponseTest : TestBase
                         Version = 1,
                     },
                     ArchivedAt = null,
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     Metadata = new Dictionary<string, string>(),
@@ -1806,6 +1884,7 @@ public class SessionListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -1813,7 +1892,9 @@ public class SessionListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                     DeploymentID = "deployment_id",
@@ -1853,13 +1934,14 @@ public class SessionListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Multiagent = new()
                         {
                             Agents =
                             [
-                                new()
+                                new BetaManagedAgentsSessionThreadAgent()
                                 {
                                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                                     Description = "A focused research subagent.",
@@ -1879,6 +1961,7 @@ public class SessionListPageResponseTest : TestBase
                                         Effort = new BetaManagedAgentsEffortLow(
                                             BetaManagedAgentsEffortLowType.Low
                                         ),
+                                        InferenceGeo = "inference_geo",
                                         Speed = Speed.Standard,
                                     },
                                     Name = "Researcher",
@@ -1975,6 +2058,11 @@ public class SessionListPageResponseTest : TestBase
                         Version = 1,
                     },
                     ArchivedAt = null,
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     Metadata = new Dictionary<string, string>(),
@@ -2024,6 +2112,7 @@ public class SessionListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -2031,7 +2120,9 @@ public class SessionListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                     DeploymentID = "deployment_id",
@@ -2077,13 +2168,14 @@ public class SessionListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Multiagent = new()
                         {
                             Agents =
                             [
-                                new()
+                                new BetaManagedAgentsSessionThreadAgent()
                                 {
                                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                                     Description = "A focused research subagent.",
@@ -2103,6 +2195,7 @@ public class SessionListPageResponseTest : TestBase
                                         Effort = new BetaManagedAgentsEffortLow(
                                             BetaManagedAgentsEffortLowType.Low
                                         ),
+                                        InferenceGeo = "inference_geo",
                                         Speed = Speed.Standard,
                                     },
                                     Name = "Researcher",
@@ -2199,6 +2292,11 @@ public class SessionListPageResponseTest : TestBase
                         Version = 1,
                     },
                     ArchivedAt = null,
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     Metadata = new Dictionary<string, string>(),
@@ -2248,6 +2346,7 @@ public class SessionListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -2255,7 +2354,9 @@ public class SessionListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                     DeploymentID = "deployment_id",
@@ -2298,13 +2399,14 @@ public class SessionListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Multiagent = new()
                         {
                             Agents =
                             [
-                                new()
+                                new BetaManagedAgentsSessionThreadAgent()
                                 {
                                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                                     Description = "A focused research subagent.",
@@ -2324,6 +2426,7 @@ public class SessionListPageResponseTest : TestBase
                                         Effort = new BetaManagedAgentsEffortLow(
                                             BetaManagedAgentsEffortLowType.Low
                                         ),
+                                        InferenceGeo = "inference_geo",
                                         Speed = Speed.Standard,
                                     },
                                     Name = "Researcher",
@@ -2420,6 +2523,11 @@ public class SessionListPageResponseTest : TestBase
                         Version = 1,
                     },
                     ArchivedAt = null,
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     Metadata = new Dictionary<string, string>(),
@@ -2469,6 +2577,7 @@ public class SessionListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -2476,7 +2585,9 @@ public class SessionListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
                     DeploymentID = "deployment_id",

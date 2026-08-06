@@ -54,6 +54,21 @@ public sealed record class BetaManagedAgentsModelConfigParams : JsonModel
     }
 
     /// <summary>
+    /// Geographic region for model inference. When unset, requests fall through
+    /// to the workspace's default_inference_geo. On update, `model` is whole-object
+    /// replacement — omitting inference_geo clears it.
+    /// </summary>
+    public string? InferenceGeo
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("inference_geo");
+        }
+        init { this._rawData.Set("inference_geo", value); }
+    }
+
+    /// <summary>
     /// Inference speed mode. `fast` provides significantly faster output token generation
     /// at premium pricing. Not all models support `fast`; invalid combinations are
     /// rejected at create time.
@@ -75,6 +90,7 @@ public sealed record class BetaManagedAgentsModelConfigParams : JsonModel
     {
         this.ID.Raw();
         this.Effort?.Validate();
+        _ = this.InferenceGeo;
         this.Speed?.Validate();
     }
 

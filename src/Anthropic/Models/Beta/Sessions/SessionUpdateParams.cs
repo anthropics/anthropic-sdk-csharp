@@ -52,6 +52,20 @@ public record class SessionUpdateParams : ParamsBase
     }
 
     /// <summary>
+    /// A hard spend ceiling. The session stops issuing new model requests once the
+    /// tracked list cost reaches `max_list_cost`.
+    /// </summary>
+    public BetaManagedAgentsBudgetLimit? Budget
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaManagedAgentsBudgetLimit>("budget");
+        }
+        init { this._rawBodyData.Set("budget", value); }
+    }
+
+    /// <summary>
     /// Metadata patch. Set a key to a string to upsert it, or to null to delete
     /// it. Omit the field to preserve.
     /// </summary>

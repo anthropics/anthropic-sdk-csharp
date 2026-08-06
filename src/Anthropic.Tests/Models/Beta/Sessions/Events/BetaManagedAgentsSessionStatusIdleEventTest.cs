@@ -158,6 +158,15 @@ public class StopReasonTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsSessionBudgetReachedValidationWorks()
+    {
+        StopReason value = new BetaManagedAgentsSessionBudgetReached(
+            BetaManagedAgentsSessionBudgetReachedType.BudgetReached
+        );
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsSessionEndTurnSerializationRoundtripWorks()
     {
         StopReason value = new BetaManagedAgentsSessionEndTurn(
@@ -194,6 +203,21 @@ public class StopReasonTest : TestBase
     {
         StopReason value = new BetaManagedAgentsSessionRetriesExhausted(
             BetaManagedAgentsSessionRetriesExhaustedType.RetriesExhausted
+        );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<StopReason>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSessionBudgetReachedSerializationRoundtripWorks()
+    {
+        StopReason value = new BetaManagedAgentsSessionBudgetReached(
+            BetaManagedAgentsSessionBudgetReachedType.BudgetReached
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<StopReason>(

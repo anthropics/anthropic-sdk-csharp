@@ -14,15 +14,18 @@ public class BetaManagedAgentsModelConfigTest : TestBase
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+            InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
 
         ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_8;
         Effort expectedEffort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low);
+        string expectedInferenceGeo = "inference_geo";
         ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedEffort, model.Effort);
+        Assert.Equal(expectedInferenceGeo, model.InferenceGeo);
         Assert.Equal(expectedSpeed, model.Speed);
     }
 
@@ -33,6 +36,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+            InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
 
@@ -52,6 +56,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+            InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
 
@@ -64,10 +69,12 @@ public class BetaManagedAgentsModelConfigTest : TestBase
 
         ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_8;
         Effort expectedEffort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low);
+        string expectedInferenceGeo = "inference_geo";
         ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedEffort, deserialized.Effort);
+        Assert.Equal(expectedInferenceGeo, deserialized.InferenceGeo);
         Assert.Equal(expectedSpeed, deserialized.Speed);
     }
 
@@ -78,6 +85,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+            InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
 
@@ -91,6 +99,8 @@ public class BetaManagedAgentsModelConfigTest : TestBase
 
         Assert.Null(model.Effort);
         Assert.False(model.RawData.ContainsKey("effort"));
+        Assert.Null(model.InferenceGeo);
+        Assert.False(model.RawData.ContainsKey("inference_geo"));
         Assert.Null(model.Speed);
         Assert.False(model.RawData.ContainsKey("speed"));
     }
@@ -112,11 +122,14 @@ public class BetaManagedAgentsModelConfigTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             Effort = null,
+            InferenceGeo = null,
             Speed = null,
         };
 
         Assert.Null(model.Effort);
         Assert.False(model.RawData.ContainsKey("effort"));
+        Assert.Null(model.InferenceGeo);
+        Assert.False(model.RawData.ContainsKey("inference_geo"));
         Assert.Null(model.Speed);
         Assert.False(model.RawData.ContainsKey("speed"));
     }
@@ -130,6 +143,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             Effort = null,
+            InferenceGeo = null,
             Speed = null,
         };
 
@@ -143,6 +157,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+            InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
 

@@ -304,6 +304,15 @@ public class BetaManagedAgentsUserMessageEventContentTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsRedactedBlockValidationWorks()
+    {
+        BetaManagedAgentsUserMessageEventContent value = new BetaManagedAgentsRedactedBlock(
+            BetaManagedAgentsRedactedBlockType.Redacted
+        );
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsTextBlockSerializationRoundtripWorks()
     {
         BetaManagedAgentsUserMessageEventContent value = new BetaManagedAgentsTextBlock()
@@ -357,6 +366,21 @@ public class BetaManagedAgentsUserMessageEventContentTest : TestBase
             Context = "context",
             Title = "title",
         };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsUserMessageEventContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRedactedBlockSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsUserMessageEventContent value = new BetaManagedAgentsRedactedBlock(
+            BetaManagedAgentsRedactedBlockType.Redacted
+        );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsUserMessageEventContent>(
             element,

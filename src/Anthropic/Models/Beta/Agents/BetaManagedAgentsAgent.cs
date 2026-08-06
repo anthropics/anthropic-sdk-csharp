@@ -179,14 +179,14 @@ public sealed record class BetaManagedAgentsAgent : JsonModel
         }
     }
 
-    public required ApiEnum<string, global::Anthropic.Models.Beta.Agents.Type> Type
+    public required ApiEnum<string, BetaManagedAgentsAgentType> Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, global::Anthropic.Models.Beta.Agents.Type>
-            >("type");
+            return this._rawData.GetNotNullClass<ApiEnum<string, BetaManagedAgentsAgentType>>(
+                "type"
+            );
         }
         init { this._rawData.Set("type", value); }
     }
@@ -971,15 +971,15 @@ sealed class BetaManagedAgentsAgentToolConverter : JsonConverter<BetaManagedAgen
     }
 }
 
-[JsonConverter(typeof(global::Anthropic.Models.Beta.Agents.TypeConverter))]
-public enum Type
+[JsonConverter(typeof(BetaManagedAgentsAgentTypeConverter))]
+public enum BetaManagedAgentsAgentType
 {
     Agent,
 }
 
-sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Agents.Type>
+sealed class BetaManagedAgentsAgentTypeConverter : JsonConverter<BetaManagedAgentsAgentType>
 {
-    public override global::Anthropic.Models.Beta.Agents.Type Read(
+    public override BetaManagedAgentsAgentType Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -987,14 +987,14 @@ sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Agents.
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "agent" => global::Anthropic.Models.Beta.Agents.Type.Agent,
-            _ => (global::Anthropic.Models.Beta.Agents.Type)(-1),
+            "agent" => BetaManagedAgentsAgentType.Agent,
+            _ => (BetaManagedAgentsAgentType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Agents.Type value,
+        BetaManagedAgentsAgentType value,
         JsonSerializerOptions options
     )
     {
@@ -1002,7 +1002,7 @@ sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Agents.
             writer,
             value switch
             {
-                global::Anthropic.Models.Beta.Agents.Type.Agent => "agent",
+                BetaManagedAgentsAgentType.Agent => "agent",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

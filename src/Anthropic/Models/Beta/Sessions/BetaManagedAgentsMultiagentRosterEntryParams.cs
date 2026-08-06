@@ -54,6 +54,15 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
         this._element = element;
     }
 
+    public BetaManagedAgentsMultiagentRosterEntryParams(
+        BetaManagedAgentsAdvisorParams value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
     public BetaManagedAgentsMultiagentRosterEntryParams(JsonElement element)
     {
         this._element = element;
@@ -123,6 +132,27 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsAdvisorParams"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickAdvisor(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsAdvisorParams`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickAdvisor([NotNullWhen(true)] out BetaManagedAgentsAdvisorParams? value)
+    {
+        value = this.Value as BetaManagedAgentsAdvisorParams;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -138,7 +168,8 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
     /// instance.Switch(
     ///     (string value) =&gt; {...},
     ///     (BetaManagedAgentsAgentParams value) =&gt; {...},
-    ///     (BetaManagedAgentsMultiagentSelfParams value) =&gt; {...}
+    ///     (BetaManagedAgentsMultiagentSelfParams value) =&gt; {...},
+    ///     (BetaManagedAgentsAdvisorParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -146,7 +177,8 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
     public void Switch(
         System::Action<string> @string,
         System::Action<BetaManagedAgentsAgentParams> agent,
-        System::Action<BetaManagedAgentsMultiagentSelfParams> self
+        System::Action<BetaManagedAgentsMultiagentSelfParams> self,
+        System::Action<BetaManagedAgentsAdvisorParams> advisor
     )
     {
         switch (this.Value)
@@ -159,6 +191,9 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
                 break;
             case BetaManagedAgentsMultiagentSelfParams value:
                 self(value);
+                break;
+            case BetaManagedAgentsAdvisorParams value:
+                advisor(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -184,7 +219,8 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
     /// var result = instance.Match(
     ///     (string value) =&gt; {...},
     ///     (BetaManagedAgentsAgentParams value) =&gt; {...},
-    ///     (BetaManagedAgentsMultiagentSelfParams value) =&gt; {...}
+    ///     (BetaManagedAgentsMultiagentSelfParams value) =&gt; {...},
+    ///     (BetaManagedAgentsAdvisorParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -192,7 +228,8 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
     public T Match<T>(
         System::Func<string, T> @string,
         System::Func<BetaManagedAgentsAgentParams, T> agent,
-        System::Func<BetaManagedAgentsMultiagentSelfParams, T> self
+        System::Func<BetaManagedAgentsMultiagentSelfParams, T> self,
+        System::Func<BetaManagedAgentsAdvisorParams, T> advisor
     )
     {
         return this.Value switch
@@ -200,6 +237,7 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
             string value => @string(value),
             BetaManagedAgentsAgentParams value => agent(value),
             BetaManagedAgentsMultiagentSelfParams value => self(value),
+            BetaManagedAgentsAdvisorParams value => advisor(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsMultiagentRosterEntryParams"
             ),
@@ -215,6 +253,10 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
 
     public static implicit operator BetaManagedAgentsMultiagentRosterEntryParams(
         BetaManagedAgentsMultiagentSelfParams value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsMultiagentRosterEntryParams(
+        BetaManagedAgentsAdvisorParams value
     ) => new(value);
 
     /// <summary>
@@ -235,7 +277,12 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
                 "Data did not match any variant of BetaManagedAgentsMultiagentRosterEntryParams"
             );
         }
-        this.Switch((_) => { }, (agent) => agent.Validate(), (self) => self.Validate());
+        this.Switch(
+            (_) => { },
+            (agent) => agent.Validate(),
+            (self) => self.Validate(),
+            (advisor) => advisor.Validate()
+        );
     }
 
     public virtual bool Equals(BetaManagedAgentsMultiagentRosterEntryParams? other) =>
@@ -261,6 +308,7 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
             string _ => 0,
             BetaManagedAgentsAgentParams _ => 1,
             BetaManagedAgentsMultiagentSelfParams _ => 2,
+            BetaManagedAgentsAdvisorParams _ => 3,
             _ => -1,
         };
     }
@@ -296,6 +344,23 @@ sealed class BetaManagedAgentsMultiagentRosterEntryParamsConverter
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagentSelfParams>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAdvisorParams>(
                 element,
                 options
             );

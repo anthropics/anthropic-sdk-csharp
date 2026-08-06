@@ -29,6 +29,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
                 Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -86,6 +87,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         {
             ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+            InferenceGeo = "inference_geo",
             Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         List<Agents::BetaManagedAgentsSkillParams> expectedSkills =
@@ -170,6 +172,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
                 Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -240,6 +243,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
                 Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -304,6 +308,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         {
             ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+            InferenceGeo = "inference_geo",
             Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         List<Agents::BetaManagedAgentsSkillParams> expectedSkills =
@@ -388,6 +393,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
                 Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -536,6 +542,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
                 Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -600,6 +607,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
                 Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -663,6 +671,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
                 Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -729,6 +738,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
                 Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -794,6 +804,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
                 Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Skills =
@@ -909,6 +920,7 @@ public class ModelTest : TestBase
         {
             ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+            InferenceGeo = "inference_geo",
             Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         value.Validate();
@@ -931,6 +943,7 @@ public class ModelTest : TestBase
         {
             ID = Agents::BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+            InferenceGeo = "inference_geo",
             Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

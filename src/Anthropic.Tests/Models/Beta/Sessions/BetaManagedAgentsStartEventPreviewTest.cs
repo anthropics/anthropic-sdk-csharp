@@ -12,7 +12,7 @@ public class BetaManagedAgentsStartEventPreviewTest : TestBase
         BetaManagedAgentsStartEventPreview value = new BetaManagedAgentsAgentMessagePreview()
         {
             ID = "id",
-            Type = Type.AgentMessage,
+            Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
         };
         value.Validate();
     }
@@ -34,7 +34,7 @@ public class BetaManagedAgentsStartEventPreviewTest : TestBase
         BetaManagedAgentsStartEventPreview value = new BetaManagedAgentsAgentMessagePreview()
         {
             ID = "id",
-            Type = Type.AgentMessage,
+            Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsStartEventPreview>(

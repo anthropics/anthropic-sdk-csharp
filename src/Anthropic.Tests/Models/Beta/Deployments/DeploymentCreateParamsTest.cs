@@ -35,6 +35,11 @@ public class DeploymentCreateParamsTest : TestBase
                 },
             ],
             Name = "x",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Description = "description",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
@@ -74,6 +79,11 @@ public class DeploymentCreateParamsTest : TestBase
             },
         ];
         string expectedName = "x";
+        Sessions::BetaManagedAgentsBudgetLimit expectedBudget = new()
+        {
+            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+            Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
+        };
         string expectedDescription = "description";
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
         List<Resource> expectedResources =
@@ -105,6 +115,7 @@ public class DeploymentCreateParamsTest : TestBase
             Assert.Equal(expectedInitialEvents[i], parameters.InitialEvents[i]);
         }
         Assert.Equal(expectedName, parameters.Name);
+        Assert.Equal(expectedBudget, parameters.Budget);
         Assert.Equal(expectedDescription, parameters.Description);
         Assert.NotNull(parameters.Metadata);
         Assert.Equal(expectedMetadata.Count, parameters.Metadata.Count);
@@ -158,6 +169,11 @@ public class DeploymentCreateParamsTest : TestBase
                 },
             ],
             Name = "x",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Description = "description",
             Schedule = new()
             {
@@ -200,6 +216,11 @@ public class DeploymentCreateParamsTest : TestBase
                 },
             ],
             Name = "x",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Description = "description",
             Schedule = new()
             {
@@ -262,6 +283,8 @@ public class DeploymentCreateParamsTest : TestBase
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
+        Assert.Null(parameters.Budget);
+        Assert.False(parameters.RawBodyData.ContainsKey("budget"));
         Assert.Null(parameters.Description);
         Assert.False(parameters.RawBodyData.ContainsKey("description"));
         Assert.Null(parameters.Schedule);
@@ -304,10 +327,13 @@ public class DeploymentCreateParamsTest : TestBase
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
+            Budget = null,
             Description = null,
             Schedule = null,
         };
 
+        Assert.Null(parameters.Budget);
+        Assert.True(parameters.RawBodyData.ContainsKey("budget"));
         Assert.Null(parameters.Description);
         Assert.True(parameters.RawBodyData.ContainsKey("description"));
         Assert.Null(parameters.Schedule);
@@ -404,6 +430,11 @@ public class DeploymentCreateParamsTest : TestBase
                 },
             ],
             Name = "x",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Description = "description",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
