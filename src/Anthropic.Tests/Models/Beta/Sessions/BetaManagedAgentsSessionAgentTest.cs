@@ -31,13 +31,14 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                 Effort = new Agents::BetaManagedAgentsEffortLow(
                     Agents::BetaManagedAgentsEffortLowType.Low
                 ),
+                InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Multiagent = new()
             {
                 Agents =
                 [
-                    new()
+                    new Agents::BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -56,6 +57,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                             Effort = new Agents::BetaManagedAgentsEffortLow(
                                 Agents::BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Agents::Speed.Standard,
                         },
                         Name = "Researcher",
@@ -167,13 +169,14 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             Effort = new Agents::BetaManagedAgentsEffortLow(
                 Agents::BetaManagedAgentsEffortLowType.Low
             ),
+            InferenceGeo = "inference_geo",
             Speed = Agents::Speed.Standard,
         };
         BetaManagedAgentsSessionMultiagentCoordinator expectedMultiagent = new()
         {
             Agents =
             [
-                new()
+                new Agents::BetaManagedAgentsSessionThreadAgent()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
@@ -192,6 +195,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                         Effort = new Agents::BetaManagedAgentsEffortLow(
                             Agents::BetaManagedAgentsEffortLowType.Low
                         ),
+                        InferenceGeo = "inference_geo",
                         Speed = Agents::Speed.Standard,
                     },
                     Name = "Researcher",
@@ -333,13 +337,14 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                 Effort = new Agents::BetaManagedAgentsEffortLow(
                     Agents::BetaManagedAgentsEffortLowType.Low
                 ),
+                InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Multiagent = new()
             {
                 Agents =
                 [
-                    new()
+                    new Agents::BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -358,6 +363,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                             Effort = new Agents::BetaManagedAgentsEffortLow(
                                 Agents::BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Agents::Speed.Standard,
                         },
                         Name = "Researcher",
@@ -483,13 +489,14 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                 Effort = new Agents::BetaManagedAgentsEffortLow(
                     Agents::BetaManagedAgentsEffortLowType.Low
                 ),
+                InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Multiagent = new()
             {
                 Agents =
                 [
-                    new()
+                    new Agents::BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -508,6 +515,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                             Effort = new Agents::BetaManagedAgentsEffortLow(
                                 Agents::BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Agents::Speed.Standard,
                         },
                         Name = "Researcher",
@@ -626,13 +634,14 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             Effort = new Agents::BetaManagedAgentsEffortLow(
                 Agents::BetaManagedAgentsEffortLowType.Low
             ),
+            InferenceGeo = "inference_geo",
             Speed = Agents::Speed.Standard,
         };
         BetaManagedAgentsSessionMultiagentCoordinator expectedMultiagent = new()
         {
             Agents =
             [
-                new()
+                new Agents::BetaManagedAgentsSessionThreadAgent()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
@@ -651,6 +660,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                         Effort = new Agents::BetaManagedAgentsEffortLow(
                             Agents::BetaManagedAgentsEffortLowType.Low
                         ),
+                        InferenceGeo = "inference_geo",
                         Speed = Agents::Speed.Standard,
                     },
                     Name = "Researcher",
@@ -792,13 +802,14 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                 Effort = new Agents::BetaManagedAgentsEffortLow(
                     Agents::BetaManagedAgentsEffortLowType.Low
                 ),
+                InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Multiagent = new()
             {
                 Agents =
                 [
-                    new()
+                    new Agents::BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -817,6 +828,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                             Effort = new Agents::BetaManagedAgentsEffortLow(
                                 Agents::BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Agents::Speed.Standard,
                         },
                         Name = "Researcher",
@@ -936,13 +948,14 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                 Effort = new Agents::BetaManagedAgentsEffortLow(
                     Agents::BetaManagedAgentsEffortLowType.Low
                 ),
+                InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Multiagent = new()
             {
                 Agents =
                 [
-                    new()
+                    new Agents::BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -961,6 +974,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                             Effort = new Agents::BetaManagedAgentsEffortLow(
                                 Agents::BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Agents::Speed.Standard,
                         },
                         Name = "Researcher",

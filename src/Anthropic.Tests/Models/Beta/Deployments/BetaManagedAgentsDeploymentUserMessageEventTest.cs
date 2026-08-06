@@ -200,6 +200,15 @@ public class ContentTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsRedactedBlockValidationWorks()
+    {
+        Content value = new Events::BetaManagedAgentsRedactedBlock(
+            Events::BetaManagedAgentsRedactedBlockType.Redacted
+        );
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsTextBlockSerializationRoundtripWorks()
     {
         Content value = new Events::BetaManagedAgentsTextBlock()
@@ -253,6 +262,21 @@ public class ContentTest : TestBase
             Context = "context",
             Title = "title",
         };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Content>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRedactedBlockSerializationRoundtripWorks()
+    {
+        Content value = new Events::BetaManagedAgentsRedactedBlock(
+            Events::BetaManagedAgentsRedactedBlockType.Redacted
+        );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Content>(
             element,

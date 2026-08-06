@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
-using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
 
@@ -12,7 +12,7 @@ public class AgentListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new Agents::AgentListPageResponse
+        var model = new AgentListPageResponse
         {
             Data =
             [
@@ -27,27 +27,26 @@ public class AgentListPageResponseTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
-                        Effort = new Agents::BetaManagedAgentsEffortLow(
-                            Agents::BetaManagedAgentsEffortLowType.Low
-                        ),
-                        Speed = Agents::Speed.Standard,
+                        ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        InferenceGeo = "inference_geo",
+                        Speed = Speed.Standard,
                     },
                     Multiagent = new()
                     {
                         Agents =
                         [
-                            new()
+                            new BetaManagedAgentsAgentReference()
                             {
                                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Type = BetaManagedAgentsAgentReferenceType.Agent,
                                 Version = 1,
                             },
                         ],
@@ -56,16 +55,16 @@ public class AgentListPageResponseTest : TestBase
                     Name = "My First Agent",
                     Skills =
                     [
-                        new Agents::BetaManagedAgentsAnthropicSkill()
+                        new BetaManagedAgentsAnthropicSkill()
                         {
                             SkillID = "xlsx",
-                            Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                             Version = "1",
                         },
-                        new Agents::BetaManagedAgentsCustomSkill()
+                        new BetaManagedAgentsCustomSkill()
                         {
                             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
-                            Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                            Type = BetaManagedAgentsCustomSkillType.Custom,
                             Version = "2",
                         },
                     ],
@@ -73,32 +72,30 @@ public class AgentListPageResponseTest : TestBase
                         "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
                     Tools =
                     [
-                        new Agents::BetaManagedAgentsAgentToolset20260401()
+                        new BetaManagedAgentsAgentToolset20260401()
                         {
                             Configs =
                             [
                                 new()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
-                                    PermissionPolicy =
-                                        new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                    Name = Name.Bash,
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                    ),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                                 ),
                             },
-                            Type =
-                                Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = Agents::Type.Agent,
+                    Type = BetaManagedAgentsAgentType.Agent,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Version = 1,
                 },
@@ -106,7 +103,7 @@ public class AgentListPageResponseTest : TestBase
             NextPage = "next_page",
         };
 
-        List<Agents::BetaManagedAgentsAgent> expectedData =
+        List<BetaManagedAgentsAgent> expectedData =
         [
             new()
             {
@@ -119,27 +116,26 @@ public class AgentListPageResponseTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                 Model = new()
                 {
-                    ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
-                    Effort = new Agents::BetaManagedAgentsEffortLow(
-                        Agents::BetaManagedAgentsEffortLowType.Low
-                    ),
-                    Speed = Agents::Speed.Standard,
+                    ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    InferenceGeo = "inference_geo",
+                    Speed = Speed.Standard,
                 },
                 Multiagent = new()
                 {
                     Agents =
                     [
-                        new()
+                        new BetaManagedAgentsAgentReference()
                         {
                             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                            Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
                             Version = 1,
                         },
                     ],
@@ -148,16 +144,16 @@ public class AgentListPageResponseTest : TestBase
                 Name = "My First Agent",
                 Skills =
                 [
-                    new Agents::BetaManagedAgentsAnthropicSkill()
+                    new BetaManagedAgentsAnthropicSkill()
                     {
                         SkillID = "xlsx",
-                        Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                         Version = "1",
                     },
-                    new Agents::BetaManagedAgentsCustomSkill()
+                    new BetaManagedAgentsCustomSkill()
                     {
                         SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
-                        Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                        Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
                 ],
@@ -165,31 +161,30 @@ public class AgentListPageResponseTest : TestBase
                     "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
                 Tools =
                 [
-                    new Agents::BetaManagedAgentsAgentToolset20260401()
+                    new BetaManagedAgentsAgentToolset20260401()
                     {
                         Configs =
                         [
                             new()
                             {
                                 Enabled = true,
-                                Name = Agents::Name.Bash,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                Name = Name.Bash,
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                             ),
                         },
-                        Type =
-                            Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                        Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = Agents::Type.Agent,
+                Type = BetaManagedAgentsAgentType.Agent,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Version = 1,
             },
@@ -207,7 +202,7 @@ public class AgentListPageResponseTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new Agents::AgentListPageResponse
+        var model = new AgentListPageResponse
         {
             Data =
             [
@@ -222,27 +217,26 @@ public class AgentListPageResponseTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
-                        Effort = new Agents::BetaManagedAgentsEffortLow(
-                            Agents::BetaManagedAgentsEffortLowType.Low
-                        ),
-                        Speed = Agents::Speed.Standard,
+                        ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        InferenceGeo = "inference_geo",
+                        Speed = Speed.Standard,
                     },
                     Multiagent = new()
                     {
                         Agents =
                         [
-                            new()
+                            new BetaManagedAgentsAgentReference()
                             {
                                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Type = BetaManagedAgentsAgentReferenceType.Agent,
                                 Version = 1,
                             },
                         ],
@@ -251,16 +245,16 @@ public class AgentListPageResponseTest : TestBase
                     Name = "My First Agent",
                     Skills =
                     [
-                        new Agents::BetaManagedAgentsAnthropicSkill()
+                        new BetaManagedAgentsAnthropicSkill()
                         {
                             SkillID = "xlsx",
-                            Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                             Version = "1",
                         },
-                        new Agents::BetaManagedAgentsCustomSkill()
+                        new BetaManagedAgentsCustomSkill()
                         {
                             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
-                            Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                            Type = BetaManagedAgentsCustomSkillType.Custom,
                             Version = "2",
                         },
                     ],
@@ -268,32 +262,30 @@ public class AgentListPageResponseTest : TestBase
                         "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
                     Tools =
                     [
-                        new Agents::BetaManagedAgentsAgentToolset20260401()
+                        new BetaManagedAgentsAgentToolset20260401()
                         {
                             Configs =
                             [
                                 new()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
-                                    PermissionPolicy =
-                                        new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                    Name = Name.Bash,
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                    ),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                                 ),
                             },
-                            Type =
-                                Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = Agents::Type.Agent,
+                    Type = BetaManagedAgentsAgentType.Agent,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Version = 1,
                 },
@@ -302,7 +294,7 @@ public class AgentListPageResponseTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Agents::AgentListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<AgentListPageResponse>(
             json,
             ModelBase.SerializerOptions
         );
@@ -313,7 +305,7 @@ public class AgentListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new Agents::AgentListPageResponse
+        var model = new AgentListPageResponse
         {
             Data =
             [
@@ -328,27 +320,26 @@ public class AgentListPageResponseTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
-                        Effort = new Agents::BetaManagedAgentsEffortLow(
-                            Agents::BetaManagedAgentsEffortLowType.Low
-                        ),
-                        Speed = Agents::Speed.Standard,
+                        ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        InferenceGeo = "inference_geo",
+                        Speed = Speed.Standard,
                     },
                     Multiagent = new()
                     {
                         Agents =
                         [
-                            new()
+                            new BetaManagedAgentsAgentReference()
                             {
                                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Type = BetaManagedAgentsAgentReferenceType.Agent,
                                 Version = 1,
                             },
                         ],
@@ -357,16 +348,16 @@ public class AgentListPageResponseTest : TestBase
                     Name = "My First Agent",
                     Skills =
                     [
-                        new Agents::BetaManagedAgentsAnthropicSkill()
+                        new BetaManagedAgentsAnthropicSkill()
                         {
                             SkillID = "xlsx",
-                            Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                             Version = "1",
                         },
-                        new Agents::BetaManagedAgentsCustomSkill()
+                        new BetaManagedAgentsCustomSkill()
                         {
                             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
-                            Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                            Type = BetaManagedAgentsCustomSkillType.Custom,
                             Version = "2",
                         },
                     ],
@@ -374,32 +365,30 @@ public class AgentListPageResponseTest : TestBase
                         "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
                     Tools =
                     [
-                        new Agents::BetaManagedAgentsAgentToolset20260401()
+                        new BetaManagedAgentsAgentToolset20260401()
                         {
                             Configs =
                             [
                                 new()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
-                                    PermissionPolicy =
-                                        new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                    Name = Name.Bash,
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                    ),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                                 ),
                             },
-                            Type =
-                                Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = Agents::Type.Agent,
+                    Type = BetaManagedAgentsAgentType.Agent,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Version = 1,
                 },
@@ -408,13 +397,13 @@ public class AgentListPageResponseTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Agents::AgentListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<AgentListPageResponse>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        List<Agents::BetaManagedAgentsAgent> expectedData =
+        List<BetaManagedAgentsAgent> expectedData =
         [
             new()
             {
@@ -427,27 +416,26 @@ public class AgentListPageResponseTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                 Model = new()
                 {
-                    ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
-                    Effort = new Agents::BetaManagedAgentsEffortLow(
-                        Agents::BetaManagedAgentsEffortLowType.Low
-                    ),
-                    Speed = Agents::Speed.Standard,
+                    ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    InferenceGeo = "inference_geo",
+                    Speed = Speed.Standard,
                 },
                 Multiagent = new()
                 {
                     Agents =
                     [
-                        new()
+                        new BetaManagedAgentsAgentReference()
                         {
                             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                            Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
                             Version = 1,
                         },
                     ],
@@ -456,16 +444,16 @@ public class AgentListPageResponseTest : TestBase
                 Name = "My First Agent",
                 Skills =
                 [
-                    new Agents::BetaManagedAgentsAnthropicSkill()
+                    new BetaManagedAgentsAnthropicSkill()
                     {
                         SkillID = "xlsx",
-                        Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                         Version = "1",
                     },
-                    new Agents::BetaManagedAgentsCustomSkill()
+                    new BetaManagedAgentsCustomSkill()
                     {
                         SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
-                        Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                        Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
                 ],
@@ -473,31 +461,30 @@ public class AgentListPageResponseTest : TestBase
                     "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
                 Tools =
                 [
-                    new Agents::BetaManagedAgentsAgentToolset20260401()
+                    new BetaManagedAgentsAgentToolset20260401()
                     {
                         Configs =
                         [
                             new()
                             {
                                 Enabled = true,
-                                Name = Agents::Name.Bash,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                Name = Name.Bash,
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                             ),
                         },
-                        Type =
-                            Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                        Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = Agents::Type.Agent,
+                Type = BetaManagedAgentsAgentType.Agent,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Version = 1,
             },
@@ -515,7 +502,7 @@ public class AgentListPageResponseTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new Agents::AgentListPageResponse
+        var model = new AgentListPageResponse
         {
             Data =
             [
@@ -530,27 +517,26 @@ public class AgentListPageResponseTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
-                        Effort = new Agents::BetaManagedAgentsEffortLow(
-                            Agents::BetaManagedAgentsEffortLowType.Low
-                        ),
-                        Speed = Agents::Speed.Standard,
+                        ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        InferenceGeo = "inference_geo",
+                        Speed = Speed.Standard,
                     },
                     Multiagent = new()
                     {
                         Agents =
                         [
-                            new()
+                            new BetaManagedAgentsAgentReference()
                             {
                                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Type = BetaManagedAgentsAgentReferenceType.Agent,
                                 Version = 1,
                             },
                         ],
@@ -559,16 +545,16 @@ public class AgentListPageResponseTest : TestBase
                     Name = "My First Agent",
                     Skills =
                     [
-                        new Agents::BetaManagedAgentsAnthropicSkill()
+                        new BetaManagedAgentsAnthropicSkill()
                         {
                             SkillID = "xlsx",
-                            Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                             Version = "1",
                         },
-                        new Agents::BetaManagedAgentsCustomSkill()
+                        new BetaManagedAgentsCustomSkill()
                         {
                             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
-                            Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                            Type = BetaManagedAgentsCustomSkillType.Custom,
                             Version = "2",
                         },
                     ],
@@ -576,32 +562,30 @@ public class AgentListPageResponseTest : TestBase
                         "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
                     Tools =
                     [
-                        new Agents::BetaManagedAgentsAgentToolset20260401()
+                        new BetaManagedAgentsAgentToolset20260401()
                         {
                             Configs =
                             [
                                 new()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
-                                    PermissionPolicy =
-                                        new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                    Name = Name.Bash,
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                    ),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                                 ),
                             },
-                            Type =
-                                Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = Agents::Type.Agent,
+                    Type = BetaManagedAgentsAgentType.Agent,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Version = 1,
                 },
@@ -615,7 +599,7 @@ public class AgentListPageResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new Agents::AgentListPageResponse
+        var model = new AgentListPageResponse
         {
             Data =
             [
@@ -630,27 +614,26 @@ public class AgentListPageResponseTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
-                        Effort = new Agents::BetaManagedAgentsEffortLow(
-                            Agents::BetaManagedAgentsEffortLowType.Low
-                        ),
-                        Speed = Agents::Speed.Standard,
+                        ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        InferenceGeo = "inference_geo",
+                        Speed = Speed.Standard,
                     },
                     Multiagent = new()
                     {
                         Agents =
                         [
-                            new()
+                            new BetaManagedAgentsAgentReference()
                             {
                                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Type = BetaManagedAgentsAgentReferenceType.Agent,
                                 Version = 1,
                             },
                         ],
@@ -659,16 +642,16 @@ public class AgentListPageResponseTest : TestBase
                     Name = "My First Agent",
                     Skills =
                     [
-                        new Agents::BetaManagedAgentsAnthropicSkill()
+                        new BetaManagedAgentsAnthropicSkill()
                         {
                             SkillID = "xlsx",
-                            Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                             Version = "1",
                         },
-                        new Agents::BetaManagedAgentsCustomSkill()
+                        new BetaManagedAgentsCustomSkill()
                         {
                             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
-                            Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                            Type = BetaManagedAgentsCustomSkillType.Custom,
                             Version = "2",
                         },
                     ],
@@ -676,32 +659,30 @@ public class AgentListPageResponseTest : TestBase
                         "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
                     Tools =
                     [
-                        new Agents::BetaManagedAgentsAgentToolset20260401()
+                        new BetaManagedAgentsAgentToolset20260401()
                         {
                             Configs =
                             [
                                 new()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
-                                    PermissionPolicy =
-                                        new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                    Name = Name.Bash,
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                    ),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                                 ),
                             },
-                            Type =
-                                Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = Agents::Type.Agent,
+                    Type = BetaManagedAgentsAgentType.Agent,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Version = 1,
                 },
@@ -715,7 +696,7 @@ public class AgentListPageResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new Agents::AgentListPageResponse
+        var model = new AgentListPageResponse
         {
             Data =
             [
@@ -730,27 +711,26 @@ public class AgentListPageResponseTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
-                        Effort = new Agents::BetaManagedAgentsEffortLow(
-                            Agents::BetaManagedAgentsEffortLowType.Low
-                        ),
-                        Speed = Agents::Speed.Standard,
+                        ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        InferenceGeo = "inference_geo",
+                        Speed = Speed.Standard,
                     },
                     Multiagent = new()
                     {
                         Agents =
                         [
-                            new()
+                            new BetaManagedAgentsAgentReference()
                             {
                                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Type = BetaManagedAgentsAgentReferenceType.Agent,
                                 Version = 1,
                             },
                         ],
@@ -759,16 +739,16 @@ public class AgentListPageResponseTest : TestBase
                     Name = "My First Agent",
                     Skills =
                     [
-                        new Agents::BetaManagedAgentsAnthropicSkill()
+                        new BetaManagedAgentsAnthropicSkill()
                         {
                             SkillID = "xlsx",
-                            Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                             Version = "1",
                         },
-                        new Agents::BetaManagedAgentsCustomSkill()
+                        new BetaManagedAgentsCustomSkill()
                         {
                             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
-                            Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                            Type = BetaManagedAgentsCustomSkillType.Custom,
                             Version = "2",
                         },
                     ],
@@ -776,32 +756,30 @@ public class AgentListPageResponseTest : TestBase
                         "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
                     Tools =
                     [
-                        new Agents::BetaManagedAgentsAgentToolset20260401()
+                        new BetaManagedAgentsAgentToolset20260401()
                         {
                             Configs =
                             [
                                 new()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
-                                    PermissionPolicy =
-                                        new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                    Name = Name.Bash,
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                    ),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                                 ),
                             },
-                            Type =
-                                Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = Agents::Type.Agent,
+                    Type = BetaManagedAgentsAgentType.Agent,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Version = 1,
                 },
@@ -814,7 +792,7 @@ public class AgentListPageResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new Agents::AgentListPageResponse
+        var model = new AgentListPageResponse
         {
             Data =
             [
@@ -829,27 +807,26 @@ public class AgentListPageResponseTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
-                        Effort = new Agents::BetaManagedAgentsEffortLow(
-                            Agents::BetaManagedAgentsEffortLowType.Low
-                        ),
-                        Speed = Agents::Speed.Standard,
+                        ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        InferenceGeo = "inference_geo",
+                        Speed = Speed.Standard,
                     },
                     Multiagent = new()
                     {
                         Agents =
                         [
-                            new()
+                            new BetaManagedAgentsAgentReference()
                             {
                                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Type = BetaManagedAgentsAgentReferenceType.Agent,
                                 Version = 1,
                             },
                         ],
@@ -858,16 +835,16 @@ public class AgentListPageResponseTest : TestBase
                     Name = "My First Agent",
                     Skills =
                     [
-                        new Agents::BetaManagedAgentsAnthropicSkill()
+                        new BetaManagedAgentsAnthropicSkill()
                         {
                             SkillID = "xlsx",
-                            Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                             Version = "1",
                         },
-                        new Agents::BetaManagedAgentsCustomSkill()
+                        new BetaManagedAgentsCustomSkill()
                         {
                             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
-                            Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                            Type = BetaManagedAgentsCustomSkillType.Custom,
                             Version = "2",
                         },
                     ],
@@ -875,32 +852,30 @@ public class AgentListPageResponseTest : TestBase
                         "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
                     Tools =
                     [
-                        new Agents::BetaManagedAgentsAgentToolset20260401()
+                        new BetaManagedAgentsAgentToolset20260401()
                         {
                             Configs =
                             [
                                 new()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
-                                    PermissionPolicy =
-                                        new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                    Name = Name.Bash,
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                    ),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                                 ),
                             },
-                            Type =
-                                Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = Agents::Type.Agent,
+                    Type = BetaManagedAgentsAgentType.Agent,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Version = 1,
                 },
@@ -916,7 +891,7 @@ public class AgentListPageResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new Agents::AgentListPageResponse
+        var model = new AgentListPageResponse
         {
             Data =
             [
@@ -931,27 +906,26 @@ public class AgentListPageResponseTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
-                        Effort = new Agents::BetaManagedAgentsEffortLow(
-                            Agents::BetaManagedAgentsEffortLowType.Low
-                        ),
-                        Speed = Agents::Speed.Standard,
+                        ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        InferenceGeo = "inference_geo",
+                        Speed = Speed.Standard,
                     },
                     Multiagent = new()
                     {
                         Agents =
                         [
-                            new()
+                            new BetaManagedAgentsAgentReference()
                             {
                                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Type = BetaManagedAgentsAgentReferenceType.Agent,
                                 Version = 1,
                             },
                         ],
@@ -960,16 +934,16 @@ public class AgentListPageResponseTest : TestBase
                     Name = "My First Agent",
                     Skills =
                     [
-                        new Agents::BetaManagedAgentsAnthropicSkill()
+                        new BetaManagedAgentsAnthropicSkill()
                         {
                             SkillID = "xlsx",
-                            Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                             Version = "1",
                         },
-                        new Agents::BetaManagedAgentsCustomSkill()
+                        new BetaManagedAgentsCustomSkill()
                         {
                             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
-                            Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                            Type = BetaManagedAgentsCustomSkillType.Custom,
                             Version = "2",
                         },
                     ],
@@ -977,32 +951,30 @@ public class AgentListPageResponseTest : TestBase
                         "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
                     Tools =
                     [
-                        new Agents::BetaManagedAgentsAgentToolset20260401()
+                        new BetaManagedAgentsAgentToolset20260401()
                         {
                             Configs =
                             [
                                 new()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
-                                    PermissionPolicy =
-                                        new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                    Name = Name.Bash,
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                    ),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                                 ),
                             },
-                            Type =
-                                Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = Agents::Type.Agent,
+                    Type = BetaManagedAgentsAgentType.Agent,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Version = 1,
                 },
@@ -1017,7 +989,7 @@ public class AgentListPageResponseTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new Agents::AgentListPageResponse
+        var model = new AgentListPageResponse
         {
             Data =
             [
@@ -1032,27 +1004,26 @@ public class AgentListPageResponseTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeSonnet4_6,
-                        Effort = new Agents::BetaManagedAgentsEffortLow(
-                            Agents::BetaManagedAgentsEffortLowType.Low
-                        ),
-                        Speed = Agents::Speed.Standard,
+                        ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        InferenceGeo = "inference_geo",
+                        Speed = Speed.Standard,
                     },
                     Multiagent = new()
                     {
                         Agents =
                         [
-                            new()
+                            new BetaManagedAgentsAgentReference()
                             {
                                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                                Type = BetaManagedAgentsAgentReferenceType.Agent,
                                 Version = 1,
                             },
                         ],
@@ -1061,16 +1032,16 @@ public class AgentListPageResponseTest : TestBase
                     Name = "My First Agent",
                     Skills =
                     [
-                        new Agents::BetaManagedAgentsAnthropicSkill()
+                        new BetaManagedAgentsAnthropicSkill()
                         {
                             SkillID = "xlsx",
-                            Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                             Version = "1",
                         },
-                        new Agents::BetaManagedAgentsCustomSkill()
+                        new BetaManagedAgentsCustomSkill()
                         {
                             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
-                            Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
+                            Type = BetaManagedAgentsCustomSkillType.Custom,
                             Version = "2",
                         },
                     ],
@@ -1078,32 +1049,30 @@ public class AgentListPageResponseTest : TestBase
                         "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
                     Tools =
                     [
-                        new Agents::BetaManagedAgentsAgentToolset20260401()
+                        new BetaManagedAgentsAgentToolset20260401()
                         {
                             Configs =
                             [
                                 new()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
-                                    PermissionPolicy =
-                                        new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                    Name = Name.Bash,
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                    ),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
                                 ),
                             },
-                            Type =
-                                Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = Agents::Type.Agent,
+                    Type = BetaManagedAgentsAgentType.Agent,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Version = 1,
                 },
@@ -1111,7 +1080,7 @@ public class AgentListPageResponseTest : TestBase
             NextPage = "next_page",
         };
 
-        Agents::AgentListPageResponse copied = new(model);
+        AgentListPageResponse copied = new(model);
 
         Assert.Equal(model, copied);
     }

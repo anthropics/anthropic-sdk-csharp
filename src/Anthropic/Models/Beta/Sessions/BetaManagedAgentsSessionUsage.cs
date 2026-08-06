@@ -16,6 +16,30 @@ namespace Anthropic.Models.Beta.Sessions;
 public sealed record class BetaManagedAgentsSessionUsage : JsonModel
 {
     /// <summary>
+    /// Cumulative time in seconds during which the session had at least one thread
+    /// in running status. Overlapping activity from concurrent threads is counted
+    /// once, unlike `stats.active_seconds`, which sums each thread's own active
+    /// time. This is the duration the session's runtime cost is priced on.
+    /// </summary>
+    public double? ActiveSeconds
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<double>("active_seconds");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("active_seconds", value);
+        }
+    }
+
+    /// <summary>
     /// Prompt-cache creation token usage broken down by cache lifetime.
     /// </summary>
     public BetaManagedAgentsCacheCreationUsage? CacheCreation
@@ -81,6 +105,19 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
     }
 
     /// <summary>
+    /// A monetary amount in a specific currency.
+    /// </summary>
+    public BetaMonetaryAmount? ListCost
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaMonetaryAmount>("list_cost");
+        }
+        init { this._rawData.Set("list_cost", value); }
+    }
+
+    /// <summary>
     /// Total output tokens generated across all turns.
     /// </summary>
     public int? OutputTokens
@@ -101,13 +138,31 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
         }
     }
 
+    /// <summary>
+    /// Cumulative count of server-executed tool invocations, broken down by tool.
+    /// </summary>
+    public BetaManagedAgentsServerToolUsage? ServerToolUse
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaManagedAgentsServerToolUsage>(
+                "server_tool_use"
+            );
+        }
+        init { this._rawData.Set("server_tool_use", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
+        _ = this.ActiveSeconds;
         this.CacheCreation?.Validate();
         _ = this.CacheReadInputTokens;
         _ = this.InputTokens;
+        this.ListCost?.Validate();
         _ = this.OutputTokens;
+        this.ServerToolUse?.Validate();
     }
 
     public BetaManagedAgentsSessionUsage() { }

@@ -212,6 +212,15 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
         this._element = element;
     }
 
+    public BetaManagedAgentsAgentThreadMessageReceivedEventContent(
+        BetaManagedAgentsRedactedBlock value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
     public BetaManagedAgentsAgentThreadMessageReceivedEventContent(JsonElement element)
     {
         this._element = element;
@@ -287,6 +296,29 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsRedactedBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsRedactedBlock(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsRedactedBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsRedactedBlock(
+        [NotNullWhen(true)] out BetaManagedAgentsRedactedBlock? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsRedactedBlock;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -302,7 +334,8 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
     /// instance.Switch(
     ///     (BetaManagedAgentsTextBlock value) =&gt; {...},
     ///     (BetaManagedAgentsImageBlock value) =&gt; {...},
-    ///     (BetaManagedAgentsDocumentBlock value) =&gt; {...}
+    ///     (BetaManagedAgentsDocumentBlock value) =&gt; {...},
+    ///     (BetaManagedAgentsRedactedBlock value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -310,7 +343,8 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
     public void Switch(
         System::Action<BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
         System::Action<BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
-        System::Action<BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock
+        System::Action<BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
+        System::Action<BetaManagedAgentsRedactedBlock> betaManagedAgentsRedactedBlock
     )
     {
         switch (this.Value)
@@ -323,6 +357,9 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
                 break;
             case BetaManagedAgentsDocumentBlock value:
                 betaManagedAgentsDocumentBlock(value);
+                break;
+            case BetaManagedAgentsRedactedBlock value:
+                betaManagedAgentsRedactedBlock(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -348,7 +385,8 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
     /// var result = instance.Match(
     ///     (BetaManagedAgentsTextBlock value) =&gt; {...},
     ///     (BetaManagedAgentsImageBlock value) =&gt; {...},
-    ///     (BetaManagedAgentsDocumentBlock value) =&gt; {...}
+    ///     (BetaManagedAgentsDocumentBlock value) =&gt; {...},
+    ///     (BetaManagedAgentsRedactedBlock value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -356,7 +394,8 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
     public T Match<T>(
         System::Func<BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
         System::Func<BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
-        System::Func<BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock
+        System::Func<BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
+        System::Func<BetaManagedAgentsRedactedBlock, T> betaManagedAgentsRedactedBlock
     )
     {
         return this.Value switch
@@ -364,6 +403,7 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
             BetaManagedAgentsTextBlock value => betaManagedAgentsTextBlock(value),
             BetaManagedAgentsImageBlock value => betaManagedAgentsImageBlock(value),
             BetaManagedAgentsDocumentBlock value => betaManagedAgentsDocumentBlock(value),
+            BetaManagedAgentsRedactedBlock value => betaManagedAgentsRedactedBlock(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsAgentThreadMessageReceivedEventContent"
             ),
@@ -380,6 +420,10 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
 
     public static implicit operator BetaManagedAgentsAgentThreadMessageReceivedEventContent(
         BetaManagedAgentsDocumentBlock value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsAgentThreadMessageReceivedEventContent(
+        BetaManagedAgentsRedactedBlock value
     ) => new(value);
 
     /// <summary>
@@ -403,7 +447,8 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
         this.Switch(
             (betaManagedAgentsTextBlock) => betaManagedAgentsTextBlock.Validate(),
             (betaManagedAgentsImageBlock) => betaManagedAgentsImageBlock.Validate(),
-            (betaManagedAgentsDocumentBlock) => betaManagedAgentsDocumentBlock.Validate()
+            (betaManagedAgentsDocumentBlock) => betaManagedAgentsDocumentBlock.Validate(),
+            (betaManagedAgentsRedactedBlock) => betaManagedAgentsRedactedBlock.Validate()
         );
     }
 
@@ -430,6 +475,7 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
             BetaManagedAgentsTextBlock _ => 0,
             BetaManagedAgentsImageBlock _ => 1,
             BetaManagedAgentsDocumentBlock _ => 2,
+            BetaManagedAgentsRedactedBlock _ => 3,
             _ => -1,
         };
     }
@@ -502,6 +548,26 @@ sealed class BetaManagedAgentsAgentThreadMessageReceivedEventContentConverter
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDocumentBlock>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "redacted":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsRedactedBlock>(
                         element,
                         options
                     );

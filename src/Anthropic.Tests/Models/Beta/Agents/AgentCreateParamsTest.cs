@@ -513,6 +513,7 @@ public class ModelTest : TestBase
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = BetaManagedAgentsEffortLevel.Low,
+            InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         value.Validate();
@@ -535,6 +536,7 @@ public class ModelTest : TestBase
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = BetaManagedAgentsEffortLevel.Low,
+            InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

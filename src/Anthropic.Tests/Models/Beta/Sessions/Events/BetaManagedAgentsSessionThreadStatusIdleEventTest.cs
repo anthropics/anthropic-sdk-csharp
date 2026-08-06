@@ -177,6 +177,16 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventStopReasonTest : TestB
     }
 
     [Fact]
+    public void BetaManagedAgentsSessionBudgetReachedValidationWorks()
+    {
+        BetaManagedAgentsSessionThreadStatusIdleEventStopReason value =
+            new BetaManagedAgentsSessionBudgetReached(
+                BetaManagedAgentsSessionBudgetReachedType.BudgetReached
+            );
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsSessionEndTurnSerializationRoundtripWorks()
     {
         BetaManagedAgentsSessionThreadStatusIdleEventStopReason value =
@@ -216,6 +226,23 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventStopReasonTest : TestB
         BetaManagedAgentsSessionThreadStatusIdleEventStopReason value =
             new BetaManagedAgentsSessionRetriesExhausted(
                 BetaManagedAgentsSessionRetriesExhaustedType.RetriesExhausted
+            );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaManagedAgentsSessionThreadStatusIdleEventStopReason>(
+                element,
+                ModelBase.SerializerOptions
+            );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSessionBudgetReachedSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsSessionThreadStatusIdleEventStopReason value =
+            new BetaManagedAgentsSessionBudgetReached(
+                BetaManagedAgentsSessionBudgetReachedType.BudgetReached
             );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =

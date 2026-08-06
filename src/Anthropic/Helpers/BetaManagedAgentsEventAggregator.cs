@@ -98,7 +98,7 @@ public sealed class BetaManagedAgentsEventAggregator
             }
 
             var rawIndex = deltaEvent.Delta.Index ?? 0;
-            var content = new List<BetaManagedAgentsTextBlock>(message.Content);
+            var content = new List<BetaManagedAgentsAgentMessageEventContent>(message.Content);
             if (rawIndex < 0 || rawIndex > content.Count)
             {
                 throw new AnthropicInvalidDataException(
@@ -113,12 +113,17 @@ public sealed class BetaManagedAgentsEventAggregator
             {
                 content.Add(deltaEvent.Delta.Content);
             }
+            else if (content[index].TryPickBetaManagedAgentsTextBlock(out var accumulated))
+            {
+                content[index] = accumulated with
+                {
+                    Text = accumulated.Text + deltaEvent.Delta.Content.Text,
+                };
+            }
             else
             {
-                content[index] = content[index] with
-                {
-                    Text = content[index].Text + deltaEvent.Delta.Content.Text,
-                };
+                // Text can't extend a non-text block; drop the fragment rather than fail the stream.
+                return;
             }
             this._agentMessages[deltaEvent.EventID] = message with { Content = content };
         }
@@ -148,12 +153,17 @@ public sealed class BetaManagedAgentsEventAggregator
 
     /// <summary>
     /// The concatenated text of the aggregated agent message with the given event id,
-    /// or <c>null</c> if the event id is unknown.
+    /// or <c>null</c> if the event id is unknown. Content blocks that carry no text
+    /// (e.g. redacted blocks) contribute nothing.
     /// </summary>
     public string? TryGetAgentMessageText(string eventID)
     {
         return this._agentMessages.TryGetValue(eventID, out var message)
-            ? string.Concat(message.Content.Select(block => block.Text))
+            ? string.Concat(
+                message.Content.Select(block =>
+                    block.TryPickBetaManagedAgentsTextBlock(out var textBlock) ? textBlock.Text : ""
+                )
+            )
             : null;
     }
 

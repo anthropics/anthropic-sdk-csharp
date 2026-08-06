@@ -57,6 +57,28 @@ public record class SessionCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// A hard spend ceiling. The session stops issuing new model requests once the
+    /// tracked list cost reaches `max_list_cost`.
+    /// </summary>
+    public BetaManagedAgentsBudgetLimit? Budget
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaManagedAgentsBudgetLimit>("budget");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("budget", value);
+        }
+    }
+
+    /// <summary>
     /// Initial events to send to the `session` at creation, processed in order.
     /// Supports `user.message` and `user.define_outcome` events. Maximum 50 events.
     /// </summary>

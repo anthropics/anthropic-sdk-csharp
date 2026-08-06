@@ -145,6 +145,12 @@ public record class Content : ModelBase
         this._element = element;
     }
 
+    public Content(Events::BetaManagedAgentsRedactedBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
     public Content(JsonElement element)
     {
         this._element = element;
@@ -220,6 +226,29 @@ public record class Content : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="Events::BetaManagedAgentsRedactedBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsRedactedBlock(out var value)) {
+    ///     // `value` is of type `Events::BetaManagedAgentsRedactedBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsRedactedBlock(
+        [NotNullWhen(true)] out Events::BetaManagedAgentsRedactedBlock? value
+    )
+    {
+        value = this.Value as Events::BetaManagedAgentsRedactedBlock;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -235,7 +264,8 @@ public record class Content : ModelBase
     /// instance.Switch(
     ///     (Events::BetaManagedAgentsTextBlock value) =&gt; {...},
     ///     (Events::BetaManagedAgentsImageBlock value) =&gt; {...},
-    ///     (Events::BetaManagedAgentsDocumentBlock value) =&gt; {...}
+    ///     (Events::BetaManagedAgentsDocumentBlock value) =&gt; {...},
+    ///     (Events::BetaManagedAgentsRedactedBlock value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -243,7 +273,8 @@ public record class Content : ModelBase
     public void Switch(
         System::Action<Events::BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
         System::Action<Events::BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
-        System::Action<Events::BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock
+        System::Action<Events::BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
+        System::Action<Events::BetaManagedAgentsRedactedBlock> betaManagedAgentsRedactedBlock
     )
     {
         switch (this.Value)
@@ -256,6 +287,9 @@ public record class Content : ModelBase
                 break;
             case Events::BetaManagedAgentsDocumentBlock value:
                 betaManagedAgentsDocumentBlock(value);
+                break;
+            case Events::BetaManagedAgentsRedactedBlock value:
+                betaManagedAgentsRedactedBlock(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -281,7 +315,8 @@ public record class Content : ModelBase
     /// var result = instance.Match(
     ///     (Events::BetaManagedAgentsTextBlock value) =&gt; {...},
     ///     (Events::BetaManagedAgentsImageBlock value) =&gt; {...},
-    ///     (Events::BetaManagedAgentsDocumentBlock value) =&gt; {...}
+    ///     (Events::BetaManagedAgentsDocumentBlock value) =&gt; {...},
+    ///     (Events::BetaManagedAgentsRedactedBlock value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -289,7 +324,8 @@ public record class Content : ModelBase
     public T Match<T>(
         System::Func<Events::BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
         System::Func<Events::BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
-        System::Func<Events::BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock
+        System::Func<Events::BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
+        System::Func<Events::BetaManagedAgentsRedactedBlock, T> betaManagedAgentsRedactedBlock
     )
     {
         return this.Value switch
@@ -297,6 +333,7 @@ public record class Content : ModelBase
             Events::BetaManagedAgentsTextBlock value => betaManagedAgentsTextBlock(value),
             Events::BetaManagedAgentsImageBlock value => betaManagedAgentsImageBlock(value),
             Events::BetaManagedAgentsDocumentBlock value => betaManagedAgentsDocumentBlock(value),
+            Events::BetaManagedAgentsRedactedBlock value => betaManagedAgentsRedactedBlock(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Content"
             ),
@@ -309,6 +346,9 @@ public record class Content : ModelBase
         new(value);
 
     public static implicit operator Content(Events::BetaManagedAgentsDocumentBlock value) =>
+        new(value);
+
+    public static implicit operator Content(Events::BetaManagedAgentsRedactedBlock value) =>
         new(value);
 
     /// <summary>
@@ -330,7 +370,8 @@ public record class Content : ModelBase
         this.Switch(
             (betaManagedAgentsTextBlock) => betaManagedAgentsTextBlock.Validate(),
             (betaManagedAgentsImageBlock) => betaManagedAgentsImageBlock.Validate(),
-            (betaManagedAgentsDocumentBlock) => betaManagedAgentsDocumentBlock.Validate()
+            (betaManagedAgentsDocumentBlock) => betaManagedAgentsDocumentBlock.Validate(),
+            (betaManagedAgentsRedactedBlock) => betaManagedAgentsRedactedBlock.Validate()
         );
     }
 
@@ -357,6 +398,7 @@ public record class Content : ModelBase
             Events::BetaManagedAgentsTextBlock _ => 0,
             Events::BetaManagedAgentsImageBlock _ => 1,
             Events::BetaManagedAgentsDocumentBlock _ => 2,
+            Events::BetaManagedAgentsRedactedBlock _ => 3,
             _ => -1,
         };
     }
@@ -431,6 +473,27 @@ sealed class ContentConverter : JsonConverter<Content>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<Events::BetaManagedAgentsDocumentBlock>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "redacted":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<Events::BetaManagedAgentsRedactedBlock>(
                             element,
                             options
                         );

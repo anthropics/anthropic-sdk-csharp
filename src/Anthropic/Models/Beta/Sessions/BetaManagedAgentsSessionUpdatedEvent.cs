@@ -75,6 +75,20 @@ public sealed record class BetaManagedAgentsSessionUpdatedEvent : JsonModel
     }
 
     /// <summary>
+    /// A hard spend ceiling. The session stops issuing new model requests once the
+    /// tracked list cost reaches `max_list_cost`.
+    /// </summary>
+    public BetaManagedAgentsBudgetLimit? Budget
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaManagedAgentsBudgetLimit>("budget");
+        }
+        init { this._rawData.Set("budget", value); }
+    }
+
+    /// <summary>
     /// The session's full metadata bag after the update. Present when the update
     /// set non-empty metadata; absent when metadata was unchanged or cleared to empty.
     /// </summary>
@@ -119,6 +133,7 @@ public sealed record class BetaManagedAgentsSessionUpdatedEvent : JsonModel
         _ = this.ProcessedAt;
         this.Type.Validate();
         this.Agent?.Validate();
+        this.Budget?.Validate();
         _ = this.Metadata;
         _ = this.Title;
     }

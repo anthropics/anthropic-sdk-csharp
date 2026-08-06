@@ -57,6 +57,20 @@ public sealed record class BetaManagedAgentsSession : JsonModel
     }
 
     /// <summary>
+    /// A hard spend ceiling. The session stops issuing new model requests once the
+    /// tracked list cost reaches `max_list_cost`.
+    /// </summary>
+    public required BetaManagedAgentsBudgetLimit? Budget
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaManagedAgentsBudgetLimit>("budget");
+        }
+        init { this._rawData.Set("budget", value); }
+    }
+
+    /// <summary>
     /// A timestamp in RFC 3339 format
     /// </summary>
     public required System::DateTimeOffset CreatedAt
@@ -249,6 +263,7 @@ public sealed record class BetaManagedAgentsSession : JsonModel
         _ = this.ID;
         this.Agent.Validate();
         _ = this.ArchivedAt;
+        this.Budget?.Validate();
         _ = this.CreatedAt;
         _ = this.EnvironmentID;
         _ = this.Metadata;

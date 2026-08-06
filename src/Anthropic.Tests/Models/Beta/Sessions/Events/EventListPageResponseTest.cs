@@ -34,7 +34,7 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
                     Content =
                     [
-                        new()
+                        new BetaManagedAgentsTextBlock()
                         {
                             Text = "Let me look up order #1234 for you.",
                             Type = BetaManagedAgentsTextBlockType.Text,
@@ -68,7 +68,7 @@ public class EventListPageResponseTest : TestBase
                 ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
                 Content =
                 [
-                    new()
+                    new BetaManagedAgentsTextBlock()
                     {
                         Text = "Let me look up order #1234 for you.",
                         Type = BetaManagedAgentsTextBlockType.Text,
@@ -115,7 +115,7 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
                     Content =
                     [
-                        new()
+                        new BetaManagedAgentsTextBlock()
                         {
                             Text = "Let me look up order #1234 for you.",
                             Type = BetaManagedAgentsTextBlockType.Text,
@@ -163,7 +163,7 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
                     Content =
                     [
-                        new()
+                        new BetaManagedAgentsTextBlock()
                         {
                             Text = "Let me look up order #1234 for you.",
                             Type = BetaManagedAgentsTextBlockType.Text,
@@ -204,7 +204,7 @@ public class EventListPageResponseTest : TestBase
                 ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
                 Content =
                 [
-                    new()
+                    new BetaManagedAgentsTextBlock()
                     {
                         Text = "Let me look up order #1234 for you.",
                         Type = BetaManagedAgentsTextBlockType.Text,
@@ -251,7 +251,7 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
                     Content =
                     [
-                        new()
+                        new BetaManagedAgentsTextBlock()
                         {
                             Text = "Let me look up order #1234 for you.",
                             Type = BetaManagedAgentsTextBlockType.Text,
@@ -339,7 +339,7 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
                     Content =
                     [
-                        new()
+                        new BetaManagedAgentsTextBlock()
                         {
                             Text = "Let me look up order #1234 for you.",
                             Type = BetaManagedAgentsTextBlockType.Text,
@@ -381,7 +381,7 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
                     Content =
                     [
-                        new()
+                        new BetaManagedAgentsTextBlock()
                         {
                             Text = "Let me look up order #1234 for you.",
                             Type = BetaManagedAgentsTextBlockType.Text,
@@ -422,7 +422,7 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
                     Content =
                     [
-                        new()
+                        new BetaManagedAgentsTextBlock()
                         {
                             Text = "Let me look up order #1234 for you.",
                             Type = BetaManagedAgentsTextBlockType.Text,
@@ -466,7 +466,7 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
                     Content =
                     [
-                        new()
+                        new BetaManagedAgentsTextBlock()
                         {
                             Text = "Let me look up order #1234 for you.",
                             Type = BetaManagedAgentsTextBlockType.Text,
@@ -509,7 +509,7 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
                     Content =
                     [
-                        new()
+                        new BetaManagedAgentsTextBlock()
                         {
                             Text = "Let me look up order #1234 for you.",
                             Type = BetaManagedAgentsTextBlockType.Text,

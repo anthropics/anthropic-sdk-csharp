@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Deployments;
 using Anthropic.Models.Beta.Sessions;
@@ -83,6 +84,11 @@ public class DeploymentListPageResponseTest : TestBase
                     Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -153,6 +159,11 @@ public class DeploymentListPageResponseTest : TestBase
                 Type = BetaManagedAgentsDeploymentType.Deployment,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                Budget = new()
+                {
+                    MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                    Type = BetaManagedAgentsBudgetLimitType.Limit,
+                },
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -237,6 +248,11 @@ public class DeploymentListPageResponseTest : TestBase
                     Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -323,6 +339,11 @@ public class DeploymentListPageResponseTest : TestBase
                     Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -400,6 +421,11 @@ public class DeploymentListPageResponseTest : TestBase
                 Type = BetaManagedAgentsDeploymentType.Deployment,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                Budget = new()
+                {
+                    MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                    Type = BetaManagedAgentsBudgetLimitType.Limit,
+                },
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -484,6 +510,11 @@ public class DeploymentListPageResponseTest : TestBase
                     Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -564,6 +595,11 @@ public class DeploymentListPageResponseTest : TestBase
                     Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                 },
             ],
         };
@@ -644,6 +680,11 @@ public class DeploymentListPageResponseTest : TestBase
                     Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                 },
             ],
         };
@@ -723,6 +764,11 @@ public class DeploymentListPageResponseTest : TestBase
                     Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                 },
             ],
 
@@ -805,6 +851,11 @@ public class DeploymentListPageResponseTest : TestBase
                     Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                 },
             ],
 
@@ -886,6 +937,11 @@ public class DeploymentListPageResponseTest : TestBase
                     Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
+                    Budget = new()
+                    {
+                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        Type = BetaManagedAgentsBudgetLimitType.Limit,
+                    },
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",

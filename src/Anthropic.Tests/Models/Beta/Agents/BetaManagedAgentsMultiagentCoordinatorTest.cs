@@ -15,7 +15,7 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
         {
             Agents =
             [
-                new()
+                new BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Type = BetaManagedAgentsAgentReferenceType.Agent,
@@ -25,9 +25,9 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
             Type = BetaManagedAgentsMultiagentCoordinatorType.Coordinator,
         };
 
-        List<BetaManagedAgentsAgentReference> expectedAgents =
+        List<Agent> expectedAgents =
         [
-            new()
+            new BetaManagedAgentsAgentReference()
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                 Type = BetaManagedAgentsAgentReferenceType.Agent,
@@ -52,7 +52,7 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
         {
             Agents =
             [
-                new()
+                new BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Type = BetaManagedAgentsAgentReferenceType.Agent,
@@ -78,7 +78,7 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
         {
             Agents =
             [
-                new()
+                new BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Type = BetaManagedAgentsAgentReferenceType.Agent,
@@ -95,9 +95,9 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        List<BetaManagedAgentsAgentReference> expectedAgents =
+        List<Agent> expectedAgents =
         [
-            new()
+            new BetaManagedAgentsAgentReference()
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                 Type = BetaManagedAgentsAgentReferenceType.Agent,
@@ -122,7 +122,7 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
         {
             Agents =
             [
-                new()
+                new BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Type = BetaManagedAgentsAgentReferenceType.Agent,
@@ -142,7 +142,7 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
         {
             Agents =
             [
-                new()
+                new BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Type = BetaManagedAgentsAgentReferenceType.Agent,
@@ -155,6 +155,53 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
         BetaManagedAgentsMultiagentCoordinator copied = new(model);
 
         Assert.Equal(model, copied);
+    }
+}
+
+public class AgentTest : TestBase
+{
+    [Fact]
+    public void BetaManagedAgentsAgentReferenceValidationWorks()
+    {
+        Agent value = new BetaManagedAgentsAgentReference()
+        {
+            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+            Type = BetaManagedAgentsAgentReferenceType.Agent,
+            Version = 1,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAdvisorValidationWorks()
+    {
+        Agent value = new BetaManagedAgentsAdvisor() { Model = "model", Type = Type.Advisor };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAgentReferenceSerializationRoundtripWorks()
+    {
+        Agent value = new BetaManagedAgentsAgentReference()
+        {
+            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+            Type = BetaManagedAgentsAgentReferenceType.Agent,
+            Version = 1,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Agent>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAdvisorSerializationRoundtripWorks()
+    {
+        Agent value = new BetaManagedAgentsAdvisor() { Model = "model", Type = Type.Advisor };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Agent>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }
 

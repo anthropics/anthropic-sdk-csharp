@@ -32,6 +32,7 @@ public class AgentUpdateParamsTest : TestBase
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus4_8,
                 Effort = BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Multiagent = new()
@@ -102,6 +103,7 @@ public class AgentUpdateParamsTest : TestBase
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = BetaManagedAgentsEffortLevel.Low,
+            InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         BetaManagedAgentsMultiagentParams expectedMultiagent = new()
@@ -367,6 +369,7 @@ public class AgentUpdateParamsTest : TestBase
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus4_8,
                 Effort = BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Name = "name",
@@ -400,6 +403,7 @@ public class AgentUpdateParamsTest : TestBase
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus4_8,
                 Effort = BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Name = "name",
@@ -487,6 +491,7 @@ public class AgentUpdateParamsTest : TestBase
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus4_8,
                 Effort = BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
             Multiagent = new()
@@ -563,6 +568,7 @@ public class AgentUpdateParamsModelTest : TestBase
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = BetaManagedAgentsEffortLevel.Low,
+            InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         value.Validate();
@@ -588,6 +594,7 @@ public class AgentUpdateParamsModelTest : TestBase
         {
             ID = BetaManagedAgentsModel.ClaudeOpus4_8,
             Effort = BetaManagedAgentsEffortLevel.Low,
+            InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

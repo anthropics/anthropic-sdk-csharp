@@ -17,7 +17,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
             ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
             Content =
             [
-                new()
+                new BetaManagedAgentsTextBlock()
                 {
                     Text = "Let me look up order #1234 for you.",
                     Type = BetaManagedAgentsTextBlockType.Text,
@@ -28,9 +28,9 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
         };
 
         string expectedID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz";
-        List<BetaManagedAgentsTextBlock> expectedContent =
+        List<BetaManagedAgentsAgentMessageEventContent> expectedContent =
         [
-            new()
+            new BetaManagedAgentsTextBlock()
             {
                 Text = "Let me look up order #1234 for you.",
                 Type = BetaManagedAgentsTextBlockType.Text,
@@ -58,7 +58,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
             ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
             Content =
             [
-                new()
+                new BetaManagedAgentsTextBlock()
                 {
                     Text = "Let me look up order #1234 for you.",
                     Type = BetaManagedAgentsTextBlockType.Text,
@@ -85,7 +85,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
             ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
             Content =
             [
-                new()
+                new BetaManagedAgentsTextBlock()
                 {
                     Text = "Let me look up order #1234 for you.",
                     Type = BetaManagedAgentsTextBlockType.Text,
@@ -103,9 +103,9 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz";
-        List<BetaManagedAgentsTextBlock> expectedContent =
+        List<BetaManagedAgentsAgentMessageEventContent> expectedContent =
         [
-            new()
+            new BetaManagedAgentsTextBlock()
             {
                 Text = "Let me look up order #1234 for you.",
                 Type = BetaManagedAgentsTextBlockType.Text,
@@ -133,7 +133,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
             ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
             Content =
             [
-                new()
+                new BetaManagedAgentsTextBlock()
                 {
                     Text = "Let me look up order #1234 for you.",
                     Type = BetaManagedAgentsTextBlockType.Text,
@@ -154,7 +154,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
             ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
             Content =
             [
-                new()
+                new BetaManagedAgentsTextBlock()
                 {
                     Text = "Let me look up order #1234 for you.",
                     Type = BetaManagedAgentsTextBlockType.Text,
@@ -167,6 +167,61 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
         BetaManagedAgentsAgentMessageEvent copied = new(model);
 
         Assert.Equal(model, copied);
+    }
+}
+
+public class BetaManagedAgentsAgentMessageEventContentTest : TestBase
+{
+    [Fact]
+    public void BetaManagedAgentsTextBlockValidationWorks()
+    {
+        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsTextBlock()
+        {
+            Text = "Where is my order #1234?",
+            Type = BetaManagedAgentsTextBlockType.Text,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRedactedBlockValidationWorks()
+    {
+        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsRedactedBlock(
+            BetaManagedAgentsRedactedBlockType.Redacted
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsTextBlockSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsTextBlock()
+        {
+            Text = "Where is my order #1234?",
+            Type = BetaManagedAgentsTextBlockType.Text,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentMessageEventContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRedactedBlockSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsRedactedBlock(
+            BetaManagedAgentsRedactedBlockType.Redacted
+        );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentMessageEventContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 
