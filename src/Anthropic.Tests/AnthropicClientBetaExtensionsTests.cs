@@ -2790,4 +2790,156 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.NotNull(capturedBetaHeaders);
         Assert.Contains("context-management-2025-06-27", capturedBetaHeaders);
     }
+
+    [Fact]
+    public async Task GetResponseAsync_ReplayedServerToolBlocks_RoundTripToParams()
+    {
+        // A tool-search turn interleaves thinking with server_tool_use /
+        // tool_search_tool_result blocks. When the turn is replayed (multi-turn history
+        // or a FunctionInvokingChatClient tool loop), those blocks must survive the
+        // conversion back to request params: dropping them modifies the assistant turn
+        // and the API rejects it ("thinking blocks ... cannot be modified").
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{"type": "text", "text": "Find a tool"}]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [
+                            {
+                                "type": "thinking",
+                                "thinking": "Searching for tools.",
+                                "signature": "sig1"
+                            },
+                            {
+                                "type": "server_tool_use",
+                                "id": "srvtoolu_01",
+                                "name": "tool_search_tool_bm25",
+                                "input": {"query": "weather"}
+                            },
+                            {
+                                "type": "tool_search_tool_result",
+                                "tool_use_id": "srvtoolu_01",
+                                "content": []
+                            },
+                            {"type": "text", "text": "Found it."}
+                        ]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{"type": "text", "text": "Thanks, continue"}]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_server_tool_replay_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{"type": "text", "text": "Continuing."}],
+                "stop_reason": "end_turn",
+                "usage": {"input_tokens": 10, "output_tokens": 5}
+            }
+            """
+        );
+
+        var serverToolUse = JsonSerializer.Deserialize<BetaServerToolUseBlock>(
+            """{"type":"server_tool_use","id":"srvtoolu_01","name":"tool_search_tool_bm25","input":{"query":"weather"}}"""
+        )!;
+        var toolSearchResult = JsonSerializer.Deserialize<BetaToolSearchToolResultBlock>(
+            """{"type":"tool_search_tool_result","tool_use_id":"srvtoolu_01","content":[]}"""
+        )!;
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Find a tool"),
+            new(
+                ChatRole.Assistant,
+                [
+                    new TextReasoningContent("Searching for tools.") { ProtectedData = "sig1" },
+                    new ToolCallContent("srvtoolu_01") { RawRepresentation = serverToolUse },
+                    new ToolResultContent("srvtoolu_01") { RawRepresentation = toolSearchResult },
+                    new TextContent("Found it."),
+                ]
+            ),
+            new(ChatRole.User, "Thanks, continue"),
+        ];
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_ServerToolUse_CapturesStreamedInputOnRawRepresentation()
+    {
+        // Streamed server_tool_use inputs arrive via input_json deltas while the start
+        // block carries an empty input. The RawRepresentation must be rebuilt with the
+        // accumulated input, or the block replays with "input": {}.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{"type": "text", "text": "Find a tool"}]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_stream_tool_search_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"server_tool_use","id":"srvtoolu_01","name":"tool_search_tool_bm25","input":{}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"query\":\"weather\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":5}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<AIContent> contents = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Find a tool",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            contents.AddRange(update.Contents);
+        }
+
+        ToolCallContent toolCall = Assert.Single(contents.OfType<ToolCallContent>());
+        Assert.Equal("srvtoolu_01", toolCall.CallId);
+        var rawBlock = Assert.IsType<BetaServerToolUseBlock>(toolCall.RawRepresentation);
+        Assert.Equal("weather", rawBlock.Input["query"].GetString());
+    }
 }

@@ -986,6 +986,12 @@ public static class AnthropicClientExtensions
                             contents.Add(rawContent);
                             break;
 
+                        case AIContent ac
+                            when ToServerToolBlockParam(ac.RawRepresentation)
+                                is { } serverToolBlock:
+                            contents.Add(serverToolBlock);
+                            break;
+
                         case TextContent tc:
                             string text = tc.Text;
                             if (message.Role == ChatRole.Assistant)
@@ -1822,6 +1828,47 @@ public static class AnthropicClientExtensions
                 string.IsNullOrWhiteSpace(raw) ? ChatFinishReason.Stop : new(raw);
         }
 
+        /// <summary>
+        /// Maps a server-tool response block (the <see cref="AIContent.RawRepresentation"/>
+        /// of the contents the adapter creates for server tool use and results) back onto
+        /// the request-side union so replayed assistant turns keep these blocks. Dropping
+        /// them modifies the replayed turn: the API rejects requests whose latest assistant
+        /// message no longer matches what the model generated (with interleaved thinking,
+        /// "`thinking` ... blocks in the latest assistant message cannot be modified"), and
+        /// tool-search results must be replayed for deferred tools to remain available.
+        /// Response and param blocks are wire-compatible JSON, so they round-trip through
+        /// the serializer verbatim.
+        /// </summary>
+        private static ContentBlockParam? ToServerToolBlockParam(object? rawRepresentation)
+        {
+            switch (rawRepresentation)
+            {
+                case ServerToolUseBlock:
+                case WebSearchToolResultBlock:
+                case WebFetchToolResultBlock:
+                case CodeExecutionToolResultBlock:
+                case BashCodeExecutionToolResultBlock:
+                case TextEditorCodeExecutionToolResultBlock:
+                case ToolSearchToolResultBlock:
+                case ContainerUploadBlock:
+                    try
+                    {
+                        string json = JsonSerializer.Serialize(
+                            rawRepresentation,
+                            rawRepresentation.GetType()
+                        );
+                        return JsonSerializer.Deserialize<ContentBlockParam>(json);
+                    }
+                    catch (JsonException)
+                    {
+                        return null;
+                    }
+
+                default:
+                    return null;
+            }
+        }
+
         private static AIContent ContentBlockValueToAIContent(object? blockValue)
         {
             switch (blockValue)
@@ -2243,13 +2290,28 @@ public static class AnthropicClientExtensions
                 catch (JsonException) { }
             }
 
+            // The content_block_start block carries an empty input (streamed inputs arrive
+            // via input_json deltas); rebuild the RawRepresentation with the accumulated
+            // input so the block replays faithfully when the turn is sent back.
+            object? rawRepresentation = functionData.RawRepresentation;
+            if (rawRepresentation is ServerToolUseBlock rawBlock && input is not null)
+            {
+                rawRepresentation = new ServerToolUseBlock
+                {
+                    ID = rawBlock.ID,
+                    Caller = rawBlock.Caller,
+                    Input = input,
+                    Name = rawBlock.Name,
+                };
+            }
+
             switch (serverToolName)
             {
                 case Name.WebSearch:
                 case Name.WebFetch:
                     WebSearchToolCallContent wsc = new(functionData.CallId)
                     {
-                        RawRepresentation = functionData.RawRepresentation,
+                        RawRepresentation = rawRepresentation,
                     };
                     if (
                         input?.TryGetValue("query", out JsonElement queryElement) == true
@@ -2266,7 +2328,7 @@ public static class AnthropicClientExtensions
                 case Name.TextEditorCodeExecution:
                     CodeInterpreterToolCallContent cic = new(functionData.CallId)
                     {
-                        RawRepresentation = functionData.RawRepresentation,
+                        RawRepresentation = rawRepresentation,
                     };
 
                     // CodeExecution (Python) uses "code"; Bash/TextEditor use "command".
@@ -2293,7 +2355,7 @@ public static class AnthropicClientExtensions
                 default:
                     return new ToolCallContent(functionData.CallId)
                     {
-                        RawRepresentation = functionData.RawRepresentation,
+                        RawRepresentation = rawRepresentation,
                     };
             }
         }
