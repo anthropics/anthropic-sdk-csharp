@@ -91,22 +91,6 @@ public enum Model
     /// High-performance model for agents and coding
     /// </summary>
     ClaudeSonnet4_5_20250929,
-
-    /// <summary>
-    /// Powerful intelligence for long-running agents and coding
-    /// </summary>
-    [System::Obsolete(
-        "Will reach end-of-life on August 5, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
-    )]
-    ClaudeOpus4_1,
-
-    /// <summary>
-    /// Powerful intelligence for long-running agents and coding
-    /// </summary>
-    [System::Obsolete(
-        "Will reach end-of-life on August 5, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
-    )]
-    ClaudeOpus4_1_20250805,
 }
 
 sealed class ModelConverter : JsonConverter<Model>
@@ -134,8 +118,6 @@ sealed class ModelConverter : JsonConverter<Model>
             "claude-opus-4-5-20251101" => Model.ClaudeOpus4_5_20251101,
             "claude-sonnet-4-5" => Model.ClaudeSonnet4_5,
             "claude-sonnet-4-5-20250929" => Model.ClaudeSonnet4_5_20250929,
-            "claude-opus-4-1" => Model.ClaudeOpus4_1,
-            "claude-opus-4-1-20250805" => Model.ClaudeOpus4_1_20250805,
             _ => (Model)(-1),
         };
     }
@@ -161,8 +143,6 @@ sealed class ModelConverter : JsonConverter<Model>
                 Model.ClaudeOpus4_5_20251101 => "claude-opus-4-5-20251101",
                 Model.ClaudeSonnet4_5 => "claude-sonnet-4-5",
                 Model.ClaudeSonnet4_5_20250929 => "claude-sonnet-4-5-20250929",
-                Model.ClaudeOpus4_1 => "claude-opus-4-1",
-                Model.ClaudeOpus4_1_20250805 => "claude-opus-4-1-20250805",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
