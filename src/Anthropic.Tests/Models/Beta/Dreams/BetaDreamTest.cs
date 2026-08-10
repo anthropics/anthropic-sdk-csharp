@@ -29,6 +29,7 @@ public class BetaDreamTest : TestBase
             ],
             Instructions = "instructions",
             Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+            OutputBehavior = new Dreams::BetaDreamOutputBehaviorCreateNew(),
             Outputs =
             [
                 new()
@@ -68,6 +69,8 @@ public class BetaDreamTest : TestBase
             ID = "x",
             Speed = Dreams::Speed.Standard,
         };
+        Dreams::BetaDreamOutputBehavior expectedOutputBehavior =
+            new Dreams::BetaDreamOutputBehaviorCreateNew();
         List<Dreams::BetaDreamOutput> expectedOutputs =
         [
             new()
@@ -99,6 +102,7 @@ public class BetaDreamTest : TestBase
         }
         Assert.Equal(expectedInstructions, model.Instructions);
         Assert.Equal(expectedModel, model.Model);
+        Assert.Equal(expectedOutputBehavior, model.OutputBehavior);
         Assert.Equal(expectedOutputs.Count, model.Outputs.Count);
         for (int i = 0; i < expectedOutputs.Count; i++)
         {
@@ -130,6 +134,7 @@ public class BetaDreamTest : TestBase
             ],
             Instructions = "instructions",
             Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+            OutputBehavior = new Dreams::BetaDreamOutputBehaviorCreateNew(),
             Outputs =
             [
                 new()
@@ -179,6 +184,7 @@ public class BetaDreamTest : TestBase
             ],
             Instructions = "instructions",
             Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+            OutputBehavior = new Dreams::BetaDreamOutputBehaviorCreateNew(),
             Outputs =
             [
                 new()
@@ -225,6 +231,8 @@ public class BetaDreamTest : TestBase
             ID = "x",
             Speed = Dreams::Speed.Standard,
         };
+        Dreams::BetaDreamOutputBehavior expectedOutputBehavior =
+            new Dreams::BetaDreamOutputBehaviorCreateNew();
         List<Dreams::BetaDreamOutput> expectedOutputs =
         [
             new()
@@ -256,6 +264,7 @@ public class BetaDreamTest : TestBase
         }
         Assert.Equal(expectedInstructions, deserialized.Instructions);
         Assert.Equal(expectedModel, deserialized.Model);
+        Assert.Equal(expectedOutputBehavior, deserialized.OutputBehavior);
         Assert.Equal(expectedOutputs.Count, deserialized.Outputs.Count);
         for (int i = 0; i < expectedOutputs.Count; i++)
         {
@@ -287,6 +296,7 @@ public class BetaDreamTest : TestBase
             ],
             Instructions = "instructions",
             Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+            OutputBehavior = new Dreams::BetaDreamOutputBehaviorCreateNew(),
             Outputs =
             [
                 new()
@@ -330,6 +340,7 @@ public class BetaDreamTest : TestBase
             ],
             Instructions = "instructions",
             Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+            OutputBehavior = new Dreams::BetaDreamOutputBehaviorCreateNew(),
             Outputs =
             [
                 new()
@@ -351,6 +362,212 @@ public class BetaDreamTest : TestBase
         };
 
         Dreams::BetaDream copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
+}
+
+public class BetaDreamOutputBehaviorTest : TestBase
+{
+    [Fact]
+    public void CreateNewValidationWorks()
+    {
+        Dreams::BetaDreamOutputBehavior value = new Dreams::BetaDreamOutputBehaviorCreateNew();
+        value.Validate();
+    }
+
+    [Fact]
+    public void UpdateExistingValidationWorks()
+    {
+        Dreams::BetaDreamOutputBehavior value = new Dreams::BetaDreamOutputBehaviorUpdateExisting(
+            "x"
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void CreateNewSerializationRoundtripWorks()
+    {
+        Dreams::BetaDreamOutputBehavior value = new Dreams::BetaDreamOutputBehaviorCreateNew();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Dreams::BetaDreamOutputBehavior>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UpdateExistingSerializationRoundtripWorks()
+    {
+        Dreams::BetaDreamOutputBehavior value = new Dreams::BetaDreamOutputBehaviorUpdateExisting(
+            "x"
+        );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Dreams::BetaDreamOutputBehavior>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class BetaDreamOutputBehaviorCreateNewTest : TestBase
+{
+    [Fact]
+    public void DefaultValidation_Works()
+    {
+        var constant = new Dreams::BetaDreamOutputBehaviorCreateNew();
+        constant.Validate();
+    }
+
+    [Fact]
+    public void ValidConstantValidation_Works()
+    {
+        var constant = JsonSerializer.Deserialize<Dreams::BetaDreamOutputBehaviorCreateNew>(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "create_new"
+                }
+                """
+            ),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(constant);
+        constant.Validate();
+    }
+
+    [Fact]
+    public void InvalidConstantValidationThrows_Works()
+    {
+        var constant = JsonSerializer.Deserialize<Dreams::BetaDreamOutputBehaviorCreateNew>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(constant);
+        Assert.Throws<AnthropicInvalidDataException>(() => constant.Validate());
+    }
+
+    [Fact]
+    public void DefaultRoundtrip_Works()
+    {
+        var constant = new Dreams::BetaDreamOutputBehaviorCreateNew();
+        string element = JsonSerializer.Serialize(constant, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Dreams::BetaDreamOutputBehaviorCreateNew>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(constant, deserialized);
+    }
+
+    [Fact]
+    public void ValidConstantRoundtrip_Works()
+    {
+        var constant = JsonSerializer.Deserialize<Dreams::BetaDreamOutputBehaviorCreateNew>(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "create_new"
+                }
+                """
+            ),
+            ModelBase.SerializerOptions
+        );
+        string element = JsonSerializer.Serialize(constant, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Dreams::BetaDreamOutputBehaviorCreateNew>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(constant, deserialized);
+    }
+
+    [Fact]
+    public void InvalidConstantRoundtrip_Works()
+    {
+        var constant = JsonSerializer.Deserialize<Dreams::BetaDreamOutputBehaviorCreateNew>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string element = JsonSerializer.Serialize(constant, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Dreams::BetaDreamOutputBehaviorCreateNew>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(constant, deserialized);
+    }
+}
+
+public class BetaDreamOutputBehaviorUpdateExistingTest : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var model = new Dreams::BetaDreamOutputBehaviorUpdateExisting { MemoryStoreID = "x" };
+
+        string expectedMemoryStoreID = "x";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("update_existing");
+
+        Assert.Equal(expectedMemoryStoreID, model.MemoryStoreID);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new Dreams::BetaDreamOutputBehaviorUpdateExisting { MemoryStoreID = "x" };
+
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized =
+            JsonSerializer.Deserialize<Dreams::BetaDreamOutputBehaviorUpdateExisting>(
+                json,
+                ModelBase.SerializerOptions
+            );
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new Dreams::BetaDreamOutputBehaviorUpdateExisting { MemoryStoreID = "x" };
+
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized =
+            JsonSerializer.Deserialize<Dreams::BetaDreamOutputBehaviorUpdateExisting>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        Assert.NotNull(deserialized);
+
+        string expectedMemoryStoreID = "x";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("update_existing");
+
+        Assert.Equal(expectedMemoryStoreID, deserialized.MemoryStoreID);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new Dreams::BetaDreamOutputBehaviorUpdateExisting { MemoryStoreID = "x" };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Dreams::BetaDreamOutputBehaviorUpdateExisting { MemoryStoreID = "x" };
+
+        Dreams::BetaDreamOutputBehaviorUpdateExisting copied = new(model);
 
         Assert.Equal(model, copied);
     }
