@@ -680,6 +680,8 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Dreams::BetaDreamOutputType>(),
             new ApiEnumConverter<string, Dreams::BetaDreamSessionsInputType>(),
             new ApiEnumConverter<string, Dreams::BetaDreamStatus>(),
+            new ApiEnumConverter<string, Dreams::BetaOutputBehaviorCreateNewType>(),
+            new ApiEnumConverter<string, Dreams::BetaOutputBehaviorUpdateExistingType>(),
         },
     };
 
