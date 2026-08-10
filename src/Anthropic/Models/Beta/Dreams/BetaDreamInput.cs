@@ -8,7 +8,9 @@ using System = System;
 namespace Anthropic.Models.Beta.Dreams;
 
 /// <summary>
-/// An input memory store the dream reads from. The dream never mutates this store.
+/// An input memory store the dream reads from. The dream never mutates this store
+/// unless it is also the destination: with output_behavior {type: "update_existing"}
+/// the job consolidates this store in place.
 /// </summary>
 [JsonConverter(typeof(BetaDreamInputConverter))]
 public record class BetaDreamInput : ModelBase

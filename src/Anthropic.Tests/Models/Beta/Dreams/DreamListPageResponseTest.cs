@@ -32,6 +32,7 @@ public class DreamListPageResponseTest : TestBase
                     ],
                     Instructions = "instructions",
                     Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+                    OutputBehavior = new Dreams::BetaDreamOutputBehaviorCreateNew(),
                     Outputs =
                     [
                         new()
@@ -74,6 +75,7 @@ public class DreamListPageResponseTest : TestBase
                 ],
                 Instructions = "instructions",
                 Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+                OutputBehavior = new Dreams::BetaDreamOutputBehaviorCreateNew(),
                 Outputs =
                 [
                     new()
@@ -128,6 +130,7 @@ public class DreamListPageResponseTest : TestBase
                     ],
                     Instructions = "instructions",
                     Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+                    OutputBehavior = new Dreams::BetaDreamOutputBehaviorCreateNew(),
                     Outputs =
                     [
                         new()
@@ -184,6 +187,7 @@ public class DreamListPageResponseTest : TestBase
                     ],
                     Instructions = "instructions",
                     Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+                    OutputBehavior = new Dreams::BetaDreamOutputBehaviorCreateNew(),
                     Outputs =
                     [
                         new()
@@ -233,6 +237,7 @@ public class DreamListPageResponseTest : TestBase
                 ],
                 Instructions = "instructions",
                 Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+                OutputBehavior = new Dreams::BetaDreamOutputBehaviorCreateNew(),
                 Outputs =
                 [
                     new()
@@ -287,6 +292,7 @@ public class DreamListPageResponseTest : TestBase
                     ],
                     Instructions = "instructions",
                     Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+                    OutputBehavior = new Dreams::BetaDreamOutputBehaviorCreateNew(),
                     Outputs =
                     [
                         new()
@@ -337,6 +343,7 @@ public class DreamListPageResponseTest : TestBase
                     ],
                     Instructions = "instructions",
                     Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+                    OutputBehavior = new Dreams::BetaDreamOutputBehaviorCreateNew(),
                     Outputs =
                     [
                         new()
