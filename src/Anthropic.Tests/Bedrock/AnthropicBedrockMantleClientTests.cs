@@ -21,6 +21,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
     private readonly string? _origAwsRegion;
     private readonly string? _origAwsDefaultRegion;
     private readonly string? _origAnthropicApiKey;
+    private readonly string? _origAnthropicAuthToken;
     private readonly string? _origMantleBaseUrl;
 
     public AnthropicBedrockMantleClientTests()
@@ -30,6 +31,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
         _origAwsRegion = Environment.GetEnvironmentVariable("AWS_REGION");
         _origAwsDefaultRegion = Environment.GetEnvironmentVariable("AWS_DEFAULT_REGION");
         _origAnthropicApiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY");
+        _origAnthropicAuthToken = Environment.GetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN");
         _origMantleBaseUrl = Environment.GetEnvironmentVariable(
             "ANTHROPIC_BEDROCK_MANTLE_BASE_URL"
         );
@@ -40,6 +42,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
         Environment.SetEnvironmentVariable("AWS_REGION", null);
         Environment.SetEnvironmentVariable("AWS_DEFAULT_REGION", null);
         Environment.SetEnvironmentVariable("ANTHROPIC_API_KEY", null);
+        Environment.SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", null);
         Environment.SetEnvironmentVariable("ANTHROPIC_BEDROCK_MANTLE_BASE_URL", null);
     }
 
@@ -51,6 +54,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
         Environment.SetEnvironmentVariable("AWS_REGION", _origAwsRegion);
         Environment.SetEnvironmentVariable("AWS_DEFAULT_REGION", _origAwsDefaultRegion);
         Environment.SetEnvironmentVariable("ANTHROPIC_API_KEY", _origAnthropicApiKey);
+        Environment.SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", _origAnthropicAuthToken);
         Environment.SetEnvironmentVariable("ANTHROPIC_BEDROCK_MANTLE_BASE_URL", _origMantleBaseUrl);
     }
 
@@ -279,6 +283,46 @@ public class AnthropicBedrockMantleClientTests : IDisposable
     #endregion
 
     #region Request Headers — SigV4 Mode
+
+    [Fact]
+    public async Task ApiKeyMode_EnvAuthTokenNotDoubledWithBearer()
+    {
+        Environment.SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "first-party-auth-token");
+        var client = new AnthropicBedrockMantleClient(
+            new() { ApiKey = "sk-test-key", BaseUrl = "http://localhost" }
+        );
+        var req = await SendOneRequest(client);
+
+        // Exactly one Authorization value — the gateway bearer, never the ambient
+        // first-party token.
+        Assert.Equal("Bearer sk-test-key", req.Headers.GetValues("Authorization").Single());
+        Assert.False(req.Headers.Contains("X-Api-Key"));
+    }
+
+    [Fact]
+    public async Task SigV4Mode_EnvAuthTokenNotSentAsBearer()
+    {
+        Environment.SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "first-party-auth-token");
+        var client = new AnthropicBedrockMantleClient(
+            new()
+            {
+                AwsAccessKey = "AKIAIOSFODNN7EXAMPLE",
+                AwsSecretAccessKey = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+                AwsRegion = "us-east-1",
+
+                BaseUrl = "http://localhost",
+            }
+        );
+        var req = await SendOneRequest(client);
+
+        // Exactly one Authorization value — the SigV4 signature, never the ambient
+        // first-party bearer token.
+        Assert.False(req.Headers.Contains("X-Api-Key"));
+        Assert.StartsWith(
+            "AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/",
+            req.Headers.GetValues("Authorization").Single()
+        );
+    }
 
     [Fact]
     public async Task SigV4Mode_SendsSigV4Headers()

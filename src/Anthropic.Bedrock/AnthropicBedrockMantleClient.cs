@@ -48,8 +48,11 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
         bool useSigV4;
         string? resolvedApiKey = null;
 
-        // Always suppress the base client's ANTHROPIC_API_KEY env var
+        // Always suppress the base client's ANTHROPIC_API_KEY / ANTHROPIC_AUTH_TOKEN
+        // env vars: neither is an auth source for Bedrock Mantle, and an ambient bearer
+        // token would double the SigV4 / gateway Authorization header.
         ApiKey = null;
+        AuthToken = null;
 
         if (opts.SkipAuth)
         {

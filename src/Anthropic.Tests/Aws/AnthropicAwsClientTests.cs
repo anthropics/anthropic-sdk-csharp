@@ -20,6 +20,7 @@ public class AnthropicAwsClientTests : IDisposable
     private readonly string? _origAwsRegion;
     private readonly string? _origAwsDefaultRegion;
     private readonly string? _origAnthropicApiKey;
+    private readonly string? _origAnthropicAuthToken;
     private readonly string? _origAwsBaseUrl;
 
     public AnthropicAwsClientTests()
@@ -29,6 +30,7 @@ public class AnthropicAwsClientTests : IDisposable
         _origAwsRegion = Environment.GetEnvironmentVariable("AWS_REGION");
         _origAwsDefaultRegion = Environment.GetEnvironmentVariable("AWS_DEFAULT_REGION");
         _origAnthropicApiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY");
+        _origAnthropicAuthToken = Environment.GetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN");
         _origAwsBaseUrl = Environment.GetEnvironmentVariable("ANTHROPIC_AWS_BASE_URL");
 
         // Clear env so tests don't pick up ambient state
@@ -37,6 +39,7 @@ public class AnthropicAwsClientTests : IDisposable
         Environment.SetEnvironmentVariable("AWS_REGION", null);
         Environment.SetEnvironmentVariable("AWS_DEFAULT_REGION", null);
         Environment.SetEnvironmentVariable("ANTHROPIC_API_KEY", null);
+        Environment.SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", null);
         Environment.SetEnvironmentVariable("ANTHROPIC_AWS_BASE_URL", null);
     }
 
@@ -48,6 +51,7 @@ public class AnthropicAwsClientTests : IDisposable
         Environment.SetEnvironmentVariable("AWS_REGION", _origAwsRegion);
         Environment.SetEnvironmentVariable("AWS_DEFAULT_REGION", _origAwsDefaultRegion);
         Environment.SetEnvironmentVariable("ANTHROPIC_API_KEY", _origAnthropicApiKey);
+        Environment.SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", _origAnthropicAuthToken);
         Environment.SetEnvironmentVariable("ANTHROPIC_AWS_BASE_URL", _origAwsBaseUrl);
     }
 
@@ -274,6 +278,49 @@ public class AnthropicAwsClientTests : IDisposable
     #endregion
 
     #region Request Headers — SigV4 Mode
+
+    [Fact]
+    public async Task SigV4Mode_EnvAuthTokenNotSentAsBearer()
+    {
+        Environment.SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "first-party-auth-token");
+        var client = new AnthropicAwsClient(
+            new()
+            {
+                AwsAccessKey = "AKIAIOSFODNN7EXAMPLE",
+                AwsSecretAccessKey = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+                AwsRegion = "us-east-1",
+                WorkspaceId = "default",
+                BaseUrl = "http://localhost",
+            }
+        );
+        var req = await AnthropicAwsClientTests.SendOneRequest(client);
+
+        // Exactly one Authorization value — the SigV4 signature, never the ambient
+        // first-party bearer token.
+        Assert.False(req.Headers.Contains("X-Api-Key"));
+        Assert.StartsWith(
+            "AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/",
+            req.Headers.GetValues("Authorization").Single()
+        );
+    }
+
+    [Fact]
+    public async Task ApiKeyMode_EnvAuthTokenNotSentAsBearer()
+    {
+        Environment.SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "first-party-auth-token");
+        var client = new AnthropicAwsClient(
+            new()
+            {
+                ApiKey = "sk-test-key",
+                WorkspaceId = "default",
+                BaseUrl = "http://localhost",
+            }
+        );
+        var req = await AnthropicAwsClientTests.SendOneRequest(client);
+
+        Assert.Equal("sk-test-key", req.Headers.GetValues("X-Api-Key").Single());
+        Assert.False(req.Headers.Contains("Authorization"));
+    }
 
     [Fact]
     public async Task SigV4Mode_SendsSigV4Headers()

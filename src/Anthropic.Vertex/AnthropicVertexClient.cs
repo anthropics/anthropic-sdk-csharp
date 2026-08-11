@@ -20,6 +20,12 @@ public class AnthropicVertexClient : AnthropicClient
         : base()
     {
         _vertexCredentials = vertexCredentials;
+        // Vertex auth comes solely from the credentials provider. Suppress the base
+        // client's ANTHROPIC_API_KEY / ANTHROPIC_AUTH_TOKEN env fallbacks so first-party
+        // credentials are never sent to Google alongside the Vertex credential (mirrors
+        // the Foundry/Bedrock/Mantle/AWS clients).
+        ApiKey = null;
+        AuthToken = null;
         BaseUrl = ComputeBaseUrl(vertexCredentials);
         BackendAdaptationHandler = () => new VertexAdaptationHandler(vertexCredentials);
     }
