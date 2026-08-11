@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading;
@@ -431,6 +432,168 @@ public class MessageStreamingAggregationTest
         Assert.Equal("get_weather", toolUse.Name);
         Assert.Equal("Paris", toolUse.Input["location"].GetString());
         Assert.IsType<DirectCaller>(toolUse.Caller.Value);
+    }
+
+    private static Message GenerateStartMessageWithFullUsage =>
+        new()
+        {
+            Container = null,
+            ID = "Test",
+            Content = [],
+            Model = Model.ClaudeOpus4_6,
+            StopDetails = null,
+            StopReason = null,
+            StopSequence = null,
+            Usage = new()
+            {
+                CacheCreation = new() { Ephemeral1hInputTokens = 2, Ephemeral5mInputTokens = 5 },
+                CacheCreationInputTokens = 7,
+                CacheReadInputTokens = 3,
+                InputTokens = 25,
+                OutputTokens = 1,
+                OutputTokensDetails = new(11),
+                ServerToolUse = new() { WebFetchRequests = 1, WebSearchRequests = 1 },
+                ServiceTier = UsageServiceTier.Standard,
+                InferenceGeo = "inference_geo",
+            },
+        };
+
+    [Fact]
+    public async Task CreateStreamingAggregation_AppliesContainerAndUsageFromMessageDelta()
+    {
+        // arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new RawMessageDeltaEvent()
+                {
+                    Delta = new()
+                    {
+                        Container = new()
+                        {
+                            ID = "container_01",
+                            ExpiresAt = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                        },
+                        StopDetails = null,
+                        StopReason = StopReason.EndTurn,
+                        StopSequence = null,
+                    },
+                    Usage = new()
+                    {
+                        CacheCreationInputTokens = 10,
+                        CacheReadInputTokens = 5,
+                        InputTokens = 100,
+                        OutputTokens = 50,
+                        OutputTokensDetails = new(30),
+                        ServerToolUse = new() { WebFetchRequests = 1, WebSearchRequests = 2 },
+                    },
+                }
+            );
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(
+                    It.IsAny<Anthropic.Models.Messages.MessageCreateParams>(),
+                    It.IsAny<CancellationToken>()
+                )
+            )
+            .Returns(GetTestValues);
+
+        // act
+
+        var stream = await messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .Aggregate();
+
+        // assert
+
+        Assert.NotNull(stream);
+        stream.Validate();
+        Assert.NotNull(stream.Container);
+        Assert.Equal("container_01", stream.Container!.ID);
+        Assert.Equal(StopReason.EndTurn, stream.StopReason!.Value());
+        Assert.Equal(100, stream.Usage.InputTokens);
+        Assert.Equal(50, stream.Usage.OutputTokens);
+        Assert.Equal(10, stream.Usage.CacheCreationInputTokens);
+        Assert.Equal(5, stream.Usage.CacheReadInputTokens);
+        Assert.NotNull(stream.Usage.OutputTokensDetails);
+        Assert.Equal(30, stream.Usage.OutputTokensDetails!.ThinkingTokens);
+        Assert.NotNull(stream.Usage.ServerToolUse);
+        Assert.Equal(2, stream.Usage.ServerToolUse!.WebSearchRequests);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_KeepsStartUsageWhenMessageDeltaOmitsOptionalKeys()
+    {
+        // arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessageWithFullUsage));
+            yield return new(
+                new RawMessageDeltaEvent()
+                {
+                    Delta = new()
+                    {
+                        Container = null,
+                        StopDetails = null,
+                        StopReason = StopReason.EndTurn,
+                        StopSequence = null,
+                    },
+                    Usage = new()
+                    {
+                        CacheCreationInputTokens = null,
+                        CacheReadInputTokens = null,
+                        InputTokens = null,
+                        OutputTokens = 99,
+                        OutputTokensDetails = null,
+                        ServerToolUse = null,
+                    },
+                }
+            );
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(
+                    It.IsAny<Anthropic.Models.Messages.MessageCreateParams>(),
+                    It.IsAny<CancellationToken>()
+                )
+            )
+            .Returns(GetTestValues);
+
+        // act
+
+        var stream = await messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .Aggregate();
+
+        // assert
+
+        Assert.NotNull(stream);
+        stream.Validate();
+        Assert.Equal(99, stream.Usage.OutputTokens);
+        Assert.Equal(25, stream.Usage.InputTokens);
+        Assert.Equal(7, stream.Usage.CacheCreationInputTokens);
+        Assert.Equal(3, stream.Usage.CacheReadInputTokens);
+        Assert.NotNull(stream.Usage.OutputTokensDetails);
+        Assert.Equal(11, stream.Usage.OutputTokensDetails!.ThinkingTokens);
+        Assert.NotNull(stream.Usage.ServerToolUse);
+        Assert.Equal(1, stream.Usage.ServerToolUse!.WebSearchRequests);
+
+        // never re-sent on message_delta, so they must survive from message_start
+        Assert.NotNull(stream.Usage.CacheCreation);
+        Assert.Equal(5, stream.Usage.CacheCreation!.Ephemeral5mInputTokens);
+        Assert.Equal(UsageServiceTier.Standard, stream.Usage.ServiceTier!.Value());
+        Assert.Equal("inference_geo", stream.Usage.InferenceGeo);
+        Assert.Null(stream.Container);
     }
 
     [Fact]

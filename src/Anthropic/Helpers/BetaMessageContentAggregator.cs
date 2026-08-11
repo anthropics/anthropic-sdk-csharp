@@ -62,8 +62,12 @@ public sealed class BetaMessageContentAggregator
         var stopReason = startMessage.Message.StopReason;
         var stopDetails = startMessage.Message.StopDetails;
         var container = startMessage.Message.Container;
+        var contextManagement = startMessage.Message.ContextManagement;
         var usage = startMessage.Message.Usage;
 
+        // message_delta usage counters are cumulative whole-message totals, so overwrite
+        // rather than add; the optional ones are omitted when they don't apply and must
+        // then leave the message_start values in place.
         if (messages.TryGetValue(FilterResult.Delta, out var deltaEvents))
         {
             var deltas = deltaEvents.Select(e => e.Value).OfType<BetaRawMessageDeltaEvent>();
@@ -77,6 +81,13 @@ public sealed class BetaMessageContentAggregator
                 if (delta.Delta.Container != null)
                 {
                     container = delta.Delta.Container;
+                }
+
+                // context_management is a sibling of delta/usage on the event, and is
+                // only ever sent here — message_start never carries it.
+                if (delta.ContextManagement != null)
+                {
+                    contextManagement = delta.ContextManagement;
                 }
 
                 usage = usage with { OutputTokens = delta.Usage.OutputTokens };
@@ -134,13 +145,13 @@ public sealed class BetaMessageContentAggregator
             }
         }
 
-        return new()
+        // Start from the message_start message so fields that are never re-sent
+        // (service_tier, cache_creation, inference_geo, speed, ...) survive untouched.
+        return startMessage.Message with
         {
             Content = [.. contentBlocks],
             Container = container,
-            ContextManagement = startMessage.Message.ContextManagement,
-            Diagnostics = startMessage.Message.Diagnostics,
-            ID = startMessage.Message.ID,
+            ContextManagement = contextManagement,
             Model = model,
             StopDetails = stopDetails,
             StopReason = stopReason,

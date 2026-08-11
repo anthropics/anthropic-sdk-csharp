@@ -656,6 +656,78 @@ public class BetaMessageStreamingAggregationTest
     }
 
     [Fact]
+    public async Task CreateStreamingAggregation_PropagatesContextManagementFromMessageDelta()
+    {
+        // arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<BetaRawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new BetaRawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new BetaRawMessageDeltaEvent()
+                {
+                    ContextManagement = new()
+                    {
+                        AppliedEdits =
+                        [
+                            new BetaClearToolUses20250919EditResponse()
+                            {
+                                ClearedInputTokens = 1234,
+                                ClearedToolUses = 2,
+                            },
+                        ],
+                    },
+                    Delta = new()
+                    {
+                        Container = null,
+                        StopDetails = null,
+                        StopReason = BetaStopReason.EndTurn,
+                        StopSequence = null,
+                    },
+                    Usage = new()
+                    {
+                        CacheCreationInputTokens = null,
+                        CacheReadInputTokens = null,
+                        FallbackCredit = null,
+                        InputTokens = null,
+                        Iterations = null,
+                        OutputTokens = 50,
+                        OutputTokensDetails = null,
+                        ServerToolUse = null,
+                    },
+                }
+            );
+            yield return new(new BetaRawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
+            )
+            .Returns(GetTestValues);
+
+        // act
+
+        var stream = await messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .Aggregate();
+
+        // assert
+
+        Assert.NotNull(stream);
+        stream.Validate();
+        Assert.NotNull(stream.ContextManagement);
+        var appliedEdit = Assert.Single(stream.ContextManagement!.AppliedEdits);
+        Assert.Equal(1234, appliedEdit.ClearedInputTokens);
+
+        // never re-sent on message_delta, so they must survive from message_start
+        Assert.Equal(25, stream.Usage.InputTokens);
+        Assert.Equal(BetaUsageServiceTier.Standard, stream.Usage.ServiceTier!.Value());
+        Assert.Equal("inference_geo", stream.Usage.InferenceGeo);
+    }
+
+    [Fact]
     public async Task CreateStreamingAggregation_ReassemblesServerAndMcpToolUseInputFromInputJsonDeltas()
     {
         static async IAsyncEnumerable<BetaRawMessageStreamEvent> GetTestValues()

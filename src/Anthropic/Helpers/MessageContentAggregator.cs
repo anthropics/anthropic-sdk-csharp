@@ -52,8 +52,12 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         var stopSequence = startMessage.Message.StopSequence;
         var stopReason = startMessage.Message.StopReason;
         var stopDetails = startMessage.Message.StopDetails;
+        var container = startMessage.Message.Container;
         var usage = startMessage.Message.Usage;
 
+        // message_delta usage counters are cumulative whole-message totals, so overwrite
+        // rather than add; the optional ones are omitted when they don't apply and must
+        // then leave the message_start values in place.
         if (messages.TryGetValue(FilterResult.Delta, out var deltaEvents))
         {
             var deltas = deltaEvents.Select(e => e.Value).OfType<RawMessageDeltaEvent>();
@@ -62,6 +66,13 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
                 stopReason = delta.Delta.StopReason;
                 stopSequence = delta.Delta.StopSequence;
                 stopDetails = delta.Delta.StopDetails;
+
+                // The container only ever arrives on message_delta, and only when a
+                // container ran, so keep whatever we have when the key is absent.
+                if (delta.Delta.Container != null)
+                {
+                    container = delta.Delta.Container;
+                }
 
                 usage = usage with { OutputTokens = delta.Usage.OutputTokens };
                 if (delta.Usage.InputTokens != null)
@@ -83,15 +94,19 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
                 {
                     usage = usage with { ServerToolUse = delta.Usage.ServerToolUse };
                 }
+                if (delta.Usage.OutputTokensDetails != null)
+                {
+                    usage = usage with { OutputTokensDetails = delta.Usage.OutputTokensDetails };
+                }
             }
         }
 
-        return new()
+        // Start from the message_start message so fields that are never re-sent
+        // (service_tier, cache_creation, inference_geo, ...) survive untouched.
+        return startMessage.Message with
         {
-            Container = null,
+            Container = container,
             Content = [.. contentBlocks],
-            ID = startMessage.Message.ID,
-            Model = startMessage.Message.Model,
             StopDetails = stopDetails,
             StopReason = stopReason,
             StopSequence = stopSequence,
