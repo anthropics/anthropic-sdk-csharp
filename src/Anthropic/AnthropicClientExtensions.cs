@@ -824,6 +824,44 @@ public static class AnthropicClientExtensions
             }
         }
 
+        /// <summary>
+        /// Merges runs of consecutive <see cref="ChatRole.System"/> messages into a single
+        /// message. The API accepts consecutive system messages and treats them as a single
+        /// system section, but some providers (e.g. Amazon Bedrock) reject adjacent system
+        /// messages, so adjacent system instructions are combined before mapping.
+        /// </summary>
+        private static List<ChatMessage> NormalizeConsecutiveSystemMessages(
+            IEnumerable<ChatMessage> messages
+        )
+        {
+            List<ChatMessage> normalized = [];
+            List<AIContent>? pendingSystem = null;
+            foreach (ChatMessage message in messages)
+            {
+                if (message.Role == ChatRole.System)
+                {
+                    // Accumulate consecutive system instructions into a single message.
+                    (pendingSystem ??= []).AddRange(message.Contents);
+                    continue;
+                }
+
+                if (pendingSystem is not null)
+                {
+                    normalized.Add(new ChatMessage(ChatRole.System, pendingSystem));
+                    pendingSystem = null;
+                }
+
+                normalized.Add(message);
+            }
+
+            if (pendingSystem is not null)
+            {
+                normalized.Add(new ChatMessage(ChatRole.System, pendingSystem));
+            }
+
+            return normalized;
+        }
+
         private static List<MessageParam> CreateMessageParams(
             IEnumerable<ChatMessage> messages,
             out List<TextBlockParam>? systemMessages
@@ -832,22 +870,49 @@ public static class AnthropicClientExtensions
             List<MessageParam> messageParams = [];
             systemMessages = null;
 
-            foreach (ChatMessage message in messages)
+            foreach (ChatMessage message in NormalizeConsecutiveSystemMessages(messages))
             {
                 if (message.Role == ChatRole.System)
                 {
+                    List<TextBlockParam> systemBlocks = [];
                     foreach (AIContent content in message.Contents)
                     {
                         switch (content)
                         {
                             case AIContent ac when ac.RawRepresentation is TextBlockParam raw:
-                                (systemMessages ??= []).Add(raw);
+                                systemBlocks.Add(raw);
                                 break;
 
                             case TextContent tc:
                                 var block = new TextBlockParam { Text = tc.Text };
-                                (systemMessages ??= []).Add(WithCacheControlFrom(block, tc));
+                                systemBlocks.Add(WithCacheControlFrom(block, tc));
                                 break;
+                        }
+                    }
+
+                    if (systemBlocks.Count > 0)
+                    {
+                        if (messageParams.Count == 0)
+                        {
+                            // A system message cannot be the first entry in `messages`; leading
+                            // system instructions go to the top-level `system` property.
+                            (systemMessages ??= []).AddRange(systemBlocks);
+                        }
+                        else
+                        {
+                            // A system message that appears mid-conversation is emitted as a
+                            // `{ "role": "system" }` message at its position, as-is. The API
+                            // rejects the request if the model or the placement does not support
+                            // mid-conversation system messages.
+                            messageParams.Add(
+                                new()
+                                {
+                                    Role = Role.System,
+                                    Content = systemBlocks
+                                        .Select(static b => (ContentBlockParam)b)
+                                        .ToList(),
+                                }
+                            );
                         }
                     }
 
