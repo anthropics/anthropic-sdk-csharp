@@ -79,6 +79,14 @@ public static class AnthropicBetaClientExtensions
     /// If no value is provided for this parameter or in <see cref="ChatOptions"/>, a default maximum will be used.
     /// </param>
     /// <returns>An <see cref="IChatClient"/> that can be used to converse via the <see cref="IMessageService"/>.</returns>
+    /// <remarks>
+    /// The returned client reports the API's <c>stop_reason</c> through <see cref="ChatResponse.FinishReason"/>:
+    /// <c>end_turn</c> and <c>stop_sequence</c> map to <see cref="ChatFinishReason.Stop"/>, <c>max_tokens</c> and
+    /// <c>model_context_window_exceeded</c> to <see cref="ChatFinishReason.Length"/>, <c>tool_use</c> to
+    /// <see cref="ChatFinishReason.ToolCalls"/>, and <c>refusal</c> to <see cref="ChatFinishReason.ContentFilter"/>.
+    /// Any other value, such as <c>pause_turn</c> or <c>compaction</c>, is surfaced verbatim as the
+    /// <see cref="ChatFinishReason.Value"/> so that callers can detect turns that need to be continued.
+    /// </remarks>
     /// <exception cref="ArgumentNullException"><paramref name="betaService"/> is <see langword="null"/>.</exception>
     public static IChatClient AsIChatClient(
         this Anthropic.Services.IBetaService betaService,
@@ -1597,17 +1605,31 @@ public static class AnthropicBetaClientExtensions
                 a is not null || b is not null ? (a ?? 0) + (b ?? 0) : null;
         }
 
-        private static ChatFinishReason? ToFinishReason(
-            ApiEnum<string, BetaStopReason>? stopReason
-        ) =>
-            stopReason?.Value() switch
+        private static ChatFinishReason? ToFinishReason(ApiEnum<string, BetaStopReason>? stopReason)
+        {
+            if (stopReason is null)
             {
-                null => null,
-                BetaStopReason.Refusal => ChatFinishReason.ContentFilter,
-                BetaStopReason.MaxTokens => ChatFinishReason.Length,
+                return null;
+            }
+
+            return stopReason.Value() switch
+            {
+                BetaStopReason.EndTurn or BetaStopReason.StopSequence => ChatFinishReason.Stop,
+                BetaStopReason.MaxTokens or BetaStopReason.ModelContextWindowExceeded =>
+                    ChatFinishReason.Length,
                 BetaStopReason.ToolUse => ChatFinishReason.ToolCalls,
-                _ => ChatFinishReason.Stop,
+                BetaStopReason.Refusal => ChatFinishReason.ContentFilter,
+                // Anything else (pause_turn, compaction, or a stop reason newer than this SDK) marks a turn
+                // the caller has to act on, so surface the wire value instead of folding it into Stop.
+                // Note that CreateMessageParams does not yet round-trip server-tool blocks, so re-sending a
+                // paused turn through this client restarts the server-side loop rather than resuming it.
+                _ => FromRaw(stopReason.Raw()),
             };
+
+            // ChatFinishReason rejects blank values; treat a blank stop_reason as a natural stop.
+            static ChatFinishReason FromRaw(string raw) =>
+                string.IsNullOrWhiteSpace(raw) ? ChatFinishReason.Stop : new(raw);
+        }
 
         private static AIContent ContentBlockValueToAIContent(object? blockValue)
         {

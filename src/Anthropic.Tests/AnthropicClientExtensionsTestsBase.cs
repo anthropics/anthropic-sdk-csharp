@@ -538,6 +538,178 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetResponseAsync_WithPauseTurnStop()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search for something"
+                    }]
+                }],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_pause_turn_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "server_tool_use",
+                    "id": "srvtoolu_01",
+                    "name": "web_search",
+                    "caller": { "type": "direct" },
+                    "input": { "query": "something" }
+                }],
+                "stop_reason": "pause_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 20
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Search for something",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        // ChatFinishReason equality ignores case, so also pin the exact wire value consumers observe.
+        Assert.Equal(new ChatFinishReason("pause_turn"), response.FinishReason);
+        Assert.Equal("pause_turn", response.FinishReason?.Value);
+    }
+
+    [Theory]
+    [InlineData("model_context_window_exceeded", "length")]
+    [InlineData("compaction", "compaction")]
+    [InlineData("some_future_stop_reason", "some_future_stop_reason")]
+    public async Task GetResponseAsync_WithOtherStopReasons(
+        string stopReason,
+        string expectedFinishReason
+    )
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Hello"
+                    }]
+                }],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: $$"""
+            {
+                "id": "msg_stop_reason_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Partial answer"
+                }],
+                "stop_reason": "{{stopReason}}",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 20
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Hello",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        // Length-like reasons map to the built-in value; reasons with no ChatFinishReason equivalent
+        // (including ones this SDK does not know yet) surface verbatim instead of collapsing to Stop.
+        Assert.Equal(expectedFinishReason, response.FinishReason?.Value);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithPauseTurnStop()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search for something"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_stream_pause_turn_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Searching"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"pause_turn","stop_sequence":null},"usage":{"output_tokens":5}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Search for something",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var finishUpdates = updates.Where(u => u.FinishReason is not null).ToList();
+        Assert.NotEmpty(finishUpdates);
+        Assert.All(
+            finishUpdates,
+            u => Assert.Equal(new ChatFinishReason("pause_turn"), u.FinishReason)
+        );
+        Assert.Equal("pause_turn", updates.ToChatResponse().FinishReason?.Value);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_VerifiesModelIdRequired()
     {
         VerbatimHttpHandler handler = new(
