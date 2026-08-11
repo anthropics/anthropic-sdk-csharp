@@ -397,9 +397,19 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
                     authRetryConsumed = true;
                     var failedToken = _tokenCache!.Cached?.Token;
                     // Prime the cache so the retry's BeforeSend picks up the fresh token.
-                    var fresh = await _tokenCache
-                        .GetTokenAsync(forceRefresh: true, cancellationToken)
-                        .ConfigureAwait(false);
+                    AccessToken fresh;
+                    try
+                    {
+                        fresh = await _tokenCache
+                            .GetTokenAsync(forceRefresh: true, cancellationToken)
+                            .ConfigureAwait(false);
+                    }
+                    catch
+                    {
+                        // A failed refresh abandons the 401 response, so release it here.
+                        response.Dispose();
+                        throw;
+                    }
                     // Only retry if the refresh actually produced a different token —
                     // StaticTokenCredentials / ANTHROPIC_AUTH_TOKEN can't change, so
                     // skipping avoids one wasted round-trip.
@@ -441,8 +451,17 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
                 }
             }
 
-            var backoff = ComputeRetryBackoff(retries, response);
-            response?.Dispose();
+            TimeSpan backoff;
+            try
+            {
+                backoff = ComputeRetryBackoff(retries, response);
+            }
+            finally
+            {
+                // A malformed Retry-After header makes the computation throw; the response
+                // being retried is abandoned either way.
+                response?.Dispose();
+            }
             await Task.Delay(backoff, cancellationToken).ConfigureAwait(false);
         }
     }
@@ -577,7 +596,12 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         {
             throw new AnthropicIOException("I/O exception", e);
         }
-        return new() { RawMessage = responseMessage, CancellationToken = cts.Token };
+        // `cts` is disposed as this method returns, before any of the body has been read, so its
+        // token must not travel with the response: every body read links against the response's
+        // token, and linking against a disposed source throws on .NET Framework in <=4.5.2
+        // compatibility mode (and is inert everywhere else). Body reads are governed by the
+        // tokens handed to them instead.
+        return new() { RawMessage = responseMessage };
     }
 
     static TimeSpan ComputeRetryBackoff(int retries, HttpResponse? response)

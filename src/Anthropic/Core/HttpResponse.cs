@@ -145,13 +145,15 @@ public sealed class HttpResponse<T> : HttpResponse
         this.CancellationToken = response.CancellationToken;
     }
 
-    public Task<T> Deserialize(Threading::CancellationToken cancellationToken = default)
+    public async Task<T> Deserialize(Threading::CancellationToken cancellationToken = default)
     {
+        // Awaited rather than returned: the linked source has to outlive the read, or the tokens
+        // it links stop reaching the read as soon as this method returns.
         using var cts = Threading::CancellationTokenSource.CreateLinkedTokenSource(
             this.CancellationToken,
             cancellationToken
         );
-        return this._deserialize(cts.Token);
+        return await this._deserialize(cts.Token).ConfigureAwait(false);
     }
 }
 
