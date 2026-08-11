@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
@@ -154,8 +154,6 @@ public sealed class BetaMessageContentAggregator
         IEnumerable<BetaRawContentBlockDelta> blockContents
     )
     {
-        BetaContentBlock? resultBlock = null;
-
         string StringJoinHelper<T>(
             string source,
             IEnumerable<T> sources,
@@ -165,134 +163,103 @@ public sealed class BetaMessageContentAggregator
             return string.Join(null, (string[])[source, .. sources.Select(expression)]);
         }
 
-        void As<TDelta>(Func<IEnumerable<TDelta>, BetaContentBlock> factory)
-        {
-            // those blocks are delta variants not the source block
-            // e.g TextBlock and TextDelta
-            resultBlock = factory([.. blockContents.Select(e => e.Value).OfType<TDelta>()]);
-        }
-
         IEnumerable<TDelta> Of<TDelta>()
         {
             return blockContents.Select(e => e.Value).OfType<TDelta>();
         }
 
-        void Single<T>(T item)
+        IEnumerable<string> PartialJsons()
         {
-            resultBlock = (
-                blockContents.Select(e => e.Value).OfType<T>().Single() as BetaContentBlock
-            );
+            return Of<BetaInputJsonDelta>().Select(d => d.PartialJson);
         }
 
-        contentBlock.Switch(
-            textBlock =>
-                As<BetaTextDelta>(blocks => new BetaTextBlock()
-                {
-                    Text = StringJoinHelper(textBlock.Text, blocks, e => e.Text),
-                    Citations =
-                    [
-                        .. (textBlock.Citations ?? []),
-                        .. Of<BetaCitationsDelta>()
-                            .Select(e =>
-                                e.Citation.Match<BetaTextCitation>(
-                                    f => f,
-                                    f => f,
-                                    f => f,
-                                    f => f,
-                                    f => f
-                                )
-                            ),
-                    ],
-                }),
-            thinkingBlock =>
-                As<BetaThinkingDelta>(blocks => new BetaThinkingBlock()
-                {
-                    Signature = StringJoinHelper(
-                        thinkingBlock.Signature,
-                        Of<BetaSignatureDelta>(),
-                        e => e.Signature
-                    ),
-                    Thinking = StringJoinHelper(thinkingBlock.Thinking, blocks, e => e.Thinking),
-                }),
-            e => Single(e),
-            toolUseBlock =>
+        // Merge the content/encrypted_content carried by compaction_delta events; the start block
+        // leaves both null until the deltas arrive.
+        string? MergeCompaction(
+            string? seed,
+            Func<BetaCompactionContentBlockDelta, string?> selector
+        )
+        {
+            var parts = new List<string>();
+            if (seed != null)
             {
-                // Reconstruct the tool_use input from input_json_delta events.
-                var partialJsons = Of<BetaInputJsonDelta>().Select(d => d.PartialJson);
-                var mergedJson = string.Concat(partialJsons);
-                IReadOnlyDictionary<string, JsonElement> input;
-                if (string.IsNullOrEmpty(mergedJson))
-                {
-                    input = toolUseBlock.Input;
-                }
-                else
-                {
-                    var parsed = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                        mergedJson
-                    );
-                    input =
-                        parsed != null
-                            ? FrozenDictionary.ToFrozenDictionary(parsed)
-                            : toolUseBlock.Input;
-                }
-                resultBlock = new BetaToolUseBlock()
-                {
-                    ID = toolUseBlock.ID,
-                    Name = toolUseBlock.Name,
-                    Input = input,
-                };
-            },
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            compactionBlock =>
-            {
-                // Merge the content/encrypted_content carried by compaction_delta events; the
-                // start block leaves both null until the deltas arrive.
-                var deltas = Of<BetaCompactionContentBlockDelta>();
-                string? Merge(string? seed, Func<BetaCompactionContentBlockDelta, string?> selector)
-                {
-                    var parts = new List<string>();
-                    if (seed != null)
-                    {
-                        parts.Add(seed);
-                    }
-                    foreach (var delta in deltas)
-                    {
-                        var value = selector(delta);
-                        if (value != null)
-                        {
-                            parts.Add(value);
-                        }
-                    }
-                    return parts.Count == 0 ? null : string.Concat(parts);
-                }
-                resultBlock = new BetaCompactionBlock()
-                {
-                    Content = Merge(compactionBlock.Content, d => d.Content),
-                    EncryptedContent = Merge(
-                        compactionBlock.EncryptedContent,
-                        d => d.EncryptedContent
-                    ),
-                };
-            },
-            fallbackBlock =>
-            {
-                // Fallback blocks arrive complete in the content_block_start event and
-                // have no delta variants, so pass the start block through unchanged.
-                resultBlock = fallbackBlock;
+                parts.Add(seed);
             }
-        );
+            foreach (var delta in Of<BetaCompactionContentBlockDelta>())
+            {
+                var value = selector(delta);
+                if (value != null)
+                {
+                    parts.Add(value);
+                }
+            }
+            return parts.Count == 0 ? null : string.Concat(parts);
+        }
 
-        return resultBlock ?? throw new AnthropicInvalidDataException("Missing result block");
+        // Only the variants below carry deltas. Every other block type — including ones this SDK
+        // version doesn't model yet — arrives complete in its content_block_start event, so its
+        // wire JSON passes through unchanged.
+        return contentBlock.Value switch
+        {
+            BetaTextBlock textBlock => new BetaTextBlock()
+            {
+                Text = StringJoinHelper(textBlock.Text, Of<BetaTextDelta>(), e => e.Text),
+                Citations =
+                [
+                    .. (textBlock.Citations ?? []),
+                    .. Of<BetaCitationsDelta>()
+                        .Select(e =>
+                            e.Citation.Match<BetaTextCitation>(
+                                f => f,
+                                f => f,
+                                f => f,
+                                f => f,
+                                f => f
+                            )
+                        ),
+                ],
+            },
+            BetaThinkingBlock thinkingBlock => new BetaThinkingBlock()
+            {
+                Signature = StringJoinHelper(
+                    thinkingBlock.Signature,
+                    Of<BetaSignatureDelta>(),
+                    e => e.Signature
+                ),
+                Thinking = StringJoinHelper(
+                    thinkingBlock.Thinking,
+                    Of<BetaThinkingDelta>(),
+                    e => e.Thinking
+                ),
+            },
+            BetaToolUseBlock block => StreamedToolInput.WithMergedInput(
+                block,
+                PartialJsons(),
+                BetaToolUseBlock.FromRawUnchecked
+            ),
+            BetaServerToolUseBlock block => StreamedToolInput.WithMergedInput(
+                block,
+                PartialJsons(),
+                BetaServerToolUseBlock.FromRawUnchecked
+            ),
+            BetaMcpToolUseBlock block => StreamedToolInput.WithMergedInput(
+                block,
+                PartialJsons(),
+                BetaMcpToolUseBlock.FromRawUnchecked
+            ),
+            BetaCompactionBlock compactionBlock => new BetaCompactionBlock()
+            {
+                Content = MergeCompaction(compactionBlock.Content, d => d.Content),
+                EncryptedContent = MergeCompaction(
+                    compactionBlock.EncryptedContent,
+                    d => d.EncryptedContent
+                ),
+            },
+            _ => JsonSerializer.Deserialize<BetaContentBlock>(
+                contentBlock.Json,
+                ModelBase.SerializerOptions
+            ) ?? throw new AnthropicInvalidDataException("content_block cannot be null"),
+        };
     }
 
     protected override FilterResult Filter(BetaRawMessageStreamEvent message) =>

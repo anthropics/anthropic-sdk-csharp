@@ -432,4 +432,188 @@ public class MessageStreamingAggregationTest
         Assert.Equal("Paris", toolUse.Input["location"].GetString());
         Assert.IsType<DirectCaller>(toolUse.Caller.Value);
     }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_ReassemblesServerToolUseInputFromInputJsonDeltas()
+    {
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new RawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(
+                        new ServerToolUseBlock()
+                        {
+                            ID = "srvtoolu_01",
+                            Caller = new DirectCaller(),
+                            Input = new Dictionary<string, JsonElement>(),
+                            Name = Name.WebSearch,
+                        }
+                    ),
+                }
+            );
+            yield return new(
+                new RawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new InputJsonDelta("{\"query\":\"latest")),
+                }
+            );
+            yield return new(
+                new RawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new InputJsonDelta(" AI news\"}")),
+                }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var stream = await GetTestValues().Aggregate();
+
+        stream.Validate();
+        var serverToolUse = Assert.IsType<ServerToolUseBlock>(Assert.Single(stream.Content).Value);
+        Assert.Equal("srvtoolu_01", serverToolUse.ID);
+        Assert.Equal(Name.WebSearch, serverToolUse.Name.Value());
+        Assert.Equal("latest AI news", serverToolUse.Input["query"].GetString());
+        Assert.IsType<DirectCaller>(serverToolUse.Caller.Value);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_KeepsStartInputWhenInputJsonDeltasAreTruncated()
+    {
+        // A stream cut by max_tokens mid-delta is legal; the block must survive with the start
+        // event's input rather than failing the whole aggregation.
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new RawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(
+                        new ToolUseBlock()
+                        {
+                            ID = "toolu_01",
+                            Caller = new DirectCaller(),
+                            Input = new Dictionary<string, JsonElement>(),
+                            Name = "get_weather",
+                        }
+                    ),
+                }
+            );
+            yield return new(
+                new RawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new InputJsonDelta("{\"location\":\"Pa")),
+                }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var stream = await GetTestValues().Aggregate();
+
+        stream.Validate();
+        var toolUse = Assert.IsType<ToolUseBlock>(Assert.Single(stream.Content).Value);
+        Assert.Equal("toolu_01", toolUse.ID);
+        Assert.Empty(toolUse.Input);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_PassesThroughBlocksWithoutDeltaVariants()
+    {
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new RawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(new RedactedThinkingBlock() { Data = "redacted" }),
+                }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(
+                new RawContentBlockStartEvent()
+                {
+                    Index = 1,
+                    ContentBlock = new(
+                        new WebSearchToolResultBlock()
+                        {
+                            ToolUseID = "srvtoolu_01",
+                            Caller = new DirectCaller(),
+                            Content = new(
+                                [
+                                    new WebSearchResultBlock()
+                                    {
+                                        EncryptedContent = "encrypted",
+                                        PageAge = null,
+                                        Title = "Result",
+                                        Url = "https://example.com",
+                                    },
+                                ]
+                            ),
+                        }
+                    ),
+                }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 1 });
+            yield return new(
+                new RawContentBlockStartEvent()
+                {
+                    Index = 2,
+                    ContentBlock = new(new ContainerUploadBlock() { FileID = "file_01" }),
+                }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 2 });
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var stream = await GetTestValues().Aggregate();
+
+        stream.Validate();
+        Assert.Equal(3, stream.Content.Count);
+        var redacted = Assert.IsType<RedactedThinkingBlock>(stream.Content[0].Value);
+        Assert.Equal("redacted", redacted.Data);
+        var webSearch = Assert.IsType<WebSearchToolResultBlock>(stream.Content[1].Value);
+        Assert.Equal("srvtoolu_01", webSearch.ToolUseID);
+        Assert.True(webSearch.Content.TryPickWebSearchResultBlocks(out var results));
+        Assert.Equal("https://example.com", Assert.Single(results).Url);
+        var upload = Assert.IsType<ContainerUploadBlock>(stream.Content[2].Value);
+        Assert.Equal("file_01", upload.FileID);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_PassesThroughUnmodelledBlockTypes()
+    {
+        // A block type this SDK version doesn't know must survive aggregation as raw JSON, the
+        // same way it survives a non-streaming response.
+        var unknownBlock = JsonSerializer.Deserialize<JsonElement>(
+            "{\"type\":\"shiny_new_block\",\"payload\":42}"
+        );
+        async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new RawContentBlockStartEvent() { Index = 0, ContentBlock = new(unknownBlock) }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var stream = await GetTestValues().Aggregate();
+
+        var block = Assert.Single(stream.Content);
+        Assert.Null(block.Value);
+        Assert.True(JsonElement.DeepEquals(unknownBlock, block.Json));
+    }
 }
