@@ -2093,6 +2093,92 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.NotNull(response);
     }
 
+    /// <summary>
+    /// The beta client also accepts <see cref="BetaCacheControlEphemeral"/> directly; the non-beta type is
+    /// covered for both clients by the shared base test of the same shape.
+    /// </summary>
+    [Fact]
+    public async Task GetResponseAsync_WithAIFunctionTool_BetaCacheControl_FlowsThrough()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Use tool"
+                    }]
+                }],
+                "tools": [{
+                    "name": "cached_tool",
+                    "description": "A tool with a cache breakpoint",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "value": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": ["value"],
+                        "additionalProperties": false
+                    },
+                    "cache_control": {
+                        "type": "ephemeral",
+                        "ttl": "1h"
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_cached_tool_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Done"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 30,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var function = AIFunctionFactory.Create(
+            (int value) => value,
+            new AIFunctionFactoryOptions
+            {
+                Name = "cached_tool",
+                Description = "A tool with a cache breakpoint",
+                AdditionalProperties = new Dictionary<string, object?>
+                {
+                    [nameof(BetaTool.CacheControl)] = new BetaCacheControlEphemeral
+                    {
+                        Ttl = Ttl.Ttl1h,
+                    },
+                },
+            }
+        );
+
+        ChatOptions options = new() { Tools = [function] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Use tool",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
     [Fact]
     public async Task GetResponseAsync_WithRawRepresentationFactory()
     {

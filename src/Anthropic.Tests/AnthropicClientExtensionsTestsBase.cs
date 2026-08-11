@@ -7505,6 +7505,89 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     /// <summary>
+    /// The non-beta <see cref="CacheControlEphemeral"/> — the type <see cref="AIContentCacheExtensions"/>
+    /// hands callers — must produce a tool-level cache breakpoint with both the beta and non-beta clients.
+    /// </summary>
+    [Fact]
+    public async Task GetResponseAsync_WithAIFunctionTool_CacheControl_FlowsThrough()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Use tool"
+                    }]
+                }],
+                "tools": [{
+                    "name": "cached_tool",
+                    "description": "A tool with a cache breakpoint",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "value": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": ["value"],
+                        "additionalProperties": false
+                    },
+                    "cache_control": {
+                        "type": "ephemeral",
+                        "ttl": "1h"
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_cached_tool_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Done"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 30,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var function = AIFunctionFactory.Create(
+            (int value) => value,
+            new AIFunctionFactoryOptions
+            {
+                Name = "cached_tool",
+                Description = "A tool with a cache breakpoint",
+                AdditionalProperties = new Dictionary<string, object?>
+                {
+                    [nameof(Tool.CacheControl)] = new CacheControlEphemeral { Ttl = Ttl.Ttl1h },
+                },
+            }
+        );
+
+        ChatOptions options = new() { Tools = [function] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Use tool",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    /// <summary>
     /// Validates that all JSON schema transformations are applied correctly when using
     /// ChatResponseFormat.ForJsonSchema. Tests:
     /// <list type="bullet">

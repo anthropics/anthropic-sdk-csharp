@@ -44,6 +44,18 @@ public static class AnthropicClientExtensions
     /// so that callers can detect turns that need to be continued.
     /// </remarks>
     /// <exception cref="ArgumentNullException"><paramref name="client"/> is <see langword="null"/>.</exception>
+    /// <remarks>
+    /// <para>
+    /// When an <see cref="AIFunction"/> in <see cref="ChatOptions.Tools"/> is converted to an Anthropic
+    /// <see cref="Tool"/>, the following <see cref="AITool.AdditionalProperties"/> entries (set via
+    /// <see cref="AIFunctionFactoryOptions.AdditionalProperties"/> when the function is created) are copied onto
+    /// the tool definition: <c>nameof(Tool.DeferLoading)</c> (<see cref="bool"/>), <c>nameof(Tool.Strict)</c>
+    /// (<see cref="bool"/>), <c>nameof(Tool.InputExamples)</c> (<c>List&lt;Dictionary&lt;string, JsonElement&gt;&gt;</c>),
+    /// <c>nameof(Tool.AllowedCallers)</c> (<c>List&lt;ApiEnum&lt;string, ToolAllowedCaller&gt;&gt;</c>), and
+    /// <c>nameof(Tool.CacheControl)</c> (<see cref="CacheControlEphemeral"/>, placing a prompt-cache breakpoint
+    /// after that tool). Entries of any other type are ignored.
+    /// </para>
+    /// </remarks>
     public static IChatClient AsIChatClient(
         this IAnthropicClient client,
         string? defaultModelId = null,
@@ -1443,25 +1455,37 @@ public static class AnthropicClientExtensions
                                     }
                                 }
 
-                                (createdTools ??= []).Add(
-                                    new Tool()
+                                Tool functionTool = new()
+                                {
+                                    Name = af.Name,
+                                    Description = af.Description,
+                                    InputSchema = new InputSchema(schemaData),
+                                    DeferLoading = GetValue<bool?>(af, nameof(Tool.DeferLoading)),
+                                    Strict = GetValue<bool?>(af, nameof(Tool.Strict)),
+                                    InputExamples = GetValue<List<Dictionary<string, JsonElement>>>(
+                                        af,
+                                        nameof(Tool.InputExamples)
+                                    ),
+                                    AllowedCallers = GetValue<
+                                        List<ApiEnum<string, ToolAllowedCaller>>
+                                    >(af, nameof(Tool.AllowedCallers)),
+                                };
+                                // cache_control is nullable on the wire: set it only when supplied,
+                                // since initializing it to null would serialize an explicit null.
+                                if (
+                                    GetValue<CacheControlEphemeral>(
+                                        af,
+                                        nameof(Tool.CacheControl)
+                                    ) is
+                                    { } cacheControl
+                                )
+                                {
+                                    functionTool = functionTool with
                                     {
-                                        Name = af.Name,
-                                        Description = af.Description,
-                                        InputSchema = new InputSchema(schemaData),
-                                        DeferLoading = GetValue<bool?>(
-                                            af,
-                                            nameof(Tool.DeferLoading)
-                                        ),
-                                        Strict = GetValue<bool?>(af, nameof(Tool.Strict)),
-                                        InputExamples = GetValue<
-                                            List<Dictionary<string, JsonElement>>
-                                        >(af, nameof(Tool.InputExamples)),
-                                        AllowedCallers = GetValue<
-                                            List<ApiEnum<string, ToolAllowedCaller>>
-                                        >(af, nameof(Tool.AllowedCallers)),
-                                    }
-                                );
+                                        CacheControl = cacheControl,
+                                    };
+                                }
+                                (createdTools ??= []).Add(functionTool);
 
                                 static T? GetValue<T>(AIFunctionDeclaration af, string name) =>
                                     af.AdditionalProperties?.TryGetValue(name, out var value)

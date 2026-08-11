@@ -88,6 +88,19 @@ public static class AnthropicBetaClientExtensions
     /// <see cref="ChatFinishReason.Value"/> so that callers can detect turns that need to be continued.
     /// </remarks>
     /// <exception cref="ArgumentNullException"><paramref name="betaService"/> is <see langword="null"/>.</exception>
+    /// <remarks>
+    /// <para>
+    /// When an <see cref="AIFunction"/> in <see cref="ChatOptions.Tools"/> is converted to an Anthropic
+    /// <see cref="BetaTool"/>, the following <see cref="AITool.AdditionalProperties"/> entries (set via
+    /// <see cref="AIFunctionFactoryOptions.AdditionalProperties"/> when the function is created) are copied onto
+    /// the tool definition: <c>nameof(BetaTool.DeferLoading)</c> (<see cref="bool"/>), <c>nameof(BetaTool.Strict)</c>
+    /// (<see cref="bool"/>), <c>nameof(BetaTool.InputExamples)</c> (<c>List&lt;Dictionary&lt;string, JsonElement&gt;&gt;</c>),
+    /// <c>nameof(BetaTool.AllowedCallers)</c> (<c>List&lt;ApiEnum&lt;string, BetaToolAllowedCaller&gt;&gt;</c>), and
+    /// <c>nameof(BetaTool.CacheControl)</c> (<see cref="BetaCacheControlEphemeral"/> or the non-beta
+    /// <see cref="Anthropic.Models.Messages.CacheControlEphemeral"/>, placing a prompt-cache breakpoint after that
+    /// tool). Entries of any other type are ignored.
+    /// </para>
+    /// </remarks>
     public static IChatClient AsIChatClient(
         this Anthropic.Services.IBetaService betaService,
         string? defaultModelId = null,
@@ -1103,17 +1116,7 @@ public static class AnthropicBetaClientExtensions
                 return block;
             }
 
-            // Convert non-beta CacheControlEphemeral to BetaCacheControlEphemeral
-            // Note: Ttl enum exists in both namespaces, using fully qualified names to disambiguate
-            var betaCacheControl = new BetaCacheControlEphemeral
-            {
-                Ttl = cacheControl.Ttl?.Value() switch
-                {
-                    Anthropic.Models.Messages.Ttl.Ttl5m => Anthropic.Models.Beta.Messages.Ttl.Ttl5m,
-                    Anthropic.Models.Messages.Ttl.Ttl1h => Anthropic.Models.Beta.Messages.Ttl.Ttl1h,
-                    _ => null,
-                },
-            };
+            var betaCacheControl = ToBetaCacheControl(cacheControl);
 
             return block switch
             {
@@ -1130,6 +1133,25 @@ public static class AnthropicBetaClientExtensions
                 _ => block,
             };
         }
+
+        /// <summary>
+        /// Converts the non-beta <see cref="Anthropic.Models.Messages.CacheControlEphemeral"/> (the type
+        /// <see cref="AIContentCacheExtensions"/> hands callers) to <see cref="BetaCacheControlEphemeral"/>,
+        /// so the same cache-control values work with both the beta and non-beta clients.
+        /// </summary>
+        private static BetaCacheControlEphemeral ToBetaCacheControl(
+            Anthropic.Models.Messages.CacheControlEphemeral cacheControl
+        ) =>
+            // Ttl exists in both namespaces; fully qualified names disambiguate.
+            new()
+            {
+                Ttl = cacheControl.Ttl?.Value() switch
+                {
+                    Anthropic.Models.Messages.Ttl.Ttl5m => Anthropic.Models.Beta.Messages.Ttl.Ttl5m,
+                    Anthropic.Models.Messages.Ttl.Ttl1h => Anthropic.Models.Beta.Messages.Ttl.Ttl1h,
+                    _ => null,
+                },
+            };
 
         private MessageCreateParams GetMessageCreateParams(
             List<BetaMessageParam> messages,
@@ -1300,25 +1322,50 @@ public static class AnthropicBetaClientExtensions
                                     }
                                 }
 
-                                (createdTools ??= []).Add(
-                                    new BetaTool()
-                                    {
-                                        Name = af.Name,
-                                        Description = af.Description,
-                                        InputSchema = new InputSchema(schemaData),
-                                        DeferLoading = GetValue<bool?>(
+                                BetaTool functionTool = new()
+                                {
+                                    Name = af.Name,
+                                    Description = af.Description,
+                                    InputSchema = new InputSchema(schemaData),
+                                    DeferLoading = GetValue<bool?>(
+                                        af,
+                                        nameof(BetaTool.DeferLoading)
+                                    ),
+                                    Strict = GetValue<bool?>(af, nameof(BetaTool.Strict)),
+                                    InputExamples = GetValue<List<Dictionary<string, JsonElement>>>(
+                                        af,
+                                        nameof(BetaTool.InputExamples)
+                                    ),
+                                    AllowedCallers = GetValue<
+                                        List<ApiEnum<string, BetaToolAllowedCaller>>
+                                    >(af, nameof(BetaTool.AllowedCallers)),
+                                };
+                                // cache_control is nullable on the wire: set it only when supplied,
+                                // since initializing it to null would serialize an explicit null.
+                                // The non-beta CacheControlEphemeral is accepted too (as it is for
+                                // message content), so the same value works with both clients.
+                                BetaCacheControlEphemeral? cacheControl =
+                                    GetValue<BetaCacheControlEphemeral>(
+                                        af,
+                                        nameof(BetaTool.CacheControl)
+                                    )
+                                    ?? (
+                                        GetValue<Anthropic.Models.Messages.CacheControlEphemeral>(
                                             af,
-                                            nameof(BetaTool.DeferLoading)
-                                        ),
-                                        Strict = GetValue<bool?>(af, nameof(BetaTool.Strict)),
-                                        InputExamples = GetValue<
-                                            List<Dictionary<string, JsonElement>>
-                                        >(af, nameof(BetaTool.InputExamples)),
-                                        AllowedCallers = GetValue<
-                                            List<ApiEnum<string, BetaToolAllowedCaller>>
-                                        >(af, nameof(BetaTool.AllowedCallers)),
-                                    }
-                                );
+                                            nameof(BetaTool.CacheControl)
+                                        )
+                                            is { } nonBetaCacheControl
+                                            ? ToBetaCacheControl(nonBetaCacheControl)
+                                            : null
+                                    );
+                                if (cacheControl is not null)
+                                {
+                                    functionTool = functionTool with
+                                    {
+                                        CacheControl = cacheControl,
+                                    };
+                                }
+                                (createdTools ??= []).Add(functionTool);
 
                                 static T? GetValue<T>(AIFunctionDeclaration af, string name) =>
                                     af.AdditionalProperties?.TryGetValue(name, out var value)
