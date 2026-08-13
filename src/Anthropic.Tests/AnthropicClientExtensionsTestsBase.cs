@@ -25,7 +25,7 @@ public abstract class AnthropicClientExtensionsTestsBase
         int? defaultMaxOutputTokens = null
     );
 
-    protected static AnthropicClient CreateAnthropicClient(VerbatimHttpHandler handler)
+    protected static AnthropicClient CreateAnthropicClient(HttpMessageHandler handler)
     {
         return new AnthropicClient
         {
@@ -35,7 +35,7 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     protected IChatClient CreateChatClient(
-        VerbatimHttpHandler handler,
+        HttpMessageHandler handler,
         string? modelId = null,
         int? defaultMaxOutputTokens = null
     ) => CreateChatClient(CreateAnthropicClient(handler), modelId, defaultMaxOutputTokens);
@@ -8414,6 +8414,48 @@ public abstract class AnthropicClientExtensionsTestsBase
         }
     }
 
+    protected sealed class MultiTurnHttpHandler(
+        params (string ExpectedRequest, string ActualResponse)[] exchanges
+    ) : HttpMessageHandler
+    {
+        private int _index;
+        public int CompletedExchanges => _index;
+
+        protected override async Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken
+        )
+        {
+            Assert.True(
+                _index < exchanges.Length,
+                $"Received more HTTP requests than the {exchanges.Length} expected."
+            );
+            var (expectedRequest, actualResponse) = exchanges[_index++];
+
+            if (!string.IsNullOrEmpty(expectedRequest))
+            {
+                Assert.NotNull(request.Content);
+                string actualRequest = await request.Content.ReadAsStringAsync(
+#if NET
+                    cancellationToken
+#endif
+                );
+                Assert.True(
+                    JsonNode.DeepEquals(
+                        JsonNode.Parse(expectedRequest),
+                        JsonNode.Parse(actualRequest)
+                    ),
+                    $"Exchange {_index - 1} request mismatch.\nExpected:\n{expectedRequest}\nActual:\n{actualRequest}"
+                );
+            }
+
+            return new()
+            {
+                Content = new StringContent(actualResponse, Encoding.UTF8, "application/json"),
+            };
+        }
+    }
+
     [Theory]
     [InlineData("https://example.com/doc.pdf", "application/pdf")]
     [InlineData("https://example.com/page.html", "text/html")]
@@ -8789,6 +8831,153 @@ public abstract class AnthropicClientExtensionsTestsBase
         );
         Assert.NotNull(response);
         Assert.Equal("Done.", response.Text);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_MultiTurn_RoundTripsWebSearchBlocksFromPriorResponse()
+    {
+        MultiTurnHttpHandler handler = new(
+            ( // Turn 1
+                ExpectedRequest: """
+                {
+                    "model": "claude-haiku-4-5",
+                    "messages": [{
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "What is the weather in SF?" }]
+                    }],
+                    "max_tokens": 1024,
+                    "tools": [
+                        { "name": "web_search", "type": "web_search_20250305" }
+                    ]
+                }
+                """,
+                ActualResponse: """
+                {
+                    "id": "msg_turn1",
+                    "type": "message",
+                    "role": "assistant",
+                    "model": "claude-haiku-4-5",
+                    "content": [
+                        {
+                            "type": "server_tool_use",
+                            "id": "srvtoolu_ws1",
+                            "name": "web_search",
+                            "caller": { "type": "direct" },
+                            "input": { "query": "weather in SF" }
+                        },
+                        {
+                            "type": "web_search_tool_result",
+                            "tool_use_id": "srvtoolu_ws1",
+                            "caller": { "type": "direct" },
+                            "content": [
+                                {
+                                    "type": "web_search_result",
+                                    "title": "SF Weather",
+                                    "url": "https://example.com/sf-weather",
+                                    "encrypted_content": "enc_1",
+                                    "page_age": "1 day ago"
+                                }
+                            ]
+                        },
+                        { "type": "text", "text": "It is sunny in SF." }
+                    ],
+                    "stop_reason": "end_turn",
+                    "usage": { "input_tokens": 20, "output_tokens": 10 }
+                }
+                """
+            ),
+            ( // Turn 2
+                ExpectedRequest: """
+                {
+                    "model": "claude-haiku-4-5",
+                    "messages": [
+                        {
+                            "role": "user",
+                            "content": [{ "type": "text", "text": "What is the weather in SF?" }]
+                        },
+                        {
+                            "role": "assistant",
+                            "content": [
+                                {
+                                    "type": "server_tool_use",
+                                    "id": "srvtoolu_ws1",
+                                    "name": "web_search",
+                                    "caller": { "type": "direct" },
+                                    "input": { "query": "weather in SF" }
+                                },
+                                {
+                                    "type": "web_search_tool_result",
+                                    "tool_use_id": "srvtoolu_ws1",
+                                    "caller": { "type": "direct" },
+                                    "content": [
+                                        {
+                                            "type": "web_search_result",
+                                            "title": "SF Weather",
+                                            "url": "https://example.com/sf-weather",
+                                            "encrypted_content": "enc_1",
+                                            "page_age": "1 day ago"
+                                        }
+                                    ]
+                                },
+                                { "type": "text", "text": "It is sunny in SF." }
+                            ]
+                        },
+                        {
+                            "role": "user",
+                            "content": [{ "type": "text", "text": "Should I bring an umbrella?" }]
+                        }
+                    ],
+                    "max_tokens": 1024,
+                    "tools": [
+                        { "name": "web_search", "type": "web_search_20250305" }
+                    ]
+                }
+                """,
+                ActualResponse: """
+                {
+                    "id": "msg_turn2",
+                    "type": "message",
+                    "role": "assistant",
+                    "model": "claude-haiku-4-5",
+                    "content": [{ "type": "text", "text": "No, it is sunny." }],
+                    "stop_reason": "end_turn",
+                    "usage": { "input_tokens": 30, "output_tokens": 5 }
+                }
+                """
+            )
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatOptions options = new() { Tools = [new HostedWebSearchTool()] };
+
+        List<ChatMessage> messages = [new(ChatRole.User, "What is the weather in SF?")];
+
+        ChatResponse turn1 = await chatClient.GetResponseAsync(
+            messages,
+            options,
+            TestContext.Current.CancellationToken
+        );
+
+        // The first turn should parse the server_tool_use and its result into dedicated content.
+        var turn1Contents = turn1.Messages[0].Contents;
+        var wsCall = turn1Contents.OfType<WebSearchToolCallContent>().Single();
+        Assert.Equal("srvtoolu_ws1", wsCall.CallId);
+        var wsResult = turn1Contents.OfType<WebSearchToolResultContent>().Single();
+        Assert.Equal("srvtoolu_ws1", wsResult.CallId);
+        Assert.Equal("It is sunny in SF.", turn1Contents.OfType<TextContent>().Single().Text);
+
+        // Carry the assistant's response forward as conversation history and ask a follow-up.
+        messages.AddRange(turn1.Messages);
+        messages.Add(new(ChatRole.User, "Should I bring an umbrella?"));
+
+        ChatResponse turn2 = await chatClient.GetResponseAsync(
+            messages,
+            options,
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal("No, it is sunny.", turn2.Text);
+        Assert.Equal(2, handler.CompletedExchanges);
     }
 
     public static TheoryData<string> ResponseBlockData() =>
