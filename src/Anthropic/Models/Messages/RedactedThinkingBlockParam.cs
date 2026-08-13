@@ -13,6 +13,10 @@ namespace Anthropic.Models.Messages;
 )]
 public sealed record class RedactedThinkingBlockParam : JsonModel
 {
+    /// <summary>
+    /// The `data` value of this redacted thinking block, exactly as returned by
+    /// the API in a previous response. Opaque and encrypted; pass it back unchanged.
+    /// </summary>
     public required string Data
     {
         get

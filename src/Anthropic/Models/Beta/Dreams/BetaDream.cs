@@ -12,9 +12,10 @@ namespace Anthropic.Models.Beta.Dreams;
 
 /// <summary>
 /// An asynchronous memory-consolidation job that reads a memory store plus a set
-/// of session transcripts and writes consolidated memories into a new output memory
-/// store. The Dreams API is in research preview: the request and response shapes
-/// are volatile and may change without the deprecation period that applies to generally-available endpoints.
+/// of session transcripts and writes consolidated memories into an output memory
+/// store — a new store by default, or an existing store chosen via output_behavior.
+/// The Dreams API is in research preview: the request and response shapes are volatile
+/// and may change without the deprecation period that applies to generally-available endpoints.
 /// </summary>
 [JsonConverter(typeof(JsonModelConverter<BetaDream, BetaDreamFromRaw>))]
 public sealed record class BetaDream : JsonModel
@@ -121,6 +122,21 @@ public sealed record class BetaDream : JsonModel
         init { this._rawData.Set("model", value); }
     }
 
+    /// <summary>
+    /// The default destination: the job creates a new output memory store as a clone
+    /// of the memory_store input and writes the consolidated memories into it. The
+    /// input store is never mutated.
+    /// </summary>
+    public required BetaOutputBehavior OutputBehavior
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaOutputBehavior>("output_behavior");
+        }
+        init { this._rawData.Set("output_behavior", value); }
+    }
+
     public required IReadOnlyList<BetaDreamOutput> Outputs
     {
         get
@@ -199,6 +215,7 @@ public sealed record class BetaDream : JsonModel
         }
         _ = this.Instructions;
         this.Model.Validate();
+        this.OutputBehavior.Validate();
         foreach (var item in this.Outputs)
         {
             item.Validate();

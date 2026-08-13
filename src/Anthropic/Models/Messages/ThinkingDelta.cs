@@ -11,6 +11,11 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(JsonModelConverter<ThinkingDelta, ThinkingDeltaFromRaw>))]
 public sealed record class ThinkingDelta : JsonModel
 {
+    /// <summary>
+    /// The incremental `thinking` text for this content block. Concatenate the `thinking`
+    /// values of successive `thinking_delta` events to assemble the block's full
+    /// `thinking` value.
+    /// </summary>
     public required string Thinking
     {
         get

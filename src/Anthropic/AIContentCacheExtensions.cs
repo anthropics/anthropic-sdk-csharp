@@ -17,6 +17,12 @@ namespace Microsoft.Extensions.AI;
 /// These extensions are only effective when used with the <see cref="IChatClient"/> returned by
 /// <see cref="AnthropicClientExtensions.AsIChatClient"/>. Other implementations will ignore the cache control settings.
 /// </para>
+/// <para>
+/// To place a cache breakpoint after a tool definition instead, set
+/// <c>AdditionalProperties[nameof(Tool.CacheControl)]</c> to a <see cref="CacheControlEphemeral"/> via
+/// <see cref="AIFunctionFactoryOptions.AdditionalProperties"/> when creating the <see cref="AIFunction"/>;
+/// see the remarks on <see cref="AnthropicClientExtensions.AsIChatClient"/>.
+/// </para>
 /// </remarks>
 public static class AIContentCacheExtensions
 {

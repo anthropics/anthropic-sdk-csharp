@@ -79,7 +79,28 @@ public static class AnthropicBetaClientExtensions
     /// If no value is provided for this parameter or in <see cref="ChatOptions"/>, a default maximum will be used.
     /// </param>
     /// <returns>An <see cref="IChatClient"/> that can be used to converse via the <see cref="IMessageService"/>.</returns>
+    /// <remarks>
+    /// The returned client reports the API's <c>stop_reason</c> through <see cref="ChatResponse.FinishReason"/>:
+    /// <c>end_turn</c> and <c>stop_sequence</c> map to <see cref="ChatFinishReason.Stop"/>, <c>max_tokens</c> and
+    /// <c>model_context_window_exceeded</c> to <see cref="ChatFinishReason.Length"/>, <c>tool_use</c> to
+    /// <see cref="ChatFinishReason.ToolCalls"/>, and <c>refusal</c> to <see cref="ChatFinishReason.ContentFilter"/>.
+    /// Any other value, such as <c>pause_turn</c> or <c>compaction</c>, is surfaced verbatim as the
+    /// <see cref="ChatFinishReason.Value"/> so that callers can detect turns that need to be continued.
+    /// </remarks>
     /// <exception cref="ArgumentNullException"><paramref name="betaService"/> is <see langword="null"/>.</exception>
+    /// <remarks>
+    /// <para>
+    /// When an <see cref="AIFunction"/> in <see cref="ChatOptions.Tools"/> is converted to an Anthropic
+    /// <see cref="BetaTool"/>, the following <see cref="AITool.AdditionalProperties"/> entries (set via
+    /// <see cref="AIFunctionFactoryOptions.AdditionalProperties"/> when the function is created) are copied onto
+    /// the tool definition: <c>nameof(BetaTool.DeferLoading)</c> (<see cref="bool"/>), <c>nameof(BetaTool.Strict)</c>
+    /// (<see cref="bool"/>), <c>nameof(BetaTool.InputExamples)</c> (<c>List&lt;Dictionary&lt;string, JsonElement&gt;&gt;</c>),
+    /// <c>nameof(BetaTool.AllowedCallers)</c> (<c>List&lt;ApiEnum&lt;string, BetaToolAllowedCaller&gt;&gt;</c>), and
+    /// <c>nameof(BetaTool.CacheControl)</c> (<see cref="BetaCacheControlEphemeral"/> or the non-beta
+    /// <see cref="Anthropic.Models.Messages.CacheControlEphemeral"/>, placing a prompt-cache breakpoint after that
+    /// tool). Entries of any other type are ignored.
+    /// </para>
+    /// </remarks>
     public static IChatClient AsIChatClient(
         this Anthropic.Services.IBetaService betaService,
         string? defaultModelId = null,
@@ -314,6 +335,12 @@ public static class AnthropicBetaClientExtensions
             string? messageId = null;
             string? modelID = null;
             UsageDetails? usageDetails = null;
+            // The cache/input token fields are nullable and are usually omitted on the terminal
+            // message_delta, so remember the values reported on message_start to fall back on.
+            long? startInputTokens = null;
+            long? startCacheCreationInputTokens = null;
+            long? startCacheReadInputTokens = null;
+            BetaServerToolUsage? startServerToolUse = null;
             ChatFinishReason? finishReason = null;
             Dictionary<long, StreamingFunctionData>? streamingFunctions = null;
 
@@ -340,6 +367,10 @@ public static class AnthropicBetaClientExtensions
 
                         if (rawMessageStart.Message.Usage is { } usage)
                         {
+                            startInputTokens = usage.InputTokens;
+                            startCacheCreationInputTokens = usage.CacheCreationInputTokens;
+                            startCacheReadInputTokens = usage.CacheReadInputTokens;
+                            startServerToolUse = usage.ServerToolUse;
                             UsageDetails current = ToUsageDetails(usage);
                             if (usageDetails is null)
                             {
@@ -358,7 +389,17 @@ public static class AnthropicBetaClientExtensions
                         {
                             // https://platform.claude.com/docs/en/build-with-claude/streaming
                             // "The token counts shown in the usage field of the message_delta event are cumulative."
-                            usageDetails = ToUsageDetails(deltaUsage);
+                            // These fields are nullable and usually omitted on the terminal
+                            // message_delta, so fall back to the message_start values instead of
+                            // wiping them out.
+                            usageDetails = ToUsageDetails(
+                                deltaUsage.InputTokens ?? startInputTokens,
+                                deltaUsage.OutputTokens,
+                                deltaUsage.CacheCreationInputTokens
+                                    ?? startCacheCreationInputTokens,
+                                deltaUsage.CacheReadInputTokens ?? startCacheReadInputTokens,
+                                deltaUsage.ServerToolUse ?? startServerToolUse
+                            );
                         }
                         break;
 
@@ -491,14 +532,16 @@ public static class AnthropicBetaClientExtensions
                         break;
 
                     case BetaRawContentBlockStopEvent contentBlockStop:
-                        if (streamingFunctions is not null)
+                        if (
+                            streamingFunctions is not null
+                            && streamingFunctions.TryGetValue(
+                                contentBlockStop.Index,
+                                out StreamingFunctionData? completedFunction
+                            )
+                        )
                         {
-                            foreach (var sf in streamingFunctions)
-                            {
-                                contents.Add(CreateStreamingToolCallContent(sf.Value));
-                            }
-
-                            streamingFunctions.Clear();
+                            contents.Add(CreateStreamingToolCallContent(completedFunction));
+                            streamingFunctions.Remove(contentBlockStop.Index);
                         }
                         break;
                 }
@@ -527,6 +570,44 @@ public static class AnthropicBetaClientExtensions
             }
         }
 
+        /// <summary>
+        /// Merges runs of consecutive <see cref="ChatRole.System"/> messages into a single
+        /// message. The API accepts consecutive system messages and treats them as a single
+        /// system section, but some providers (e.g. Amazon Bedrock) reject adjacent system
+        /// messages, so adjacent system instructions are combined before mapping.
+        /// </summary>
+        private static List<ChatMessage> NormalizeConsecutiveSystemMessages(
+            IEnumerable<ChatMessage> messages
+        )
+        {
+            List<ChatMessage> normalized = [];
+            List<AIContent>? pendingSystem = null;
+            foreach (ChatMessage message in messages)
+            {
+                if (message.Role == ChatRole.System)
+                {
+                    // Accumulate consecutive system instructions into a single message.
+                    (pendingSystem ??= []).AddRange(message.Contents);
+                    continue;
+                }
+
+                if (pendingSystem is not null)
+                {
+                    normalized.Add(new ChatMessage(ChatRole.System, pendingSystem));
+                    pendingSystem = null;
+                }
+
+                normalized.Add(message);
+            }
+
+            if (pendingSystem is not null)
+            {
+                normalized.Add(new ChatMessage(ChatRole.System, pendingSystem));
+            }
+
+            return normalized;
+        }
+
         private static List<BetaMessageParam> CreateMessageParams(
             IEnumerable<ChatMessage> messages,
             out List<BetaTextBlockParam>? systemMessages,
@@ -537,22 +618,49 @@ public static class AnthropicBetaClientExtensions
             systemMessages = null;
             hasHostedFiles = false;
 
-            foreach (ChatMessage message in messages)
+            foreach (ChatMessage message in NormalizeConsecutiveSystemMessages(messages))
             {
                 if (message.Role == ChatRole.System)
                 {
+                    List<BetaTextBlockParam> systemBlocks = [];
                     foreach (AIContent content in message.Contents)
                     {
                         switch (content)
                         {
                             case AIContent ac when ac.RawRepresentation is BetaTextBlockParam raw:
-                                (systemMessages ??= []).Add(raw);
+                                systemBlocks.Add(raw);
                                 break;
 
                             case TextContent tc:
                                 var block = new BetaTextBlockParam { Text = tc.Text };
-                                (systemMessages ??= []).Add(WithCacheControlFrom(block, tc));
+                                systemBlocks.Add(WithCacheControlFrom(block, tc));
                                 break;
+                        }
+                    }
+
+                    if (systemBlocks.Count > 0)
+                    {
+                        if (messageParams.Count == 0)
+                        {
+                            // A system message cannot be the first entry in `messages`; leading
+                            // system instructions go to the top-level `system` property.
+                            (systemMessages ??= []).AddRange(systemBlocks);
+                        }
+                        else
+                        {
+                            // A system message that appears mid-conversation is emitted as a
+                            // `{ "role": "system" }` message at its position, as-is. The API
+                            // rejects the request if the model or the placement does not support
+                            // mid-conversation system messages.
+                            messageParams.Add(
+                                new()
+                                {
+                                    Role = Role.System,
+                                    Content = systemBlocks
+                                        .Select(static b => (BetaContentBlockParam)b)
+                                        .ToList(),
+                                }
+                            );
                         }
                     }
 
@@ -1087,17 +1195,7 @@ public static class AnthropicBetaClientExtensions
                 return block;
             }
 
-            // Convert non-beta CacheControlEphemeral to BetaCacheControlEphemeral
-            // Note: Ttl enum exists in both namespaces, using fully qualified names to disambiguate
-            var betaCacheControl = new BetaCacheControlEphemeral
-            {
-                Ttl = cacheControl.Ttl?.Value() switch
-                {
-                    Anthropic.Models.Messages.Ttl.Ttl5m => Anthropic.Models.Beta.Messages.Ttl.Ttl5m,
-                    Anthropic.Models.Messages.Ttl.Ttl1h => Anthropic.Models.Beta.Messages.Ttl.Ttl1h,
-                    _ => null,
-                },
-            };
+            var betaCacheControl = ToBetaCacheControl(cacheControl);
 
             return block switch
             {
@@ -1114,6 +1212,25 @@ public static class AnthropicBetaClientExtensions
                 _ => block,
             };
         }
+
+        /// <summary>
+        /// Converts the non-beta <see cref="Anthropic.Models.Messages.CacheControlEphemeral"/> (the type
+        /// <see cref="AIContentCacheExtensions"/> hands callers) to <see cref="BetaCacheControlEphemeral"/>,
+        /// so the same cache-control values work with both the beta and non-beta clients.
+        /// </summary>
+        private static BetaCacheControlEphemeral ToBetaCacheControl(
+            Anthropic.Models.Messages.CacheControlEphemeral cacheControl
+        ) =>
+            // Ttl exists in both namespaces; fully qualified names disambiguate.
+            new()
+            {
+                Ttl = cacheControl.Ttl?.Value() switch
+                {
+                    Anthropic.Models.Messages.Ttl.Ttl5m => Anthropic.Models.Beta.Messages.Ttl.Ttl5m,
+                    Anthropic.Models.Messages.Ttl.Ttl1h => Anthropic.Models.Beta.Messages.Ttl.Ttl1h,
+                    _ => null,
+                },
+            };
 
         private MessageCreateParams GetMessageCreateParams(
             List<BetaMessageParam> messages,
@@ -1166,6 +1283,15 @@ public static class AnthropicBetaClientExtensions
             if (hasHostedFiles)
             {
                 (betaHeaders ??= []).Add("files-api-2025-04-14");
+            }
+
+            // The context_management parameter is beta-gated: if a raw-representation
+            // template carries it without the beta opt-in, the API rejects the request
+            // with "context_management: Extra inputs are not permitted". This includes a
+            // property explicitly initialized to null, which serializes as JSON null.
+            if (createParams.RawBodyData.ContainsKey("context_management"))
+            {
+                (betaHeaders ??= []).Add("context-management-2025-06-27");
             }
 
             if (options is not null)
@@ -1304,22 +1430,47 @@ public static class AnthropicBetaClientExtensions
                                             : null
                                     );
 
-                                (createdTools ??= []).Add(
-                                    new BetaTool()
+                                BetaTool functionTool = new()
+                                {
+                                    Name = af.Name,
+                                    Description = af.Description,
+                                    InputSchema = new InputSchema(schemaData),
+                                    DeferLoading = betaDeferLoading,
+                                    Strict = GetValue<bool?>(af, nameof(BetaTool.Strict)),
+                                    InputExamples = GetValue<List<Dictionary<string, JsonElement>>>(
+                                        af,
+                                        nameof(BetaTool.InputExamples)
+                                    ),
+                                    AllowedCallers = GetValue<
+                                        List<ApiEnum<string, BetaToolAllowedCaller>>
+                                    >(af, nameof(BetaTool.AllowedCallers)),
+                                };
+                                // cache_control is nullable on the wire: set it only when supplied,
+                                // since initializing it to null would serialize an explicit null.
+                                // The non-beta CacheControlEphemeral is accepted too (as it is for
+                                // message content), so the same value works with both clients.
+                                BetaCacheControlEphemeral? cacheControl =
+                                    GetValue<BetaCacheControlEphemeral>(
+                                        af,
+                                        nameof(BetaTool.CacheControl)
+                                    )
+                                    ?? (
+                                        GetValue<Anthropic.Models.Messages.CacheControlEphemeral>(
+                                            af,
+                                            nameof(BetaTool.CacheControl)
+                                        )
+                                            is { } nonBetaCacheControl
+                                            ? ToBetaCacheControl(nonBetaCacheControl)
+                                            : null
+                                    );
+                                if (cacheControl is not null)
+                                {
+                                    functionTool = functionTool with
                                     {
-                                        Name = af.Name,
-                                        Description = af.Description,
-                                        InputSchema = new InputSchema(schemaData),
-                                        DeferLoading = betaDeferLoading,
-                                        Strict = GetValue<bool?>(af, nameof(BetaTool.Strict)),
-                                        InputExamples = GetValue<
-                                            List<Dictionary<string, JsonElement>>
-                                        >(af, nameof(BetaTool.InputExamples)),
-                                        AllowedCallers = GetValue<
-                                            List<ApiEnum<string, BetaToolAllowedCaller>>
-                                        >(af, nameof(BetaTool.AllowedCallers)),
-                                    }
-                                );
+                                        CacheControl = cacheControl,
+                                    };
+                                }
+                                (createdTools ??= []).Add(functionTool);
 
                                 static T? GetValue<T>(AIFunctionDeclaration af, string name) =>
                                     af.AdditionalProperties?.TryGetValue(name, out var value)
@@ -1565,15 +1716,6 @@ public static class AnthropicBetaClientExtensions
                 usage.ServerToolUse
             );
 
-        private static UsageDetails ToUsageDetails(BetaMessageDeltaUsage usage) =>
-            ToUsageDetails(
-                usage.InputTokens,
-                usage.OutputTokens,
-                usage.CacheCreationInputTokens,
-                usage.CacheReadInputTokens,
-                usage.ServerToolUse
-            );
-
         private static UsageDetails ToUsageDetails(
             long? inputTokens,
             long? outputTokens,
@@ -1628,17 +1770,31 @@ public static class AnthropicBetaClientExtensions
                 a is not null || b is not null ? (a ?? 0) + (b ?? 0) : null;
         }
 
-        private static ChatFinishReason? ToFinishReason(
-            ApiEnum<string, BetaStopReason>? stopReason
-        ) =>
-            stopReason?.Value() switch
+        private static ChatFinishReason? ToFinishReason(ApiEnum<string, BetaStopReason>? stopReason)
+        {
+            if (stopReason is null)
             {
-                null => null,
-                BetaStopReason.Refusal => ChatFinishReason.ContentFilter,
-                BetaStopReason.MaxTokens => ChatFinishReason.Length,
+                return null;
+            }
+
+            return stopReason.Value() switch
+            {
+                BetaStopReason.EndTurn or BetaStopReason.StopSequence => ChatFinishReason.Stop,
+                BetaStopReason.MaxTokens or BetaStopReason.ModelContextWindowExceeded =>
+                    ChatFinishReason.Length,
                 BetaStopReason.ToolUse => ChatFinishReason.ToolCalls,
-                _ => ChatFinishReason.Stop,
+                BetaStopReason.Refusal => ChatFinishReason.ContentFilter,
+                // Anything else (pause_turn, compaction, or a stop reason newer than this SDK) marks a turn
+                // the caller has to act on, so surface the wire value instead of folding it into Stop.
+                // Note that CreateMessageParams does not yet round-trip server-tool blocks, so re-sending a
+                // paused turn through this client restarts the server-side loop rather than resuming it.
+                _ => FromRaw(stopReason.Raw()),
             };
+
+            // ChatFinishReason rejects blank values; treat a blank stop_reason as a natural stop.
+            static ChatFinishReason FromRaw(string raw) =>
+                string.IsNullOrWhiteSpace(raw) ? ChatFinishReason.Stop : new(raw);
+        }
 
         private static AIContent ContentBlockValueToAIContent(object? blockValue)
         {

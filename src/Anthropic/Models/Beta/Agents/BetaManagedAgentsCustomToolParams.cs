@@ -24,7 +24,7 @@ public sealed record class BetaManagedAgentsCustomToolParams : JsonModel
 {
     /// <summary>
     /// Description of what the tool does, shown to the agent to help it decide when
-    /// to use the tool. 1-4096 characters.
+    /// to use the tool.
     /// </summary>
     public required string Description
     {

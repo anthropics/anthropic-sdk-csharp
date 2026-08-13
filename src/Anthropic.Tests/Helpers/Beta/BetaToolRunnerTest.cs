@@ -33,6 +33,7 @@ public class BetaToolRunnerTest
                 CacheCreation = null,
                 CacheCreationInputTokens = null,
                 CacheReadInputTokens = null,
+                FallbackCredit = null,
                 InputTokens = 10,
                 OutputTokens = 10,
                 OutputTokensDetails = new(0),
@@ -233,6 +234,185 @@ public class BetaToolRunnerTest
         Assert.NotNull(secondCallParams);
         // messages: [original user, assistant with tool_use, user with tool_result]
         Assert.Equal(3, secondCallParams!.Messages.Count);
+    }
+
+    private static BetaMessageParam MakeSystemToolChangeMessage(BetaContentBlockParam block) =>
+        new() { Role = Role.System, Content = new BetaMessageParamContent([block]) };
+
+    private static BetaContentBlockParam MakeToolRemovalBlock(string name) =>
+        new BetaRequestToolRemovalBlock(new BetaToolChangeToolReference(name));
+
+    private static BetaContentBlockParam MakeToolAdditionBlock(string name) =>
+        new BetaRequestToolAdditionBlock(new BetaToolChangeToolReference(name));
+
+    /// <summary>
+    /// Runs one tool round-trip and returns the tool_result the runner sent back.
+    /// </summary>
+    private static async Task<JsonElement> RunAndCaptureToolResult(
+        MessageCreateParams parameters,
+        IReadOnlyList<IBetaRunnableTool> tools,
+        string toolName,
+        CancellationToken ct
+    )
+    {
+        var mock = new Mock<IMessageService>();
+        var callCount = 0;
+        MessageCreateParams? secondCallParams = null;
+
+        mock.Setup(s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(
+                (MessageCreateParams p, CancellationToken _) =>
+                {
+                    callCount++;
+                    if (callCount == 1)
+                    {
+                        return MakeMessage(
+                            [
+                                MakeToolUseBlock(
+                                    "tu_1",
+                                    toolName,
+                                    new() { ["location"] = JsonSerializer.SerializeToElement("SF") }
+                                ),
+                            ],
+                            BetaStopReason.ToolUse
+                        );
+                    }
+                    secondCallParams = p;
+                    return MakeMessage([MakeTextBlock("Done")]);
+                }
+            );
+
+        var runner = mock.Object.ToolRunner(parameters, tools);
+        await runner.RunUntilDoneAsync(ct);
+
+        Assert.NotNull(secondCallParams);
+        var userMsg = secondCallParams!.Messages[secondCallParams.Messages.Count - 1];
+        return Assert.Single(userMsg.Content.Json.EnumerateArray());
+    }
+
+    [Fact]
+    public async Task ToolRemoval_TreatsRemovedToolAsNotFound()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var toolExecuted = false;
+        var tool = MakeWeatherToolSync(_ =>
+        {
+            toolExecuted = true;
+            return "Sunny";
+        });
+
+        // Baseline: the model calls a tool that was never defined.
+        var neverDefinedResult = await RunAndCaptureToolResult(BaseParams, [], "get_weather", ct);
+
+        // A system message removes the tool before the assistant turn.
+        var paramsWithRemoval = BaseParams with
+        {
+            Messages =
+            [
+                new() { Content = "Hello", Role = Role.User },
+                MakeSystemToolChangeMessage(MakeToolRemovalBlock("get_weather")),
+            ],
+        };
+        var removedResult = await RunAndCaptureToolResult(
+            paramsWithRemoval,
+            [tool],
+            "get_weather",
+            ct
+        );
+
+        Assert.False(toolExecuted);
+        Assert.True(removedResult.GetProperty("is_error").GetBoolean());
+        Assert.Equal(
+            neverDefinedResult.GetProperty("content").GetString(),
+            removedResult.GetProperty("content").GetString()
+        );
+        Assert.Equal(
+            neverDefinedResult.GetProperty("is_error").GetBoolean(),
+            removedResult.GetProperty("is_error").GetBoolean()
+        );
+    }
+
+    [Fact]
+    public async Task ToolRemoval_PushedDuringToolUseTurn_IsHonored()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+        var callCount = 0;
+
+        mock.Setup(s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(() =>
+            {
+                callCount++;
+                if (callCount == 1)
+                {
+                    return MakeMessage(
+                        [
+                            MakeToolUseBlock(
+                                "tu_1",
+                                "get_weather",
+                                new() { ["location"] = JsonSerializer.SerializeToElement("SF") }
+                            ),
+                        ],
+                        BetaStopReason.ToolUse
+                    );
+                }
+                return MakeMessage([MakeTextBlock("Done")]);
+            });
+
+        var toolExecuted = false;
+        var tool = MakeWeatherToolSync(_ =>
+        {
+            toolExecuted = true;
+            return "Sunny";
+        });
+
+        var runner = mock.Object.ToolRunner(BaseParams, [tool]);
+
+        await foreach (var msg in runner.WithCancellation(ct))
+        {
+            if (callCount == 1)
+            {
+                // Remove the tool while the runner is yielding the tool_use turn — before it
+                // executes the calls for the assistant message just returned.
+                runner.PushMessages(
+                    MakeSystemToolChangeMessage(MakeToolRemovalBlock("get_weather"))
+                );
+            }
+        }
+
+        // The removal is folded from the live params at dispatch, so the removed tool
+        // never runs — its side effects don't fire only to have the results dropped.
+        Assert.False(toolExecuted);
+        mock.Verify(
+            s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()),
+            Times.Exactly(2)
+        );
+    }
+
+    [Fact]
+    public async Task ToolAddition_AfterRemoval_ReenablesTool()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var toolExecuted = false;
+        var tool = MakeWeatherToolSync(_ =>
+        {
+            toolExecuted = true;
+            return "Sunny";
+        });
+
+        var paramsWithReaddition = BaseParams with
+        {
+            Messages =
+            [
+                new() { Content = "Hello", Role = Role.User },
+                MakeSystemToolChangeMessage(MakeToolRemovalBlock("get_weather")),
+                MakeSystemToolChangeMessage(MakeToolAdditionBlock("get_weather")),
+            ],
+        };
+        var result = await RunAndCaptureToolResult(paramsWithReaddition, [tool], "get_weather", ct);
+
+        Assert.True(toolExecuted);
+        Assert.Equal("Sunny", result.GetProperty("content").GetString());
     }
 
     [Fact]

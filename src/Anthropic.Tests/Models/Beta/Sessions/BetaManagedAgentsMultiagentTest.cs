@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
+using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
 
@@ -16,22 +16,22 @@ public class BetaManagedAgentsMultiagentTest : TestBase
         {
             Agents =
             [
-                new()
+                new Agents::BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                    Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
             ],
             Type = BetaManagedAgentsMultiagentType.Coordinator,
         };
 
-        List<BetaManagedAgentsAgentReference> expectedAgents =
+        List<BetaManagedAgentsMultiagentAgent> expectedAgents =
         [
-            new()
+            new Agents::BetaManagedAgentsAgentReference()
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                Type = BetaManagedAgentsAgentReferenceType.Agent,
+                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
                 Version = 1,
             },
         ];
@@ -53,10 +53,10 @@ public class BetaManagedAgentsMultiagentTest : TestBase
         {
             Agents =
             [
-                new()
+                new Agents::BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                    Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
             ],
@@ -79,10 +79,10 @@ public class BetaManagedAgentsMultiagentTest : TestBase
         {
             Agents =
             [
-                new()
+                new Agents::BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                    Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
             ],
@@ -96,12 +96,12 @@ public class BetaManagedAgentsMultiagentTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        List<BetaManagedAgentsAgentReference> expectedAgents =
+        List<BetaManagedAgentsMultiagentAgent> expectedAgents =
         [
-            new()
+            new Agents::BetaManagedAgentsAgentReference()
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                Type = BetaManagedAgentsAgentReferenceType.Agent,
+                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
                 Version = 1,
             },
         ];
@@ -123,10 +123,10 @@ public class BetaManagedAgentsMultiagentTest : TestBase
         {
             Agents =
             [
-                new()
+                new Agents::BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                    Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
             ],
@@ -143,10 +143,10 @@ public class BetaManagedAgentsMultiagentTest : TestBase
         {
             Agents =
             [
-                new()
+                new Agents::BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                    Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
             ],
@@ -156,6 +156,67 @@ public class BetaManagedAgentsMultiagentTest : TestBase
         BetaManagedAgentsMultiagent copied = new(model);
 
         Assert.Equal(model, copied);
+    }
+}
+
+public class BetaManagedAgentsMultiagentAgentTest : TestBase
+{
+    [Fact]
+    public void BetaManagedAgentsAgentReferenceValidationWorks()
+    {
+        BetaManagedAgentsMultiagentAgent value = new Agents::BetaManagedAgentsAgentReference()
+        {
+            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+            Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+            Version = 1,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAdvisorValidationWorks()
+    {
+        BetaManagedAgentsMultiagentAgent value = new Agents::BetaManagedAgentsAdvisor()
+        {
+            Model = "model",
+            Type = Agents::Type.Advisor,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAgentReferenceSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsMultiagentAgent value = new Agents::BetaManagedAgentsAgentReference()
+        {
+            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+            Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+            Version = 1,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagentAgent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAdvisorSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsMultiagentAgent value = new Agents::BetaManagedAgentsAdvisor()
+        {
+            Model = "model",
+            Type = Agents::Type.Advisor,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagentAgent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 

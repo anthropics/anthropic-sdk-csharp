@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
+using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
 
@@ -30,9 +30,20 @@ public class BetaManagedAgentsMultiagentRosterEntryParamsTest : TestBase
     public void SelfValidationWorks()
     {
         BetaManagedAgentsMultiagentRosterEntryParams value =
-            new BetaManagedAgentsMultiagentSelfParams(
-                BetaManagedAgentsMultiagentSelfParamsType.Self
+            new Agents::BetaManagedAgentsMultiagentSelfParams(
+                Agents::BetaManagedAgentsMultiagentSelfParamsType.Self
             );
+        value.Validate();
+    }
+
+    [Fact]
+    public void AdvisorValidationWorks()
+    {
+        BetaManagedAgentsMultiagentRosterEntryParams value = new BetaManagedAgentsAdvisorParams()
+        {
+            Model = "claude-fable-5",
+            Type = Type.Advisor,
+        };
         value.Validate();
     }
 
@@ -71,9 +82,26 @@ public class BetaManagedAgentsMultiagentRosterEntryParamsTest : TestBase
     public void SelfSerializationRoundtripWorks()
     {
         BetaManagedAgentsMultiagentRosterEntryParams value =
-            new BetaManagedAgentsMultiagentSelfParams(
-                BetaManagedAgentsMultiagentSelfParamsType.Self
+            new Agents::BetaManagedAgentsMultiagentSelfParams(
+                Agents::BetaManagedAgentsMultiagentSelfParamsType.Self
             );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagentRosterEntryParams>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void AdvisorSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsMultiagentRosterEntryParams value = new BetaManagedAgentsAdvisorParams()
+        {
+            Model = "claude-fable-5",
+            Type = Type.Advisor,
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagentRosterEntryParams>(
             element,

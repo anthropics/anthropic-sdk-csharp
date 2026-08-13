@@ -139,8 +139,8 @@ public sealed record class BetaUserProfile : JsonModel
     }
 
     /// <summary>
-    /// Display name of the entity this profile represents. For `resold` this is
-    /// the resold-to company's name.
+    /// Real-world name of the entity this profile represents (company or individual).
+    /// For `resold` this is the resold-to company's name.
     /// </summary>
     public string? Name
     {

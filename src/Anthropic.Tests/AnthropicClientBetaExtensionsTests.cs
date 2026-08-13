@@ -2093,6 +2093,92 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.NotNull(response);
     }
 
+    /// <summary>
+    /// The beta client also accepts <see cref="BetaCacheControlEphemeral"/> directly; the non-beta type is
+    /// covered for both clients by the shared base test of the same shape.
+    /// </summary>
+    [Fact]
+    public async Task GetResponseAsync_WithAIFunctionTool_BetaCacheControl_FlowsThrough()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Use tool"
+                    }]
+                }],
+                "tools": [{
+                    "name": "cached_tool",
+                    "description": "A tool with a cache breakpoint",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "value": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": ["value"],
+                        "additionalProperties": false
+                    },
+                    "cache_control": {
+                        "type": "ephemeral",
+                        "ttl": "1h"
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_cached_tool_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Done"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 30,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var function = AIFunctionFactory.Create(
+            (int value) => value,
+            new AIFunctionFactoryOptions
+            {
+                Name = "cached_tool",
+                Description = "A tool with a cache breakpoint",
+                AdditionalProperties = new Dictionary<string, object?>
+                {
+                    [nameof(BetaTool.CacheControl)] = new BetaCacheControlEphemeral
+                    {
+                        Ttl = Ttl.Ttl1h,
+                    },
+                },
+            }
+        );
+
+        ChatOptions options = new() { Tools = [function] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Use tool",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
     [Fact]
     public async Task GetResponseAsync_WithRawRepresentationFactory()
     {
@@ -2574,4 +2660,142 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     protected override object CreateResponseBlock(string rawJson) =>
         JsonSerializer.Deserialize<BetaContentBlock>(rawJson)?.Value
         ?? throw new InvalidOperationException("Failed to deserialize server tool result.");
+
+    [Fact]
+    public async Task GetResponseAsync_WithRawRepresentationFactory_ContextManagement_AddsBetaHeader()
+    {
+        IEnumerable<string>? capturedBetaHeaders = null;
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test"
+                    }]
+                }],
+                "context_management": {
+                    "edits": [{
+                        "type": "clear_tool_uses_20250919"
+                    }]
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_ctx_mgmt_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 15,
+                    "output_tokens": 5
+                }
+            }
+            """
+        )
+        {
+            OnRequestHeaders = headers =>
+                headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
+        };
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 1024,
+                Model = "claude-haiku-4-5",
+                Messages = [],
+                ContextManagement = new() { Edits = [new BetaClearToolUses20250919Edit()] },
+            },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [new ChatMessage(ChatRole.User, "Test")],
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+        Assert.NotNull(capturedBetaHeaders);
+        Assert.Contains("context-management-2025-06-27", capturedBetaHeaders);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithRawRepresentationFactory_NullContextManagement_AddsBetaHeader()
+    {
+        // A property explicitly initialized to null is recorded in the raw body data and
+        // serialized as JSON null. Without the beta header the API rejects such a request
+        // outright ("context_management: Extra inputs are not permitted"); with the header
+        // an explicit null is accepted and means "no context management".
+        IEnumerable<string>? capturedBetaHeaders = null;
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test"
+                    }]
+                }],
+                "context_management": null
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_ctx_mgmt_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 15,
+                    "output_tokens": 5
+                }
+            }
+            """
+        )
+        {
+            OnRequestHeaders = headers =>
+                headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
+        };
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 1024,
+                Model = "claude-haiku-4-5",
+                Messages = [],
+                ContextManagement = null,
+            },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [new ChatMessage(ChatRole.User, "Test")],
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+        Assert.NotNull(capturedBetaHeaders);
+        Assert.Contains("context-management-2025-06-27", capturedBetaHeaders);
+    }
 }

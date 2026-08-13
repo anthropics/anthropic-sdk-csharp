@@ -50,32 +50,7 @@ public class MessageCreateParamsTest : TestBase
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             FallbackCreditToken = "x",
-            Fallbacks =
-            [
-                new()
-                {
-                    Model = Messages::Model.ClaudeSonnet5,
-                    MaxTokens = 0,
-                    OutputConfig = new()
-                    {
-                        Effort = Effort.Low,
-                        Format = new()
-                        {
-                            Schema = new Dictionary<string, JsonElement>()
-                            {
-                                { "foo", JsonSerializer.SerializeToElement("bar") },
-                            },
-                        },
-                        TaskBudget = new() { Total = 1024, Remaining = 0 },
-                    },
-                    Speed = BetaFallbackParamSpeed.Standard,
-                    Thinking = new BetaThinkingConfigEnabled()
-                    {
-                        BudgetTokens = 1024,
-                        Display = BetaThinkingConfigEnabledDisplay.Summarized,
-                    },
-                },
-            ],
+            Fallbacks = new Default(),
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -207,33 +182,8 @@ public class MessageCreateParamsTest : TestBase
         {
             PreviousMessageID = "previous_message_id",
         };
-        string expectedFallbackCreditToken = "x";
-        List<BetaFallbackParam> expectedFallbacks =
-        [
-            new()
-            {
-                Model = Messages::Model.ClaudeSonnet5,
-                MaxTokens = 0,
-                OutputConfig = new()
-                {
-                    Effort = Effort.Low,
-                    Format = new()
-                    {
-                        Schema = new Dictionary<string, JsonElement>()
-                        {
-                            { "foo", JsonSerializer.SerializeToElement("bar") },
-                        },
-                    },
-                    TaskBudget = new() { Total = 1024, Remaining = 0 },
-                },
-                Speed = BetaFallbackParamSpeed.Standard,
-                Thinking = new BetaThinkingConfigEnabled()
-                {
-                    BudgetTokens = 1024,
-                    Display = BetaThinkingConfigEnabledDisplay.Summarized,
-                },
-            },
-        ];
+        FallbackCreditToken expectedFallbackCreditToken = "x";
+        BetaFallbacksParam expectedFallbacks = new Default();
         string expectedInferenceGeo = "inference_geo";
         List<BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
@@ -347,12 +297,7 @@ public class MessageCreateParamsTest : TestBase
         Assert.Equal(expectedContextManagement, parameters.ContextManagement);
         Assert.Equal(expectedDiagnostics, parameters.Diagnostics);
         Assert.Equal(expectedFallbackCreditToken, parameters.FallbackCreditToken);
-        Assert.NotNull(parameters.Fallbacks);
-        Assert.Equal(expectedFallbacks.Count, parameters.Fallbacks.Count);
-        for (int i = 0; i < expectedFallbacks.Count; i++)
-        {
-            Assert.Equal(expectedFallbacks[i], parameters.Fallbacks[i]);
-        }
+        Assert.Equal(expectedFallbacks, parameters.Fallbacks);
         Assert.Equal(expectedInferenceGeo, parameters.InferenceGeo);
         Assert.NotNull(parameters.McpServers);
         Assert.Equal(expectedMcpServers.Count, parameters.McpServers.Count);
@@ -430,32 +375,7 @@ public class MessageCreateParamsTest : TestBase
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             FallbackCreditToken = "x",
-            Fallbacks =
-            [
-                new()
-                {
-                    Model = Messages::Model.ClaudeSonnet5,
-                    MaxTokens = 0,
-                    OutputConfig = new()
-                    {
-                        Effort = Effort.Low,
-                        Format = new()
-                        {
-                            Schema = new Dictionary<string, JsonElement>()
-                            {
-                                { "foo", JsonSerializer.SerializeToElement("bar") },
-                            },
-                        },
-                        TaskBudget = new() { Total = 1024, Remaining = 0 },
-                    },
-                    Speed = BetaFallbackParamSpeed.Standard,
-                    Thinking = new BetaThinkingConfigEnabled()
-                    {
-                        BudgetTokens = 1024,
-                        Display = BetaThinkingConfigEnabledDisplay.Summarized,
-                    },
-                },
-            ],
+            Fallbacks = new Default(),
             InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
@@ -535,32 +455,7 @@ public class MessageCreateParamsTest : TestBase
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             FallbackCreditToken = "x",
-            Fallbacks =
-            [
-                new()
-                {
-                    Model = Messages::Model.ClaudeSonnet5,
-                    MaxTokens = 0,
-                    OutputConfig = new()
-                    {
-                        Effort = Effort.Low,
-                        Format = new()
-                        {
-                            Schema = new Dictionary<string, JsonElement>()
-                            {
-                                { "foo", JsonSerializer.SerializeToElement("bar") },
-                            },
-                        },
-                        TaskBudget = new() { Total = 1024, Remaining = 0 },
-                    },
-                    Speed = BetaFallbackParamSpeed.Standard,
-                    Thinking = new BetaThinkingConfigEnabled()
-                    {
-                        BudgetTokens = 1024,
-                        Display = BetaThinkingConfigEnabledDisplay.Summarized,
-                    },
-                },
-            ],
+            Fallbacks = new Default(),
             InferenceGeo = "inference_geo",
             OutputFormat = new()
             {
@@ -932,32 +827,7 @@ public class MessageCreateParamsTest : TestBase
             },
             Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             FallbackCreditToken = "x",
-            Fallbacks =
-            [
-                new()
-                {
-                    Model = Messages::Model.ClaudeSonnet5,
-                    MaxTokens = 0,
-                    OutputConfig = new()
-                    {
-                        Effort = Effort.Low,
-                        Format = new()
-                        {
-                            Schema = new Dictionary<string, JsonElement>()
-                            {
-                                { "foo", JsonSerializer.SerializeToElement("bar") },
-                            },
-                        },
-                        TaskBudget = new() { Total = 1024, Remaining = 0 },
-                    },
-                    Speed = BetaFallbackParamSpeed.Standard,
-                    Thinking = new BetaThinkingConfigEnabled()
-                    {
-                        BudgetTokens = 1024,
-                        Display = BetaThinkingConfigEnabledDisplay.Summarized,
-                    },
-                },
-            ],
+            Fallbacks = new Default(),
             InferenceGeo = "inference_geo",
             McpServers =
             [
@@ -1116,6 +986,57 @@ public class ContainerTest : TestBase
         Container value = "string";
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Container>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class FallbackCreditTokenTest : TestBase
+{
+    [Fact]
+    public void StringValidationWorks()
+    {
+        FallbackCreditToken value = "x";
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaFallbackCreditTokenParamValidationWorks()
+    {
+        FallbackCreditToken value = new BetaFallbackCreditTokenParam()
+        {
+            Token = "x",
+            Mode = Mode.Strict,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void StringSerializationRoundtripWorks()
+    {
+        FallbackCreditToken value = "x";
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<FallbackCreditToken>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaFallbackCreditTokenParamSerializationRoundtripWorks()
+    {
+        FallbackCreditToken value = new BetaFallbackCreditTokenParam()
+        {
+            Token = "x",
+            Mode = Mode.Strict,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<FallbackCreditToken>(
             element,
             ModelBase.SerializerOptions
         );

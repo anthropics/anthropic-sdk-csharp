@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.11.1 (2026-08-07)
+
+Full Changelog: [Bedrock-v0.11.0...Bedrock-v0.11.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.11.0...Bedrock-v0.11.1)
+
+### Bug Fixes
+
+* **client:** preserve the URL port when adapting Bedrock and Vertex requests ([#137](https://github.com/anthropics/anthropic-sdk-csharp/issues/137)) ([6ef8819](https://github.com/anthropics/anthropic-sdk-csharp/commit/6ef881945d122f20c551c8875d49eefb40dc58f6))
+
 ## 0.11.0 (2026-07-16)
 
 Full Changelog: [Bedrock-v0.10.2...Bedrock-v0.11.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.10.2...Bedrock-v0.11.0)

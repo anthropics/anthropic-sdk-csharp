@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
 
@@ -35,13 +36,14 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
                 {
                     Agents =
                     [
-                        new()
+                        new BetaManagedAgentsSessionThreadAgent()
                         {
                             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                             Description = "A focused research subagent.",
@@ -60,6 +62,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
+                                InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -153,6 +156,11 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Title = "title",
         };
@@ -178,13 +186,14 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
             {
                 ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
             Multiagent = new()
             {
                 Agents =
                 [
-                    new()
+                    new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -203,6 +212,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -295,6 +305,11 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
             Type = BetaManagedAgentsSessionAgentType.Agent,
             Version = 1,
         };
+        BetaManagedAgentsBudgetLimit expectedBudget = new()
+        {
+            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+            Type = BetaManagedAgentsBudgetLimitType.Limit,
+        };
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
         string expectedTitle = "title";
 
@@ -302,6 +317,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
         Assert.Equal(expectedType, model.Type);
         Assert.Equal(expectedAgent, model.Agent);
+        Assert.Equal(expectedBudget, model.Budget);
         Assert.NotNull(model.Metadata);
         Assert.Equal(expectedMetadata.Count, model.Metadata.Count);
         foreach (var item in expectedMetadata)
@@ -338,13 +354,14 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
                 {
                     Agents =
                     [
-                        new()
+                        new BetaManagedAgentsSessionThreadAgent()
                         {
                             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                             Description = "A focused research subagent.",
@@ -363,6 +380,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
+                                InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -455,6 +473,11 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
+            },
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
             },
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Title = "title",
@@ -494,13 +517,14 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
                 {
                     Agents =
                     [
-                        new()
+                        new BetaManagedAgentsSessionThreadAgent()
                         {
                             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                             Description = "A focused research subagent.",
@@ -519,6 +543,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
+                                InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -612,6 +637,11 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Title = "title",
         };
@@ -644,13 +674,14 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
             {
                 ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                 Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
             Multiagent = new()
             {
                 Agents =
                 [
-                    new()
+                    new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -669,6 +700,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -761,6 +793,11 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
             Type = BetaManagedAgentsSessionAgentType.Agent,
             Version = 1,
         };
+        BetaManagedAgentsBudgetLimit expectedBudget = new()
+        {
+            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+            Type = BetaManagedAgentsBudgetLimitType.Limit,
+        };
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
         string expectedTitle = "title";
 
@@ -768,6 +805,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
         Assert.Equal(expectedType, deserialized.Type);
         Assert.Equal(expectedAgent, deserialized.Agent);
+        Assert.Equal(expectedBudget, deserialized.Budget);
         Assert.NotNull(deserialized.Metadata);
         Assert.Equal(expectedMetadata.Count, deserialized.Metadata.Count);
         foreach (var item in expectedMetadata)
@@ -804,13 +842,14 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
                 {
                     Agents =
                     [
-                        new()
+                        new BetaManagedAgentsSessionThreadAgent()
                         {
                             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                             Description = "A focused research subagent.",
@@ -829,6 +868,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
+                                InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -921,6 +961,11 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
+            },
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
             },
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Title = "title",
@@ -954,13 +999,14 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
                 {
                     Agents =
                     [
-                        new()
+                        new BetaManagedAgentsSessionThreadAgent()
                         {
                             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                             Description = "A focused research subagent.",
@@ -979,6 +1025,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
+                                InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -1071,6 +1118,11 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
+            },
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
             },
             Title = "title",
         };
@@ -1104,13 +1156,14 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
                 {
                     Agents =
                     [
-                        new()
+                        new BetaManagedAgentsSessionThreadAgent()
                         {
                             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                             Description = "A focused research subagent.",
@@ -1129,6 +1182,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
+                                InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -1222,6 +1276,11 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Title = "title",
         };
 
@@ -1253,13 +1312,14 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
                 {
                     Agents =
                     [
-                        new()
+                        new BetaManagedAgentsSessionThreadAgent()
                         {
                             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                             Description = "A focused research subagent.",
@@ -1278,6 +1338,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
+                                InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -1370,6 +1431,11 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
+            },
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
             },
             Title = "title",
 
@@ -1406,13 +1472,14 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
                 {
                     Agents =
                     [
-                        new()
+                        new BetaManagedAgentsSessionThreadAgent()
                         {
                             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                             Description = "A focused research subagent.",
@@ -1431,6 +1498,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
+                                InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -1524,6 +1592,11 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Title = "title",
 
             // Null should be interpreted as omitted for these properties
@@ -1546,6 +1619,8 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
 
         Assert.Null(model.Agent);
         Assert.False(model.RawData.ContainsKey("agent"));
+        Assert.Null(model.Budget);
+        Assert.False(model.RawData.ContainsKey("budget"));
         Assert.Null(model.Title);
         Assert.False(model.RawData.ContainsKey("title"));
     }
@@ -1575,11 +1650,14 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
 
             Agent = null,
+            Budget = null,
             Title = null,
         };
 
         Assert.Null(model.Agent);
         Assert.True(model.RawData.ContainsKey("agent"));
+        Assert.Null(model.Budget);
+        Assert.True(model.RawData.ContainsKey("budget"));
         Assert.Null(model.Title);
         Assert.True(model.RawData.ContainsKey("title"));
     }
@@ -1595,6 +1673,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
 
             Agent = null,
+            Budget = null,
             Title = null,
         };
 
@@ -1626,13 +1705,14 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 {
                     ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
                 Multiagent = new()
                 {
                     Agents =
                     [
-                        new()
+                        new BetaManagedAgentsSessionThreadAgent()
                         {
                             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                             Description = "A focused research subagent.",
@@ -1651,6 +1731,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
+                                InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
                             Name = "Researcher",
@@ -1743,6 +1824,11 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
+            },
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
             },
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Title = "title",

@@ -26,6 +26,7 @@ public class BetaMessageStreamingAggregationTest
                 CacheCreation = null,
                 CacheCreationInputTokens = null,
                 CacheReadInputTokens = null,
+                FallbackCredit = null,
                 InputTokens = 25,
                 OutputTokens = 25,
                 OutputTokensDetails = new(0),
@@ -380,6 +381,7 @@ public class BetaMessageStreamingAggregationTest
                     {
                         CacheCreationInputTokens = null,
                         CacheReadInputTokens = null,
+                        FallbackCredit = null,
                         InputTokens = null,
                         Iterations =
                         [
@@ -445,6 +447,65 @@ public class BetaMessageStreamingAggregationTest
         );
         Assert.Equal(75, second.InputTokens);
         Assert.Equal(40, second.OutputTokens);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_PropagatesFallbackCreditFromMessageDelta()
+    {
+        // arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<BetaRawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new BetaRawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new BetaRawMessageDeltaEvent()
+                {
+                    ContextManagement = null,
+                    Delta = new()
+                    {
+                        Container = null,
+                        StopDetails = null,
+                        StopReason = BetaStopReason.EndTurn,
+                        StopSequence = null,
+                    },
+                    Usage = new()
+                    {
+                        CacheCreationInputTokens = null,
+                        CacheReadInputTokens = null,
+                        FallbackCredit = new BetaFallbackCreditUsage
+                        {
+                            Status = new BetaFallbackCreditRedeemed(),
+                        },
+                        InputTokens = null,
+                        Iterations = null,
+                        OutputTokens = 50,
+                        OutputTokensDetails = null,
+                        ServerToolUse = null,
+                    },
+                }
+            );
+            yield return new(new BetaRawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
+            )
+            .Returns(GetTestValues);
+
+        // act
+
+        var stream = await messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .Aggregate();
+
+        // assert
+
+        Assert.NotNull(stream);
+        stream.Validate();
+        Assert.NotNull(stream.Usage.FallbackCredit);
+        Assert.IsType<BetaFallbackCreditRedeemed>(stream.Usage.FallbackCredit!.Status.Value);
     }
 
     [Fact]
@@ -592,5 +653,306 @@ public class BetaMessageStreamingAggregationTest
         Assert.Equal("toolu_01", toolUse.ID);
         Assert.Equal("get_weather", toolUse.Name);
         Assert.Equal("Paris", toolUse.Input["location"].GetString());
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_PropagatesContextManagementFromMessageDelta()
+    {
+        // arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<BetaRawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new BetaRawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new BetaRawMessageDeltaEvent()
+                {
+                    ContextManagement = new()
+                    {
+                        AppliedEdits =
+                        [
+                            new BetaClearToolUses20250919EditResponse()
+                            {
+                                ClearedInputTokens = 1234,
+                                ClearedToolUses = 2,
+                            },
+                        ],
+                    },
+                    Delta = new()
+                    {
+                        Container = null,
+                        StopDetails = null,
+                        StopReason = BetaStopReason.EndTurn,
+                        StopSequence = null,
+                    },
+                    Usage = new()
+                    {
+                        CacheCreationInputTokens = null,
+                        CacheReadInputTokens = null,
+                        FallbackCredit = null,
+                        InputTokens = null,
+                        Iterations = null,
+                        OutputTokens = 50,
+                        OutputTokensDetails = null,
+                        ServerToolUse = null,
+                    },
+                }
+            );
+            yield return new(new BetaRawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
+            )
+            .Returns(GetTestValues);
+
+        // act
+
+        var stream = await messagesServiceMock
+            .Object.CreateStreaming(StreamingParam, TestContext.Current.CancellationToken)
+            .Aggregate();
+
+        // assert
+
+        Assert.NotNull(stream);
+        stream.Validate();
+        Assert.NotNull(stream.ContextManagement);
+        var appliedEdit = Assert.Single(stream.ContextManagement!.AppliedEdits);
+        Assert.Equal(1234, appliedEdit.ClearedInputTokens);
+
+        // never re-sent on message_delta, so they must survive from message_start
+        Assert.Equal(25, stream.Usage.InputTokens);
+        Assert.Equal(BetaUsageServiceTier.Standard, stream.Usage.ServiceTier!.Value());
+        Assert.Equal("inference_geo", stream.Usage.InferenceGeo);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_ReassemblesServerAndMcpToolUseInputFromInputJsonDeltas()
+    {
+        static async IAsyncEnumerable<BetaRawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new BetaRawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new BetaRawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(
+                        new BetaServerToolUseBlock()
+                        {
+                            ID = "srvtoolu_01",
+                            Caller = new BetaDirectCaller(),
+                            Input = new Dictionary<string, JsonElement>(),
+                            Name = Name.WebSearch,
+                        }
+                    ),
+                }
+            );
+            yield return new(
+                new BetaRawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new BetaInputJsonDelta("{\"query\":\"latest")),
+                }
+            );
+            yield return new(
+                new BetaRawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new BetaInputJsonDelta(" AI news\"}")),
+                }
+            );
+            yield return new(new BetaRawContentBlockStopEvent() { Index = 0 });
+            yield return new(
+                new BetaRawContentBlockStartEvent()
+                {
+                    Index = 1,
+                    ContentBlock = new(
+                        new BetaMcpToolUseBlock()
+                        {
+                            ID = "mcptoolu_01",
+                            Input = new Dictionary<string, JsonElement>(),
+                            Name = "echo",
+                            ServerName = "example",
+                        }
+                    ),
+                }
+            );
+            yield return new(
+                new BetaRawContentBlockDeltaEvent()
+                {
+                    Index = 1,
+                    Delta = new(new BetaInputJsonDelta("{\"text\":\"hi\"}")),
+                }
+            );
+            yield return new(new BetaRawContentBlockStopEvent() { Index = 1 });
+            yield return new(new BetaRawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var stream = await GetTestValues().Aggregate();
+
+        stream.Validate();
+        Assert.Equal(2, stream.Content.Count);
+        var serverToolUse = Assert.IsType<BetaServerToolUseBlock>(stream.Content[0].Value);
+        Assert.Equal("srvtoolu_01", serverToolUse.ID);
+        Assert.Equal(Name.WebSearch, serverToolUse.Name.Value());
+        Assert.Equal("latest AI news", serverToolUse.Input["query"].GetString());
+        Assert.IsType<BetaDirectCaller>(serverToolUse.Caller?.Value);
+        var mcpToolUse = Assert.IsType<BetaMcpToolUseBlock>(stream.Content[1].Value);
+        Assert.Equal("mcptoolu_01", mcpToolUse.ID);
+        Assert.Equal("example", mcpToolUse.ServerName);
+        Assert.Equal("hi", mcpToolUse.Input["text"].GetString());
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_KeepsStartInputWhenInputJsonDeltasAreTruncated()
+    {
+        // A stream cut by max_tokens mid-delta is legal; the block must survive with the start
+        // event's input rather than failing the whole aggregation.
+        static async IAsyncEnumerable<BetaRawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new BetaRawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new BetaRawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(
+                        new BetaServerToolUseBlock()
+                        {
+                            ID = "srvtoolu_01",
+                            Input = new Dictionary<string, JsonElement>(),
+                            Name = Name.WebSearch,
+                        }
+                    ),
+                }
+            );
+            yield return new(
+                new BetaRawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new BetaInputJsonDelta("{\"query\":\"lat")),
+                }
+            );
+            yield return new(new BetaRawContentBlockStopEvent() { Index = 0 });
+            yield return new(new BetaRawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var stream = await GetTestValues().Aggregate();
+
+        stream.Validate();
+        var serverToolUse = Assert.IsType<BetaServerToolUseBlock>(
+            Assert.Single(stream.Content).Value
+        );
+        Assert.Equal("srvtoolu_01", serverToolUse.ID);
+        Assert.Empty(serverToolUse.Input);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_PassesThroughBlocksWithoutDeltaVariants()
+    {
+        static async IAsyncEnumerable<BetaRawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new BetaRawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new BetaRawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(new BetaRedactedThinkingBlock() { Data = "redacted" }),
+                }
+            );
+            yield return new(new BetaRawContentBlockStopEvent() { Index = 0 });
+            yield return new(
+                new BetaRawContentBlockStartEvent()
+                {
+                    Index = 1,
+                    ContentBlock = new(
+                        new BetaWebSearchToolResultBlock()
+                        {
+                            ToolUseID = "srvtoolu_01",
+                            Content = new(
+                                [
+                                    new BetaWebSearchResultBlock()
+                                    {
+                                        EncryptedContent = "encrypted",
+                                        PageAge = null,
+                                        Title = "Result",
+                                        Url = "https://example.com",
+                                    },
+                                ]
+                            ),
+                        }
+                    ),
+                }
+            );
+            yield return new(new BetaRawContentBlockStopEvent() { Index = 1 });
+            yield return new(
+                new BetaRawContentBlockStartEvent()
+                {
+                    Index = 2,
+                    ContentBlock = new(
+                        new BetaMcpToolResultBlock()
+                        {
+                            ToolUseID = "mcptoolu_01",
+                            IsError = false,
+                            Content = new("hi"),
+                        }
+                    ),
+                }
+            );
+            yield return new(new BetaRawContentBlockStopEvent() { Index = 2 });
+            yield return new(
+                new BetaRawContentBlockStartEvent()
+                {
+                    Index = 3,
+                    ContentBlock = new(new BetaContainerUploadBlock() { FileID = "file_01" }),
+                }
+            );
+            yield return new(new BetaRawContentBlockStopEvent() { Index = 3 });
+            yield return new(new BetaRawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var stream = await GetTestValues().Aggregate();
+
+        stream.Validate();
+        Assert.Equal(4, stream.Content.Count);
+        var redacted = Assert.IsType<BetaRedactedThinkingBlock>(stream.Content[0].Value);
+        Assert.Equal("redacted", redacted.Data);
+        var webSearch = Assert.IsType<BetaWebSearchToolResultBlock>(stream.Content[1].Value);
+        Assert.Equal("srvtoolu_01", webSearch.ToolUseID);
+        Assert.True(webSearch.Content.TryPickBetaWebSearchResultBlocks(out var results));
+        Assert.Equal("https://example.com", Assert.Single(results).Url);
+        var mcpResult = Assert.IsType<BetaMcpToolResultBlock>(stream.Content[2].Value);
+        Assert.Equal("mcptoolu_01", mcpResult.ToolUseID);
+        var upload = Assert.IsType<BetaContainerUploadBlock>(stream.Content[3].Value);
+        Assert.Equal("file_01", upload.FileID);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_PassesThroughUnmodelledBlockTypes()
+    {
+        // A block type this SDK version doesn't know must survive aggregation as raw JSON, the
+        // same way it survives a non-streaming response.
+        var unknownBlock = JsonSerializer.Deserialize<JsonElement>(
+            "{\"type\":\"shiny_new_block\",\"payload\":42}"
+        );
+        async IAsyncEnumerable<BetaRawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new BetaRawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new BetaRawContentBlockStartEvent() { Index = 0, ContentBlock = new(unknownBlock) }
+            );
+            yield return new(new BetaRawContentBlockStopEvent() { Index = 0 });
+            yield return new(new BetaRawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var stream = await GetTestValues().Aggregate();
+
+        var block = Assert.Single(stream.Content);
+        Assert.Null(block.Value);
+        Assert.True(JsonElement.DeepEquals(unknownBlock, block.Json));
     }
 }

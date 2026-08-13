@@ -53,6 +53,11 @@ public class SessionUpdateParamsTest : TestBase
                     },
                 ],
             },
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Title = "Order #1234 inquiry",
             VaultIds = ["string"],
@@ -97,6 +102,11 @@ public class SessionUpdateParamsTest : TestBase
                 },
             ],
         };
+        BetaManagedAgentsBudgetLimit expectedBudget = new()
+        {
+            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+            Type = BetaManagedAgentsBudgetLimitType.Limit,
+        };
         Dictionary<string, string?> expectedMetadata = new() { { "foo", "string" } };
         string expectedTitle = "Order #1234 inquiry";
         List<string> expectedVaultIds = ["string"];
@@ -107,6 +117,7 @@ public class SessionUpdateParamsTest : TestBase
 
         Assert.Equal(expectedSessionID, parameters.SessionID);
         Assert.Equal(expectedAgent, parameters.Agent);
+        Assert.Equal(expectedBudget, parameters.Budget);
         Assert.NotNull(parameters.Metadata);
         Assert.Equal(expectedMetadata.Count, parameters.Metadata.Count);
         foreach (var item in expectedMetadata)
@@ -136,6 +147,11 @@ public class SessionUpdateParamsTest : TestBase
         var parameters = new SessionUpdateParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Title = "Order #1234 inquiry",
         };
@@ -154,6 +170,11 @@ public class SessionUpdateParamsTest : TestBase
         var parameters = new SessionUpdateParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Title = "Order #1234 inquiry",
 
@@ -218,6 +239,8 @@ public class SessionUpdateParamsTest : TestBase
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
+        Assert.Null(parameters.Budget);
+        Assert.False(parameters.RawBodyData.ContainsKey("budget"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Title);
@@ -270,10 +293,13 @@ public class SessionUpdateParamsTest : TestBase
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
+            Budget = null,
             Metadata = null,
             Title = null,
         };
 
+        Assert.Null(parameters.Budget);
+        Assert.True(parameters.RawBodyData.ContainsKey("budget"));
         Assert.Null(parameters.Metadata);
         Assert.True(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Title);
@@ -357,6 +383,11 @@ public class SessionUpdateParamsTest : TestBase
                         },
                     },
                 ],
+            },
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
             },
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Title = "Order #1234 inquiry",

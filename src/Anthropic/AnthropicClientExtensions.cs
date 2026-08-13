@@ -35,7 +35,27 @@ public static class AnthropicClientExtensions
     /// If no value is provided for this parameter or in <see cref="ChatOptions"/>, a default maximum will be used.
     /// </param>
     /// <returns>An <see cref="IChatClient"/> that can be used to converse via the <see cref="IAnthropicClient"/>.</returns>
+    /// <remarks>
+    /// The returned client reports the API's <c>stop_reason</c> through <see cref="ChatResponse.FinishReason"/>:
+    /// <c>end_turn</c> and <c>stop_sequence</c> map to <see cref="ChatFinishReason.Stop"/>, <c>max_tokens</c> and
+    /// <c>model_context_window_exceeded</c> to <see cref="ChatFinishReason.Length"/>, <c>tool_use</c> to
+    /// <see cref="ChatFinishReason.ToolCalls"/>, and <c>refusal</c> to <see cref="ChatFinishReason.ContentFilter"/>.
+    /// Any other value, such as <c>pause_turn</c>, is surfaced verbatim as the <see cref="ChatFinishReason.Value"/>
+    /// so that callers can detect turns that need to be continued.
+    /// </remarks>
     /// <exception cref="ArgumentNullException"><paramref name="client"/> is <see langword="null"/>.</exception>
+    /// <remarks>
+    /// <para>
+    /// When an <see cref="AIFunction"/> in <see cref="ChatOptions.Tools"/> is converted to an Anthropic
+    /// <see cref="Tool"/>, the following <see cref="AITool.AdditionalProperties"/> entries (set via
+    /// <see cref="AIFunctionFactoryOptions.AdditionalProperties"/> when the function is created) are copied onto
+    /// the tool definition: <c>nameof(Tool.DeferLoading)</c> (<see cref="bool"/>), <c>nameof(Tool.Strict)</c>
+    /// (<see cref="bool"/>), <c>nameof(Tool.InputExamples)</c> (<c>List&lt;Dictionary&lt;string, JsonElement&gt;&gt;</c>),
+    /// <c>nameof(Tool.AllowedCallers)</c> (<c>List&lt;ApiEnum&lt;string, ToolAllowedCaller&gt;&gt;</c>), and
+    /// <c>nameof(Tool.CacheControl)</c> (<see cref="CacheControlEphemeral"/>, placing a prompt-cache breakpoint
+    /// after that tool). Entries of any other type are ignored.
+    /// </para>
+    /// </remarks>
     public static IChatClient AsIChatClient(
         this IAnthropicClient client,
         string? defaultModelId = null,
@@ -591,6 +611,12 @@ public static class AnthropicClientExtensions
             string? messageId = null;
             string? modelID = null;
             UsageDetails? usageDetails = null;
+            // The cache/input token fields are nullable and are usually omitted on the terminal
+            // message_delta, so remember the values reported on message_start to fall back on.
+            long? startInputTokens = null;
+            long? startCacheCreationInputTokens = null;
+            long? startCacheReadInputTokens = null;
+            ServerToolUsage? startServerToolUse = null;
             ChatFinishReason? finishReason = null;
             Dictionary<long, StreamingFunctionData>? streamingFunctions = null;
 
@@ -617,6 +643,10 @@ public static class AnthropicClientExtensions
 
                         if (rawMessageStart.Message.Usage is { } usage)
                         {
+                            startInputTokens = usage.InputTokens;
+                            startCacheCreationInputTokens = usage.CacheCreationInputTokens;
+                            startCacheReadInputTokens = usage.CacheReadInputTokens;
+                            startServerToolUse = usage.ServerToolUse;
                             UsageDetails current = ToUsageDetails(usage);
                             if (usageDetails is null)
                             {
@@ -635,7 +665,17 @@ public static class AnthropicClientExtensions
                         {
                             // https://platform.claude.com/docs/en/build-with-claude/streaming
                             // "The token counts shown in the usage field of the message_delta event are cumulative."
-                            usageDetails = ToUsageDetails(deltaUsage);
+                            // These fields are nullable and usually omitted on the terminal
+                            // message_delta, so fall back to the message_start values instead of
+                            // wiping them out.
+                            usageDetails = ToUsageDetails(
+                                deltaUsage.InputTokens ?? startInputTokens,
+                                deltaUsage.OutputTokens,
+                                deltaUsage.CacheCreationInputTokens
+                                    ?? startCacheCreationInputTokens,
+                                deltaUsage.CacheReadInputTokens ?? startCacheReadInputTokens,
+                                deltaUsage.ServerToolUse ?? startServerToolUse
+                            );
                         }
                         break;
 
@@ -766,14 +806,16 @@ public static class AnthropicClientExtensions
                         break;
 
                     case RawContentBlockStopEvent contentBlockStop:
-                        if (streamingFunctions is not null)
+                        if (
+                            streamingFunctions is not null
+                            && streamingFunctions.TryGetValue(
+                                contentBlockStop.Index,
+                                out StreamingFunctionData? completedFunction
+                            )
+                        )
                         {
-                            foreach (var sf in streamingFunctions)
-                            {
-                                contents.Add(CreateStreamingToolCallContent(sf.Value));
-                            }
-
-                            streamingFunctions.Clear();
+                            contents.Add(CreateStreamingToolCallContent(completedFunction));
+                            streamingFunctions.Remove(contentBlockStop.Index);
                         }
                         break;
                 }
@@ -802,6 +844,44 @@ public static class AnthropicClientExtensions
             }
         }
 
+        /// <summary>
+        /// Merges runs of consecutive <see cref="ChatRole.System"/> messages into a single
+        /// message. The API accepts consecutive system messages and treats them as a single
+        /// system section, but some providers (e.g. Amazon Bedrock) reject adjacent system
+        /// messages, so adjacent system instructions are combined before mapping.
+        /// </summary>
+        private static List<ChatMessage> NormalizeConsecutiveSystemMessages(
+            IEnumerable<ChatMessage> messages
+        )
+        {
+            List<ChatMessage> normalized = [];
+            List<AIContent>? pendingSystem = null;
+            foreach (ChatMessage message in messages)
+            {
+                if (message.Role == ChatRole.System)
+                {
+                    // Accumulate consecutive system instructions into a single message.
+                    (pendingSystem ??= []).AddRange(message.Contents);
+                    continue;
+                }
+
+                if (pendingSystem is not null)
+                {
+                    normalized.Add(new ChatMessage(ChatRole.System, pendingSystem));
+                    pendingSystem = null;
+                }
+
+                normalized.Add(message);
+            }
+
+            if (pendingSystem is not null)
+            {
+                normalized.Add(new ChatMessage(ChatRole.System, pendingSystem));
+            }
+
+            return normalized;
+        }
+
         private static List<MessageParam> CreateMessageParams(
             IEnumerable<ChatMessage> messages,
             out List<TextBlockParam>? systemMessages
@@ -810,22 +890,49 @@ public static class AnthropicClientExtensions
             List<MessageParam> messageParams = [];
             systemMessages = null;
 
-            foreach (ChatMessage message in messages)
+            foreach (ChatMessage message in NormalizeConsecutiveSystemMessages(messages))
             {
                 if (message.Role == ChatRole.System)
                 {
+                    List<TextBlockParam> systemBlocks = [];
                     foreach (AIContent content in message.Contents)
                     {
                         switch (content)
                         {
                             case AIContent ac when ac.RawRepresentation is TextBlockParam raw:
-                                (systemMessages ??= []).Add(raw);
+                                systemBlocks.Add(raw);
                                 break;
 
                             case TextContent tc:
                                 var block = new TextBlockParam { Text = tc.Text };
-                                (systemMessages ??= []).Add(WithCacheControlFrom(block, tc));
+                                systemBlocks.Add(WithCacheControlFrom(block, tc));
                                 break;
+                        }
+                    }
+
+                    if (systemBlocks.Count > 0)
+                    {
+                        if (messageParams.Count == 0)
+                        {
+                            // A system message cannot be the first entry in `messages`; leading
+                            // system instructions go to the top-level `system` property.
+                            (systemMessages ??= []).AddRange(systemBlocks);
+                        }
+                        else
+                        {
+                            // A system message that appears mid-conversation is emitted as a
+                            // `{ "role": "system" }` message at its position, as-is. The API
+                            // rejects the request if the model or the placement does not support
+                            // mid-conversation system messages.
+                            messageParams.Add(
+                                new()
+                                {
+                                    Role = Role.System,
+                                    Content = systemBlocks
+                                        .Select(static b => (ContentBlockParam)b)
+                                        .ToList(),
+                                }
+                            );
                         }
                     }
 
@@ -1444,22 +1551,37 @@ public static class AnthropicClientExtensions
                                             : null
                                     );
 
-                                (createdTools ??= []).Add(
-                                    new Tool()
+                                Tool functionTool = new()
+                                {
+                                    Name = af.Name,
+                                    Description = af.Description,
+                                    InputSchema = new InputSchema(schemaData),
+                                    DeferLoading = deferLoading,
+                                    Strict = GetValue<bool?>(af, nameof(Tool.Strict)),
+                                    InputExamples = GetValue<List<Dictionary<string, JsonElement>>>(
+                                        af,
+                                        nameof(Tool.InputExamples)
+                                    ),
+                                    AllowedCallers = GetValue<
+                                        List<ApiEnum<string, ToolAllowedCaller>>
+                                    >(af, nameof(Tool.AllowedCallers)),
+                                };
+                                // cache_control is nullable on the wire: set it only when supplied,
+                                // since initializing it to null would serialize an explicit null.
+                                if (
+                                    GetValue<CacheControlEphemeral>(
+                                        af,
+                                        nameof(Tool.CacheControl)
+                                    ) is
+                                    { } cacheControl
+                                )
+                                {
+                                    functionTool = functionTool with
                                     {
-                                        Name = af.Name,
-                                        Description = af.Description,
-                                        InputSchema = new InputSchema(schemaData),
-                                        DeferLoading = deferLoading,
-                                        Strict = GetValue<bool?>(af, nameof(Tool.Strict)),
-                                        InputExamples = GetValue<
-                                            List<Dictionary<string, JsonElement>>
-                                        >(af, nameof(Tool.InputExamples)),
-                                        AllowedCallers = GetValue<
-                                            List<ApiEnum<string, ToolAllowedCaller>>
-                                        >(af, nameof(Tool.AllowedCallers)),
-                                    }
-                                );
+                                        CacheControl = cacheControl,
+                                    };
+                                }
+                                (createdTools ??= []).Add(functionTool);
 
                                 static T? GetValue<T>(AIFunctionDeclaration af, string name) =>
                                     af.AdditionalProperties?.TryGetValue(name, out var value)
@@ -1639,15 +1761,6 @@ public static class AnthropicClientExtensions
                 usage.ServerToolUse
             );
 
-        private static UsageDetails ToUsageDetails(MessageDeltaUsage usage) =>
-            ToUsageDetails(
-                usage.InputTokens,
-                usage.OutputTokens,
-                usage.CacheCreationInputTokens,
-                usage.CacheReadInputTokens,
-                usage.ServerToolUse
-            );
-
         private static UsageDetails ToUsageDetails(
             long? inputTokens,
             long? outputTokens,
@@ -1700,15 +1813,31 @@ public static class AnthropicClientExtensions
                 a is not null || b is not null ? (a ?? 0) + (b ?? 0) : null;
         }
 
-        private static ChatFinishReason? ToFinishReason(ApiEnum<string, StopReason>? stopReason) =>
-            stopReason?.Value() switch
+        private static ChatFinishReason? ToFinishReason(ApiEnum<string, StopReason>? stopReason)
+        {
+            if (stopReason is null)
             {
-                null => null,
-                StopReason.Refusal => ChatFinishReason.ContentFilter,
-                StopReason.MaxTokens => ChatFinishReason.Length,
+                return null;
+            }
+
+            return stopReason.Value() switch
+            {
+                StopReason.EndTurn or StopReason.StopSequence => ChatFinishReason.Stop,
+                StopReason.MaxTokens or StopReason.ModelContextWindowExceeded =>
+                    ChatFinishReason.Length,
                 StopReason.ToolUse => ChatFinishReason.ToolCalls,
-                _ => ChatFinishReason.Stop,
+                StopReason.Refusal => ChatFinishReason.ContentFilter,
+                // Anything else (pause_turn, compaction, or a stop reason newer than this SDK) marks a turn
+                // the caller has to act on, so surface the wire value instead of folding it into Stop.
+                // Note that CreateMessageParams does not yet round-trip server-tool blocks, so re-sending a
+                // paused turn through this client restarts the server-side loop rather than resuming it.
+                _ => FromRaw(stopReason.Raw()),
             };
+
+            // ChatFinishReason rejects blank values; treat a blank stop_reason as a natural stop.
+            static ChatFinishReason FromRaw(string raw) =>
+                string.IsNullOrWhiteSpace(raw) ? ChatFinishReason.Stop : new(raw);
+        }
 
         private static AIContent ContentBlockValueToAIContent(object? blockValue)
         {

@@ -11,6 +11,7 @@ public class ModelTest : TestBase
     [InlineData(Model.ClaudeSonnet5)]
     [InlineData(Model.ClaudeFable5)]
     [InlineData(Model.ClaudeMythos5)]
+    [InlineData(Model.ClaudeOpus5)]
     [InlineData(Model.ClaudeOpus4_8)]
     [InlineData(Model.ClaudeOpus4_7)]
     [InlineData(Model.ClaudeMythosPreview)]
@@ -22,8 +23,6 @@ public class ModelTest : TestBase
     [InlineData(Model.ClaudeOpus4_5_20251101)]
     [InlineData(Model.ClaudeSonnet4_5)]
     [InlineData(Model.ClaudeSonnet4_5_20250929)]
-    [InlineData(Model.ClaudeOpus4_1)]
-    [InlineData(Model.ClaudeOpus4_1_20250805)]
     public void Validation_Works(Model rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -47,6 +46,7 @@ public class ModelTest : TestBase
     [InlineData(Model.ClaudeSonnet5)]
     [InlineData(Model.ClaudeFable5)]
     [InlineData(Model.ClaudeMythos5)]
+    [InlineData(Model.ClaudeOpus5)]
     [InlineData(Model.ClaudeOpus4_8)]
     [InlineData(Model.ClaudeOpus4_7)]
     [InlineData(Model.ClaudeMythosPreview)]
@@ -58,8 +58,6 @@ public class ModelTest : TestBase
     [InlineData(Model.ClaudeOpus4_5_20251101)]
     [InlineData(Model.ClaudeSonnet4_5)]
     [InlineData(Model.ClaudeSonnet4_5_20250929)]
-    [InlineData(Model.ClaudeOpus4_1)]
-    [InlineData(Model.ClaudeOpus4_1_20250805)]
     public void SerializationRoundtrip_Works(Model rawValue)
     {
         // force implicit conversion because Theory can't do that for us

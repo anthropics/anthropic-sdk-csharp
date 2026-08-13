@@ -29,6 +29,9 @@ public class BetaDreamTest : TestBase
             ],
             Instructions = "instructions",
             Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+            OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
+                Dreams::BetaOutputBehaviorCreateNewType.CreateNew
+            ),
             Outputs =
             [
                 new()
@@ -68,6 +71,9 @@ public class BetaDreamTest : TestBase
             ID = "x",
             Speed = Dreams::Speed.Standard,
         };
+        Dreams::BetaOutputBehavior expectedOutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
+            Dreams::BetaOutputBehaviorCreateNewType.CreateNew
+        );
         List<Dreams::BetaDreamOutput> expectedOutputs =
         [
             new()
@@ -99,6 +105,7 @@ public class BetaDreamTest : TestBase
         }
         Assert.Equal(expectedInstructions, model.Instructions);
         Assert.Equal(expectedModel, model.Model);
+        Assert.Equal(expectedOutputBehavior, model.OutputBehavior);
         Assert.Equal(expectedOutputs.Count, model.Outputs.Count);
         for (int i = 0; i < expectedOutputs.Count; i++)
         {
@@ -130,6 +137,9 @@ public class BetaDreamTest : TestBase
             ],
             Instructions = "instructions",
             Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+            OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
+                Dreams::BetaOutputBehaviorCreateNewType.CreateNew
+            ),
             Outputs =
             [
                 new()
@@ -179,6 +189,9 @@ public class BetaDreamTest : TestBase
             ],
             Instructions = "instructions",
             Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+            OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
+                Dreams::BetaOutputBehaviorCreateNewType.CreateNew
+            ),
             Outputs =
             [
                 new()
@@ -225,6 +238,9 @@ public class BetaDreamTest : TestBase
             ID = "x",
             Speed = Dreams::Speed.Standard,
         };
+        Dreams::BetaOutputBehavior expectedOutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
+            Dreams::BetaOutputBehaviorCreateNewType.CreateNew
+        );
         List<Dreams::BetaDreamOutput> expectedOutputs =
         [
             new()
@@ -256,6 +272,7 @@ public class BetaDreamTest : TestBase
         }
         Assert.Equal(expectedInstructions, deserialized.Instructions);
         Assert.Equal(expectedModel, deserialized.Model);
+        Assert.Equal(expectedOutputBehavior, deserialized.OutputBehavior);
         Assert.Equal(expectedOutputs.Count, deserialized.Outputs.Count);
         for (int i = 0; i < expectedOutputs.Count; i++)
         {
@@ -287,6 +304,9 @@ public class BetaDreamTest : TestBase
             ],
             Instructions = "instructions",
             Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+            OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
+                Dreams::BetaOutputBehaviorCreateNewType.CreateNew
+            ),
             Outputs =
             [
                 new()
@@ -330,6 +350,9 @@ public class BetaDreamTest : TestBase
             ],
             Instructions = "instructions",
             Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
+            OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
+                Dreams::BetaOutputBehaviorCreateNewType.CreateNew
+            ),
             Outputs =
             [
                 new()

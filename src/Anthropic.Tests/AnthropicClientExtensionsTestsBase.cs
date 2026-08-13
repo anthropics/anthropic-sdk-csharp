@@ -538,6 +538,178 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetResponseAsync_WithPauseTurnStop()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search for something"
+                    }]
+                }],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_pause_turn_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "server_tool_use",
+                    "id": "srvtoolu_01",
+                    "name": "web_search",
+                    "caller": { "type": "direct" },
+                    "input": { "query": "something" }
+                }],
+                "stop_reason": "pause_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 20
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Search for something",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        // ChatFinishReason equality ignores case, so also pin the exact wire value consumers observe.
+        Assert.Equal(new ChatFinishReason("pause_turn"), response.FinishReason);
+        Assert.Equal("pause_turn", response.FinishReason?.Value);
+    }
+
+    [Theory]
+    [InlineData("model_context_window_exceeded", "length")]
+    [InlineData("compaction", "compaction")]
+    [InlineData("some_future_stop_reason", "some_future_stop_reason")]
+    public async Task GetResponseAsync_WithOtherStopReasons(
+        string stopReason,
+        string expectedFinishReason
+    )
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Hello"
+                    }]
+                }],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: $$"""
+            {
+                "id": "msg_stop_reason_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Partial answer"
+                }],
+                "stop_reason": "{{stopReason}}",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 20
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Hello",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        // Length-like reasons map to the built-in value; reasons with no ChatFinishReason equivalent
+        // (including ones this SDK does not know yet) surface verbatim instead of collapsing to Stop.
+        Assert.Equal(expectedFinishReason, response.FinishReason?.Value);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithPauseTurnStop()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Search for something"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_stream_pause_turn_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Searching"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"pause_turn","stop_sequence":null},"usage":{"output_tokens":5}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Search for something",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var finishUpdates = updates.Where(u => u.FinishReason is not null).ToList();
+        Assert.NotEmpty(finishUpdates);
+        Assert.All(
+            finishUpdates,
+            u => Assert.Equal(new ChatFinishReason("pause_turn"), u.FinishReason)
+        );
+        Assert.Equal("pause_turn", updates.ToChatResponse().FinishReason?.Value);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_VerifiesModelIdRequired()
     {
         VerbatimHttpHandler handler = new(
@@ -2061,6 +2233,337 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetResponseAsync_MidConversationSystemMessage_TrailingAfterUser()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-opus-4-8",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Review the process function." }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{ "type": "text", "text": "Looks fine for small inputs." }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Now review the caller." }]
+                    },
+                    {
+                        "role": "system",
+                        "content": [{ "type": "text", "text": "From now on, require type annotations." }]
+                    }
+                ],
+                "max_tokens": 1024,
+                "system": [{ "type": "text", "text": "You are a code reviewer." }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mid_conv_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-opus-4-8",
+                "content": [{ "type": "text", "text": "Reviewing..." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 30, "output_tokens": 10 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-opus-4-8");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.System, "You are a code reviewer."),
+            new(ChatRole.User, "Review the process function."),
+            new(ChatRole.Assistant, "Looks fine for small inputs."),
+            new(ChatRole.User, "Now review the caller."),
+            new(ChatRole.System, "From now on, require type annotations."),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_MidConversationSystemMessage_BetweenUserAndAssistant()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-opus-4-8",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Review this." }]
+                    },
+                    {
+                        "role": "system",
+                        "content": [{ "type": "text", "text": "Be concise." }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{ "type": "text", "text": "Looks good." }]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mid_conv_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-opus-4-8",
+                "content": [{ "type": "text", "text": "Done." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 15, "output_tokens": 5 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-opus-4-8");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Review this."),
+            new(ChatRole.System, "Be concise."),
+            new(ChatRole.Assistant, "Looks good."),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_SystemMessageAfterAssistant_IsSentInPlace()
+    {
+        // A system message that follows an assistant turn is sent through as-is, even though
+        // the API documents it as an invalid position; the API rejects it rather than the SDK
+        // silently rewriting the request.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-opus-4-8",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Hello" }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{ "type": "text", "text": "Hi!" }]
+                    },
+                    {
+                        "role": "system",
+                        "content": [{ "type": "text", "text": "Be concise." }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Tell me about AI" }]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mid_conv_04",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-opus-4-8",
+                "content": [{ "type": "text", "text": "AI is..." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 20, "output_tokens": 10 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-opus-4-8");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Hello"),
+            new(ChatRole.Assistant, "Hi!"),
+            new(ChatRole.System, "Be concise."),
+            new(ChatRole.User, "Tell me about AI"),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ConsecutiveSystemMessages_AreMerged()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-opus-4-8",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Hello" }]
+                    },
+                    {
+                        "role": "system",
+                        "content": [
+                            { "type": "text", "text": "Rule A." },
+                            { "type": "text", "text": "Rule B." }
+                        ]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mid_conv_05",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-opus-4-8",
+                "content": [{ "type": "text", "text": "Understood." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 15, "output_tokens": 5 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-opus-4-8");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Hello"),
+            new(ChatRole.System, "Rule A."),
+            new(ChatRole.System, "Rule B."),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_LeadingSystemMessage_StaysTopLevel()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-opus-4-8",
+                "messages": [{
+                    "role": "user",
+                    "content": [{ "type": "text", "text": "Tell me about AI" }]
+                }],
+                "max_tokens": 1024,
+                "system": [{ "type": "text", "text": "You are helpful." }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mid_conv_06",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-opus-4-8",
+                "content": [{ "type": "text", "text": "AI is..." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 20, "output_tokens": 10 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-opus-4-8");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.System, "You are helpful."),
+            new(ChatRole.User, "Tell me about AI"),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithCacheControlOnMidConversationSystemMessage()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-opus-4-8",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Hello" }]
+                    },
+                    {
+                        "role": "system",
+                        "content": [{
+                            "type": "text",
+                            "text": "Remember the rules.",
+                            "cache_control": { "type": "ephemeral", "ttl": "1h" }
+                        }]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mid_conv_07",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-opus-4-8",
+                "content": [{ "type": "text", "text": "Understood." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 15, "output_tokens": 5 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-opus-4-8");
+
+        var systemContent = new TextContent("Remember the rules.").WithCacheControl(
+            Anthropic.Models.Messages.Ttl.Ttl1h
+        );
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Hello"),
+            new(ChatRole.System, [systemContent]),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_WithMixedContentTypes()
     {
         VerbatimHttpHandler handler = new(
@@ -3058,6 +3561,87 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.NotNull(gammaCall.Arguments);
         Assert.Equal("123", gammaCall.Arguments["id"]?.ToString());
         Assert.Equal("True", gammaCall.Arguments["active"]?.ToString());
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithOverlappingParallelToolBlocks_EmitsOneCompleteFunctionCallPerBlock()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Call overlapping parallel tools"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_overlap_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_a","name":"tool_a","input":{},"caller":{"type":"direct"}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"arg\":\"a\"}"}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":1,"content_block":{"type":"tool_use","id":"toolu_b","name":"tool_b","input":{},"caller":{"type":"direct"}}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":1,"delta":{"type":"input_json_delta","partial_json":"{\"arg\":\"b\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":1}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null},"usage":{"output_tokens":15}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Call overlapping parallel tools",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var allFunctionCalls = updates
+            .SelectMany(u => u.Contents.OfType<FunctionCallContent>())
+            .ToList();
+
+        Assert.Equal(2, allFunctionCalls.Count);
+        Assert.Equal(2, allFunctionCalls.Select(fc => fc.CallId).Distinct().Count());
+
+        var fccA = allFunctionCalls.Single(fc => fc.CallId == "toolu_a");
+        Assert.Equal("tool_a", fccA.Name);
+        Assert.NotNull(fccA.Arguments);
+        Assert.Equal("a", fccA.Arguments["arg"]?.ToString());
+
+        var fccB = allFunctionCalls.Single(fc => fc.CallId == "toolu_b");
+        Assert.Equal("tool_b", fccB.Name);
+        Assert.NotNull(fccB.Arguments);
+        Assert.Equal("b", fccB.Arguments["arg"]?.ToString());
     }
 
     [Fact]
@@ -5227,6 +5811,80 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetStreamingResponseAsync_DeltaWithoutCacheTokens_PreservesStartCacheTokens()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "hello"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            // message_start reports cache tokens, but the terminal message_delta omits the
+            // cache_* fields (as the API typically does). The cache counts from message_start
+            // must be preserved instead of being wiped out by the delta.
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":8,"cache_creation_input_tokens":50,"cache_read_input_tokens":25,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello!"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"input_tokens":8,"output_tokens":12}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "hello",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        Assert.NotEmpty(updates);
+        var usageContent = updates
+            .SelectMany(u => u.Contents.OfType<UsageContent>())
+            .LastOrDefault();
+        Assert.NotNull(usageContent);
+
+        // Cache token counts from message_start survive the cache-less message_delta.
+        Assert.Equal(25, usageContent.Details.CachedInputTokenCount);
+        Assert.NotNull(usageContent.Details.AdditionalCounts);
+        Assert.Equal(50L, usageContent.Details.AdditionalCounts["CacheCreationInputTokens"]);
+
+        // input_tokens (8) + cache_creation (50) + cache_read (25) = 83.
+        Assert.Equal(83, usageContent.Details.InputTokenCount);
+        Assert.Equal(12, usageContent.Details.OutputTokenCount);
+        Assert.Equal(95, usageContent.Details.TotalTokenCount);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_FunctionResult_WithSingleTextContent()
     {
         VerbatimHttpHandler handler = new(
@@ -6840,6 +7498,89 @@ public abstract class AnthropicClientExtensionsTestsBase
 
         ChatResponse response = await chatClient.GetResponseAsync(
             "Use strict tool",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    /// <summary>
+    /// The non-beta <see cref="CacheControlEphemeral"/> — the type <see cref="AIContentCacheExtensions"/>
+    /// hands callers — must produce a tool-level cache breakpoint with both the beta and non-beta clients.
+    /// </summary>
+    [Fact]
+    public async Task GetResponseAsync_WithAIFunctionTool_CacheControl_FlowsThrough()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Use tool"
+                    }]
+                }],
+                "tools": [{
+                    "name": "cached_tool",
+                    "description": "A tool with a cache breakpoint",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "value": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": ["value"],
+                        "additionalProperties": false
+                    },
+                    "cache_control": {
+                        "type": "ephemeral",
+                        "ttl": "1h"
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_cached_tool_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Done"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 30,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var function = AIFunctionFactory.Create(
+            (int value) => value,
+            new AIFunctionFactoryOptions
+            {
+                Name = "cached_tool",
+                Description = "A tool with a cache breakpoint",
+                AdditionalProperties = new Dictionary<string, object?>
+                {
+                    [nameof(Tool.CacheControl)] = new CacheControlEphemeral { Ttl = Ttl.Ttl1h },
+                },
+            }
+        );
+
+        ChatOptions options = new() { Tools = [function] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Use tool",
             options,
             TestContext.Current.CancellationToken
         );

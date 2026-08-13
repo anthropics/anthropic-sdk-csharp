@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
+using Anthropic.Models.Beta.Sessions;
 using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
@@ -261,6 +262,20 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
         }
     }
 
+    /// <summary>
+    /// A hard spend ceiling. The session stops issuing new model requests once the
+    /// tracked list cost reaches `max_list_cost`.
+    /// </summary>
+    public BetaManagedAgentsBudgetLimit? Budget
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaManagedAgentsBudgetLimit>("budget");
+        }
+        init { this._rawData.Set("budget", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -286,6 +301,7 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
         this.Type.Validate();
         _ = this.UpdatedAt;
         _ = this.VaultIds;
+        this.Budget?.Validate();
     }
 
     public BetaManagedAgentsDeployment() { }

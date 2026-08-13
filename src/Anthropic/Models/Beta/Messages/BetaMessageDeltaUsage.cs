@@ -41,6 +41,19 @@ public sealed record class BetaMessageDeltaUsage : JsonModel
     }
 
     /// <summary>
+    /// Outcome of the ``fallback_credit_token`` presented on this request.
+    /// </summary>
+    public required BetaFallbackCreditUsage? FallbackCredit
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaFallbackCreditUsage>("fallback_credit");
+        }
+        init { this._rawData.Set("fallback_credit", value); }
+    }
+
+    /// <summary>
     /// The cumulative number of input tokens which were used.
     /// </summary>
     public required long? InputTokens
@@ -127,6 +140,7 @@ public sealed record class BetaMessageDeltaUsage : JsonModel
     {
         _ = this.CacheCreationInputTokens;
         _ = this.CacheReadInputTokens;
+        this.FallbackCredit?.Validate();
         _ = this.InputTokens;
         foreach (var item in this.Iterations ?? [])
         {

@@ -72,7 +72,7 @@ internal sealed class VertexAdaptationHandler : DelegatingHandler
         );
 
         var requestBuilder = new StringBuilder(
-            $"{requestMessage.RequestUri!.Scheme}://{requestMessage.RequestUri.Host}/v1/projects/{_vertexCredentials.Project}/locations/{_vertexCredentials.Region}/publishers/anthropic/models/"
+            $"{requestMessage.RequestUri!.Scheme}://{requestMessage.RequestUri.Authority}/v1/projects/{_vertexCredentials.Project}/locations/{_vertexCredentials.Region}/publishers/anthropic/models/"
         );
         if (isCountEndpoint)
         {

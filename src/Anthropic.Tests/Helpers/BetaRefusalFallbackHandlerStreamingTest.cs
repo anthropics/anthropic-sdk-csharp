@@ -97,7 +97,7 @@ public class BetaRefusalFallbackHandlerStreamingTest
 
         // Model swapped to the fallback, credit token from A's stop_details set.
         Assert.Equal(FallbackModel, bodyB["model"]?.GetValue<string>());
-        Assert.NotEmpty(bodyB["fallback_credit_token"]!.GetValue<string>());
+        Assert.NotEmpty(bodyB["fallback_credit_token"]!["token"]!.GetValue<string>());
 
         // max_tokens untouched (any render-shaping change would 400).
         Assert.Equal(1024, bodyB["max_tokens"]?.GetValue<int>());
@@ -128,7 +128,7 @@ public class BetaRefusalFallbackHandlerStreamingTest
         Assert.Equal(2, transport.RequestCount);
         for (var index = 0; index < transport.RequestCount; index++)
         {
-            Assert.Equal(["fallback-credit-2026-06-01"], transport.BetaHeaderValues(index));
+            Assert.Equal(["fallback-credit-2026-07-01"], transport.BetaHeaderValues(index));
         }
     }
 
@@ -200,7 +200,7 @@ public class BetaRefusalFallbackHandlerStreamingTest
 
         Assert.Equal(2, transport.RequestCount);
         var bodyB = transport.JsonBodies[1];
-        Assert.Equal("tok_abc", bodyB["fallback_credit_token"]?.GetValue<string>());
+        Assert.Equal("tok_abc", bodyB["fallback_credit_token"]?["token"]!.GetValue<string>());
         Assert.True(JsonNode.DeepEquals(transport.JsonBodies[0]["messages"], bodyB["messages"]));
 
         // The boundary block leads, then the fallback's content follows at shifted indices.
@@ -230,7 +230,7 @@ public class BetaRefusalFallbackHandlerStreamingTest
         await Consume(invoker);
 
         var bodyB = transport.JsonBodies[1];
-        Assert.Equal("tok_abc", bodyB["fallback_credit_token"]?.GetValue<string>());
+        Assert.Equal("tok_abc", bodyB["fallback_credit_token"]?["token"]!.GetValue<string>());
         // No appended assistant turn — identical messages (same-body form).
         Assert.True(JsonNode.DeepEquals(transport.JsonBodies[0]["messages"], bodyB["messages"]));
     }
@@ -695,7 +695,7 @@ public class BetaRefusalFallbackHandlerStreamingTest
         var body2 = transport.JsonBodies[2];
         Assert.Equal(FallbackModel, body1["model"]?.GetValue<string>());
         Assert.Equal(SecondModel, body2["model"]?.GetValue<string>());
-        Assert.Equal("tok_b", body2["fallback_credit_token"]?.GetValue<string>());
+        Assert.Equal("tok_b", body2["fallback_credit_token"]?["token"]?.GetValue<string>());
         Assert.False(
             JsonNode.DeepEquals(body1["fallback_credit_token"], body2["fallback_credit_token"])
         );

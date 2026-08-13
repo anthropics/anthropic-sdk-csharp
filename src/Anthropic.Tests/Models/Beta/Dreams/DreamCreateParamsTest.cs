@@ -25,6 +25,9 @@ public class DreamCreateParamsTest : TestBase
             ],
             Model = "string",
             Instructions = "x",
+            OutputBehavior = new BetaOutputBehaviorCreateNew(
+                BetaOutputBehaviorCreateNewType.CreateNew
+            ),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -38,6 +41,9 @@ public class DreamCreateParamsTest : TestBase
         ];
         Model expectedModel = "string";
         string expectedInstructions = "x";
+        BetaOutputBehavior expectedOutputBehavior = new BetaOutputBehaviorCreateNew(
+            BetaOutputBehaviorCreateNewType.CreateNew
+        );
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -50,6 +56,7 @@ public class DreamCreateParamsTest : TestBase
         }
         Assert.Equal(expectedModel, parameters.Model);
         Assert.Equal(expectedInstructions, parameters.Instructions);
+        Assert.Equal(expectedOutputBehavior, parameters.OutputBehavior);
         Assert.NotNull(parameters.Betas);
         Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
         for (int i = 0; i < expectedBetas.Count; i++)
@@ -75,6 +82,8 @@ public class DreamCreateParamsTest : TestBase
             Instructions = "x",
         };
 
+        Assert.Null(parameters.OutputBehavior);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_behavior"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
@@ -96,9 +105,12 @@ public class DreamCreateParamsTest : TestBase
             Instructions = "x",
 
             // Null should be interpreted as omitted for these properties
+            OutputBehavior = null,
             Betas = null,
         };
 
+        Assert.Null(parameters.OutputBehavior);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_behavior"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
@@ -117,6 +129,9 @@ public class DreamCreateParamsTest : TestBase
                 },
             ],
             Model = "string",
+            OutputBehavior = new BetaOutputBehaviorCreateNew(
+                BetaOutputBehaviorCreateNewType.CreateNew
+            ),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -138,6 +153,9 @@ public class DreamCreateParamsTest : TestBase
                 },
             ],
             Model = "string",
+            OutputBehavior = new BetaOutputBehaviorCreateNew(
+                BetaOutputBehaviorCreateNewType.CreateNew
+            ),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
             Instructions = null,
@@ -211,6 +229,9 @@ public class DreamCreateParamsTest : TestBase
             ],
             Model = "string",
             Instructions = "x",
+            OutputBehavior = new BetaOutputBehaviorCreateNew(
+                BetaOutputBehaviorCreateNewType.CreateNew
+            ),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 

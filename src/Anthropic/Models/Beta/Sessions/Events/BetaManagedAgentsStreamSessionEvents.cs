@@ -68,7 +68,8 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 sessionUpdatedEvent: (x) => x.ID,
                 startEvent: (_) => null,
                 deltaEvent: (_) => null,
-                systemMessageEvent: (x) => x.ID
+                systemMessageEvent: (x) => x.ID,
+                sessionUsageEvent: (x) => x.ID
             );
         }
     }
@@ -113,7 +114,8 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 sessionUpdatedEvent: (x) => x.ProcessedAt,
                 startEvent: (_) => null,
                 deltaEvent: (_) => null,
-                systemMessageEvent: (x) => x.ProcessedAt
+                systemMessageEvent: (x) => x.ProcessedAt,
+                sessionUsageEvent: (x) => x.ProcessedAt
             );
         }
     }
@@ -158,7 +160,8 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 sessionUpdatedEvent: (_) => null,
                 startEvent: (_) => null,
                 deltaEvent: (_) => null,
-                systemMessageEvent: (_) => null
+                systemMessageEvent: (_) => null,
+                sessionUsageEvent: (_) => null
             );
         }
     }
@@ -203,7 +206,8 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 sessionUpdatedEvent: (_) => null,
                 startEvent: (_) => null,
                 deltaEvent: (_) => null,
-                systemMessageEvent: (_) => null
+                systemMessageEvent: (_) => null,
+                sessionUsageEvent: (_) => null
             );
         }
     }
@@ -248,7 +252,8 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 sessionUpdatedEvent: (_) => null,
                 startEvent: (_) => null,
                 deltaEvent: (_) => null,
-                systemMessageEvent: (_) => null
+                systemMessageEvent: (_) => null,
+                sessionUsageEvent: (_) => null
             );
         }
     }
@@ -293,7 +298,8 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 sessionUpdatedEvent: (_) => null,
                 startEvent: (_) => null,
                 deltaEvent: (_) => null,
-                systemMessageEvent: (_) => null
+                systemMessageEvent: (_) => null,
+                sessionUsageEvent: (_) => null
             );
         }
     }
@@ -338,7 +344,8 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 sessionUpdatedEvent: (_) => null,
                 startEvent: (_) => null,
                 deltaEvent: (_) => null,
-                systemMessageEvent: (_) => null
+                systemMessageEvent: (_) => null,
+                sessionUsageEvent: (_) => null
             );
         }
     }
@@ -383,7 +390,8 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 sessionUpdatedEvent: (_) => null,
                 startEvent: (_) => null,
                 deltaEvent: (_) => null,
-                systemMessageEvent: (_) => null
+                systemMessageEvent: (_) => null,
+                sessionUsageEvent: (_) => null
             );
         }
     }
@@ -428,7 +436,54 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 sessionUpdatedEvent: (_) => null,
                 startEvent: (_) => null,
                 deltaEvent: (_) => null,
-                systemMessageEvent: (_) => null
+                systemMessageEvent: (_) => null,
+                sessionUsageEvent: (_) => null
+            );
+        }
+    }
+
+    public BetaManagedAgentsBudgetLimit? Budget
+    {
+        get
+        {
+            return Match<BetaManagedAgentsBudgetLimit?>(
+                userMessageEvent: (_) => null,
+                userInterruptEvent: (_) => null,
+                userToolConfirmationEvent: (_) => null,
+                userCustomToolResultEvent: (_) => null,
+                agentCustomToolUseEvent: (_) => null,
+                agentMessageEvent: (_) => null,
+                agentThinkingEvent: (_) => null,
+                agentMcpToolUseEvent: (_) => null,
+                agentMcpToolResultEvent: (_) => null,
+                agentToolUseEvent: (_) => null,
+                agentToolResultEvent: (_) => null,
+                agentThreadMessageReceivedEvent: (_) => null,
+                agentThreadMessageSentEvent: (_) => null,
+                agentThreadContextCompactedEvent: (_) => null,
+                sessionErrorEvent: (_) => null,
+                sessionStatusRescheduledEvent: (_) => null,
+                sessionStatusRunningEvent: (_) => null,
+                sessionStatusIdleEvent: (_) => null,
+                sessionStatusTerminatedEvent: (_) => null,
+                sessionThreadCreatedEvent: (_) => null,
+                spanOutcomeEvaluationStartEvent: (_) => null,
+                spanOutcomeEvaluationEndEvent: (_) => null,
+                spanModelRequestStartEvent: (_) => null,
+                spanModelRequestEndEvent: (_) => null,
+                spanOutcomeEvaluationOngoingEvent: (_) => null,
+                userDefineOutcomeEvent: (_) => null,
+                sessionDeletedEvent: (_) => null,
+                sessionThreadStatusRunningEvent: (_) => null,
+                sessionThreadStatusIdleEvent: (_) => null,
+                sessionThreadStatusTerminatedEvent: (_) => null,
+                userToolResultEvent: (_) => null,
+                sessionThreadStatusRescheduledEvent: (_) => null,
+                sessionUpdatedEvent: (x) => x.Budget,
+                startEvent: (_) => null,
+                deltaEvent: (_) => null,
+                systemMessageEvent: (_) => null,
+                sessionUsageEvent: (x) => x.Budget
             );
         }
     }
@@ -750,6 +805,15 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
 
     public BetaManagedAgentsStreamSessionEvents(
         BetaManagedAgentsSystemMessageEvent value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsSessionUsageEvent value,
         JsonElement? element = null
     )
     {
@@ -1587,6 +1651,29 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsSessionUsageEvent"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickSessionUsageEvent(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsSessionUsageEvent`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickSessionUsageEvent(
+        [NotNullWhen(true)] out BetaManagedAgentsSessionUsageEvent? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsSessionUsageEvent;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -1635,7 +1722,8 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
     ///     (BetaManagedAgentsSessionUpdatedEvent value) =&gt; {...},
     ///     (BetaManagedAgentsStartEvent value) =&gt; {...},
     ///     (BetaManagedAgentsDeltaEvent value) =&gt; {...},
-    ///     (BetaManagedAgentsSystemMessageEvent value) =&gt; {...}
+    ///     (BetaManagedAgentsSystemMessageEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsSessionUsageEvent value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -1676,7 +1764,8 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
         System::Action<BetaManagedAgentsSessionUpdatedEvent> sessionUpdatedEvent,
         System::Action<BetaManagedAgentsStartEvent> startEvent,
         System::Action<BetaManagedAgentsDeltaEvent> deltaEvent,
-        System::Action<BetaManagedAgentsSystemMessageEvent> systemMessageEvent
+        System::Action<BetaManagedAgentsSystemMessageEvent> systemMessageEvent,
+        System::Action<BetaManagedAgentsSessionUsageEvent> sessionUsageEvent
     )
     {
         switch (this.Value)
@@ -1789,6 +1878,9 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
             case BetaManagedAgentsSystemMessageEvent value:
                 systemMessageEvent(value);
                 break;
+            case BetaManagedAgentsSessionUsageEvent value:
+                sessionUsageEvent(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of BetaManagedAgentsStreamSessionEvents"
@@ -1846,7 +1938,8 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
     ///     (BetaManagedAgentsSessionUpdatedEvent value) =&gt; {...},
     ///     (BetaManagedAgentsStartEvent value) =&gt; {...},
     ///     (BetaManagedAgentsDeltaEvent value) =&gt; {...},
-    ///     (BetaManagedAgentsSystemMessageEvent value) =&gt; {...}
+    ///     (BetaManagedAgentsSystemMessageEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsSessionUsageEvent value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -1914,7 +2007,8 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
         System::Func<BetaManagedAgentsSessionUpdatedEvent, T> sessionUpdatedEvent,
         System::Func<BetaManagedAgentsStartEvent, T> startEvent,
         System::Func<BetaManagedAgentsDeltaEvent, T> deltaEvent,
-        System::Func<BetaManagedAgentsSystemMessageEvent, T> systemMessageEvent
+        System::Func<BetaManagedAgentsSystemMessageEvent, T> systemMessageEvent,
+        System::Func<BetaManagedAgentsSessionUsageEvent, T> sessionUsageEvent
     )
     {
         return this.Value switch
@@ -1972,6 +2066,7 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
             BetaManagedAgentsStartEvent value => startEvent(value),
             BetaManagedAgentsDeltaEvent value => deltaEvent(value),
             BetaManagedAgentsSystemMessageEvent value => systemMessageEvent(value),
+            BetaManagedAgentsSessionUsageEvent value => sessionUsageEvent(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsStreamSessionEvents"
             ),
@@ -2122,6 +2217,10 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
         BetaManagedAgentsSystemMessageEvent value
     ) => new(value);
 
+    public static implicit operator BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsSessionUsageEvent value
+    ) => new(value);
+
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -2176,7 +2275,8 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
             (sessionUpdatedEvent) => sessionUpdatedEvent.Validate(),
             (startEvent) => startEvent.Validate(),
             (deltaEvent) => deltaEvent.Validate(),
-            (systemMessageEvent) => systemMessageEvent.Validate()
+            (systemMessageEvent) => systemMessageEvent.Validate(),
+            (sessionUsageEvent) => sessionUsageEvent.Validate()
         );
     }
 
@@ -2236,6 +2336,7 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
             BetaManagedAgentsStartEvent _ => 33,
             BetaManagedAgentsDeltaEvent _ => 34,
             BetaManagedAgentsSystemMessageEvent _ => 35,
+            BetaManagedAgentsSessionUsageEvent _ => 36,
             _ => -1,
         };
     }
@@ -3002,6 +3103,27 @@ sealed class BetaManagedAgentsStreamSessionEventsConverter
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaManagedAgentsSystemMessageEvent>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "session.usage":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsSessionUsageEvent>(
                             element,
                             options
                         );

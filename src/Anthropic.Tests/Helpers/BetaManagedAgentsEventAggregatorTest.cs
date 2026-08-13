@@ -37,6 +37,12 @@ public class BetaManagedAgentsEventAggregatorTest
         );
     }
 
+    static string TextOf(Events::BetaManagedAgentsAgentMessageEventContent content)
+    {
+        Assert.True(content.TryPickBetaManagedAgentsTextBlock(out var textBlock));
+        return textBlock.Text;
+    }
+
     static BetaManagedAgentsEventAggregator Aggregate(
         params Events::BetaManagedAgentsStreamSessionEvents[] events
     )
@@ -163,9 +169,23 @@ public class BetaManagedAgentsEventAggregatorTest
 
         var message = Assert.Contains("evt_1", aggregator.AgentMessages);
         Assert.Equal(2, message.Content.Count);
-        Assert.Equal("Hello", message.Content[0].Text);
-        Assert.Equal("World", message.Content[1].Text);
+        Assert.Equal("Hello", TextOf(message.Content[0]));
+        Assert.Equal("World", TextOf(message.Content[1]));
         Assert.Equal("HelloWorld", aggregator.GetAgentMessageText("evt_1"));
+    }
+
+    [Fact]
+    public void RedactedBlocksContributeNoText()
+    {
+        var aggregator = Aggregate(
+            SseEvent(
+                """{"type":"agent.message","id":"evt_1","processed_at":"2024-01-01T00:00:00Z","content":[{"type":"text","text":"before"},{"type":"redacted"},{"type":"text","text":"after"}]}"""
+            )
+        );
+
+        var message = Assert.Contains("evt_1", aggregator.AgentMessages);
+        Assert.Equal(3, message.Content.Count);
+        Assert.Equal("beforeafter", aggregator.GetAgentMessageText("evt_1"));
     }
 
     [Fact]

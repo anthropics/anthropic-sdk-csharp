@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Agents;
 using Threads = Anthropic.Models.Beta.Sessions.Threads;
 
@@ -19,7 +20,7 @@ public class ThreadListPageResponseTest : TestBase
                 new()
                 {
                     ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
-                    Agent = new()
+                    Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -38,6 +39,7 @@ public class ThreadListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -96,6 +98,7 @@ public class ThreadListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -103,7 +106,9 @@ public class ThreadListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                 },
             ],
@@ -115,7 +120,7 @@ public class ThreadListPageResponseTest : TestBase
             new()
             {
                 ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
-                Agent = new()
+                Agent = new BetaManagedAgentsSessionThreadAgent()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
@@ -132,6 +137,7 @@ public class ThreadListPageResponseTest : TestBase
                     {
                         ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
@@ -189,6 +195,7 @@ public class ThreadListPageResponseTest : TestBase
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Usage = new()
                 {
+                    ActiveSeconds = 0,
                     CacheCreation = new()
                     {
                         Ephemeral1hInputTokens = 0,
@@ -196,7 +203,9 @@ public class ThreadListPageResponseTest : TestBase
                     },
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
+                    ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                     OutputTokens = 0,
+                    ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                 },
             },
         ];
@@ -221,7 +230,7 @@ public class ThreadListPageResponseTest : TestBase
                 new()
                 {
                     ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
-                    Agent = new()
+                    Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -240,6 +249,7 @@ public class ThreadListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -298,6 +308,7 @@ public class ThreadListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -305,7 +316,9 @@ public class ThreadListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                 },
             ],
@@ -331,7 +344,7 @@ public class ThreadListPageResponseTest : TestBase
                 new()
                 {
                     ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
-                    Agent = new()
+                    Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -350,6 +363,7 @@ public class ThreadListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -408,6 +422,7 @@ public class ThreadListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -415,7 +430,9 @@ public class ThreadListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                 },
             ],
@@ -434,7 +451,7 @@ public class ThreadListPageResponseTest : TestBase
             new()
             {
                 ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
-                Agent = new()
+                Agent = new BetaManagedAgentsSessionThreadAgent()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
@@ -451,6 +468,7 @@ public class ThreadListPageResponseTest : TestBase
                     {
                         ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
@@ -508,6 +526,7 @@ public class ThreadListPageResponseTest : TestBase
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Usage = new()
                 {
+                    ActiveSeconds = 0,
                     CacheCreation = new()
                     {
                         Ephemeral1hInputTokens = 0,
@@ -515,7 +534,9 @@ public class ThreadListPageResponseTest : TestBase
                     },
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
+                    ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                     OutputTokens = 0,
+                    ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                 },
             },
         ];
@@ -540,7 +561,7 @@ public class ThreadListPageResponseTest : TestBase
                 new()
                 {
                     ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
-                    Agent = new()
+                    Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -559,6 +580,7 @@ public class ThreadListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -617,6 +639,7 @@ public class ThreadListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -624,7 +647,9 @@ public class ThreadListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                 },
             ],
@@ -696,7 +721,7 @@ public class ThreadListPageResponseTest : TestBase
                 new()
                 {
                     ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
-                    Agent = new()
+                    Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -715,6 +740,7 @@ public class ThreadListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -773,6 +799,7 @@ public class ThreadListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -780,7 +807,9 @@ public class ThreadListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                 },
             ],
@@ -800,7 +829,7 @@ public class ThreadListPageResponseTest : TestBase
                 new()
                 {
                     ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
-                    Agent = new()
+                    Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -819,6 +848,7 @@ public class ThreadListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -877,6 +907,7 @@ public class ThreadListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -884,7 +915,9 @@ public class ThreadListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                 },
             ],
@@ -903,7 +936,7 @@ public class ThreadListPageResponseTest : TestBase
                 new()
                 {
                     ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
-                    Agent = new()
+                    Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -922,6 +955,7 @@ public class ThreadListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -980,6 +1014,7 @@ public class ThreadListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -987,7 +1022,9 @@ public class ThreadListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                 },
             ],
@@ -1009,7 +1046,7 @@ public class ThreadListPageResponseTest : TestBase
                 new()
                 {
                     ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
-                    Agent = new()
+                    Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -1028,6 +1065,7 @@ public class ThreadListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -1086,6 +1124,7 @@ public class ThreadListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -1093,7 +1132,9 @@ public class ThreadListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                 },
             ],
@@ -1114,7 +1155,7 @@ public class ThreadListPageResponseTest : TestBase
                 new()
                 {
                     ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
-                    Agent = new()
+                    Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
@@ -1133,6 +1174,7 @@ public class ThreadListPageResponseTest : TestBase
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
+                            InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
                         Name = "Researcher",
@@ -1191,6 +1233,7 @@ public class ThreadListPageResponseTest : TestBase
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
+                        ActiveSeconds = 0,
                         CacheCreation = new()
                         {
                             Ephemeral1hInputTokens = 0,
@@ -1198,7 +1241,9 @@ public class ThreadListPageResponseTest : TestBase
                         },
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
                         OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
                 },
             ],

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 using Anthropic.Services;
@@ -51,8 +52,12 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         var stopSequence = startMessage.Message.StopSequence;
         var stopReason = startMessage.Message.StopReason;
         var stopDetails = startMessage.Message.StopDetails;
+        var container = startMessage.Message.Container;
         var usage = startMessage.Message.Usage;
 
+        // message_delta usage counters are cumulative whole-message totals, so overwrite
+        // rather than add; the optional ones are omitted when they don't apply and must
+        // then leave the message_start values in place.
         if (messages.TryGetValue(FilterResult.Delta, out var deltaEvents))
         {
             var deltas = deltaEvents.Select(e => e.Value).OfType<RawMessageDeltaEvent>();
@@ -61,6 +66,13 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
                 stopReason = delta.Delta.StopReason;
                 stopSequence = delta.Delta.StopSequence;
                 stopDetails = delta.Delta.StopDetails;
+
+                // The container only ever arrives on message_delta, and only when a
+                // container ran, so keep whatever we have when the key is absent.
+                if (delta.Delta.Container != null)
+                {
+                    container = delta.Delta.Container;
+                }
 
                 usage = usage with { OutputTokens = delta.Usage.OutputTokens };
                 if (delta.Usage.InputTokens != null)
@@ -82,15 +94,19 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
                 {
                     usage = usage with { ServerToolUse = delta.Usage.ServerToolUse };
                 }
+                if (delta.Usage.OutputTokensDetails != null)
+                {
+                    usage = usage with { OutputTokensDetails = delta.Usage.OutputTokensDetails };
+                }
             }
         }
 
-        return new()
+        // Start from the message_start message so fields that are never re-sent
+        // (service_tier, cache_creation, inference_geo, ...) survive untouched.
+        return startMessage.Message with
         {
-            Container = null,
+            Container = container,
             Content = [.. contentBlocks],
-            ID = startMessage.Message.ID,
-            Model = startMessage.Message.Model,
             StopDetails = stopDetails,
             StopReason = stopReason,
             StopSequence = stopSequence,
@@ -103,8 +119,6 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         IEnumerable<RawContentBlockDelta> blockContents
     )
     {
-        ContentBlock? resultBlock = null;
-
         string StringJoinHelper<T>(
             string source,
             IEnumerable<T> sources,
@@ -114,86 +128,61 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             return string.Join(null, (string[])[source, .. sources.Select(expression)]);
         }
 
-        void As<TDelta>(Func<IEnumerable<TDelta>, ContentBlock> factory)
-        {
-            // those blocks are delta variants not the source block
-            // e.g TextBlock and TextDelta
-            resultBlock = factory([.. blockContents.Select(e => e.Value).OfType<TDelta>()]);
-        }
-
         IEnumerable<TDelta> Of<TDelta>()
         {
             return blockContents.Select(e => e.Value).OfType<TDelta>();
         }
 
-        void Single<T>(T item)
+        IEnumerable<string> PartialJsons()
         {
-            resultBlock =
-                (blockContents.Select(e => e.Value).OfType<T>().Single() as ContentBlock)
-                ?? throw new AnthropicInvalidDataException(
-                    "Could not convert block to content block"
-                );
+            return Of<InputJsonDelta>().Select(d => d.PartialJson);
         }
 
-        contentBlock.Switch(
-            textBlock =>
-                As<TextDelta>(blocks => new TextBlock()
-                {
-                    Text = StringJoinHelper(textBlock.Text, blocks, e => e.Text),
-                    Citations =
-                    [
-                        .. (textBlock.Citations ?? []),
-                        .. Of<CitationsDelta>()
-                            .Select(e =>
-                                e.Citation.Match<TextCitation>(
-                                    f => f,
-                                    f => f,
-                                    f => f,
-                                    f => f,
-                                    f => f
-                                )
-                            ),
-                    ],
-                }),
-            thinkingBlock =>
-                As<ThinkingDelta>(blocks => new ThinkingBlock()
-                {
-                    Signature = StringJoinHelper(
-                        thinkingBlock.Signature,
-                        Of<SignatureDelta>(),
-                        e => e.Signature
-                    ),
-                    Thinking = StringJoinHelper(thinkingBlock.Thinking, blocks, e => e.Thinking),
-                }),
-            e => Single(e),
-            toolUseBlock =>
+        // Only the variants below carry deltas. Every other block type — including ones this SDK
+        // version doesn't model yet — arrives complete in its content_block_start event, so its
+        // wire JSON passes through unchanged.
+        return contentBlock.Value switch
+        {
+            TextBlock textBlock => new TextBlock()
             {
-                // Reconstruct the tool_use input from input_json_delta events, overriding only
-                // "input" so the other fields the start block carried (id, name, and any optional
-                // ones such as caller, which the wire omits here) survive untouched.
-                var mergedJson = string.Concat(Of<InputJsonDelta>().Select(d => d.PartialJson));
-                if (string.IsNullOrEmpty(mergedJson))
-                {
-                    resultBlock = toolUseBlock;
-                }
-                else
-                {
-                    var raw = toolUseBlock.RawData.ToDictionary(kv => kv.Key, kv => kv.Value);
-                    raw["input"] = JsonSerializer.Deserialize<JsonElement>(mergedJson);
-                    resultBlock = ToolUseBlock.FromRawUnchecked(raw);
-                }
+                Text = StringJoinHelper(textBlock.Text, Of<TextDelta>(), e => e.Text),
+                Citations =
+                [
+                    .. (textBlock.Citations ?? []),
+                    .. Of<CitationsDelta>()
+                        .Select(e =>
+                            e.Citation.Match<TextCitation>(f => f, f => f, f => f, f => f, f => f)
+                        ),
+                ],
             },
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e)
-        );
-
-        return resultBlock ?? throw new AnthropicInvalidDataException("Missing result block");
+            ThinkingBlock thinkingBlock => new ThinkingBlock()
+            {
+                Signature = StringJoinHelper(
+                    thinkingBlock.Signature,
+                    Of<SignatureDelta>(),
+                    e => e.Signature
+                ),
+                Thinking = StringJoinHelper(
+                    thinkingBlock.Thinking,
+                    Of<ThinkingDelta>(),
+                    e => e.Thinking
+                ),
+            },
+            ToolUseBlock block => StreamedToolInput.WithMergedInput(
+                block,
+                PartialJsons(),
+                ToolUseBlock.FromRawUnchecked
+            ),
+            ServerToolUseBlock block => StreamedToolInput.WithMergedInput(
+                block,
+                PartialJsons(),
+                ServerToolUseBlock.FromRawUnchecked
+            ),
+            _ => JsonSerializer.Deserialize<ContentBlock>(
+                contentBlock.Json,
+                ModelBase.SerializerOptions
+            ) ?? throw new AnthropicInvalidDataException("content_block cannot be null"),
+        };
     }
 
     protected override FilterResult Filter(RawMessageStreamEvent message) =>

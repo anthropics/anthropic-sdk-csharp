@@ -14,7 +14,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
         {
             Content =
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -34,9 +34,9 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        List<BetaTextBlockParam> expectedContent =
+        List<BetaMidConversationSystemBlockParamContent> expectedContent =
         [
-            new()
+            new BetaTextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -72,7 +72,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
         {
             Content =
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -108,7 +108,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
         {
             Content =
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -135,9 +135,9 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        List<BetaTextBlockParam> expectedContent =
+        List<BetaMidConversationSystemBlockParamContent> expectedContent =
         [
-            new()
+            new BetaTextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -173,7 +173,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
         {
             Content =
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -203,7 +203,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
         {
             Content =
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -233,7 +233,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
         {
             Content =
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -262,7 +262,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
         {
             Content =
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -294,7 +294,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
         {
             Content =
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -325,7 +325,7 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
         {
             Content =
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { Ttl = Ttl.Ttl5m },
@@ -348,5 +348,114 @@ public class BetaMidConversationSystemBlockParamTest : TestBase
         BetaMidConversationSystemBlockParam copied = new(model);
 
         Assert.Equal(model, copied);
+    }
+}
+
+public class BetaMidConversationSystemBlockParamContentTest : TestBase
+{
+    [Fact]
+    public void BetaTextBlockParamValidationWorks()
+    {
+        BetaMidConversationSystemBlockParamContent value = new BetaTextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new BetaCitationCharLocationParam()
+                {
+                    CitedText = "The grass is green. The sky is blue.",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
+                },
+            ],
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaRequestToolAdditionBlockValidationWorks()
+    {
+        BetaMidConversationSystemBlockParamContent value = new BetaRequestToolAdditionBlock()
+        {
+            Tool = new BetaToolChangeToolReference("name"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaRequestToolRemovalBlockValidationWorks()
+    {
+        BetaMidConversationSystemBlockParamContent value = new BetaRequestToolRemovalBlock()
+        {
+            Tool = new BetaToolChangeToolReference("name"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaTextBlockParamSerializationRoundtripWorks()
+    {
+        BetaMidConversationSystemBlockParamContent value = new BetaTextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new BetaCitationCharLocationParam()
+                {
+                    CitedText = "The grass is green. The sky is blue.",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
+                },
+            ],
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMidConversationSystemBlockParamContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaRequestToolAdditionBlockSerializationRoundtripWorks()
+    {
+        BetaMidConversationSystemBlockParamContent value = new BetaRequestToolAdditionBlock()
+        {
+            Tool = new BetaToolChangeToolReference("name"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMidConversationSystemBlockParamContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaRequestToolRemovalBlockSerializationRoundtripWorks()
+    {
+        BetaMidConversationSystemBlockParamContent value = new BetaRequestToolRemovalBlock()
+        {
+            Tool = new BetaToolChangeToolReference("name"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMidConversationSystemBlockParamContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

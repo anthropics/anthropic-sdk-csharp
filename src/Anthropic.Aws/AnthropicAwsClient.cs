@@ -59,6 +59,12 @@ public sealed class AnthropicAwsClient : AnthropicClient
 
         bool useSigV4;
 
+        // A first-party bearer token is never an auth source for the AWS gateway.
+        // Suppress the base client's ANTHROPIC_AUTH_TOKEN env fallback so an ambient
+        // token is never sent as an Authorization header alongside SigV4 or the
+        // gateway API key.
+        AuthToken = null;
+
         if (opts.SkipAuth)
         {
             useSigV4 = false;

@@ -19,6 +19,11 @@ public class DeploymentUpdateParamsTest : TestBase
         {
             DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Agent = "string",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Description = "description",
             EnvironmentID = "environment_id",
             InitialEvents =
@@ -59,6 +64,11 @@ public class DeploymentUpdateParamsTest : TestBase
 
         string expectedDeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai";
         DeploymentUpdateParamsAgent expectedAgent = "string";
+        Sessions::BetaManagedAgentsBudgetLimit expectedBudget = new()
+        {
+            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+            Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
+        };
         string expectedDescription = "description";
         string expectedEnvironmentID = "environment_id";
         List<BetaManagedAgentsDeploymentInitialEventParams> expectedInitialEvents =
@@ -101,6 +111,7 @@ public class DeploymentUpdateParamsTest : TestBase
 
         Assert.Equal(expectedDeploymentID, parameters.DeploymentID);
         Assert.Equal(expectedAgent, parameters.Agent);
+        Assert.Equal(expectedBudget, parameters.Budget);
         Assert.Equal(expectedDescription, parameters.Description);
         Assert.Equal(expectedEnvironmentID, parameters.EnvironmentID);
         Assert.NotNull(parameters.InitialEvents);
@@ -145,6 +156,11 @@ public class DeploymentUpdateParamsTest : TestBase
         var parameters = new DeploymentUpdateParams
         {
             DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Description = "description",
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Resources =
@@ -183,6 +199,11 @@ public class DeploymentUpdateParamsTest : TestBase
         var parameters = new DeploymentUpdateParams
         {
             DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Description = "description",
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Resources =
@@ -249,6 +270,8 @@ public class DeploymentUpdateParamsTest : TestBase
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
+        Assert.Null(parameters.Budget);
+        Assert.False(parameters.RawBodyData.ContainsKey("budget"));
         Assert.Null(parameters.Description);
         Assert.False(parameters.RawBodyData.ContainsKey("description"));
         Assert.Null(parameters.Metadata);
@@ -287,6 +310,7 @@ public class DeploymentUpdateParamsTest : TestBase
             Name = "name",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
+            Budget = null,
             Description = null,
             Metadata = null,
             Resources = null,
@@ -294,6 +318,8 @@ public class DeploymentUpdateParamsTest : TestBase
             VaultIds = null,
         };
 
+        Assert.Null(parameters.Budget);
+        Assert.True(parameters.RawBodyData.ContainsKey("budget"));
         Assert.Null(parameters.Description);
         Assert.True(parameters.RawBodyData.ContainsKey("description"));
         Assert.Null(parameters.Metadata);
@@ -351,6 +377,11 @@ public class DeploymentUpdateParamsTest : TestBase
         {
             DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Agent = "string",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
+            },
             Description = "description",
             EnvironmentID = "environment_id",
             InitialEvents =

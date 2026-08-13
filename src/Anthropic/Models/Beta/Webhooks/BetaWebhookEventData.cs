@@ -72,7 +72,8 @@ public record class BetaWebhookEventData : ModelBase
                 environmentDeleted: (x) => x.ID,
                 memoryStoreCreated: (x) => x.ID,
                 memoryStoreArchived: (x) => x.ID,
-                memoryStoreDeleted: (x) => x.ID
+                memoryStoreDeleted: (x) => x.ID,
+                sessionBudgetReached: (x) => x.ID
             );
         }
     }
@@ -124,7 +125,8 @@ public record class BetaWebhookEventData : ModelBase
                 environmentDeleted: (x) => x.OrganizationID,
                 memoryStoreCreated: (x) => x.OrganizationID,
                 memoryStoreArchived: (x) => x.OrganizationID,
-                memoryStoreDeleted: (x) => x.OrganizationID
+                memoryStoreDeleted: (x) => x.OrganizationID,
+                sessionBudgetReached: (x) => x.OrganizationID
             );
         }
     }
@@ -176,7 +178,8 @@ public record class BetaWebhookEventData : ModelBase
                 environmentDeleted: (x) => x.Type,
                 memoryStoreCreated: (x) => x.Type,
                 memoryStoreArchived: (x) => x.Type,
-                memoryStoreDeleted: (x) => x.Type
+                memoryStoreDeleted: (x) => x.Type,
+                sessionBudgetReached: (x) => x.Type
             );
         }
     }
@@ -228,7 +231,8 @@ public record class BetaWebhookEventData : ModelBase
                 environmentDeleted: (x) => x.WorkspaceID,
                 memoryStoreCreated: (x) => x.WorkspaceID,
                 memoryStoreArchived: (x) => x.WorkspaceID,
-                memoryStoreDeleted: (x) => x.WorkspaceID
+                memoryStoreDeleted: (x) => x.WorkspaceID,
+                sessionBudgetReached: (x) => x.WorkspaceID
             );
         }
     }
@@ -280,7 +284,8 @@ public record class BetaWebhookEventData : ModelBase
                 environmentDeleted: (_) => null,
                 memoryStoreCreated: (_) => null,
                 memoryStoreArchived: (_) => null,
-                memoryStoreDeleted: (_) => null
+                memoryStoreDeleted: (_) => null,
+                sessionBudgetReached: (_) => null
             );
         }
     }
@@ -332,7 +337,8 @@ public record class BetaWebhookEventData : ModelBase
                 environmentDeleted: (_) => null,
                 memoryStoreCreated: (_) => null,
                 memoryStoreArchived: (_) => null,
-                memoryStoreDeleted: (_) => null
+                memoryStoreDeleted: (_) => null,
+                sessionBudgetReached: (_) => null
             );
         }
     }
@@ -699,6 +705,15 @@ public record class BetaWebhookEventData : ModelBase
 
     public BetaWebhookEventData(
         BetaWebhookMemoryStoreDeletedEventData value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaWebhookEventData(
+        BetaWebhookSessionBudgetReachedEventData value,
         JsonElement? element = null
     )
     {
@@ -1689,6 +1704,29 @@ public record class BetaWebhookEventData : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebhookSessionBudgetReachedEventData"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickSessionBudgetReached(out var value)) {
+    ///     // `value` is of type `BetaWebhookSessionBudgetReachedEventData`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickSessionBudgetReached(
+        [NotNullWhen(true)] out BetaWebhookSessionBudgetReachedEventData? value
+    )
+    {
+        value = this.Value as BetaWebhookSessionBudgetReachedEventData;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -1744,7 +1782,8 @@ public record class BetaWebhookEventData : ModelBase
     ///     (BetaWebhookEnvironmentDeletedEventData value) =&gt; {...},
     ///     (BetaWebhookMemoryStoreCreatedEventData value) =&gt; {...},
     ///     (BetaWebhookMemoryStoreArchivedEventData value) =&gt; {...},
-    ///     (BetaWebhookMemoryStoreDeletedEventData value) =&gt; {...}
+    ///     (BetaWebhookMemoryStoreDeletedEventData value) =&gt; {...},
+    ///     (BetaWebhookSessionBudgetReachedEventData value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -1792,7 +1831,8 @@ public record class BetaWebhookEventData : ModelBase
         Action<BetaWebhookEnvironmentDeletedEventData> environmentDeleted,
         Action<BetaWebhookMemoryStoreCreatedEventData> memoryStoreCreated,
         Action<BetaWebhookMemoryStoreArchivedEventData> memoryStoreArchived,
-        Action<BetaWebhookMemoryStoreDeletedEventData> memoryStoreDeleted
+        Action<BetaWebhookMemoryStoreDeletedEventData> memoryStoreDeleted,
+        Action<BetaWebhookSessionBudgetReachedEventData> sessionBudgetReached
     )
     {
         switch (this.Value)
@@ -1926,6 +1966,9 @@ public record class BetaWebhookEventData : ModelBase
             case BetaWebhookMemoryStoreDeletedEventData value:
                 memoryStoreDeleted(value);
                 break;
+            case BetaWebhookSessionBudgetReachedEventData value:
+                sessionBudgetReached(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of BetaWebhookEventData"
@@ -1990,7 +2033,8 @@ public record class BetaWebhookEventData : ModelBase
     ///     (BetaWebhookEnvironmentDeletedEventData value) =&gt; {...},
     ///     (BetaWebhookMemoryStoreCreatedEventData value) =&gt; {...},
     ///     (BetaWebhookMemoryStoreArchivedEventData value) =&gt; {...},
-    ///     (BetaWebhookMemoryStoreDeletedEventData value) =&gt; {...}
+    ///     (BetaWebhookMemoryStoreDeletedEventData value) =&gt; {...},
+    ///     (BetaWebhookSessionBudgetReachedEventData value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -2038,7 +2082,8 @@ public record class BetaWebhookEventData : ModelBase
         Func<BetaWebhookEnvironmentDeletedEventData, T> environmentDeleted,
         Func<BetaWebhookMemoryStoreCreatedEventData, T> memoryStoreCreated,
         Func<BetaWebhookMemoryStoreArchivedEventData, T> memoryStoreArchived,
-        Func<BetaWebhookMemoryStoreDeletedEventData, T> memoryStoreDeleted
+        Func<BetaWebhookMemoryStoreDeletedEventData, T> memoryStoreDeleted,
+        Func<BetaWebhookSessionBudgetReachedEventData, T> sessionBudgetReached
     )
     {
         return this.Value switch
@@ -2089,6 +2134,7 @@ public record class BetaWebhookEventData : ModelBase
             BetaWebhookMemoryStoreCreatedEventData value => memoryStoreCreated(value),
             BetaWebhookMemoryStoreArchivedEventData value => memoryStoreArchived(value),
             BetaWebhookMemoryStoreDeletedEventData value => memoryStoreDeleted(value),
+            BetaWebhookSessionBudgetReachedEventData value => sessionBudgetReached(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaWebhookEventData"
             ),
@@ -2259,6 +2305,10 @@ public record class BetaWebhookEventData : ModelBase
         BetaWebhookMemoryStoreDeletedEventData value
     ) => new(value);
 
+    public static implicit operator BetaWebhookEventData(
+        BetaWebhookSessionBudgetReachedEventData value
+    ) => new(value);
+
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -2320,7 +2370,8 @@ public record class BetaWebhookEventData : ModelBase
             (environmentDeleted) => environmentDeleted.Validate(),
             (memoryStoreCreated) => memoryStoreCreated.Validate(),
             (memoryStoreArchived) => memoryStoreArchived.Validate(),
-            (memoryStoreDeleted) => memoryStoreDeleted.Validate()
+            (memoryStoreDeleted) => memoryStoreDeleted.Validate(),
+            (sessionBudgetReached) => sessionBudgetReached.Validate()
         );
     }
 
@@ -2387,6 +2438,7 @@ public record class BetaWebhookEventData : ModelBase
             BetaWebhookMemoryStoreCreatedEventData _ => 40,
             BetaWebhookMemoryStoreArchivedEventData _ => 41,
             BetaWebhookMemoryStoreDeletedEventData _ => 42,
+            BetaWebhookSessionBudgetReachedEventData _ => 43,
             _ => -1,
         };
     }
@@ -3295,6 +3347,27 @@ sealed class BetaWebhookEventDataConverter : JsonConverter<BetaWebhookEventData>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaWebhookMemoryStoreDeletedEventData>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "session.budget_reached":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaWebhookSessionBudgetReachedEventData>(
                             element,
                             options
                         );

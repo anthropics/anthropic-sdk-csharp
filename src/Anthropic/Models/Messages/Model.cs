@@ -30,12 +30,17 @@ public enum Model
     ClaudeMythos5,
 
     /// <summary>
-    /// Frontier intelligence for long-running agents and coding
+    /// Powerful intelligence for long-running agents and coding
+    /// </summary>
+    ClaudeOpus5,
+
+    /// <summary>
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_8,
 
     /// <summary>
-    /// Frontier intelligence for long-running agents and coding
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_7,
 
@@ -48,7 +53,7 @@ public enum Model
     ClaudeMythosPreview,
 
     /// <summary>
-    /// Frontier intelligence for long-running agents and coding
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_6,
 
@@ -68,12 +73,12 @@ public enum Model
     ClaudeHaiku4_5_20251001,
 
     /// <summary>
-    /// Premium model combining maximum intelligence with practical performance
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_5,
 
     /// <summary>
-    /// Premium model combining maximum intelligence with practical performance
+    /// Powerful intelligence for long-running agents and coding
     /// </summary>
     ClaudeOpus4_5_20251101,
 
@@ -86,22 +91,6 @@ public enum Model
     /// High-performance model for agents and coding
     /// </summary>
     ClaudeSonnet4_5_20250929,
-
-    /// <summary>
-    /// Exceptional model for specialized complex tasks
-    /// </summary>
-    [System::Obsolete(
-        "Will reach end-of-life on August 5, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
-    )]
-    ClaudeOpus4_1,
-
-    /// <summary>
-    /// Exceptional model for specialized complex tasks
-    /// </summary>
-    [System::Obsolete(
-        "Will reach end-of-life on August 5, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
-    )]
-    ClaudeOpus4_1_20250805,
 }
 
 sealed class ModelConverter : JsonConverter<Model>
@@ -117,6 +106,7 @@ sealed class ModelConverter : JsonConverter<Model>
             "claude-sonnet-5" => Model.ClaudeSonnet5,
             "claude-fable-5" => Model.ClaudeFable5,
             "claude-mythos-5" => Model.ClaudeMythos5,
+            "claude-opus-5" => Model.ClaudeOpus5,
             "claude-opus-4-8" => Model.ClaudeOpus4_8,
             "claude-opus-4-7" => Model.ClaudeOpus4_7,
             "claude-mythos-preview" => Model.ClaudeMythosPreview,
@@ -128,8 +118,6 @@ sealed class ModelConverter : JsonConverter<Model>
             "claude-opus-4-5-20251101" => Model.ClaudeOpus4_5_20251101,
             "claude-sonnet-4-5" => Model.ClaudeSonnet4_5,
             "claude-sonnet-4-5-20250929" => Model.ClaudeSonnet4_5_20250929,
-            "claude-opus-4-1" => Model.ClaudeOpus4_1,
-            "claude-opus-4-1-20250805" => Model.ClaudeOpus4_1_20250805,
             _ => (Model)(-1),
         };
     }
@@ -143,6 +131,7 @@ sealed class ModelConverter : JsonConverter<Model>
                 Model.ClaudeSonnet5 => "claude-sonnet-5",
                 Model.ClaudeFable5 => "claude-fable-5",
                 Model.ClaudeMythos5 => "claude-mythos-5",
+                Model.ClaudeOpus5 => "claude-opus-5",
                 Model.ClaudeOpus4_8 => "claude-opus-4-8",
                 Model.ClaudeOpus4_7 => "claude-opus-4-7",
                 Model.ClaudeMythosPreview => "claude-mythos-preview",
@@ -154,8 +143,6 @@ sealed class ModelConverter : JsonConverter<Model>
                 Model.ClaudeOpus4_5_20251101 => "claude-opus-4-5-20251101",
                 Model.ClaudeSonnet4_5 => "claude-sonnet-4-5",
                 Model.ClaudeSonnet4_5_20250929 => "claude-sonnet-4-5-20250929",
-                Model.ClaudeOpus4_1 => "claude-opus-4-1",
-                Model.ClaudeOpus4_1_20250805 => "claude-opus-4-1-20250805",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

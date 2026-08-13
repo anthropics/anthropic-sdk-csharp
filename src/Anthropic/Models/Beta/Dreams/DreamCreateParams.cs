@@ -68,6 +68,29 @@ public record class DreamCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// The default destination: the job creates a new output memory store as a clone
+    /// of the memory_store input and writes the consolidated memories into it. The
+    /// input store is never mutated.
+    /// </summary>
+    public BetaOutputBehavior? OutputBehavior
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaOutputBehavior>("output_behavior");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("output_behavior", value);
+        }
+    }
+
+    /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas

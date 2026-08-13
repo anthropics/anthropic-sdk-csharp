@@ -30,6 +30,11 @@ public sealed record class BetaThinkingDelta : JsonModel
         init { this._rawData.Set("estimated_tokens", value); }
     }
 
+    /// <summary>
+    /// The incremental `thinking` text for this content block. Concatenate the `thinking`
+    /// values of successive `thinking_delta` events to assemble the block's full
+    /// `thinking` value.
+    /// </summary>
     public required string Thinking
     {
         get

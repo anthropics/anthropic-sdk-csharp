@@ -15,13 +15,17 @@ public class BetaManagedAgentsStartEventTest : TestBase
             Event = new BetaManagedAgentsAgentMessagePreview()
             {
                 ID = "id",
-                Type = Type.AgentMessage,
+                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
             },
             Type = BetaManagedAgentsStartEventType.EventStart,
         };
 
         BetaManagedAgentsStartEventPreview expectedEvent =
-            new BetaManagedAgentsAgentMessagePreview() { ID = "id", Type = Type.AgentMessage };
+            new BetaManagedAgentsAgentMessagePreview()
+            {
+                ID = "id",
+                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
+            };
         ApiEnum<string, BetaManagedAgentsStartEventType> expectedType =
             BetaManagedAgentsStartEventType.EventStart;
 
@@ -37,7 +41,7 @@ public class BetaManagedAgentsStartEventTest : TestBase
             Event = new BetaManagedAgentsAgentMessagePreview()
             {
                 ID = "id",
-                Type = Type.AgentMessage,
+                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
             },
             Type = BetaManagedAgentsStartEventType.EventStart,
         };
@@ -59,7 +63,7 @@ public class BetaManagedAgentsStartEventTest : TestBase
             Event = new BetaManagedAgentsAgentMessagePreview()
             {
                 ID = "id",
-                Type = Type.AgentMessage,
+                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
             },
             Type = BetaManagedAgentsStartEventType.EventStart,
         };
@@ -72,7 +76,11 @@ public class BetaManagedAgentsStartEventTest : TestBase
         Assert.NotNull(deserialized);
 
         BetaManagedAgentsStartEventPreview expectedEvent =
-            new BetaManagedAgentsAgentMessagePreview() { ID = "id", Type = Type.AgentMessage };
+            new BetaManagedAgentsAgentMessagePreview()
+            {
+                ID = "id",
+                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
+            };
         ApiEnum<string, BetaManagedAgentsStartEventType> expectedType =
             BetaManagedAgentsStartEventType.EventStart;
 
@@ -88,7 +96,7 @@ public class BetaManagedAgentsStartEventTest : TestBase
             Event = new BetaManagedAgentsAgentMessagePreview()
             {
                 ID = "id",
-                Type = Type.AgentMessage,
+                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
             },
             Type = BetaManagedAgentsStartEventType.EventStart,
         };
@@ -104,7 +112,7 @@ public class BetaManagedAgentsStartEventTest : TestBase
             Event = new BetaManagedAgentsAgentMessagePreview()
             {
                 ID = "id",
-                Type = Type.AgentMessage,
+                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
             },
             Type = BetaManagedAgentsStartEventType.EventStart,
         };
