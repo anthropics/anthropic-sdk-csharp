@@ -68,8 +68,9 @@ public record class UserProfileCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Display name of the entity this profile represents. Required when relationship
-    /// is `resold` (the resold-to company's name); optional otherwise. Maximum 255 characters.
+    /// Optional for all profiles. Real-world name of the entity this profile represents
+    /// (company or individual); for `resold` profiles, the resold-to company's name
+    /// where known. Maximum 255 characters.
     /// </summary>
     public string? Name
     {
