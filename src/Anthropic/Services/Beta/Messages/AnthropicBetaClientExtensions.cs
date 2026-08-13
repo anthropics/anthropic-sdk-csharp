@@ -581,6 +581,66 @@ public static class AnthropicBetaClientExtensions
 
                         case AIContent ac
                             when ac.RawRepresentation
+                                is BetaWebSearchToolResultBlock webSearchResultBlock:
+                            contents.Add(
+                                BetaWebSearchToolResultBlockParam.FromRawUnchecked(
+                                    webSearchResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is BetaWebFetchToolResultBlock webFetchResultBlock:
+                            contents.Add(
+                                BetaWebFetchToolResultBlockParam.FromRawUnchecked(
+                                    webFetchResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is BetaCodeExecutionToolResultBlock codeExecutionResultBlock:
+                            contents.Add(
+                                BetaCodeExecutionToolResultBlockParam.FromRawUnchecked(
+                                    codeExecutionResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is BetaBashCodeExecutionToolResultBlock bashCodeExecutionResultBlock:
+                            contents.Add(
+                                BetaBashCodeExecutionToolResultBlockParam.FromRawUnchecked(
+                                    bashCodeExecutionResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is BetaTextEditorCodeExecutionToolResultBlock textEditorCodeExecutionResultBlock:
+                            contents.Add(
+                                BetaTextEditorCodeExecutionToolResultBlockParam.FromRawUnchecked(
+                                    textEditorCodeExecutionResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is BetaContainerUploadBlock containerUploadBlock:
+                            contents.Add(
+                                BetaContainerUploadBlockParam.FromRawUnchecked(
+                                    containerUploadBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
                                 is BetaToolSearchToolResultBlock toolSearchResultBlock:
                             contents.Add(
                                 BetaToolSearchToolResultBlockParam.FromRawUnchecked(

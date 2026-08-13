@@ -8458,11 +8458,20 @@ public abstract class AnthropicClientExtensionsTestsBase
         );
     }
 
-    [Fact]
-    public async Task GetResponseAsync_WithHostedToolSearchTool_ProducesToolSearchTool()
+    [Theory]
+    [InlineData("tool_search_tool_regex")]
+    [InlineData("tool_search_tool_bm25")]
+    public async Task GetResponseAsync_WithHostedToolSearchTool_ProducesToolSearchTool(
+        string toolType
+    )
     {
+        AITool tool =
+            toolType == "tool_search_tool_bm25"
+                ? new HostedToolSearchTool().AsBm25()
+                : new HostedToolSearchTool();
+
         VerbatimHttpHandler handler = new(
-            expectedRequest: """
+            expectedRequest: $$"""
             {
                 "model": "claude-haiku-4-5",
                 "messages": [{
@@ -8475,76 +8484,39 @@ public abstract class AnthropicClientExtensionsTestsBase
                 "max_tokens": 1024,
                 "tools": [
                     {
-                        "name": "tool_search_tool_regex",
-                        "type": "tool_search_tool_regex"
+                        "name": "{{toolType}}",
+                        "type": "{{toolType}}"
                     }
                 ]
             }
             """,
-            actualResponse: """
+            actualResponse: $$"""
             {
                 "id": "msg_ts_01",
                 "type": "message",
                 "role": "assistant",
                 "model": "claude-haiku-4-5",
-                "content": [{
-                    "type": "text",
-                    "text": "I found the tool."
-                }],
-                "stop_reason": "end_turn",
-                "usage": {
-                    "input_tokens": 20,
-                    "output_tokens": 10
-                }
-            }
-            """
-        );
-
-        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
-
-        ChatOptions options = new() { Tools = [new HostedToolSearchTool()] };
-
-        ChatResponse response = await chatClient.GetResponseAsync(
-            "Search for a tool",
-            options,
-            TestContext.Current.CancellationToken
-        );
-        Assert.NotNull(response);
-    }
-
-    [Fact]
-    public async Task GetResponseAsync_WithBm25HostedToolSearchTool_ProducesBm25ToolSearchTool()
-    {
-        VerbatimHttpHandler handler = new(
-            expectedRequest: """
-            {
-                "model": "claude-haiku-4-5",
-                "messages": [{
-                    "role": "user",
-                    "content": [{
-                        "type": "text",
-                        "text": "Search for a tool"
-                    }]
-                }],
-                "max_tokens": 1024,
-                "tools": [
+                "content": [
                     {
-                        "name": "tool_search_tool_bm25",
-                        "type": "tool_search_tool_bm25"
+                        "type": "text",
+                        "text": "I found the tool."
+                    },
+                    {
+                        "type": "server_tool_use",
+                        "id": "srvtoolu_ts_01",
+                        "name": "{{toolType}}",
+                        "caller": { "type": "direct" },
+                        "input": {}
+                    },
+                    {
+                        "type": "tool_search_tool_result",
+                        "tool_use_id": "srvtoolu_ts_01",
+                        "content": {
+                            "type": "tool_search_tool_search_result",
+                            "tool_references": []
+                        }
                     }
-                ]
-            }
-            """,
-            actualResponse: """
-            {
-                "id": "msg_ts_01",
-                "type": "message",
-                "role": "assistant",
-                "model": "claude-haiku-4-5",
-                "content": [{
-                    "type": "text",
-                    "text": "I found the tool."
-                }],
+                ],
                 "stop_reason": "end_turn",
                 "usage": {
                     "input_tokens": 20,
@@ -8556,7 +8528,7 @@ public abstract class AnthropicClientExtensionsTestsBase
 
         IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
 
-        ChatOptions options = new() { Tools = [new HostedToolSearchTool().AsBm25()] };
+        ChatOptions options = new() { Tools = [tool] };
 
         ChatResponse response = await chatClient.GetResponseAsync(
             "Search for a tool",
@@ -8564,6 +8536,12 @@ public abstract class AnthropicClientExtensionsTestsBase
             TestContext.Current.CancellationToken
         );
         Assert.NotNull(response);
+
+        var contents = response.Messages[0].Contents;
+        var toolCall = contents.OfType<ToolCallContent>().Single();
+        Assert.Equal("srvtoolu_ts_01", toolCall.CallId);
+        var toolResult = contents.OfType<ToolResultContent>().Single();
+        Assert.Equal("srvtoolu_ts_01", toolResult.CallId);
     }
 
     [Fact]
@@ -8733,13 +8711,29 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Equal("Hello!", response.Text);
     }
 
-    [Fact]
-    public async Task GetResponseAsync_ServerToolUseBlock_RoundTripsAsContentBlockParam()
+    [Theory]
+    [InlineData("web_search")]
+    [InlineData("code_execution")]
+    [InlineData("tool_search_tool_regex")]
+    [InlineData("tool_search_tool_bm25")]
+    public async Task GetResponseAsync_ServerToolUseBlock_RoundTripsAsContentBlockParam(
+        string toolName
+    )
     {
         // When a previous response included a server_tool_use block (e.g. tool_search),
         // it must be converted to a ContentBlockParam for the next request.
+        string serverToolUseBlock = $$"""
+            {
+                "type": "server_tool_use",
+                "id": "srvtoolu_01ABC",
+                "name": "{{toolName}}",
+                "input": {},
+                "caller": { "type": "direct" }
+            }
+            """;
+
         VerbatimHttpHandler handler = new(
-            expectedRequest: """
+            expectedRequest: $$"""
             {
                 "model": "claude-haiku-4-5",
                 "messages": [
@@ -8751,13 +8745,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "role": "assistant",
                         "content": [
                             { "type": "text", "text": "Let me search." },
-                            {
-                                "type": "server_tool_use",
-                                "id": "srvtoolu_01ABC",
-                                "name": "tool_search_tool_bm25",
-                                "input": {},
-                                "caller": { "type": "direct" }
-                            }
+                            {{serverToolUseBlock}}
                         ]
                     },
                     {
@@ -8785,7 +8773,7 @@ public abstract class AnthropicClientExtensionsTestsBase
 
         var toolCallContent = new ToolCallContent("srvtoolu_01ABC")
         {
-            RawRepresentation = CreateServerToolUseBlock("srvtoolu_01ABC", "tool_search_tool_bm25"),
+            RawRepresentation = CreateServerToolUseBlock(serverToolUseBlock),
         };
 
         List<ChatMessage> messages =
@@ -8803,32 +8791,117 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Equal("Done.", response.Text);
     }
 
-    [Fact]
-    public async Task GetResponseAsync_ToolSearchToolResultBlock_RoundTripsAsContentBlockParam()
+    public static TheoryData<string> ResponseBlockData() =>
+        new()
+        {
+            """
+                {
+                    "type": "web_search_tool_result",
+                    "tool_use_id": "srvtoolu_01",
+                    "content": [],
+                    "caller": { "type": "direct" }
+                }
+                """,
+            """
+                {
+                    "type": "web_fetch_tool_result",
+                    "tool_use_id": "srvtoolu_01",
+                    "caller": { "type": "direct" },
+                    "content": {
+                        "type": "web_fetch_result",
+                        "url": "https://example.com/article.html",
+                        "retrieved_at": "2025-01-01T00:00:00Z",
+                        "content": {
+                            "type": "document",
+                            "citations": null,
+                            "source": {
+                                "type": "text",
+                                "media_type": "text/plain",
+                                "data": "fetched content"
+                            },
+                            "title": "Article"
+                        }
+                    }
+                }
+                """,
+            """
+                {
+                    "type": "code_execution_tool_result",
+                    "tool_use_id": "srvtoolu_01",
+                    "content": {
+                        "type": "code_execution_result",
+                        "stdout": "hello\n",
+                        "stderr": "",
+                        "return_code": 0,
+                        "content": []
+                    }
+                }
+                """,
+            """
+                {
+                    "type": "bash_code_execution_tool_result",
+                    "tool_use_id": "srvtoolu_01",
+                    "content": {
+                        "type": "bash_code_execution_result",
+                        "stdout": "hello\n",
+                        "stderr": "",
+                        "return_code": 0,
+                        "content": []
+                    }
+                }
+                """,
+            """
+                {
+                    "type": "text_editor_code_execution_tool_result",
+                    "tool_use_id": "srvtoolu_01",
+                    "content": {
+                        "type": "text_editor_code_execution_view_result",
+                        "file_type": "text",
+                        "content": "print('hello')",
+                        "num_lines": 1,
+                        "start_line": 1,
+                        "total_lines": 1
+                    }
+                }
+                """,
+            """
+                {
+                    "type": "container_upload",
+                    "file_id": "file_01"
+                }
+                """,
+            """
+                {
+                    "type": "tool_search_tool_result",
+                    "tool_use_id": "srvtoolu_01",
+                    "content": {
+                        "type": "tool_search_tool_search_result",
+                        "tool_references": []
+                    }
+                }
+                """,
+        };
+
+    [Theory]
+    [MemberData(nameof(ResponseBlockData))]
+    public async Task GetResponseAsync_ResponseBlock_RoundTripsAsContentBlockParam(
+        string resultBlock
+    )
     {
-        // When a previous response included a tool_search_tool_result block, it must be converted
-        // back to a ContentBlockParam for the next request.
         VerbatimHttpHandler handler = new(
-            expectedRequest: """
+            expectedRequest: $$"""
             {
                 "model": "claude-haiku-4-5",
                 "messages": [
                     {
                         "role": "user",
-                        "content": [{ "type": "text", "text": "Search for weather" }]
+                        "content": [{ "type": "text", "text": "Use the hosted tool" }]
                     },
                     {
                         "role": "assistant",
                         "content": [
-                            { "type": "text", "text": "Here are the tools." },
-                            {
-                                "type": "tool_search_tool_result",
-                                "tool_use_id": "srvtoolu_ts_01",
-                                "content": {
-                                    "type": "tool_search_tool_search_result",
-                                    "tool_references": []
-                                }
-                            }
+                            { "type": "text", "text": "Tool result." },
+                            {{resultBlock}}
                         ]
                     },
                     {
@@ -8841,7 +8914,7 @@ public abstract class AnthropicClientExtensionsTestsBase
             """,
             actualResponse: """
             {
-                "id": "msg_rt_02",
+                "id": "msg_rt_server_result",
                 "type": "message",
                 "role": "assistant",
                 "model": "claude-haiku-4-5",
@@ -8853,16 +8926,14 @@ public abstract class AnthropicClientExtensionsTestsBase
         );
 
         IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
-
-        var toolResultContent = new ToolResultContent("srvtoolu_ts_01")
+        var toolResultContent = new AIContent
         {
-            RawRepresentation = CreateToolSearchToolResultBlock("srvtoolu_ts_01"),
+            RawRepresentation = CreateResponseBlock(resultBlock),
         };
-
         List<ChatMessage> messages =
         [
-            new(ChatRole.User, "Search for weather"),
-            new(ChatRole.Assistant, [new TextContent("Here are the tools."), toolResultContent]),
+            new(ChatRole.User, "Use the hosted tool"),
+            new(ChatRole.Assistant, [new TextContent("Tool result."), toolResultContent]),
             new(ChatRole.User, "Continue"),
         ];
 
@@ -8870,7 +8941,6 @@ public abstract class AnthropicClientExtensionsTestsBase
             messages,
             cancellationToken: TestContext.Current.CancellationToken
         );
-        Assert.NotNull(response);
         Assert.Equal("Done.", response.Text);
     }
 
@@ -8878,27 +8948,11 @@ public abstract class AnthropicClientExtensionsTestsBase
     /// Creates a server_tool_use response block for round-trip testing.
     /// Overridden by the beta adapter tests to use Beta types.
     /// </summary>
-    protected virtual object CreateServerToolUseBlock(string id, string name)
-    {
-        return new ServerToolUseBlock()
-        {
-            ID = id,
-            Name = Name.ToolSearchToolBm25,
-            Input = new Dictionary<string, JsonElement>(),
-            Caller = new DirectCaller(),
-        };
-    }
+    protected virtual object CreateServerToolUseBlock(string rawJson) =>
+        JsonSerializer.Deserialize<ServerToolUseBlock>(rawJson)
+        ?? throw new InvalidOperationException("Failed to deserialize server tool use block.");
 
-    /// <summary>
-    /// Creates a tool_search_tool_result response block for round-trip testing.
-    /// Overridden by the beta adapter tests to use Beta types.
-    /// </summary>
-    protected virtual object CreateToolSearchToolResultBlock(string toolUseId)
-    {
-        return new ToolSearchToolResultBlock()
-        {
-            ToolUseID = toolUseId,
-            Content = new ToolSearchToolSearchResultBlock() { ToolReferences = [] },
-        };
-    }
+    protected virtual object CreateResponseBlock(string rawJson) =>
+        JsonSerializer.Deserialize<ContentBlock>(rawJson)?.Value
+        ?? throw new InvalidOperationException("Failed to deserialize server tool result.");
 }

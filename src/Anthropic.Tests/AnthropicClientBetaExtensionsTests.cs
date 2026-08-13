@@ -2567,23 +2567,11 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.Equal(2000, files[1].SizeInBytes);
     }
 
-    protected override object CreateServerToolUseBlock(string id, string name)
-    {
-        return new BetaServerToolUseBlock()
-        {
-            ID = id,
-            Name = Anthropic.Models.Beta.Messages.Name.ToolSearchToolBm25,
-            Input = new Dictionary<string, JsonElement>(),
-            Caller = new BetaDirectCaller(),
-        };
-    }
+    protected override object CreateServerToolUseBlock(string rawJson) =>
+        JsonSerializer.Deserialize<BetaServerToolUseBlock>(rawJson)
+        ?? throw new InvalidOperationException("Failed to deserialize server tool use block.");
 
-    protected override object CreateToolSearchToolResultBlock(string toolUseId)
-    {
-        return new BetaToolSearchToolResultBlock()
-        {
-            ToolUseID = toolUseId,
-            Content = new BetaToolSearchToolSearchResultBlock() { ToolReferences = [] },
-        };
-    }
+    protected override object CreateResponseBlock(string rawJson) =>
+        JsonSerializer.Deserialize<BetaContentBlock>(rawJson)?.Value
+        ?? throw new InvalidOperationException("Failed to deserialize server tool result.");
 }

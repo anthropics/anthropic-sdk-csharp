@@ -851,6 +851,65 @@ public static class AnthropicClientExtensions
 
                         case AIContent ac
                             when ac.RawRepresentation
+                                is WebSearchToolResultBlock webSearchResultBlock:
+                            contents.Add(
+                                WebSearchToolResultBlockParam.FromRawUnchecked(
+                                    webSearchResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is WebFetchToolResultBlock webFetchResultBlock:
+                            contents.Add(
+                                WebFetchToolResultBlockParam.FromRawUnchecked(
+                                    webFetchResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is CodeExecutionToolResultBlock codeExecutionResultBlock:
+                            contents.Add(
+                                CodeExecutionToolResultBlockParam.FromRawUnchecked(
+                                    codeExecutionResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is BashCodeExecutionToolResultBlock bashCodeExecutionResultBlock:
+                            contents.Add(
+                                BashCodeExecutionToolResultBlockParam.FromRawUnchecked(
+                                    bashCodeExecutionResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is TextEditorCodeExecutionToolResultBlock textEditorCodeExecutionResultBlock:
+                            contents.Add(
+                                TextEditorCodeExecutionToolResultBlockParam.FromRawUnchecked(
+                                    textEditorCodeExecutionResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation is ContainerUploadBlock containerUploadBlock:
+                            contents.Add(
+                                ContainerUploadBlockParam.FromRawUnchecked(
+                                    containerUploadBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
                                 is ToolSearchToolResultBlock toolSearchResultBlock:
                             contents.Add(
                                 ToolSearchToolResultBlockParam.FromRawUnchecked(
