@@ -17,7 +17,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
@@ -101,7 +101,7 @@ public class MessageCreateParamsTest : TestBase
         [
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_6;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5;
         Messages::CacheControlEphemeral expectedCacheControl = new() { Ttl = Messages::Ttl.Ttl5m };
         string expectedContainer = "container";
         string expectedInferenceGeo = "inference_geo";
@@ -226,7 +226,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
@@ -265,7 +265,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",
@@ -318,7 +318,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
             {
@@ -409,7 +409,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
             {
@@ -504,7 +504,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -520,7 +520,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             UserProfileID = "anthropic-user-profile-id",
         };
 
@@ -539,7 +539,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = "container",
             InferenceGeo = "inference_geo",

@@ -53,7 +53,6 @@ public record class BetaContentBlockParam : ModelBase
                 requestMcpToolResult: (x) => x.Type,
                 containerUpload: (x) => x.Type,
                 compaction: (x) => x.Type,
-                midConversationSystem: (x) => x.Type,
                 requestToolAdditionBlock: (x) => x.Type,
                 requestToolRemovalBlock: (x) => x.Type,
                 fallback: (x) => x.Type
@@ -86,7 +85,6 @@ public record class BetaContentBlockParam : ModelBase
                 requestMcpToolResult: (x) => x.CacheControl,
                 containerUpload: (x) => x.CacheControl,
                 compaction: (x) => x.CacheControl,
-                midConversationSystem: (x) => x.CacheControl,
                 requestToolAdditionBlock: (x) => x.CacheControl,
                 requestToolRemovalBlock: (x) => x.CacheControl,
                 fallback: (_) => null
@@ -119,7 +117,6 @@ public record class BetaContentBlockParam : ModelBase
                 requestMcpToolResult: (_) => null,
                 containerUpload: (_) => null,
                 compaction: (_) => null,
-                midConversationSystem: (_) => null,
                 requestToolAdditionBlock: (_) => null,
                 requestToolRemovalBlock: (_) => null,
                 fallback: (_) => null
@@ -152,7 +149,6 @@ public record class BetaContentBlockParam : ModelBase
                 requestMcpToolResult: (_) => null,
                 containerUpload: (_) => null,
                 compaction: (_) => null,
-                midConversationSystem: (_) => null,
                 requestToolAdditionBlock: (_) => null,
                 requestToolRemovalBlock: (_) => null,
                 fallback: (_) => null
@@ -185,7 +181,6 @@ public record class BetaContentBlockParam : ModelBase
                 requestMcpToolResult: (x) => x.ToolUseID,
                 containerUpload: (_) => null,
                 compaction: (_) => null,
-                midConversationSystem: (_) => null,
                 requestToolAdditionBlock: (_) => null,
                 requestToolRemovalBlock: (_) => null,
                 fallback: (_) => null
@@ -218,7 +213,6 @@ public record class BetaContentBlockParam : ModelBase
                 requestMcpToolResult: (x) => x.IsError,
                 containerUpload: (_) => null,
                 compaction: (_) => null,
-                midConversationSystem: (_) => null,
                 requestToolAdditionBlock: (_) => null,
                 requestToolRemovalBlock: (_) => null,
                 fallback: (_) => null
@@ -362,15 +356,6 @@ public record class BetaContentBlockParam : ModelBase
     }
 
     public BetaContentBlockParam(BetaCompactionBlockParam value, JsonElement? element = null)
-    {
-        this.Value = value;
-        this._element = element;
-    }
-
-    public BetaContentBlockParam(
-        BetaMidConversationSystemBlockParam value,
-        JsonElement? element = null
-    )
     {
         this.Value = value;
         this._element = element;
@@ -839,29 +824,6 @@ public record class BetaContentBlockParam : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaMidConversationSystemBlockParam"/>.
-    ///
-    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
-    ///
-    /// <example>
-    /// <code>
-    /// if (instance.TryPickMidConversationSystem(out var value)) {
-    ///     // `value` is of type `BetaMidConversationSystemBlockParam`
-    ///     Console.WriteLine(value);
-    /// }
-    /// </code>
-    /// </example>
-    /// </summary>
-    public bool TryPickMidConversationSystem(
-        [NotNullWhen(true)] out BetaMidConversationSystemBlockParam? value
-    )
-    {
-        value = this.Value as BetaMidConversationSystemBlockParam;
-        return value != null;
-    }
-
-    /// <summary>
-    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaRequestToolAdditionBlock"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -961,7 +923,6 @@ public record class BetaContentBlockParam : ModelBase
     ///     (BetaRequestMcpToolResultBlockParam value) =&gt; {...},
     ///     (BetaContainerUploadBlockParam value) =&gt; {...},
     ///     (BetaCompactionBlockParam value) =&gt; {...},
-    ///     (BetaMidConversationSystemBlockParam value) =&gt; {...},
     ///     (BetaRequestToolAdditionBlock value) =&gt; {...},
     ///     (BetaRequestToolRemovalBlock value) =&gt; {...},
     ///     (BetaFallbackBlockParam value) =&gt; {...}
@@ -990,7 +951,6 @@ public record class BetaContentBlockParam : ModelBase
         System::Action<BetaRequestMcpToolResultBlockParam> requestMcpToolResult,
         System::Action<BetaContainerUploadBlockParam> containerUpload,
         System::Action<BetaCompactionBlockParam> compaction,
-        System::Action<BetaMidConversationSystemBlockParam> midConversationSystem,
         System::Action<BetaRequestToolAdditionBlock> requestToolAdditionBlock,
         System::Action<BetaRequestToolRemovalBlock> requestToolRemovalBlock,
         System::Action<BetaFallbackBlockParam> fallback
@@ -1058,9 +1018,6 @@ public record class BetaContentBlockParam : ModelBase
             case BetaCompactionBlockParam value:
                 compaction(value);
                 break;
-            case BetaMidConversationSystemBlockParam value:
-                midConversationSystem(value);
-                break;
             case BetaRequestToolAdditionBlock value:
                 requestToolAdditionBlock(value);
                 break;
@@ -1112,7 +1069,6 @@ public record class BetaContentBlockParam : ModelBase
     ///     (BetaRequestMcpToolResultBlockParam value) =&gt; {...},
     ///     (BetaContainerUploadBlockParam value) =&gt; {...},
     ///     (BetaCompactionBlockParam value) =&gt; {...},
-    ///     (BetaMidConversationSystemBlockParam value) =&gt; {...},
     ///     (BetaRequestToolAdditionBlock value) =&gt; {...},
     ///     (BetaRequestToolRemovalBlock value) =&gt; {...},
     ///     (BetaFallbackBlockParam value) =&gt; {...}
@@ -1144,7 +1100,6 @@ public record class BetaContentBlockParam : ModelBase
         System::Func<BetaRequestMcpToolResultBlockParam, T> requestMcpToolResult,
         System::Func<BetaContainerUploadBlockParam, T> containerUpload,
         System::Func<BetaCompactionBlockParam, T> compaction,
-        System::Func<BetaMidConversationSystemBlockParam, T> midConversationSystem,
         System::Func<BetaRequestToolAdditionBlock, T> requestToolAdditionBlock,
         System::Func<BetaRequestToolRemovalBlock, T> requestToolRemovalBlock,
         System::Func<BetaFallbackBlockParam, T> fallback
@@ -1173,7 +1128,6 @@ public record class BetaContentBlockParam : ModelBase
             BetaRequestMcpToolResultBlockParam value => requestMcpToolResult(value),
             BetaContainerUploadBlockParam value => containerUpload(value),
             BetaCompactionBlockParam value => compaction(value),
-            BetaMidConversationSystemBlockParam value => midConversationSystem(value),
             BetaRequestToolAdditionBlock value => requestToolAdditionBlock(value),
             BetaRequestToolRemovalBlock value => requestToolRemovalBlock(value),
             BetaFallbackBlockParam value => fallback(value),
@@ -1247,10 +1201,6 @@ public record class BetaContentBlockParam : ModelBase
     public static implicit operator BetaContentBlockParam(BetaCompactionBlockParam value) =>
         new(value);
 
-    public static implicit operator BetaContentBlockParam(
-        BetaMidConversationSystemBlockParam value
-    ) => new(value);
-
     public static implicit operator BetaContentBlockParam(BetaRequestToolAdditionBlock value) =>
         new(value);
 
@@ -1299,7 +1249,6 @@ public record class BetaContentBlockParam : ModelBase
             (requestMcpToolResult) => requestMcpToolResult.Validate(),
             (containerUpload) => containerUpload.Validate(),
             (compaction) => compaction.Validate(),
-            (midConversationSystem) => midConversationSystem.Validate(),
             (requestToolAdditionBlock) => requestToolAdditionBlock.Validate(),
             (requestToolRemovalBlock) => requestToolRemovalBlock.Validate(),
             (fallback) => fallback.Validate()
@@ -1346,10 +1295,9 @@ public record class BetaContentBlockParam : ModelBase
             BetaRequestMcpToolResultBlockParam _ => 17,
             BetaContainerUploadBlockParam _ => 18,
             BetaCompactionBlockParam _ => 19,
-            BetaMidConversationSystemBlockParam _ => 20,
-            BetaRequestToolAdditionBlock _ => 21,
-            BetaRequestToolRemovalBlock _ => 22,
-            BetaFallbackBlockParam _ => 23,
+            BetaRequestToolAdditionBlock _ => 20,
+            BetaRequestToolRemovalBlock _ => 21,
+            BetaFallbackBlockParam _ => 22,
             _ => -1,
         };
     }
@@ -1770,27 +1718,6 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         element,
                         options
                     );
-                    if (deserialized != null)
-                    {
-                        return new(deserialized, element);
-                    }
-                }
-                catch (JsonException)
-                {
-                    // ignore
-                }
-
-                return new(element);
-            }
-            case "mid_conv_system":
-            {
-                try
-                {
-                    var deserialized =
-                        JsonSerializer.Deserialize<BetaMidConversationSystemBlockParam>(
-                            element,
-                            options
-                        );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);

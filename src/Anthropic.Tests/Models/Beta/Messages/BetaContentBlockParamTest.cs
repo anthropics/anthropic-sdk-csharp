@@ -323,35 +323,6 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void MidConversationSystemValidationWorks()
-    {
-        BetaContentBlockParam value = new BetaMidConversationSystemBlockParam()
-        {
-            Content =
-            [
-                new BetaTextBlockParam()
-                {
-                    Text = "x",
-                    CacheControl = new() { Ttl = Ttl.Ttl5m },
-                    Citations =
-                    [
-                        new BetaCitationCharLocationParam()
-                        {
-                            CitedText = "The grass is green. The sky is blue.",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
-            ],
-            CacheControl = new() { Ttl = Ttl.Ttl5m },
-        };
-        value.Validate();
-    }
-
-    [Fact]
     public void RequestToolAdditionBlockValidationWorks()
     {
         BetaContentBlockParam value = new BetaRequestToolAdditionBlock()
@@ -809,41 +780,6 @@ public class BetaContentBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "content",
             EncryptedContent = "encrypted_content",
-        };
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(
-            element,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void MidConversationSystemSerializationRoundtripWorks()
-    {
-        BetaContentBlockParam value = new BetaMidConversationSystemBlockParam()
-        {
-            Content =
-            [
-                new BetaTextBlockParam()
-                {
-                    Text = "x",
-                    CacheControl = new() { Ttl = Ttl.Ttl5m },
-                    Citations =
-                    [
-                        new BetaCitationCharLocationParam()
-                        {
-                            CitedText = "The grass is green. The sky is blue.",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
-            ],
-            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(

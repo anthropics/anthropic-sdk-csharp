@@ -13,7 +13,7 @@ public class MessageServiceTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                Model = Model.ClaudeOpus4_6,
+                Model = Model.ClaudeOpus5,
             },
             TestContext.Current.CancellationToken
         );
@@ -28,7 +28,7 @@ public class MessageServiceTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                Model = Model.ClaudeOpus4_6,
+                Model = Model.ClaudeOpus5,
             },
             TestContext.Current.CancellationToken
         );
@@ -46,7 +46,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                Model = Model.ClaudeOpus4_6,
+                Model = Model.ClaudeOpus5,
             },
             TestContext.Current.CancellationToken
         );

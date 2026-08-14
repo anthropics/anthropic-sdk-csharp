@@ -61,7 +61,7 @@ public class BetaRawMessageStartEventTest : TestBase
                 Diagnostics = new(
                     new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
                 ),
-                Model = Model.ClaudeOpus4_6,
+                Model = Model.ClaudeOpus5,
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
@@ -69,7 +69,7 @@ public class BetaRawMessageStartEventTest : TestBase
                         "This request was declined because it conflicts with Anthropic's Usage Policy.",
                     FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                     FallbackHasPrefillClaim = true,
-                    RecommendedModel = "claude-sonnet-4-6",
+                    RecommendedModel = "claude-opus-4-8",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
@@ -160,7 +160,7 @@ public class BetaRawMessageStartEventTest : TestBase
             Diagnostics = new(
                 new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
-            Model = Model.ClaudeOpus4_6,
+            Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
@@ -168,7 +168,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     "This request was declined because it conflicts with Anthropic's Usage Policy.",
                 FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                 FallbackHasPrefillClaim = true,
-                RecommendedModel = "claude-sonnet-4-6",
+                RecommendedModel = "claude-opus-4-8",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
@@ -264,7 +264,7 @@ public class BetaRawMessageStartEventTest : TestBase
                 Diagnostics = new(
                     new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
                 ),
-                Model = Model.ClaudeOpus4_6,
+                Model = Model.ClaudeOpus5,
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
@@ -272,7 +272,7 @@ public class BetaRawMessageStartEventTest : TestBase
                         "This request was declined because it conflicts with Anthropic's Usage Policy.",
                     FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                     FallbackHasPrefillClaim = true,
-                    RecommendedModel = "claude-sonnet-4-6",
+                    RecommendedModel = "claude-opus-4-8",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
@@ -377,7 +377,7 @@ public class BetaRawMessageStartEventTest : TestBase
                 Diagnostics = new(
                     new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
                 ),
-                Model = Model.ClaudeOpus4_6,
+                Model = Model.ClaudeOpus5,
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
@@ -385,7 +385,7 @@ public class BetaRawMessageStartEventTest : TestBase
                         "This request was declined because it conflicts with Anthropic's Usage Policy.",
                     FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                     FallbackHasPrefillClaim = true,
-                    RecommendedModel = "claude-sonnet-4-6",
+                    RecommendedModel = "claude-opus-4-8",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
@@ -483,7 +483,7 @@ public class BetaRawMessageStartEventTest : TestBase
             Diagnostics = new(
                 new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
-            Model = Model.ClaudeOpus4_6,
+            Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
@@ -491,7 +491,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     "This request was declined because it conflicts with Anthropic's Usage Policy.",
                 FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                 FallbackHasPrefillClaim = true,
-                RecommendedModel = "claude-sonnet-4-6",
+                RecommendedModel = "claude-opus-4-8",
             },
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
@@ -587,7 +587,7 @@ public class BetaRawMessageStartEventTest : TestBase
                 Diagnostics = new(
                     new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
                 ),
-                Model = Model.ClaudeOpus4_6,
+                Model = Model.ClaudeOpus5,
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
@@ -595,7 +595,7 @@ public class BetaRawMessageStartEventTest : TestBase
                         "This request was declined because it conflicts with Anthropic's Usage Policy.",
                     FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                     FallbackHasPrefillClaim = true,
-                    RecommendedModel = "claude-sonnet-4-6",
+                    RecommendedModel = "claude-opus-4-8",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
@@ -694,7 +694,7 @@ public class BetaRawMessageStartEventTest : TestBase
                 Diagnostics = new(
                     new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
                 ),
-                Model = Model.ClaudeOpus4_6,
+                Model = Model.ClaudeOpus5,
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
@@ -702,7 +702,7 @@ public class BetaRawMessageStartEventTest : TestBase
                         "This request was declined because it conflicts with Anthropic's Usage Policy.",
                     FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
                     FallbackHasPrefillClaim = true,
-                    RecommendedModel = "claude-sonnet-4-6",
+                    RecommendedModel = "claude-opus-4-8",
                 },
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,

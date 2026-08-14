@@ -265,35 +265,6 @@ public class ContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void MidConversationSystemValidationWorks()
-    {
-        ContentBlockParam value = new MidConversationSystemBlockParam()
-        {
-            Content =
-            [
-                new()
-                {
-                    Text = "x",
-                    CacheControl = new() { Ttl = Ttl.Ttl5m },
-                    Citations =
-                    [
-                        new CitationCharLocationParam()
-                        {
-                            CitedText = "The grass is green. The sky is blue.",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
-            ],
-            CacheControl = new() { Ttl = Ttl.Ttl5m },
-        };
-        value.Validate();
-    }
-
-    [Fact]
     public void TextSerializationRoundtripWorks()
     {
         ContentBlockParam value = new TextBlockParam()
@@ -635,41 +606,6 @@ public class ContentBlockParamTest : TestBase
         ContentBlockParam value = new ContainerUploadBlockParam()
         {
             FileID = "file_id",
-            CacheControl = new() { Ttl = Ttl.Ttl5m },
-        };
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
-            element,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void MidConversationSystemSerializationRoundtripWorks()
-    {
-        ContentBlockParam value = new MidConversationSystemBlockParam()
-        {
-            Content =
-            [
-                new()
-                {
-                    Text = "x",
-                    CacheControl = new() { Ttl = Ttl.Ttl5m },
-                    Citations =
-                    [
-                        new CitationCharLocationParam()
-                        {
-                            CitedText = "The grass is green. The sky is blue.",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
-            ],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

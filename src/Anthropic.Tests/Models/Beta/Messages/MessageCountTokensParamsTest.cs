@@ -18,7 +18,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new MessageCountTokensParams
         {
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             ContextManagement = new()
             {
@@ -124,7 +124,7 @@ public class MessageCountTokensParamsTest : TestBase
         [
             new() { Content = "Hello, world", Role = Role.User },
         ];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_6;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5;
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaContextManagementConfig expectedContextManagement = new()
         {
@@ -276,7 +276,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new MessageCountTokensParams
         {
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             ContextManagement = new()
             {
@@ -326,7 +326,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new MessageCountTokensParams
         {
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             ContextManagement = new()
             {
@@ -386,7 +386,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new MessageCountTokensParams
         {
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             McpServers =
             [
                 new()
@@ -481,7 +481,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new MessageCountTokensParams
         {
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             McpServers =
             [
                 new()
@@ -581,7 +581,7 @@ public class MessageCountTokensParamsTest : TestBase
         MessageCountTokensParams parameters = new()
         {
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -601,7 +601,7 @@ public class MessageCountTokensParamsTest : TestBase
         MessageCountTokensParams parameters = new()
         {
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             UserProfileID = "anthropic-user-profile-id",
         };
@@ -624,7 +624,7 @@ public class MessageCountTokensParamsTest : TestBase
         var parameters = new MessageCountTokensParams
         {
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             ContextManagement = new()
             {

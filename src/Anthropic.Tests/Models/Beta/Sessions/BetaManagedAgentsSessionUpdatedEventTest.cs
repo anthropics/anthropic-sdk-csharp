@@ -34,7 +34,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Model = new()
                 {
-                    ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    ID = BetaManagedAgentsModel.ClaudeOpus5,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
@@ -58,7 +58,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                             ],
                             Model = new()
                             {
-                                ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                ID = BetaManagedAgentsModel.ClaudeOpus5,
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
@@ -184,7 +184,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
             ],
             Model = new()
             {
-                ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                ID = BetaManagedAgentsModel.ClaudeOpus5,
                 Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
@@ -208,7 +208,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                         ],
                         Model = new()
                         {
-                            ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            ID = BetaManagedAgentsModel.ClaudeOpus5,
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
@@ -352,7 +352,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Model = new()
                 {
-                    ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    ID = BetaManagedAgentsModel.ClaudeOpus5,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
@@ -376,7 +376,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                             ],
                             Model = new()
                             {
-                                ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                ID = BetaManagedAgentsModel.ClaudeOpus5,
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
@@ -515,7 +515,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Model = new()
                 {
-                    ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    ID = BetaManagedAgentsModel.ClaudeOpus5,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
@@ -539,7 +539,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                             ],
                             Model = new()
                             {
-                                ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                ID = BetaManagedAgentsModel.ClaudeOpus5,
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
@@ -672,7 +672,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
             ],
             Model = new()
             {
-                ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                ID = BetaManagedAgentsModel.ClaudeOpus5,
                 Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
@@ -696,7 +696,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                         ],
                         Model = new()
                         {
-                            ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                            ID = BetaManagedAgentsModel.ClaudeOpus5,
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
@@ -840,7 +840,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Model = new()
                 {
-                    ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    ID = BetaManagedAgentsModel.ClaudeOpus5,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
@@ -864,7 +864,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                             ],
                             Model = new()
                             {
-                                ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                ID = BetaManagedAgentsModel.ClaudeOpus5,
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
@@ -997,7 +997,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Model = new()
                 {
-                    ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    ID = BetaManagedAgentsModel.ClaudeOpus5,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
@@ -1021,7 +1021,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                             ],
                             Model = new()
                             {
-                                ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                ID = BetaManagedAgentsModel.ClaudeOpus5,
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
@@ -1154,7 +1154,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Model = new()
                 {
-                    ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    ID = BetaManagedAgentsModel.ClaudeOpus5,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
@@ -1178,7 +1178,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                             ],
                             Model = new()
                             {
-                                ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                ID = BetaManagedAgentsModel.ClaudeOpus5,
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
@@ -1310,7 +1310,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Model = new()
                 {
-                    ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    ID = BetaManagedAgentsModel.ClaudeOpus5,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
@@ -1334,7 +1334,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                             ],
                             Model = new()
                             {
-                                ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                ID = BetaManagedAgentsModel.ClaudeOpus5,
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
@@ -1470,7 +1470,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Model = new()
                 {
-                    ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    ID = BetaManagedAgentsModel.ClaudeOpus5,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
@@ -1494,7 +1494,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                             ],
                             Model = new()
                             {
-                                ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                ID = BetaManagedAgentsModel.ClaudeOpus5,
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),
@@ -1703,7 +1703,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 ],
                 Model = new()
                 {
-                    ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                    ID = BetaManagedAgentsModel.ClaudeOpus5,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
@@ -1727,7 +1727,7 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                             ],
                             Model = new()
                             {
-                                ID = BetaManagedAgentsModel.ClaudeSonnet4_6,
+                                ID = BetaManagedAgentsModel.ClaudeOpus5,
                                 Effort = new BetaManagedAgentsEffortLow(
                                     BetaManagedAgentsEffortLowType.Low
                                 ),

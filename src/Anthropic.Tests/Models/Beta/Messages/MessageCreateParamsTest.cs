@@ -19,7 +19,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Container = new BetaContainerParams()
             {
@@ -149,7 +149,7 @@ public class MessageCreateParamsTest : TestBase
         [
             new() { Content = "Hello, world", Role = Role.User },
         ];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_6;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5;
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         Container expectedContainer = new BetaContainerParams()
         {
@@ -344,7 +344,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Container = new BetaContainerParams()
             {
@@ -424,7 +424,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Container = new BetaContainerParams()
             {
@@ -520,7 +520,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             McpServers =
             [
                 new()
@@ -632,7 +632,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             McpServers =
             [
                 new()
@@ -754,7 +754,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -772,7 +772,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             UserProfileID = "anthropic-user-profile-id",
         };
@@ -796,7 +796,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-            Model = Messages::Model.ClaudeOpus4_6,
+            Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Container = new BetaContainerParams()
             {

@@ -68,14 +68,14 @@ public sealed record class BetaEnvironment : JsonModel
     }
 
     /// <summary>
-    /// User-provided description for the environment
+    /// User-provided description for the environment; null when unset
     /// </summary>
-    public required string Description
+    public required string? Description
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<string>("description");
+            return this._rawData.GetNullableClass<string>("description");
         }
         init { this._rawData.Set("description", value); }
     }

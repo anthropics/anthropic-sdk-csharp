@@ -17,7 +17,7 @@ public class ModelListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "claude-opus-4-6",
+                    ID = "claude-opus-5",
                     Capabilities = new()
                     {
                         Batch = new(true),
@@ -48,8 +48,8 @@ public class ModelListPageResponseTest : TestBase
                             Types = new() { Adaptive = new(true), Enabled = new(true) },
                         },
                     },
-                    CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
-                    DisplayName = "Claude Opus 4.6",
+                    CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
+                    DisplayName = "Claude Opus 5",
                     MaxInputTokens = 0,
                     MaxTokens = 0,
                 },
@@ -63,7 +63,7 @@ public class ModelListPageResponseTest : TestBase
         [
             new()
             {
-                ID = "claude-opus-4-6",
+                ID = "claude-opus-5",
                 Capabilities = new()
                 {
                     Batch = new(true),
@@ -94,8 +94,8 @@ public class ModelListPageResponseTest : TestBase
                         Types = new() { Adaptive = new(true), Enabled = new(true) },
                     },
                 },
-                CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
-                DisplayName = "Claude Opus 4.6",
+                CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
+                DisplayName = "Claude Opus 5",
                 MaxInputTokens = 0,
                 MaxTokens = 0,
             },
@@ -123,7 +123,7 @@ public class ModelListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "claude-opus-4-6",
+                    ID = "claude-opus-5",
                     Capabilities = new()
                     {
                         Batch = new(true),
@@ -154,8 +154,8 @@ public class ModelListPageResponseTest : TestBase
                             Types = new() { Adaptive = new(true), Enabled = new(true) },
                         },
                     },
-                    CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
-                    DisplayName = "Claude Opus 4.6",
+                    CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
+                    DisplayName = "Claude Opus 5",
                     MaxInputTokens = 0,
                     MaxTokens = 0,
                 },
@@ -183,7 +183,7 @@ public class ModelListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "claude-opus-4-6",
+                    ID = "claude-opus-5",
                     Capabilities = new()
                     {
                         Batch = new(true),
@@ -214,8 +214,8 @@ public class ModelListPageResponseTest : TestBase
                             Types = new() { Adaptive = new(true), Enabled = new(true) },
                         },
                     },
-                    CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
-                    DisplayName = "Claude Opus 4.6",
+                    CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
+                    DisplayName = "Claude Opus 5",
                     MaxInputTokens = 0,
                     MaxTokens = 0,
                 },
@@ -236,7 +236,7 @@ public class ModelListPageResponseTest : TestBase
         [
             new()
             {
-                ID = "claude-opus-4-6",
+                ID = "claude-opus-5",
                 Capabilities = new()
                 {
                     Batch = new(true),
@@ -267,8 +267,8 @@ public class ModelListPageResponseTest : TestBase
                         Types = new() { Adaptive = new(true), Enabled = new(true) },
                     },
                 },
-                CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
-                DisplayName = "Claude Opus 4.6",
+                CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
+                DisplayName = "Claude Opus 5",
                 MaxInputTokens = 0,
                 MaxTokens = 0,
             },
@@ -296,7 +296,7 @@ public class ModelListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "claude-opus-4-6",
+                    ID = "claude-opus-5",
                     Capabilities = new()
                     {
                         Batch = new(true),
@@ -327,8 +327,8 @@ public class ModelListPageResponseTest : TestBase
                             Types = new() { Adaptive = new(true), Enabled = new(true) },
                         },
                     },
-                    CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
-                    DisplayName = "Claude Opus 4.6",
+                    CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
+                    DisplayName = "Claude Opus 5",
                     MaxInputTokens = 0,
                     MaxTokens = 0,
                 },
@@ -350,7 +350,7 @@ public class ModelListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "claude-opus-4-6",
+                    ID = "claude-opus-5",
                     Capabilities = new()
                     {
                         Batch = new(true),
@@ -381,8 +381,8 @@ public class ModelListPageResponseTest : TestBase
                             Types = new() { Adaptive = new(true), Enabled = new(true) },
                         },
                     },
-                    CreatedAt = DateTimeOffset.Parse("2026-02-04T00:00:00Z"),
-                    DisplayName = "Claude Opus 4.6",
+                    CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
+                    DisplayName = "Claude Opus 5",
                     MaxInputTokens = 0,
                     MaxTokens = 0,
                 },

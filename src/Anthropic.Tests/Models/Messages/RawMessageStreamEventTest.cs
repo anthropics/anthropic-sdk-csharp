@@ -38,7 +38,7 @@ public class RawMessageStreamEventTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus4_6,
+                Model = Model.ClaudeOpus5,
                 StopDetails = new()
                 {
                     Category = Category.Cyber,
@@ -184,7 +184,7 @@ public class RawMessageStreamEventTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus4_6,
+                Model = Model.ClaudeOpus5,
                 StopDetails = new()
                 {
                     Category = Category.Cyber,

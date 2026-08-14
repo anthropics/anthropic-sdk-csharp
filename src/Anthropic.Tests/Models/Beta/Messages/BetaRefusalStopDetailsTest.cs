@@ -17,7 +17,7 @@ public class BetaRefusalStopDetailsTest : TestBase
                 "This request was declined because it conflicts with Anthropic's Usage Policy.",
             FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
             FallbackHasPrefillClaim = true,
-            RecommendedModel = "claude-sonnet-4-6",
+            RecommendedModel = "claude-opus-4-8",
         };
 
         ApiEnum<string, Category> expectedCategory = Category.Cyber;
@@ -25,7 +25,7 @@ public class BetaRefusalStopDetailsTest : TestBase
             "This request was declined because it conflicts with Anthropic's Usage Policy.";
         string expectedFallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==";
         bool expectedFallbackHasPrefillClaim = true;
-        string expectedRecommendedModel = "claude-sonnet-4-6";
+        string expectedRecommendedModel = "claude-opus-4-8";
         JsonElement expectedType = JsonSerializer.SerializeToElement("refusal");
 
         Assert.Equal(expectedCategory, model.Category);
@@ -46,7 +46,7 @@ public class BetaRefusalStopDetailsTest : TestBase
                 "This request was declined because it conflicts with Anthropic's Usage Policy.",
             FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
             FallbackHasPrefillClaim = true,
-            RecommendedModel = "claude-sonnet-4-6",
+            RecommendedModel = "claude-opus-4-8",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -68,7 +68,7 @@ public class BetaRefusalStopDetailsTest : TestBase
                 "This request was declined because it conflicts with Anthropic's Usage Policy.",
             FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
             FallbackHasPrefillClaim = true,
-            RecommendedModel = "claude-sonnet-4-6",
+            RecommendedModel = "claude-opus-4-8",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -83,7 +83,7 @@ public class BetaRefusalStopDetailsTest : TestBase
             "This request was declined because it conflicts with Anthropic's Usage Policy.";
         string expectedFallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==";
         bool expectedFallbackHasPrefillClaim = true;
-        string expectedRecommendedModel = "claude-sonnet-4-6";
+        string expectedRecommendedModel = "claude-opus-4-8";
         JsonElement expectedType = JsonSerializer.SerializeToElement("refusal");
 
         Assert.Equal(expectedCategory, deserialized.Category);
@@ -104,7 +104,7 @@ public class BetaRefusalStopDetailsTest : TestBase
                 "This request was declined because it conflicts with Anthropic's Usage Policy.",
             FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
             FallbackHasPrefillClaim = true,
-            RecommendedModel = "claude-sonnet-4-6",
+            RecommendedModel = "claude-opus-4-8",
         };
 
         model.Validate();
@@ -120,7 +120,7 @@ public class BetaRefusalStopDetailsTest : TestBase
                 "This request was declined because it conflicts with Anthropic's Usage Policy.",
             FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
             FallbackHasPrefillClaim = true,
-            RecommendedModel = "claude-sonnet-4-6",
+            RecommendedModel = "claude-opus-4-8",
         };
 
         BetaRefusalStopDetails copied = new(model);
