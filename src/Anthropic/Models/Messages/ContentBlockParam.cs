@@ -48,8 +48,7 @@ public record class ContentBlockParam : ModelBase
                 bashCodeExecutionToolResult: (x) => x.Type,
                 textEditorCodeExecutionToolResult: (x) => x.Type,
                 toolSearchToolResult: (x) => x.Type,
-                containerUpload: (x) => x.Type,
-                midConversationSystem: (x) => x.Type
+                containerUpload: (x) => x.Type
             );
         }
     }
@@ -74,8 +73,7 @@ public record class ContentBlockParam : ModelBase
                 bashCodeExecutionToolResult: (x) => x.CacheControl,
                 textEditorCodeExecutionToolResult: (x) => x.CacheControl,
                 toolSearchToolResult: (x) => x.CacheControl,
-                containerUpload: (x) => x.CacheControl,
-                midConversationSystem: (x) => x.CacheControl
+                containerUpload: (x) => x.CacheControl
             );
         }
     }
@@ -100,8 +98,7 @@ public record class ContentBlockParam : ModelBase
                 bashCodeExecutionToolResult: (_) => null,
                 textEditorCodeExecutionToolResult: (_) => null,
                 toolSearchToolResult: (_) => null,
-                containerUpload: (_) => null,
-                midConversationSystem: (_) => null
+                containerUpload: (_) => null
             );
         }
     }
@@ -126,8 +123,7 @@ public record class ContentBlockParam : ModelBase
                 bashCodeExecutionToolResult: (_) => null,
                 textEditorCodeExecutionToolResult: (_) => null,
                 toolSearchToolResult: (_) => null,
-                containerUpload: (_) => null,
-                midConversationSystem: (_) => null
+                containerUpload: (_) => null
             );
         }
     }
@@ -152,8 +148,7 @@ public record class ContentBlockParam : ModelBase
                 bashCodeExecutionToolResult: (x) => x.ToolUseID,
                 textEditorCodeExecutionToolResult: (x) => x.ToolUseID,
                 toolSearchToolResult: (x) => x.ToolUseID,
-                containerUpload: (_) => null,
-                midConversationSystem: (_) => null
+                containerUpload: (_) => null
             );
         }
     }
@@ -255,12 +250,6 @@ public record class ContentBlockParam : ModelBase
     }
 
     public ContentBlockParam(ContainerUploadBlockParam value, JsonElement? element = null)
-    {
-        this.Value = value;
-        this._element = element;
-    }
-
-    public ContentBlockParam(MidConversationSystemBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -620,29 +609,6 @@ public record class ContentBlockParam : ModelBase
     }
 
     /// <summary>
-    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="MidConversationSystemBlockParam"/>.
-    ///
-    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
-    ///
-    /// <example>
-    /// <code>
-    /// if (instance.TryPickMidConversationSystem(out var value)) {
-    ///     // `value` is of type `MidConversationSystemBlockParam`
-    ///     Console.WriteLine(value);
-    /// }
-    /// </code>
-    /// </example>
-    /// </summary>
-    public bool TryPickMidConversationSystem(
-        [NotNullWhen(true)] out MidConversationSystemBlockParam? value
-    )
-    {
-        value = this.Value as MidConversationSystemBlockParam;
-        return value != null;
-    }
-
-    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -671,8 +637,7 @@ public record class ContentBlockParam : ModelBase
     ///     (BashCodeExecutionToolResultBlockParam value) =&gt; {...},
     ///     (TextEditorCodeExecutionToolResultBlockParam value) =&gt; {...},
     ///     (ToolSearchToolResultBlockParam value) =&gt; {...},
-    ///     (ContainerUploadBlockParam value) =&gt; {...},
-    ///     (MidConversationSystemBlockParam value) =&gt; {...}
+    ///     (ContainerUploadBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -693,8 +658,7 @@ public record class ContentBlockParam : ModelBase
         System::Action<BashCodeExecutionToolResultBlockParam> bashCodeExecutionToolResult,
         System::Action<TextEditorCodeExecutionToolResultBlockParam> textEditorCodeExecutionToolResult,
         System::Action<ToolSearchToolResultBlockParam> toolSearchToolResult,
-        System::Action<ContainerUploadBlockParam> containerUpload,
-        System::Action<MidConversationSystemBlockParam> midConversationSystem
+        System::Action<ContainerUploadBlockParam> containerUpload
     )
     {
         switch (this.Value)
@@ -747,9 +711,6 @@ public record class ContentBlockParam : ModelBase
             case ContainerUploadBlockParam value:
                 containerUpload(value);
                 break;
-            case MidConversationSystemBlockParam value:
-                midConversationSystem(value);
-                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of ContentBlockParam"
@@ -787,8 +748,7 @@ public record class ContentBlockParam : ModelBase
     ///     (BashCodeExecutionToolResultBlockParam value) =&gt; {...},
     ///     (TextEditorCodeExecutionToolResultBlockParam value) =&gt; {...},
     ///     (ToolSearchToolResultBlockParam value) =&gt; {...},
-    ///     (ContainerUploadBlockParam value) =&gt; {...},
-    ///     (MidConversationSystemBlockParam value) =&gt; {...}
+    ///     (ContainerUploadBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -812,8 +772,7 @@ public record class ContentBlockParam : ModelBase
             T
         > textEditorCodeExecutionToolResult,
         System::Func<ToolSearchToolResultBlockParam, T> toolSearchToolResult,
-        System::Func<ContainerUploadBlockParam, T> containerUpload,
-        System::Func<MidConversationSystemBlockParam, T> midConversationSystem
+        System::Func<ContainerUploadBlockParam, T> containerUpload
     )
     {
         return this.Value switch
@@ -836,7 +795,6 @@ public record class ContentBlockParam : ModelBase
             ),
             ToolSearchToolResultBlockParam value => toolSearchToolResult(value),
             ContainerUploadBlockParam value => containerUpload(value),
-            MidConversationSystemBlockParam value => midConversationSystem(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ContentBlockParam"
             ),
@@ -885,9 +843,6 @@ public record class ContentBlockParam : ModelBase
     public static implicit operator ContentBlockParam(ContainerUploadBlockParam value) =>
         new(value);
 
-    public static implicit operator ContentBlockParam(MidConversationSystemBlockParam value) =>
-        new(value);
-
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -922,8 +877,7 @@ public record class ContentBlockParam : ModelBase
             (bashCodeExecutionToolResult) => bashCodeExecutionToolResult.Validate(),
             (textEditorCodeExecutionToolResult) => textEditorCodeExecutionToolResult.Validate(),
             (toolSearchToolResult) => toolSearchToolResult.Validate(),
-            (containerUpload) => containerUpload.Validate(),
-            (midConversationSystem) => midConversationSystem.Validate()
+            (containerUpload) => containerUpload.Validate()
         );
     }
 
@@ -963,7 +917,6 @@ public record class ContentBlockParam : ModelBase
             TextEditorCodeExecutionToolResultBlockParam _ => 13,
             ToolSearchToolResultBlockParam _ => 14,
             ContainerUploadBlockParam _ => 15,
-            MidConversationSystemBlockParam _ => 16,
             _ => -1,
         };
     }
@@ -1295,26 +1248,6 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ContainerUploadBlockParam>(
-                        element,
-                        options
-                    );
-                    if (deserialized != null)
-                    {
-                        return new(deserialized, element);
-                    }
-                }
-                catch (JsonException)
-                {
-                    // ignore
-                }
-
-                return new(element);
-            }
-            case "mid_conv_system":
-            {
-                try
-                {
-                    var deserialized = JsonSerializer.Deserialize<MidConversationSystemBlockParam>(
                         element,
                         options
                     );

@@ -38,7 +38,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus4_6,
+            Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
                 Category = Category.Cyber,
@@ -86,7 +86,7 @@ public class MessageTest : TestBase
                 Text = "Hi! My name is Claude.",
             },
         ];
-        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_6;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         RefusalStopDetails expectedStopDetails = new()
         {
@@ -155,7 +155,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus4_6,
+            Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
                 Category = Category.Cyber,
@@ -214,7 +214,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus4_6,
+            Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
                 Category = Category.Cyber,
@@ -269,7 +269,7 @@ public class MessageTest : TestBase
                 Text = "Hi! My name is Claude.",
             },
         ];
-        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_6;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         RefusalStopDetails expectedStopDetails = new()
         {
@@ -338,7 +338,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus4_6,
+            Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
                 Category = Category.Cyber,
@@ -394,7 +394,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus4_6,
+            Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
                 Category = Category.Cyber,

@@ -16,7 +16,7 @@ public class AgentCreateParamsTest : TestBase
     {
         var parameters = new AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeSonnet4_6,
+            Model = BetaManagedAgentsModel.ClaudeOpus5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
             McpServers =
@@ -79,7 +79,7 @@ public class AgentCreateParamsTest : TestBase
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
-        Model expectedModel = BetaManagedAgentsModel.ClaudeSonnet4_6;
+        Model expectedModel = BetaManagedAgentsModel.ClaudeOpus5;
         string expectedName = "My First Agent";
         string expectedDescription = "A general-purpose starter agent.";
         List<BetaManagedAgentsUrlMcpServerParams> expectedMcpServers =
@@ -188,7 +188,7 @@ public class AgentCreateParamsTest : TestBase
     {
         var parameters = new AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeSonnet4_6,
+            Model = BetaManagedAgentsModel.ClaudeOpus5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
             Multiagent = new()
@@ -223,7 +223,7 @@ public class AgentCreateParamsTest : TestBase
     {
         var parameters = new AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeSonnet4_6,
+            Model = BetaManagedAgentsModel.ClaudeOpus5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
             Multiagent = new()
@@ -265,7 +265,7 @@ public class AgentCreateParamsTest : TestBase
     {
         var parameters = new AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeSonnet4_6,
+            Model = BetaManagedAgentsModel.ClaudeOpus5,
             Name = "My First Agent",
             McpServers =
             [
@@ -327,7 +327,7 @@ public class AgentCreateParamsTest : TestBase
     {
         var parameters = new AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeSonnet4_6,
+            Model = BetaManagedAgentsModel.ClaudeOpus5,
             Name = "My First Agent",
             McpServers =
             [
@@ -393,7 +393,7 @@ public class AgentCreateParamsTest : TestBase
     {
         AgentCreateParams parameters = new()
         {
-            Model = BetaManagedAgentsModel.ClaudeSonnet4_6,
+            Model = BetaManagedAgentsModel.ClaudeOpus5,
             Name = "My First Agent",
         };
 
@@ -410,7 +410,7 @@ public class AgentCreateParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         AgentCreateParams parameters = new()
         {
-            Model = BetaManagedAgentsModel.ClaudeSonnet4_6,
+            Model = BetaManagedAgentsModel.ClaudeOpus5,
             Name = "My First Agent",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
@@ -428,7 +428,7 @@ public class AgentCreateParamsTest : TestBase
     {
         var parameters = new AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeSonnet4_6,
+            Model = BetaManagedAgentsModel.ClaudeOpus5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
             McpServers =
@@ -511,7 +511,7 @@ public class ModelTest : TestBase
     {
         Model value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -534,7 +534,7 @@ public class ModelTest : TestBase
     {
         Model value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,

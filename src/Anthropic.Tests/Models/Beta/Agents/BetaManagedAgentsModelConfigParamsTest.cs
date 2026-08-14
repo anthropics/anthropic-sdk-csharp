@@ -12,13 +12,13 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
 
-        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_8;
+        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus5;
         BetaManagedAgentsModelConfigParamsEffort expectedEffort = BetaManagedAgentsEffortLevel.Low;
         string expectedInferenceGeo = "inference_geo";
         ApiEnum<string, BetaManagedAgentsModelConfigParamsSpeed> expectedSpeed =
@@ -35,7 +35,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -55,7 +55,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -68,7 +68,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_8;
+        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus5;
         BetaManagedAgentsModelConfigParamsEffort expectedEffort = BetaManagedAgentsEffortLevel.Low;
         string expectedInferenceGeo = "inference_geo";
         ApiEnum<string, BetaManagedAgentsModelConfigParamsSpeed> expectedSpeed =
@@ -85,7 +85,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -99,7 +99,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
         };
 
         Assert.Null(model.Effort);
@@ -115,7 +115,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
         };
 
         model.Validate();
@@ -126,7 +126,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
 
             Effort = null,
             InferenceGeo = null,
@@ -146,7 +146,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
 
             Effort = null,
             InferenceGeo = null,
@@ -161,7 +161,7 @@ public class BetaManagedAgentsModelConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfigParams
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,

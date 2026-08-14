@@ -12,13 +12,13 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
             InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
 
-        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_8;
+        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus5;
         Effort expectedEffort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low);
         string expectedInferenceGeo = "inference_geo";
         ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
@@ -34,7 +34,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
             InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
@@ -54,7 +54,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
             InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
@@ -67,7 +67,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus4_8;
+        ApiEnum<string, BetaManagedAgentsModel> expectedID = BetaManagedAgentsModel.ClaudeOpus5;
         Effort expectedEffort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low);
         string expectedInferenceGeo = "inference_geo";
         ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
@@ -83,7 +83,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
             InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
@@ -95,7 +95,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaManagedAgentsModelConfig { ID = BetaManagedAgentsModel.ClaudeOpus4_8 };
+        var model = new BetaManagedAgentsModelConfig { ID = BetaManagedAgentsModel.ClaudeOpus5 };
 
         Assert.Null(model.Effort);
         Assert.False(model.RawData.ContainsKey("effort"));
@@ -108,7 +108,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaManagedAgentsModelConfig { ID = BetaManagedAgentsModel.ClaudeOpus4_8 };
+        var model = new BetaManagedAgentsModelConfig { ID = BetaManagedAgentsModel.ClaudeOpus5 };
 
         model.Validate();
     }
@@ -118,7 +118,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
 
             // Null should be interpreted as omitted for these properties
             Effort = null,
@@ -139,7 +139,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
 
             // Null should be interpreted as omitted for these properties
             Effort = null,
@@ -155,7 +155,7 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     {
         var model = new BetaManagedAgentsModelConfig
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
             InferenceGeo = "inference_geo",
             Speed = Speed.Standard,

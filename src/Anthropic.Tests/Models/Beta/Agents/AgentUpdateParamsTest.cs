@@ -30,7 +30,7 @@ public class AgentUpdateParamsTest : TestBase
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+                ID = BetaManagedAgentsModel.ClaudeOpus5,
                 Effort = BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -101,7 +101,7 @@ public class AgentUpdateParamsTest : TestBase
         Dictionary<string, string?> expectedMetadata = new() { { "foo", "string" } };
         AgentUpdateParamsModel expectedModel = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -367,7 +367,7 @@ public class AgentUpdateParamsTest : TestBase
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+                ID = BetaManagedAgentsModel.ClaudeOpus5,
                 Effort = BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -401,7 +401,7 @@ public class AgentUpdateParamsTest : TestBase
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+                ID = BetaManagedAgentsModel.ClaudeOpus5,
                 Effort = BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -489,7 +489,7 @@ public class AgentUpdateParamsTest : TestBase
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+                ID = BetaManagedAgentsModel.ClaudeOpus5,
                 Effort = BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -566,7 +566,7 @@ public class AgentUpdateParamsModelTest : TestBase
     {
         AgentUpdateParamsModel value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -592,7 +592,7 @@ public class AgentUpdateParamsModelTest : TestBase
     {
         AgentUpdateParamsModel value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus4_8,
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,

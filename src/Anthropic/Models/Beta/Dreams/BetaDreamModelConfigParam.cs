@@ -18,7 +18,7 @@ namespace Anthropic.Models.Beta.Dreams;
 public sealed record class BetaDreamModelConfigParam : JsonModel
 {
     /// <summary>
-    /// Model identifier, e.g. "claude-opus-4-7". 1-256 characters.
+    /// Model identifier, e.g. "claude-opus-5". 1-256 characters.
     /// </summary>
     public required string ID
     {

@@ -393,38 +393,6 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
                 if (ReferencedToolName(addition.Tool.Value) is { } addedName)
                     available.Add(addedName);
                 break;
-            case BetaMidConversationSystemBlockParam mid:
-                foreach (var inner in mid.Content)
-                {
-                    ApplyToolChange(inner, available);
-                }
-                break;
-            default:
-                // Other and unknown/newer block types leave the set untouched
-                // (forward compatibility).
-                break;
-        }
-    }
-
-    private static void ApplyToolChange(
-        BetaMidConversationSystemBlockParamContent block,
-        HashSet<string> available
-    )
-    {
-        switch (block.Value)
-        {
-            case BetaRequestToolRemovalBlock removal:
-                if (ReferencedToolName(removal.Tool.Value) is { } removedName)
-                    available.Remove(removedName);
-                break;
-            case BetaRequestToolAdditionBlock addition:
-                if (ReferencedToolName(addition.Tool.Value) is { } addedName)
-                    available.Add(addedName);
-                break;
-            default:
-                // Other and unknown/newer block types leave the set untouched
-                // (forward compatibility).
-                break;
         }
     }
 
