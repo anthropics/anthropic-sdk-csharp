@@ -40,6 +40,13 @@ public class BetaManagedAgentsActorTest : TestBase
     }
 
     [Fact]
+    public void ServiceAccountValidationWorks()
+    {
+        BetaManagedAgentsActor value = new BetaManagedAgentsServiceAccountActor("x");
+        value.Validate();
+    }
+
+    [Fact]
     public void SessionSerializationRoundtripWorks()
     {
         BetaManagedAgentsActor value = new BetaManagedAgentsSessionActor()
@@ -81,6 +88,19 @@ public class BetaManagedAgentsActorTest : TestBase
             Type = BetaManagedAgentsUserActorType.UserActor,
             UserID = "x",
         };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsActor>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ServiceAccountSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsActor value = new BetaManagedAgentsServiceAccountActor("x");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsActor>(
             element,

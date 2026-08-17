@@ -172,6 +172,27 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
+    /// Query parameter for service_account_id
+    /// </summary>
+    public string? ServiceAccountID
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableClass<string>("service_account_id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set("service_account_id", value);
+        }
+    }
+
+    /// <summary>
     /// Query parameter for session_id
     /// </summary>
     public string? SessionID

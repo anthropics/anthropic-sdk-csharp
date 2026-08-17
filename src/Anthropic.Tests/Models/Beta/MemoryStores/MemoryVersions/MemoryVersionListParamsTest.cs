@@ -23,6 +23,7 @@ public class MemoryVersionListParamsTest : TestBase
             MemoryID = "memory_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
             Page = "page",
+            ServiceAccountID = "service_account_id",
             SessionID = "session_id",
             View = BetaManagedAgentsMemoryView.Basic,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -37,6 +38,7 @@ public class MemoryVersionListParamsTest : TestBase
         ApiEnum<string, BetaManagedAgentsMemoryVersionOperation> expectedOperation =
             BetaManagedAgentsMemoryVersionOperation.Created;
         string expectedPage = "page";
+        string expectedServiceAccountID = "service_account_id";
         string expectedSessionID = "session_id";
         ApiEnum<string, BetaManagedAgentsMemoryView> expectedView =
             BetaManagedAgentsMemoryView.Basic;
@@ -53,6 +55,7 @@ public class MemoryVersionListParamsTest : TestBase
         Assert.Equal(expectedMemoryID, parameters.MemoryID);
         Assert.Equal(expectedOperation, parameters.Operation);
         Assert.Equal(expectedPage, parameters.Page);
+        Assert.Equal(expectedServiceAccountID, parameters.ServiceAccountID);
         Assert.Equal(expectedSessionID, parameters.SessionID);
         Assert.Equal(expectedView, parameters.View);
         Assert.NotNull(parameters.Betas);
@@ -82,6 +85,8 @@ public class MemoryVersionListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("operation"));
         Assert.Null(parameters.Page);
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
+        Assert.Null(parameters.ServiceAccountID);
+        Assert.False(parameters.RawQueryData.ContainsKey("service_account_id"));
         Assert.Null(parameters.SessionID);
         Assert.False(parameters.RawQueryData.ContainsKey("session_id"));
         Assert.Null(parameters.View);
@@ -105,6 +110,7 @@ public class MemoryVersionListParamsTest : TestBase
             MemoryID = null,
             Operation = null,
             Page = null,
+            ServiceAccountID = null,
             SessionID = null,
             View = null,
             Betas = null,
@@ -124,6 +130,8 @@ public class MemoryVersionListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("operation"));
         Assert.Null(parameters.Page);
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
+        Assert.Null(parameters.ServiceAccountID);
+        Assert.False(parameters.RawQueryData.ContainsKey("service_account_id"));
         Assert.Null(parameters.SessionID);
         Assert.False(parameters.RawQueryData.ContainsKey("session_id"));
         Assert.Null(parameters.View);
@@ -145,6 +153,7 @@ public class MemoryVersionListParamsTest : TestBase
             MemoryID = "memory_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
             Page = "page",
+            ServiceAccountID = "service_account_id",
             SessionID = "session_id",
             View = BetaManagedAgentsMemoryView.Basic,
         };
@@ -154,7 +163,7 @@ public class MemoryVersionListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memory_versions?beta=true&api_key_id=api_key_id&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&limit=0&memory_id=memory_id&operation=created&page=page&session_id=session_id&view=basic"
+                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memory_versions?beta=true&api_key_id=api_key_id&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&limit=0&memory_id=memory_id&operation=created&page=page&service_account_id=service_account_id&session_id=session_id&view=basic"
                 ),
                 url
             )
@@ -192,6 +201,7 @@ public class MemoryVersionListParamsTest : TestBase
             MemoryID = "memory_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
             Page = "page",
+            ServiceAccountID = "service_account_id",
             SessionID = "session_id",
             View = BetaManagedAgentsMemoryView.Basic,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
