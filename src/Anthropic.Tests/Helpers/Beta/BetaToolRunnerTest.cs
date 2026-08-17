@@ -17,7 +17,8 @@ public class BetaToolRunnerTest
 
     private static BetaMessage MakeMessage(
         IReadOnlyList<BetaContentBlock> content,
-        BetaStopReason stopReason = BetaStopReason.EndTurn
+        BetaStopReason stopReason = BetaStopReason.EndTurn,
+        BetaContainer? container = null
     )
     {
         return new()
@@ -43,7 +44,7 @@ public class BetaToolRunnerTest
                 InferenceGeo = null,
                 Iterations = null,
             },
-            Container = null,
+            Container = container,
             ContextManagement = null,
             Diagnostics = null,
         };
@@ -1512,6 +1513,141 @@ public class BetaToolRunnerTest
             s => s.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()),
             Times.Exactly(2)
         );
+    }
+
+    private static BetaContainer ServerContainer =>
+        new()
+        {
+            ID = "container_123",
+            ExpiresAt = DateTimeOffset.Parse("2026-01-01T00:00:00Z"),
+            Skills = null,
+        };
+
+    private static async Task<List<MessageCreateParams>> RunContainerLoopAsync(
+        MessageCreateParams parameters,
+        CancellationToken ct
+    )
+    {
+        var mock = new Mock<IMessageService>();
+        var captured = new List<MessageCreateParams>();
+        mock.Setup(s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(
+                (MessageCreateParams p, CancellationToken _) =>
+                {
+                    captured.Add(p);
+                    return captured.Count == 1
+                        ? MakeMessage(
+                            [MakeToolUseBlock("tu_1", "get_weather", new())],
+                            BetaStopReason.ToolUse,
+                            ServerContainer
+                        )
+                        : MakeMessage([MakeTextBlock("Done")]);
+                }
+            );
+
+        var runner = mock.Object.ToolRunner(parameters, [MakeWeatherToolSync(_ => "Sunny")]);
+        await runner.RunUntilDoneAsync(ct);
+        return captured;
+    }
+
+    [Fact]
+    public async Task Container_FromResponse_ReusedOnNextRequest()
+    {
+        var ct = TestContext.Current.CancellationToken;
+
+        var captured = await RunContainerLoopAsync(BaseParams, ct);
+
+        Assert.Equal(2, captured.Count);
+        Assert.Null(captured[0].Container);
+        Assert.Equal("container_123", captured[1].Container?.Value);
+    }
+
+    [Fact]
+    public async Task Container_PinnedByCaller_NotReplaced()
+    {
+        var ct = TestContext.Current.CancellationToken;
+
+        var captured = await RunContainerLoopAsync(
+            BaseParams with
+            {
+                Container = "container_mine",
+            },
+            ct
+        );
+
+        Assert.Equal("container_mine", captured[1].Container?.Value);
+    }
+
+    [Fact]
+    public async Task Container_PinnedParamsWithoutID_GetIDFilledIn()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var skill = new BetaSkillParams { SkillID = "pdf", Type = BetaSkillParamsType.Anthropic };
+
+        var captured = await RunContainerLoopAsync(
+            BaseParams with
+            {
+                Container = new BetaContainerParams { Skills = [skill] },
+            },
+            ct
+        );
+
+        Assert.True(captured[1].Container!.TryPickBetaContainerParams(out var sent));
+        Assert.Equal("container_123", sent.ID);
+        Assert.Equal([skill], sent.Skills);
+    }
+
+    [Fact]
+    public async Task Streaming_Container_FromResponse_ReusedOnNextRequest()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+        var captured = new List<MessageCreateParams>();
+
+        static IAsyncEnumerable<BetaRawMessageStreamEvent> MakeToolUseStream()
+        {
+            return MakeEventStream(
+                """{"type":"message_start","message":{"id":"msg_1","type":"message","role":"assistant","content":[],"model":"claude-opus-4-6-20250929","stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":10}}}""",
+                """{"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"tu_1","name":"get_weather","input":{}}}""",
+                """{"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"location\":\"SF\"}"}}""",
+                """{"type":"content_block_stop","index":0}""",
+                """{"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null,"container":{"id":"container_123","expires_at":"2026-01-01T00:00:00Z"}},"usage":{"output_tokens":10}}""",
+                """{"type":"message_stop"}"""
+            );
+        }
+
+        static IAsyncEnumerable<BetaRawMessageStreamEvent> MakeTextStream()
+        {
+            return MakeEventStream(
+                """{"type":"message_start","message":{"id":"msg_2","type":"message","role":"assistant","content":[],"model":"claude-opus-4-6-20250929","stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":10}}}""",
+                """{"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}""",
+                """{"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Done"}}""",
+                """{"type":"content_block_stop","index":0}""",
+                """{"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":10}}""",
+                """{"type":"message_stop"}"""
+            );
+        }
+
+        mock.Setup(s =>
+                s.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
+            )
+            .Returns(
+                (MessageCreateParams p, CancellationToken _) =>
+                {
+                    captured.Add(p);
+                    return captured.Count == 1 ? MakeToolUseStream() : MakeTextStream();
+                }
+            );
+
+        var runner = mock.Object.ToolRunner(BaseParams, [MakeWeatherToolSync(_ => "Sunny")]);
+        await foreach (var stream in runner.Streaming(ct).WithCancellation(ct))
+        {
+            await foreach (var _ in stream.WithCancellation(ct)) { }
+        }
+
+        Assert.Equal(2, captured.Count);
+        Assert.Null(captured[0].Container);
+        Assert.Equal("container_123", captured[1].Container?.Value);
     }
 
     private class CustomWeatherTool : IBetaRunnableTool

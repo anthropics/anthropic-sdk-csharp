@@ -142,6 +142,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
                 .Create(iterationParams, cancellationToken)
                 .ConfigureAwait(false);
             iterations++;
+            AdoptContainer(response);
 
             yield return response;
 
@@ -247,6 +248,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
 
             var response = aggregator.Message();
             iterations++;
+            AdoptContainer(response);
 
             // A refusal-terminated turn is terminal: its tool calls belong to a dead
             // conversation — executing them fires side effects the model never confirmed
@@ -458,6 +460,30 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
                 Content = ex.Message,
                 IsError = true,
             };
+        }
+    }
+
+    /// <summary>
+    /// Reuses the container the previous turn ran in on the next request, so server-side
+    /// state survives across iterations. A container the caller pinned is left alone,
+    /// except that a pinned <see cref="BetaContainerParams"/> without an id gets the id filled in.
+    /// </summary>
+    private void AdoptContainer(BetaMessage response)
+    {
+        if (response.Container is not { } container)
+            return;
+
+        switch (_currentParams.Container)
+        {
+            case null:
+                _currentParams = _currentParams with { Container = container.ID };
+                break;
+            case { Value: BetaContainerParams { ID: null } pinned }:
+                _currentParams = _currentParams with
+                {
+                    Container = pinned with { ID = container.ID },
+                };
+                break;
         }
     }
 
