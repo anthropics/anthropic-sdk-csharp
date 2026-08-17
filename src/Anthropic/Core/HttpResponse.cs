@@ -48,6 +48,20 @@ public class HttpResponse : IDisposable
         }
     }
 
+    /// <summary>
+    /// Returns the value of the <c>anthropic-workspace-id</c> header,
+    /// or null if there's no such header in the response.
+    /// </summary>
+    public string? WorkspaceID
+    {
+        get
+        {
+            return RawMessage.Headers.TryGetValues("anthropic-workspace-id", out var value)
+                ? Enumerable.FirstOrDefault(value)
+                : null;
+        }
+    }
+
     public IEnumerable<string> GetHeaderValues(string name) => RawMessage.Headers.GetValues(name);
 
     public bool TryGetHeaderValues(
