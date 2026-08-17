@@ -15,7 +15,7 @@ function prism_is_running() {
 
 kill_server_on_port() {
   if [ ! "$(which lsof)" ]; then
-    echo "Warning: lsof not found. Prism will not be killed."
+    echo "Warning: lsof not found. The mock server will not be killed."
     return 0
   fi
   pids=$(lsof -t -i tcp:"$1" || echo "")
