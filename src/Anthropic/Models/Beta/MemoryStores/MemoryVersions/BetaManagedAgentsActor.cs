@@ -49,6 +49,15 @@ public record class BetaManagedAgentsActor : ModelBase
         this._element = element;
     }
 
+    public BetaManagedAgentsActor(
+        BetaManagedAgentsServiceAccountActor value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
     public BetaManagedAgentsActor(JsonElement element)
     {
         this._element = element;
@@ -118,6 +127,29 @@ public record class BetaManagedAgentsActor : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsServiceAccountActor"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickServiceAccount(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsServiceAccountActor`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickServiceAccount(
+        [NotNullWhen(true)] out BetaManagedAgentsServiceAccountActor? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsServiceAccountActor;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -133,7 +165,8 @@ public record class BetaManagedAgentsActor : ModelBase
     /// instance.Switch(
     ///     (BetaManagedAgentsSessionActor value) =&gt; {...},
     ///     (BetaManagedAgentsApiActor value) =&gt; {...},
-    ///     (BetaManagedAgentsUserActor value) =&gt; {...}
+    ///     (BetaManagedAgentsUserActor value) =&gt; {...},
+    ///     (BetaManagedAgentsServiceAccountActor value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -141,7 +174,8 @@ public record class BetaManagedAgentsActor : ModelBase
     public void Switch(
         System::Action<BetaManagedAgentsSessionActor> session,
         System::Action<BetaManagedAgentsApiActor> api,
-        System::Action<BetaManagedAgentsUserActor> user
+        System::Action<BetaManagedAgentsUserActor> user,
+        System::Action<BetaManagedAgentsServiceAccountActor> serviceAccount
     )
     {
         switch (this.Value)
@@ -154,6 +188,9 @@ public record class BetaManagedAgentsActor : ModelBase
                 break;
             case BetaManagedAgentsUserActor value:
                 user(value);
+                break;
+            case BetaManagedAgentsServiceAccountActor value:
+                serviceAccount(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -179,7 +216,8 @@ public record class BetaManagedAgentsActor : ModelBase
     /// var result = instance.Match(
     ///     (BetaManagedAgentsSessionActor value) =&gt; {...},
     ///     (BetaManagedAgentsApiActor value) =&gt; {...},
-    ///     (BetaManagedAgentsUserActor value) =&gt; {...}
+    ///     (BetaManagedAgentsUserActor value) =&gt; {...},
+    ///     (BetaManagedAgentsServiceAccountActor value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -187,7 +225,8 @@ public record class BetaManagedAgentsActor : ModelBase
     public T Match<T>(
         System::Func<BetaManagedAgentsSessionActor, T> session,
         System::Func<BetaManagedAgentsApiActor, T> api,
-        System::Func<BetaManagedAgentsUserActor, T> user
+        System::Func<BetaManagedAgentsUserActor, T> user,
+        System::Func<BetaManagedAgentsServiceAccountActor, T> serviceAccount
     )
     {
         return this.Value switch
@@ -195,6 +234,7 @@ public record class BetaManagedAgentsActor : ModelBase
             BetaManagedAgentsSessionActor value => session(value),
             BetaManagedAgentsApiActor value => api(value),
             BetaManagedAgentsUserActor value => user(value),
+            BetaManagedAgentsServiceAccountActor value => serviceAccount(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsActor"
             ),
@@ -209,6 +249,10 @@ public record class BetaManagedAgentsActor : ModelBase
 
     public static implicit operator BetaManagedAgentsActor(BetaManagedAgentsUserActor value) =>
         new(value);
+
+    public static implicit operator BetaManagedAgentsActor(
+        BetaManagedAgentsServiceAccountActor value
+    ) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -231,7 +275,8 @@ public record class BetaManagedAgentsActor : ModelBase
         this.Switch(
             (session) => session.Validate(),
             (api) => api.Validate(),
-            (user) => user.Validate()
+            (user) => user.Validate(),
+            (serviceAccount) => serviceAccount.Validate()
         );
     }
 
@@ -258,6 +303,7 @@ public record class BetaManagedAgentsActor : ModelBase
             BetaManagedAgentsSessionActor _ => 0,
             BetaManagedAgentsApiActor _ => 1,
             BetaManagedAgentsUserActor _ => 2,
+            BetaManagedAgentsServiceAccountActor _ => 3,
             _ => -1,
         };
     }
@@ -332,6 +378,27 @@ sealed class BetaManagedAgentsActorConverter : JsonConverter<BetaManagedAgentsAc
                         element,
                         options
                     );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "service_account_actor":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsServiceAccountActor>(
+                            element,
+                            options
+                        );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);

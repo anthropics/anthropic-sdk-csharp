@@ -18,16 +18,19 @@ public class FileUploadParamsTest : TestBase
         var parameters = new FileUploadParams
         {
             File = file,
+            ExpiresInSeconds = 3600,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         BinaryContent expectedFile = file;
+        long expectedExpiresInSeconds = 3600;
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
 
         Assert.Equal(expectedFile, parameters.File);
+        Assert.Equal(expectedExpiresInSeconds, parameters.ExpiresInSeconds);
         Assert.NotNull(parameters.Betas);
         Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
         for (int i = 0; i < expectedBetas.Count; i++)
@@ -43,6 +46,8 @@ public class FileUploadParamsTest : TestBase
 
         var parameters = new FileUploadParams { File = file };
 
+        Assert.Null(parameters.ExpiresInSeconds);
+        Assert.False(parameters.RawBodyData.ContainsKey("expires_in_seconds"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
@@ -57,9 +62,12 @@ public class FileUploadParamsTest : TestBase
             File = file,
 
             // Null should be interpreted as omitted for these properties
+            ExpiresInSeconds = null,
             Betas = null,
         };
 
+        Assert.Null(parameters.ExpiresInSeconds);
+        Assert.False(parameters.RawBodyData.ContainsKey("expires_in_seconds"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
@@ -100,6 +108,7 @@ public class FileUploadParamsTest : TestBase
         var parameters = new FileUploadParams
         {
             File = Encoding.UTF8.GetBytes("Example data"),
+            ExpiresInSeconds = 3600,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 

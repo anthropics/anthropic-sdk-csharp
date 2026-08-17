@@ -39,6 +39,28 @@ public record class FileUploadParams : ParamsBase
     }
 
     /// <summary>
+    /// Seconds from upload until the file expires and its bytes become permanently
+    /// unavailable. Must be between 3600 (one hour) and 7776000 (ninety days).
+    /// </summary>
+    public long? ExpiresInSeconds
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<long>("expires_in_seconds");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("expires_in_seconds", value);
+        }
+    }
+
+    /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
