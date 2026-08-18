@@ -29,6 +29,31 @@ public record class UserProfileCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// How the platform uses the API on behalf of the entity this profile represents.
+    /// `application`: the platform sells a product that uses the API behind the
+    /// scenes, and the profile represents an individual end-user of that product.
+    /// `passthrough`: the platform resells raw inference, and the profile identifies
+    /// the resold-to company.
+    /// </summary>
+    public ApiEnum<string, AccessType>? AccessType
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<ApiEnum<string, AccessType>>("access_type");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("access_type", value);
+        }
+    }
+
+    /// <summary>
     /// Platform's own identifier for this user. Not enforced unique. Maximum 255 characters.
     /// </summary>
     public string? ExternalID
@@ -69,8 +94,9 @@ public record class UserProfileCreateParams : ParamsBase
 
     /// <summary>
     /// Optional for all profiles. Real-world name of the entity this profile represents
-    /// (company or individual); for `resold` profiles, the resold-to company's name
-    /// where known. Maximum 255 characters.
+    /// (company or individual); for a resold-to company (`relationship` `resold`
+    /// / `access_type` `passthrough`), that company's name where known. Maximum
+    /// 255 characters.
     /// </summary>
     public string? Name
     {
@@ -242,6 +268,56 @@ public record class UserProfileCreateParams : ParamsBase
     public override int GetHashCode()
     {
         return 0;
+    }
+}
+
+/// <summary>
+/// How the platform uses the API on behalf of the entity this profile represents.
+/// `application`: the platform sells a product that uses the API behind the scenes,
+/// and the profile represents an individual end-user of that product. `passthrough`:
+/// the platform resells raw inference, and the profile identifies the resold-to company.
+/// </summary>
+[JsonConverter(typeof(AccessTypeConverter))]
+public enum AccessType
+{
+    Application,
+    Passthrough,
+}
+
+sealed class AccessTypeConverter : JsonConverter<AccessType>
+{
+    public override AccessType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "application" => AccessType.Application,
+            "passthrough" => AccessType.Passthrough,
+            _ => (AccessType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        AccessType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                AccessType.Application => "application",
+                AccessType.Passthrough => "passthrough",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }
 

@@ -17,6 +17,7 @@ public class UserProfileUpdateParamsTest : TestBase
         var parameters = new UserProfileUpdateParams
         {
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            AccessType = UserProfileUpdateParamsAccessType.Application,
             ExternalID = "user_12345",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "x",
@@ -25,6 +26,8 @@ public class UserProfileUpdateParamsTest : TestBase
         };
 
         string expectedUserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9";
+        ApiEnum<string, UserProfileUpdateParamsAccessType> expectedAccessType =
+            UserProfileUpdateParamsAccessType.Application;
         string expectedExternalID = "user_12345";
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
         string expectedName = "x";
@@ -36,6 +39,7 @@ public class UserProfileUpdateParamsTest : TestBase
         ];
 
         Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
+        Assert.Equal(expectedAccessType, parameters.AccessType);
         Assert.Equal(expectedExternalID, parameters.ExternalID);
         Assert.NotNull(parameters.Metadata);
         Assert.Equal(expectedMetadata.Count, parameters.Metadata.Count);
@@ -61,6 +65,7 @@ public class UserProfileUpdateParamsTest : TestBase
         var parameters = new UserProfileUpdateParams
         {
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            AccessType = UserProfileUpdateParamsAccessType.Application,
             ExternalID = "user_12345",
             Name = "x",
             Relationship = UserProfileUpdateParamsRelationship.External,
@@ -78,6 +83,7 @@ public class UserProfileUpdateParamsTest : TestBase
         var parameters = new UserProfileUpdateParams
         {
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            AccessType = UserProfileUpdateParamsAccessType.Application,
             ExternalID = "user_12345",
             Name = "x",
             Relationship = UserProfileUpdateParamsRelationship.External,
@@ -103,6 +109,8 @@ public class UserProfileUpdateParamsTest : TestBase
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
+        Assert.Null(parameters.AccessType);
+        Assert.False(parameters.RawBodyData.ContainsKey("access_type"));
         Assert.Null(parameters.ExternalID);
         Assert.False(parameters.RawBodyData.ContainsKey("external_id"));
         Assert.Null(parameters.Name);
@@ -120,11 +128,14 @@ public class UserProfileUpdateParamsTest : TestBase
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
+            AccessType = null,
             ExternalID = null,
             Name = null,
             Relationship = null,
         };
 
+        Assert.Null(parameters.AccessType);
+        Assert.True(parameters.RawBodyData.ContainsKey("access_type"));
         Assert.Null(parameters.ExternalID);
         Assert.True(parameters.RawBodyData.ContainsKey("external_id"));
         Assert.Null(parameters.Name);
@@ -166,7 +177,7 @@ public class UserProfileUpdateParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["user-profiles-2026-03-24", "message-batches-2024-09-24"],
+            ["user-profiles-2026-08-18", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -177,6 +188,7 @@ public class UserProfileUpdateParamsTest : TestBase
         var parameters = new UserProfileUpdateParams
         {
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            AccessType = UserProfileUpdateParamsAccessType.Application,
             ExternalID = "user_12345",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "x",
@@ -187,6 +199,62 @@ public class UserProfileUpdateParamsTest : TestBase
         UserProfileUpdateParams copied = new(parameters);
 
         Assert.Equal(parameters, copied);
+    }
+}
+
+public class UserProfileUpdateParamsAccessTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(UserProfileUpdateParamsAccessType.Application)]
+    [InlineData(UserProfileUpdateParamsAccessType.Passthrough)]
+    public void Validation_Works(UserProfileUpdateParamsAccessType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, UserProfileUpdateParamsAccessType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, UserProfileUpdateParamsAccessType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(UserProfileUpdateParamsAccessType.Application)]
+    [InlineData(UserProfileUpdateParamsAccessType.Passthrough)]
+    public void SerializationRoundtrip_Works(UserProfileUpdateParamsAccessType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, UserProfileUpdateParamsAccessType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, UserProfileUpdateParamsAccessType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, UserProfileUpdateParamsAccessType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, UserProfileUpdateParamsAccessType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }
 

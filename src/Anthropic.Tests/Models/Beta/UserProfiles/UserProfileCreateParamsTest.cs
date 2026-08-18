@@ -16,6 +16,7 @@ public class UserProfileCreateParamsTest : TestBase
     {
         var parameters = new UserProfileCreateParams
         {
+            AccessType = AccessType.Application,
             ExternalID = "user_12345",
             Metadata = new Dictionary<string, string>(),
             Name = "x",
@@ -23,6 +24,7 @@ public class UserProfileCreateParamsTest : TestBase
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
+        ApiEnum<string, AccessType> expectedAccessType = AccessType.Application;
         string expectedExternalID = "user_12345";
         Dictionary<string, string> expectedMetadata = new();
         string expectedName = "x";
@@ -32,6 +34,7 @@ public class UserProfileCreateParamsTest : TestBase
             AnthropicBeta.MessageBatches2024_09_24,
         ];
 
+        Assert.Equal(expectedAccessType, parameters.AccessType);
         Assert.Equal(expectedExternalID, parameters.ExternalID);
         Assert.NotNull(parameters.Metadata);
         Assert.Equal(expectedMetadata.Count, parameters.Metadata.Count);
@@ -56,6 +59,8 @@ public class UserProfileCreateParamsTest : TestBase
     {
         var parameters = new UserProfileCreateParams { ExternalID = "user_12345", Name = "x" };
 
+        Assert.Null(parameters.AccessType);
+        Assert.False(parameters.RawBodyData.ContainsKey("access_type"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Relationship);
@@ -73,11 +78,14 @@ public class UserProfileCreateParamsTest : TestBase
             Name = "x",
 
             // Null should be interpreted as omitted for these properties
+            AccessType = null,
             Metadata = null,
             Relationship = null,
             Betas = null,
         };
 
+        Assert.Null(parameters.AccessType);
+        Assert.False(parameters.RawBodyData.ContainsKey("access_type"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Relationship);
@@ -91,6 +99,7 @@ public class UserProfileCreateParamsTest : TestBase
     {
         var parameters = new UserProfileCreateParams
         {
+            AccessType = AccessType.Application,
             Metadata = new Dictionary<string, string>(),
             Relationship = Relationship.External,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -107,6 +116,7 @@ public class UserProfileCreateParamsTest : TestBase
     {
         var parameters = new UserProfileCreateParams
         {
+            AccessType = AccessType.Application,
             Metadata = new Dictionary<string, string>(),
             Relationship = Relationship.External,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -145,7 +155,7 @@ public class UserProfileCreateParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["user-profiles-2026-03-24", "message-batches-2024-09-24"],
+            ["user-profiles-2026-08-18", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -155,6 +165,7 @@ public class UserProfileCreateParamsTest : TestBase
     {
         var parameters = new UserProfileCreateParams
         {
+            AccessType = AccessType.Application,
             ExternalID = "user_12345",
             Metadata = new Dictionary<string, string>(),
             Name = "x",
@@ -165,6 +176,64 @@ public class UserProfileCreateParamsTest : TestBase
         UserProfileCreateParams copied = new(parameters);
 
         Assert.Equal(parameters, copied);
+    }
+}
+
+public class AccessTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(AccessType.Application)]
+    [InlineData(AccessType.Passthrough)]
+    public void Validation_Works(AccessType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, AccessType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, AccessType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(AccessType.Application)]
+    [InlineData(AccessType.Passthrough)]
+    public void SerializationRoundtrip_Works(AccessType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, AccessType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AccessType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, AccessType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AccessType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 

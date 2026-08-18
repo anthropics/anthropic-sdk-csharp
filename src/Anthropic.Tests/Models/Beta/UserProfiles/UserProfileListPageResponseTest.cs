@@ -20,15 +20,16 @@ public class UserProfileListPageResponseTest : TestBase
                     ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
-                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                     TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                     {
                         { "cyber", new(UserProfiles::Status.Active) },
                     },
                     Type = UserProfiles::Type.UserProfile,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    AccessType = UserProfiles::BetaUserProfileAccessType.Application,
                     ExternalID = "user_12345",
                     Name = "Example User",
+                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -41,15 +42,16 @@ public class UserProfileListPageResponseTest : TestBase
                 ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Metadata = new Dictionary<string, string>(),
-                Relationship = UserProfiles::BetaUserProfileRelationship.External,
                 TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                 {
                     { "cyber", new(UserProfiles::Status.Active) },
                 },
                 Type = UserProfiles::Type.UserProfile,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                AccessType = UserProfiles::BetaUserProfileAccessType.Application,
                 ExternalID = "user_12345",
                 Name = "Example User",
+                Relationship = UserProfiles::BetaUserProfileRelationship.External,
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -74,15 +76,16 @@ public class UserProfileListPageResponseTest : TestBase
                     ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
-                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                     TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                     {
                         { "cyber", new(UserProfiles::Status.Active) },
                     },
                     Type = UserProfiles::Type.UserProfile,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    AccessType = UserProfiles::BetaUserProfileAccessType.Application,
                     ExternalID = "user_12345",
                     Name = "Example User",
+                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -109,15 +112,16 @@ public class UserProfileListPageResponseTest : TestBase
                     ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
-                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                     TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                     {
                         { "cyber", new(UserProfiles::Status.Active) },
                     },
                     Type = UserProfiles::Type.UserProfile,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    AccessType = UserProfiles::BetaUserProfileAccessType.Application,
                     ExternalID = "user_12345",
                     Name = "Example User",
+                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -137,15 +141,16 @@ public class UserProfileListPageResponseTest : TestBase
                 ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Metadata = new Dictionary<string, string>(),
-                Relationship = UserProfiles::BetaUserProfileRelationship.External,
                 TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                 {
                     { "cyber", new(UserProfiles::Status.Active) },
                 },
                 Type = UserProfiles::Type.UserProfile,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                AccessType = UserProfiles::BetaUserProfileAccessType.Application,
                 ExternalID = "user_12345",
                 Name = "Example User",
+                Relationship = UserProfiles::BetaUserProfileRelationship.External,
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -170,15 +175,16 @@ public class UserProfileListPageResponseTest : TestBase
                     ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
-                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                     TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                     {
                         { "cyber", new(UserProfiles::Status.Active) },
                     },
                     Type = UserProfiles::Type.UserProfile,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    AccessType = UserProfiles::BetaUserProfileAccessType.Application,
                     ExternalID = "user_12345",
                     Name = "Example User",
+                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -199,15 +205,16 @@ public class UserProfileListPageResponseTest : TestBase
                     ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
-                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                     TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                     {
                         { "cyber", new(UserProfiles::Status.Active) },
                     },
                     Type = UserProfiles::Type.UserProfile,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    AccessType = UserProfiles::BetaUserProfileAccessType.Application,
                     ExternalID = "user_12345",
                     Name = "Example User",
+                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",

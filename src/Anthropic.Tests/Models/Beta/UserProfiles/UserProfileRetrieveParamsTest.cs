@@ -93,7 +93,7 @@ public class UserProfileRetrieveParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["user-profiles-2026-03-24", "message-batches-2024-09-24"],
+            ["user-profiles-2026-08-18", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }

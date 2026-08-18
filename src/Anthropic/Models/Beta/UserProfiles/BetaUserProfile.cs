@@ -59,23 +59,6 @@ public sealed record class BetaUserProfile : JsonModel
     }
 
     /// <summary>
-    /// How the entity behind a user profile relates to the platform that owns the
-    /// API key. `external`: an individual end-user of the platform. `resold`: a company
-    /// the platform resells Claude access to. `internal`: the platform's own usage.
-    /// </summary>
-    public required ApiEnum<string, BetaUserProfileRelationship> Relationship
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaUserProfileRelationship>>(
-                "relationship"
-            );
-        }
-        init { this._rawData.Set("relationship", value); }
-    }
-
-    /// <summary>
     /// Trust grants for this profile, keyed by grant name. Key omitted when no grant
     /// is active or in flight.
     /// </summary>
@@ -126,6 +109,33 @@ public sealed record class BetaUserProfile : JsonModel
     }
 
     /// <summary>
+    /// How the platform uses the API on behalf of the entity this profile represents.
+    /// `application`: the platform sells a product that uses the API behind the
+    /// scenes, and the profile represents an individual end-user of that product.
+    /// `passthrough`: the platform resells raw inference, and the profile identifies
+    /// the resold-to company.
+    /// </summary>
+    public ApiEnum<string, BetaUserProfileAccessType>? AccessType
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, BetaUserProfileAccessType>>(
+                "access_type"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("access_type", value);
+        }
+    }
+
+    /// <summary>
     /// Platform's own identifier for this user. Not enforced unique.
     /// </summary>
     public string? ExternalID
@@ -140,7 +150,8 @@ public sealed record class BetaUserProfile : JsonModel
 
     /// <summary>
     /// Real-world name of the entity this profile represents (company or individual).
-    /// For `resold` this is the resold-to company's name.
+    /// For a resold-to company (`access_type` `passthrough`, or `relationship` `resold`
+    /// under the `user-profiles-2026-03-24` header) this is that company's name.
     /// </summary>
     public string? Name
     {
@@ -152,21 +163,47 @@ public sealed record class BetaUserProfile : JsonModel
         init { this._rawData.Set("name", value); }
     }
 
+    /// <summary>
+    /// How the entity behind a user profile relates to the platform that owns the
+    /// API key. `external`: an individual end-user of the platform. `resold`: a company
+    /// the platform resells Claude access to. `internal`: the platform's own usage.
+    /// </summary>
+    public ApiEnum<string, BetaUserProfileRelationship>? Relationship
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, BetaUserProfileRelationship>>(
+                "relationship"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("relationship", value);
+        }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
         _ = this.CreatedAt;
         _ = this.Metadata;
-        this.Relationship.Validate();
         foreach (var item in this.TrustGrants.Values)
         {
             item.Validate();
         }
         this.Type.Validate();
         _ = this.UpdatedAt;
+        this.AccessType?.Validate();
         _ = this.ExternalID;
         _ = this.Name;
+        this.Relationship?.Validate();
     }
 
     public BetaUserProfile() { }
@@ -202,6 +239,100 @@ class BetaUserProfileFromRaw : IFromRawJson<BetaUserProfile>
     /// <inheritdoc/>
     public BetaUserProfile FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaUserProfile.FromRawUnchecked(rawData);
+}
+
+/// <summary>
+/// Object type. Always `user_profile`.
+/// </summary>
+[JsonConverter(typeof(TypeConverter))]
+public enum Type
+{
+    UserProfile,
+}
+
+sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.UserProfiles.Type>
+{
+    public override global::Anthropic.Models.Beta.UserProfiles.Type Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user_profile" => global::Anthropic.Models.Beta.UserProfiles.Type.UserProfile,
+            _ => (global::Anthropic.Models.Beta.UserProfiles.Type)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        global::Anthropic.Models.Beta.UserProfiles.Type value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                global::Anthropic.Models.Beta.UserProfiles.Type.UserProfile => "user_profile",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
+/// How the platform uses the API on behalf of the entity this profile represents.
+/// `application`: the platform sells a product that uses the API behind the scenes,
+/// and the profile represents an individual end-user of that product. `passthrough`:
+/// the platform resells raw inference, and the profile identifies the resold-to company.
+/// </summary>
+[JsonConverter(typeof(BetaUserProfileAccessTypeConverter))]
+public enum BetaUserProfileAccessType
+{
+    Application,
+    Passthrough,
+}
+
+sealed class BetaUserProfileAccessTypeConverter : JsonConverter<BetaUserProfileAccessType>
+{
+    public override BetaUserProfileAccessType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "application" => BetaUserProfileAccessType.Application,
+            "passthrough" => BetaUserProfileAccessType.Passthrough,
+            _ => (BetaUserProfileAccessType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaUserProfileAccessType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaUserProfileAccessType.Application => "application",
+                BetaUserProfileAccessType.Passthrough => "passthrough",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
 }
 
 /// <summary>
@@ -247,50 +378,6 @@ sealed class BetaUserProfileRelationshipConverter : JsonConverter<BetaUserProfil
                 BetaUserProfileRelationship.External => "external",
                 BetaUserProfileRelationship.Resold => "resold",
                 BetaUserProfileRelationship.Internal => "internal",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-/// <summary>
-/// Object type. Always `user_profile`.
-/// </summary>
-[JsonConverter(typeof(TypeConverter))]
-public enum Type
-{
-    UserProfile,
-}
-
-sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.UserProfiles.Type>
-{
-    public override global::Anthropic.Models.Beta.UserProfiles.Type Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "user_profile" => global::Anthropic.Models.Beta.UserProfiles.Type.UserProfile,
-            _ => (global::Anthropic.Models.Beta.UserProfiles.Type)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.UserProfiles.Type value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                global::Anthropic.Models.Beta.UserProfiles.Type.UserProfile => "user_profile",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

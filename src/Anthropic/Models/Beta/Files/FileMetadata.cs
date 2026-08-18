@@ -116,21 +116,6 @@ public sealed record class FileMetadata : JsonModel
     }
 
     /// <summary>
-    /// RFC 3339 datetime string representing when the file will expire and become
-    /// unavailable for download. Null if the file does not expire. For files uploaded
-    /// with `expires_in_seconds`, this is the upload time plus that value.
-    /// </summary>
-    public DateTimeOffset? ExpiresAt
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<DateTimeOffset>("expires_at");
-        }
-        init { this._rawData.Set("expires_at", value); }
-    }
-
-    /// <summary>
     /// The scope of this file, indicating the context in which it was created (e.g.,
     /// a session).
     /// </summary>
@@ -157,7 +142,6 @@ public sealed record class FileMetadata : JsonModel
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         _ = this.Downloadable;
-        _ = this.ExpiresAt;
         this.Scope?.Validate();
     }
 

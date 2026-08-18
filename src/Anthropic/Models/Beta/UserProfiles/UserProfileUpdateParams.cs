@@ -31,6 +31,25 @@ public record class UserProfileUpdateParams : ParamsBase
     public string? UserProfileID { get; init; }
 
     /// <summary>
+    /// How the platform uses the API on behalf of the entity this profile represents.
+    /// `application`: the platform sells a product that uses the API behind the
+    /// scenes, and the profile represents an individual end-user of that product.
+    /// `passthrough`: the platform resells raw inference, and the profile identifies
+    /// the resold-to company.
+    /// </summary>
+    public ApiEnum<string, UserProfileUpdateParamsAccessType>? AccessType
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<
+                ApiEnum<string, UserProfileUpdateParamsAccessType>
+            >("access_type");
+        }
+        init { this._rawBodyData.Set("access_type", value); }
+    }
+
+    /// <summary>
     /// If present, replaces the stored external_id. Omit to leave unchanged. Maximum
     /// 255 characters.
     /// </summary>
@@ -247,6 +266,57 @@ public record class UserProfileUpdateParams : ParamsBase
     public override int GetHashCode()
     {
         return 0;
+    }
+}
+
+/// <summary>
+/// How the platform uses the API on behalf of the entity this profile represents.
+/// `application`: the platform sells a product that uses the API behind the scenes,
+/// and the profile represents an individual end-user of that product. `passthrough`:
+/// the platform resells raw inference, and the profile identifies the resold-to company.
+/// </summary>
+[JsonConverter(typeof(UserProfileUpdateParamsAccessTypeConverter))]
+public enum UserProfileUpdateParamsAccessType
+{
+    Application,
+    Passthrough,
+}
+
+sealed class UserProfileUpdateParamsAccessTypeConverter
+    : JsonConverter<UserProfileUpdateParamsAccessType>
+{
+    public override UserProfileUpdateParamsAccessType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "application" => UserProfileUpdateParamsAccessType.Application,
+            "passthrough" => UserProfileUpdateParamsAccessType.Passthrough,
+            _ => (UserProfileUpdateParamsAccessType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        UserProfileUpdateParamsAccessType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                UserProfileUpdateParamsAccessType.Application => "application",
+                UserProfileUpdateParamsAccessType.Passthrough => "passthrough",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }
 
