@@ -18,7 +18,6 @@ public class FileMetadataTest : TestBase
             MimeType = "application/pdf",
             SizeBytes = 102400,
             Downloadable = false,
-            ExpiresAt = DateTimeOffset.Parse("2025-05-15T18:37:24.100435Z"),
             Scope = new("id"),
         };
 
@@ -29,7 +28,6 @@ public class FileMetadataTest : TestBase
         long expectedSizeBytes = 102400;
         JsonElement expectedType = JsonSerializer.SerializeToElement("file");
         bool expectedDownloadable = false;
-        DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2025-05-15T18:37:24.100435Z");
         BetaFileScope expectedScope = new("id");
 
         Assert.Equal(expectedID, model.ID);
@@ -39,7 +37,6 @@ public class FileMetadataTest : TestBase
         Assert.Equal(expectedSizeBytes, model.SizeBytes);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedDownloadable, model.Downloadable);
-        Assert.Equal(expectedExpiresAt, model.ExpiresAt);
         Assert.Equal(expectedScope, model.Scope);
     }
 
@@ -54,7 +51,6 @@ public class FileMetadataTest : TestBase
             MimeType = "application/pdf",
             SizeBytes = 102400,
             Downloadable = false,
-            ExpiresAt = DateTimeOffset.Parse("2025-05-15T18:37:24.100435Z"),
             Scope = new("id"),
         };
 
@@ -78,7 +74,6 @@ public class FileMetadataTest : TestBase
             MimeType = "application/pdf",
             SizeBytes = 102400,
             Downloadable = false,
-            ExpiresAt = DateTimeOffset.Parse("2025-05-15T18:37:24.100435Z"),
             Scope = new("id"),
         };
 
@@ -96,7 +91,6 @@ public class FileMetadataTest : TestBase
         long expectedSizeBytes = 102400;
         JsonElement expectedType = JsonSerializer.SerializeToElement("file");
         bool expectedDownloadable = false;
-        DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2025-05-15T18:37:24.100435Z");
         BetaFileScope expectedScope = new("id");
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -106,7 +100,6 @@ public class FileMetadataTest : TestBase
         Assert.Equal(expectedSizeBytes, deserialized.SizeBytes);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedDownloadable, deserialized.Downloadable);
-        Assert.Equal(expectedExpiresAt, deserialized.ExpiresAt);
         Assert.Equal(expectedScope, deserialized.Scope);
     }
 
@@ -121,7 +114,6 @@ public class FileMetadataTest : TestBase
             MimeType = "application/pdf",
             SizeBytes = 102400,
             Downloadable = false,
-            ExpiresAt = DateTimeOffset.Parse("2025-05-15T18:37:24.100435Z"),
             Scope = new("id"),
         };
 
@@ -138,7 +130,6 @@ public class FileMetadataTest : TestBase
             Filename = "document.pdf",
             MimeType = "application/pdf",
             SizeBytes = 102400,
-            ExpiresAt = DateTimeOffset.Parse("2025-05-15T18:37:24.100435Z"),
             Scope = new("id"),
         };
 
@@ -156,7 +147,6 @@ public class FileMetadataTest : TestBase
             Filename = "document.pdf",
             MimeType = "application/pdf",
             SizeBytes = 102400,
-            ExpiresAt = DateTimeOffset.Parse("2025-05-15T18:37:24.100435Z"),
             Scope = new("id"),
         };
 
@@ -173,7 +163,6 @@ public class FileMetadataTest : TestBase
             Filename = "document.pdf",
             MimeType = "application/pdf",
             SizeBytes = 102400,
-            ExpiresAt = DateTimeOffset.Parse("2025-05-15T18:37:24.100435Z"),
             Scope = new("id"),
 
             // Null should be interpreted as omitted for these properties
@@ -194,7 +183,6 @@ public class FileMetadataTest : TestBase
             Filename = "document.pdf",
             MimeType = "application/pdf",
             SizeBytes = 102400,
-            ExpiresAt = DateTimeOffset.Parse("2025-05-15T18:37:24.100435Z"),
             Scope = new("id"),
 
             // Null should be interpreted as omitted for these properties
@@ -217,8 +205,6 @@ public class FileMetadataTest : TestBase
             Downloadable = false,
         };
 
-        Assert.Null(model.ExpiresAt);
-        Assert.False(model.RawData.ContainsKey("expires_at"));
         Assert.Null(model.Scope);
         Assert.False(model.RawData.ContainsKey("scope"));
     }
@@ -251,12 +237,9 @@ public class FileMetadataTest : TestBase
             SizeBytes = 102400,
             Downloadable = false,
 
-            ExpiresAt = null,
             Scope = null,
         };
 
-        Assert.Null(model.ExpiresAt);
-        Assert.True(model.RawData.ContainsKey("expires_at"));
         Assert.Null(model.Scope);
         Assert.True(model.RawData.ContainsKey("scope"));
     }
@@ -273,7 +256,6 @@ public class FileMetadataTest : TestBase
             SizeBytes = 102400,
             Downloadable = false,
 
-            ExpiresAt = null,
             Scope = null,
         };
 
@@ -291,7 +273,6 @@ public class FileMetadataTest : TestBase
             MimeType = "application/pdf",
             SizeBytes = 102400,
             Downloadable = false,
-            ExpiresAt = DateTimeOffset.Parse("2025-05-15T18:37:24.100435Z"),
             Scope = new("id"),
         };
 

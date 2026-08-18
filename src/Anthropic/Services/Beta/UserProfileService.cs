@@ -13,7 +13,7 @@ public sealed class UserProfileService : IUserProfileService
 {
     internal static void AddDefaultHeaders(HttpRequestMessage request)
     {
-        request.Headers.Add("anthropic-beta", "user-profiles-2026-03-24");
+        request.Headers.Add("anthropic-beta", "user-profiles-2026-08-18");
     }
 
     readonly Lazy<IUserProfileServiceWithRawResponse> _withRawResponse;
