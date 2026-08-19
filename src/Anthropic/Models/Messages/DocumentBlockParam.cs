@@ -164,7 +164,8 @@ public record class DocumentBlockParamSource : ModelBase
                 base64Pdf: (x) => x.Data,
                 plainText: (x) => x.Data,
                 contentBlock: (_) => null,
-                urlPdf: (_) => null
+                urlPdf: (_) => null,
+                fileDocument: (_) => null
             );
         }
     }
@@ -177,7 +178,8 @@ public record class DocumentBlockParamSource : ModelBase
                 base64Pdf: (x) => x.MediaType,
                 plainText: (x) => x.MediaType,
                 contentBlock: (_) => null,
-                urlPdf: (_) => null
+                urlPdf: (_) => null,
+                fileDocument: (_) => null
             );
         }
     }
@@ -190,7 +192,8 @@ public record class DocumentBlockParamSource : ModelBase
                 base64Pdf: (x) => x.Type,
                 plainText: (x) => x.Type,
                 contentBlock: (x) => x.Type,
-                urlPdf: (x) => x.Type
+                urlPdf: (x) => x.Type,
+                fileDocument: (x) => x.Type
             );
         }
     }
@@ -214,6 +217,12 @@ public record class DocumentBlockParamSource : ModelBase
     }
 
     public DocumentBlockParamSource(UrlPdfSource value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public DocumentBlockParamSource(FileDocumentSource value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -309,6 +318,27 @@ public record class DocumentBlockParamSource : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="FileDocumentSource"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickFileDocument(out var value)) {
+    ///     // `value` is of type `FileDocumentSource`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickFileDocument([NotNullWhen(true)] out FileDocumentSource? value)
+    {
+        value = this.Value as FileDocumentSource;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -325,7 +355,8 @@ public record class DocumentBlockParamSource : ModelBase
     ///     (Base64PdfSource value) =&gt; {...},
     ///     (PlainTextSource value) =&gt; {...},
     ///     (ContentBlockSource value) =&gt; {...},
-    ///     (UrlPdfSource value) =&gt; {...}
+    ///     (UrlPdfSource value) =&gt; {...},
+    ///     (FileDocumentSource value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -334,7 +365,8 @@ public record class DocumentBlockParamSource : ModelBase
         System::Action<Base64PdfSource> base64Pdf,
         System::Action<PlainTextSource> plainText,
         System::Action<ContentBlockSource> contentBlock,
-        System::Action<UrlPdfSource> urlPdf
+        System::Action<UrlPdfSource> urlPdf,
+        System::Action<FileDocumentSource> fileDocument
     )
     {
         switch (this.Value)
@@ -350,6 +382,9 @@ public record class DocumentBlockParamSource : ModelBase
                 break;
             case UrlPdfSource value:
                 urlPdf(value);
+                break;
+            case FileDocumentSource value:
+                fileDocument(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -376,7 +411,8 @@ public record class DocumentBlockParamSource : ModelBase
     ///     (Base64PdfSource value) =&gt; {...},
     ///     (PlainTextSource value) =&gt; {...},
     ///     (ContentBlockSource value) =&gt; {...},
-    ///     (UrlPdfSource value) =&gt; {...}
+    ///     (UrlPdfSource value) =&gt; {...},
+    ///     (FileDocumentSource value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -385,7 +421,8 @@ public record class DocumentBlockParamSource : ModelBase
         System::Func<Base64PdfSource, T> base64Pdf,
         System::Func<PlainTextSource, T> plainText,
         System::Func<ContentBlockSource, T> contentBlock,
-        System::Func<UrlPdfSource, T> urlPdf
+        System::Func<UrlPdfSource, T> urlPdf,
+        System::Func<FileDocumentSource, T> fileDocument
     )
     {
         return this.Value switch
@@ -394,6 +431,7 @@ public record class DocumentBlockParamSource : ModelBase
             PlainTextSource value => plainText(value),
             ContentBlockSource value => contentBlock(value),
             UrlPdfSource value => urlPdf(value),
+            FileDocumentSource value => fileDocument(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of DocumentBlockParamSource"
             ),
@@ -408,6 +446,9 @@ public record class DocumentBlockParamSource : ModelBase
         new(value);
 
     public static implicit operator DocumentBlockParamSource(UrlPdfSource value) => new(value);
+
+    public static implicit operator DocumentBlockParamSource(FileDocumentSource value) =>
+        new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -431,7 +472,8 @@ public record class DocumentBlockParamSource : ModelBase
             (base64Pdf) => base64Pdf.Validate(),
             (plainText) => plainText.Validate(),
             (contentBlock) => contentBlock.Validate(),
-            (urlPdf) => urlPdf.Validate()
+            (urlPdf) => urlPdf.Validate(),
+            (fileDocument) => fileDocument.Validate()
         );
     }
 
@@ -459,6 +501,7 @@ public record class DocumentBlockParamSource : ModelBase
             PlainTextSource _ => 1,
             ContentBlockSource _ => 2,
             UrlPdfSource _ => 3,
+            FileDocumentSource _ => 4,
             _ => -1,
         };
     }
@@ -550,6 +593,26 @@ sealed class DocumentBlockParamSourceConverter : JsonConverter<DocumentBlockPara
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<UrlPdfSource>(element, options);
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "file":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<FileDocumentSource>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);

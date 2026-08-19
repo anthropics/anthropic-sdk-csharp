@@ -997,6 +997,51 @@ public class ToolTest : TestBase
     }
 
     [Fact]
+    public void BetaBrowserToolset20260801ValidationWorks()
+    {
+        Tool value = new BetaBrowserToolset20260801()
+        {
+            AllowedCallers = [BetaBrowserToolset20260801AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Configs = new()
+            {
+                CloseTab = new() { DeferLoading = true, Enabled = true },
+                DoubleClick = new() { DeferLoading = true, Enabled = true },
+                FileUpload = new() { DeferLoading = true, Enabled = true },
+                Find = new() { DeferLoading = true, Enabled = true },
+                FormInput = new() { DeferLoading = true, Enabled = true },
+                GetPageText = new() { DeferLoading = true, Enabled = true },
+                HoldKey = new() { DeferLoading = true, Enabled = true },
+                Hover = new() { DeferLoading = true, Enabled = true },
+                JavascriptExec = new() { DeferLoading = true, Enabled = true },
+                Key = new() { DeferLoading = true, Enabled = true },
+                LeftClick = new() { DeferLoading = true, Enabled = true },
+                LeftClickDrag = new() { DeferLoading = true, Enabled = true },
+                LeftMouseDown = new() { DeferLoading = true, Enabled = true },
+                LeftMouseUp = new() { DeferLoading = true, Enabled = true },
+                ListTabs = new() { DeferLoading = true, Enabled = true },
+                MiddleClick = new() { DeferLoading = true, Enabled = true },
+                MouseMove = new() { DeferLoading = true, Enabled = true },
+                Navigate = new() { DeferLoading = true, Enabled = true },
+                NewTab = new() { DeferLoading = true, Enabled = true },
+                ReadConsole = new() { DeferLoading = true, Enabled = true },
+                ReadNetwork = new() { DeferLoading = true, Enabled = true },
+                ReadPage = new() { DeferLoading = true, Enabled = true },
+                RightClick = new() { DeferLoading = true, Enabled = true },
+                Screenshot = new() { DeferLoading = true, Enabled = true },
+                Scroll = new() { DeferLoading = true, Enabled = true },
+                ScrollTo = new() { DeferLoading = true, Enabled = true },
+                SwitchTab = new() { DeferLoading = true, Enabled = true },
+                TripleClick = new() { DeferLoading = true, Enabled = true },
+                Type = new() { DeferLoading = true, Enabled = true },
+                Wait = new() { DeferLoading = true, Enabled = true },
+                Zoom = new() { DeferLoading = true, Enabled = true },
+            },
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaToolComputerUse20241022ValidationWorks()
     {
         Tool value = new BetaToolComputerUse20241022()
@@ -1102,6 +1147,37 @@ public class ToolTest : TestBase
                 },
             ],
             Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaComputerToolset20260801ValidationWorks()
+    {
+        Tool value = new BetaComputerToolset20260801()
+        {
+            AllowedCallers = [BetaComputerToolset20260801AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Configs = new()
+            {
+                CursorPosition = new() { DeferLoading = true, Enabled = true },
+                DoubleClick = new() { DeferLoading = true, Enabled = true },
+                HoldKey = new() { DeferLoading = true, Enabled = true },
+                Key = new() { DeferLoading = true, Enabled = true },
+                LeftClick = new() { DeferLoading = true, Enabled = true },
+                LeftClickDrag = new() { DeferLoading = true, Enabled = true },
+                LeftMouseDown = new() { DeferLoading = true, Enabled = true },
+                LeftMouseUp = new() { DeferLoading = true, Enabled = true },
+                MiddleClick = new() { DeferLoading = true, Enabled = true },
+                MouseMove = new() { DeferLoading = true, Enabled = true },
+                RightClick = new() { DeferLoading = true, Enabled = true },
+                Screenshot = new() { DeferLoading = true, Enabled = true },
+                Scroll = new() { DeferLoading = true, Enabled = true },
+                TripleClick = new() { DeferLoading = true, Enabled = true },
+                Type = new() { DeferLoading = true, Enabled = true },
+                Wait = new() { DeferLoading = true, Enabled = true },
+                Zoom = new() { DeferLoading = true, Enabled = true },
+            },
         };
         value.Validate();
     }
@@ -1523,6 +1599,54 @@ public class ToolTest : TestBase
     }
 
     [Fact]
+    public void BetaBrowserToolset20260801SerializationRoundtripWorks()
+    {
+        Tool value = new BetaBrowserToolset20260801()
+        {
+            AllowedCallers = [BetaBrowserToolset20260801AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Configs = new()
+            {
+                CloseTab = new() { DeferLoading = true, Enabled = true },
+                DoubleClick = new() { DeferLoading = true, Enabled = true },
+                FileUpload = new() { DeferLoading = true, Enabled = true },
+                Find = new() { DeferLoading = true, Enabled = true },
+                FormInput = new() { DeferLoading = true, Enabled = true },
+                GetPageText = new() { DeferLoading = true, Enabled = true },
+                HoldKey = new() { DeferLoading = true, Enabled = true },
+                Hover = new() { DeferLoading = true, Enabled = true },
+                JavascriptExec = new() { DeferLoading = true, Enabled = true },
+                Key = new() { DeferLoading = true, Enabled = true },
+                LeftClick = new() { DeferLoading = true, Enabled = true },
+                LeftClickDrag = new() { DeferLoading = true, Enabled = true },
+                LeftMouseDown = new() { DeferLoading = true, Enabled = true },
+                LeftMouseUp = new() { DeferLoading = true, Enabled = true },
+                ListTabs = new() { DeferLoading = true, Enabled = true },
+                MiddleClick = new() { DeferLoading = true, Enabled = true },
+                MouseMove = new() { DeferLoading = true, Enabled = true },
+                Navigate = new() { DeferLoading = true, Enabled = true },
+                NewTab = new() { DeferLoading = true, Enabled = true },
+                ReadConsole = new() { DeferLoading = true, Enabled = true },
+                ReadNetwork = new() { DeferLoading = true, Enabled = true },
+                ReadPage = new() { DeferLoading = true, Enabled = true },
+                RightClick = new() { DeferLoading = true, Enabled = true },
+                Screenshot = new() { DeferLoading = true, Enabled = true },
+                Scroll = new() { DeferLoading = true, Enabled = true },
+                ScrollTo = new() { DeferLoading = true, Enabled = true },
+                SwitchTab = new() { DeferLoading = true, Enabled = true },
+                TripleClick = new() { DeferLoading = true, Enabled = true },
+                Type = new() { DeferLoading = true, Enabled = true },
+                Wait = new() { DeferLoading = true, Enabled = true },
+                Zoom = new() { DeferLoading = true, Enabled = true },
+            },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void BetaToolComputerUse20241022SerializationRoundtripWorks()
     {
         Tool value = new BetaToolComputerUse20241022()
@@ -1640,6 +1764,40 @@ public class ToolTest : TestBase
                 },
             ],
             Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaComputerToolset20260801SerializationRoundtripWorks()
+    {
+        Tool value = new BetaComputerToolset20260801()
+        {
+            AllowedCallers = [BetaComputerToolset20260801AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Configs = new()
+            {
+                CursorPosition = new() { DeferLoading = true, Enabled = true },
+                DoubleClick = new() { DeferLoading = true, Enabled = true },
+                HoldKey = new() { DeferLoading = true, Enabled = true },
+                Key = new() { DeferLoading = true, Enabled = true },
+                LeftClick = new() { DeferLoading = true, Enabled = true },
+                LeftClickDrag = new() { DeferLoading = true, Enabled = true },
+                LeftMouseDown = new() { DeferLoading = true, Enabled = true },
+                LeftMouseUp = new() { DeferLoading = true, Enabled = true },
+                MiddleClick = new() { DeferLoading = true, Enabled = true },
+                MouseMove = new() { DeferLoading = true, Enabled = true },
+                RightClick = new() { DeferLoading = true, Enabled = true },
+                Screenshot = new() { DeferLoading = true, Enabled = true },
+                Scroll = new() { DeferLoading = true, Enabled = true },
+                TripleClick = new() { DeferLoading = true, Enabled = true },
+                Type = new() { DeferLoading = true, Enabled = true },
+                Wait = new() { DeferLoading = true, Enabled = true },
+                Zoom = new() { DeferLoading = true, Enabled = true },
+            },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);

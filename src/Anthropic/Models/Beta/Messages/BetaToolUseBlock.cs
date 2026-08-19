@@ -79,6 +79,19 @@ public sealed record class BetaToolUseBlock : JsonModel
         }
     }
 
+    /// <summary>
+    /// For a toolset member tool_use, the toolset family.
+    /// </summary>
+    public string? ToolsetName
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("toolset_name");
+        }
+        init { this._rawData.Set("toolset_name", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -90,6 +103,7 @@ public sealed record class BetaToolUseBlock : JsonModel
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         this.Caller?.Validate();
+        _ = this.ToolsetName;
     }
 
     public BetaToolUseBlock()

@@ -45,6 +45,22 @@ public sealed record class BetaImageBlockParam : JsonModel
         init { this._rawData.Set("cache_control", value); }
     }
 
+    /// <summary>
+    /// Configures the transformations the server applies to this image before the
+    /// model observes it. Each key names a condition the server transforms images
+    /// for; its value selects the transformation applied. Omitted keys keep their
+    /// default behavior, and an empty object is equivalent to omitting the field.
+    /// </summary>
+    public BetaImageTransformationsParam? Transformations
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaImageTransformationsParam>("transformations");
+        }
+        init { this._rawData.Set("transformations", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -54,6 +70,7 @@ public sealed record class BetaImageBlockParam : JsonModel
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         this.CacheControl?.Validate();
+        this.Transformations?.Validate();
     }
 
     public BetaImageBlockParam()

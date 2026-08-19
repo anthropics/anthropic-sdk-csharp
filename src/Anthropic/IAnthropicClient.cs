@@ -63,6 +63,10 @@ public interface IAnthropicClient : IDisposable
 
     IModelService Models { get; }
 
+    IFileService Files { get; }
+
+    ISkillService Skills { get; }
+
     IBetaService Beta { get; }
 }
 
@@ -105,6 +109,10 @@ public interface IAnthropicClientWithRawResponse : IDisposable
     IMessageServiceWithRawResponse Messages { get; }
 
     IModelServiceWithRawResponse Models { get; }
+
+    IFileServiceWithRawResponse Files { get; }
+
+    ISkillServiceWithRawResponse Skills { get; }
 
     IBetaServiceWithRawResponse Beta { get; }
 

@@ -105,6 +105,18 @@ public sealed class AnthropicClient : IAnthropicClient
         get { return _models.Value; }
     }
 
+    readonly Lazy<IFileService> _files;
+    public IFileService Files
+    {
+        get { return _files.Value; }
+    }
+
+    readonly Lazy<ISkillService> _skills;
+    public ISkillService Skills
+    {
+        get { return _skills.Value; }
+    }
+
     readonly Lazy<IBetaService> _beta;
     public IBetaService Beta
     {
@@ -120,6 +132,8 @@ public sealed class AnthropicClient : IAnthropicClient
         _withRawResponse = new(() => new AnthropicClientWithRawResponse(this._options));
         _messages = new(() => new MessageService(this));
         _models = new(() => new ModelService(this));
+        _files = new(() => new FileService(this));
+        _skills = new(() => new SkillService(this));
         _beta = new(() => new BetaService(this));
     }
 
@@ -225,6 +239,18 @@ public sealed class AnthropicClientWithRawResponse : IAnthropicClientWithRawResp
     public IModelServiceWithRawResponse Models
     {
         get { return _models.Value; }
+    }
+
+    readonly Lazy<IFileServiceWithRawResponse> _files;
+    public IFileServiceWithRawResponse Files
+    {
+        get { return _files.Value; }
+    }
+
+    readonly Lazy<ISkillServiceWithRawResponse> _skills;
+    public ISkillServiceWithRawResponse Skills
+    {
+        get { return _skills.Value; }
     }
 
     readonly Lazy<IBetaServiceWithRawResponse> _beta;
@@ -429,6 +455,8 @@ public sealed class AnthropicClientWithRawResponse : IAnthropicClientWithRawResp
 
         _messages = new(() => new MessageServiceWithRawResponse(this));
         _models = new(() => new ModelServiceWithRawResponse(this));
+        _files = new(() => new FileServiceWithRawResponse(this));
+        _skills = new(() => new SkillServiceWithRawResponse(this));
         _beta = new(() => new BetaServiceWithRawResponse(this));
     }
 

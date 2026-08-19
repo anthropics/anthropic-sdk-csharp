@@ -17,10 +17,10 @@ public sealed class FileListPage(
     IFileServiceWithRawResponse service,
     FileListParams parameters,
     FileListPageResponse response
-) : IPage<FileMetadata>
+) : IPage<BetaFileMetadata>
 {
     /// <inheritdoc/>
-    public IReadOnlyList<FileMetadata> Items
+    public IReadOnlyList<BetaFileMetadata> Items
     {
         get { return response.Data; }
     }
@@ -41,8 +41,9 @@ public sealed class FileListPage(
     }
 
     /// <inheritdoc/>
-    async Task<IPage<FileMetadata>> IPage<FileMetadata>.Next(CancellationToken cancellationToken) =>
-        await this.Next(cancellationToken).ConfigureAwait(false);
+    async Task<IPage<BetaFileMetadata>> IPage<BetaFileMetadata>.Next(
+        CancellationToken cancellationToken
+    ) => await this.Next(cancellationToken).ConfigureAwait(false);
 
     /// <inheritdoc cref="IPage{T}.Next"/>
     public async Task<FileListPage> Next(CancellationToken cancellationToken = default)

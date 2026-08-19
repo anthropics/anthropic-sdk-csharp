@@ -92,6 +92,19 @@ public sealed record class BetaToolUseBlockParam : JsonModel
         }
     }
 
+    /// <summary>
+    /// For a toolset member tool_use, the toolset family this member belongs to.
+    /// </summary>
+    public string? ToolsetName
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("toolset_name");
+        }
+        init { this._rawData.Set("toolset_name", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -104,6 +117,7 @@ public sealed record class BetaToolUseBlockParam : JsonModel
         }
         this.CacheControl?.Validate();
         this.Caller?.Validate();
+        _ = this.ToolsetName;
     }
 
     public BetaToolUseBlockParam()

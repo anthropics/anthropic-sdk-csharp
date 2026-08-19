@@ -255,6 +255,7 @@ public class ContentBlockTest : TestBase
             },
             Name = "x",
             Caller = new BetaDirectCaller(),
+            ToolsetName = "toolset_name",
         };
         value.Validate();
     }
@@ -498,6 +499,7 @@ public class ContentBlockTest : TestBase
             },
             Name = "x",
             Caller = new BetaDirectCaller(),
+            ToolsetName = "toolset_name",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(

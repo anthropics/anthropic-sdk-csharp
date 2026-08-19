@@ -19,6 +19,7 @@ public class BetaToolUseBlockTest : TestBase
             },
             Name = "x",
             Caller = new BetaDirectCaller(),
+            ToolsetName = "toolset_name",
         };
 
         string expectedID = "id";
@@ -29,6 +30,7 @@ public class BetaToolUseBlockTest : TestBase
         string expectedName = "x";
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
         BetaToolUseBlockCaller expectedCaller = new BetaDirectCaller();
+        string expectedToolsetName = "toolset_name";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedInput.Count, model.Input.Count);
@@ -41,6 +43,7 @@ public class BetaToolUseBlockTest : TestBase
         Assert.Equal(expectedName, model.Name);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedCaller, model.Caller);
+        Assert.Equal(expectedToolsetName, model.ToolsetName);
     }
 
     [Fact]
@@ -55,6 +58,7 @@ public class BetaToolUseBlockTest : TestBase
             },
             Name = "x",
             Caller = new BetaDirectCaller(),
+            ToolsetName = "toolset_name",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -78,6 +82,7 @@ public class BetaToolUseBlockTest : TestBase
             },
             Name = "x",
             Caller = new BetaDirectCaller(),
+            ToolsetName = "toolset_name",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -95,6 +100,7 @@ public class BetaToolUseBlockTest : TestBase
         string expectedName = "x";
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
         BetaToolUseBlockCaller expectedCaller = new BetaDirectCaller();
+        string expectedToolsetName = "toolset_name";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedInput.Count, deserialized.Input.Count);
@@ -107,6 +113,7 @@ public class BetaToolUseBlockTest : TestBase
         Assert.Equal(expectedName, deserialized.Name);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedCaller, deserialized.Caller);
+        Assert.Equal(expectedToolsetName, deserialized.ToolsetName);
     }
 
     [Fact]
@@ -121,6 +128,7 @@ public class BetaToolUseBlockTest : TestBase
             },
             Name = "x",
             Caller = new BetaDirectCaller(),
+            ToolsetName = "toolset_name",
         };
 
         model.Validate();
@@ -137,6 +145,7 @@ public class BetaToolUseBlockTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
+            ToolsetName = "toolset_name",
         };
 
         Assert.Null(model.Caller);
@@ -154,6 +163,7 @@ public class BetaToolUseBlockTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
+            ToolsetName = "toolset_name",
         };
 
         model.Validate();
@@ -170,6 +180,7 @@ public class BetaToolUseBlockTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
+            ToolsetName = "toolset_name",
 
             // Null should be interpreted as omitted for these properties
             Caller = null,
@@ -190,9 +201,84 @@ public class BetaToolUseBlockTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
+            ToolsetName = "toolset_name",
 
             // Null should be interpreted as omitted for these properties
             Caller = null,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new BetaToolUseBlock
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+            Caller = new BetaDirectCaller(),
+        };
+
+        Assert.Null(model.ToolsetName);
+        Assert.False(model.RawData.ContainsKey("toolset_name"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new BetaToolUseBlock
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+            Caller = new BetaDirectCaller(),
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
+    {
+        var model = new BetaToolUseBlock
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+            Caller = new BetaDirectCaller(),
+
+            ToolsetName = null,
+        };
+
+        Assert.Null(model.ToolsetName);
+        Assert.True(model.RawData.ContainsKey("toolset_name"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new BetaToolUseBlock
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+            Caller = new BetaDirectCaller(),
+
+            ToolsetName = null,
         };
 
         model.Validate();
@@ -210,6 +296,7 @@ public class BetaToolUseBlockTest : TestBase
             },
             Name = "x",
             Caller = new BetaDirectCaller(),
+            ToolsetName = "toolset_name",
         };
 
         BetaToolUseBlock copied = new(model);

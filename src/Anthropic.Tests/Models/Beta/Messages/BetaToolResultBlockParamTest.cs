@@ -15,6 +15,7 @@ public class BetaToolResultBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "string",
             IsError = true,
+            ToolsetName = "toolset_name",
         };
 
         string expectedToolUseID = "tool_use_id";
@@ -22,12 +23,14 @@ public class BetaToolResultBlockParamTest : TestBase
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaToolResultBlockParamContent expectedContent = "string";
         bool expectedIsError = true;
+        string expectedToolsetName = "toolset_name";
 
         Assert.Equal(expectedToolUseID, model.ToolUseID);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedIsError, model.IsError);
+        Assert.Equal(expectedToolsetName, model.ToolsetName);
     }
 
     [Fact]
@@ -39,6 +42,7 @@ public class BetaToolResultBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "string",
             IsError = true,
+            ToolsetName = "toolset_name",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -59,6 +63,7 @@ public class BetaToolResultBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "string",
             IsError = true,
+            ToolsetName = "toolset_name",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -73,12 +78,14 @@ public class BetaToolResultBlockParamTest : TestBase
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaToolResultBlockParamContent expectedContent = "string";
         bool expectedIsError = true;
+        string expectedToolsetName = "toolset_name";
 
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedIsError, deserialized.IsError);
+        Assert.Equal(expectedToolsetName, deserialized.ToolsetName);
     }
 
     [Fact]
@@ -90,6 +97,7 @@ public class BetaToolResultBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "string",
             IsError = true,
+            ToolsetName = "toolset_name",
         };
 
         model.Validate();
@@ -102,6 +110,7 @@ public class BetaToolResultBlockParamTest : TestBase
         {
             ToolUseID = "tool_use_id",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            ToolsetName = "toolset_name",
         };
 
         Assert.Null(model.Content);
@@ -117,6 +126,7 @@ public class BetaToolResultBlockParamTest : TestBase
         {
             ToolUseID = "tool_use_id",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            ToolsetName = "toolset_name",
         };
 
         model.Validate();
@@ -129,6 +139,7 @@ public class BetaToolResultBlockParamTest : TestBase
         {
             ToolUseID = "tool_use_id",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            ToolsetName = "toolset_name",
 
             // Null should be interpreted as omitted for these properties
             Content = null,
@@ -148,6 +159,7 @@ public class BetaToolResultBlockParamTest : TestBase
         {
             ToolUseID = "tool_use_id",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            ToolsetName = "toolset_name",
 
             // Null should be interpreted as omitted for these properties
             Content = null,
@@ -169,6 +181,8 @@ public class BetaToolResultBlockParamTest : TestBase
 
         Assert.Null(model.CacheControl);
         Assert.False(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.ToolsetName);
+        Assert.False(model.RawData.ContainsKey("toolset_name"));
     }
 
     [Fact]
@@ -194,10 +208,13 @@ public class BetaToolResultBlockParamTest : TestBase
             IsError = true,
 
             CacheControl = null,
+            ToolsetName = null,
         };
 
         Assert.Null(model.CacheControl);
         Assert.True(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.ToolsetName);
+        Assert.True(model.RawData.ContainsKey("toolset_name"));
     }
 
     [Fact]
@@ -210,6 +227,7 @@ public class BetaToolResultBlockParamTest : TestBase
             IsError = true,
 
             CacheControl = null,
+            ToolsetName = null,
         };
 
         model.Validate();
@@ -224,6 +242,7 @@ public class BetaToolResultBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "string",
             IsError = true,
+            ToolsetName = "toolset_name",
         };
 
         BetaToolResultBlockParam copied = new(model);
@@ -352,6 +371,7 @@ public class BlockTest : TestBase
                 MediaType = MediaType.ImageJpeg,
             },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
         };
         value.Validate();
     }
@@ -414,6 +434,27 @@ public class BlockTest : TestBase
     }
 
     [Fact]
+    public void BetaBrowserStateBlockParamValidationWorks()
+    {
+        Block value = new BetaBrowserStateBlockParam()
+        {
+            Tabs =
+            [
+                new()
+                {
+                    TabID = "tab_id",
+                    Title = "title",
+                    Url = "url",
+                    Active = true,
+                },
+            ],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            StateChanges = [new BetaBrowserStateChangeTabOpened("tab_id")],
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaTextBlockParamSerializationRoundtripWorks()
     {
         Block value = new BetaTextBlockParam()
@@ -449,6 +490,7 @@ public class BlockTest : TestBase
                 MediaType = MediaType.ImageJpeg,
             },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Block>(element, ModelBase.SerializerOptions);
@@ -515,6 +557,30 @@ public class BlockTest : TestBase
         {
             ToolName = "tool_name",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Block>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaBrowserStateBlockParamSerializationRoundtripWorks()
+    {
+        Block value = new BetaBrowserStateBlockParam()
+        {
+            Tabs =
+            [
+                new()
+                {
+                    TabID = "tab_id",
+                    Title = "title",
+                    Url = "url",
+                    Active = true,
+                },
+            ],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            StateChanges = [new BetaBrowserStateChangeTabOpened("tab_id")],
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Block>(element, ModelBase.SerializerOptions);

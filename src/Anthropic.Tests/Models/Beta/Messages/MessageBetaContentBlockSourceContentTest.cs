@@ -39,6 +39,7 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
                 MediaType = MediaType.ImageJpeg,
             },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
         };
         value.Validate();
     }
@@ -82,6 +83,7 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
                 MediaType = MediaType.ImageJpeg,
             },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<MessageBetaContentBlockSourceContent>(

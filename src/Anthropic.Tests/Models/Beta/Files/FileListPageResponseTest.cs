@@ -31,7 +31,7 @@ public class FileListPageResponseTest : TestBase
             LastID = "file_013Zva2CMHLNnXjNJJKqJ2EF",
         };
 
-        List<FileMetadata> expectedData =
+        List<BetaFileMetadata> expectedData =
         [
             new()
             {
@@ -120,7 +120,7 @@ public class FileListPageResponseTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        List<FileMetadata> expectedData =
+        List<BetaFileMetadata> expectedData =
         [
             new()
             {

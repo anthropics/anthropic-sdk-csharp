@@ -20,6 +20,15 @@ public class MessageBatchSucceededResultTest : TestBase
                 {
                     ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = ContainerSkillType.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
                 },
                 Content =
                 [
@@ -75,6 +84,15 @@ public class MessageBatchSucceededResultTest : TestBase
             {
                 ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = ContainerSkillType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
             },
             Content =
             [
@@ -135,6 +153,15 @@ public class MessageBatchSucceededResultTest : TestBase
                 {
                     ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = ContainerSkillType.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
                 },
                 Content =
                 [
@@ -204,6 +231,15 @@ public class MessageBatchSucceededResultTest : TestBase
                 {
                     ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = ContainerSkillType.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
                 },
                 Content =
                 [
@@ -266,6 +302,15 @@ public class MessageBatchSucceededResultTest : TestBase
             {
                 ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = ContainerSkillType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
             },
             Content =
             [
@@ -326,6 +371,15 @@ public class MessageBatchSucceededResultTest : TestBase
                 {
                     ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = ContainerSkillType.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
                 },
                 Content =
                 [
@@ -389,6 +443,15 @@ public class MessageBatchSucceededResultTest : TestBase
                 {
                     ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = ContainerSkillType.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
                 },
                 Content =
                 [

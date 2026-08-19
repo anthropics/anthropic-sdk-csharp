@@ -71,6 +71,19 @@ public sealed record class ToolUseBlock : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
+    /// <summary>
+    /// For a toolset member tool_use, the toolset family.
+    /// </summary>
+    public string? ToolsetName
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("toolset_name");
+        }
+        init { this._rawData.Set("toolset_name", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -82,6 +95,7 @@ public sealed record class ToolUseBlock : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
+        _ = this.ToolsetName;
     }
 
     public ToolUseBlock()

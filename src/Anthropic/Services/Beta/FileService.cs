@@ -52,7 +52,7 @@ public sealed class FileService : IFileService
     }
 
     /// <inheritdoc/>
-    public async Task<DeletedFile> Delete(
+    public async Task<BetaDeletedFile> Delete(
         FileDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -64,7 +64,7 @@ public sealed class FileService : IFileService
     }
 
     /// <inheritdoc/>
-    public Task<DeletedFile> Delete(
+    public Task<BetaDeletedFile> Delete(
         string fileID,
         FileDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -97,7 +97,7 @@ public sealed class FileService : IFileService
     }
 
     /// <inheritdoc/>
-    public async Task<FileMetadata> RetrieveMetadata(
+    public async Task<BetaFileMetadata> RetrieveMetadata(
         FileRetrieveMetadataParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -109,7 +109,7 @@ public sealed class FileService : IFileService
     }
 
     /// <inheritdoc/>
-    public Task<FileMetadata> RetrieveMetadata(
+    public Task<BetaFileMetadata> RetrieveMetadata(
         string fileID,
         FileRetrieveMetadataParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -121,7 +121,7 @@ public sealed class FileService : IFileService
     }
 
     /// <inheritdoc/>
-    public async Task<FileMetadata> Upload(
+    public async Task<BetaFileMetadata> Upload(
         FileUploadParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -180,7 +180,7 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
     }
 
     /// <inheritdoc/>
-    public async Task<HttpResponse<DeletedFile>> Delete(
+    public async Task<HttpResponse<BetaDeletedFile>> Delete(
         FileDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -200,20 +200,20 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
             response,
             async (token) =>
             {
-                var deletedFile = await response
-                    .Deserialize<DeletedFile>(token)
+                var betaDeletedFile = await response
+                    .Deserialize<BetaDeletedFile>(token)
                     .ConfigureAwait(false);
                 if (this._client.ResponseValidation)
                 {
-                    deletedFile.Validate();
+                    betaDeletedFile.Validate();
                 }
-                return deletedFile;
+                return betaDeletedFile;
             }
         );
     }
 
     /// <inheritdoc/>
-    public Task<HttpResponse<DeletedFile>> Delete(
+    public Task<HttpResponse<BetaDeletedFile>> Delete(
         string fileID,
         FileDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -256,7 +256,7 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
     }
 
     /// <inheritdoc/>
-    public async Task<HttpResponse<FileMetadata>> RetrieveMetadata(
+    public async Task<HttpResponse<BetaFileMetadata>> RetrieveMetadata(
         FileRetrieveMetadataParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -276,20 +276,20 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
             response,
             async (token) =>
             {
-                var fileMetadata = await response
-                    .Deserialize<FileMetadata>(token)
+                var betaFileMetadata = await response
+                    .Deserialize<BetaFileMetadata>(token)
                     .ConfigureAwait(false);
                 if (this._client.ResponseValidation)
                 {
-                    fileMetadata.Validate();
+                    betaFileMetadata.Validate();
                 }
-                return fileMetadata;
+                return betaFileMetadata;
             }
         );
     }
 
     /// <inheritdoc/>
-    public Task<HttpResponse<FileMetadata>> RetrieveMetadata(
+    public Task<HttpResponse<BetaFileMetadata>> RetrieveMetadata(
         string fileID,
         FileRetrieveMetadataParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -301,7 +301,7 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
     }
 
     /// <inheritdoc/>
-    public async Task<HttpResponse<FileMetadata>> Upload(
+    public async Task<HttpResponse<BetaFileMetadata>> Upload(
         FileUploadParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -316,14 +316,14 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
             response,
             async (token) =>
             {
-                var fileMetadata = await response
-                    .Deserialize<FileMetadata>(token)
+                var betaFileMetadata = await response
+                    .Deserialize<BetaFileMetadata>(token)
                     .ConfigureAwait(false);
                 if (this._client.ResponseValidation)
                 {
-                    fileMetadata.Validate();
+                    betaFileMetadata.Validate();
                 }
-                return fileMetadata;
+                return betaFileMetadata;
             }
         );
     }

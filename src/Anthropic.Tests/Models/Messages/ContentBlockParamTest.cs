@@ -40,6 +40,7 @@ public class ContentBlockParamTest : TestBase
                 MediaType = MediaType.ImageJpeg,
             },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
         };
         value.Validate();
     }
@@ -121,6 +122,7 @@ public class ContentBlockParamTest : TestBase
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new DirectCaller(),
+            ToolsetName = "toolset_name",
         };
         value.Validate();
     }
@@ -134,6 +136,7 @@ public class ContentBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "string",
             IsError = true,
+            ToolsetName = "toolset_name",
         };
         value.Validate();
     }
@@ -303,6 +306,7 @@ public class ContentBlockParamTest : TestBase
                 MediaType = MediaType.ImageJpeg,
             },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
@@ -414,6 +418,7 @@ public class ContentBlockParamTest : TestBase
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new DirectCaller(),
+            ToolsetName = "toolset_name",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
@@ -433,6 +438,7 @@ public class ContentBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "string",
             IsError = true,
+            ToolsetName = "toolset_name",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(

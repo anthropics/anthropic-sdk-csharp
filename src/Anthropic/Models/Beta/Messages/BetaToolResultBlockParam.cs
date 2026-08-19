@@ -84,6 +84,19 @@ public sealed record class BetaToolResultBlockParam : JsonModel
         }
     }
 
+    /// <summary>
+    /// For a toolset member tool_result, the toolset family of the paired tool_use.
+    /// </summary>
+    public string? ToolsetName
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("toolset_name");
+        }
+        init { this._rawData.Set("toolset_name", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -95,6 +108,7 @@ public sealed record class BetaToolResultBlockParam : JsonModel
         this.CacheControl?.Validate();
         this.Content?.Validate();
         _ = this.IsError;
+        _ = this.ToolsetName;
     }
 
     public BetaToolResultBlockParam()
@@ -439,7 +453,8 @@ public record class Block : ModelBase
                 betaImageBlockParam: (x) => x.Type,
                 betaSearchResultBlockParam: (x) => x.Type,
                 betaRequestDocument: (x) => x.Type,
-                betaToolReferenceBlockParam: (x) => x.Type
+                betaToolReferenceBlockParam: (x) => x.Type,
+                betaBrowserStateBlockParam: (x) => x.Type
             );
         }
     }
@@ -453,7 +468,8 @@ public record class Block : ModelBase
                 betaImageBlockParam: (x) => x.CacheControl,
                 betaSearchResultBlockParam: (x) => x.CacheControl,
                 betaRequestDocument: (x) => x.CacheControl,
-                betaToolReferenceBlockParam: (x) => x.CacheControl
+                betaToolReferenceBlockParam: (x) => x.CacheControl,
+                betaBrowserStateBlockParam: (x) => x.CacheControl
             );
         }
     }
@@ -467,7 +483,8 @@ public record class Block : ModelBase
                 betaImageBlockParam: (_) => null,
                 betaSearchResultBlockParam: (x) => x.Title,
                 betaRequestDocument: (x) => x.Title,
-                betaToolReferenceBlockParam: (_) => null
+                betaToolReferenceBlockParam: (_) => null,
+                betaBrowserStateBlockParam: (_) => null
             );
         }
     }
@@ -497,6 +514,12 @@ public record class Block : ModelBase
     }
 
     public Block(BetaToolReferenceBlockParam value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Block(BetaBrowserStateBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -617,6 +640,29 @@ public record class Block : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaBrowserStateBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaBrowserStateBlockParam(out var value)) {
+    ///     // `value` is of type `BetaBrowserStateBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaBrowserStateBlockParam(
+        [NotNullWhen(true)] out BetaBrowserStateBlockParam? value
+    )
+    {
+        value = this.Value as BetaBrowserStateBlockParam;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -634,7 +680,8 @@ public record class Block : ModelBase
     ///     (BetaImageBlockParam value) =&gt; {...},
     ///     (BetaSearchResultBlockParam value) =&gt; {...},
     ///     (BetaRequestDocumentBlock value) =&gt; {...},
-    ///     (BetaToolReferenceBlockParam value) =&gt; {...}
+    ///     (BetaToolReferenceBlockParam value) =&gt; {...},
+    ///     (BetaBrowserStateBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -644,7 +691,8 @@ public record class Block : ModelBase
         System::Action<BetaImageBlockParam> betaImageBlockParam,
         System::Action<BetaSearchResultBlockParam> betaSearchResultBlockParam,
         System::Action<BetaRequestDocumentBlock> betaRequestDocument,
-        System::Action<BetaToolReferenceBlockParam> betaToolReferenceBlockParam
+        System::Action<BetaToolReferenceBlockParam> betaToolReferenceBlockParam,
+        System::Action<BetaBrowserStateBlockParam> betaBrowserStateBlockParam
     )
     {
         switch (this.Value)
@@ -663,6 +711,9 @@ public record class Block : ModelBase
                 break;
             case BetaToolReferenceBlockParam value:
                 betaToolReferenceBlockParam(value);
+                break;
+            case BetaBrowserStateBlockParam value:
+                betaBrowserStateBlockParam(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Block");
@@ -688,7 +739,8 @@ public record class Block : ModelBase
     ///     (BetaImageBlockParam value) =&gt; {...},
     ///     (BetaSearchResultBlockParam value) =&gt; {...},
     ///     (BetaRequestDocumentBlock value) =&gt; {...},
-    ///     (BetaToolReferenceBlockParam value) =&gt; {...}
+    ///     (BetaToolReferenceBlockParam value) =&gt; {...},
+    ///     (BetaBrowserStateBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -698,7 +750,8 @@ public record class Block : ModelBase
         System::Func<BetaImageBlockParam, T> betaImageBlockParam,
         System::Func<BetaSearchResultBlockParam, T> betaSearchResultBlockParam,
         System::Func<BetaRequestDocumentBlock, T> betaRequestDocument,
-        System::Func<BetaToolReferenceBlockParam, T> betaToolReferenceBlockParam
+        System::Func<BetaToolReferenceBlockParam, T> betaToolReferenceBlockParam,
+        System::Func<BetaBrowserStateBlockParam, T> betaBrowserStateBlockParam
     )
     {
         return this.Value switch
@@ -708,6 +761,7 @@ public record class Block : ModelBase
             BetaSearchResultBlockParam value => betaSearchResultBlockParam(value),
             BetaRequestDocumentBlock value => betaRequestDocument(value),
             BetaToolReferenceBlockParam value => betaToolReferenceBlockParam(value),
+            BetaBrowserStateBlockParam value => betaBrowserStateBlockParam(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Block"),
         };
     }
@@ -721,6 +775,8 @@ public record class Block : ModelBase
     public static implicit operator Block(BetaRequestDocumentBlock value) => new(value);
 
     public static implicit operator Block(BetaToolReferenceBlockParam value) => new(value);
+
+    public static implicit operator Block(BetaBrowserStateBlockParam value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -743,7 +799,8 @@ public record class Block : ModelBase
             (betaImageBlockParam) => betaImageBlockParam.Validate(),
             (betaSearchResultBlockParam) => betaSearchResultBlockParam.Validate(),
             (betaRequestDocument) => betaRequestDocument.Validate(),
-            (betaToolReferenceBlockParam) => betaToolReferenceBlockParam.Validate()
+            (betaToolReferenceBlockParam) => betaToolReferenceBlockParam.Validate(),
+            (betaBrowserStateBlockParam) => betaBrowserStateBlockParam.Validate()
         );
     }
 
@@ -772,6 +829,7 @@ public record class Block : ModelBase
             BetaSearchResultBlockParam _ => 2,
             BetaRequestDocumentBlock _ => 3,
             BetaToolReferenceBlockParam _ => 4,
+            BetaBrowserStateBlockParam _ => 5,
             _ => -1,
         };
     }
@@ -883,6 +941,26 @@ sealed class BlockConverter : JsonConverter<Block>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolReferenceBlockParam>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "browser_state":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaBrowserStateBlockParam>(
                         element,
                         options
                     );

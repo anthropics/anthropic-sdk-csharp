@@ -398,12 +398,12 @@ public sealed record class Params : JsonModel
     /// <summary>
     /// Container identifier for reuse across requests.
     /// </summary>
-    public string? Container
+    public MessageCreateParamsContainer? Container
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("container");
+            return this._rawData.GetNullableClass<MessageCreateParamsContainer>("container");
         }
         init { this._rawData.Set("container", value); }
     }
@@ -790,7 +790,7 @@ public sealed record class Params : JsonModel
         }
         this.Model.Raw();
         this.CacheControl?.Validate();
-        _ = this.Container;
+        this.Container?.Validate();
         _ = this.InferenceGeo;
         this.Metadata?.Validate();
         this.OutputConfig?.Validate();

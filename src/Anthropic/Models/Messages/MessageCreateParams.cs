@@ -155,12 +155,12 @@ public record class MessageCreateParams : ParamsBase
     /// <summary>
     /// Container identifier for reuse across requests.
     /// </summary>
-    public string? Container
+    public MessageCreateParamsContainer? Container
     {
         get
         {
             this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableClass<string>("container");
+            return this._rawBodyData.GetNullableClass<MessageCreateParamsContainer>("container");
         }
         init { this._rawBodyData.Set("container", value); }
     }
