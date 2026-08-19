@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
@@ -8,210 +7,133 @@ namespace Anthropic.Tests.Models.Beta.Agents;
 public class BetaManagedAgentsAgentToolConfigTest : TestBase
 {
     [Fact]
-    public void FieldRoundtrip_Works()
+    public void BashValidationWorks()
     {
-        var model = new BetaManagedAgentsAgentToolConfig
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsBashToolConfig()
         {
             Enabled = true,
-            Name = Name.Bash,
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
         };
-
-        bool expectedEnabled = true;
-        ApiEnum<string, Name> expectedName = Name.Bash;
-        PermissionPolicy expectedPermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-        );
-
-        Assert.Equal(expectedEnabled, model.Enabled);
-        Assert.Equal(expectedName, model.Name);
-        Assert.Equal(expectedPermissionPolicy, model.PermissionPolicy);
-    }
-
-    [Fact]
-    public void SerializationRoundtrip_Works()
-    {
-        var model = new BetaManagedAgentsAgentToolConfig
-        {
-            Enabled = true,
-            Name = Name.Bash,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
-        };
-
-        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolConfig>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(model, deserialized);
-    }
-
-    [Fact]
-    public void FieldRoundtripThroughSerialization_Works()
-    {
-        var model = new BetaManagedAgentsAgentToolConfig
-        {
-            Enabled = true,
-            Name = Name.Bash,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
-        };
-
-        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolConfig>(
-            element,
-            ModelBase.SerializerOptions
-        );
-        Assert.NotNull(deserialized);
-
-        bool expectedEnabled = true;
-        ApiEnum<string, Name> expectedName = Name.Bash;
-        PermissionPolicy expectedPermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-        );
-
-        Assert.Equal(expectedEnabled, deserialized.Enabled);
-        Assert.Equal(expectedName, deserialized.Name);
-        Assert.Equal(expectedPermissionPolicy, deserialized.PermissionPolicy);
-    }
-
-    [Fact]
-    public void Validation_Works()
-    {
-        var model = new BetaManagedAgentsAgentToolConfig
-        {
-            Enabled = true,
-            Name = Name.Bash,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void CopyConstructor_Works()
-    {
-        var model = new BetaManagedAgentsAgentToolConfig
-        {
-            Enabled = true,
-            Name = Name.Bash,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
-        };
-
-        BetaManagedAgentsAgentToolConfig copied = new(model);
-
-        Assert.Equal(model, copied);
-    }
-}
-
-public class NameTest : TestBase
-{
-    [Theory]
-    [InlineData(Name.Bash)]
-    [InlineData(Name.Edit)]
-    [InlineData(Name.Read)]
-    [InlineData(Name.Write)]
-    [InlineData(Name.Glob)]
-    [InlineData(Name.Grep)]
-    [InlineData(Name.WebFetch)]
-    [InlineData(Name.WebSearch)]
-    public void Validation_Works(Name rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Name> value = rawValue;
         value.Validate();
     }
 
     [Fact]
-    public void InvalidEnumValidationThrows_Works()
+    public void EditValidationWorks()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Name>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(Name.Bash)]
-    [InlineData(Name.Edit)]
-    [InlineData(Name.Read)]
-    [InlineData(Name.Write)]
-    [InlineData(Name.Glob)]
-    [InlineData(Name.Grep)]
-    [InlineData(Name.WebFetch)]
-    [InlineData(Name.WebSearch)]
-    public void SerializationRoundtrip_Works(Name rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Name> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Name>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Name>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Name>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-}
-
-public class PermissionPolicyTest : TestBase
-{
-    [Fact]
-    public void BetaManagedAgentsAlwaysAllowValidationWorks()
-    {
-        PermissionPolicy value = new BetaManagedAgentsAlwaysAllowPolicy(
-            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-        );
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsEditToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+        };
         value.Validate();
     }
 
     [Fact]
-    public void BetaManagedAgentsAlwaysAskValidationWorks()
+    public void ReadValidationWorks()
     {
-        PermissionPolicy value = new BetaManagedAgentsAlwaysAskPolicy(
-            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-        );
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsReadToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+        };
         value.Validate();
     }
 
     [Fact]
-    public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
+    public void WriteValidationWorks()
     {
-        PermissionPolicy value = new BetaManagedAgentsAlwaysAllowPolicy(
-            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-        );
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsWriteToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void GlobValidationWorks()
+    {
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsGlobToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void GrepValidationWorks()
+    {
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsGrepToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void WebFetchValidationWorks()
+    {
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsWebFetchToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            MaxContentTokens = 0,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void WebSearchValidationWorks()
+    {
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsWebSearchToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            UserLocation = new()
+            {
+                City = "x",
+                Country = "country",
+                Region = "x",
+                Timezone = "x",
+            },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BashSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsBashToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<PermissionPolicy>(
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolConfig>(
             element,
             ModelBase.SerializerOptions
         );
@@ -220,13 +142,143 @@ public class PermissionPolicyTest : TestBase
     }
 
     [Fact]
-    public void BetaManagedAgentsAlwaysAskSerializationRoundtripWorks()
+    public void EditSerializationRoundtripWorks()
     {
-        PermissionPolicy value = new BetaManagedAgentsAlwaysAskPolicy(
-            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-        );
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsEditToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<PermissionPolicy>(
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolConfig>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ReadSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsReadToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolConfig>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WriteSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsWriteToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolConfig>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void GlobSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsGlobToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolConfig>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void GrepSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsGrepToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolConfig>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WebFetchSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsWebFetchToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            MaxContentTokens = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolConfig>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WebSearchSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsAgentToolConfig value = new BetaManagedAgentsWebSearchToolConfig()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            UserLocation = new()
+            {
+                City = "x",
+                Country = "country",
+                Region = "x",
+                Timezone = "x",
+            },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolConfig>(
             element,
             ModelBase.SerializerOptions
         );

@@ -56,10 +56,9 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Agents::Name.Bash,
                                 PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                     Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -145,10 +144,9 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 {
                     Configs =
                     [
-                        new()
+                        new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            Name = Agents::Name.Bash,
                             PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                 Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
@@ -249,10 +247,9 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Agents::Name.Bash,
                                 PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                     Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -352,10 +349,9 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Agents::Name.Bash,
                                 PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                     Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -448,10 +444,9 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 {
                     Configs =
                     [
-                        new()
+                        new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            Name = Agents::Name.Bash,
                             PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                 Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
@@ -552,10 +547,9 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Agents::Name.Bash,
                                 PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                     Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -649,10 +643,9 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Agents::Name.Bash,
                                 PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                     Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -748,10 +741,9 @@ public class AgentTest : TestBase
                 {
                     Configs =
                     [
-                        new()
+                        new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            Name = Agents::Name.Bash,
                             PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                 Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
@@ -827,10 +819,9 @@ public class AgentTest : TestBase
                 {
                     Configs =
                     [
-                        new()
+                        new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            Name = Agents::Name.Bash,
                             PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                 Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),

@@ -29,13 +29,13 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
                     Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
-                        new()
+                        new BetaManagedAgentsBashToolConfigParams()
                         {
-                            Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                             Enabled = true,
                             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
+                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                         },
                     ],
                     DefaultConfig = new()
@@ -65,13 +65,13 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
                 Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                 Configs =
                 [
-                    new()
+                    new BetaManagedAgentsBashToolConfigParams()
                     {
-                        Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                         Enabled = true,
                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                         ),
+                        Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                     },
                 ],
                 DefaultConfig = new()
@@ -119,13 +119,13 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
                     Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
-                        new()
+                        new BetaManagedAgentsBashToolConfigParams()
                         {
-                            Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                             Enabled = true,
                             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
+                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                         },
                     ],
                     DefaultConfig = new()
@@ -169,13 +169,13 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
                     Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
-                        new()
+                        new BetaManagedAgentsBashToolConfigParams()
                         {
-                            Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                             Enabled = true,
                             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
+                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                         },
                     ],
                     DefaultConfig = new()
@@ -212,13 +212,13 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
                 Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                 Configs =
                 [
-                    new()
+                    new BetaManagedAgentsBashToolConfigParams()
                     {
-                        Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                         Enabled = true,
                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                         ),
+                        Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                     },
                 ],
                 DefaultConfig = new()
@@ -266,13 +266,13 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
                     Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
-                        new()
+                        new BetaManagedAgentsBashToolConfigParams()
                         {
-                            Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                             Enabled = true,
                             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
+                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                         },
                     ],
                     DefaultConfig = new()
@@ -358,13 +358,13 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
                     Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
-                        new()
+                        new BetaManagedAgentsBashToolConfigParams()
                         {
-                            Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                             Enabled = true,
                             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
+                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                         },
                     ],
                     DefaultConfig = new()
@@ -395,13 +395,13 @@ public class BetaManagedAgentsSessionAgentUpdateToolTest : TestBase
                 Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                 Configs =
                 [
-                    new()
+                    new BetaManagedAgentsBashToolConfigParams()
                     {
-                        Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                         Enabled = true,
                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                         ),
+                        Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                     },
                 ],
                 DefaultConfig = new()
@@ -473,13 +473,13 @@ public class BetaManagedAgentsSessionAgentUpdateToolTest : TestBase
                 Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                 Configs =
                 [
-                    new()
+                    new BetaManagedAgentsBashToolConfigParams()
                     {
-                        Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                         Enabled = true,
                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                         ),
+                        Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                     },
                 ],
                 DefaultConfig = new()

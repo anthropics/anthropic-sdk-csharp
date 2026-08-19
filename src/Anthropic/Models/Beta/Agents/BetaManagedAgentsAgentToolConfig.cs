@@ -1,5 +1,3 @@
-using System.Collections.Frozen;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -12,164 +10,8 @@ namespace Anthropic.Models.Beta.Agents;
 /// <summary>
 /// Configuration for a specific agent tool.
 /// </summary>
-[JsonConverter(
-    typeof(JsonModelConverter<
-        BetaManagedAgentsAgentToolConfig,
-        BetaManagedAgentsAgentToolConfigFromRaw
-    >)
-)]
-public sealed record class BetaManagedAgentsAgentToolConfig : JsonModel
-{
-    public required bool Enabled
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<bool>("enabled");
-        }
-        init { this._rawData.Set("enabled", value); }
-    }
-
-    /// <summary>
-    /// Built-in agent tool identifier.
-    /// </summary>
-    public required ApiEnum<string, Name> Name
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, Name>>("name");
-        }
-        init { this._rawData.Set("name", value); }
-    }
-
-    /// <summary>
-    /// Permission policy for tool execution.
-    /// </summary>
-    public required PermissionPolicy PermissionPolicy
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<PermissionPolicy>("permission_policy");
-        }
-        init { this._rawData.Set("permission_policy", value); }
-    }
-
-    /// <inheritdoc/>
-    public override void Validate()
-    {
-        _ = this.Enabled;
-        this.Name.Validate();
-        this.PermissionPolicy.Validate();
-    }
-
-    public BetaManagedAgentsAgentToolConfig() { }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public BetaManagedAgentsAgentToolConfig(
-        BetaManagedAgentsAgentToolConfig betaManagedAgentsAgentToolConfig
-    )
-        : base(betaManagedAgentsAgentToolConfig) { }
-#pragma warning restore CS8618
-
-    public BetaManagedAgentsAgentToolConfig(IReadOnlyDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    BetaManagedAgentsAgentToolConfig(FrozenDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-#pragma warning restore CS8618
-
-    /// <inheritdoc cref="BetaManagedAgentsAgentToolConfigFromRaw.FromRawUnchecked"/>
-    public static BetaManagedAgentsAgentToolConfig FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-}
-
-class BetaManagedAgentsAgentToolConfigFromRaw : IFromRawJson<BetaManagedAgentsAgentToolConfig>
-{
-    /// <inheritdoc/>
-    public BetaManagedAgentsAgentToolConfig FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    ) => BetaManagedAgentsAgentToolConfig.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// Built-in agent tool identifier.
-/// </summary>
-[JsonConverter(typeof(NameConverter))]
-public enum Name
-{
-    Bash,
-    Edit,
-    Read,
-    Write,
-    Glob,
-    Grep,
-    WebFetch,
-    WebSearch,
-}
-
-sealed class NameConverter : JsonConverter<Name>
-{
-    public override Name Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "bash" => Name.Bash,
-            "edit" => Name.Edit,
-            "read" => Name.Read,
-            "write" => Name.Write,
-            "glob" => Name.Glob,
-            "grep" => Name.Grep,
-            "web_fetch" => Name.WebFetch,
-            "web_search" => Name.WebSearch,
-            _ => (Name)(-1),
-        };
-    }
-
-    public override void Write(Utf8JsonWriter writer, Name value, JsonSerializerOptions options)
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                Name.Bash => "bash",
-                Name.Edit => "edit",
-                Name.Read => "read",
-                Name.Write => "write",
-                Name.Glob => "glob",
-                Name.Grep => "grep",
-                Name.WebFetch => "web_fetch",
-                Name.WebSearch => "web_search",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-/// <summary>
-/// Permission policy for tool execution.
-/// </summary>
-[JsonConverter(typeof(PermissionPolicyConverter))]
-public record class PermissionPolicy : ModelBase
+[JsonConverter(typeof(BetaManagedAgentsAgentToolConfigConverter))]
+public record class BetaManagedAgentsAgentToolConfig : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -186,66 +28,301 @@ public record class PermissionPolicy : ModelBase
         }
     }
 
-    public PermissionPolicy(BetaManagedAgentsAlwaysAllowPolicy value, JsonElement? element = null)
+    public bool Enabled
+    {
+        get
+        {
+            return Match(
+                bash: (x) => x.Enabled,
+                edit: (x) => x.Enabled,
+                read: (x) => x.Enabled,
+                write: (x) => x.Enabled,
+                glob: (x) => x.Enabled,
+                grep: (x) => x.Enabled,
+                webFetch: (x) => x.Enabled,
+                webSearch: (x) => x.Enabled
+            );
+        }
+    }
+
+    public JsonElement Name
+    {
+        get
+        {
+            return Match(
+                bash: (x) => x.Name,
+                edit: (x) => x.Name,
+                read: (x) => x.Name,
+                write: (x) => x.Name,
+                glob: (x) => x.Name,
+                grep: (x) => x.Name,
+                webFetch: (x) => x.Name,
+                webSearch: (x) => x.Name
+            );
+        }
+    }
+
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                bash: (x) => x.Type,
+                edit: (x) => x.Type,
+                read: (x) => x.Type,
+                write: (x) => x.Type,
+                glob: (x) => x.Type,
+                grep: (x) => x.Type,
+                webFetch: (x) => x.Type,
+                webSearch: (x) => x.Type
+            );
+        }
+    }
+
+    public BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsBashToolConfig value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
     }
 
-    public PermissionPolicy(BetaManagedAgentsAlwaysAskPolicy value, JsonElement? element = null)
+    public BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsEditToolConfig value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
     }
 
-    public PermissionPolicy(JsonElement element)
+    public BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsReadToolConfig value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsWriteToolConfig value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsGlobToolConfig value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsGrepToolConfig value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsWebFetchToolConfig value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsWebSearchToolConfig value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsAgentToolConfig(JsonElement element)
     {
         this._element = element;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsAlwaysAllowPolicy"/>.
+    /// type <see cref="BetaManagedAgentsBashToolConfig"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaManagedAgentsAlwaysAllow(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsAlwaysAllowPolicy`
+    /// if (instance.TryPickBash(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsBashToolConfig`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaManagedAgentsAlwaysAllow(
-        [NotNullWhen(true)] out BetaManagedAgentsAlwaysAllowPolicy? value
-    )
+    public bool TryPickBash([NotNullWhen(true)] out BetaManagedAgentsBashToolConfig? value)
     {
-        value = this.Value as BetaManagedAgentsAlwaysAllowPolicy;
+        value = this.Value as BetaManagedAgentsBashToolConfig;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsAlwaysAskPolicy"/>.
+    /// type <see cref="BetaManagedAgentsEditToolConfig"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaManagedAgentsAlwaysAsk(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsAlwaysAskPolicy`
+    /// if (instance.TryPickEdit(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsEditToolConfig`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaManagedAgentsAlwaysAsk(
-        [NotNullWhen(true)] out BetaManagedAgentsAlwaysAskPolicy? value
+    public bool TryPickEdit([NotNullWhen(true)] out BetaManagedAgentsEditToolConfig? value)
+    {
+        value = this.Value as BetaManagedAgentsEditToolConfig;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsReadToolConfig"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickRead(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsReadToolConfig`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickRead([NotNullWhen(true)] out BetaManagedAgentsReadToolConfig? value)
+    {
+        value = this.Value as BetaManagedAgentsReadToolConfig;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsWriteToolConfig"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWrite(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsWriteToolConfig`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWrite([NotNullWhen(true)] out BetaManagedAgentsWriteToolConfig? value)
+    {
+        value = this.Value as BetaManagedAgentsWriteToolConfig;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsGlobToolConfig"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickGlob(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsGlobToolConfig`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickGlob([NotNullWhen(true)] out BetaManagedAgentsGlobToolConfig? value)
+    {
+        value = this.Value as BetaManagedAgentsGlobToolConfig;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsGrepToolConfig"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickGrep(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsGrepToolConfig`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickGrep([NotNullWhen(true)] out BetaManagedAgentsGrepToolConfig? value)
+    {
+        value = this.Value as BetaManagedAgentsGrepToolConfig;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsWebFetchToolConfig"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebFetch(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsWebFetchToolConfig`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebFetch([NotNullWhen(true)] out BetaManagedAgentsWebFetchToolConfig? value)
+    {
+        value = this.Value as BetaManagedAgentsWebFetchToolConfig;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsWebSearchToolConfig"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebSearch(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsWebSearchToolConfig`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebSearch(
+        [NotNullWhen(true)] out BetaManagedAgentsWebSearchToolConfig? value
     )
     {
-        value = this.Value as BetaManagedAgentsAlwaysAskPolicy;
+        value = this.Value as BetaManagedAgentsWebSearchToolConfig;
         return value != null;
     }
 
@@ -263,28 +340,58 @@ public record class PermissionPolicy : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaManagedAgentsAlwaysAllowPolicy value) =&gt; {...},
-    ///     (BetaManagedAgentsAlwaysAskPolicy value) =&gt; {...}
+    ///     (BetaManagedAgentsBashToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsEditToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsReadToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsWriteToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsGlobToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsGrepToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsWebFetchToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsWebSearchToolConfig value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsAlwaysAllowPolicy> betaManagedAgentsAlwaysAllow,
-        System::Action<BetaManagedAgentsAlwaysAskPolicy> betaManagedAgentsAlwaysAsk
+        System::Action<BetaManagedAgentsBashToolConfig> bash,
+        System::Action<BetaManagedAgentsEditToolConfig> edit,
+        System::Action<BetaManagedAgentsReadToolConfig> read,
+        System::Action<BetaManagedAgentsWriteToolConfig> write,
+        System::Action<BetaManagedAgentsGlobToolConfig> glob,
+        System::Action<BetaManagedAgentsGrepToolConfig> grep,
+        System::Action<BetaManagedAgentsWebFetchToolConfig> webFetch,
+        System::Action<BetaManagedAgentsWebSearchToolConfig> webSearch
     )
     {
         switch (this.Value)
         {
-            case BetaManagedAgentsAlwaysAllowPolicy value:
-                betaManagedAgentsAlwaysAllow(value);
+            case BetaManagedAgentsBashToolConfig value:
+                bash(value);
                 break;
-            case BetaManagedAgentsAlwaysAskPolicy value:
-                betaManagedAgentsAlwaysAsk(value);
+            case BetaManagedAgentsEditToolConfig value:
+                edit(value);
+                break;
+            case BetaManagedAgentsReadToolConfig value:
+                read(value);
+                break;
+            case BetaManagedAgentsWriteToolConfig value:
+                write(value);
+                break;
+            case BetaManagedAgentsGlobToolConfig value:
+                glob(value);
+                break;
+            case BetaManagedAgentsGrepToolConfig value:
+                grep(value);
+                break;
+            case BetaManagedAgentsWebFetchToolConfig value:
+                webFetch(value);
+                break;
+            case BetaManagedAgentsWebSearchToolConfig value:
+                webSearch(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of PermissionPolicy"
+                    "Data did not match any variant of BetaManagedAgentsAgentToolConfig"
                 );
         }
     }
@@ -304,32 +411,76 @@ public record class PermissionPolicy : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaManagedAgentsAlwaysAllowPolicy value) =&gt; {...},
-    ///     (BetaManagedAgentsAlwaysAskPolicy value) =&gt; {...}
+    ///     (BetaManagedAgentsBashToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsEditToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsReadToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsWriteToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsGlobToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsGrepToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsWebFetchToolConfig value) =&gt; {...},
+    ///     (BetaManagedAgentsWebSearchToolConfig value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsAlwaysAllowPolicy, T> betaManagedAgentsAlwaysAllow,
-        System::Func<BetaManagedAgentsAlwaysAskPolicy, T> betaManagedAgentsAlwaysAsk
+        System::Func<BetaManagedAgentsBashToolConfig, T> bash,
+        System::Func<BetaManagedAgentsEditToolConfig, T> edit,
+        System::Func<BetaManagedAgentsReadToolConfig, T> read,
+        System::Func<BetaManagedAgentsWriteToolConfig, T> write,
+        System::Func<BetaManagedAgentsGlobToolConfig, T> glob,
+        System::Func<BetaManagedAgentsGrepToolConfig, T> grep,
+        System::Func<BetaManagedAgentsWebFetchToolConfig, T> webFetch,
+        System::Func<BetaManagedAgentsWebSearchToolConfig, T> webSearch
     )
     {
         return this.Value switch
         {
-            BetaManagedAgentsAlwaysAllowPolicy value => betaManagedAgentsAlwaysAllow(value),
-            BetaManagedAgentsAlwaysAskPolicy value => betaManagedAgentsAlwaysAsk(value),
+            BetaManagedAgentsBashToolConfig value => bash(value),
+            BetaManagedAgentsEditToolConfig value => edit(value),
+            BetaManagedAgentsReadToolConfig value => read(value),
+            BetaManagedAgentsWriteToolConfig value => write(value),
+            BetaManagedAgentsGlobToolConfig value => glob(value),
+            BetaManagedAgentsGrepToolConfig value => grep(value),
+            BetaManagedAgentsWebFetchToolConfig value => webFetch(value),
+            BetaManagedAgentsWebSearchToolConfig value => webSearch(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of PermissionPolicy"
+                "Data did not match any variant of BetaManagedAgentsAgentToolConfig"
             ),
         };
     }
 
-    public static implicit operator PermissionPolicy(BetaManagedAgentsAlwaysAllowPolicy value) =>
-        new(value);
+    public static implicit operator BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsBashToolConfig value
+    ) => new(value);
 
-    public static implicit operator PermissionPolicy(BetaManagedAgentsAlwaysAskPolicy value) =>
-        new(value);
+    public static implicit operator BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsEditToolConfig value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsReadToolConfig value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsWriteToolConfig value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsGlobToolConfig value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsGrepToolConfig value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsWebFetchToolConfig value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsAgentToolConfig(
+        BetaManagedAgentsWebSearchToolConfig value
+    ) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -346,16 +497,22 @@ public record class PermissionPolicy : ModelBase
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of PermissionPolicy"
+                "Data did not match any variant of BetaManagedAgentsAgentToolConfig"
             );
         }
         this.Switch(
-            (betaManagedAgentsAlwaysAllow) => betaManagedAgentsAlwaysAllow.Validate(),
-            (betaManagedAgentsAlwaysAsk) => betaManagedAgentsAlwaysAsk.Validate()
+            (bash) => bash.Validate(),
+            (edit) => edit.Validate(),
+            (read) => read.Validate(),
+            (write) => write.Validate(),
+            (glob) => glob.Validate(),
+            (grep) => grep.Validate(),
+            (webFetch) => webFetch.Validate(),
+            (webSearch) => webSearch.Validate()
         );
     }
 
-    public virtual bool Equals(PermissionPolicy? other) =>
+    public virtual bool Equals(BetaManagedAgentsAgentToolConfig? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -375,16 +532,23 @@ public record class PermissionPolicy : ModelBase
     {
         return this.Value switch
         {
-            BetaManagedAgentsAlwaysAllowPolicy _ => 0,
-            BetaManagedAgentsAlwaysAskPolicy _ => 1,
+            BetaManagedAgentsBashToolConfig _ => 0,
+            BetaManagedAgentsEditToolConfig _ => 1,
+            BetaManagedAgentsReadToolConfig _ => 2,
+            BetaManagedAgentsWriteToolConfig _ => 3,
+            BetaManagedAgentsGlobToolConfig _ => 4,
+            BetaManagedAgentsGrepToolConfig _ => 5,
+            BetaManagedAgentsWebFetchToolConfig _ => 6,
+            BetaManagedAgentsWebSearchToolConfig _ => 7,
             _ => -1,
         };
     }
 }
 
-sealed class PermissionPolicyConverter : JsonConverter<PermissionPolicy>
+sealed class BetaManagedAgentsAgentToolConfigConverter
+    : JsonConverter<BetaManagedAgentsAgentToolConfig>
 {
-    public override PermissionPolicy? Read(
+    public override BetaManagedAgentsAgentToolConfig? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -403,32 +567,11 @@ sealed class PermissionPolicyConverter : JsonConverter<PermissionPolicy>
 
         switch (type)
         {
-            case "always_allow":
+            case "bash":
             {
                 try
                 {
-                    var deserialized =
-                        JsonSerializer.Deserialize<BetaManagedAgentsAlwaysAllowPolicy>(
-                            element,
-                            options
-                        );
-                    if (deserialized != null)
-                    {
-                        return new(deserialized, element);
-                    }
-                }
-                catch (JsonException)
-                {
-                    // ignore
-                }
-
-                return new(element);
-            }
-            case "always_ask":
-            {
-                try
-                {
-                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAlwaysAskPolicy>(
+                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsBashToolConfig>(
                         element,
                         options
                     );
@@ -444,16 +587,158 @@ sealed class PermissionPolicyConverter : JsonConverter<PermissionPolicy>
 
                 return new(element);
             }
+            case "edit":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsEditToolConfig>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "read":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsReadToolConfig>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "write":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsWriteToolConfig>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "glob":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsGlobToolConfig>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "grep":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsGrepToolConfig>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "web_fetch":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsWebFetchToolConfig>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "web_search":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsWebSearchToolConfig>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             default:
             {
-                return new PermissionPolicy(element);
+                return new BetaManagedAgentsAgentToolConfig(element);
             }
         }
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        PermissionPolicy value,
+        BetaManagedAgentsAgentToolConfig value,
         JsonSerializerOptions options
     )
     {

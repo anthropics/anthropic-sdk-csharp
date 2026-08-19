@@ -60,10 +60,9 @@ public class ThreadListPageResponseTest : TestBase
                             {
                                 Configs =
                                 [
-                                    new()
+                                    new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        Name = Name.Bash,
                                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                         ),
@@ -158,10 +157,9 @@ public class ThreadListPageResponseTest : TestBase
                         {
                             Configs =
                             [
-                                new()
+                                new BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    Name = Name.Bash,
                                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                     ),
@@ -270,10 +268,9 @@ public class ThreadListPageResponseTest : TestBase
                             {
                                 Configs =
                                 [
-                                    new()
+                                    new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        Name = Name.Bash,
                                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                         ),
@@ -384,10 +381,9 @@ public class ThreadListPageResponseTest : TestBase
                             {
                                 Configs =
                                 [
-                                    new()
+                                    new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        Name = Name.Bash,
                                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                         ),
@@ -489,10 +485,9 @@ public class ThreadListPageResponseTest : TestBase
                         {
                             Configs =
                             [
-                                new()
+                                new BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    Name = Name.Bash,
                                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                     ),
@@ -601,10 +596,9 @@ public class ThreadListPageResponseTest : TestBase
                             {
                                 Configs =
                                 [
-                                    new()
+                                    new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        Name = Name.Bash,
                                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                         ),
@@ -761,10 +755,9 @@ public class ThreadListPageResponseTest : TestBase
                             {
                                 Configs =
                                 [
-                                    new()
+                                    new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        Name = Name.Bash,
                                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                         ),
@@ -869,10 +862,9 @@ public class ThreadListPageResponseTest : TestBase
                             {
                                 Configs =
                                 [
-                                    new()
+                                    new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        Name = Name.Bash,
                                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                         ),
@@ -976,10 +968,9 @@ public class ThreadListPageResponseTest : TestBase
                             {
                                 Configs =
                                 [
-                                    new()
+                                    new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        Name = Name.Bash,
                                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                         ),
@@ -1086,10 +1077,9 @@ public class ThreadListPageResponseTest : TestBase
                             {
                                 Configs =
                                 [
-                                    new()
+                                    new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        Name = Name.Bash,
                                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                         ),
@@ -1195,10 +1185,9 @@ public class ThreadListPageResponseTest : TestBase
                             {
                                 Configs =
                                 [
-                                    new()
+                                    new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        Name = Name.Bash,
                                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                         ),

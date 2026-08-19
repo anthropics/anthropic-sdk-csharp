@@ -83,10 +83,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 {
                                     Configs =
                                     [
-                                        new()
+                                        new BetaManagedAgentsBashToolConfig()
                                         {
                                             Enabled = true,
-                                            Name = Name.Bash,
                                             PermissionPolicy =
                                                 new BetaManagedAgentsAlwaysAllowPolicy(
                                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -134,10 +133,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Name.Bash,
                                 PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -233,10 +231,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                             {
                                 Configs =
                                 [
-                                    new()
+                                    new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        Name = Name.Bash,
                                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                         ),
@@ -283,10 +280,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 {
                     Configs =
                     [
-                        new()
+                        new BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            Name = Name.Bash,
                             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
@@ -401,10 +397,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 {
                                     Configs =
                                     [
-                                        new()
+                                        new BetaManagedAgentsBashToolConfig()
                                         {
                                             Enabled = true,
-                                            Name = Name.Bash,
                                             PermissionPolicy =
                                                 new BetaManagedAgentsAlwaysAllowPolicy(
                                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -452,10 +447,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Name.Bash,
                                 PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -564,10 +558,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 {
                                     Configs =
                                     [
-                                        new()
+                                        new BetaManagedAgentsBashToolConfig()
                                         {
                                             Enabled = true,
-                                            Name = Name.Bash,
                                             PermissionPolicy =
                                                 new BetaManagedAgentsAlwaysAllowPolicy(
                                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -615,10 +608,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Name.Bash,
                                 PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -721,10 +713,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                             {
                                 Configs =
                                 [
-                                    new()
+                                    new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        Name = Name.Bash,
                                         PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                             BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                         ),
@@ -771,10 +762,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                 {
                     Configs =
                     [
-                        new()
+                        new BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            Name = Name.Bash,
                             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
@@ -889,10 +879,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 {
                                     Configs =
                                     [
-                                        new()
+                                        new BetaManagedAgentsBashToolConfig()
                                         {
                                             Enabled = true,
-                                            Name = Name.Bash,
                                             PermissionPolicy =
                                                 new BetaManagedAgentsAlwaysAllowPolicy(
                                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -940,10 +929,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Name.Bash,
                                 PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -1046,10 +1034,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 {
                                     Configs =
                                     [
-                                        new()
+                                        new BetaManagedAgentsBashToolConfig()
                                         {
                                             Enabled = true,
-                                            Name = Name.Bash,
                                             PermissionPolicy =
                                                 new BetaManagedAgentsAlwaysAllowPolicy(
                                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -1097,10 +1084,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Name.Bash,
                                 PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -1203,10 +1189,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 {
                                     Configs =
                                     [
-                                        new()
+                                        new BetaManagedAgentsBashToolConfig()
                                         {
                                             Enabled = true,
-                                            Name = Name.Bash,
                                             PermissionPolicy =
                                                 new BetaManagedAgentsAlwaysAllowPolicy(
                                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -1254,10 +1239,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Name.Bash,
                                 PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -1359,10 +1343,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 {
                                     Configs =
                                     [
-                                        new()
+                                        new BetaManagedAgentsBashToolConfig()
                                         {
                                             Enabled = true,
-                                            Name = Name.Bash,
                                             PermissionPolicy =
                                                 new BetaManagedAgentsAlwaysAllowPolicy(
                                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -1410,10 +1393,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Name.Bash,
                                 PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -1519,10 +1501,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 {
                                     Configs =
                                     [
-                                        new()
+                                        new BetaManagedAgentsBashToolConfig()
                                         {
                                             Enabled = true,
-                                            Name = Name.Bash,
                                             PermissionPolicy =
                                                 new BetaManagedAgentsAlwaysAllowPolicy(
                                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -1570,10 +1551,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Name.Bash,
                                 PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -1752,10 +1732,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                                 {
                                     Configs =
                                     [
-                                        new()
+                                        new BetaManagedAgentsBashToolConfig()
                                         {
                                             Enabled = true,
-                                            Name = Name.Bash,
                                             PermissionPolicy =
                                                 new BetaManagedAgentsAlwaysAllowPolicy(
                                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -1803,10 +1782,9 @@ public class BetaManagedAgentsSessionUpdatedEventTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Name.Bash,
                                 PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
