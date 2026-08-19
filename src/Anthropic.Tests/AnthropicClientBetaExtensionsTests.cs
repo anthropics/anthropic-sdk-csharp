@@ -2653,6 +2653,14 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.Equal(2000, files[1].SizeInBytes);
     }
 
+    protected override object CreateServerToolUseBlock(string rawJson) =>
+        JsonSerializer.Deserialize<BetaServerToolUseBlock>(rawJson)
+        ?? throw new InvalidOperationException("Failed to deserialize server tool use block.");
+
+    protected override object CreateResponseBlock(string rawJson) =>
+        JsonSerializer.Deserialize<BetaContentBlock>(rawJson)?.Value
+        ?? throw new InvalidOperationException("Failed to deserialize server tool result.");
+
     [Fact]
     public async Task GetResponseAsync_WithRawRepresentationFactory_ContextManagement_AddsBetaHeader()
     {

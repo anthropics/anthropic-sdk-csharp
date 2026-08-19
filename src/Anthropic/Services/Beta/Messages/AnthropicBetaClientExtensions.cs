@@ -678,6 +678,85 @@ public static class AnthropicBetaClientExtensions
                             contents.Add(rawContent);
                             break;
 
+                        case AIContent ac
+                            when ac.RawRepresentation is BetaServerToolUseBlock serverToolUseBlock:
+                            contents.Add(
+                                BetaServerToolUseBlockParam.FromRawUnchecked(
+                                    serverToolUseBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is BetaWebSearchToolResultBlock webSearchResultBlock:
+                            contents.Add(
+                                BetaWebSearchToolResultBlockParam.FromRawUnchecked(
+                                    webSearchResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is BetaWebFetchToolResultBlock webFetchResultBlock:
+                            contents.Add(
+                                BetaWebFetchToolResultBlockParam.FromRawUnchecked(
+                                    webFetchResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is BetaCodeExecutionToolResultBlock codeExecutionResultBlock:
+                            contents.Add(
+                                BetaCodeExecutionToolResultBlockParam.FromRawUnchecked(
+                                    codeExecutionResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is BetaBashCodeExecutionToolResultBlock bashCodeExecutionResultBlock:
+                            contents.Add(
+                                BetaBashCodeExecutionToolResultBlockParam.FromRawUnchecked(
+                                    bashCodeExecutionResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is BetaTextEditorCodeExecutionToolResultBlock textEditorCodeExecutionResultBlock:
+                            contents.Add(
+                                BetaTextEditorCodeExecutionToolResultBlockParam.FromRawUnchecked(
+                                    textEditorCodeExecutionResultBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is BetaContainerUploadBlock containerUploadBlock:
+                            contents.Add(
+                                BetaContainerUploadBlockParam.FromRawUnchecked(
+                                    containerUploadBlock.RawData
+                                )
+                            );
+                            break;
+
+                        case AIContent ac
+                            when ac.RawRepresentation
+                                is BetaToolSearchToolResultBlock toolSearchResultBlock:
+                            contents.Add(
+                                BetaToolSearchToolResultBlockParam.FromRawUnchecked(
+                                    toolSearchResultBlock.RawData
+                                )
+                            );
+                            break;
+
                         case TextContent tc:
                             string text = tc.Text;
                             if (message.Role == ChatRole.Assistant)
@@ -1298,6 +1377,18 @@ public static class AnthropicBetaClientExtensions
 
                 if (options.Tools is { } tools)
                 {
+                    // Pre-scan for HostedToolSearchTool to determine which tools should be deferred.
+                    // A tool-search tool with no DeferredTools defers every function tool; otherwise
+                    // it defers only the named tools.
+                    var toolSearchTools = tools.OfType<HostedToolSearchTool>().ToList();
+                    bool deferAll = toolSearchTools.Any(t => t.DeferredTools is null);
+                    HashSet<string>? deferredToolNames = deferAll
+                        ? null
+                        : new HashSet<string>(
+                            toolSearchTools.SelectMany(t => t.DeferredTools!),
+                            StringComparer.Ordinal
+                        );
+
                     List<BetaToolUnion>? createdTools = createParams.Tools?.ToList();
                     List<BetaRequestMcpServerUrlDefinition>? mcpServers =
                         createParams.McpServers?.ToList();
@@ -1331,15 +1422,20 @@ public static class AnthropicBetaClientExtensions
                                     }
                                 }
 
+                                bool? betaDeferLoading =
+                                    GetValue<bool?>(af, nameof(BetaTool.DeferLoading))
+                                    ?? (
+                                        deferAll || deferredToolNames?.Contains(af.Name) == true
+                                            ? true
+                                            : null
+                                    );
+
                                 BetaTool functionTool = new()
                                 {
                                     Name = af.Name,
                                     Description = af.Description,
                                     InputSchema = new InputSchema(schemaData),
-                                    DeferLoading = GetValue<bool?>(
-                                        af,
-                                        nameof(BetaTool.DeferLoading)
-                                    ),
+                                    DeferLoading = betaDeferLoading,
                                     Strict = GetValue<bool?>(af, nameof(BetaTool.Strict)),
                                     InputExamples = GetValue<List<Dictionary<string, JsonElement>>>(
                                         af,
@@ -1382,6 +1478,19 @@ public static class AnthropicBetaClientExtensions
                                     && value is T tValue
                                         ? tValue
                                         : default;
+                                break;
+
+                            case HostedToolSearchTool toolSearch:
+                                (createdTools ??= []).Add(
+                                    toolSearch
+                                    is HostedToolSearchToolExtensions.Bm25HostedToolSearchTool
+                                        ? new BetaToolSearchToolBm25_20251119(
+                                            BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25
+                                        )
+                                        : new BetaToolSearchToolRegex20251119(
+                                            BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex
+                                        )
+                                );
                                 break;
 
                             case HostedWebSearchTool:
