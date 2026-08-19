@@ -424,13 +424,13 @@ public class AgentTest : TestBase
                         Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
-                        new()
+                        new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
-                            Name = Agents::BetaManagedAgentsAgentToolConfigParamsName.Bash,
                             Enabled = true,
                             PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                 Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
+                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
                         },
                     ],
                     DefaultConfig = new()
@@ -513,13 +513,13 @@ public class AgentTest : TestBase
                         Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
-                        new()
+                        new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
-                            Name = Agents::BetaManagedAgentsAgentToolConfigParamsName.Bash,
                             Enabled = true,
                             PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                 Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                             ),
+                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
                         },
                     ],
                     DefaultConfig = new()

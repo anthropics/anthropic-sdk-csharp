@@ -44,7 +44,7 @@ public sealed record class BetaSkill : JsonModel
     }
 
     /// <summary>
-    /// Skill version or 'latest' for most recent version
+    /// The resolved version: a skill version ID for custom skills.
     /// </summary>
     public required string Version
     {

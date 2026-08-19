@@ -56,10 +56,9 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                         {
                             Configs =
                             [
-                                new()
+                                new Agents::BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
                                     PermissionPolicy =
                                         new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                             Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -126,10 +125,9 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Agents::Name.Bash,
                                 PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                     Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -208,10 +206,9 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                         {
                             Configs =
                             [
-                                new()
+                                new Agents::BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
                                     PermissionPolicy =
                                         new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                             Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -293,10 +290,9 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                         {
                             Configs =
                             [
-                                new()
+                                new Agents::BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
                                     PermissionPolicy =
                                         new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                             Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -371,10 +367,9 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Agents::Name.Bash,
                                 PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                     Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -453,10 +448,9 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                         {
                             Configs =
                             [
-                                new()
+                                new Agents::BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
                                     PermissionPolicy =
                                         new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                             Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -531,10 +525,9 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                         {
                             Configs =
                             [
-                                new()
+                                new Agents::BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    Name = Agents::Name.Bash,
                                     PermissionPolicy =
                                         new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                             Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
@@ -611,10 +604,9 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorAgentTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Agents::Name.Bash,
                                 PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                     Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),
@@ -689,10 +681,9 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorAgentTest : TestBase
                     {
                         Configs =
                         [
-                            new()
+                            new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                Name = Agents::Name.Bash,
                                 PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
                                     Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                                 ),

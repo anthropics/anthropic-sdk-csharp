@@ -18,10 +18,9 @@ public class BetaManagedAgentsAgentToolsetDefaultConfigTest : TestBase
         };
 
         bool expectedEnabled = true;
-        BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+        PermissionPolicy expectedPermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+        );
 
         Assert.Equal(expectedEnabled, model.Enabled);
         Assert.Equal(expectedPermissionPolicy, model.PermissionPolicy);
@@ -66,10 +65,9 @@ public class BetaManagedAgentsAgentToolsetDefaultConfigTest : TestBase
         Assert.NotNull(deserialized);
 
         bool expectedEnabled = true;
-        BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+        PermissionPolicy expectedPermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+        );
 
         Assert.Equal(expectedEnabled, deserialized.Enabled);
         Assert.Equal(expectedPermissionPolicy, deserialized.PermissionPolicy);
@@ -106,39 +104,37 @@ public class BetaManagedAgentsAgentToolsetDefaultConfigTest : TestBase
     }
 }
 
-public class BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicyTest : TestBase
+public class PermissionPolicyTest : TestBase
 {
     [Fact]
     public void BetaManagedAgentsAlwaysAllowValidationWorks()
     {
-        BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+        PermissionPolicy value = new BetaManagedAgentsAlwaysAllowPolicy(
+            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+        );
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsAlwaysAskValidationWorks()
     {
-        BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+        PermissionPolicy value = new BetaManagedAgentsAlwaysAskPolicy(
+            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+        );
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
     {
-        BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+        PermissionPolicy value = new BetaManagedAgentsAlwaysAllowPolicy(
+            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+        );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy>(
-                element,
-                ModelBase.SerializerOptions
-            );
+        var deserialized = JsonSerializer.Deserialize<PermissionPolicy>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -146,14 +142,14 @@ public class BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicyTest : Te
     [Fact]
     public void BetaManagedAgentsAlwaysAskSerializationRoundtripWorks()
     {
-        BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+        PermissionPolicy value = new BetaManagedAgentsAlwaysAskPolicy(
+            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+        );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy>(
-                element,
-                ModelBase.SerializerOptions
-            );
+        var deserialized = JsonSerializer.Deserialize<PermissionPolicy>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

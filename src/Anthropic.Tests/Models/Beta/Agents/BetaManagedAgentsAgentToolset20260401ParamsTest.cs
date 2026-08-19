@@ -16,13 +16,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
             Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfigParams()
                 {
-                    Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                     Enabled = true,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
+                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                 },
             ],
             DefaultConfig = new()
@@ -38,13 +38,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
             BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401;
         List<BetaManagedAgentsAgentToolConfigParams> expectedConfigs =
         [
-            new()
+            new BetaManagedAgentsBashToolConfigParams()
             {
-                Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                 Enabled = true,
                 PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                 ),
+                Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
             },
         ];
         BetaManagedAgentsAgentToolsetDefaultConfigParams expectedDefaultConfig = new()
@@ -73,13 +73,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
             Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfigParams()
                 {
-                    Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                     Enabled = true,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
+                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                 },
             ],
             DefaultConfig = new()
@@ -108,13 +108,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
             Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfigParams()
                 {
-                    Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                     Enabled = true,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
+                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                 },
             ],
             DefaultConfig = new()
@@ -137,13 +137,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
             BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401;
         List<BetaManagedAgentsAgentToolConfigParams> expectedConfigs =
         [
-            new()
+            new BetaManagedAgentsBashToolConfigParams()
             {
-                Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                 Enabled = true,
                 PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                 ),
+                Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
             },
         ];
         BetaManagedAgentsAgentToolsetDefaultConfigParams expectedDefaultConfig = new()
@@ -172,13 +172,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
             Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfigParams()
                 {
-                    Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                     Enabled = true,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
+                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                 },
             ],
             DefaultConfig = new()
@@ -281,13 +281,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
             Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfigParams()
                 {
-                    Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                     Enabled = true,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
+                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                 },
             ],
         };
@@ -304,13 +304,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
             Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfigParams()
                 {
-                    Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                     Enabled = true,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
+                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                 },
             ],
         };
@@ -326,13 +326,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
             Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfigParams()
                 {
-                    Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                     Enabled = true,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
+                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                 },
             ],
 
@@ -351,13 +351,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
             Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfigParams()
                 {
-                    Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                     Enabled = true,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
+                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                 },
             ],
 
@@ -375,13 +375,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
             Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfigParams()
                 {
-                    Name = BetaManagedAgentsAgentToolConfigParamsName.Bash,
                     Enabled = true,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
+                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
                 },
             ],
             DefaultConfig = new()

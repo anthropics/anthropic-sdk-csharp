@@ -33,14 +33,12 @@ public sealed record class BetaManagedAgentsAgentToolsetDefaultConfig : JsonMode
     /// <summary>
     /// Permission policy for tool execution.
     /// </summary>
-    public required BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy PermissionPolicy
+    public required PermissionPolicy PermissionPolicy
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy>(
-                "permission_policy"
-            );
+            return this._rawData.GetNotNullClass<PermissionPolicy>("permission_policy");
         }
         init { this._rawData.Set("permission_policy", value); }
     }
@@ -98,8 +96,8 @@ class BetaManagedAgentsAgentToolsetDefaultConfigFromRaw
 /// <summary>
 /// Permission policy for tool execution.
 /// </summary>
-[JsonConverter(typeof(BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicyConverter))]
-public record class BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy : ModelBase
+[JsonConverter(typeof(PermissionPolicyConverter))]
+public record class PermissionPolicy : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -116,25 +114,19 @@ public record class BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy :
         }
     }
 
-    public BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy(
-        BetaManagedAgentsAlwaysAllowPolicy value,
-        JsonElement? element = null
-    )
+    public PermissionPolicy(BetaManagedAgentsAlwaysAllowPolicy value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy(
-        BetaManagedAgentsAlwaysAskPolicy value,
-        JsonElement? element = null
-    )
+    public PermissionPolicy(BetaManagedAgentsAlwaysAskPolicy value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy(JsonElement element)
+    public PermissionPolicy(JsonElement element)
     {
         this._element = element;
     }
@@ -220,7 +212,7 @@ public record class BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy :
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy"
+                    "Data did not match any variant of PermissionPolicy"
                 );
         }
     }
@@ -256,18 +248,16 @@ public record class BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy :
             BetaManagedAgentsAlwaysAllowPolicy value => betaManagedAgentsAlwaysAllow(value),
             BetaManagedAgentsAlwaysAskPolicy value => betaManagedAgentsAlwaysAsk(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy"
+                "Data did not match any variant of PermissionPolicy"
             ),
         };
     }
 
-    public static implicit operator BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy(
-        BetaManagedAgentsAlwaysAllowPolicy value
-    ) => new(value);
+    public static implicit operator PermissionPolicy(BetaManagedAgentsAlwaysAllowPolicy value) =>
+        new(value);
 
-    public static implicit operator BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy(
-        BetaManagedAgentsAlwaysAskPolicy value
-    ) => new(value);
+    public static implicit operator PermissionPolicy(BetaManagedAgentsAlwaysAskPolicy value) =>
+        new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -284,7 +274,7 @@ public record class BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy :
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy"
+                "Data did not match any variant of PermissionPolicy"
             );
         }
         this.Switch(
@@ -293,7 +283,7 @@ public record class BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy :
         );
     }
 
-    public virtual bool Equals(BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy? other) =>
+    public virtual bool Equals(PermissionPolicy? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -320,10 +310,9 @@ public record class BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy :
     }
 }
 
-sealed class BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicyConverter
-    : JsonConverter<BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy>
+sealed class PermissionPolicyConverter : JsonConverter<PermissionPolicy>
 {
-    public override BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy? Read(
+    public override PermissionPolicy? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -385,14 +374,14 @@ sealed class BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicyConverter
             }
             default:
             {
-                return new BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy(element);
+                return new PermissionPolicy(element);
             }
         }
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicy value,
+        PermissionPolicy value,
         JsonSerializerOptions options
     )
     {

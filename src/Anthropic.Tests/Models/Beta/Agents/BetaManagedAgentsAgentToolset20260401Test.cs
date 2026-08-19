@@ -15,10 +15,9 @@ public class BetaManagedAgentsAgentToolset20260401Test : TestBase
         {
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfig()
                 {
                     Enabled = true,
-                    Name = Name.Bash,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
@@ -36,10 +35,9 @@ public class BetaManagedAgentsAgentToolset20260401Test : TestBase
 
         List<BetaManagedAgentsAgentToolConfig> expectedConfigs =
         [
-            new()
+            new BetaManagedAgentsBashToolConfig()
             {
                 Enabled = true,
-                Name = Name.Bash,
                 PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                 ),
@@ -71,10 +69,9 @@ public class BetaManagedAgentsAgentToolset20260401Test : TestBase
         {
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfig()
                 {
                     Enabled = true,
-                    Name = Name.Bash,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
@@ -106,10 +103,9 @@ public class BetaManagedAgentsAgentToolset20260401Test : TestBase
         {
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfig()
                 {
                     Enabled = true,
-                    Name = Name.Bash,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
@@ -134,10 +130,9 @@ public class BetaManagedAgentsAgentToolset20260401Test : TestBase
 
         List<BetaManagedAgentsAgentToolConfig> expectedConfigs =
         [
-            new()
+            new BetaManagedAgentsBashToolConfig()
             {
                 Enabled = true,
-                Name = Name.Bash,
                 PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                 ),
@@ -169,10 +164,9 @@ public class BetaManagedAgentsAgentToolset20260401Test : TestBase
         {
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfig()
                 {
                     Enabled = true,
-                    Name = Name.Bash,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
@@ -198,10 +192,9 @@ public class BetaManagedAgentsAgentToolset20260401Test : TestBase
         {
             Configs =
             [
-                new()
+                new BetaManagedAgentsBashToolConfig()
                 {
                     Enabled = true,
-                    Name = Name.Bash,
                     PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                         BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                     ),
