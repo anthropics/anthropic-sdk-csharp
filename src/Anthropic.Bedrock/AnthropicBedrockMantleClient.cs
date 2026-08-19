@@ -155,6 +155,26 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
         );
 
     /// <summary>
+    /// Not supported on Bedrock Mantle. Only Messages (and Beta.Messages) are available.
+    /// </summary>
+    /// <exception cref="NotSupportedException">Always thrown.</exception>
+    public new IFileService Files =>
+        throw new NotSupportedException(
+            "The Files resource is not supported on Bedrock Mantle. "
+                + "Only Messages and Beta.Messages are available."
+        );
+
+    /// <summary>
+    /// Not supported on Bedrock Mantle. Only Messages (and Beta.Messages) are available.
+    /// </summary>
+    /// <exception cref="NotSupportedException">Always thrown.</exception>
+    public new ISkillService Skills =>
+        throw new NotSupportedException(
+            "The Skills resource is not supported on Bedrock Mantle. "
+                + "Only Messages and Beta.Messages are available."
+        );
+
+    /// <summary>
     /// Beta resources. Only <c>Messages</c> is available; accessing <c>Models</c>,
     /// <c>Files</c>, or <c>Skills</c> will throw <see cref="NotSupportedException"/>.
     /// </summary>

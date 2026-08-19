@@ -13,12 +13,12 @@ public class FileServiceTest : TestBase
 
     public async Task Delete_Works()
     {
-        var deletedFile = await this.client.Beta.Files.Delete(
+        var betaDeletedFile = await this.client.Beta.Files.Delete(
             "file_id",
             new(),
             TestContext.Current.CancellationToken
         );
-        deletedFile.Validate();
+        betaDeletedFile.Validate();
     }
 
     public async Task Download_Works()
@@ -32,20 +32,20 @@ public class FileServiceTest : TestBase
 
     public async Task RetrieveMetadata_Works()
     {
-        var fileMetadata = await this.client.Beta.Files.RetrieveMetadata(
+        var betaFileMetadata = await this.client.Beta.Files.RetrieveMetadata(
             "file_id",
             new(),
             TestContext.Current.CancellationToken
         );
-        fileMetadata.Validate();
+        betaFileMetadata.Validate();
     }
 
     public async Task Upload_Works()
     {
-        var fileMetadata = await this.client.Beta.Files.Upload(
+        var betaFileMetadata = await this.client.Beta.Files.Upload(
             new() { File = Encoding.UTF8.GetBytes("Example data") },
             TestContext.Current.CancellationToken
         );
-        fileMetadata.Validate();
+        betaFileMetadata.Validate();
     }
 }

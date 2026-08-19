@@ -1447,6 +1447,198 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.NotNull(response);
     }
 
+    [Theory]
+    [InlineData("computer")]
+    [InlineData(null)]
+    public async Task GetResponseAsync_ToolsetToolUse_RoundTripsToolsetName(string? toolsetName)
+    {
+        string toolsetJson = toolsetName is null ? "" : $", \"toolset_name\": \"{toolsetName}\"";
+
+        VerbatimHttpHandler firstHandler = new(
+            expectedRequest: "",
+            actualResponse: $$"""
+            {
+                "id": "msg_toolset_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "tool_use",
+                    "id": "toolu_shot_1",
+                    "name": "screenshot",
+                    "input": {},
+                    "caller": { "type": "direct" }{{toolsetJson}}
+                }],
+                "stop_reason": "tool_use",
+                "usage": { "input_tokens": 10, "output_tokens": 5 }
+            }
+            """
+        );
+
+        List<ChatMessage> messages = [new(ChatRole.User, "Take a screenshot")];
+
+        ChatResponse first = await CreateChatClient(firstHandler, "claude-haiku-4-5")
+            .GetResponseAsync(messages, new(), TestContext.Current.CancellationToken);
+
+        FunctionCallContent call = Assert.Single(
+            first.Messages.SelectMany(m => m.Contents).OfType<FunctionCallContent>()
+        );
+        Assert.Equal("toolu_shot_1", call.CallId);
+
+        messages.AddMessages(first);
+        messages.Add(new(ChatRole.Tool, [new FunctionResultContent(call.CallId, "done")]));
+
+        VerbatimHttpHandler secondHandler = new(
+            expectedRequest: $$"""
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Take a screenshot" }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "toolu_shot_1",
+                            "name": "screenshot",
+                            "input": {}{{toolsetJson}}
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "toolu_shot_1",
+                            "content": "done",
+                            "is_error": false{{toolsetJson}}
+                        }]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_toolset_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{ "type": "text", "text": "Done." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 20, "output_tokens": 5 }
+            }
+            """
+        );
+
+        ChatResponse second = await CreateChatClient(secondHandler, "claude-haiku-4-5")
+            .GetResponseAsync(messages, new(), TestContext.Current.CancellationToken);
+        Assert.NotNull(second);
+    }
+
+    [Theory]
+    [InlineData("computer")]
+    [InlineData(null)]
+    public async Task GetStreamingResponseAsync_ToolsetToolUse_RoundTripsToolsetName(
+        string? toolsetName
+    )
+    {
+        string toolsetJson = toolsetName is null ? "" : $",\"toolset_name\":\"{toolsetName}\"";
+
+        VerbatimHttpHandler firstHandler = new(
+            expectedRequest: "",
+            actualResponse: $$$$"""
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_toolset_stream_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_shot_1","name":"screenshot","input":{},"caller":{"type":"direct"}{{{{toolsetJson}}}}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null},"usage":{"output_tokens":5}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        List<ChatMessage> messages = [new(ChatRole.User, "Take a screenshot")];
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in CreateChatClient(firstHandler, "claude-haiku-4-5")
+                .GetStreamingResponseAsync(messages, new(), TestContext.Current.CancellationToken)
+        )
+        {
+            updates.Add(update);
+        }
+
+        ChatResponse first = updates.ToChatResponse();
+        FunctionCallContent call = Assert.Single(
+            first.Messages.SelectMany(m => m.Contents).OfType<FunctionCallContent>()
+        );
+        Assert.Equal("toolu_shot_1", call.CallId);
+
+        messages.AddMessages(first);
+        messages.Add(new(ChatRole.Tool, [new FunctionResultContent(call.CallId, "done")]));
+
+        VerbatimHttpHandler secondHandler = new(
+            expectedRequest: $$"""
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Take a screenshot" }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "toolu_shot_1",
+                            "name": "screenshot",
+                            "input": {}{{toolsetJson}}
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "toolu_shot_1",
+                            "content": "done",
+                            "is_error": false{{toolsetJson}}
+                        }]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_toolset_stream_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{ "type": "text", "text": "Done." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 20, "output_tokens": 5 }
+            }
+            """
+        );
+
+        ChatResponse second = await CreateChatClient(secondHandler, "claude-haiku-4-5")
+            .GetResponseAsync(messages, new(), TestContext.Current.CancellationToken);
+        Assert.NotNull(second);
+    }
+
     [Fact]
     public async Task GetResponseAsync_WithTopK()
     {

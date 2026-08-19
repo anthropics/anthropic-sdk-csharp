@@ -45,6 +45,22 @@ public sealed record class ImageBlockParam : JsonModel
         init { this._rawData.Set("cache_control", value); }
     }
 
+    /// <summary>
+    /// Configures the transformations the server applies to this image before the
+    /// model observes it. Each key names a condition the server transforms images
+    /// for; its value selects the transformation applied. Omitted keys keep their
+    /// default behavior, and an empty object is equivalent to omitting the field.
+    /// </summary>
+    public ImageTransformationsParam? Transformations
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ImageTransformationsParam>("transformations");
+        }
+        init { this._rawData.Set("transformations", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -54,6 +70,7 @@ public sealed record class ImageBlockParam : JsonModel
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         this.CacheControl?.Validate();
+        this.Transformations?.Validate();
     }
 
     public ImageBlockParam()
@@ -123,7 +140,14 @@ public record class ImageBlockParamSource : ModelBase
 
     public JsonElement Type
     {
-        get { return Match(base64Image: (x) => x.Type, urlImage: (x) => x.Type); }
+        get
+        {
+            return Match(
+                base64Image: (x) => x.Type,
+                urlImage: (x) => x.Type,
+                fileImage: (x) => x.Type
+            );
+        }
     }
 
     public ImageBlockParamSource(Base64ImageSource value, JsonElement? element = null)
@@ -133,6 +157,12 @@ public record class ImageBlockParamSource : ModelBase
     }
 
     public ImageBlockParamSource(UrlImageSource value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ImageBlockParamSource(FileImageSource value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -186,6 +216,27 @@ public record class ImageBlockParamSource : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="FileImageSource"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickFileImage(out var value)) {
+    ///     // `value` is of type `FileImageSource`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickFileImage([NotNullWhen(true)] out FileImageSource? value)
+    {
+        value = this.Value as FileImageSource;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -200,14 +251,16 @@ public record class ImageBlockParamSource : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (Base64ImageSource value) =&gt; {...},
-    ///     (UrlImageSource value) =&gt; {...}
+    ///     (UrlImageSource value) =&gt; {...},
+    ///     (FileImageSource value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<Base64ImageSource> base64Image,
-        System::Action<UrlImageSource> urlImage
+        System::Action<UrlImageSource> urlImage,
+        System::Action<FileImageSource> fileImage
     )
     {
         switch (this.Value)
@@ -217,6 +270,9 @@ public record class ImageBlockParamSource : ModelBase
                 break;
             case UrlImageSource value:
                 urlImage(value);
+                break;
+            case FileImageSource value:
+                fileImage(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -241,20 +297,23 @@ public record class ImageBlockParamSource : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (Base64ImageSource value) =&gt; {...},
-    ///     (UrlImageSource value) =&gt; {...}
+    ///     (UrlImageSource value) =&gt; {...},
+    ///     (FileImageSource value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
         System::Func<Base64ImageSource, T> base64Image,
-        System::Func<UrlImageSource, T> urlImage
+        System::Func<UrlImageSource, T> urlImage,
+        System::Func<FileImageSource, T> fileImage
     )
     {
         return this.Value switch
         {
             Base64ImageSource value => base64Image(value),
             UrlImageSource value => urlImage(value),
+            FileImageSource value => fileImage(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ImageBlockParamSource"
             ),
@@ -264,6 +323,8 @@ public record class ImageBlockParamSource : ModelBase
     public static implicit operator ImageBlockParamSource(Base64ImageSource value) => new(value);
 
     public static implicit operator ImageBlockParamSource(UrlImageSource value) => new(value);
+
+    public static implicit operator ImageBlockParamSource(FileImageSource value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -283,7 +344,11 @@ public record class ImageBlockParamSource : ModelBase
                 "Data did not match any variant of ImageBlockParamSource"
             );
         }
-        this.Switch((base64Image) => base64Image.Validate(), (urlImage) => urlImage.Validate());
+        this.Switch(
+            (base64Image) => base64Image.Validate(),
+            (urlImage) => urlImage.Validate(),
+            (fileImage) => fileImage.Validate()
+        );
     }
 
     public virtual bool Equals(ImageBlockParamSource? other) =>
@@ -308,6 +373,7 @@ public record class ImageBlockParamSource : ModelBase
         {
             Base64ImageSource _ => 0,
             UrlImageSource _ => 1,
+            FileImageSource _ => 2,
             _ => -1,
         };
     }
@@ -359,6 +425,26 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<UrlImageSource>(element, options);
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "file":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<FileImageSource>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);

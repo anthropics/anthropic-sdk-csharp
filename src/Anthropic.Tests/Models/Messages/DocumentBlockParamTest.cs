@@ -216,6 +216,13 @@ public class DocumentBlockParamSourceTest : TestBase
     }
 
     [Fact]
+    public void FileDocumentValidationWorks()
+    {
+        DocumentBlockParamSource value = new FileDocumentSource("file_id");
+        value.Validate();
+    }
+
+    [Fact]
     public void Base64PdfSerializationRoundtripWorks()
     {
         DocumentBlockParamSource value = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
@@ -260,6 +267,19 @@ public class DocumentBlockParamSourceTest : TestBase
     public void UrlPdfSerializationRoundtripWorks()
     {
         DocumentBlockParamSource value = new UrlPdfSource("url");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<DocumentBlockParamSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void FileDocumentSerializationRoundtripWorks()
+    {
+        DocumentBlockParamSource value = new FileDocumentSource("file_id");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<DocumentBlockParamSource>(
             element,

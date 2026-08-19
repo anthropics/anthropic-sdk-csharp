@@ -18,6 +18,15 @@ public class RawMessageDeltaEventTest : TestBase
                 {
                     ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = ContainerSkillType.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
                 },
                 StopDetails = new()
                 {
@@ -45,6 +54,15 @@ public class RawMessageDeltaEventTest : TestBase
             {
                 ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = ContainerSkillType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
             },
             StopDetails = new()
             {
@@ -82,6 +100,15 @@ public class RawMessageDeltaEventTest : TestBase
                 {
                     ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = ContainerSkillType.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
                 },
                 StopDetails = new()
                 {
@@ -123,6 +150,15 @@ public class RawMessageDeltaEventTest : TestBase
                 {
                     ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = ContainerSkillType.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
                 },
                 StopDetails = new()
                 {
@@ -157,6 +193,15 @@ public class RawMessageDeltaEventTest : TestBase
             {
                 ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = ContainerSkillType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
             },
             StopDetails = new()
             {
@@ -194,6 +239,15 @@ public class RawMessageDeltaEventTest : TestBase
                 {
                     ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = ContainerSkillType.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
                 },
                 StopDetails = new()
                 {
@@ -229,6 +283,15 @@ public class RawMessageDeltaEventTest : TestBase
                 {
                     ID = "container_011CpZohnwH4vuy7gazohgSP",
                     ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = ContainerSkillType.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
                 },
                 StopDetails = new()
                 {
@@ -267,6 +330,15 @@ public class DeltaTest : TestBase
             {
                 ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = ContainerSkillType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
             },
             StopDetails = new()
             {
@@ -282,6 +354,15 @@ public class DeltaTest : TestBase
         {
             ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "pdf",
+                    Type = ContainerSkillType.Anthropic,
+                    Version = "latest",
+                },
+            ],
         };
         RefusalStopDetails expectedStopDetails = new()
         {
@@ -307,6 +388,15 @@ public class DeltaTest : TestBase
             {
                 ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = ContainerSkillType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
             },
             StopDetails = new()
             {
@@ -333,6 +423,15 @@ public class DeltaTest : TestBase
             {
                 ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = ContainerSkillType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
             },
             StopDetails = new()
             {
@@ -352,6 +451,15 @@ public class DeltaTest : TestBase
         {
             ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "pdf",
+                    Type = ContainerSkillType.Anthropic,
+                    Version = "latest",
+                },
+            ],
         };
         RefusalStopDetails expectedStopDetails = new()
         {
@@ -377,6 +485,15 @@ public class DeltaTest : TestBase
             {
                 ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = ContainerSkillType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
             },
             StopDetails = new()
             {
@@ -400,6 +517,15 @@ public class DeltaTest : TestBase
             {
                 ID = "container_011CpZohnwH4vuy7gazohgSP",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = ContainerSkillType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
             },
             StopDetails = new()
             {

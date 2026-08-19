@@ -128,6 +128,31 @@ public record class ContentBlockParam : ModelBase
         }
     }
 
+    public string? ToolsetName
+    {
+        get
+        {
+            return Match<string?>(
+                text: (_) => null,
+                image: (_) => null,
+                document: (_) => null,
+                searchResult: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (x) => x.ToolsetName,
+                toolResult: (x) => x.ToolsetName,
+                serverToolUse: (_) => null,
+                webSearchToolResult: (_) => null,
+                webFetchToolResult: (_) => null,
+                codeExecutionToolResult: (_) => null,
+                bashCodeExecutionToolResult: (_) => null,
+                textEditorCodeExecutionToolResult: (_) => null,
+                toolSearchToolResult: (_) => null,
+                containerUpload: (_) => null
+            );
+        }
+    }
+
     public string? ToolUseID
     {
         get

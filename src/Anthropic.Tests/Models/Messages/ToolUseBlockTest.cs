@@ -19,6 +19,7 @@ public class ToolUseBlockTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
+            ToolsetName = "toolset_name",
         };
 
         string expectedID = "id";
@@ -29,6 +30,7 @@ public class ToolUseBlockTest : TestBase
         };
         string expectedName = "x";
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
+        string expectedToolsetName = "toolset_name";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedCaller, model.Caller);
@@ -41,6 +43,7 @@ public class ToolUseBlockTest : TestBase
         }
         Assert.Equal(expectedName, model.Name);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.Equal(expectedToolsetName, model.ToolsetName);
     }
 
     [Fact]
@@ -55,6 +58,7 @@ public class ToolUseBlockTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
+            ToolsetName = "toolset_name",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -78,6 +82,7 @@ public class ToolUseBlockTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
+            ToolsetName = "toolset_name",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -95,6 +100,7 @@ public class ToolUseBlockTest : TestBase
         };
         string expectedName = "x";
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
+        string expectedToolsetName = "toolset_name";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedCaller, deserialized.Caller);
@@ -107,6 +113,7 @@ public class ToolUseBlockTest : TestBase
         }
         Assert.Equal(expectedName, deserialized.Name);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.Equal(expectedToolsetName, deserialized.ToolsetName);
     }
 
     [Fact]
@@ -121,6 +128,81 @@ public class ToolUseBlockTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
+            ToolsetName = "toolset_name",
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new ToolUseBlock
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+        };
+
+        Assert.Null(model.ToolsetName);
+        Assert.False(model.RawData.ContainsKey("toolset_name"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new ToolUseBlock
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
+    {
+        var model = new ToolUseBlock
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+
+            ToolsetName = null,
+        };
+
+        Assert.Null(model.ToolsetName);
+        Assert.True(model.RawData.ContainsKey("toolset_name"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new ToolUseBlock
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+
+            ToolsetName = null,
         };
 
         model.Validate();
@@ -138,6 +220,7 @@ public class ToolUseBlockTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
+            ToolsetName = "toolset_name",
         };
 
         ToolUseBlock copied = new(model);

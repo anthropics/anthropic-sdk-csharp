@@ -476,6 +476,7 @@ public class MessageStreamingAggregationTest
                         {
                             ID = "container_01",
                             ExpiresAt = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                            Skills = null,
                         },
                         StopDetails = null,
                         StopReason = StopReason.EndTurn,

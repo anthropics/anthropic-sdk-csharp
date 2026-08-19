@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Anthropic;
 using Anthropic.Core;
 using Anthropic.Models.Messages;
 
+#pragma warning disable MEAI001 // [Experimental] APIs in Microsoft.Extensions.AI
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 
 namespace Microsoft.Extensions.AI.Tests;
@@ -1201,5 +1203,687 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
             TestContext.Current.CancellationToken
         );
         Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithFunctionResultContent_HostedFileContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Get file"
+                        }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "tool_file",
+                            "name": "file_tool",
+                            "input": {}
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "tool_file",
+                            "is_error": false,
+                            "content": [{
+                                "type": "document",
+                                "source": {
+                                    "type": "file",
+                                    "file_id": "file_abc123"
+                                }
+                            }]
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_file_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "File received"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 28,
+                    "output_tokens": 7
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatMessage> messages =
+        [
+            new ChatMessage(ChatRole.User, "Get file"),
+            new ChatMessage(
+                ChatRole.Assistant,
+                [
+                    new FunctionCallContent(
+                        "tool_file",
+                        "file_tool",
+                        new Dictionary<string, object?>()
+                    ),
+                ]
+            ),
+            new ChatMessage(
+                ChatRole.User,
+                [new FunctionResultContent("tool_file", new HostedFileContent("file_abc123"))]
+            ),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithFunctionResultContent_HostedFileContent_Image()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Get image"
+                        }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "tool_image",
+                            "name": "image_tool",
+                            "input": {}
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "tool_image",
+                            "is_error": false,
+                            "content": [{
+                                "type": "image",
+                                "source": {
+                                    "type": "file",
+                                    "file_id": "file_abc123"
+                                }
+                            }]
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_image_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Image received"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 28,
+                    "output_tokens": 7
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatMessage> messages =
+        [
+            new ChatMessage(ChatRole.User, "Get image"),
+            new ChatMessage(
+                ChatRole.Assistant,
+                [
+                    new FunctionCallContent(
+                        "tool_image",
+                        "image_tool",
+                        new Dictionary<string, object?>()
+                    ),
+                ]
+            ),
+            new ChatMessage(
+                ChatRole.User,
+                [
+                    new FunctionResultContent(
+                        "tool_image",
+                        new HostedFileContent("file_abc123") { MediaType = "image/png" }
+                    ),
+                ]
+            ),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithHostedFileContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "document",
+                        "source": {
+                            "type": "file",
+                            "file_id": "file_abc123"
+                        }
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_hosted_file_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "I read the hosted file."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 6
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var hostedFile = new HostedFileContent("file_abc123");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [new ChatMessage(ChatRole.User, [hostedFile])],
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithHostedFileContent_Image()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "image",
+                        "source": {
+                            "type": "file",
+                            "file_id": "file_abc123"
+                        }
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_hosted_image_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "I see an image."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var hostedFile = new HostedFileContent("file_abc123") { MediaType = "image/png" };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [new ChatMessage(ChatRole.User, [hostedFile])],
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+        Assert.Equal("I see an image.", response.Text);
+    }
+
+    [Fact]
+    public void AsIHostedFileClient_ReturnsInstance()
+    {
+        var client = new AnthropicClient { ApiKey = "test-key" };
+        IHostedFileClient fileClient = client.AsIHostedFileClient();
+        Assert.NotNull(fileClient);
+    }
+
+    [Fact]
+    public void AsIHostedFileClient_ReturnsHostedFileClientMetadata()
+    {
+        var client = new AnthropicClient { ApiKey = "test-key" };
+        IHostedFileClient fileClient = client.AsIHostedFileClient();
+        var metadata = fileClient.GetService<HostedFileClientMetadata>();
+        Assert.NotNull(metadata);
+        Assert.Equal("anthropic", metadata.ProviderName);
+    }
+
+    [Fact]
+    public void AsIHostedFileClient_ThrowsOnNull()
+    {
+        IAnthropicClient client = null!;
+        Anthropic.Services.IFileService fileService = null!;
+
+        Assert.Throws<ArgumentNullException>(() => client.AsIHostedFileClient());
+        Assert.Throws<ArgumentNullException>(() => fileService.AsIHostedFileClient());
+    }
+
+    [Fact]
+    public async Task IHostedFileClient_UploadAsync_NullContent_Throws()
+    {
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.AsIHostedFileClient();
+        await Assert.ThrowsAsync<ArgumentNullException>(
+            "content",
+            () =>
+                fileClient.UploadAsync(
+                    null!,
+                    cancellationToken: TestContext.Current.CancellationToken
+                )
+        );
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    public async Task IHostedFileClient_DownloadAsync_InvalidFileId_Throws(string? fileId)
+    {
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.AsIHostedFileClient();
+        ArgumentException ex = await Assert.ThrowsAnyAsync<ArgumentException>(() =>
+            fileClient.DownloadAsync(
+                fileId!,
+                cancellationToken: TestContext.Current.CancellationToken
+            )
+        );
+        Assert.Equal("fileId", ex.ParamName);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    public async Task IHostedFileClient_GetFileInfoAsync_InvalidFileId_Throws(string? fileId)
+    {
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.AsIHostedFileClient();
+        ArgumentException ex = await Assert.ThrowsAnyAsync<ArgumentException>(() =>
+            fileClient.GetFileInfoAsync(
+                fileId!,
+                cancellationToken: TestContext.Current.CancellationToken
+            )
+        );
+        Assert.Equal("fileId", ex.ParamName);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    public async Task IHostedFileClient_DeleteAsync_InvalidFileId_Throws(string? fileId)
+    {
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.AsIHostedFileClient();
+        ArgumentException ex = await Assert.ThrowsAnyAsync<ArgumentException>(() =>
+            fileClient.DeleteAsync(
+                fileId!,
+                cancellationToken: TestContext.Current.CancellationToken
+            )
+        );
+        Assert.Equal("fileId", ex.ParamName);
+    }
+
+    [Fact]
+    public void IHostedFileClient_GetService_NullServiceType_Throws()
+    {
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.AsIHostedFileClient();
+        Assert.Throws<ArgumentNullException>("serviceType", () => fileClient.GetService(null!));
+    }
+
+    [Fact]
+    public void IHostedFileClient_GetService_NonNullServiceKey_ReturnsNull()
+    {
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.AsIHostedFileClient();
+        Assert.Null(fileClient.GetService(typeof(HostedFileClientMetadata), "key"));
+    }
+
+    [Fact]
+    public void IHostedFileClient_GetService_ReturnsSelf()
+    {
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.AsIHostedFileClient();
+        Assert.Same(fileClient, fileClient.GetService<IHostedFileClient>());
+    }
+
+    [Fact]
+    public void IHostedFileClient_GetService_UnknownType_ReturnsNull()
+    {
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.AsIHostedFileClient();
+        Assert.Null(fileClient.GetService(typeof(string)));
+    }
+
+    [Fact]
+    public void IHostedFileClient_GetService_Metadata_HasProviderUri()
+    {
+        using IHostedFileClient fileClient = new AnthropicClient
+        {
+            ApiKey = "test-key",
+        }.AsIHostedFileClient();
+        var metadata = fileClient.GetService<HostedFileClientMetadata>();
+        Assert.NotNull(metadata);
+        Assert.NotNull(metadata.ProviderUri);
+    }
+
+    [Fact]
+    public async Task IHostedFileClient_GetFileInfoAsync_ReturnsHostedFileContent()
+    {
+        VerbatimHttpHandler handler = new(
+            "",
+            """
+            {
+                "id": "file_abc123",
+                "created_at": "2024-01-01T00:00:00+00:00",
+                "filename": "test.txt",
+                "mime_type": "text/plain",
+                "size_bytes": 100,
+                "type": "file"
+            }
+            """
+        );
+
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler).AsIHostedFileClient();
+        HostedFileContent? result = await fileClient.GetFileInfoAsync(
+            "file_abc123",
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(result);
+        Assert.Equal("file_abc123", result.FileId);
+        Assert.Equal("text/plain", result.MediaType);
+        Assert.Equal("test.txt", result.Name);
+        Assert.Equal(100, result.SizeInBytes);
+        Assert.NotNull(result.CreatedAt);
+        Assert.IsType<Anthropic.Models.Files.FileMetadata>(result.RawRepresentation);
+    }
+
+    [Fact]
+    public async Task IHostedFileClient_DeleteAsync_ReturnsTrue()
+    {
+        VerbatimHttpHandler handler = new(
+            "",
+            """
+            {
+                "id": "file_abc123",
+                "type": "file_deleted"
+            }
+            """
+        );
+
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler).AsIHostedFileClient();
+        bool result = await fileClient.DeleteAsync(
+            "file_abc123",
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task IHostedFileClient_UploadAsync_ReturnsHostedFileContent()
+    {
+        VerbatimHttpHandler handler = new(
+            "",
+            """
+            {
+                "id": "file_new123",
+                "created_at": "2024-06-15T10:30:00+00:00",
+                "filename": "report.pdf",
+                "mime_type": "application/pdf",
+                "size_bytes": 5000,
+                "type": "file"
+            }
+            """
+        );
+
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler).AsIHostedFileClient();
+        using var stream = new MemoryStream([1, 2, 3]);
+
+        HostedFileContent result = await fileClient.UploadAsync(
+            stream,
+            "application/pdf",
+            "report.pdf",
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal("file_new123", result.FileId);
+        Assert.Equal("application/pdf", result.MediaType);
+        Assert.Equal("report.pdf", result.Name);
+        Assert.Equal(5000, result.SizeInBytes);
+    }
+
+    [Fact]
+    public async Task IHostedFileClient_UploadAsync_NullMediaType_InfersFromFileName()
+    {
+        VerbatimHttpHandler handler = new(
+            "",
+            """
+            {
+                "id": "file_inferred",
+                "created_at": "2024-06-15T10:30:00+00:00",
+                "filename": "data.csv",
+                "mime_type": "text/csv",
+                "size_bytes": 500,
+                "type": "file"
+            }
+            """
+        );
+
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler).AsIHostedFileClient();
+        using var stream = new MemoryStream([1, 2, 3]);
+
+        HostedFileContent result = await fileClient.UploadAsync(
+            stream,
+            null,
+            "data.csv",
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal("file_inferred", result.FileId);
+    }
+
+    [Fact]
+    public async Task IHostedFileClient_UploadAsync_NullFileName_GeneratesFromMediaType()
+    {
+        VerbatimHttpHandler handler = new(
+            "",
+            """
+            {
+                "id": "file_gen",
+                "created_at": "2024-06-15T10:30:00+00:00",
+                "filename": "generated.pdf",
+                "mime_type": "application/pdf",
+                "size_bytes": 100,
+                "type": "file"
+            }
+            """
+        );
+
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler).AsIHostedFileClient();
+        using var stream = new MemoryStream([1, 2, 3]);
+
+        HostedFileContent result = await fileClient.UploadAsync(
+            stream,
+            "application/pdf",
+            null,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal("file_gen", result.FileId);
+    }
+
+    [Fact]
+    public async Task IHostedFileClient_DownloadAsync_ReturnsReadableStream()
+    {
+        VerbatimHttpHandler handler = new("", "test file content");
+
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler).AsIHostedFileClient();
+        using HostedFileDownloadStream downloadStream = await fileClient.DownloadAsync(
+            "file_abc123",
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(downloadStream);
+        Assert.True(downloadStream.CanRead);
+        Assert.False(downloadStream.CanWrite);
+
+        using var reader = new StreamReader(downloadStream);
+        string content = await reader.ReadToEndAsync(
+#if NET
+            TestContext.Current.CancellationToken
+#endif
+        );
+        Assert.Contains("test file content", content);
+    }
+
+    [Fact]
+    public async Task IHostedFileClient_DownloadAsync_StreamWriteThrows()
+    {
+        VerbatimHttpHandler handler = new("", "content");
+
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler).AsIHostedFileClient();
+        using HostedFileDownloadStream stream = await fileClient.DownloadAsync(
+            "file_abc123",
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+
+        Assert.Throws<NotSupportedException>(() => stream.Write(new byte[1], 0, 1));
+        Assert.Throws<NotSupportedException>(() => stream.SetLength(0));
+    }
+
+    [Fact]
+    public async Task IHostedFileClient_ListFilesAsync_ReturnsFiles()
+    {
+        VerbatimHttpHandler handler = new(
+            "",
+            """
+            {
+                "data": [
+                    {
+                        "id": "file_1",
+                        "created_at": "2024-01-01T00:00:00+00:00",
+                        "filename": "a.txt",
+                        "mime_type": "text/plain",
+                        "size_bytes": 10,
+                        "type": "file"
+                    },
+                    {
+                        "id": "file_2",
+                        "created_at": "2024-01-02T00:00:00+00:00",
+                        "filename": "b.pdf",
+                        "mime_type": "application/pdf",
+                        "size_bytes": 2000,
+                        "type": "file"
+                    }
+                ],
+                "first_id": "file_1",
+                "has_more": false,
+                "last_id": null
+            }
+            """
+        );
+
+        using IHostedFileClient fileClient = CreateAnthropicClient(handler).AsIHostedFileClient();
+
+        List<HostedFileContent> files = new();
+        await foreach (
+            HostedFileContent file in fileClient.ListFilesAsync(
+                cancellationToken: TestContext.Current.CancellationToken
+            )
+        )
+        {
+            files.Add(file);
+        }
+
+        Assert.Equal(2, files.Count);
+        Assert.Equal("file_1", files[0].FileId);
+        Assert.Equal("a.txt", files[0].Name);
+        Assert.Equal("text/plain", files[0].MediaType);
+        Assert.Equal(10, files[0].SizeInBytes);
+        Assert.Equal("file_2", files[1].FileId);
+        Assert.Equal("b.pdf", files[1].Name);
+        Assert.Equal("application/pdf", files[1].MediaType);
+        Assert.Equal(2000, files[1].SizeInBytes);
     }
 }

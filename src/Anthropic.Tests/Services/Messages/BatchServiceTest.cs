@@ -24,7 +24,19 @@ public class BatchServiceTest : TestBase
                             Messages = [new() { Content = "Hello, world", Role = Role.User }],
                             Model = Model.ClaudeOpus5,
                             CacheControl = new() { Ttl = Ttl.Ttl5m },
-                            Container = "container",
+                            Container = new ContainerParams()
+                            {
+                                ID = "id",
+                                Skills =
+                                [
+                                    new()
+                                    {
+                                        SkillID = "pdf",
+                                        Type = SkillParamsType.Anthropic,
+                                        Version = "latest",
+                                    },
+                                ],
+                            },
                             InferenceGeo = "inference_geo",
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                             OutputConfig = new()

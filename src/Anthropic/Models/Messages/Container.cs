@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -40,11 +41,34 @@ public sealed record class Container : JsonModel
         init { this._rawData.Set("expires_at", value); }
     }
 
+    /// <summary>
+    /// Skills loaded in the container
+    /// </summary>
+    public required IReadOnlyList<ContainerSkill>? Skills
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<ContainerSkill>>("skills");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<ContainerSkill>?>(
+                "skills",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
         _ = this.ExpiresAt;
+        foreach (var item in this.Skills ?? [])
+        {
+            item.Validate();
+        }
     }
 
     public Container() { }

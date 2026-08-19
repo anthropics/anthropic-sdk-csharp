@@ -1,0 +1,166 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Anthropic.Core;
+using Anthropic.Models.Skills.Versions;
+
+namespace Anthropic.Services.Skills;
+
+/// <summary>
+/// NOTE: Do not inherit from this type outside the SDK unless you're okay with breaking
+/// changes in non-major versions. We may add new methods in the future that cause
+/// existing derived classes to break.
+/// </summary>
+public interface IVersionService
+{
+    /// <summary>
+    /// Returns a view of this service that provides access to raw HTTP responses
+    /// for each method.
+    /// </summary>
+    IVersionServiceWithRawResponse WithRawResponse { get; }
+
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
+    IVersionService WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
+    /// <summary>
+    /// Create Skill Version
+    /// </summary>
+    Task<SkillVersion> Create(
+        VersionCreateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Create(VersionCreateParams, CancellationToken)"/>
+    Task<SkillVersion> Create(
+        string skillID,
+        VersionCreateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Get Skill Version
+    /// </summary>
+    Task<SkillVersion> Retrieve(
+        VersionRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Retrieve(VersionRetrieveParams, CancellationToken)"/>
+    Task<SkillVersion> Retrieve(
+        string version,
+        VersionRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// List Skill Versions
+    /// </summary>
+    Task<VersionListPage> List(
+        VersionListParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="List(VersionListParams, CancellationToken)"/>
+    Task<VersionListPage> List(
+        string skillID,
+        VersionListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Delete Skill Version
+    /// </summary>
+    Task<DeletedSkillVersion> Delete(
+        VersionDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Delete(VersionDeleteParams, CancellationToken)"/>
+    Task<DeletedSkillVersion> Delete(
+        string version,
+        VersionDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    );
+}
+
+/// <summary>
+/// A view of <see cref="IVersionService"/> that provides access to raw
+/// HTTP responses for each method.
+/// </summary>
+public interface IVersionServiceWithRawResponse
+{
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
+    IVersionServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
+    /// <summary>
+    /// Returns a raw HTTP response for <c>post /v1/skills/{skill_id}/versions</c>, but is otherwise the
+    /// same as <see cref="IVersionService.Create(VersionCreateParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<SkillVersion>> Create(
+        VersionCreateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Create(VersionCreateParams, CancellationToken)"/>
+    Task<HttpResponse<SkillVersion>> Create(
+        string skillID,
+        VersionCreateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for <c>get /v1/skills/{skill_id}/versions/{version}</c>, but is otherwise the
+    /// same as <see cref="IVersionService.Retrieve(VersionRetrieveParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<SkillVersion>> Retrieve(
+        VersionRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Retrieve(VersionRetrieveParams, CancellationToken)"/>
+    Task<HttpResponse<SkillVersion>> Retrieve(
+        string version,
+        VersionRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for <c>get /v1/skills/{skill_id}/versions</c>, but is otherwise the
+    /// same as <see cref="IVersionService.List(VersionListParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<VersionListPage>> List(
+        VersionListParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="List(VersionListParams, CancellationToken)"/>
+    Task<HttpResponse<VersionListPage>> List(
+        string skillID,
+        VersionListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for <c>delete /v1/skills/{skill_id}/versions/{version}</c>, but is otherwise the
+    /// same as <see cref="IVersionService.Delete(VersionDeleteParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<DeletedSkillVersion>> Delete(
+        VersionDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Delete(VersionDeleteParams, CancellationToken)"/>
+    Task<HttpResponse<DeletedSkillVersion>> Delete(
+        string version,
+        VersionDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    );
+}

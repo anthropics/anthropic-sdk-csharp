@@ -41,6 +41,7 @@ public class BetaContentBlockParamTest : TestBase
                 MediaType = MediaType.ImageJpeg,
             },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
         };
         value.Validate();
     }
@@ -122,6 +123,7 @@ public class BetaContentBlockParamTest : TestBase
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
+            ToolsetName = "toolset_name",
         };
         value.Validate();
     }
@@ -135,6 +137,7 @@ public class BetaContentBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "string",
             IsError = true,
+            ToolsetName = "toolset_name",
         };
         value.Validate();
     }
@@ -395,6 +398,7 @@ public class BetaContentBlockParamTest : TestBase
                 MediaType = MediaType.ImageJpeg,
             },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(
@@ -506,6 +510,7 @@ public class BetaContentBlockParamTest : TestBase
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
+            ToolsetName = "toolset_name",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(
@@ -525,6 +530,7 @@ public class BetaContentBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "string",
             IsError = true,
+            ToolsetName = "toolset_name",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(

@@ -82,6 +82,19 @@ public sealed record class ToolResultBlockParam : JsonModel
         }
     }
 
+    /// <summary>
+    /// For a toolset member tool_result, the toolset family of the paired tool_use.
+    /// </summary>
+    public string? ToolsetName
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("toolset_name");
+        }
+        init { this._rawData.Set("toolset_name", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -93,6 +106,7 @@ public sealed record class ToolResultBlockParam : JsonModel
         this.CacheControl?.Validate();
         this.Content?.Validate();
         _ = this.IsError;
+        _ = this.ToolsetName;
     }
 
     public ToolResultBlockParam()
@@ -436,7 +450,8 @@ public record class Block : ModelBase
                 imageBlockParam: (x) => x.Type,
                 searchResultBlockParam: (x) => x.Type,
                 documentBlockParam: (x) => x.Type,
-                toolReferenceBlockParam: (x) => x.Type
+                toolReferenceBlockParam: (x) => x.Type,
+                browserStateBlockParam: (x) => x.Type
             );
         }
     }
@@ -450,7 +465,8 @@ public record class Block : ModelBase
                 imageBlockParam: (x) => x.CacheControl,
                 searchResultBlockParam: (x) => x.CacheControl,
                 documentBlockParam: (x) => x.CacheControl,
-                toolReferenceBlockParam: (x) => x.CacheControl
+                toolReferenceBlockParam: (x) => x.CacheControl,
+                browserStateBlockParam: (x) => x.CacheControl
             );
         }
     }
@@ -464,7 +480,8 @@ public record class Block : ModelBase
                 imageBlockParam: (_) => null,
                 searchResultBlockParam: (x) => x.Title,
                 documentBlockParam: (x) => x.Title,
-                toolReferenceBlockParam: (_) => null
+                toolReferenceBlockParam: (_) => null,
+                browserStateBlockParam: (_) => null
             );
         }
     }
@@ -494,6 +511,12 @@ public record class Block : ModelBase
     }
 
     public Block(ToolReferenceBlockParam value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Block(BrowserStateBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -612,6 +635,27 @@ public record class Block : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BrowserStateBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBrowserStateBlockParam(out var value)) {
+    ///     // `value` is of type `BrowserStateBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBrowserStateBlockParam([NotNullWhen(true)] out BrowserStateBlockParam? value)
+    {
+        value = this.Value as BrowserStateBlockParam;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -629,7 +673,8 @@ public record class Block : ModelBase
     ///     (ImageBlockParam value) =&gt; {...},
     ///     (SearchResultBlockParam value) =&gt; {...},
     ///     (DocumentBlockParam value) =&gt; {...},
-    ///     (ToolReferenceBlockParam value) =&gt; {...}
+    ///     (ToolReferenceBlockParam value) =&gt; {...},
+    ///     (BrowserStateBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -639,7 +684,8 @@ public record class Block : ModelBase
         System::Action<ImageBlockParam> imageBlockParam,
         System::Action<SearchResultBlockParam> searchResultBlockParam,
         System::Action<DocumentBlockParam> documentBlockParam,
-        System::Action<ToolReferenceBlockParam> toolReferenceBlockParam
+        System::Action<ToolReferenceBlockParam> toolReferenceBlockParam,
+        System::Action<BrowserStateBlockParam> browserStateBlockParam
     )
     {
         switch (this.Value)
@@ -658,6 +704,9 @@ public record class Block : ModelBase
                 break;
             case ToolReferenceBlockParam value:
                 toolReferenceBlockParam(value);
+                break;
+            case BrowserStateBlockParam value:
+                browserStateBlockParam(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Block");
@@ -683,7 +732,8 @@ public record class Block : ModelBase
     ///     (ImageBlockParam value) =&gt; {...},
     ///     (SearchResultBlockParam value) =&gt; {...},
     ///     (DocumentBlockParam value) =&gt; {...},
-    ///     (ToolReferenceBlockParam value) =&gt; {...}
+    ///     (ToolReferenceBlockParam value) =&gt; {...},
+    ///     (BrowserStateBlockParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -693,7 +743,8 @@ public record class Block : ModelBase
         System::Func<ImageBlockParam, T> imageBlockParam,
         System::Func<SearchResultBlockParam, T> searchResultBlockParam,
         System::Func<DocumentBlockParam, T> documentBlockParam,
-        System::Func<ToolReferenceBlockParam, T> toolReferenceBlockParam
+        System::Func<ToolReferenceBlockParam, T> toolReferenceBlockParam,
+        System::Func<BrowserStateBlockParam, T> browserStateBlockParam
     )
     {
         return this.Value switch
@@ -703,6 +754,7 @@ public record class Block : ModelBase
             SearchResultBlockParam value => searchResultBlockParam(value),
             DocumentBlockParam value => documentBlockParam(value),
             ToolReferenceBlockParam value => toolReferenceBlockParam(value),
+            BrowserStateBlockParam value => browserStateBlockParam(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Block"),
         };
     }
@@ -716,6 +768,8 @@ public record class Block : ModelBase
     public static implicit operator Block(DocumentBlockParam value) => new(value);
 
     public static implicit operator Block(ToolReferenceBlockParam value) => new(value);
+
+    public static implicit operator Block(BrowserStateBlockParam value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -738,7 +792,8 @@ public record class Block : ModelBase
             (imageBlockParam) => imageBlockParam.Validate(),
             (searchResultBlockParam) => searchResultBlockParam.Validate(),
             (documentBlockParam) => documentBlockParam.Validate(),
-            (toolReferenceBlockParam) => toolReferenceBlockParam.Validate()
+            (toolReferenceBlockParam) => toolReferenceBlockParam.Validate(),
+            (browserStateBlockParam) => browserStateBlockParam.Validate()
         );
     }
 
@@ -767,6 +822,7 @@ public record class Block : ModelBase
             SearchResultBlockParam _ => 2,
             DocumentBlockParam _ => 3,
             ToolReferenceBlockParam _ => 4,
+            BrowserStateBlockParam _ => 5,
             _ => -1,
         };
     }
@@ -875,6 +931,26 @@ sealed class BlockConverter : JsonConverter<Block>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ToolReferenceBlockParam>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "browser_state":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BrowserStateBlockParam>(
                         element,
                         options
                     );

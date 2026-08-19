@@ -55,6 +55,7 @@ public class ContentBlockTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
+            ToolsetName = "toolset_name",
         };
         value.Validate();
     }
@@ -230,6 +231,7 @@ public class ContentBlockTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
+            ToolsetName = "toolset_name",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(

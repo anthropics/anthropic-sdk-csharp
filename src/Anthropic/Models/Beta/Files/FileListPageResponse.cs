@@ -14,16 +14,16 @@ public sealed record class FileListPageResponse : JsonModel
     /// <summary>
     /// List of file metadata objects.
     /// </summary>
-    public required IReadOnlyList<FileMetadata> Data
+    public required IReadOnlyList<BetaFileMetadata> Data
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<ImmutableArray<FileMetadata>>("data");
+            return this._rawData.GetNotNullStruct<ImmutableArray<BetaFileMetadata>>("data");
         }
         init
         {
-            this._rawData.Set<ImmutableArray<FileMetadata>>(
+            this._rawData.Set<ImmutableArray<BetaFileMetadata>>(
                 "data",
                 ImmutableArray.ToImmutableArray(value)
             );
@@ -119,7 +119,7 @@ public sealed record class FileListPageResponse : JsonModel
     }
 
     [SetsRequiredMembers]
-    public FileListPageResponse(IReadOnlyList<FileMetadata> data)
+    public FileListPageResponse(IReadOnlyList<BetaFileMetadata> data)
         : this()
     {
         this.Data = data;

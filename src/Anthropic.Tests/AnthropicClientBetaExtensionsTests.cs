@@ -2434,7 +2434,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.Equal("test.txt", result.Name);
         Assert.Equal(100, result.SizeInBytes);
         Assert.NotNull(result.CreatedAt);
-        Assert.IsType<Anthropic.Models.Beta.Files.FileMetadata>(result.RawRepresentation);
+        Assert.IsType<Anthropic.Models.Beta.Files.BetaFileMetadata>(result.RawRepresentation);
     }
 
     [Fact]

@@ -20,6 +20,7 @@ public class ToolUseBlockParamTest : TestBase
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new DirectCaller(),
+            ToolsetName = "toolset_name",
         };
 
         string expectedID = "id";
@@ -31,6 +32,7 @@ public class ToolUseBlockParamTest : TestBase
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         ToolUseBlockParamCaller expectedCaller = new DirectCaller();
+        string expectedToolsetName = "toolset_name";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedInput.Count, model.Input.Count);
@@ -44,6 +46,7 @@ public class ToolUseBlockParamTest : TestBase
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedCaller, model.Caller);
+        Assert.Equal(expectedToolsetName, model.ToolsetName);
     }
 
     [Fact]
@@ -59,6 +62,7 @@ public class ToolUseBlockParamTest : TestBase
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new DirectCaller(),
+            ToolsetName = "toolset_name",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -83,6 +87,7 @@ public class ToolUseBlockParamTest : TestBase
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new DirectCaller(),
+            ToolsetName = "toolset_name",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -101,6 +106,7 @@ public class ToolUseBlockParamTest : TestBase
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         ToolUseBlockParamCaller expectedCaller = new DirectCaller();
+        string expectedToolsetName = "toolset_name";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedInput.Count, deserialized.Input.Count);
@@ -114,6 +120,7 @@ public class ToolUseBlockParamTest : TestBase
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedCaller, deserialized.Caller);
+        Assert.Equal(expectedToolsetName, deserialized.ToolsetName);
     }
 
     [Fact]
@@ -129,6 +136,7 @@ public class ToolUseBlockParamTest : TestBase
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new DirectCaller(),
+            ToolsetName = "toolset_name",
         };
 
         model.Validate();
@@ -146,6 +154,7 @@ public class ToolUseBlockParamTest : TestBase
             },
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            ToolsetName = "toolset_name",
         };
 
         Assert.Null(model.Caller);
@@ -164,6 +173,7 @@ public class ToolUseBlockParamTest : TestBase
             },
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            ToolsetName = "toolset_name",
         };
 
         model.Validate();
@@ -181,6 +191,7 @@ public class ToolUseBlockParamTest : TestBase
             },
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            ToolsetName = "toolset_name",
 
             // Null should be interpreted as omitted for these properties
             Caller = null,
@@ -202,6 +213,7 @@ public class ToolUseBlockParamTest : TestBase
             },
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            ToolsetName = "toolset_name",
 
             // Null should be interpreted as omitted for these properties
             Caller = null,
@@ -226,6 +238,8 @@ public class ToolUseBlockParamTest : TestBase
 
         Assert.Null(model.CacheControl);
         Assert.False(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.ToolsetName);
+        Assert.False(model.RawData.ContainsKey("toolset_name"));
     }
 
     [Fact]
@@ -259,10 +273,13 @@ public class ToolUseBlockParamTest : TestBase
             Caller = new DirectCaller(),
 
             CacheControl = null,
+            ToolsetName = null,
         };
 
         Assert.Null(model.CacheControl);
         Assert.True(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.ToolsetName);
+        Assert.True(model.RawData.ContainsKey("toolset_name"));
     }
 
     [Fact]
@@ -279,6 +296,7 @@ public class ToolUseBlockParamTest : TestBase
             Caller = new DirectCaller(),
 
             CacheControl = null,
+            ToolsetName = null,
         };
 
         model.Validate();
@@ -297,6 +315,7 @@ public class ToolUseBlockParamTest : TestBase
             Name = "x",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new DirectCaller(),
+            ToolsetName = "toolset_name",
         };
 
         ToolUseBlockParam copied = new(model);

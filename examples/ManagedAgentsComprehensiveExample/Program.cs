@@ -4,9 +4,9 @@ using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Environments;
 using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Events;
-using Anthropic.Models.Beta.Skills;
 using Anthropic.Models.Beta.Vaults;
 using Anthropic.Models.Beta.Vaults.Credentials;
+using Anthropic.Models.Skills;
 
 var mcpServerName = "github";
 var mcpServerUrl = "https://api.githubcopilot.com/mcp/";
@@ -54,10 +54,10 @@ Console.WriteLine($"Created credential: {credential.ID}");
 // Upload a custom skill
 var skillTitle = $"comprehensive-greeting-{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
 using var skillStream = File.OpenRead("greeting-SKILL.md");
-var skill = await client.Beta.Skills.Create(
+var skill = await client.Skills.Create(
     new SkillCreateParams
     {
-        DisplayTitle = skillTitle,
+        DisplayName = skillTitle,
         Files =
         [
             new BinaryContent

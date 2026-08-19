@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -14,7 +15,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Anthropic;
 using Anthropic.Core;
+using Anthropic.Models.Files;
 using Anthropic.Models.Messages;
+using Anthropic.Services;
 
 #pragma warning disable MEAI001 // [Experimental] APIs in Microsoft.Extensions.AI
 #pragma warning disable IDE0130 // Namespace does not match folder structure
@@ -76,6 +79,38 @@ public static class AnthropicClientExtensions
         }
 
         return new AnthropicChatClient(client, defaultModelId, defaultMaxOutputTokens);
+    }
+
+    /// <summary>
+    /// Creates an <see cref="IHostedFileClient"/> that can be used to manage files via the <see cref="IFileService"/>.
+    /// </summary>
+    /// <param name="fileService">The file service to use.</param>
+    /// <returns>An <see cref="IHostedFileClient"/> that can be used to manage files via the <see cref="IFileService"/>.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="fileService"/> is <see langword="null"/>.</exception>
+    public static IHostedFileClient AsIHostedFileClient(this IFileService fileService)
+    {
+        if (fileService is null)
+        {
+            throw new ArgumentNullException(nameof(fileService));
+        }
+
+        return new AnthropicHostedFileClient(fileService);
+    }
+
+    /// <summary>
+    /// Creates an <see cref="IHostedFileClient"/> that can be used to manage files via the <see cref="IAnthropicClient"/>.
+    /// </summary>
+    /// <param name="client">The client to use.</param>
+    /// <returns>An <see cref="IHostedFileClient"/> that can be used to manage files via the <see cref="IAnthropicClient"/>.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="client"/> is <see langword="null"/>.</exception>
+    public static IHostedFileClient AsIHostedFileClient(this IAnthropicClient client)
+    {
+        if (client is null)
+        {
+            throw new ArgumentNullException(nameof(client));
+        }
+
+        return client.Files.AsIHostedFileClient();
     }
 
     /// <summary>Creates an <see cref="AITool"/> to represent a raw <see cref="ToolUnion"/>.</summary>
@@ -714,6 +749,7 @@ public static class AnthropicClientExtensions
                                 {
                                     CallId = toolUse.ID,
                                     Name = toolUse.Name,
+                                    RawRepresentation = toolUse,
                                 };
                                 break;
 
@@ -888,6 +924,7 @@ public static class AnthropicClientExtensions
         )
         {
             List<MessageParam> messageParams = [];
+            Dictionary<string, string>? toolsetNames = null;
             systemMessages = null;
 
             foreach (ChatMessage message in NormalizeConsecutiveSystemMessages(messages))
@@ -1084,30 +1121,62 @@ public static class AnthropicClientExtensions
                             );
                             break;
 
-                        case FunctionCallContent fcc:
+                        case HostedFileContent fc when fc.HasTopLevelMediaType("image"):
+                            contents.Add(
+                                new ImageBlockParam()
+                                {
+                                    Source = new(new FileImageSource(fc.FileId)),
+                                }
+                            );
+                            break;
+
+                        case HostedFileContent fc:
                             contents.Add(
                                 WithCacheControlFrom(
-                                    new ToolUseBlockParam()
+                                    new DocumentBlockParam()
                                     {
-                                        ID = fcc.CallId,
-                                        Name = fcc.Name,
-                                        Input =
-                                            fcc.Arguments?.ToDictionary(
-                                                e => e.Key,
-                                                e =>
-                                                    e.Value is JsonElement je
-                                                        ? je
-                                                        : JsonSerializer.SerializeToElement(
-                                                            e.Value,
-                                                            AIJsonUtilities.DefaultOptions.GetTypeInfo(
-                                                                typeof(object)
-                                                            )
-                                                        )
-                                            ) ?? [],
+                                        Source = new(new FileDocumentSource(fc.FileId)),
                                     },
-                                    fcc
+                                    fc
                                 )
                             );
+                            break;
+
+                        case FunctionCallContent fcc:
+                            ToolUseBlockParam toolUse = new()
+                            {
+                                ID = fcc.CallId,
+                                Name = fcc.Name,
+                                Input =
+                                    fcc.Arguments?.ToDictionary(
+                                        e => e.Key,
+                                        e =>
+                                            e.Value is JsonElement je
+                                                ? je
+                                                : JsonSerializer.SerializeToElement(
+                                                    e.Value,
+                                                    AIJsonUtilities.DefaultOptions.GetTypeInfo(
+                                                        typeof(object)
+                                                    )
+                                                )
+                                    ) ?? [],
+                            };
+
+                            if (
+                                fcc.RawRepresentation switch
+                                {
+                                    ToolUseBlock raw => raw.ToolsetName,
+                                    ToolUseBlockParam raw => raw.ToolsetName,
+                                    _ => null,
+                                }
+                                is string toolsetName
+                            )
+                            {
+                                toolUse = toolUse with { ToolsetName = toolsetName };
+                                (toolsetNames ??= [])[fcc.CallId] = toolsetName;
+                            }
+
+                            contents.Add(WithCacheControlFrom(toolUse, fcc));
                             break;
 
                         case FunctionResultContent frc:
@@ -1231,6 +1300,21 @@ public static class AnthropicClientExtensions
                                                 }
                                             ),
 
+                                            HostedFileContent fc
+                                                when fc.HasTopLevelMediaType("image") => new Block(
+                                                new ImageBlockParam()
+                                                {
+                                                    Source = new(new FileImageSource(fc.FileId)),
+                                                }
+                                            ),
+
+                                            HostedFileContent fc => new Block(
+                                                new DocumentBlockParam()
+                                                {
+                                                    Source = new(new FileDocumentSource(fc.FileId)),
+                                                }
+                                            ),
+
                                             _ => new Block(
                                                 new TextBlockParam()
                                                 {
@@ -1249,17 +1333,25 @@ public static class AnthropicClientExtensions
                                 return blocks;
                             }
 
-                            contents.Add(
-                                WithCacheControlFrom(
-                                    new ToolResultBlockParam()
-                                    {
-                                        ToolUseID = frc.CallId,
-                                        IsError = frc.Exception is not null,
-                                        Content = result,
-                                    },
-                                    frc
+                            ToolResultBlockParam toolResult = new()
+                            {
+                                ToolUseID = frc.CallId,
+                                IsError = frc.Exception is not null,
+                                Content = result,
+                            };
+
+                            if (
+                                toolsetNames is not null
+                                && toolsetNames.TryGetValue(
+                                    frc.CallId,
+                                    out string? resultToolsetName
                                 )
-                            );
+                            )
+                            {
+                                toolResult = toolResult with { ToolsetName = resultToolsetName };
+                            }
+
+                            contents.Add(WithCacheControlFrom(toolResult, frc));
                             break;
                     }
                 }
@@ -2120,7 +2212,7 @@ public static class AnthropicClientExtensions
         {
             if (functionData.ServerToolName is not Name serverToolName)
             {
-                return FunctionCallContent.CreateFromParsedArguments(
+                var fcc = FunctionCallContent.CreateFromParsedArguments(
                     functionData.Arguments.ToString(),
                     functionData.CallId,
                     functionData.Name,
@@ -2135,6 +2227,8 @@ public static class AnthropicClientExtensions
                                     )
                                 )
                 );
+                fcc.RawRepresentation = functionData.RawRepresentation;
+                return fcc;
             }
 
             IReadOnlyDictionary<string, JsonElement>? input = functionData.InitialInput;
@@ -2278,6 +2372,274 @@ public static class AnthropicClientExtensions
             public IReadOnlyDictionary<string, JsonElement>? InitialInput { get; set; }
             public object? RawRepresentation { get; set; }
             public StringBuilder Arguments { get; } = new();
+        }
+    }
+
+    private sealed class AnthropicHostedFileClient(IFileService fileService) : IHostedFileClient
+    {
+        private HostedFileClientMetadata? _metadata;
+
+        /// <inheritdoc />
+        void IDisposable.Dispose() { }
+
+        /// <inheritdoc />
+        public object? GetService(System.Type serviceType, object? serviceKey = null)
+        {
+            if (serviceType is null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
+
+            if (serviceKey is not null)
+            {
+                return null;
+            }
+
+            if (serviceType == typeof(HostedFileClientMetadata))
+            {
+                return _metadata ??= new(
+                    "anthropic",
+                    fileService is FileService { _client.BaseUrl: string baseUrl }
+                        ? new Uri(baseUrl)
+                        : null
+                );
+            }
+
+            if (serviceType.IsInstanceOfType(this))
+            {
+                return this;
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc />
+        public async Task<HostedFileContent> UploadAsync(
+            Stream content,
+            string? mediaType,
+            string? fileName,
+            HostedFileClientOptions? options,
+            CancellationToken cancellationToken
+        )
+        {
+            if (content is null)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
+
+            // Infer fileName/mediaType when not provided, matching the OpenAI provider's behavior:
+            // https://github.com/dotnet/extensions/blob/1ebbf3879591843e2f9ec943e17efc7e4163c854/src/Libraries/Microsoft.Extensions.AI.OpenAI/OpenAIHostedFileClient.cs#L105-L107
+            fileName ??= content is FileStream fs ? System.IO.Path.GetFileName(fs.Name) : null;
+            mediaType ??= fileName is not null
+                ? InferMediaTypeFromExtension(System.IO.Path.GetExtension(fileName))
+                : null;
+            fileName ??= $"{Guid.NewGuid():N}{InferExtensionFromMediaType(mediaType)}";
+
+            var binaryContent = new BinaryContent { Stream = content, FileName = fileName };
+
+            if (mediaType is not null)
+            {
+                binaryContent.ContentType = new MediaTypeHeaderValue(mediaType);
+            }
+
+            FileMetadata result = await fileService.Upload(
+                new FileUploadParams { File = binaryContent },
+                cancellationToken
+            );
+
+            return ToHostedFileContent(result);
+        }
+
+        /// <inheritdoc />
+        public async Task<HostedFileDownloadStream> DownloadAsync(
+            string fileId,
+            HostedFileClientOptions? options,
+            CancellationToken cancellationToken
+        )
+        {
+            ThrowIfFileIdInvalid(fileId);
+
+            HttpResponse response = await fileService.Download(
+                fileId,
+                cancellationToken: cancellationToken
+            );
+
+            Stream stream = await response.ReadAsStream(cancellationToken);
+
+            string? contentType = response.RawMessage.Content.Headers.ContentType?.MediaType;
+
+            return new AnthropicHostedFileDownloadStream(stream, response, contentType, null);
+        }
+
+        /// <inheritdoc />
+        public async Task<HostedFileContent?> GetFileInfoAsync(
+            string fileId,
+            HostedFileClientOptions? options,
+            CancellationToken cancellationToken
+        )
+        {
+            ThrowIfFileIdInvalid(fileId);
+
+            FileMetadata result = await fileService.RetrieveMetadata(
+                fileId,
+                cancellationToken: cancellationToken
+            );
+
+            return ToHostedFileContent(result);
+        }
+
+        /// <inheritdoc />
+        public async IAsyncEnumerable<HostedFileContent> ListFilesAsync(
+            HostedFileClientOptions? options,
+            [EnumeratorCancellation] CancellationToken cancellationToken
+        )
+        {
+            FileListPage page = await fileService.List(cancellationToken: cancellationToken);
+
+            while (true)
+            {
+                foreach (FileMetadata file in page.Items)
+                {
+                    yield return ToHostedFileContent(file);
+                }
+
+                if (!page.HasNext())
+                {
+                    break;
+                }
+
+                page = await page.Next(cancellationToken);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> DeleteAsync(
+            string fileId,
+            HostedFileClientOptions? options,
+            CancellationToken cancellationToken
+        )
+        {
+            ThrowIfFileIdInvalid(fileId);
+
+            await fileService.Delete(fileId, cancellationToken: cancellationToken);
+            return true;
+        }
+
+        private static void ThrowIfFileIdInvalid(string fileId)
+        {
+            if (fileId is null)
+            {
+                throw new ArgumentNullException(nameof(fileId));
+            }
+
+            if (fileId.Length == 0)
+            {
+                throw new ArgumentException("File ID cannot be empty.", nameof(fileId));
+            }
+        }
+
+        private static HostedFileContent ToHostedFileContent(FileMetadata metadata) =>
+            new(metadata.ID)
+            {
+                MediaType = metadata.MimeType,
+                Name = metadata.Filename,
+                SizeInBytes = metadata.SizeBytes,
+                CreatedAt = metadata.CreatedAt,
+                RawRepresentation = metadata,
+            };
+
+        /// <summary>
+        /// A <see cref="HostedFileDownloadStream"/> that wraps an Anthropic file download response.
+        /// </summary>
+        private sealed class AnthropicHostedFileDownloadStream(
+            Stream innerStream,
+            HttpResponse response,
+            string? mediaType,
+            string? fileName
+        ) : HostedFileDownloadStream
+        {
+            public override string? MediaType => mediaType;
+
+            public override string? FileName => fileName;
+
+            public override bool CanRead => innerStream.CanRead;
+
+            public override bool CanSeek => innerStream.CanSeek;
+
+            public override bool CanWrite => false;
+
+            public override long Length => innerStream.Length;
+
+            public override long Position
+            {
+                get => innerStream.Position;
+                set => innerStream.Position = value;
+            }
+
+            public override int Read(byte[] buffer, int offset, int count) =>
+                innerStream.Read(buffer, offset, count);
+
+            public override Task<int> ReadAsync(
+                byte[] buffer,
+                int offset,
+                int count,
+                CancellationToken cancellationToken
+            ) => innerStream.ReadAsync(buffer, offset, count, cancellationToken);
+
+            public override Task FlushAsync(CancellationToken cancellationToken) =>
+                innerStream.FlushAsync(cancellationToken);
+
+            public override IAsyncResult BeginRead(
+                byte[] buffer,
+                int offset,
+                int count,
+                AsyncCallback? callback,
+                object? state
+            ) => innerStream.BeginRead(buffer, offset, count, callback, state);
+
+            public override int EndRead(IAsyncResult asyncResult) =>
+                innerStream.EndRead(asyncResult);
+
+            public override Task CopyToAsync(
+                Stream destination,
+                int bufferSize,
+                CancellationToken cancellationToken
+            ) => innerStream.CopyToAsync(destination, bufferSize, cancellationToken);
+
+            public override int ReadByte() => innerStream.ReadByte();
+
+            public override long Seek(long offset, SeekOrigin origin) =>
+                innerStream.Seek(offset, origin);
+
+            public override void SetLength(long value) => throw new NotSupportedException();
+
+            public override void Write(byte[] buffer, int offset, int count) =>
+                throw new NotSupportedException();
+
+            public override void Flush() => innerStream.Flush();
+
+            protected override void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    innerStream.Dispose();
+                    response.Dispose();
+                }
+
+                base.Dispose(disposing);
+            }
+
+#if NET
+            public override int Read(Span<byte> buffer) => innerStream.Read(buffer);
+
+            public override ValueTask<int> ReadAsync(
+                Memory<byte> buffer,
+                CancellationToken cancellationToken = default
+            ) => innerStream.ReadAsync(buffer, cancellationToken);
+
+            public override void CopyTo(Stream destination, int bufferSize) =>
+                innerStream.CopyTo(destination, bufferSize);
+#endif
         }
     }
 

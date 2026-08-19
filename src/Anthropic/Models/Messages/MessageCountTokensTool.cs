@@ -39,7 +39,9 @@ public record class MessageCountTokensTool : ModelBase
                 codeExecutionTool20250825: (x) => x.CacheControl,
                 codeExecutionTool20260120: (x) => x.CacheControl,
                 codeExecutionTool20260521: (x) => x.CacheControl,
+                browserToolset20260801: (x) => x.CacheControl,
                 memoryTool20250818: (x) => x.CacheControl,
+                computerToolset20260801: (x) => x.CacheControl,
                 toolTextEditor20250124: (x) => x.CacheControl,
                 toolTextEditor20250429: (x) => x.CacheControl,
                 toolTextEditor20250728: (x) => x.CacheControl,
@@ -67,7 +69,9 @@ public record class MessageCountTokensTool : ModelBase
                 codeExecutionTool20250825: (x) => x.DeferLoading,
                 codeExecutionTool20260120: (x) => x.DeferLoading,
                 codeExecutionTool20260521: (x) => x.DeferLoading,
+                browserToolset20260801: (_) => null,
                 memoryTool20250818: (x) => x.DeferLoading,
+                computerToolset20260801: (_) => null,
                 toolTextEditor20250124: (x) => x.DeferLoading,
                 toolTextEditor20250429: (x) => x.DeferLoading,
                 toolTextEditor20250728: (x) => x.DeferLoading,
@@ -95,7 +99,9 @@ public record class MessageCountTokensTool : ModelBase
                 codeExecutionTool20250825: (x) => x.Strict,
                 codeExecutionTool20260120: (x) => x.Strict,
                 codeExecutionTool20260521: (x) => x.Strict,
+                browserToolset20260801: (_) => null,
                 memoryTool20250818: (x) => x.Strict,
+                computerToolset20260801: (_) => null,
                 toolTextEditor20250124: (x) => x.Strict,
                 toolTextEditor20250429: (x) => x.Strict,
                 toolTextEditor20250728: (x) => x.Strict,
@@ -123,7 +129,9 @@ public record class MessageCountTokensTool : ModelBase
                 codeExecutionTool20250825: (_) => null,
                 codeExecutionTool20260120: (_) => null,
                 codeExecutionTool20260521: (_) => null,
+                browserToolset20260801: (_) => null,
                 memoryTool20250818: (_) => null,
+                computerToolset20260801: (_) => null,
                 toolTextEditor20250124: (_) => null,
                 toolTextEditor20250429: (_) => null,
                 toolTextEditor20250728: (_) => null,
@@ -151,7 +159,9 @@ public record class MessageCountTokensTool : ModelBase
                 codeExecutionTool20250825: (_) => null,
                 codeExecutionTool20260120: (_) => null,
                 codeExecutionTool20260521: (_) => null,
+                browserToolset20260801: (_) => null,
                 memoryTool20250818: (_) => null,
+                computerToolset20260801: (_) => null,
                 toolTextEditor20250124: (_) => null,
                 toolTextEditor20250429: (_) => null,
                 toolTextEditor20250728: (_) => null,
@@ -179,7 +189,9 @@ public record class MessageCountTokensTool : ModelBase
                 codeExecutionTool20250825: (_) => null,
                 codeExecutionTool20260120: (_) => null,
                 codeExecutionTool20260521: (_) => null,
+                browserToolset20260801: (_) => null,
                 memoryTool20250818: (_) => null,
+                computerToolset20260801: (_) => null,
                 toolTextEditor20250124: (_) => null,
                 toolTextEditor20250429: (_) => null,
                 toolTextEditor20250728: (_) => null,
@@ -207,7 +219,9 @@ public record class MessageCountTokensTool : ModelBase
                 codeExecutionTool20250825: (_) => null,
                 codeExecutionTool20260120: (_) => null,
                 codeExecutionTool20260521: (_) => null,
+                browserToolset20260801: (_) => null,
                 memoryTool20250818: (_) => null,
+                computerToolset20260801: (_) => null,
                 toolTextEditor20250124: (_) => null,
                 toolTextEditor20250429: (_) => null,
                 toolTextEditor20250728: (_) => null,
@@ -235,7 +249,9 @@ public record class MessageCountTokensTool : ModelBase
                 codeExecutionTool20250825: (_) => null,
                 codeExecutionTool20260120: (_) => null,
                 codeExecutionTool20260521: (_) => null,
+                browserToolset20260801: (_) => null,
                 memoryTool20250818: (_) => null,
+                computerToolset20260801: (_) => null,
                 toolTextEditor20250124: (_) => null,
                 toolTextEditor20250429: (_) => null,
                 toolTextEditor20250728: (_) => null,
@@ -288,7 +304,19 @@ public record class MessageCountTokensTool : ModelBase
         this._element = element;
     }
 
+    public MessageCountTokensTool(BrowserToolset20260801 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
     public MessageCountTokensTool(MemoryTool20250818 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public MessageCountTokensTool(ComputerToolset20260801 value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -507,6 +535,27 @@ public record class MessageCountTokensTool : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BrowserToolset20260801"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBrowserToolset20260801(out var value)) {
+    ///     // `value` is of type `BrowserToolset20260801`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBrowserToolset20260801([NotNullWhen(true)] out BrowserToolset20260801? value)
+    {
+        value = this.Value as BrowserToolset20260801;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="MemoryTool20250818"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -523,6 +572,29 @@ public record class MessageCountTokensTool : ModelBase
     public bool TryPickMemoryTool20250818([NotNullWhen(true)] out MemoryTool20250818? value)
     {
         value = this.Value as MemoryTool20250818;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ComputerToolset20260801"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickComputerToolset20260801(out var value)) {
+    ///     // `value` is of type `ComputerToolset20260801`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickComputerToolset20260801(
+        [NotNullWhen(true)] out ComputerToolset20260801? value
+    )
+    {
+        value = this.Value as ComputerToolset20260801;
         return value != null;
     }
 
@@ -802,7 +874,9 @@ public record class MessageCountTokensTool : ModelBase
     ///     (CodeExecutionTool20250825 value) =&gt; {...},
     ///     (CodeExecutionTool20260120 value) =&gt; {...},
     ///     (CodeExecutionTool20260521 value) =&gt; {...},
+    ///     (BrowserToolset20260801 value) =&gt; {...},
     ///     (MemoryTool20250818 value) =&gt; {...},
+    ///     (ComputerToolset20260801 value) =&gt; {...},
     ///     (ToolTextEditor20250124 value) =&gt; {...},
     ///     (ToolTextEditor20250429 value) =&gt; {...},
     ///     (ToolTextEditor20250728 value) =&gt; {...},
@@ -826,7 +900,9 @@ public record class MessageCountTokensTool : ModelBase
         System::Action<CodeExecutionTool20250825> codeExecutionTool20250825,
         System::Action<CodeExecutionTool20260120> codeExecutionTool20260120,
         System::Action<CodeExecutionTool20260521> codeExecutionTool20260521,
+        System::Action<BrowserToolset20260801> browserToolset20260801,
         System::Action<MemoryTool20250818> memoryTool20250818,
+        System::Action<ComputerToolset20260801> computerToolset20260801,
         System::Action<ToolTextEditor20250124> toolTextEditor20250124,
         System::Action<ToolTextEditor20250429> toolTextEditor20250429,
         System::Action<ToolTextEditor20250728> toolTextEditor20250728,
@@ -861,8 +937,14 @@ public record class MessageCountTokensTool : ModelBase
             case CodeExecutionTool20260521 value:
                 codeExecutionTool20260521(value);
                 break;
+            case BrowserToolset20260801 value:
+                browserToolset20260801(value);
+                break;
             case MemoryTool20250818 value:
                 memoryTool20250818(value);
+                break;
+            case ComputerToolset20260801 value:
+                computerToolset20260801(value);
                 break;
             case ToolTextEditor20250124 value:
                 toolTextEditor20250124(value);
@@ -928,7 +1010,9 @@ public record class MessageCountTokensTool : ModelBase
     ///     (CodeExecutionTool20250825 value) =&gt; {...},
     ///     (CodeExecutionTool20260120 value) =&gt; {...},
     ///     (CodeExecutionTool20260521 value) =&gt; {...},
+    ///     (BrowserToolset20260801 value) =&gt; {...},
     ///     (MemoryTool20250818 value) =&gt; {...},
+    ///     (ComputerToolset20260801 value) =&gt; {...},
     ///     (ToolTextEditor20250124 value) =&gt; {...},
     ///     (ToolTextEditor20250429 value) =&gt; {...},
     ///     (ToolTextEditor20250728 value) =&gt; {...},
@@ -952,7 +1036,9 @@ public record class MessageCountTokensTool : ModelBase
         System::Func<CodeExecutionTool20250825, T> codeExecutionTool20250825,
         System::Func<CodeExecutionTool20260120, T> codeExecutionTool20260120,
         System::Func<CodeExecutionTool20260521, T> codeExecutionTool20260521,
+        System::Func<BrowserToolset20260801, T> browserToolset20260801,
         System::Func<MemoryTool20250818, T> memoryTool20250818,
+        System::Func<ComputerToolset20260801, T> computerToolset20260801,
         System::Func<ToolTextEditor20250124, T> toolTextEditor20250124,
         System::Func<ToolTextEditor20250429, T> toolTextEditor20250429,
         System::Func<ToolTextEditor20250728, T> toolTextEditor20250728,
@@ -975,7 +1061,9 @@ public record class MessageCountTokensTool : ModelBase
             CodeExecutionTool20250825 value => codeExecutionTool20250825(value),
             CodeExecutionTool20260120 value => codeExecutionTool20260120(value),
             CodeExecutionTool20260521 value => codeExecutionTool20260521(value),
+            BrowserToolset20260801 value => browserToolset20260801(value),
             MemoryTool20250818 value => memoryTool20250818(value),
+            ComputerToolset20260801 value => computerToolset20260801(value),
             ToolTextEditor20250124 value => toolTextEditor20250124(value),
             ToolTextEditor20250429 value => toolTextEditor20250429(value),
             ToolTextEditor20250728 value => toolTextEditor20250728(value),
@@ -1010,7 +1098,13 @@ public record class MessageCountTokensTool : ModelBase
     public static implicit operator MessageCountTokensTool(CodeExecutionTool20260521 value) =>
         new(value);
 
+    public static implicit operator MessageCountTokensTool(BrowserToolset20260801 value) =>
+        new(value);
+
     public static implicit operator MessageCountTokensTool(MemoryTool20250818 value) => new(value);
+
+    public static implicit operator MessageCountTokensTool(ComputerToolset20260801 value) =>
+        new(value);
 
     public static implicit operator MessageCountTokensTool(ToolTextEditor20250124 value) =>
         new(value);
@@ -1073,7 +1167,9 @@ public record class MessageCountTokensTool : ModelBase
             (codeExecutionTool20250825) => codeExecutionTool20250825.Validate(),
             (codeExecutionTool20260120) => codeExecutionTool20260120.Validate(),
             (codeExecutionTool20260521) => codeExecutionTool20260521.Validate(),
+            (browserToolset20260801) => browserToolset20260801.Validate(),
             (memoryTool20250818) => memoryTool20250818.Validate(),
+            (computerToolset20260801) => computerToolset20260801.Validate(),
             (toolTextEditor20250124) => toolTextEditor20250124.Validate(),
             (toolTextEditor20250429) => toolTextEditor20250429.Validate(),
             (toolTextEditor20250728) => toolTextEditor20250728.Validate(),
@@ -1115,19 +1211,21 @@ public record class MessageCountTokensTool : ModelBase
             CodeExecutionTool20250825 _ => 3,
             CodeExecutionTool20260120 _ => 4,
             CodeExecutionTool20260521 _ => 5,
-            MemoryTool20250818 _ => 6,
-            ToolTextEditor20250124 _ => 7,
-            ToolTextEditor20250429 _ => 8,
-            ToolTextEditor20250728 _ => 9,
-            WebSearchTool20250305 _ => 10,
-            WebFetchTool20250910 _ => 11,
-            WebSearchTool20260209 _ => 12,
-            WebFetchTool20260209 _ => 13,
-            WebFetchTool20260309 _ => 14,
-            WebSearchTool20260318 _ => 15,
-            WebFetchTool20260318 _ => 16,
-            ToolSearchToolBm25_20251119 _ => 17,
-            ToolSearchToolRegex20251119 _ => 18,
+            BrowserToolset20260801 _ => 6,
+            MemoryTool20250818 _ => 7,
+            ComputerToolset20260801 _ => 8,
+            ToolTextEditor20250124 _ => 9,
+            ToolTextEditor20250429 _ => 10,
+            ToolTextEditor20250728 _ => 11,
+            WebSearchTool20250305 _ => 12,
+            WebFetchTool20250910 _ => 13,
+            WebSearchTool20260209 _ => 14,
+            WebFetchTool20260209 _ => 15,
+            WebFetchTool20260309 _ => 16,
+            WebSearchTool20260318 _ => 17,
+            WebFetchTool20260318 _ => 18,
+            ToolSearchToolBm25_20251119 _ => 19,
+            ToolSearchToolRegex20251119 _ => 20,
             _ => -1,
         };
     }
@@ -1240,7 +1338,38 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
 
         try
         {
+            var deserialized = JsonSerializer.Deserialize<BrowserToolset20260801>(element, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
             var deserialized = JsonSerializer.Deserialize<MemoryTool20250818>(element, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<ComputerToolset20260801>(
+                element,
+                options
+            );
             if (deserialized != null)
             {
                 deserialized.Validate();

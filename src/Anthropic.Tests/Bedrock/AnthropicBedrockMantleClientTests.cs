@@ -532,6 +532,24 @@ public class AnthropicBedrockMantleClientTests : IDisposable
     }
 
     [Fact]
+    public void Files_ThrowsNotSupportedException()
+    {
+        var client = new AnthropicBedrockMantleClient(
+            new() { ApiKey = "test-key", BaseUrl = "http://localhost" }
+        );
+        Assert.Throws<NotSupportedException>(() => client.Files);
+    }
+
+    [Fact]
+    public void Skills_ThrowsNotSupportedException()
+    {
+        var client = new AnthropicBedrockMantleClient(
+            new() { ApiKey = "test-key", BaseUrl = "http://localhost" }
+        );
+        Assert.Throws<NotSupportedException>(() => client.Skills);
+    }
+
+    [Fact]
     public void BetaModels_ThrowsNotSupportedException()
     {
         var client = new AnthropicBedrockMantleClient(

@@ -19,7 +19,19 @@ public class MessageCreateParamsTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
-            Container = "container",
+            Container = new Messages::ContainerParams()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = Messages::SkillParamsType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
+            },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -103,7 +115,19 @@ public class MessageCreateParamsTest : TestBase
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5;
         Messages::CacheControlEphemeral expectedCacheControl = new() { Ttl = Messages::Ttl.Ttl5m };
-        string expectedContainer = "container";
+        Messages::MessageCreateParamsContainer expectedContainer = new Messages::ContainerParams()
+        {
+            ID = "id",
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "pdf",
+                    Type = Messages::SkillParamsType.Anthropic,
+                    Version = "latest",
+                },
+            ],
+        };
         string expectedInferenceGeo = "inference_geo";
         Messages::Metadata expectedMetadata = new()
         {
@@ -228,7 +252,19 @@ public class MessageCreateParamsTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
-            Container = "container",
+            Container = new Messages::ContainerParams()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = Messages::SkillParamsType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
+            },
             InferenceGeo = "inference_geo",
         };
 
@@ -267,7 +303,19 @@ public class MessageCreateParamsTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
-            Container = "container",
+            Container = new Messages::ContainerParams()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = Messages::SkillParamsType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
+            },
             InferenceGeo = "inference_geo",
 
             // Null should be interpreted as omitted for these properties
@@ -541,7 +589,19 @@ public class MessageCreateParamsTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
-            Container = "container",
+            Container = new Messages::ContainerParams()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = Messages::SkillParamsType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
+            },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()

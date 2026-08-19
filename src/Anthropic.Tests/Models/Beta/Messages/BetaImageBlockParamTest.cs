@@ -17,6 +17,7 @@ public class BetaImageBlockParamTest : TestBase
                 MediaType = MediaType.ImageJpeg,
             },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
         };
 
         BetaImageBlockParamSource expectedSource = new BetaBase64ImageSource()
@@ -26,10 +27,15 @@ public class BetaImageBlockParamTest : TestBase
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("image");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        BetaImageTransformationsParam expectedTransformations = new()
+        {
+            OversizedImage = OversizedImage.Downsize,
+        };
 
         Assert.Equal(expectedSource, model.Source);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedCacheControl, model.CacheControl);
+        Assert.Equal(expectedTransformations, model.Transformations);
     }
 
     [Fact]
@@ -43,6 +49,7 @@ public class BetaImageBlockParamTest : TestBase
                 MediaType = MediaType.ImageJpeg,
             },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -65,6 +72,7 @@ public class BetaImageBlockParamTest : TestBase
                 MediaType = MediaType.ImageJpeg,
             },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -81,10 +89,15 @@ public class BetaImageBlockParamTest : TestBase
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("image");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        BetaImageTransformationsParam expectedTransformations = new()
+        {
+            OversizedImage = OversizedImage.Downsize,
+        };
 
         Assert.Equal(expectedSource, deserialized.Source);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
+        Assert.Equal(expectedTransformations, deserialized.Transformations);
     }
 
     [Fact]
@@ -98,6 +111,7 @@ public class BetaImageBlockParamTest : TestBase
                 MediaType = MediaType.ImageJpeg,
             },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
         };
 
         model.Validate();
@@ -117,6 +131,8 @@ public class BetaImageBlockParamTest : TestBase
 
         Assert.Null(model.CacheControl);
         Assert.False(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.Transformations);
+        Assert.False(model.RawData.ContainsKey("transformations"));
     }
 
     [Fact]
@@ -146,10 +162,13 @@ public class BetaImageBlockParamTest : TestBase
             },
 
             CacheControl = null,
+            Transformations = null,
         };
 
         Assert.Null(model.CacheControl);
         Assert.True(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.Transformations);
+        Assert.True(model.RawData.ContainsKey("transformations"));
     }
 
     [Fact]
@@ -164,6 +183,7 @@ public class BetaImageBlockParamTest : TestBase
             },
 
             CacheControl = null,
+            Transformations = null,
         };
 
         model.Validate();
@@ -180,6 +200,7 @@ public class BetaImageBlockParamTest : TestBase
                 MediaType = MediaType.ImageJpeg,
             },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
         };
 
         BetaImageBlockParam copied = new(model);

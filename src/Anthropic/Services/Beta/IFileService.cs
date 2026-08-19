@@ -37,13 +37,13 @@ public interface IFileService
     /// <summary>
     /// Delete File
     /// </summary>
-    Task<DeletedFile> Delete(
+    Task<BetaDeletedFile> Delete(
         FileDeleteParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Delete(FileDeleteParams, CancellationToken)"/>
-    Task<DeletedFile> Delete(
+    Task<BetaDeletedFile> Delete(
         string fileID,
         FileDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -69,13 +69,13 @@ public interface IFileService
     /// <summary>
     /// Get File Metadata
     /// </summary>
-    Task<FileMetadata> RetrieveMetadata(
+    Task<BetaFileMetadata> RetrieveMetadata(
         FileRetrieveMetadataParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="RetrieveMetadata(FileRetrieveMetadataParams, CancellationToken)"/>
-    Task<FileMetadata> RetrieveMetadata(
+    Task<BetaFileMetadata> RetrieveMetadata(
         string fileID,
         FileRetrieveMetadataParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -84,7 +84,7 @@ public interface IFileService
     /// <summary>
     /// Upload File
     /// </summary>
-    Task<FileMetadata> Upload(
+    Task<BetaFileMetadata> Upload(
         FileUploadParams parameters,
         CancellationToken cancellationToken = default
     );
@@ -116,13 +116,13 @@ public interface IFileServiceWithRawResponse
     /// Returns a raw HTTP response for <c>delete /v1/files/{file_id}?beta=true</c>, but is otherwise the
     /// same as <see cref="IFileService.Delete(FileDeleteParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<DeletedFile>> Delete(
+    Task<HttpResponse<BetaDeletedFile>> Delete(
         FileDeleteParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Delete(FileDeleteParams, CancellationToken)"/>
-    Task<HttpResponse<DeletedFile>> Delete(
+    Task<HttpResponse<BetaDeletedFile>> Delete(
         string fileID,
         FileDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -148,13 +148,13 @@ public interface IFileServiceWithRawResponse
     /// Returns a raw HTTP response for <c>get /v1/files/{file_id}?beta=true</c>, but is otherwise the
     /// same as <see cref="IFileService.RetrieveMetadata(FileRetrieveMetadataParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<FileMetadata>> RetrieveMetadata(
+    Task<HttpResponse<BetaFileMetadata>> RetrieveMetadata(
         FileRetrieveMetadataParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="RetrieveMetadata(FileRetrieveMetadataParams, CancellationToken)"/>
-    Task<HttpResponse<FileMetadata>> RetrieveMetadata(
+    Task<HttpResponse<BetaFileMetadata>> RetrieveMetadata(
         string fileID,
         FileRetrieveMetadataParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -164,7 +164,7 @@ public interface IFileServiceWithRawResponse
     /// Returns a raw HTTP response for <c>post /v1/files?beta=true</c>, but is otherwise the
     /// same as <see cref="IFileService.Upload(FileUploadParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<FileMetadata>> Upload(
+    Task<HttpResponse<BetaFileMetadata>> Upload(
         FileUploadParams parameters,
         CancellationToken cancellationToken = default
     );

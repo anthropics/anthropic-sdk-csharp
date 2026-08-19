@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Messages;
@@ -14,13 +15,37 @@ public class ContainerTest : TestBase
         {
             ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "pdf",
+                    Type = ContainerSkillType.Anthropic,
+                    Version = "latest",
+                },
+            ],
         };
 
         string expectedID = "container_011CpZohnwH4vuy7gazohgSP";
         DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        List<ContainerSkill> expectedSkills =
+        [
+            new()
+            {
+                SkillID = "pdf",
+                Type = ContainerSkillType.Anthropic,
+                Version = "latest",
+            },
+        ];
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedExpiresAt, model.ExpiresAt);
+        Assert.NotNull(model.Skills);
+        Assert.Equal(expectedSkills.Count, model.Skills.Count);
+        for (int i = 0; i < expectedSkills.Count; i++)
+        {
+            Assert.Equal(expectedSkills[i], model.Skills[i]);
+        }
     }
 
     [Fact]
@@ -30,6 +55,15 @@ public class ContainerTest : TestBase
         {
             ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "pdf",
+                    Type = ContainerSkillType.Anthropic,
+                    Version = "latest",
+                },
+            ],
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -45,6 +79,15 @@ public class ContainerTest : TestBase
         {
             ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "pdf",
+                    Type = ContainerSkillType.Anthropic,
+                    Version = "latest",
+                },
+            ],
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -56,9 +99,24 @@ public class ContainerTest : TestBase
 
         string expectedID = "container_011CpZohnwH4vuy7gazohgSP";
         DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        List<ContainerSkill> expectedSkills =
+        [
+            new()
+            {
+                SkillID = "pdf",
+                Type = ContainerSkillType.Anthropic,
+                Version = "latest",
+            },
+        ];
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedExpiresAt, deserialized.ExpiresAt);
+        Assert.NotNull(deserialized.Skills);
+        Assert.Equal(expectedSkills.Count, deserialized.Skills.Count);
+        for (int i = 0; i < expectedSkills.Count; i++)
+        {
+            Assert.Equal(expectedSkills[i], deserialized.Skills[i]);
+        }
     }
 
     [Fact]
@@ -68,6 +126,15 @@ public class ContainerTest : TestBase
         {
             ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "pdf",
+                    Type = ContainerSkillType.Anthropic,
+                    Version = "latest",
+                },
+            ],
         };
 
         model.Validate();
@@ -80,6 +147,15 @@ public class ContainerTest : TestBase
         {
             ID = "container_011CpZohnwH4vuy7gazohgSP",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "pdf",
+                    Type = ContainerSkillType.Anthropic,
+                    Version = "latest",
+                },
+            ],
         };
 
         Container copied = new(model);

@@ -438,6 +438,7 @@ public static class AnthropicBetaClientExtensions
                                 {
                                     CallId = toolUse.ID,
                                     Name = toolUse.Name,
+                                    RawRepresentation = toolUse,
                                 };
                                 break;
 
@@ -615,6 +616,7 @@ public static class AnthropicBetaClientExtensions
         )
         {
             List<BetaMessageParam> messageParams = [];
+            Dictionary<string, string>? toolsetNames = null;
             systemMessages = null;
             hasHostedFiles = false;
 
@@ -847,29 +849,40 @@ public static class AnthropicBetaClientExtensions
                             break;
 
                         case FunctionCallContent fcc:
-                            contents.Add(
-                                WithCacheControlFrom(
-                                    new BetaToolUseBlockParam()
-                                    {
-                                        ID = fcc.CallId,
-                                        Name = fcc.Name,
-                                        Input =
-                                            fcc.Arguments?.ToDictionary(
-                                                e => e.Key,
-                                                e =>
-                                                    e.Value is JsonElement je
-                                                        ? je
-                                                        : JsonSerializer.SerializeToElement(
-                                                            e.Value,
-                                                            AIJsonUtilities.DefaultOptions.GetTypeInfo(
-                                                                typeof(object)
-                                                            )
-                                                        )
-                                            ) ?? [],
-                                    },
-                                    fcc
-                                )
-                            );
+                            BetaToolUseBlockParam toolUse = new()
+                            {
+                                ID = fcc.CallId,
+                                Name = fcc.Name,
+                                Input =
+                                    fcc.Arguments?.ToDictionary(
+                                        e => e.Key,
+                                        e =>
+                                            e.Value is JsonElement je
+                                                ? je
+                                                : JsonSerializer.SerializeToElement(
+                                                    e.Value,
+                                                    AIJsonUtilities.DefaultOptions.GetTypeInfo(
+                                                        typeof(object)
+                                                    )
+                                                )
+                                    ) ?? [],
+                            };
+
+                            if (
+                                fcc.RawRepresentation switch
+                                {
+                                    BetaToolUseBlock raw => raw.ToolsetName,
+                                    BetaToolUseBlockParam raw => raw.ToolsetName,
+                                    _ => null,
+                                }
+                                is string toolsetName
+                            )
+                            {
+                                toolUse = toolUse with { ToolsetName = toolsetName };
+                                (toolsetNames ??= [])[fcc.CallId] = toolsetName;
+                            }
+
+                            contents.Add(WithCacheControlFrom(toolUse, fcc));
                             break;
 
                         case FunctionResultContent frc:
@@ -1067,17 +1080,25 @@ public static class AnthropicBetaClientExtensions
                                 return blocks;
                             }
 
-                            contents.Add(
-                                WithCacheControlFrom(
-                                    new BetaToolResultBlockParam()
-                                    {
-                                        ToolUseID = frc.CallId,
-                                        IsError = frc.Exception is not null,
-                                        Content = result,
-                                    },
-                                    frc
+                            BetaToolResultBlockParam toolResult = new()
+                            {
+                                ToolUseID = frc.CallId,
+                                IsError = frc.Exception is not null,
+                                Content = result,
+                            };
+
+                            if (
+                                toolsetNames is not null
+                                && toolsetNames.TryGetValue(
+                                    frc.CallId,
+                                    out string? resultToolsetName
                                 )
-                            );
+                            )
+                            {
+                                toolResult = toolResult with { ToolsetName = resultToolsetName };
+                            }
+
+                            contents.Add(WithCacheControlFrom(toolResult, frc));
                             break;
                     }
                 }
@@ -2129,7 +2150,7 @@ public static class AnthropicBetaClientExtensions
         {
             if (functionData.ServerToolName is not Name serverToolName)
             {
-                return FunctionCallContent.CreateFromParsedArguments(
+                var fcc = FunctionCallContent.CreateFromParsedArguments(
                     functionData.Arguments.ToString(),
                     functionData.CallId,
                     functionData.Name,
@@ -2144,6 +2165,8 @@ public static class AnthropicBetaClientExtensions
                                     )
                                 )
                 );
+                fcc.RawRepresentation = functionData.RawRepresentation;
+                return fcc;
             }
 
             IReadOnlyDictionary<string, JsonElement>? input = functionData.InitialInput;
@@ -2360,7 +2383,7 @@ public static class AnthropicBetaClientExtensions
                 binaryContent.ContentType = new MediaTypeHeaderValue(mediaType);
             }
 
-            FileMetadata result = await fileService.Upload(
+            BetaFileMetadata result = await fileService.Upload(
                 new FileUploadParams { File = binaryContent },
                 cancellationToken
             );
@@ -2398,7 +2421,7 @@ public static class AnthropicBetaClientExtensions
         {
             ThrowIfFileIdInvalid(fileId);
 
-            FileMetadata result = await fileService.RetrieveMetadata(
+            BetaFileMetadata result = await fileService.RetrieveMetadata(
                 fileId,
                 cancellationToken: cancellationToken
             );
@@ -2416,7 +2439,7 @@ public static class AnthropicBetaClientExtensions
 
             while (true)
             {
-                foreach (FileMetadata file in page.Items)
+                foreach (BetaFileMetadata file in page.Items)
                 {
                     yield return ToHostedFileContent(file);
                 }
@@ -2456,7 +2479,7 @@ public static class AnthropicBetaClientExtensions
             }
         }
 
-        private static HostedFileContent ToHostedFileContent(FileMetadata metadata) =>
+        private static HostedFileContent ToHostedFileContent(BetaFileMetadata metadata) =>
             new(metadata.ID)
             {
                 MediaType = metadata.MimeType,
