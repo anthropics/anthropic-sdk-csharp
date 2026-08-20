@@ -207,29 +207,33 @@ public sealed class BetaMessageContentAggregator
             return parts.Count == 0 ? null : string.Concat(parts);
         }
 
+        // Start from the wire block so `citations` stays exactly as the server sent it (usually
+        // absent) unless citation deltas arrive; a re-sent turn then matches the original bytes.
+        BetaTextBlock MergeText(BetaTextBlock start)
+        {
+            var merged = start with
+            {
+                Text = StringJoinHelper(start.Text, Of<BetaTextDelta>(), e => e.Text),
+            };
+            var citations = Of<BetaCitationsDelta>()
+                .Select(e =>
+                    e.Citation.Match<BetaTextCitation>(f => f, f => f, f => f, f => f, f => f)
+                )
+                .ToList();
+            return citations.Count == 0
+                ? merged
+                : merged with
+                {
+                    Citations = [.. (start.Citations ?? []), .. citations],
+                };
+        }
+
         // Only the variants below carry deltas. Every other block type — including ones this SDK
         // version doesn't model yet — arrives complete in its content_block_start event, so its
         // wire JSON passes through unchanged.
         return contentBlock.Value switch
         {
-            BetaTextBlock textBlock => new BetaTextBlock()
-            {
-                Text = StringJoinHelper(textBlock.Text, Of<BetaTextDelta>(), e => e.Text),
-                Citations =
-                [
-                    .. (textBlock.Citations ?? []),
-                    .. Of<BetaCitationsDelta>()
-                        .Select(e =>
-                            e.Citation.Match<BetaTextCitation>(
-                                f => f,
-                                f => f,
-                                f => f,
-                                f => f,
-                                f => f
-                            )
-                        ),
-                ],
-            },
+            BetaTextBlock textBlock => MergeText(textBlock),
             BetaThinkingBlock thinkingBlock => new BetaThinkingBlock()
             {
                 Signature = StringJoinHelper(

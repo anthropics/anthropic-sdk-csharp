@@ -138,23 +138,31 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             return Of<InputJsonDelta>().Select(d => d.PartialJson);
         }
 
+        // Start from the wire block so `citations` stays exactly as the server sent it (usually
+        // absent) unless citation deltas arrive; a re-sent turn then matches the original bytes.
+        TextBlock MergeText(TextBlock start)
+        {
+            var merged = start with
+            {
+                Text = StringJoinHelper(start.Text, Of<TextDelta>(), e => e.Text),
+            };
+            var citations = Of<CitationsDelta>()
+                .Select(e => e.Citation.Match<TextCitation>(f => f, f => f, f => f, f => f, f => f))
+                .ToList();
+            return citations.Count == 0
+                ? merged
+                : merged with
+                {
+                    Citations = [.. (start.Citations ?? []), .. citations],
+                };
+        }
+
         // Only the variants below carry deltas. Every other block type — including ones this SDK
         // version doesn't model yet — arrives complete in its content_block_start event, so its
         // wire JSON passes through unchanged.
         return contentBlock.Value switch
         {
-            TextBlock textBlock => new TextBlock()
-            {
-                Text = StringJoinHelper(textBlock.Text, Of<TextDelta>(), e => e.Text),
-                Citations =
-                [
-                    .. (textBlock.Citations ?? []),
-                    .. Of<CitationsDelta>()
-                        .Select(e =>
-                            e.Citation.Match<TextCitation>(f => f, f => f, f => f, f => f, f => f)
-                        ),
-                ],
-            },
+            TextBlock textBlock => MergeText(textBlock),
             ThinkingBlock thinkingBlock => new ThinkingBlock()
             {
                 Signature = StringJoinHelper(

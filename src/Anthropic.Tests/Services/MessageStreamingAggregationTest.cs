@@ -780,4 +780,108 @@ public class MessageStreamingAggregationTest
         Assert.Null(block.Value);
         Assert.True(JsonElement.DeepEquals(unknownBlock, block.Json));
     }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_TextBlockWithoutCitationDeltasKeepsWireShape()
+    {
+        // The wire text block carries no `citations` key; aggregation must not add one, or a
+        // turn re-sent from the aggregate differs from what the server produced.
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return JsonSerializer.Deserialize<RawMessageStreamEvent>(
+                """{"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}"""
+            )!;
+            yield return new(
+                new RawContentBlockDeltaEvent() { Index = 0, Delta = new(new TextDelta("Hello")) }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var stream = await GetTestValues().Aggregate();
+
+        stream.Validate();
+        var block = Assert.Single(stream.Content);
+        var text = Assert.IsType<TextBlock>(block.Value);
+        Assert.Equal("Hello", text.Text);
+        Assert.Null(text.Citations);
+        Assert.False(block.Json.TryGetProperty("citations", out _));
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_TextBlockWithEmptyCitationsKeepsEmptyArray()
+    {
+        // With citations enabled the server opens the block with `"citations": []`; that key
+        // must survive aggregation even when no citation deltas follow.
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return JsonSerializer.Deserialize<RawMessageStreamEvent>(
+                """{"type":"content_block_start","index":0,"content_block":{"type":"text","text":"","citations":[]}}"""
+            )!;
+            yield return new(
+                new RawContentBlockDeltaEvent() { Index = 0, Delta = new(new TextDelta("Hello")) }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var stream = await GetTestValues().Aggregate();
+
+        stream.Validate();
+        var block = Assert.Single(stream.Content);
+        var text = Assert.IsType<TextBlock>(block.Value);
+        Assert.Equal("Hello", text.Text);
+        Assert.NotNull(text.Citations);
+        Assert.Empty(text.Citations);
+        Assert.Equal(0, block.Json.GetProperty("citations").GetArrayLength());
+    }
+
+    [Theory]
+    [InlineData("""{"type":"text","text":""}""")]
+    [InlineData("""{"type":"text","text":"","citations":[]}""")]
+    public async Task CreateStreamingAggregation_TextBlockAccumulatesCitationDeltasInOrder(
+        string startBlock
+    )
+    {
+        async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return JsonSerializer.Deserialize<RawMessageStreamEvent>(
+                $$"""{"type":"content_block_start","index":0,"content_block":{{startBlock}}}"""
+            )!;
+            yield return JsonSerializer.Deserialize<RawMessageStreamEvent>(
+                """{"type":"content_block_delta","index":0,"delta":{"type":"citations_delta","citation":{"type":"char_location","cited_text":"The grass is green. ","document_index":0,"document_title":"Nature Facts","file_id":null,"start_char_index":0,"end_char_index":20}}}"""
+            )!;
+            yield return new(
+                new RawContentBlockDeltaEvent() { Index = 0, Delta = new(new TextDelta("Hello")) }
+            );
+            yield return JsonSerializer.Deserialize<RawMessageStreamEvent>(
+                """{"type":"content_block_delta","index":0,"delta":{"type":"citations_delta","citation":{"type":"web_search_result_location","cited_text":"Mild summers.","encrypted_index":"Eo8B","title":"Paris climate","url":"https://example.com/paris"}}}"""
+            )!;
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var stream = await GetTestValues().Aggregate();
+
+        stream.Validate();
+        var block = Assert.Single(stream.Content);
+        var text = Assert.IsType<TextBlock>(block.Value);
+        Assert.Equal("Hello", text.Text);
+        Assert.NotNull(text.Citations);
+        Assert.Equal(2, text.Citations.Count);
+        Assert.True(text.Citations[0].TryPickCitationCharLocation(out var charLocation));
+        Assert.Equal("The grass is green. ", charLocation.CitedText);
+        Assert.True(text.Citations[1].TryPickCitationsWebSearchResultLocation(out var webSearch));
+        Assert.Equal("https://example.com/paris", webSearch.Url);
+        var citations = block.Json.GetProperty("citations");
+        Assert.Equal(2, citations.GetArrayLength());
+        Assert.Equal("char_location", citations[0].GetProperty("type").GetString());
+        Assert.Equal("web_search_result_location", citations[1].GetProperty("type").GetString());
+    }
 }
