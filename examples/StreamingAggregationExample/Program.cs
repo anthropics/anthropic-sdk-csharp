@@ -8,15 +8,23 @@ AnthropicClient client = new();
 
 MessageCreateParams parameters = new()
 {
-    MaxTokens = 2048,
+    MaxTokens = 16000,
     Messages =
     [
-        new() { Content = "Tell me a story about building the best SDK!", Role = Role.User },
+        new()
+        {
+            Content =
+                "Create a haiku about Anthropic. Think carefully about syllable counts before answering.",
+            Role = Role.User,
+        },
     ],
     Model = Model.ClaudeSonnet5,
-    Thinking = new ThinkingConfigEnabled() { BudgetTokens = 1024 },
+    Thinking = new ThinkingConfigAdaptive() { Display = Display.Summarized },
+    OutputConfig = new OutputConfig() { Effort = Effort.High },
 };
 
+// Each CreateStreaming call sends one request. The returned IAsyncEnumerable is lazy: the request
+// is sent when it is enumerated, and enumerating it a second time would send a second request.
 IAsyncEnumerable<RawMessageStreamEvent> responseUpdates = client.Messages.CreateStreaming(
     parameters
 );
@@ -26,10 +34,13 @@ IAsyncEnumerable<RawMessageStreamEvent> responseUpdates = client.Messages.Create
 var message = await responseUpdates.Aggregate().ConfigureAwait(false);
 Console.WriteLine(message);
 
-// you can also add an aggregator as part of your LINQ chain to get real-time streaming and aggregation
-
+// you can also add an aggregator as part of your LINQ chain to get real-time streaming and aggregation.
+// This is a separate request, streamed through the aggregator as the events arrive.
 var aggregator = new MessageContentAggregator();
-await foreach (RawMessageStreamEvent rawEvent in responseUpdates.CollectAsync(aggregator))
+IAsyncEnumerable<RawMessageStreamEvent> secondResponseUpdates = client.Messages.CreateStreaming(
+    parameters
+);
+await foreach (RawMessageStreamEvent rawEvent in secondResponseUpdates.CollectAsync(aggregator))
 {
     // do something with the stream events
     if (rawEvent.TryPickContentBlockDelta(out var delta))
@@ -44,6 +55,7 @@ await foreach (RawMessageStreamEvent rawEvent in responseUpdates.CollectAsync(ag
         }
     }
 }
+Console.WriteLine();
 
 // and then get the full aggregated message
 var message2 = aggregator.Message();

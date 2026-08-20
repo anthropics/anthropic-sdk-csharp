@@ -6,13 +6,19 @@ AnthropicClient client = new();
 
 MessageCreateParams parameters = new()
 {
-    MaxTokens = 2048,
+    MaxTokens = 16000,
     Messages =
     [
-        new() { Content = "Tell me a story about building the best SDK!", Role = Role.User },
+        new()
+        {
+            Content =
+                "Create a haiku about Anthropic. Think carefully about syllable counts before answering.",
+            Role = Role.User,
+        },
     ],
     Model = Model.ClaudeSonnet5,
-    Thinking = new ThinkingConfigEnabled() { BudgetTokens = 1024 },
+    Thinking = new ThinkingConfigAdaptive() { Display = Display.Summarized },
+    OutputConfig = new OutputConfig() { Effort = Effort.High },
 };
 
 var response = await client.Messages.Create(parameters);
