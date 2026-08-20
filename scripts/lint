@@ -10,3 +10,16 @@ dotnet csharpier check .
 echo "==> Running dotnet format"
 dotnet format style --severity info --verify-no-changes
 dotnet format analyzers --severity info --verify-no-changes
+
+echo "==> Checking examples/Anthropic.Examples.sln includes every example project"
+# ./scripts/build compiles the examples through this solution, so a project
+# missing from it is never built.
+IN_SOLUTION=$(dotnet sln examples/Anthropic.Examples.sln list | tr -d '\r' | tr '\\' '/' | sed -n '/\.csproj$/p' | sort)
+ON_DISK=$(cd examples && find . -name '*.csproj' | sed 's|^\./||' | sort)
+MISSING=$(comm -13 <(echo "$IN_SOLUTION") <(echo "$ON_DISK"))
+if [ -n "$MISSING" ]; then
+    echo "error: example projects missing from examples/Anthropic.Examples.sln:" >&2
+    printf '  %s\n' $MISSING >&2
+    echo "Add them with: (cd examples && dotnet sln add <path-to-csproj>)" >&2
+    exit 1
+fi
