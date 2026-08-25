@@ -110,6 +110,7 @@ public class DisplayTest : TestBase
     [Theory]
     [InlineData(Display.Summarized)]
     [InlineData(Display.Omitted)]
+    [InlineData(Display.Updates)]
     public void Validation_Works(Display rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -132,6 +133,7 @@ public class DisplayTest : TestBase
     [Theory]
     [InlineData(Display.Summarized)]
     [InlineData(Display.Omitted)]
+    [InlineData(Display.Updates)]
     public void SerializationRoundtrip_Works(Display rawValue)
     {
         // force implicit conversion because Theory can't do that for us

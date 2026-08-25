@@ -146,6 +146,7 @@ public class BetaThinkingConfigEnabledDisplayTest : TestBase
     [Theory]
     [InlineData(BetaThinkingConfigEnabledDisplay.Summarized)]
     [InlineData(BetaThinkingConfigEnabledDisplay.Omitted)]
+    [InlineData(BetaThinkingConfigEnabledDisplay.Updates)]
     public void Validation_Works(BetaThinkingConfigEnabledDisplay rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -168,6 +169,7 @@ public class BetaThinkingConfigEnabledDisplayTest : TestBase
     [Theory]
     [InlineData(BetaThinkingConfigEnabledDisplay.Summarized)]
     [InlineData(BetaThinkingConfigEnabledDisplay.Omitted)]
+    [InlineData(BetaThinkingConfigEnabledDisplay.Updates)]
     public void SerializationRoundtrip_Works(BetaThinkingConfigEnabledDisplay rawValue)
     {
         // force implicit conversion because Theory can't do that for us
