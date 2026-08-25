@@ -146,19 +146,24 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
 
             yield return response;
 
-            // A refusal-terminated turn is terminal: its tool calls belong to a dead
-            // conversation — executing them fires side effects the model never confirmed
-            // and produces tool_results that cannot be coherently replayed.
-            if (
-                response.StopReason is { } stopReason
-                && stopReason.Value() == BetaStopReason.Refusal
-            )
-            {
+            var nextStep = DetermineNextStepFromStopReason(response);
+            if (nextStep == NextStep.Stop)
                 yield break;
+
+            if (nextStep == NextStep.Resume)
+            {
+                if (_paramsMutated)
+                {
+                    messages = [.. _currentParams.Messages];
+                }
+                else
+                {
+                    messages.Add(ToAssistantParam(response));
+                }
+                continue;
             }
 
             var toolUseBlocks = CollectToolUses(response);
-
             if (toolUseBlocks.Count == 0)
                 yield break;
 
@@ -180,18 +185,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
                 continue;
             }
 
-            // Append assistant message to conversation history.
-            // Use JSON round-trip to convert response content blocks to param format.
-            var contentJson = JsonSerializer.SerializeToElement(
-                response.Content.Select(b => b.Json).ToArray()
-            );
-            messages.Add(
-                new BetaMessageParam
-                {
-                    Role = Role.Assistant,
-                    Content = new BetaMessageParamContent(contentJson),
-                }
-            );
+            messages.Add(ToAssistantParam(response));
 
             // Append tool results as a user message.
             messages.Add(
@@ -250,19 +244,24 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
             iterations++;
             AdoptContainer(response);
 
-            // A refusal-terminated turn is terminal: its tool calls belong to a dead
-            // conversation — executing them fires side effects the model never confirmed
-            // and produces tool_results that cannot be coherently replayed.
-            if (
-                response.StopReason is { } stopReason
-                && stopReason.Value() == BetaStopReason.Refusal
-            )
-            {
+            var nextStep = DetermineNextStepFromStopReason(response);
+            if (nextStep == NextStep.Stop)
                 yield break;
+
+            if (nextStep == NextStep.Resume)
+            {
+                if (_paramsMutated)
+                {
+                    messages = [.. _currentParams.Messages];
+                }
+                else
+                {
+                    messages.Add(ToAssistantParam(response));
+                }
+                continue;
             }
 
             var toolUseBlocks = CollectToolUses(response);
-
             if (toolUseBlocks.Count == 0)
                 yield break;
 
@@ -282,16 +281,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
                 continue;
             }
 
-            var contentJson = JsonSerializer.SerializeToElement(
-                response.Content.Select(b => b.Json).ToArray()
-            );
-            messages.Add(
-                new BetaMessageParam
-                {
-                    Role = Role.Assistant,
-                    Content = new BetaMessageParamContent(contentJson),
-                }
-            );
+            messages.Add(ToAssistantParam(response));
 
             messages.Add(
                 new BetaMessageParam
@@ -323,6 +313,51 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
             ?? throw new InvalidOperationException(
                 "Tool runner completed without producing any messages."
             );
+    }
+
+    private enum NextStep
+    {
+        /// <summary>Run the turn's client tool calls, answer them, and continue.</summary>
+        RunTools,
+
+        /// <summary>The turn is not finished: send it back unchanged to continue it.</summary>
+        Resume,
+
+        /// <summary>The turn is final; its tool calls, if any, must not be executed.</summary>
+        Stop,
+    }
+
+    /// <summary>
+    /// Maps every stop reason to what the loop does next. Each member is listed explicitly
+    /// so a newly generated one shows up as an unclassified case; values this SDK version
+    /// does not know about fall through to <see cref="NextStep.Stop"/> and end the loop.
+    /// </summary>
+    private static NextStep DetermineNextStepFromStopReason(BetaMessage response) =>
+        response.StopReason?.Value() switch
+        {
+            BetaStopReason.ToolUse => NextStep.RunTools,
+            // pause_after_compaction hands the turn back before the model answers; sending
+            // it back unchanged continues it, the same as a paused turn.
+            BetaStopReason.PauseTurn or BetaStopReason.Compaction => NextStep.Resume,
+            BetaStopReason.EndTurn
+            or BetaStopReason.StopSequence
+            or BetaStopReason.MaxTokens
+            or BetaStopReason.ModelContextWindowExceeded
+            or BetaStopReason.Refusal => NextStep.Stop,
+            _ => NextStep.Stop,
+        };
+
+    private static BetaMessageParam ToAssistantParam(BetaMessage response)
+    {
+        // JSON round-trip converts response content blocks to their param form.
+        var contentJson = JsonSerializer.SerializeToElement(
+            response.Content.Select(b => b.Json).ToArray()
+        );
+        return new BetaMessageParam
+        {
+            Role = Role.Assistant,
+            Content = new BetaMessageParamContent(contentJson),
+        };
     }
 
     /// <summary>

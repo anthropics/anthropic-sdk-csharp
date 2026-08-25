@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -85,6 +87,26 @@ public class BetaToolRunnerTest
                 trigger = new { type = "refusal", category = (string?)null },
             }
         );
+        return JsonSerializer.Deserialize<BetaContentBlock>(json, s_jsonOptions)!;
+    }
+
+    private static BetaContentBlock MakeServerToolUseBlock(string id, string name, object input)
+    {
+        var json = JsonSerializer.SerializeToElement(
+            new
+            {
+                type = "server_tool_use",
+                id,
+                name,
+                input,
+            }
+        );
+        return JsonSerializer.Deserialize<BetaContentBlock>(json, s_jsonOptions)!;
+    }
+
+    private static BetaContentBlock MakeCompactionBlock(string content)
+    {
+        var json = JsonSerializer.SerializeToElement(new { type = "compaction", content });
         return JsonSerializer.Deserialize<BetaContentBlock>(json, s_jsonOptions)!;
     }
 
@@ -1648,6 +1670,411 @@ public class BetaToolRunnerTest
         Assert.Equal(2, captured.Count);
         Assert.Null(captured[0].Container);
         Assert.Equal("container_123", captured[1].Container?.Value);
+    }
+
+    // --- stop_reason classification ---
+
+    // Reaches the private classifier via reflection so every generated stop reason must
+    // appear in the expected map below: a new enum member fails here until classified.
+    [Fact]
+    public void DetermineNextStepFromStopReason_CoversEveryStopReason()
+    {
+        var expected = new Dictionary<BetaStopReason, string>
+        {
+            [BetaStopReason.EndTurn] = "Stop",
+            [BetaStopReason.MaxTokens] = "Stop",
+            [BetaStopReason.StopSequence] = "Stop",
+            [BetaStopReason.ToolUse] = "RunTools",
+            [BetaStopReason.PauseTurn] = "Resume",
+            [BetaStopReason.Compaction] = "Resume",
+            [BetaStopReason.Refusal] = "Stop",
+            [BetaStopReason.ModelContextWindowExceeded] = "Stop",
+        };
+        var determineNextStep = typeof(BetaToolRunner).GetMethod(
+            "DetermineNextStepFromStopReason",
+            BindingFlags.NonPublic | BindingFlags.Static
+        );
+        Assert.NotNull(determineNextStep);
+        string NextStepFor(BetaMessage message) =>
+            determineNextStep!.Invoke(null, [message])!.ToString()!;
+
+        foreach (BetaStopReason reason in Enum.GetValues(typeof(BetaStopReason)))
+        {
+            Assert.True(expected.ContainsKey(reason), $"Unclassified stop reason: {reason}");
+            Assert.Equal(expected[reason], NextStepFor(MakeMessage([], reason)));
+        }
+
+        // Values newer than this SDK and a missing stop reason stop the loop.
+        Assert.Equal(
+            "Stop",
+            NextStepFor(MakeMessage([]) with { StopReason = "some_future_reason" })
+        );
+        Assert.Equal("Stop", NextStepFor(MakeMessage([]) with { StopReason = null }));
+    }
+
+    [Fact]
+    public async Task MaxTokens_EndsLoopWithoutExecutingTools()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+        mock.Setup(s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(
+                MakeMessage(
+                    [
+                        MakeTextBlock("Checking the weather"),
+                        MakeToolUseBlock(
+                            "tu_1",
+                            "get_weather",
+                            new() { ["location"] = JsonSerializer.SerializeToElement("SF") }
+                        ),
+                    ],
+                    BetaStopReason.MaxTokens
+                )
+            );
+
+        var toolExecuted = false;
+        var tool = MakeWeatherToolSync(_ =>
+        {
+            toolExecuted = true;
+            throw new InvalidOperationException("tool must not run on a truncated turn");
+        });
+
+        var runner = mock.Object.ToolRunner(BaseParams, [tool], maxIterations: 3);
+        var result = await runner.RunUntilDoneAsync(ct);
+
+        // A max_tokens turn is final: its (possibly truncated) tool call is not executed and
+        // no follow-up request is sent.
+        Assert.False(toolExecuted);
+        Assert.Equal(BetaStopReason.MaxTokens, result.StopReason!.Value());
+        mock.Verify(
+            s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()),
+            Times.Once
+        );
+    }
+
+    [Fact]
+    public async Task Streaming_MaxTokens_EndsLoopWithoutExecutingTools()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+
+        mock.Setup(s =>
+                s.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
+            )
+            .Returns(() =>
+                MakeEventStream(
+                    """{"type":"message_start","message":{"id":"msg_1","type":"message","role":"assistant","content":[],"model":"claude-opus-4-6-20250929","stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":10}}}""",
+                    """{"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"tu_1","name":"get_weather","input":{}}}""",
+                    """{"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"location\":\"SF\"}"}}""",
+                    """{"type":"content_block_stop","index":0}""",
+                    """{"type":"message_delta","delta":{"stop_reason":"max_tokens","stop_sequence":null},"usage":{"output_tokens":10}}""",
+                    """{"type":"message_stop"}"""
+                )
+            );
+
+        var toolExecuted = false;
+        var tool = MakeWeatherToolSync(_ =>
+        {
+            toolExecuted = true;
+            throw new InvalidOperationException("tool must not run on a truncated turn");
+        });
+
+        var runner = mock.Object.ToolRunner(BaseParams, [tool], maxIterations: 3);
+        var iterationCount = 0;
+
+        await foreach (var stream in runner.Streaming(ct).WithCancellation(ct))
+        {
+            await foreach (var _ in stream.WithCancellation(ct)) { }
+            iterationCount++;
+        }
+
+        Assert.False(toolExecuted);
+        Assert.Equal(1, iterationCount);
+        mock.Verify(
+            s => s.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()),
+            Times.Once
+        );
+    }
+
+    // --- pause_turn ---
+
+    private static BetaMessage MakePausedTurn() =>
+        MakeMessage(
+            [
+                MakeTextBlock("Let me look that up."),
+                MakeServerToolUseBlock("srvtoolu_1", "web_search", new { query = "weather in SF" }),
+            ],
+            BetaStopReason.PauseTurn
+        );
+
+    [Fact]
+    public async Task PauseTurn_ResendsPausedTurnAndContinues()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+        var callCount = 0;
+        MessageCreateParams? secondCallParams = null;
+
+        mock.Setup(s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(
+                (MessageCreateParams p, CancellationToken _) =>
+                {
+                    callCount++;
+                    if (callCount == 1)
+                    {
+                        return MakePausedTurn();
+                    }
+                    secondCallParams = p;
+                    return MakeMessage([MakeTextBlock("It's sunny in SF!")]);
+                }
+            );
+
+        var runner = mock.Object.ToolRunner(BaseParams, [MakeWeatherToolSync(_ => "Sunny")]);
+        var result = await runner.RunUntilDoneAsync(ct);
+
+        Assert.Equal(BetaStopReason.EndTurn, result.StopReason!.Value());
+        mock.Verify(
+            s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()),
+            Times.Exactly(2)
+        );
+
+        // The paused assistant turn is sent back unchanged (no tool_result turn) so the
+        // server resumes it.
+        Assert.NotNull(secondCallParams);
+        Assert.Equal(2, secondCallParams!.Messages.Count);
+        var appended = secondCallParams.Messages[1];
+        Assert.Equal(Role.Assistant, appended.Role.Value());
+        Assert.Equal(
+            ["text", "server_tool_use"],
+            appended.Content.Json.EnumerateArray().Select(b => b.GetProperty("type").GetString())
+        );
+    }
+
+    [Fact]
+    public async Task PauseTurn_StopsAtMaxIterations()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+        mock.Setup(s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(() => MakePausedTurn());
+
+        var runner = mock.Object.ToolRunner(BaseParams, [], maxIterations: 3);
+        var result = await runner.RunUntilDoneAsync(ct);
+
+        Assert.Equal(BetaStopReason.PauseTurn, result.StopReason!.Value());
+        mock.Verify(
+            s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()),
+            Times.Exactly(3)
+        );
+    }
+
+    [Fact]
+    public async Task Streaming_PauseTurn_ResendsPausedTurnAndContinues()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+        var callCount = 0;
+        MessageCreateParams? secondCallParams = null;
+
+        static IAsyncEnumerable<BetaRawMessageStreamEvent> MakePausedStream()
+        {
+            return MakeEventStream(
+                """{"type":"message_start","message":{"id":"msg_1","type":"message","role":"assistant","content":[],"model":"claude-opus-4-6-20250929","stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":10}}}""",
+                """{"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}""",
+                """{"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Let me look that up."}}""",
+                """{"type":"content_block_stop","index":0}""",
+                """{"type":"content_block_start","index":1,"content_block":{"type":"server_tool_use","id":"srvtoolu_1","name":"web_search","input":{},"caller":{"type":"direct"}}}""",
+                """{"type":"content_block_delta","index":1,"delta":{"type":"input_json_delta","partial_json":""}}""",
+                """{"type":"content_block_delta","index":1,"delta":{"type":"input_json_delta","partial_json":"{\"query\": \"weath"}}""",
+                """{"type":"content_block_delta","index":1,"delta":{"type":"input_json_delta","partial_json":"er in SF\"}"}}""",
+                """{"type":"content_block_stop","index":1}""",
+                """{"type":"message_delta","delta":{"stop_reason":"pause_turn","stop_sequence":null},"usage":{"output_tokens":10}}""",
+                """{"type":"message_stop"}"""
+            );
+        }
+
+        static IAsyncEnumerable<BetaRawMessageStreamEvent> MakeTextStream()
+        {
+            return MakeEventStream(
+                """{"type":"message_start","message":{"id":"msg_2","type":"message","role":"assistant","content":[],"model":"claude-opus-4-6-20250929","stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":10}}}""",
+                """{"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}""",
+                """{"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"It's sunny in SF!"}}""",
+                """{"type":"content_block_stop","index":0}""",
+                """{"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":10}}""",
+                """{"type":"message_stop"}"""
+            );
+        }
+
+        mock.Setup(s =>
+                s.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
+            )
+            .Returns(
+                (MessageCreateParams p, CancellationToken _) =>
+                {
+                    callCount++;
+                    if (callCount == 1)
+                    {
+                        return MakePausedStream();
+                    }
+                    secondCallParams = p;
+                    return MakeTextStream();
+                }
+            );
+
+        var runner = mock.Object.ToolRunner(BaseParams, [MakeWeatherToolSync(_ => "Sunny")]);
+        var iterationCount = 0;
+
+        await foreach (var stream in runner.Streaming(ct).WithCancellation(ct))
+        {
+            await foreach (var _ in stream.WithCancellation(ct)) { }
+            iterationCount++;
+        }
+
+        Assert.Equal(2, iterationCount);
+        mock.Verify(
+            s => s.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()),
+            Times.Exactly(2)
+        );
+
+        Assert.NotNull(secondCallParams);
+        Assert.Equal(2, secondCallParams!.Messages.Count);
+        var appended = secondCallParams.Messages[1];
+        Assert.Equal(Role.Assistant, appended.Role.Value());
+        var blocks = appended.Content.Json.EnumerateArray().ToList();
+        Assert.Equal(
+            ["text", "server_tool_use"],
+            blocks.Select(b => b.GetProperty("type").GetString())
+        );
+        Assert.Equal("Let me look that up.", blocks[0].GetProperty("text").GetString());
+        Assert.Equal(
+            "weather in SF",
+            blocks[1].GetProperty("input").GetProperty("query").GetString()
+        );
+    }
+
+    // --- compaction ---
+
+    [Fact]
+    public async Task Compaction_ResendsCompactedTurnAndContinues()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+        var callCount = 0;
+        MessageCreateParams? secondCallParams = null;
+
+        mock.Setup(s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(
+                (MessageCreateParams p, CancellationToken _) =>
+                {
+                    callCount++;
+                    if (callCount == 1)
+                    {
+                        return MakeMessage(
+                            [MakeCompactionBlock("Summary of the conversation so far.")],
+                            BetaStopReason.Compaction
+                        );
+                    }
+                    secondCallParams = p;
+                    return MakeMessage([MakeTextBlock("It's sunny in SF!")]);
+                }
+            );
+
+        var runner = mock.Object.ToolRunner(BaseParams, [MakeWeatherToolSync(_ => "Sunny")]);
+        var result = await runner.RunUntilDoneAsync(ct);
+
+        Assert.Equal(BetaStopReason.EndTurn, result.StopReason!.Value());
+        mock.Verify(
+            s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()),
+            Times.Exactly(2)
+        );
+
+        // The compaction turn is sent back unchanged as the last message — no tool_result
+        // turn follows it — so the model answers on the next request.
+        Assert.NotNull(secondCallParams);
+        Assert.Equal(2, secondCallParams!.Messages.Count);
+        var appended = secondCallParams.Messages[1];
+        Assert.Equal(Role.Assistant, appended.Role.Value());
+        var block = Assert.Single(appended.Content.Json.EnumerateArray());
+        Assert.Equal("compaction", block.GetProperty("type").GetString());
+        Assert.Equal(
+            "Summary of the conversation so far.",
+            block.GetProperty("content").GetString()
+        );
+    }
+
+    [Fact]
+    public async Task Streaming_Compaction_ResendsCompactedTurnAndContinues()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+        var callCount = 0;
+        MessageCreateParams? secondCallParams = null;
+
+        static IAsyncEnumerable<BetaRawMessageStreamEvent> MakeCompactionStream()
+        {
+            return MakeEventStream(
+                """{"type":"message_start","message":{"id":"msg_1","type":"message","role":"assistant","content":[],"model":"claude-opus-4-6-20250929","stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":10}}}""",
+                """{"type":"content_block_start","index":0,"content_block":{"type":"compaction","content":null,"encrypted_content":null}}""",
+                """{"type":"content_block_delta","index":0,"delta":{"type":"compaction_delta","content":"Summary of the conversation so far.","encrypted_content":null}}""",
+                """{"type":"content_block_stop","index":0}""",
+                """{"type":"message_delta","delta":{"stop_reason":"compaction","stop_sequence":null},"usage":{"output_tokens":10}}""",
+                """{"type":"message_stop"}"""
+            );
+        }
+
+        static IAsyncEnumerable<BetaRawMessageStreamEvent> MakeTextStream()
+        {
+            return MakeEventStream(
+                """{"type":"message_start","message":{"id":"msg_2","type":"message","role":"assistant","content":[],"model":"claude-opus-4-6-20250929","stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":10}}}""",
+                """{"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}""",
+                """{"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"It's sunny in SF!"}}""",
+                """{"type":"content_block_stop","index":0}""",
+                """{"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":10}}""",
+                """{"type":"message_stop"}"""
+            );
+        }
+
+        mock.Setup(s =>
+                s.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
+            )
+            .Returns(
+                (MessageCreateParams p, CancellationToken _) =>
+                {
+                    callCount++;
+                    if (callCount == 1)
+                    {
+                        return MakeCompactionStream();
+                    }
+                    secondCallParams = p;
+                    return MakeTextStream();
+                }
+            );
+
+        var runner = mock.Object.ToolRunner(BaseParams, [MakeWeatherToolSync(_ => "Sunny")]);
+        var iterationCount = 0;
+
+        await foreach (var stream in runner.Streaming(ct).WithCancellation(ct))
+        {
+            await foreach (var _ in stream.WithCancellation(ct)) { }
+            iterationCount++;
+        }
+
+        Assert.Equal(2, iterationCount);
+        mock.Verify(
+            s => s.CreateStreaming(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()),
+            Times.Exactly(2)
+        );
+
+        Assert.NotNull(secondCallParams);
+        Assert.Equal(2, secondCallParams!.Messages.Count);
+        var appended = secondCallParams.Messages[1];
+        Assert.Equal(Role.Assistant, appended.Role.Value());
+        var block = Assert.Single(appended.Content.Json.EnumerateArray());
+        Assert.Equal("compaction", block.GetProperty("type").GetString());
+        Assert.Equal(
+            "Summary of the conversation so far.",
+            block.GetProperty("content").GetString()
+        );
     }
 
     private class CustomWeatherTool : IBetaRunnableTool
