@@ -42,6 +42,11 @@ public enum AnthropicBeta
     FallbackCredit2026_07_01,
     AgentMemory2026_07_22,
     MidConversationToolChanges2026_07_01,
+    Compact2026_01_12,
+    ComputerUse2025_11_24,
+    McpTunnels2026_06_22,
+    StructuredOutputs2025_11_13,
+    TaskBudgets2026_03_13,
 }
 
 sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
@@ -90,6 +95,11 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "agent-memory-2026-07-22" => AnthropicBeta.AgentMemory2026_07_22,
             "mid-conversation-tool-changes-2026-07-01" =>
                 AnthropicBeta.MidConversationToolChanges2026_07_01,
+            "compact-2026-01-12" => AnthropicBeta.Compact2026_01_12,
+            "computer-use-2025-11-24" => AnthropicBeta.ComputerUse2025_11_24,
+            "mcp-tunnels-2026-06-22" => AnthropicBeta.McpTunnels2026_06_22,
+            "structured-outputs-2025-11-13" => AnthropicBeta.StructuredOutputs2025_11_13,
+            "task-budgets-2026-03-13" => AnthropicBeta.TaskBudgets2026_03_13,
             _ => (AnthropicBeta)(-1),
         };
     }
@@ -140,6 +150,11 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.AgentMemory2026_07_22 => "agent-memory-2026-07-22",
                 AnthropicBeta.MidConversationToolChanges2026_07_01 =>
                     "mid-conversation-tool-changes-2026-07-01",
+                AnthropicBeta.Compact2026_01_12 => "compact-2026-01-12",
+                AnthropicBeta.ComputerUse2025_11_24 => "computer-use-2025-11-24",
+                AnthropicBeta.McpTunnels2026_06_22 => "mcp-tunnels-2026-06-22",
+                AnthropicBeta.StructuredOutputs2025_11_13 => "structured-outputs-2025-11-13",
+                AnthropicBeta.TaskBudgets2026_03_13 => "task-budgets-2026-03-13",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
