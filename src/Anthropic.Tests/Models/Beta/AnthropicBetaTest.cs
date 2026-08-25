@@ -42,6 +42,11 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.FallbackCredit2026_07_01)]
     [InlineData(AnthropicBeta.AgentMemory2026_07_22)]
     [InlineData(AnthropicBeta.MidConversationToolChanges2026_07_01)]
+    [InlineData(AnthropicBeta.Compact2026_01_12)]
+    [InlineData(AnthropicBeta.ComputerUse2025_11_24)]
+    [InlineData(AnthropicBeta.McpTunnels2026_06_22)]
+    [InlineData(AnthropicBeta.StructuredOutputs2025_11_13)]
+    [InlineData(AnthropicBeta.TaskBudgets2026_03_13)]
     public void Validation_Works(AnthropicBeta rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -96,6 +101,11 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.FallbackCredit2026_07_01)]
     [InlineData(AnthropicBeta.AgentMemory2026_07_22)]
     [InlineData(AnthropicBeta.MidConversationToolChanges2026_07_01)]
+    [InlineData(AnthropicBeta.Compact2026_01_12)]
+    [InlineData(AnthropicBeta.ComputerUse2025_11_24)]
+    [InlineData(AnthropicBeta.McpTunnels2026_06_22)]
+    [InlineData(AnthropicBeta.StructuredOutputs2025_11_13)]
+    [InlineData(AnthropicBeta.TaskBudgets2026_03_13)]
     public void SerializationRoundtrip_Works(AnthropicBeta rawValue)
     {
         // force implicit conversion because Theory can't do that for us

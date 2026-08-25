@@ -16,6 +16,9 @@ namespace Anthropic.Models.Beta.Environments;
 /// <para>When versioning, use the version semantics relevant for the package manager,
 /// e.g. for `pip` use `package==1.0.0`. You are responsible for validating the package
 /// and version exist. Unversioned installs the latest.</para>
+///
+/// <para>Under `limited` networking, requires `networking.allow_package_managers`
+/// to be `true`.</para>
 /// </summary>
 [JsonConverter(typeof(JsonModelConverter<BetaPackagesParams, BetaPackagesParamsFromRaw>))]
 public sealed record class BetaPackagesParams : JsonModel

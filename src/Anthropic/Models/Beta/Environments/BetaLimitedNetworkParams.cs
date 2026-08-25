@@ -48,7 +48,8 @@ public sealed record class BetaLimitedNetworkParams : JsonModel
 
     /// <summary>
     /// Permits outbound access to public package registries (PyPI, npm, etc.) beyond
-    /// those listed in the `allowed_hosts` array. Defaults to `false`.
+    /// those listed in the `allowed_hosts` array. Defaults to `false` on creation.
+    /// Must be `true` when `packages` are specified.
     /// </summary>
     public bool? AllowPackageManagers
     {
