@@ -132,6 +132,7 @@ public enum BetaThinkingConfigEnabledDisplay
 {
     Summarized,
     Omitted,
+    Updates,
 }
 
 sealed class BetaThinkingConfigEnabledDisplayConverter
@@ -147,6 +148,7 @@ sealed class BetaThinkingConfigEnabledDisplayConverter
         {
             "summarized" => BetaThinkingConfigEnabledDisplay.Summarized,
             "omitted" => BetaThinkingConfigEnabledDisplay.Omitted,
+            "updates" => BetaThinkingConfigEnabledDisplay.Updates,
             _ => (BetaThinkingConfigEnabledDisplay)(-1),
         };
     }
@@ -163,6 +165,7 @@ sealed class BetaThinkingConfigEnabledDisplayConverter
             {
                 BetaThinkingConfigEnabledDisplay.Summarized => "summarized",
                 BetaThinkingConfigEnabledDisplay.Omitted => "omitted",
+                BetaThinkingConfigEnabledDisplay.Updates => "updates",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

@@ -47,6 +47,7 @@ public enum AnthropicBeta
     McpTunnels2026_06_22,
     StructuredOutputs2025_11_13,
     TaskBudgets2026_03_13,
+    ThinkingDisplayUpdates2026_08_18,
 }
 
 sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
@@ -100,6 +101,7 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "mcp-tunnels-2026-06-22" => AnthropicBeta.McpTunnels2026_06_22,
             "structured-outputs-2025-11-13" => AnthropicBeta.StructuredOutputs2025_11_13,
             "task-budgets-2026-03-13" => AnthropicBeta.TaskBudgets2026_03_13,
+            "thinking-display-updates-2026-08-18" => AnthropicBeta.ThinkingDisplayUpdates2026_08_18,
             _ => (AnthropicBeta)(-1),
         };
     }
@@ -155,6 +157,8 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.McpTunnels2026_06_22 => "mcp-tunnels-2026-06-22",
                 AnthropicBeta.StructuredOutputs2025_11_13 => "structured-outputs-2025-11-13",
                 AnthropicBeta.TaskBudgets2026_03_13 => "task-budgets-2026-03-13",
+                AnthropicBeta.ThinkingDisplayUpdates2026_08_18 =>
+                    "thinking-display-updates-2026-08-18",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

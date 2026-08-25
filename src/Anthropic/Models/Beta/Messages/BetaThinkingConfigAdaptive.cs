@@ -102,6 +102,7 @@ public enum Display
 {
     Summarized,
     Omitted,
+    Updates,
 }
 
 sealed class DisplayConverter : JsonConverter<Display>
@@ -116,6 +117,7 @@ sealed class DisplayConverter : JsonConverter<Display>
         {
             "summarized" => Display.Summarized,
             "omitted" => Display.Omitted,
+            "updates" => Display.Updates,
             _ => (Display)(-1),
         };
     }
@@ -128,6 +130,7 @@ sealed class DisplayConverter : JsonConverter<Display>
             {
                 Display.Summarized => "summarized",
                 Display.Omitted => "omitted",
+                Display.Updates => "updates",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
