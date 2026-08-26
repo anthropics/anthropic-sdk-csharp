@@ -3,8 +3,14 @@ using Anthropic.Exceptions;
 using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments.Work;
+using Anthropic.Models.Beta.Organization;
+using Anthropic.Models.Beta.Organization.ExternalKeys;
+using Anthropic.Models.Beta.Organization.ServiceAccounts;
+using Anthropic.Models.Beta.Organization.Workspaces;
+using Anthropic.Models.Beta.Organization.Workspaces.RateLimits;
 using Anthropic.Models.Messages;
 using Agents = Anthropic.Models.Beta.Agents;
+using ApiKeys = Anthropic.Models.Beta.Organization.ApiKeys;
 using Batches = Anthropic.Models.Messages.Batches;
 using BetaFiles = Anthropic.Models.Beta.Files;
 using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
@@ -14,16 +20,19 @@ using Dreams = Anthropic.Models.Beta.Dreams;
 using Environments = Anthropic.Models.Beta.Environments;
 using Events = Anthropic.Models.Beta.Sessions.Events;
 using Files = Anthropic.Models.Files;
+using Invites = Anthropic.Models.Beta.Organization.Invites;
 using Memories = Anthropic.Models.Beta.MemoryStores.Memories;
 using MemoryStores = Anthropic.Models.Beta.MemoryStores;
 using MemoryVersions = Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 using Messages = Anthropic.Models.Beta.Messages;
 using MessagesBatches = Anthropic.Models.Beta.Messages.Batches;
+using RateLimits = Anthropic.Models.Beta.Organization.RateLimits;
 using Resources = Anthropic.Models.Beta.Sessions.Resources;
 using Sessions = Anthropic.Models.Beta.Sessions;
 using Skills = Anthropic.Models.Skills;
 using Threads = Anthropic.Models.Beta.Sessions.Threads;
 using UserProfiles = Anthropic.Models.Beta.UserProfiles;
+using Users = Anthropic.Models.Beta.Organization.Users;
 using Vaults = Anthropic.Models.Beta.Vaults;
 
 namespace Anthropic.Core;
@@ -703,6 +712,31 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Dreams::BetaDreamStatus>(),
             new ApiEnumConverter<string, Dreams::BetaOutputBehaviorCreateNewType>(),
             new ApiEnumConverter<string, Dreams::BetaOutputBehaviorUpdateExistingType>(),
+            new ApiEnumConverter<string, BetaOrganizationRole>(),
+            new ApiEnumConverter<string, ApiKeys::BetaApiKeyStatus>(),
+            new ApiEnumConverter<string, ApiKeys::Type>(),
+            new ApiEnumConverter<string, ApiKeys::Status>(),
+            new ApiEnumConverter<string, ApiKeys::ApiKeyListParamsStatus>(),
+            new ApiEnumConverter<string, Status>(),
+            new ApiEnumConverter<string, Geo>(),
+            new ApiEnumConverter<string, ExternalKeyUpdateParamsGeo>(),
+            new ApiEnumConverter<string, Invites::BetaOrganizationInviteStatus>(),
+            new ApiEnumConverter<string, Invites::Role>(),
+            new ApiEnumConverter<string, Invites::Status>(),
+            new ApiEnumConverter<string, BetaServiceAccountOrganizationRole>(),
+            new ApiEnumConverter<string, OrganizationRole>(),
+            new ApiEnumConverter<string, ServiceAccountUpdateParamsOrganizationRole>(),
+            new ApiEnumConverter<string, BetaNoBillingWorkspaceRole>(),
+            new ApiEnumConverter<string, Users::Role>(),
+            new ApiEnumConverter<string, BetaAllowedInferenceGeo>(),
+            new ApiEnumConverter<string, DefaultInferenceGeo>(),
+            new ApiEnumConverter<string, WorkspaceGeo>(),
+            new ApiEnumConverter<string, BetaDataResidencyUpdateConfigDefaultInferenceGeo>(),
+            new ApiEnumConverter<string, BetaWorkspaceRole>(),
+            new ApiEnumConverter<string, BetaWorkspaceRateLimitGroupType>(),
+            new ApiEnumConverter<string, GroupType>(),
+            new ApiEnumConverter<string, RateLimits::BetaOrganizationRateLimitGroupType>(),
+            new ApiEnumConverter<string, RateLimits::GroupType>(),
         },
     };
 

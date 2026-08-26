@@ -9,7 +9,7 @@ public class CertificateServiceTest : TestBase
     {
         var betaTunnelCertificate = await this.client.Beta.Tunnels.Certificates.Create(
             "tunnel_id",
-            new() { CaCertificatePem = "ca_certificate_pem" },
+            new() { CACertificatePem = "ca_certificate_pem" },
             TestContext.Current.CancellationToken
         );
         betaTunnelCertificate.Validate();

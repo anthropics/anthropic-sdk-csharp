@@ -15,19 +15,19 @@ public class CertificateCreateParamsTest : TestBase
         var parameters = new CertificateCreateParams
         {
             TunnelID = "tunnel_id",
-            CaCertificatePem = "ca_certificate_pem",
+            CACertificatePem = "ca_certificate_pem",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         string expectedTunnelID = "tunnel_id";
-        string expectedCaCertificatePem = "ca_certificate_pem";
+        string expectedCACertificatePem = "ca_certificate_pem";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
 
         Assert.Equal(expectedTunnelID, parameters.TunnelID);
-        Assert.Equal(expectedCaCertificatePem, parameters.CaCertificatePem);
+        Assert.Equal(expectedCACertificatePem, parameters.CACertificatePem);
         Assert.NotNull(parameters.Betas);
         Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
         for (int i = 0; i < expectedBetas.Count; i++)
@@ -42,7 +42,7 @@ public class CertificateCreateParamsTest : TestBase
         var parameters = new CertificateCreateParams
         {
             TunnelID = "tunnel_id",
-            CaCertificatePem = "ca_certificate_pem",
+            CACertificatePem = "ca_certificate_pem",
         };
 
         Assert.Null(parameters.Betas);
@@ -55,7 +55,7 @@ public class CertificateCreateParamsTest : TestBase
         var parameters = new CertificateCreateParams
         {
             TunnelID = "tunnel_id",
-            CaCertificatePem = "ca_certificate_pem",
+            CACertificatePem = "ca_certificate_pem",
 
             // Null should be interpreted as omitted for these properties
             Betas = null,
@@ -71,7 +71,7 @@ public class CertificateCreateParamsTest : TestBase
         CertificateCreateParams parameters = new()
         {
             TunnelID = "tunnel_id",
-            CaCertificatePem = "ca_certificate_pem",
+            CACertificatePem = "ca_certificate_pem",
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -91,7 +91,7 @@ public class CertificateCreateParamsTest : TestBase
         CertificateCreateParams parameters = new()
         {
             TunnelID = "tunnel_id",
-            CaCertificatePem = "ca_certificate_pem",
+            CACertificatePem = "ca_certificate_pem",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -109,7 +109,7 @@ public class CertificateCreateParamsTest : TestBase
         var parameters = new CertificateCreateParams
         {
             TunnelID = "tunnel_id",
-            CaCertificatePem = "ca_certificate_pem",
+            CACertificatePem = "ca_certificate_pem",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 

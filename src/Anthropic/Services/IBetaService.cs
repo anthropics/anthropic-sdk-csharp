@@ -53,6 +53,8 @@ public interface IBetaService
     Beta::IDreamService Dreams { get; }
 
     Beta::ITunnelService Tunnels { get; }
+
+    Beta::IOrganizationService Organization { get; }
 }
 
 /// <summary>
@@ -97,4 +99,6 @@ public interface IBetaServiceWithRawResponse
     Beta::IDreamServiceWithRawResponse Dreams { get; }
 
     Beta::ITunnelServiceWithRawResponse Tunnels { get; }
+
+    Beta::IOrganizationServiceWithRawResponse Organization { get; }
 }
