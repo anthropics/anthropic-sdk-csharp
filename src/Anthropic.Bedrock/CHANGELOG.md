@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.0 (2026-08-26)
+
+Full Changelog: [Bedrock-v0.12.0...Bedrock-v0.13.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.12.0...Bedrock-v0.13.0)
+
+### Features
+
+* **api:** add support for Organization API endpoints ([b255cba](https://github.com/anthropics/anthropic-sdk-csharp/commit/b255cba4fc11cae270c38b15902c8c065be407b1))
+
 ## 0.12.0 (2026-08-19)
 
 Full Changelog: [Bedrock-v0.11.1...Bedrock-v0.12.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.11.1...Bedrock-v0.12.0)
