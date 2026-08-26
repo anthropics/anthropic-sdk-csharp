@@ -4,11 +4,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Bedrock;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Messages;
 using Moq;
 using Moq.Protected;
 
@@ -498,6 +500,74 @@ public class AnthropicBedrockMantleClientTests : IDisposable
         var req = await SendOneRequest(client);
 
         Assert.Equal("Bearer mantle-key", req.Headers.GetValues("Authorization").Single());
+    }
+
+    #endregion
+
+    #region SigV4 Signature Verification
+
+    const string SigV4AccessKey = "AKIAIOSFODNN7EXAMPLE";
+    const string SigV4SecretKey = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY";
+    const string MessageJson = """
+        {"id":"msg_x","type":"message","role":"assistant","model":"anthropic.claude-3","content":[{"type":"text","text":"hi"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":1,"output_tokens":1}}
+        """;
+
+    static AnthropicBedrockMantleClient CreateSigV4ClientAgainst(HttpMessageHandler gateway) =>
+        new(
+            new()
+            {
+                AwsAccessKey = SigV4AccessKey,
+                AwsSecretAccessKey = SigV4SecretKey,
+                AwsRegion = "us-east-1",
+                ClientOptions = new() { HttpClient = new HttpClient(gateway) },
+            }
+        );
+
+    [Fact]
+    public async Task SigV4Mode_MessagesCreate_SignatureVerifies()
+    {
+        var gateway = new SigV4VerifyingHandler(SigV4SecretKey, MessageJson);
+        var client = CreateSigV4ClientAgainst(gateway);
+
+        var message = await client.Messages.Create(
+            new MessageCreateParams
+            {
+                MaxTokens = 16,
+                Messages = [new() { Content = "hello", Role = Role.User }],
+                Model = "anthropic.claude-3",
+            },
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal("msg_x", message.ID);
+        Assert.Equal("", gateway.VerifiedRequestUris.Single().Query);
+    }
+
+    [Fact]
+    public async Task SigV4Mode_RepeatedQueryKey_SignatureVerifies()
+    {
+        var gateway = new SigV4VerifyingHandler(SigV4SecretKey, MessageJson);
+        var client = CreateSigV4ClientAgainst(gateway);
+
+        var message = await client.Messages.Create(
+            new MessageCreateParams(
+                rawHeaderData: new Dictionary<string, JsonElement>(),
+                rawQueryData: new Dictionary<string, JsonElement>
+                {
+                    ["tag"] = JsonSerializer.SerializeToElement(new List<string> { "b", "a" }),
+                },
+                rawBodyData: new Dictionary<string, JsonElement>()
+            )
+            {
+                MaxTokens = 16,
+                Messages = [new() { Content = "hello", Role = Role.User }],
+                Model = "anthropic.claude-3",
+            },
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal("msg_x", message.ID);
+        Assert.Equal("?tag%5b%5d=b&tag%5b%5d=a", gateway.VerifiedRequestUris.Single().Query);
     }
 
     #endregion

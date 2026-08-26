@@ -82,7 +82,7 @@ internal static class MantleAwsSigner
         return date.ToString("yyyyMMddTHHmmssZ");
     }
 
-    // SigV4 requires query parameters to be sorted lexicographically by key and
+    // SigV4 requires query parameters to be sorted by key, then value, and
     // percent-encoded using RFC 3986. We round-trip through unescape/escape to
     // normalize any inconsistent encoding (e.g. %2f → %2F) before sorting.
     static string CanonicalizeQueryString(Uri uri)
@@ -99,36 +99,52 @@ internal static class MantleAwsSigner
             query = query.Substring(1);
         }
 
-        var pairs = new SortedDictionary<string, string>(StringComparer.Ordinal);
+        // Repeated keys each contribute a pair; SigV4 orders pairs by key, then value.
+        var pairs = new List<(string Key, string Value)>();
         foreach (var segment in query.Split('&'))
         {
             var eqIndex = segment.IndexOf('=');
             if (eqIndex >= 0)
             {
 #if NET9_0_OR_GREATER
-                pairs[Uri.EscapeDataString(Uri.UnescapeDataString(segment.AsSpan(0, eqIndex)))] =
-                    Uri.EscapeDataString(Uri.UnescapeDataString(segment.AsSpan(eqIndex + 1)));
+                pairs.Add(
+                    (
+                        Uri.EscapeDataString(Uri.UnescapeDataString(segment.AsSpan(0, eqIndex))),
+                        Uri.EscapeDataString(Uri.UnescapeDataString(segment.AsSpan(eqIndex + 1)))
+                    )
+                );
 #else
-                pairs[Uri.EscapeDataString(Uri.UnescapeDataString(segment.Substring(0, eqIndex)))] =
-                    Uri.EscapeDataString(Uri.UnescapeDataString(segment.Substring(eqIndex + 1)));
+                pairs.Add(
+                    (
+                        Uri.EscapeDataString(Uri.UnescapeDataString(segment.Substring(0, eqIndex))),
+                        Uri.EscapeDataString(Uri.UnescapeDataString(segment.Substring(eqIndex + 1)))
+                    )
+                );
 #endif
             }
             else
             {
-                pairs[Uri.EscapeDataString(Uri.UnescapeDataString(segment))] = "";
+                pairs.Add((Uri.EscapeDataString(Uri.UnescapeDataString(segment)), ""));
             }
         }
+        pairs.Sort(
+            (a, b) =>
+            {
+                var byKey = string.CompareOrdinal(a.Key, b.Key);
+                return byKey != 0 ? byKey : string.CompareOrdinal(a.Value, b.Value);
+            }
+        );
 
         var sb = new StringBuilder();
-        foreach (var pair in pairs)
+        foreach (var (key, value) in pairs)
         {
             if (sb.Length > 0)
             {
                 sb.Append('&');
             }
-            sb.Append(pair.Key);
+            sb.Append(key);
             sb.Append('=');
-            sb.Append(pair.Value);
+            sb.Append(value);
         }
         return sb.ToString();
     }

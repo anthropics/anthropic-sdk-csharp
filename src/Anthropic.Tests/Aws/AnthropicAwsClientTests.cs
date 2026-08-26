@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Anthropic.Aws;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Files;
 using Moq;
 using Moq.Protected;
 
@@ -504,6 +505,59 @@ public class AnthropicAwsClientTests : IDisposable
         );
         var raw = client.WithRawResponse;
         Assert.NotNull(raw);
+    }
+
+    #endregion
+
+    #region SigV4 Signature Verification
+
+    const string SigV4AccessKey = "AKIAIOSFODNN7EXAMPLE";
+    const string SigV4SecretKey = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY";
+
+    static AnthropicAwsClient CreateSigV4ClientAgainst(HttpMessageHandler gateway) =>
+        new(
+            new()
+            {
+                AwsAccessKey = SigV4AccessKey,
+                AwsSecretAccessKey = SigV4SecretKey,
+                AwsRegion = "us-east-1",
+                WorkspaceId = "default",
+                BaseUrl = "https://aws-external-anthropic.us-east-1.api.aws",
+                ClientOptions = new() { HttpClient = new HttpClient(gateway) },
+            }
+        );
+
+    [Fact]
+    public async Task SigV4Mode_SingleValueQuery_SignatureVerifies()
+    {
+        var gateway = new SigV4VerifyingHandler(SigV4SecretKey, """{"data":[],"next_page":null}""");
+        var client = CreateSigV4ClientAgainst(gateway);
+
+        var page = await client.Files.List(
+            new FileListParams { Ids = ["file_a"] },
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Empty(page.Items);
+        Assert.Equal("?ids%5b%5d=file_a", gateway.VerifiedRequestUris.Single().Query);
+    }
+
+    [Fact]
+    public async Task SigV4Mode_RepeatedQueryKey_SignatureVerifies()
+    {
+        var gateway = new SigV4VerifyingHandler(SigV4SecretKey, """{"data":[],"next_page":null}""");
+        var client = CreateSigV4ClientAgainst(gateway);
+
+        var page = await client.Files.List(
+            new FileListParams { Ids = ["file_a", "file_b"] },
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Empty(page.Items);
+        Assert.Equal(
+            "?ids%5b%5d=file_a&ids%5b%5d=file_b",
+            gateway.VerifiedRequestUris.Single().Query
+        );
     }
 
     #endregion
