@@ -48,6 +48,7 @@ public enum AnthropicBeta
     StructuredOutputs2025_11_13,
     TaskBudgets2026_03_13,
     ThinkingDisplayUpdates2026_08_18,
+    CEUserManagement2026_07_13,
 }
 
 sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
@@ -102,6 +103,7 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "structured-outputs-2025-11-13" => AnthropicBeta.StructuredOutputs2025_11_13,
             "task-budgets-2026-03-13" => AnthropicBeta.TaskBudgets2026_03_13,
             "thinking-display-updates-2026-08-18" => AnthropicBeta.ThinkingDisplayUpdates2026_08_18,
+            "ce-user-management-2026-07-13" => AnthropicBeta.CEUserManagement2026_07_13,
             _ => (AnthropicBeta)(-1),
         };
     }
@@ -159,6 +161,7 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.TaskBudgets2026_03_13 => "task-budgets-2026-03-13",
                 AnthropicBeta.ThinkingDisplayUpdates2026_08_18 =>
                     "thinking-display-updates-2026-08-18",
+                AnthropicBeta.CEUserManagement2026_07_13 => "ce-user-management-2026-07-13",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

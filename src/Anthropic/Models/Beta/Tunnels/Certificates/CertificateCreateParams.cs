@@ -38,7 +38,7 @@ public record class CertificateCreateParams : ParamsBase
     /// PEM-encoded X.509 CA certificate. Must contain exactly one certificate and
     /// no private-key material. Maximum 8KB.
     /// </summary>
-    public required string CaCertificatePem
+    public required string CACertificatePem
     {
         get
         {

@@ -279,6 +279,12 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
                 "The Beta.Tunnels resource is not supported on Bedrock Mantle. "
                     + "Only Messages and Beta.Messages are available."
             );
+
+        public Beta::IOrganizationService Organization =>
+            throw new NotSupportedException(
+                "The Beta.Organization resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
     }
 
     private sealed class RestrictedBetaServiceWithRawResponse : IBetaServiceWithRawResponse
@@ -375,6 +381,12 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
         public Beta::ITunnelServiceWithRawResponse Tunnels =>
             throw new NotSupportedException(
                 "The Beta.Tunnels resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
+
+        public Beta::IOrganizationServiceWithRawResponse Organization =>
+            throw new NotSupportedException(
+                "The Beta.Organization resource is not supported on Bedrock Mantle. "
                     + "Only Messages and Beta.Messages are available."
             );
     }

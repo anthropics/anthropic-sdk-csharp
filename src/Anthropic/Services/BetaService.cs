@@ -43,6 +43,7 @@ public sealed class BetaService : IBetaService
         _userProfiles = new(() => new Beta::UserProfileService(client));
         _dreams = new(() => new Beta::DreamService(client));
         _tunnels = new(() => new Beta::TunnelService(client));
+        _organization = new(() => new Beta::OrganizationService(client));
     }
 
     readonly Lazy<Beta::IModelService> _models;
@@ -134,6 +135,12 @@ public sealed class BetaService : IBetaService
     {
         get { return _tunnels.Value; }
     }
+
+    readonly Lazy<Beta::IOrganizationService> _organization;
+    public Beta::IOrganizationService Organization
+    {
+        get { return _organization.Value; }
+    }
 }
 
 /// <inheritdoc/>
@@ -166,6 +173,7 @@ public sealed class BetaServiceWithRawResponse : IBetaServiceWithRawResponse
         _userProfiles = new(() => new Beta::UserProfileServiceWithRawResponse(client));
         _dreams = new(() => new Beta::DreamServiceWithRawResponse(client));
         _tunnels = new(() => new Beta::TunnelServiceWithRawResponse(client));
+        _organization = new(() => new Beta::OrganizationServiceWithRawResponse(client));
     }
 
     readonly Lazy<Beta::IModelServiceWithRawResponse> _models;
@@ -256,5 +264,11 @@ public sealed class BetaServiceWithRawResponse : IBetaServiceWithRawResponse
     public Beta::ITunnelServiceWithRawResponse Tunnels
     {
         get { return _tunnels.Value; }
+    }
+
+    readonly Lazy<Beta::IOrganizationServiceWithRawResponse> _organization;
+    public Beta::IOrganizationServiceWithRawResponse Organization
+    {
+        get { return _organization.Value; }
     }
 }
