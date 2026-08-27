@@ -11,11 +11,6 @@ namespace Anthropic.Services.Beta.Skills;
 /// <inheritdoc/>
 public sealed class VersionService : IVersionService
 {
-    internal static void AddDefaultHeaders(HttpRequestMessage request)
-    {
-        request.Headers.Add("anthropic-beta", "skills-2025-10-02");
-    }
-
     readonly Lazy<IVersionServiceWithRawResponse> _withRawResponse;
 
     /// <inheritdoc/>
@@ -40,7 +35,7 @@ public sealed class VersionService : IVersionService
     }
 
     /// <inheritdoc/>
-    public async Task<VersionCreateResponse> Create(
+    public async Task<BetaSkillVersion> Create(
         VersionCreateParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -52,7 +47,7 @@ public sealed class VersionService : IVersionService
     }
 
     /// <inheritdoc/>
-    public Task<VersionCreateResponse> Create(
+    public Task<BetaSkillVersion> Create(
         string skillID,
         VersionCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -62,7 +57,7 @@ public sealed class VersionService : IVersionService
     }
 
     /// <inheritdoc/>
-    public async Task<VersionRetrieveResponse> Retrieve(
+    public async Task<BetaSkillVersion> Retrieve(
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -74,7 +69,7 @@ public sealed class VersionService : IVersionService
     }
 
     /// <inheritdoc/>
-    public Task<VersionRetrieveResponse> Retrieve(
+    public Task<BetaSkillVersion> Retrieve(
         string version,
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -108,7 +103,7 @@ public sealed class VersionService : IVersionService
     }
 
     /// <inheritdoc/>
-    public async Task<VersionDeleteResponse> Delete(
+    public async Task<BetaDeletedSkillVersion> Delete(
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -120,7 +115,7 @@ public sealed class VersionService : IVersionService
     }
 
     /// <inheritdoc/>
-    public Task<VersionDeleteResponse> Delete(
+    public Task<BetaDeletedSkillVersion> Delete(
         string version,
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default
@@ -166,7 +161,7 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
     }
 
     /// <inheritdoc/>
-    public async Task<HttpResponse<VersionCreateResponse>> Create(
+    public async Task<HttpResponse<BetaSkillVersion>> Create(
         VersionCreateParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -186,20 +181,20 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
             response,
             async (token) =>
             {
-                var version = await response
-                    .Deserialize<VersionCreateResponse>(token)
+                var betaSkillVersion = await response
+                    .Deserialize<BetaSkillVersion>(token)
                     .ConfigureAwait(false);
                 if (this._client.ResponseValidation)
                 {
-                    version.Validate();
+                    betaSkillVersion.Validate();
                 }
-                return version;
+                return betaSkillVersion;
             }
         );
     }
 
     /// <inheritdoc/>
-    public Task<HttpResponse<VersionCreateResponse>> Create(
+    public Task<HttpResponse<BetaSkillVersion>> Create(
         string skillID,
         VersionCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -209,7 +204,7 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
     }
 
     /// <inheritdoc/>
-    public async Task<HttpResponse<VersionRetrieveResponse>> Retrieve(
+    public async Task<HttpResponse<BetaSkillVersion>> Retrieve(
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -229,20 +224,20 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
             response,
             async (token) =>
             {
-                var version = await response
-                    .Deserialize<VersionRetrieveResponse>(token)
+                var betaSkillVersion = await response
+                    .Deserialize<BetaSkillVersion>(token)
                     .ConfigureAwait(false);
                 if (this._client.ResponseValidation)
                 {
-                    version.Validate();
+                    betaSkillVersion.Validate();
                 }
-                return version;
+                return betaSkillVersion;
             }
         );
     }
 
     /// <inheritdoc/>
-    public Task<HttpResponse<VersionRetrieveResponse>> Retrieve(
+    public Task<HttpResponse<BetaSkillVersion>> Retrieve(
         string version,
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -297,7 +292,7 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
     }
 
     /// <inheritdoc/>
-    public async Task<HttpResponse<VersionDeleteResponse>> Delete(
+    public async Task<HttpResponse<BetaDeletedSkillVersion>> Delete(
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -317,20 +312,20 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
             response,
             async (token) =>
             {
-                var version = await response
-                    .Deserialize<VersionDeleteResponse>(token)
+                var betaDeletedSkillVersion = await response
+                    .Deserialize<BetaDeletedSkillVersion>(token)
                     .ConfigureAwait(false);
                 if (this._client.ResponseValidation)
                 {
-                    version.Validate();
+                    betaDeletedSkillVersion.Validate();
                 }
-                return version;
+                return betaDeletedSkillVersion;
             }
         );
     }
 
     /// <inheritdoc/>
-    public Task<HttpResponse<VersionDeleteResponse>> Delete(
+    public Task<HttpResponse<BetaDeletedSkillVersion>> Delete(
         string version,
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default

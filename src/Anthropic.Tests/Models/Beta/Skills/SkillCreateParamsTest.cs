@@ -18,12 +18,12 @@ public class SkillCreateParamsTest : TestBase
         var parameters = new SkillCreateParams
         {
             Files = [files],
-            DisplayTitle = "display_title",
+            DisplayName = "display_name",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         List<BinaryContent> expectedFiles = [files];
-        string expectedDisplayTitle = "display_title";
+        string expectedDisplayName = "display_name";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -34,7 +34,7 @@ public class SkillCreateParamsTest : TestBase
         {
             Assert.Equal(expectedFiles[i], parameters.Files[i]);
         }
-        Assert.Equal(expectedDisplayTitle, parameters.DisplayTitle);
+        Assert.Equal(expectedDisplayName, parameters.DisplayName);
         Assert.NotNull(parameters.Betas);
         Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
         for (int i = 0; i < expectedBetas.Count; i++)
@@ -48,7 +48,7 @@ public class SkillCreateParamsTest : TestBase
     {
         BinaryContent files = Encoding.UTF8.GetBytes("Example data");
 
-        var parameters = new SkillCreateParams { Files = [files], DisplayTitle = "display_title" };
+        var parameters = new SkillCreateParams { Files = [files], DisplayName = "display_name" };
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
@@ -62,7 +62,7 @@ public class SkillCreateParamsTest : TestBase
         var parameters = new SkillCreateParams
         {
             Files = [files],
-            DisplayTitle = "display_title",
+            DisplayName = "display_name",
 
             // Null should be interpreted as omitted for these properties
             Betas = null,
@@ -83,8 +83,8 @@ public class SkillCreateParamsTest : TestBase
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
-        Assert.Null(parameters.DisplayTitle);
-        Assert.False(parameters.RawBodyData.ContainsKey("display_title"));
+        Assert.Null(parameters.DisplayName);
+        Assert.False(parameters.RawBodyData.ContainsKey("display_name"));
     }
 
     [Fact]
@@ -97,11 +97,11 @@ public class SkillCreateParamsTest : TestBase
             Files = [files],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
-            DisplayTitle = null,
+            DisplayName = null,
         };
 
-        Assert.Null(parameters.DisplayTitle);
-        Assert.True(parameters.RawBodyData.ContainsKey("display_title"));
+        Assert.Null(parameters.DisplayName);
+        Assert.True(parameters.RawBodyData.ContainsKey("display_name"));
     }
 
     [Fact]
@@ -129,7 +129,7 @@ public class SkillCreateParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["skills-2025-10-02", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -140,7 +140,7 @@ public class SkillCreateParamsTest : TestBase
         var parameters = new SkillCreateParams
         {
             Files = [Encoding.UTF8.GetBytes("Example data")],
-            DisplayTitle = "display_title",
+            DisplayName = "display_name",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 

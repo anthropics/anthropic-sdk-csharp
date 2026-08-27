@@ -14,36 +14,20 @@ public sealed record class SkillListPageResponse : JsonModel
     /// <summary>
     /// List of skills.
     /// </summary>
-    public required IReadOnlyList<SkillListResponse> Data
+    public required IReadOnlyList<BetaSkill> Data
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<ImmutableArray<SkillListResponse>>("data");
+            return this._rawData.GetNotNullStruct<ImmutableArray<BetaSkill>>("data");
         }
         init
         {
-            this._rawData.Set<ImmutableArray<SkillListResponse>>(
+            this._rawData.Set<ImmutableArray<BetaSkill>>(
                 "data",
                 ImmutableArray.ToImmutableArray(value)
             );
         }
-    }
-
-    /// <summary>
-    /// Whether there are more results available.
-    ///
-    /// <para>If `true`, there are additional results that can be fetched using the
-    /// `next_page` token.</para>
-    /// </summary>
-    public required bool HasMore
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<bool>("has_more");
-        }
-        init { this._rawData.Set("has_more", value); }
     }
 
     /// <summary>
@@ -69,7 +53,6 @@ public sealed record class SkillListPageResponse : JsonModel
         {
             item.Validate();
         }
-        _ = this.HasMore;
         _ = this.NextPage;
     }
 

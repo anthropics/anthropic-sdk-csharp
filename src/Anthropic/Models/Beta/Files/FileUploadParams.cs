@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Services.Beta;
 
 namespace Anthropic.Models.Beta.Files;
 
@@ -36,6 +35,28 @@ public record class FileUploadParams : ParamsBase
             return this._rawBodyData.GetNotNullClass<BinaryContent>("file");
         }
         init { this._rawBodyData.Set("file", value); }
+    }
+
+    /// <summary>
+    /// Seconds from upload until the file expires and its bytes become permanently
+    /// unavailable. Must be between 3600 (one hour) and 7776000 (ninety days).
+    /// </summary>
+    public long? ExpiresInSeconds
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<long>("expires_in_seconds");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("expires_in_seconds", value);
+        }
     }
 
     /// <summary>
@@ -159,7 +180,6 @@ public record class FileUploadParams : ParamsBase
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
-        FileService.AddDefaultHeaders(request);
         foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);

@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Services.Beta;
 
 namespace Anthropic.Models.Beta.Skills;
 
@@ -22,7 +21,7 @@ public record class SkillListParams : ParamsBase
     /// <summary>
     /// Number of results to return per page.
     ///
-    /// <para>Maximum value is 100. Defaults to 20.</para>
+    /// <para>Ranges from `1` to `1000`. Defaults to `20`.</para>
     /// </summary>
     public long? Limit
     {
@@ -180,7 +179,6 @@ public record class SkillListParams : ParamsBase
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
-        SkillService.AddDefaultHeaders(request);
         foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);

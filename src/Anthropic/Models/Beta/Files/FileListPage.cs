@@ -30,7 +30,7 @@ public sealed class FileListPage(
     {
         try
         {
-            return this.Items.Count > 0 && response.LastID != null;
+            return this.Items.Count > 0 && response.NextPage != null;
         }
         catch (AnthropicInvalidDataException)
         {
@@ -49,9 +49,9 @@ public sealed class FileListPage(
     public async Task<FileListPage> Next(CancellationToken cancellationToken = default)
     {
         var nextCursor =
-            response.LastID ?? throw new InvalidOperationException("Cannot request next page");
+            response.NextPage ?? throw new InvalidOperationException("Cannot request next page");
         using var nextResponse = await service
-            .List(parameters with { AfterID = nextCursor }, cancellationToken)
+            .List(parameters with { Page = nextCursor }, cancellationToken)
             .ConfigureAwait(false);
         return await nextResponse.Deserialize(cancellationToken).ConfigureAwait(false);
     }

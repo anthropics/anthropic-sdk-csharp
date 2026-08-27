@@ -14,13 +14,13 @@ public class SkillListParamsTest : TestBase
     {
         var parameters = new SkillListParams
         {
-            Limit = 0,
+            Limit = 1,
             Page = "page",
             Source = "source",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
-        long expectedLimit = 0;
+        long expectedLimit = 1;
         string expectedPage = "page";
         string expectedSource = "source";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
@@ -74,7 +74,7 @@ public class SkillListParamsTest : TestBase
     {
         var parameters = new SkillListParams
         {
-            Limit = 0,
+            Limit = 1,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -89,7 +89,7 @@ public class SkillListParamsTest : TestBase
     {
         var parameters = new SkillListParams
         {
-            Limit = 0,
+            Limit = 1,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
             Page = null,
@@ -107,7 +107,7 @@ public class SkillListParamsTest : TestBase
     {
         SkillListParams parameters = new()
         {
-            Limit = 0,
+            Limit = 1,
             Page = "page",
             Source = "source",
         };
@@ -117,7 +117,7 @@ public class SkillListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/skills?beta=true&limit=0&page=page&source=source"
+                    "https://api.anthropic.com/v1/skills?beta=true&limit=1&page=page&source=source"
                 ),
                 url
             )
@@ -133,7 +133,7 @@ public class SkillListParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["skills-2025-10-02", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -143,7 +143,7 @@ public class SkillListParamsTest : TestBase
     {
         var parameters = new SkillListParams
         {
-            Limit = 0,
+            Limit = 1,
             Page = "page",
             Source = "source",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],

@@ -15,13 +15,13 @@ public class VersionListParamsTest : TestBase
         var parameters = new VersionListParams
         {
             SkillID = "skill_id",
-            Limit = 0,
+            Limit = 1,
             Page = "page",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         string expectedSkillID = "skill_id";
-        long expectedLimit = 0;
+        long expectedLimit = 1;
         string expectedPage = "page";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
@@ -45,7 +45,7 @@ public class VersionListParamsTest : TestBase
         var parameters = new VersionListParams
         {
             SkillID = "skill_id",
-            Limit = 0,
+            Limit = 1,
             Page = "page",
         };
 
@@ -59,7 +59,7 @@ public class VersionListParamsTest : TestBase
         var parameters = new VersionListParams
         {
             SkillID = "skill_id",
-            Limit = 0,
+            Limit = 1,
             Page = "page",
 
             // Null should be interpreted as omitted for these properties
@@ -109,7 +109,7 @@ public class VersionListParamsTest : TestBase
         VersionListParams parameters = new()
         {
             SkillID = "skill_id",
-            Limit = 0,
+            Limit = 1,
             Page = "page",
         };
 
@@ -118,7 +118,7 @@ public class VersionListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/skills/skill_id/versions?beta=true&limit=0&page=page"
+                    "https://api.anthropic.com/v1/skills/skill_id/versions?beta=true&limit=1&page=page"
                 ),
                 url
             )
@@ -138,7 +138,7 @@ public class VersionListParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["skills-2025-10-02", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -149,7 +149,7 @@ public class VersionListParamsTest : TestBase
         var parameters = new VersionListParams
         {
             SkillID = "skill_id",
-            Limit = 0,
+            Limit = 1,
             Page = "page",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };

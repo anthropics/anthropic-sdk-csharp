@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Models.Beta.Skills;
+using Skills = Anthropic.Models.Beta.Skills;
 
 namespace Anthropic.Tests.Models.Beta.Skills;
 
@@ -10,74 +11,67 @@ public class SkillListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new SkillListPageResponse
+        var model = new Skills::SkillListPageResponse
         {
             Data =
             [
                 new()
                 {
                     ID = "skill_01JAbcdefghijklmnopqrstuvw",
-                    CreatedAt = "2024-10-30T23:58:27.427722Z",
-                    DisplayTitle = "My Custom Skill",
-                    LatestVersion = "1759178010641129",
-                    Source = "custom",
-                    Type = "type",
-                    UpdatedAt = "2024-10-30T23:58:27.427722Z",
+                    CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    DisplayName = "display_name",
+                    LatestVersionID = "latest_version_id",
+                    Source = new(Skills::Type.Custom),
+                    UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 },
             ],
-            HasMore = true,
-            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            NextPage = "next_page",
         };
 
-        List<SkillListResponse> expectedData =
+        List<Skills::BetaSkill> expectedData =
         [
             new()
             {
                 ID = "skill_01JAbcdefghijklmnopqrstuvw",
-                CreatedAt = "2024-10-30T23:58:27.427722Z",
-                DisplayTitle = "My Custom Skill",
-                LatestVersion = "1759178010641129",
-                Source = "custom",
-                Type = "type",
-                UpdatedAt = "2024-10-30T23:58:27.427722Z",
+                CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                DisplayName = "display_name",
+                LatestVersionID = "latest_version_id",
+                Source = new(Skills::Type.Custom),
+                UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             },
         ];
-        bool expectedHasMore = true;
-        string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
+        string expectedNextPage = "next_page";
 
         Assert.Equal(expectedData.Count, model.Data.Count);
         for (int i = 0; i < expectedData.Count; i++)
         {
             Assert.Equal(expectedData[i], model.Data[i]);
         }
-        Assert.Equal(expectedHasMore, model.HasMore);
         Assert.Equal(expectedNextPage, model.NextPage);
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new SkillListPageResponse
+        var model = new Skills::SkillListPageResponse
         {
             Data =
             [
                 new()
                 {
                     ID = "skill_01JAbcdefghijklmnopqrstuvw",
-                    CreatedAt = "2024-10-30T23:58:27.427722Z",
-                    DisplayTitle = "My Custom Skill",
-                    LatestVersion = "1759178010641129",
-                    Source = "custom",
-                    Type = "type",
-                    UpdatedAt = "2024-10-30T23:58:27.427722Z",
+                    CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    DisplayName = "display_name",
+                    LatestVersionID = "latest_version_id",
+                    Source = new(Skills::Type.Custom),
+                    UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 },
             ],
-            HasMore = true,
-            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            NextPage = "next_page",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<SkillListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<Skills::SkillListPageResponse>(
             json,
             ModelBase.SerializerOptions
         );
@@ -88,77 +82,70 @@ public class SkillListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new SkillListPageResponse
+        var model = new Skills::SkillListPageResponse
         {
             Data =
             [
                 new()
                 {
                     ID = "skill_01JAbcdefghijklmnopqrstuvw",
-                    CreatedAt = "2024-10-30T23:58:27.427722Z",
-                    DisplayTitle = "My Custom Skill",
-                    LatestVersion = "1759178010641129",
-                    Source = "custom",
-                    Type = "type",
-                    UpdatedAt = "2024-10-30T23:58:27.427722Z",
+                    CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    DisplayName = "display_name",
+                    LatestVersionID = "latest_version_id",
+                    Source = new(Skills::Type.Custom),
+                    UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 },
             ],
-            HasMore = true,
-            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            NextPage = "next_page",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<SkillListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<Skills::SkillListPageResponse>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        List<SkillListResponse> expectedData =
+        List<Skills::BetaSkill> expectedData =
         [
             new()
             {
                 ID = "skill_01JAbcdefghijklmnopqrstuvw",
-                CreatedAt = "2024-10-30T23:58:27.427722Z",
-                DisplayTitle = "My Custom Skill",
-                LatestVersion = "1759178010641129",
-                Source = "custom",
-                Type = "type",
-                UpdatedAt = "2024-10-30T23:58:27.427722Z",
+                CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                DisplayName = "display_name",
+                LatestVersionID = "latest_version_id",
+                Source = new(Skills::Type.Custom),
+                UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             },
         ];
-        bool expectedHasMore = true;
-        string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
+        string expectedNextPage = "next_page";
 
         Assert.Equal(expectedData.Count, deserialized.Data.Count);
         for (int i = 0; i < expectedData.Count; i++)
         {
             Assert.Equal(expectedData[i], deserialized.Data[i]);
         }
-        Assert.Equal(expectedHasMore, deserialized.HasMore);
         Assert.Equal(expectedNextPage, deserialized.NextPage);
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new SkillListPageResponse
+        var model = new Skills::SkillListPageResponse
         {
             Data =
             [
                 new()
                 {
                     ID = "skill_01JAbcdefghijklmnopqrstuvw",
-                    CreatedAt = "2024-10-30T23:58:27.427722Z",
-                    DisplayTitle = "My Custom Skill",
-                    LatestVersion = "1759178010641129",
-                    Source = "custom",
-                    Type = "type",
-                    UpdatedAt = "2024-10-30T23:58:27.427722Z",
+                    CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    DisplayName = "display_name",
+                    LatestVersionID = "latest_version_id",
+                    Source = new(Skills::Type.Custom),
+                    UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 },
             ],
-            HasMore = true,
-            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            NextPage = "next_page",
         };
 
         model.Validate();
@@ -167,26 +154,24 @@ public class SkillListPageResponseTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new SkillListPageResponse
+        var model = new Skills::SkillListPageResponse
         {
             Data =
             [
                 new()
                 {
                     ID = "skill_01JAbcdefghijklmnopqrstuvw",
-                    CreatedAt = "2024-10-30T23:58:27.427722Z",
-                    DisplayTitle = "My Custom Skill",
-                    LatestVersion = "1759178010641129",
-                    Source = "custom",
-                    Type = "type",
-                    UpdatedAt = "2024-10-30T23:58:27.427722Z",
+                    CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    DisplayName = "display_name",
+                    LatestVersionID = "latest_version_id",
+                    Source = new(Skills::Type.Custom),
+                    UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 },
             ],
-            HasMore = true,
-            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            NextPage = "next_page",
         };
 
-        SkillListPageResponse copied = new(model);
+        Skills::SkillListPageResponse copied = new(model);
 
         Assert.Equal(model, copied);
     }

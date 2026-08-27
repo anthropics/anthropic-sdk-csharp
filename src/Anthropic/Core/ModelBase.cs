@@ -13,6 +13,7 @@ using Agents = Anthropic.Models.Beta.Agents;
 using ApiKeys = Anthropic.Models.Beta.Organization.ApiKeys;
 using Batches = Anthropic.Models.Messages.Batches;
 using BetaFiles = Anthropic.Models.Beta.Files;
+using BetaSkills = Anthropic.Models.Beta.Skills;
 using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
 using DeploymentRuns = Anthropic.Models.Beta.DeploymentRuns;
 using Deployments = Anthropic.Models.Beta.Deployments;
@@ -128,6 +129,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Messages::BetaCodeExecutionTool20260521AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaCodeExecutionToolResultErrorCode>(),
             new ApiEnumConverter<string, Messages::BetaComputerToolset20260801AllowedCaller>(),
+            new ApiEnumConverter<string, Messages::Type>(),
             new ApiEnumConverter<string, Messages::Reason>(),
             new ApiEnumConverter<string, Messages::Mode>(),
             new ApiEnumConverter<string, Messages::BetaFallbackParamSpeed>(),
@@ -139,7 +141,6 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Messages::Category>(),
             new ApiEnumConverter<string, Messages::Name>(),
             new ApiEnumConverter<string, Messages::BetaServerToolUseBlockParamName>(),
-            new ApiEnumConverter<string, Messages::Type>(),
             new ApiEnumConverter<string, Messages::BetaSkillParamsType>(),
             new ApiEnumConverter<string, Messages::BetaStopReason>(),
             new ApiEnumConverter<
@@ -692,6 +693,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsSessionActorType>(),
             new ApiEnumConverter<string, MemoryVersions::BetaManagedAgentsUserActorType>(),
             new ApiEnumConverter<string, BetaFiles::Type>(),
+            new ApiEnumConverter<string, BetaSkills::Type>(),
             new ApiEnumConverter<string, UserProfiles::Type>(),
             new ApiEnumConverter<string, UserProfiles::BetaUserProfileAccessType>(),
             new ApiEnumConverter<string, UserProfiles::BetaUserProfileRelationship>(),

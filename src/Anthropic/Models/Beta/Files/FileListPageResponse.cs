@@ -31,50 +31,17 @@ public sealed record class FileListPageResponse : JsonModel
     }
 
     /// <summary>
-    /// ID of the first file in this page of results.
+    /// Opaque cursor for the next page. Supply as `?page=` to fetch the next page;
+    /// null when there are no more results.
     /// </summary>
-    public string? FirstID
+    public string? NextPage
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("first_id");
+            return this._rawData.GetNullableClass<string>("next_page");
         }
-        init { this._rawData.Set("first_id", value); }
-    }
-
-    /// <summary>
-    /// Whether there are more results available.
-    /// </summary>
-    public bool? HasMore
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<bool>("has_more");
-        }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawData.Set("has_more", value);
-        }
-    }
-
-    /// <summary>
-    /// ID of the last file in this page of results.
-    /// </summary>
-    public string? LastID
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("last_id");
-        }
-        init { this._rawData.Set("last_id", value); }
+        init { this._rawData.Set("next_page", value); }
     }
 
     /// <inheritdoc/>
@@ -84,9 +51,7 @@ public sealed record class FileListPageResponse : JsonModel
         {
             item.Validate();
         }
-        _ = this.FirstID;
-        _ = this.HasMore;
-        _ = this.LastID;
+        _ = this.NextPage;
     }
 
     public FileListPageResponse() { }

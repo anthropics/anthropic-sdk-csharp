@@ -17,10 +17,10 @@ public sealed class SkillListPage(
     ISkillServiceWithRawResponse service,
     SkillListParams parameters,
     SkillListPageResponse response
-) : IPage<SkillListResponse>
+) : IPage<BetaSkill>
 {
     /// <inheritdoc/>
-    public IReadOnlyList<SkillListResponse> Items
+    public IReadOnlyList<BetaSkill> Items
     {
         get { return response.Data; }
     }
@@ -41,9 +41,8 @@ public sealed class SkillListPage(
     }
 
     /// <inheritdoc/>
-    async Task<IPage<SkillListResponse>> IPage<SkillListResponse>.Next(
-        CancellationToken cancellationToken
-    ) => await this.Next(cancellationToken).ConfigureAwait(false);
+    async Task<IPage<BetaSkill>> IPage<BetaSkill>.Next(CancellationToken cancellationToken) =>
+        await this.Next(cancellationToken).ConfigureAwait(false);
 
     /// <inheritdoc cref="IPage{T}.Next"/>
     public async Task<SkillListPage> Next(CancellationToken cancellationToken = default)

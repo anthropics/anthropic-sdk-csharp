@@ -32,7 +32,7 @@ public interface ISkillService
     /// <summary>
     /// Create Skill
     /// </summary>
-    Task<SkillCreateResponse> Create(
+    Task<BetaSkill> Create(
         SkillCreateParams parameters,
         CancellationToken cancellationToken = default
     );
@@ -40,13 +40,13 @@ public interface ISkillService
     /// <summary>
     /// Get Skill
     /// </summary>
-    Task<SkillRetrieveResponse> Retrieve(
+    Task<BetaSkill> Retrieve(
         SkillRetrieveParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Retrieve(SkillRetrieveParams, CancellationToken)"/>
-    Task<SkillRetrieveResponse> Retrieve(
+    Task<BetaSkill> Retrieve(
         string skillID,
         SkillRetrieveParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -63,13 +63,13 @@ public interface ISkillService
     /// <summary>
     /// Delete Skill
     /// </summary>
-    Task<SkillDeleteResponse> Delete(
+    Task<BetaDeletedSkill> Delete(
         SkillDeleteParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Delete(SkillDeleteParams, CancellationToken)"/>
-    Task<SkillDeleteResponse> Delete(
+    Task<BetaDeletedSkill> Delete(
         string skillID,
         SkillDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -95,7 +95,7 @@ public interface ISkillServiceWithRawResponse
     /// Returns a raw HTTP response for <c>post /v1/skills?beta=true</c>, but is otherwise the
     /// same as <see cref="ISkillService.Create(SkillCreateParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<SkillCreateResponse>> Create(
+    Task<HttpResponse<BetaSkill>> Create(
         SkillCreateParams parameters,
         CancellationToken cancellationToken = default
     );
@@ -104,13 +104,13 @@ public interface ISkillServiceWithRawResponse
     /// Returns a raw HTTP response for <c>get /v1/skills/{skill_id}?beta=true</c>, but is otherwise the
     /// same as <see cref="ISkillService.Retrieve(SkillRetrieveParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<SkillRetrieveResponse>> Retrieve(
+    Task<HttpResponse<BetaSkill>> Retrieve(
         SkillRetrieveParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Retrieve(SkillRetrieveParams, CancellationToken)"/>
-    Task<HttpResponse<SkillRetrieveResponse>> Retrieve(
+    Task<HttpResponse<BetaSkill>> Retrieve(
         string skillID,
         SkillRetrieveParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -129,13 +129,13 @@ public interface ISkillServiceWithRawResponse
     /// Returns a raw HTTP response for <c>delete /v1/skills/{skill_id}?beta=true</c>, but is otherwise the
     /// same as <see cref="ISkillService.Delete(SkillDeleteParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<SkillDeleteResponse>> Delete(
+    Task<HttpResponse<BetaDeletedSkill>> Delete(
         SkillDeleteParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Delete(SkillDeleteParams, CancellationToken)"/>
-    Task<HttpResponse<SkillDeleteResponse>> Delete(
+    Task<HttpResponse<BetaDeletedSkill>> Delete(
         string skillID,
         SkillDeleteParams? parameters = null,
         CancellationToken cancellationToken = default

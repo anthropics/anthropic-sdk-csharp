@@ -4,27 +4,27 @@ using Anthropic.Models.Beta.Skills.Versions;
 
 namespace Anthropic.Tests.Models.Beta.Skills.Versions;
 
-public class VersionDeleteResponseTest : TestBase
+public class BetaDeletedSkillVersionTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new VersionDeleteResponse { ID = "1759178010641129", Type = "type" };
+        var model = new BetaDeletedSkillVersion { ID = "id" };
 
-        string expectedID = "1759178010641129";
-        string expectedType = "type";
+        string expectedID = "id";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("skill_version_deleted");
 
         Assert.Equal(expectedID, model.ID);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new VersionDeleteResponse { ID = "1759178010641129", Type = "type" };
+        var model = new BetaDeletedSkillVersion { ID = "id" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<VersionDeleteResponse>(
+        var deserialized = JsonSerializer.Deserialize<BetaDeletedSkillVersion>(
             json,
             ModelBase.SerializerOptions
         );
@@ -35,26 +35,26 @@ public class VersionDeleteResponseTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new VersionDeleteResponse { ID = "1759178010641129", Type = "type" };
+        var model = new BetaDeletedSkillVersion { ID = "id" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<VersionDeleteResponse>(
+        var deserialized = JsonSerializer.Deserialize<BetaDeletedSkillVersion>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "1759178010641129";
-        string expectedType = "type";
+        string expectedID = "id";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("skill_version_deleted");
 
         Assert.Equal(expectedID, deserialized.ID);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new VersionDeleteResponse { ID = "1759178010641129", Type = "type" };
+        var model = new BetaDeletedSkillVersion { ID = "id" };
 
         model.Validate();
     }
@@ -62,9 +62,9 @@ public class VersionDeleteResponseTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new VersionDeleteResponse { ID = "1759178010641129", Type = "type" };
+        var model = new BetaDeletedSkillVersion { ID = "id" };
 
-        VersionDeleteResponse copied = new(model);
+        BetaDeletedSkillVersion copied = new(model);
 
         Assert.Equal(model, copied);
     }

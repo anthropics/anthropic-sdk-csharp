@@ -12,11 +12,6 @@ namespace Anthropic.Services.Beta;
 /// <inheritdoc/>
 public sealed class SkillService : ISkillService
 {
-    internal static void AddDefaultHeaders(HttpRequestMessage request)
-    {
-        request.Headers.Add("anthropic-beta", "skills-2025-10-02");
-    }
-
     readonly Lazy<ISkillServiceWithRawResponse> _withRawResponse;
 
     /// <inheritdoc/>
@@ -48,7 +43,7 @@ public sealed class SkillService : ISkillService
     }
 
     /// <inheritdoc/>
-    public async Task<SkillCreateResponse> Create(
+    public async Task<BetaSkill> Create(
         SkillCreateParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -60,7 +55,7 @@ public sealed class SkillService : ISkillService
     }
 
     /// <inheritdoc/>
-    public async Task<SkillRetrieveResponse> Retrieve(
+    public async Task<BetaSkill> Retrieve(
         SkillRetrieveParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -72,7 +67,7 @@ public sealed class SkillService : ISkillService
     }
 
     /// <inheritdoc/>
-    public Task<SkillRetrieveResponse> Retrieve(
+    public Task<BetaSkill> Retrieve(
         string skillID,
         SkillRetrieveParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -96,7 +91,7 @@ public sealed class SkillService : ISkillService
     }
 
     /// <inheritdoc/>
-    public async Task<SkillDeleteResponse> Delete(
+    public async Task<BetaDeletedSkill> Delete(
         SkillDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -108,7 +103,7 @@ public sealed class SkillService : ISkillService
     }
 
     /// <inheritdoc/>
-    public Task<SkillDeleteResponse> Delete(
+    public Task<BetaDeletedSkill> Delete(
         string skillID,
         SkillDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -145,7 +140,7 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
     }
 
     /// <inheritdoc/>
-    public async Task<HttpResponse<SkillCreateResponse>> Create(
+    public async Task<HttpResponse<BetaSkill>> Create(
         SkillCreateParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -160,20 +155,18 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
             response,
             async (token) =>
             {
-                var skill = await response
-                    .Deserialize<SkillCreateResponse>(token)
-                    .ConfigureAwait(false);
+                var betaSkill = await response.Deserialize<BetaSkill>(token).ConfigureAwait(false);
                 if (this._client.ResponseValidation)
                 {
-                    skill.Validate();
+                    betaSkill.Validate();
                 }
-                return skill;
+                return betaSkill;
             }
         );
     }
 
     /// <inheritdoc/>
-    public async Task<HttpResponse<SkillRetrieveResponse>> Retrieve(
+    public async Task<HttpResponse<BetaSkill>> Retrieve(
         SkillRetrieveParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -193,20 +186,18 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
             response,
             async (token) =>
             {
-                var skill = await response
-                    .Deserialize<SkillRetrieveResponse>(token)
-                    .ConfigureAwait(false);
+                var betaSkill = await response.Deserialize<BetaSkill>(token).ConfigureAwait(false);
                 if (this._client.ResponseValidation)
                 {
-                    skill.Validate();
+                    betaSkill.Validate();
                 }
-                return skill;
+                return betaSkill;
             }
         );
     }
 
     /// <inheritdoc/>
-    public Task<HttpResponse<SkillRetrieveResponse>> Retrieve(
+    public Task<HttpResponse<BetaSkill>> Retrieve(
         string skillID,
         SkillRetrieveParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -248,7 +239,7 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
     }
 
     /// <inheritdoc/>
-    public async Task<HttpResponse<SkillDeleteResponse>> Delete(
+    public async Task<HttpResponse<BetaDeletedSkill>> Delete(
         SkillDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -268,20 +259,20 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
             response,
             async (token) =>
             {
-                var skill = await response
-                    .Deserialize<SkillDeleteResponse>(token)
+                var betaDeletedSkill = await response
+                    .Deserialize<BetaDeletedSkill>(token)
                     .ConfigureAwait(false);
                 if (this._client.ResponseValidation)
                 {
-                    skill.Validate();
+                    betaDeletedSkill.Validate();
                 }
-                return skill;
+                return betaDeletedSkill;
             }
         );
     }
 
     /// <inheritdoc/>
-    public Task<HttpResponse<SkillDeleteResponse>> Delete(
+    public Task<HttpResponse<BetaDeletedSkill>> Delete(
         string skillID,
         SkillDeleteParams? parameters = null,
         CancellationToken cancellationToken = default

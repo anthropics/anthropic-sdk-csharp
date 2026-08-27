@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Services.Beta.Skills;
 
 namespace Anthropic.Models.Beta.Skills.Versions;
 
@@ -22,9 +21,9 @@ public record class VersionListParams : ParamsBase
     public string? SkillID { get; init; }
 
     /// <summary>
-    /// Number of items to return per page.
+    /// Number of results to return per page.
     ///
-    /// <para>Defaults to `20`. Ranges from `1` to `1000`.</para>
+    /// <para>Ranges from `1` to `1000`. Defaults to `20`.</para>
     /// </summary>
     public long? Limit
     {
@@ -166,7 +165,6 @@ public record class VersionListParams : ParamsBase
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
-        VersionService.AddDefaultHeaders(request);
         foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);

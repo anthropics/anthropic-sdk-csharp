@@ -12,18 +12,18 @@ namespace Anthropic.Models.Beta.Skills.Versions;
 public sealed record class VersionListPageResponse : JsonModel
 {
     /// <summary>
-    /// List of skill versions.
+    /// List of skills.
     /// </summary>
-    public required IReadOnlyList<VersionListResponse> Data
+    public required IReadOnlyList<BetaSkillVersion> Data
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<ImmutableArray<VersionListResponse>>("data");
+            return this._rawData.GetNotNullStruct<ImmutableArray<BetaSkillVersion>>("data");
         }
         init
         {
-            this._rawData.Set<ImmutableArray<VersionListResponse>>(
+            this._rawData.Set<ImmutableArray<BetaSkillVersion>>(
                 "data",
                 ImmutableArray.ToImmutableArray(value)
             );
@@ -31,21 +31,10 @@ public sealed record class VersionListPageResponse : JsonModel
     }
 
     /// <summary>
-    /// Indicates if there are more results in the requested page direction.
-    /// </summary>
-    public required bool HasMore
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<bool>("has_more");
-        }
-        init { this._rawData.Set("has_more", value); }
-    }
-
-    /// <summary>
-    /// Token to provide in as `page` in the subsequent request to retrieve the next
-    /// page of data.
+    /// Token for fetching the next page of results.
+    ///
+    /// <para>If `null`, there are no more results available. Pass this value to
+    /// the `page` parameter in the next request to get the next page.</para>
     /// </summary>
     public required string? NextPage
     {
@@ -64,7 +53,6 @@ public sealed record class VersionListPageResponse : JsonModel
         {
             item.Validate();
         }
-        _ = this.HasMore;
         _ = this.NextPage;
     }
 

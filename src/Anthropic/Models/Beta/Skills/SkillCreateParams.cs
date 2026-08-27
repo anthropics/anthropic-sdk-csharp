@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Services.Beta;
 
 namespace Anthropic.Models.Beta.Skills;
 
@@ -48,19 +47,18 @@ public record class SkillCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Display title for the skill.
-    ///
-    /// <para>This is a human-readable label that is not included in the prompt sent
-    /// to the model.</para>
+    /// Human-readable, single-line label for the Skill. Maximum 255 characters. Always
+    /// set: derived from the SKILL.md frontmatter `name` when omitted at creation.
+    /// Not unique.
     /// </summary>
-    public string? DisplayTitle
+    public string? DisplayName
     {
         get
         {
             this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableClass<string>("display_title");
+            return this._rawBodyData.GetNullableClass<string>("display_name");
         }
-        init { this._rawBodyData.Set("display_title", value); }
+        init { this._rawBodyData.Set("display_name", value); }
     }
 
     /// <summary>
@@ -184,7 +182,6 @@ public record class SkillCreateParams : ParamsBase
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
-        SkillService.AddDefaultHeaders(request);
         foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);

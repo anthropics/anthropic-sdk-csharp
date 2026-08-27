@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Services.Beta;
 
 namespace Anthropic.Models.Beta.Files;
 
@@ -20,46 +19,24 @@ namespace Anthropic.Models.Beta.Files;
 public record class FileListParams : ParamsBase
 {
     /// <summary>
-    /// ID of the object to use as a cursor for pagination. When provided, returns
-    /// the page of results immediately after this object.
+    /// Restrict the result set to Files whose `id` is in this list. At most 100 entries
+    /// (after de-duplication). Mutually exclusive with `page` and `limit`. When supplied,
+    /// the response is always a single page (`next_page` is null). IDs that do not
+    /// resolve to a visible File — including deleted Files — are silently omitted.
     /// </summary>
-    public string? AfterID
+    public IReadOnlyList<string>? Ids
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableClass<string>("after_id");
+            return this._rawQueryData.GetNullableStruct<ImmutableArray<string>>("ids");
         }
         init
         {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawQueryData.Set("after_id", value);
-        }
-    }
-
-    /// <summary>
-    /// ID of the object to use as a cursor for pagination. When provided, returns
-    /// the page of results immediately before this object.
-    /// </summary>
-    public string? BeforeID
-    {
-        get
-        {
-            this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableClass<string>("before_id");
-        }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawQueryData.Set("before_id", value);
+            this._rawQueryData.Set<ImmutableArray<string>?>(
+                "ids",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -84,6 +61,19 @@ public record class FileListParams : ParamsBase
 
             this._rawQueryData.Set("limit", value);
         }
+    }
+
+    /// <summary>
+    /// Opaque page cursor returned in a prior list response's `next_page`. Prefixed `page_`.
+    /// </summary>
+    public string? Page
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableClass<string>("page");
+        }
+        init { this._rawQueryData.Set("page", value); }
     }
 
     /// <summary>
@@ -213,7 +203,6 @@ public record class FileListParams : ParamsBase
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
-        FileService.AddDefaultHeaders(request);
         foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);

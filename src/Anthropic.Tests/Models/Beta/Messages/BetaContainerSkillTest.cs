@@ -5,12 +5,12 @@ using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
 
-public class BetaSkillTest : TestBase
+public class BetaContainerSkillTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaSkill
+        var model = new BetaContainerSkill
         {
             SkillID = "pdf",
             Type = Type.Anthropic,
@@ -29,7 +29,7 @@ public class BetaSkillTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaSkill
+        var model = new BetaContainerSkill
         {
             SkillID = "pdf",
             Type = Type.Anthropic,
@@ -37,7 +37,10 @@ public class BetaSkillTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaSkill>(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContainerSkill>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -45,7 +48,7 @@ public class BetaSkillTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaSkill
+        var model = new BetaContainerSkill
         {
             SkillID = "pdf",
             Type = Type.Anthropic,
@@ -53,7 +56,7 @@ public class BetaSkillTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaSkill>(
+        var deserialized = JsonSerializer.Deserialize<BetaContainerSkill>(
             element,
             ModelBase.SerializerOptions
         );
@@ -71,7 +74,7 @@ public class BetaSkillTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaSkill
+        var model = new BetaContainerSkill
         {
             SkillID = "pdf",
             Type = Type.Anthropic,
@@ -84,14 +87,14 @@ public class BetaSkillTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaSkill
+        var model = new BetaContainerSkill
         {
             SkillID = "pdf",
             Type = Type.Anthropic,
             Version = "latest",
         };
 
-        BetaSkill copied = new(model);
+        BetaContainerSkill copied = new(model);
 
         Assert.Equal(model, copied);
     }

@@ -85,7 +85,7 @@ public class FileDownloadParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["files-api-2025-04-14", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
