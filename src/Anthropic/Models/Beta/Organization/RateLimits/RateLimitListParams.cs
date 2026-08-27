@@ -17,8 +17,8 @@ namespace Anthropic.Models.Beta.Organization.RateLimits;
 /// an API-surface category such as the Files API or Message Batches) and contains
 /// the set of limiter values that apply to it.</para>
 ///
-/// <para>This endpoint currently returns every matching entry in a single page regardless
-/// of `limit`; follow `next_page` so that clients keep working when pagination is enabled.</para>
+/// <para>When `limit` is omitted, every matching entry is returned in a single page;
+/// when `limit` truncates the result, follow `next_page` to fetch the remaining entries.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -42,8 +42,8 @@ public record class RateLimitListParams : ParamsBase
     /// <summary>
     /// Maximum number of items to return per page. Ranges from `1` to `1000`.
     ///
-    /// <para>Accepted for request-shape compatibility and currently ignored: every
-    /// entry is returned in a single page.</para>
+    /// <para>When omitted, every remaining entry is returned in a single page and
+    /// `next_page` is `null`.</para>
     /// </summary>
     public long? Limit
     {
