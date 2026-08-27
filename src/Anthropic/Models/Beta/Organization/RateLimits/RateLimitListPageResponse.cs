@@ -35,8 +35,8 @@ public sealed record class RateLimitListPageResponse : JsonModel
     }
 
     /// <summary>
-    /// Token to provide in as `page` in the subsequent request to retrieve the next
-    /// page of data.
+    /// Opaque cursor for the next page of results, or `null` when no entries remain
+    /// beyond this response.
     /// </summary>
     public required string? NextPage
     {

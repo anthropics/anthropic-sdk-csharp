@@ -33,9 +33,9 @@ public interface IRateLimitService
     /// an API-surface category such as the Files API or Message Batches) and contains
     /// the set of limiter values that apply to it.</para>
     ///
-    /// <para>This endpoint currently returns every matching entry in a single page
-    /// regardless of `limit`; follow `next_page` so that clients keep working when
-    /// pagination is enabled.</para>
+    /// <para>When `limit` is omitted, every matching entry is returned in a single
+    /// page; when `limit` truncates the result, follow `next_page` to fetch the
+    /// remaining entries.</para>
     /// </summary>
     Task<RateLimitListPage> List(
         RateLimitListParams? parameters = null,
