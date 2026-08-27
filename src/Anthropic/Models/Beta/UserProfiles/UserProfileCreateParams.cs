@@ -67,6 +67,29 @@ public record class UserProfileCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// A timestamp in RFC 3339 format
+    /// </summary>
+    public System::DateTimeOffset? ExternalUserOnboardedAt
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<System::DateTimeOffset>(
+                "external_user_onboarded_at"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("external_user_onboarded_at", value);
+        }
+    }
+
+    /// <summary>
     /// Free-form key-value data to attach to this user profile. Maximum 16 keys,
     /// with keys up to 64 characters and values up to 512 characters. Values must
     /// be non-empty strings.

@@ -149,6 +149,21 @@ public sealed record class BetaUserProfile : JsonModel
     }
 
     /// <summary>
+    /// A timestamp in RFC 3339 format
+    /// </summary>
+    public System::DateTimeOffset? ExternalUserOnboardedAt
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<System::DateTimeOffset>(
+                "external_user_onboarded_at"
+            );
+        }
+        init { this._rawData.Set("external_user_onboarded_at", value); }
+    }
+
+    /// <summary>
     /// Real-world name of the entity this profile represents (company or individual).
     /// For a resold-to company (`access_type` `passthrough`, or `relationship` `resold`
     /// under the `user-profiles-2026-03-24` header) this is that company's name.
@@ -202,6 +217,7 @@ public sealed record class BetaUserProfile : JsonModel
         _ = this.UpdatedAt;
         this.AccessType?.Validate();
         _ = this.ExternalID;
+        _ = this.ExternalUserOnboardedAt;
         _ = this.Name;
         this.Relationship?.Validate();
     }

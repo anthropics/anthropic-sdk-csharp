@@ -25,6 +25,7 @@ public class BetaUserProfileTest : TestBase
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             AccessType = UserProfiles::BetaUserProfileAccessType.Application,
             ExternalID = "user_12345",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Name = "Example User",
             Relationship = UserProfiles::BetaUserProfileRelationship.External,
         };
@@ -41,6 +42,9 @@ public class BetaUserProfileTest : TestBase
         ApiEnum<string, UserProfiles::BetaUserProfileAccessType> expectedAccessType =
             UserProfiles::BetaUserProfileAccessType.Application;
         string expectedExternalID = "user_12345";
+        DateTimeOffset expectedExternalUserOnboardedAt = DateTimeOffset.Parse(
+            "2024-11-02T08:15:00Z"
+        );
         string expectedName = "Example User";
         ApiEnum<string, UserProfiles::BetaUserProfileRelationship> expectedRelationship =
             UserProfiles::BetaUserProfileRelationship.External;
@@ -65,6 +69,7 @@ public class BetaUserProfileTest : TestBase
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
         Assert.Equal(expectedAccessType, model.AccessType);
         Assert.Equal(expectedExternalID, model.ExternalID);
+        Assert.Equal(expectedExternalUserOnboardedAt, model.ExternalUserOnboardedAt);
         Assert.Equal(expectedName, model.Name);
         Assert.Equal(expectedRelationship, model.Relationship);
     }
@@ -85,6 +90,7 @@ public class BetaUserProfileTest : TestBase
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             AccessType = UserProfiles::BetaUserProfileAccessType.Application,
             ExternalID = "user_12345",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Name = "Example User",
             Relationship = UserProfiles::BetaUserProfileRelationship.External,
         };
@@ -114,6 +120,7 @@ public class BetaUserProfileTest : TestBase
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             AccessType = UserProfiles::BetaUserProfileAccessType.Application,
             ExternalID = "user_12345",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Name = "Example User",
             Relationship = UserProfiles::BetaUserProfileRelationship.External,
         };
@@ -137,6 +144,9 @@ public class BetaUserProfileTest : TestBase
         ApiEnum<string, UserProfiles::BetaUserProfileAccessType> expectedAccessType =
             UserProfiles::BetaUserProfileAccessType.Application;
         string expectedExternalID = "user_12345";
+        DateTimeOffset expectedExternalUserOnboardedAt = DateTimeOffset.Parse(
+            "2024-11-02T08:15:00Z"
+        );
         string expectedName = "Example User";
         ApiEnum<string, UserProfiles::BetaUserProfileRelationship> expectedRelationship =
             UserProfiles::BetaUserProfileRelationship.External;
@@ -161,6 +171,7 @@ public class BetaUserProfileTest : TestBase
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
         Assert.Equal(expectedAccessType, deserialized.AccessType);
         Assert.Equal(expectedExternalID, deserialized.ExternalID);
+        Assert.Equal(expectedExternalUserOnboardedAt, deserialized.ExternalUserOnboardedAt);
         Assert.Equal(expectedName, deserialized.Name);
         Assert.Equal(expectedRelationship, deserialized.Relationship);
     }
@@ -181,6 +192,7 @@ public class BetaUserProfileTest : TestBase
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             AccessType = UserProfiles::BetaUserProfileAccessType.Application,
             ExternalID = "user_12345",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Name = "Example User",
             Relationship = UserProfiles::BetaUserProfileRelationship.External,
         };
@@ -203,6 +215,7 @@ public class BetaUserProfileTest : TestBase
             Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             ExternalID = "user_12345",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Name = "Example User",
         };
 
@@ -227,6 +240,7 @@ public class BetaUserProfileTest : TestBase
             Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             ExternalID = "user_12345",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Name = "Example User",
         };
 
@@ -248,6 +262,7 @@ public class BetaUserProfileTest : TestBase
             Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             ExternalID = "user_12345",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Name = "Example User",
 
             // Null should be interpreted as omitted for these properties
@@ -276,6 +291,7 @@ public class BetaUserProfileTest : TestBase
             Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             ExternalID = "user_12345",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Name = "Example User",
 
             // Null should be interpreted as omitted for these properties
@@ -306,6 +322,8 @@ public class BetaUserProfileTest : TestBase
 
         Assert.Null(model.ExternalID);
         Assert.False(model.RawData.ContainsKey("external_id"));
+        Assert.Null(model.ExternalUserOnboardedAt);
+        Assert.False(model.RawData.ContainsKey("external_user_onboarded_at"));
         Assert.Null(model.Name);
         Assert.False(model.RawData.ContainsKey("name"));
     }
@@ -349,11 +367,14 @@ public class BetaUserProfileTest : TestBase
             Relationship = UserProfiles::BetaUserProfileRelationship.External,
 
             ExternalID = null,
+            ExternalUserOnboardedAt = null,
             Name = null,
         };
 
         Assert.Null(model.ExternalID);
         Assert.True(model.RawData.ContainsKey("external_id"));
+        Assert.Null(model.ExternalUserOnboardedAt);
+        Assert.True(model.RawData.ContainsKey("external_user_onboarded_at"));
         Assert.Null(model.Name);
         Assert.True(model.RawData.ContainsKey("name"));
     }
@@ -376,6 +397,7 @@ public class BetaUserProfileTest : TestBase
             Relationship = UserProfiles::BetaUserProfileRelationship.External,
 
             ExternalID = null,
+            ExternalUserOnboardedAt = null,
             Name = null,
         };
 
@@ -398,6 +420,7 @@ public class BetaUserProfileTest : TestBase
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             AccessType = UserProfiles::BetaUserProfileAccessType.Application,
             ExternalID = "user_12345",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Name = "Example User",
             Relationship = UserProfiles::BetaUserProfileRelationship.External,
         };

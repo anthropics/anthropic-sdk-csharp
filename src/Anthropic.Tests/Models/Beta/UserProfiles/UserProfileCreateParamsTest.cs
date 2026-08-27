@@ -18,6 +18,7 @@ public class UserProfileCreateParamsTest : TestBase
         {
             AccessType = AccessType.Application,
             ExternalID = "user_12345",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "x",
             Relationship = Relationship.External,
@@ -26,6 +27,9 @@ public class UserProfileCreateParamsTest : TestBase
 
         ApiEnum<string, AccessType> expectedAccessType = AccessType.Application;
         string expectedExternalID = "user_12345";
+        DateTimeOffset expectedExternalUserOnboardedAt = DateTimeOffset.Parse(
+            "2024-11-02T08:15:00Z"
+        );
         Dictionary<string, string> expectedMetadata = new();
         string expectedName = "x";
         ApiEnum<string, Relationship> expectedRelationship = Relationship.External;
@@ -36,6 +40,7 @@ public class UserProfileCreateParamsTest : TestBase
 
         Assert.Equal(expectedAccessType, parameters.AccessType);
         Assert.Equal(expectedExternalID, parameters.ExternalID);
+        Assert.Equal(expectedExternalUserOnboardedAt, parameters.ExternalUserOnboardedAt);
         Assert.NotNull(parameters.Metadata);
         Assert.Equal(expectedMetadata.Count, parameters.Metadata.Count);
         foreach (var item in expectedMetadata)
@@ -61,6 +66,8 @@ public class UserProfileCreateParamsTest : TestBase
 
         Assert.Null(parameters.AccessType);
         Assert.False(parameters.RawBodyData.ContainsKey("access_type"));
+        Assert.Null(parameters.ExternalUserOnboardedAt);
+        Assert.False(parameters.RawBodyData.ContainsKey("external_user_onboarded_at"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Relationship);
@@ -79,6 +86,7 @@ public class UserProfileCreateParamsTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             AccessType = null,
+            ExternalUserOnboardedAt = null,
             Metadata = null,
             Relationship = null,
             Betas = null,
@@ -86,6 +94,8 @@ public class UserProfileCreateParamsTest : TestBase
 
         Assert.Null(parameters.AccessType);
         Assert.False(parameters.RawBodyData.ContainsKey("access_type"));
+        Assert.Null(parameters.ExternalUserOnboardedAt);
+        Assert.False(parameters.RawBodyData.ContainsKey("external_user_onboarded_at"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Relationship);
@@ -100,6 +110,7 @@ public class UserProfileCreateParamsTest : TestBase
         var parameters = new UserProfileCreateParams
         {
             AccessType = AccessType.Application,
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
             Relationship = Relationship.External,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -117,6 +128,7 @@ public class UserProfileCreateParamsTest : TestBase
         var parameters = new UserProfileCreateParams
         {
             AccessType = AccessType.Application,
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
             Relationship = Relationship.External,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -167,6 +179,7 @@ public class UserProfileCreateParamsTest : TestBase
         {
             AccessType = AccessType.Application,
             ExternalID = "user_12345",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "x",
             Relationship = Relationship.External,

@@ -64,6 +64,29 @@ public record class UserProfileUpdateParams : ParamsBase
     }
 
     /// <summary>
+    /// A timestamp in RFC 3339 format
+    /// </summary>
+    public System::DateTimeOffset? ExternalUserOnboardedAt
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<System::DateTimeOffset>(
+                "external_user_onboarded_at"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("external_user_onboarded_at", value);
+        }
+    }
+
+    /// <summary>
     /// Key-value pairs to merge into the stored metadata. Keys provided overwrite
     /// existing values. To remove a key, set its value to an empty string. Keys not
     /// provided are left unchanged. Maximum 16 keys, with keys up to 64 characters

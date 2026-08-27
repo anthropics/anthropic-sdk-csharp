@@ -19,6 +19,7 @@ public class UserProfileUpdateParamsTest : TestBase
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileUpdateParamsAccessType.Application,
             ExternalID = "user_12345",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "x",
             Relationship = UserProfileUpdateParamsRelationship.External,
@@ -29,6 +30,9 @@ public class UserProfileUpdateParamsTest : TestBase
         ApiEnum<string, UserProfileUpdateParamsAccessType> expectedAccessType =
             UserProfileUpdateParamsAccessType.Application;
         string expectedExternalID = "user_12345";
+        DateTimeOffset expectedExternalUserOnboardedAt = DateTimeOffset.Parse(
+            "2019-12-27T18:11:19.117Z"
+        );
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
         string expectedName = "x";
         ApiEnum<string, UserProfileUpdateParamsRelationship> expectedRelationship =
@@ -41,6 +45,7 @@ public class UserProfileUpdateParamsTest : TestBase
         Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
         Assert.Equal(expectedAccessType, parameters.AccessType);
         Assert.Equal(expectedExternalID, parameters.ExternalID);
+        Assert.Equal(expectedExternalUserOnboardedAt, parameters.ExternalUserOnboardedAt);
         Assert.NotNull(parameters.Metadata);
         Assert.Equal(expectedMetadata.Count, parameters.Metadata.Count);
         foreach (var item in expectedMetadata)
@@ -71,6 +76,8 @@ public class UserProfileUpdateParamsTest : TestBase
             Relationship = UserProfileUpdateParamsRelationship.External,
         };
 
+        Assert.Null(parameters.ExternalUserOnboardedAt);
+        Assert.False(parameters.RawBodyData.ContainsKey("external_user_onboarded_at"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Betas);
@@ -89,10 +96,13 @@ public class UserProfileUpdateParamsTest : TestBase
             Relationship = UserProfileUpdateParamsRelationship.External,
 
             // Null should be interpreted as omitted for these properties
+            ExternalUserOnboardedAt = null,
             Metadata = null,
             Betas = null,
         };
 
+        Assert.Null(parameters.ExternalUserOnboardedAt);
+        Assert.False(parameters.RawBodyData.ContainsKey("external_user_onboarded_at"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Betas);
@@ -105,6 +115,7 @@ public class UserProfileUpdateParamsTest : TestBase
         var parameters = new UserProfileUpdateParams
         {
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
@@ -125,6 +136,7 @@ public class UserProfileUpdateParamsTest : TestBase
         var parameters = new UserProfileUpdateParams
         {
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
@@ -190,6 +202,7 @@ public class UserProfileUpdateParamsTest : TestBase
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileUpdateParamsAccessType.Application,
             ExternalID = "user_12345",
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "x",
             Relationship = UserProfileUpdateParamsRelationship.External,
