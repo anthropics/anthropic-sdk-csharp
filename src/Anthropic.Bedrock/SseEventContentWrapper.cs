@@ -79,22 +79,32 @@ internal class SseEventContentWrapper : HttpContent
                 return toCopy;
             }
 
-            var (data, success) = await AwsEventStreamHelpers
-                .ReadStreamMessage(_sourceStream, cancellationToken)
-                .ConfigureAwait(false);
-            if (!success)
+            while (true)
             {
-                return 0;
-            }
+                var (data, success) = await AwsEventStreamHelpers
+                    .ReadStreamMessage(_sourceStream, cancellationToken)
+                    .ConfigureAwait(false);
+                if (!success)
+                {
+                    return 0;
+                }
 
-            var encodedData = Encoding.UTF8.GetBytes(data!);
-            var bytesToCopy = Math.Min(encodedData.Length, buffer.Length);
-            encodedData.AsMemory(0, bytesToCopy).CopyTo(buffer);
-            if (bytesToCopy < encodedData.Length)
-            {
-                _remainder = encodedData.AsMemory(bytesToCopy);
+                // Messages without content (e.g. control events that carry no
+                // "bytes" field) yield a null payload; skip them and read on.
+                if (data == null)
+                {
+                    continue;
+                }
+
+                var encodedData = Encoding.UTF8.GetBytes(data);
+                var bytesToCopy = Math.Min(encodedData.Length, buffer.Length);
+                encodedData.AsMemory(0, bytesToCopy).CopyTo(buffer);
+                if (bytesToCopy < encodedData.Length)
+                {
+                    _remainder = encodedData.AsMemory(bytesToCopy);
+                }
+                return bytesToCopy;
             }
-            return bytesToCopy;
         }
 #else
         public override async Task<int> ReadAsync(
@@ -113,22 +123,32 @@ internal class SseEventContentWrapper : HttpContent
                 return toCopy;
             }
 
-            var (data, success) = await AwsEventStreamHelpers
-                .ReadStreamMessage(_sourceStream, cancellationToken)
-                .ConfigureAwait(false);
-            if (!success)
+            while (true)
             {
-                return 0;
-            }
+                var (data, success) = await AwsEventStreamHelpers
+                    .ReadStreamMessage(_sourceStream, cancellationToken)
+                    .ConfigureAwait(false);
+                if (!success)
+                {
+                    return 0;
+                }
 
-            var encodedData = Encoding.UTF8.GetBytes(data!);
-            var bytesToCopy = Math.Min(encodedData.Length, count);
-            Array.Copy(encodedData, 0, buffer, offset, bytesToCopy);
-            if (bytesToCopy < encodedData.Length)
-            {
-                _remainder = encodedData.AsMemory(bytesToCopy);
+                // Messages without content (e.g. control events that carry no
+                // "bytes" field) yield a null payload; skip them and read on.
+                if (data == null)
+                {
+                    continue;
+                }
+
+                var encodedData = Encoding.UTF8.GetBytes(data);
+                var bytesToCopy = Math.Min(encodedData.Length, count);
+                Array.Copy(encodedData, 0, buffer, offset, bytesToCopy);
+                if (bytesToCopy < encodedData.Length)
+                {
+                    _remainder = encodedData.AsMemory(bytesToCopy);
+                }
+                return bytesToCopy;
             }
-            return bytesToCopy;
         }
 #endif
 
