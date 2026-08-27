@@ -26,7 +26,31 @@ public sealed class BatchListPage(
     }
 
     /// <inheritdoc/>
-    public bool HasNext() => response.HasMore;
+    public bool HasNext()
+    {
+        try
+        {
+            if (this.Items.Count == 0)
+            {
+                return false;
+            }
+            if (response.HasMore == false)
+            {
+                return false;
+            }
+            if (parameters.BeforeID != null)
+            {
+                return response.FirstID != null;
+            }
+            return response.LastID != null;
+        }
+        catch (AnthropicInvalidDataException)
+        {
+            // If accessing the response data to determine if there's a next page failed, then just
+            // assume there's no next page.
+            return false;
+        }
+    }
 
     /// <inheritdoc/>
     async Task<IPage<BetaMessageBatch>> IPage<BetaMessageBatch>.Next(
@@ -36,6 +60,15 @@ public sealed class BatchListPage(
     /// <inheritdoc cref="IPage{T}.Next"/>
     public async Task<BatchListPage> Next(CancellationToken cancellationToken = default)
     {
+        if (parameters.BeforeID != null)
+        {
+            var previousCursor =
+                response.FirstID ?? throw new InvalidOperationException("Cannot request next page");
+            using var previousResponse = await service
+                .List(parameters with { BeforeID = previousCursor }, cancellationToken)
+                .ConfigureAwait(false);
+            return await previousResponse.Deserialize(cancellationToken).ConfigureAwait(false);
+        }
         var nextCursor =
             response.LastID ?? throw new InvalidOperationException("Cannot request next page");
         using var nextResponse = await service
