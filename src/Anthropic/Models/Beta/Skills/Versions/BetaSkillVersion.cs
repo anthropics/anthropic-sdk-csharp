@@ -1,19 +1,20 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Skills.Versions;
 
-[JsonConverter(typeof(JsonModelConverter<VersionRetrieveResponse, VersionRetrieveResponseFromRaw>))]
-public sealed record class VersionRetrieveResponse : JsonModel
+[JsonConverter(typeof(JsonModelConverter<BetaSkillVersion, BetaSkillVersionFromRaw>))]
+public sealed record class BetaSkillVersion : JsonModel
 {
     /// <summary>
-    /// Unique identifier for the skill version.
-    ///
-    /// <para>The format and length of IDs may change over time.</para>
+    /// Unique identifier for this Skill Version. The id addresses the version in
+    /// paths and pins it in references.
     /// </summary>
     public required string ID
     {
@@ -26,14 +27,14 @@ public sealed record class VersionRetrieveResponse : JsonModel
     }
 
     /// <summary>
-    /// ISO 8601 timestamp of when the skill version was created.
+    /// ISO 8601 timestamp of when the skill was created.
     /// </summary>
-    public required string CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<string>("created_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
     }
@@ -54,24 +55,10 @@ public sealed record class VersionRetrieveResponse : JsonModel
     }
 
     /// <summary>
-    /// Directory name of the skill version.
-    ///
-    /// <para>This is the top-level directory name that was extracted from the uploaded files.</para>
-    /// </summary>
-    public required string Directory
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<string>("directory");
-        }
-        init { this._rawData.Set("directory", value); }
-    }
-
-    /// <summary>
-    /// Human-readable name of the skill version.
-    ///
-    /// <para>This is extracted from the SKILL.md file in the skill upload.</para>
+    /// The Skill's immutable kebab-case slug, set at creation from the first upload's
+    /// SKILL.md frontmatter `name` (or its enclosing directory). Every later upload
+    /// must resolve to the same value. Also the top-level directory of the Skill's
+    /// mounted files and the base name of a downloaded archive.
     /// </summary>
     public required string Name
     {
@@ -84,7 +71,9 @@ public sealed record class VersionRetrieveResponse : JsonModel
     }
 
     /// <summary>
-    /// Identifier for the skill that this version belongs to.
+    /// Unique identifier for the skill.
+    ///
+    /// <para>The format and length of IDs may change over time.</para>
     /// </summary>
     public required string SkillID
     {
@@ -101,29 +90,14 @@ public sealed record class VersionRetrieveResponse : JsonModel
     ///
     /// <para>For Skill Versions, this is always `"skill_version"`.</para>
     /// </summary>
-    public required string Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<string>("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
-    }
-
-    /// <summary>
-    /// Version identifier for the skill.
-    ///
-    /// <para>Each version is identified by a Unix epoch timestamp (e.g., "1759178010641129").</para>
-    /// </summary>
-    public required string Version
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<string>("version");
-        }
-        init { this._rawData.Set("version", value); }
     }
 
     /// <inheritdoc/>
@@ -132,36 +106,42 @@ public sealed record class VersionRetrieveResponse : JsonModel
         _ = this.ID;
         _ = this.CreatedAt;
         _ = this.Description;
-        _ = this.Directory;
         _ = this.Name;
         _ = this.SkillID;
-        _ = this.Type;
-        _ = this.Version;
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("skill_version")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public VersionRetrieveResponse() { }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public VersionRetrieveResponse(VersionRetrieveResponse versionRetrieveResponse)
-        : base(versionRetrieveResponse) { }
-#pragma warning restore CS8618
-
-    public VersionRetrieveResponse(IReadOnlyDictionary<string, JsonElement> rawData)
+    public BetaSkillVersion()
     {
-        this._rawData = new(rawData);
+        this.Type = JsonSerializer.SerializeToElement("skill_version");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    VersionRetrieveResponse(FrozenDictionary<string, JsonElement> rawData)
+    public BetaSkillVersion(BetaSkillVersion betaSkillVersion)
+        : base(betaSkillVersion) { }
+#pragma warning restore CS8618
+
+    public BetaSkillVersion(IReadOnlyDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("skill_version");
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    BetaSkillVersion(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="VersionRetrieveResponseFromRaw.FromRawUnchecked"/>
-    public static VersionRetrieveResponse FromRawUnchecked(
+    /// <inheritdoc cref="BetaSkillVersionFromRaw.FromRawUnchecked"/>
+    public static BetaSkillVersion FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -169,10 +149,9 @@ public sealed record class VersionRetrieveResponse : JsonModel
     }
 }
 
-class VersionRetrieveResponseFromRaw : IFromRawJson<VersionRetrieveResponse>
+class BetaSkillVersionFromRaw : IFromRawJson<BetaSkillVersion>
 {
     /// <inheritdoc/>
-    public VersionRetrieveResponse FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    ) => VersionRetrieveResponse.FromRawUnchecked(rawData);
+    public BetaSkillVersion FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaSkillVersion.FromRawUnchecked(rawData);
 }

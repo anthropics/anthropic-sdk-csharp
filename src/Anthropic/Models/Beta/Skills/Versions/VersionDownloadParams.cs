@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Services.Beta.Skills;
 
 namespace Anthropic.Models.Beta.Skills.Versions;
 
@@ -148,7 +147,6 @@ public record class VersionDownloadParams : ParamsBase
     {
         ParamsBase.AddDefaultHeaders(request, options);
         request.Headers.Add("Accept", "application/binary");
-        VersionService.AddDefaultHeaders(request);
         foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);

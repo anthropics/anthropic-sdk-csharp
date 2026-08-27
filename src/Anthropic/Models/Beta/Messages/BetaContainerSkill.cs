@@ -12,8 +12,8 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// A skill that was loaded in a container (response model).
 /// </summary>
-[JsonConverter(typeof(JsonModelConverter<BetaSkill, BetaSkillFromRaw>))]
-public sealed record class BetaSkill : JsonModel
+[JsonConverter(typeof(JsonModelConverter<BetaContainerSkill, BetaContainerSkillFromRaw>))]
+public sealed record class BetaContainerSkill : JsonModel
 {
     /// <summary>
     /// Skill ID
@@ -64,39 +64,41 @@ public sealed record class BetaSkill : JsonModel
         _ = this.Version;
     }
 
-    public BetaSkill() { }
+    public BetaContainerSkill() { }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    public BetaSkill(BetaSkill betaSkill)
-        : base(betaSkill) { }
+    public BetaContainerSkill(BetaContainerSkill betaContainerSkill)
+        : base(betaContainerSkill) { }
 #pragma warning restore CS8618
 
-    public BetaSkill(IReadOnlyDictionary<string, JsonElement> rawData)
+    public BetaContainerSkill(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaSkill(FrozenDictionary<string, JsonElement> rawData)
+    BetaContainerSkill(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="BetaSkillFromRaw.FromRawUnchecked"/>
-    public static BetaSkill FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
+    /// <inheritdoc cref="BetaContainerSkillFromRaw.FromRawUnchecked"/>
+    public static BetaContainerSkill FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 
-class BetaSkillFromRaw : IFromRawJson<BetaSkill>
+class BetaContainerSkillFromRaw : IFromRawJson<BetaContainerSkill>
 {
     /// <inheritdoc/>
-    public BetaSkill FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
-        BetaSkill.FromRawUnchecked(rawData);
+    public BetaContainerSkill FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaContainerSkill.FromRawUnchecked(rawData);
 }
 
 /// <summary>

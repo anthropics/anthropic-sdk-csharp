@@ -7,22 +7,22 @@ public class VersionServiceTest : TestBase
 {
     public async Task Create_Works()
     {
-        var version = await this.client.Beta.Skills.Versions.Create(
+        var betaSkillVersion = await this.client.Beta.Skills.Versions.Create(
             "skill_id",
             new() { Files = [Encoding.UTF8.GetBytes("Example data")] },
             TestContext.Current.CancellationToken
         );
-        version.Validate();
+        betaSkillVersion.Validate();
     }
 
     public async Task Retrieve_Works()
     {
-        var version = await this.client.Beta.Skills.Versions.Retrieve(
+        var betaSkillVersion = await this.client.Beta.Skills.Versions.Retrieve(
             "version",
             new() { SkillID = "skill_id" },
             TestContext.Current.CancellationToken
         );
-        version.Validate();
+        betaSkillVersion.Validate();
     }
 
     public async Task List_Works()
@@ -37,12 +37,12 @@ public class VersionServiceTest : TestBase
 
     public async Task Delete_Works()
     {
-        var version = await this.client.Beta.Skills.Versions.Delete(
+        var betaDeletedSkillVersion = await this.client.Beta.Skills.Versions.Delete(
             "version",
             new() { SkillID = "skill_id" },
             TestContext.Current.CancellationToken
         );
-        version.Validate();
+        betaDeletedSkillVersion.Validate();
     }
 
     public async Task Download_Works()

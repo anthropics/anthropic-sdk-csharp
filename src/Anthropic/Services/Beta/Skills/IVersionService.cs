@@ -29,13 +29,13 @@ public interface IVersionService
     /// <summary>
     /// Create Skill Version
     /// </summary>
-    Task<VersionCreateResponse> Create(
+    Task<BetaSkillVersion> Create(
         VersionCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Create(VersionCreateParams, CancellationToken)"/>
-    Task<VersionCreateResponse> Create(
+    Task<BetaSkillVersion> Create(
         string skillID,
         VersionCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -44,13 +44,13 @@ public interface IVersionService
     /// <summary>
     /// Get Skill Version
     /// </summary>
-    Task<VersionRetrieveResponse> Retrieve(
+    Task<BetaSkillVersion> Retrieve(
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Retrieve(VersionRetrieveParams, CancellationToken)"/>
-    Task<VersionRetrieveResponse> Retrieve(
+    Task<BetaSkillVersion> Retrieve(
         string version,
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -74,13 +74,13 @@ public interface IVersionService
     /// <summary>
     /// Delete Skill Version
     /// </summary>
-    Task<VersionDeleteResponse> Delete(
+    Task<BetaDeletedSkillVersion> Delete(
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Delete(VersionDeleteParams, CancellationToken)"/>
-    Task<VersionDeleteResponse> Delete(
+    Task<BetaDeletedSkillVersion> Delete(
         string version,
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default
@@ -121,13 +121,13 @@ public interface IVersionServiceWithRawResponse
     /// Returns a raw HTTP response for <c>post /v1/skills/{skill_id}/versions?beta=true</c>, but is otherwise the
     /// same as <see cref="IVersionService.Create(VersionCreateParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<VersionCreateResponse>> Create(
+    Task<HttpResponse<BetaSkillVersion>> Create(
         VersionCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Create(VersionCreateParams, CancellationToken)"/>
-    Task<HttpResponse<VersionCreateResponse>> Create(
+    Task<HttpResponse<BetaSkillVersion>> Create(
         string skillID,
         VersionCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -137,13 +137,13 @@ public interface IVersionServiceWithRawResponse
     /// Returns a raw HTTP response for <c>get /v1/skills/{skill_id}/versions/{version}?beta=true</c>, but is otherwise the
     /// same as <see cref="IVersionService.Retrieve(VersionRetrieveParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<VersionRetrieveResponse>> Retrieve(
+    Task<HttpResponse<BetaSkillVersion>> Retrieve(
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Retrieve(VersionRetrieveParams, CancellationToken)"/>
-    Task<HttpResponse<VersionRetrieveResponse>> Retrieve(
+    Task<HttpResponse<BetaSkillVersion>> Retrieve(
         string version,
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -169,13 +169,13 @@ public interface IVersionServiceWithRawResponse
     /// Returns a raw HTTP response for <c>delete /v1/skills/{skill_id}/versions/{version}?beta=true</c>, but is otherwise the
     /// same as <see cref="IVersionService.Delete(VersionDeleteParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<VersionDeleteResponse>> Delete(
+    Task<HttpResponse<BetaDeletedSkillVersion>> Delete(
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Delete(VersionDeleteParams, CancellationToken)"/>
-    Task<HttpResponse<VersionDeleteResponse>> Delete(
+    Task<HttpResponse<BetaDeletedSkillVersion>> Delete(
         string version,
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default

@@ -7,21 +7,21 @@ public class SkillServiceTest : TestBase
 {
     public async Task Create_Works()
     {
-        var skill = await this.client.Beta.Skills.Create(
+        var betaSkill = await this.client.Beta.Skills.Create(
             new() { Files = [Encoding.UTF8.GetBytes("Example data")] },
             TestContext.Current.CancellationToken
         );
-        skill.Validate();
+        betaSkill.Validate();
     }
 
     public async Task Retrieve_Works()
     {
-        var skill = await this.client.Beta.Skills.Retrieve(
+        var betaSkill = await this.client.Beta.Skills.Retrieve(
             "skill_id",
             new(),
             TestContext.Current.CancellationToken
         );
-        skill.Validate();
+        betaSkill.Validate();
     }
 
     public async Task List_Works()
@@ -32,11 +32,11 @@ public class SkillServiceTest : TestBase
 
     public async Task Delete_Works()
     {
-        var skill = await this.client.Beta.Skills.Delete(
+        var betaDeletedSkill = await this.client.Beta.Skills.Delete(
             "skill_id",
             new(),
             TestContext.Current.CancellationToken
         );
-        skill.Validate();
+        betaDeletedSkill.Validate();
     }
 }

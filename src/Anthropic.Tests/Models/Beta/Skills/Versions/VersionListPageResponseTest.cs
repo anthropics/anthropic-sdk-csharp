@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
@@ -16,43 +17,34 @@ public class VersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "skillver_01JAbcdefghijklmnopqrstuvw",
-                    CreatedAt = "2024-10-30T23:58:27.427722Z",
-                    Description = "A custom skill for doing something useful",
-                    Directory = "my-skill",
-                    Name = "my-skill",
+                    ID = "id",
+                    CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    Description = "description",
+                    Name = "name",
                     SkillID = "skill_01JAbcdefghijklmnopqrstuvw",
-                    Type = "type",
-                    Version = "1759178010641129",
                 },
             ],
-            HasMore = true,
-            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            NextPage = "next_page",
         };
 
-        List<VersionListResponse> expectedData =
+        List<BetaSkillVersion> expectedData =
         [
             new()
             {
-                ID = "skillver_01JAbcdefghijklmnopqrstuvw",
-                CreatedAt = "2024-10-30T23:58:27.427722Z",
-                Description = "A custom skill for doing something useful",
-                Directory = "my-skill",
-                Name = "my-skill",
+                ID = "id",
+                CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                Description = "description",
+                Name = "name",
                 SkillID = "skill_01JAbcdefghijklmnopqrstuvw",
-                Type = "type",
-                Version = "1759178010641129",
             },
         ];
-        bool expectedHasMore = true;
-        string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
+        string expectedNextPage = "next_page";
 
         Assert.Equal(expectedData.Count, model.Data.Count);
         for (int i = 0; i < expectedData.Count; i++)
         {
             Assert.Equal(expectedData[i], model.Data[i]);
         }
-        Assert.Equal(expectedHasMore, model.HasMore);
         Assert.Equal(expectedNextPage, model.NextPage);
     }
 
@@ -65,18 +57,14 @@ public class VersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "skillver_01JAbcdefghijklmnopqrstuvw",
-                    CreatedAt = "2024-10-30T23:58:27.427722Z",
-                    Description = "A custom skill for doing something useful",
-                    Directory = "my-skill",
-                    Name = "my-skill",
+                    ID = "id",
+                    CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    Description = "description",
+                    Name = "name",
                     SkillID = "skill_01JAbcdefghijklmnopqrstuvw",
-                    Type = "type",
-                    Version = "1759178010641129",
                 },
             ],
-            HasMore = true,
-            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            NextPage = "next_page",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -97,18 +85,14 @@ public class VersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "skillver_01JAbcdefghijklmnopqrstuvw",
-                    CreatedAt = "2024-10-30T23:58:27.427722Z",
-                    Description = "A custom skill for doing something useful",
-                    Directory = "my-skill",
-                    Name = "my-skill",
+                    ID = "id",
+                    CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    Description = "description",
+                    Name = "name",
                     SkillID = "skill_01JAbcdefghijklmnopqrstuvw",
-                    Type = "type",
-                    Version = "1759178010641129",
                 },
             ],
-            HasMore = true,
-            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            NextPage = "next_page",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -118,29 +102,24 @@ public class VersionListPageResponseTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        List<VersionListResponse> expectedData =
+        List<BetaSkillVersion> expectedData =
         [
             new()
             {
-                ID = "skillver_01JAbcdefghijklmnopqrstuvw",
-                CreatedAt = "2024-10-30T23:58:27.427722Z",
-                Description = "A custom skill for doing something useful",
-                Directory = "my-skill",
-                Name = "my-skill",
+                ID = "id",
+                CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                Description = "description",
+                Name = "name",
                 SkillID = "skill_01JAbcdefghijklmnopqrstuvw",
-                Type = "type",
-                Version = "1759178010641129",
             },
         ];
-        bool expectedHasMore = true;
-        string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
+        string expectedNextPage = "next_page";
 
         Assert.Equal(expectedData.Count, deserialized.Data.Count);
         for (int i = 0; i < expectedData.Count; i++)
         {
             Assert.Equal(expectedData[i], deserialized.Data[i]);
         }
-        Assert.Equal(expectedHasMore, deserialized.HasMore);
         Assert.Equal(expectedNextPage, deserialized.NextPage);
     }
 
@@ -153,18 +132,14 @@ public class VersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "skillver_01JAbcdefghijklmnopqrstuvw",
-                    CreatedAt = "2024-10-30T23:58:27.427722Z",
-                    Description = "A custom skill for doing something useful",
-                    Directory = "my-skill",
-                    Name = "my-skill",
+                    ID = "id",
+                    CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    Description = "description",
+                    Name = "name",
                     SkillID = "skill_01JAbcdefghijklmnopqrstuvw",
-                    Type = "type",
-                    Version = "1759178010641129",
                 },
             ],
-            HasMore = true,
-            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            NextPage = "next_page",
         };
 
         model.Validate();
@@ -179,18 +154,14 @@ public class VersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "skillver_01JAbcdefghijklmnopqrstuvw",
-                    CreatedAt = "2024-10-30T23:58:27.427722Z",
-                    Description = "A custom skill for doing something useful",
-                    Directory = "my-skill",
-                    Name = "my-skill",
+                    ID = "id",
+                    CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    Description = "description",
+                    Name = "name",
                     SkillID = "skill_01JAbcdefghijklmnopqrstuvw",
-                    Type = "type",
-                    Version = "1759178010641129",
                 },
             ],
-            HasMore = true,
-            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+            NextPage = "next_page",
         };
 
         VersionListPageResponse copied = new(model);

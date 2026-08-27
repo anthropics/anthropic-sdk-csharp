@@ -28,7 +28,7 @@ public class BetaContainerTest : TestBase
 
         string expectedID = "container_011CpZohnwH4vuy7gazohgSP";
         DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        List<Messages::BetaSkill> expectedSkills =
+        List<Messages::BetaContainerSkill> expectedSkills =
         [
             new()
             {
@@ -102,7 +102,7 @@ public class BetaContainerTest : TestBase
 
         string expectedID = "container_011CpZohnwH4vuy7gazohgSP";
         DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        List<Messages::BetaSkill> expectedSkills =
+        List<Messages::BetaContainerSkill> expectedSkills =
         [
             new()
             {

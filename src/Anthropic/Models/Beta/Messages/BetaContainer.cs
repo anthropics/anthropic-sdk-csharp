@@ -44,16 +44,16 @@ public sealed record class BetaContainer : JsonModel
     /// <summary>
     /// Skills loaded in the container
     /// </summary>
-    public required IReadOnlyList<BetaSkill>? Skills
+    public required IReadOnlyList<BetaContainerSkill>? Skills
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<ImmutableArray<BetaSkill>>("skills");
+            return this._rawData.GetNullableStruct<ImmutableArray<BetaContainerSkill>>("skills");
         }
         init
         {
-            this._rawData.Set<ImmutableArray<BetaSkill>?>(
+            this._rawData.Set<ImmutableArray<BetaContainerSkill>?>(
                 "skills",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );

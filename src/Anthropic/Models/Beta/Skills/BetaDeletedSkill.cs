@@ -4,11 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Skills;
 
-[JsonConverter(typeof(JsonModelConverter<SkillDeleteResponse, SkillDeleteResponseFromRaw>))]
-public sealed record class SkillDeleteResponse : JsonModel
+[JsonConverter(typeof(JsonModelConverter<BetaDeletedSkill, BetaDeletedSkillFromRaw>))]
+public sealed record class BetaDeletedSkill : JsonModel
 {
     /// <summary>
     /// Unique identifier for the skill.
@@ -30,12 +31,12 @@ public sealed record class SkillDeleteResponse : JsonModel
     ///
     /// <para>For Skills, this is always `"skill_deleted"`.</para>
     /// </summary>
-    public required string Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<string>("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -44,42 +45,57 @@ public sealed record class SkillDeleteResponse : JsonModel
     public override void Validate()
     {
         _ = this.ID;
-        _ = this.Type;
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("skill_deleted")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public SkillDeleteResponse() { }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public SkillDeleteResponse(SkillDeleteResponse skillDeleteResponse)
-        : base(skillDeleteResponse) { }
-#pragma warning restore CS8618
-
-    public SkillDeleteResponse(IReadOnlyDictionary<string, JsonElement> rawData)
+    public BetaDeletedSkill()
     {
-        this._rawData = new(rawData);
+        this.Type = JsonSerializer.SerializeToElement("skill_deleted");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    SkillDeleteResponse(FrozenDictionary<string, JsonElement> rawData)
+    public BetaDeletedSkill(BetaDeletedSkill betaDeletedSkill)
+        : base(betaDeletedSkill) { }
+#pragma warning restore CS8618
+
+    public BetaDeletedSkill(IReadOnlyDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("skill_deleted");
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    BetaDeletedSkill(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="SkillDeleteResponseFromRaw.FromRawUnchecked"/>
-    public static SkillDeleteResponse FromRawUnchecked(
+    /// <inheritdoc cref="BetaDeletedSkillFromRaw.FromRawUnchecked"/>
+    public static BetaDeletedSkill FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaDeletedSkill(string id)
+        : this()
+    {
+        this.ID = id;
+    }
 }
 
-class SkillDeleteResponseFromRaw : IFromRawJson<SkillDeleteResponse>
+class BetaDeletedSkillFromRaw : IFromRawJson<BetaDeletedSkill>
 {
     /// <inheritdoc/>
-    public SkillDeleteResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
-        SkillDeleteResponse.FromRawUnchecked(rawData);
+    public BetaDeletedSkill FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaDeletedSkill.FromRawUnchecked(rawData);
 }

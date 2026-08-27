@@ -11,11 +11,6 @@ namespace Anthropic.Services.Beta;
 /// <inheritdoc/>
 public sealed class FileService : IFileService
 {
-    internal static void AddDefaultHeaders(HttpRequestMessage request)
-    {
-        request.Headers.Add("anthropic-beta", "files-api-2025-04-14");
-    }
-
     readonly Lazy<IFileServiceWithRawResponse> _withRawResponse;
 
     /// <inheritdoc/>

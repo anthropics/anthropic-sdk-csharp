@@ -17,19 +17,31 @@ public sealed class VersionListPage(
     IVersionServiceWithRawResponse service,
     VersionListParams parameters,
     VersionListPageResponse response
-) : IPage<VersionListResponse>
+) : IPage<BetaSkillVersion>
 {
     /// <inheritdoc/>
-    public IReadOnlyList<VersionListResponse> Items
+    public IReadOnlyList<BetaSkillVersion> Items
     {
         get { return response.Data; }
     }
 
     /// <inheritdoc/>
-    public bool HasNext() => response.HasMore;
+    public bool HasNext()
+    {
+        try
+        {
+            return this.Items.Count > 0 && response.NextPage != null;
+        }
+        catch (AnthropicInvalidDataException)
+        {
+            // If accessing the response data to determine if there's a next page failed, then just
+            // assume there's no next page.
+            return false;
+        }
+    }
 
     /// <inheritdoc/>
-    async Task<IPage<VersionListResponse>> IPage<VersionListResponse>.Next(
+    async Task<IPage<BetaSkillVersion>> IPage<BetaSkillVersion>.Next(
         CancellationToken cancellationToken
     ) => await this.Next(cancellationToken).ConfigureAwait(false);
 

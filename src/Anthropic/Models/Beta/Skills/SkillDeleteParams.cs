@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Services.Beta;
 
 namespace Anthropic.Models.Beta.Skills;
 
@@ -137,7 +136,6 @@ public record class SkillDeleteParams : ParamsBase
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
-        SkillService.AddDefaultHeaders(request);
         foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
