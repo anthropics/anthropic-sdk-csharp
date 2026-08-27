@@ -30,7 +30,19 @@ public sealed class ApiKeyListPage(
     {
         try
         {
-            return this.Items.Count > 0 && response.LastID != null;
+            if (this.Items.Count == 0)
+            {
+                return false;
+            }
+            if (response.HasMore == false)
+            {
+                return false;
+            }
+            if (parameters.BeforeID != null)
+            {
+                return response.FirstID != null;
+            }
+            return response.LastID != null;
         }
         catch (AnthropicInvalidDataException)
         {
@@ -47,6 +59,15 @@ public sealed class ApiKeyListPage(
     /// <inheritdoc cref="IPage{T}.Next"/>
     public async Task<ApiKeyListPage> Next(CancellationToken cancellationToken = default)
     {
+        if (parameters.BeforeID != null)
+        {
+            var previousCursor =
+                response.FirstID ?? throw new InvalidOperationException("Cannot request next page");
+            using var previousResponse = await service
+                .List(parameters with { BeforeID = previousCursor }, cancellationToken)
+                .ConfigureAwait(false);
+            return await previousResponse.Deserialize(cancellationToken).ConfigureAwait(false);
+        }
         var nextCursor =
             response.LastID ?? throw new InvalidOperationException("Cannot request next page");
         using var nextResponse = await service
