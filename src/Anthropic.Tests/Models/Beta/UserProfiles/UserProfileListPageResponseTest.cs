@@ -30,7 +30,6 @@ public class UserProfileListPageResponseTest : TestBase
                     ExternalID = "user_12345",
                     ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                     Name = "Example User",
-                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -53,7 +52,6 @@ public class UserProfileListPageResponseTest : TestBase
                 ExternalID = "user_12345",
                 ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                 Name = "Example User",
-                Relationship = UserProfiles::BetaUserProfileRelationship.External,
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -88,7 +86,6 @@ public class UserProfileListPageResponseTest : TestBase
                     ExternalID = "user_12345",
                     ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                     Name = "Example User",
-                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -125,7 +122,6 @@ public class UserProfileListPageResponseTest : TestBase
                     ExternalID = "user_12345",
                     ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                     Name = "Example User",
-                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -155,7 +151,6 @@ public class UserProfileListPageResponseTest : TestBase
                 ExternalID = "user_12345",
                 ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                 Name = "Example User",
-                Relationship = UserProfiles::BetaUserProfileRelationship.External,
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -190,7 +185,6 @@ public class UserProfileListPageResponseTest : TestBase
                     ExternalID = "user_12345",
                     ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                     Name = "Example User",
-                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -221,7 +215,6 @@ public class UserProfileListPageResponseTest : TestBase
                     ExternalID = "user_12345",
                     ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                     Name = "Example User",
-                    Relationship = UserProfiles::BetaUserProfileRelationship.External,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",

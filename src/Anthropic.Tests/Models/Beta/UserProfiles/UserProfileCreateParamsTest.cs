@@ -21,7 +21,6 @@ public class UserProfileCreateParamsTest : TestBase
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "x",
-            Relationship = Relationship.External,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -32,7 +31,6 @@ public class UserProfileCreateParamsTest : TestBase
         );
         Dictionary<string, string> expectedMetadata = new();
         string expectedName = "x";
-        ApiEnum<string, Relationship> expectedRelationship = Relationship.External;
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -50,7 +48,6 @@ public class UserProfileCreateParamsTest : TestBase
             Assert.Equal(value, parameters.Metadata[item.Key]);
         }
         Assert.Equal(expectedName, parameters.Name);
-        Assert.Equal(expectedRelationship, parameters.Relationship);
         Assert.NotNull(parameters.Betas);
         Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
         for (int i = 0; i < expectedBetas.Count; i++)
@@ -70,8 +67,6 @@ public class UserProfileCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("external_user_onboarded_at"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
-        Assert.Null(parameters.Relationship);
-        Assert.False(parameters.RawBodyData.ContainsKey("relationship"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
@@ -88,7 +83,6 @@ public class UserProfileCreateParamsTest : TestBase
             AccessType = null,
             ExternalUserOnboardedAt = null,
             Metadata = null,
-            Relationship = null,
             Betas = null,
         };
 
@@ -98,8 +92,6 @@ public class UserProfileCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("external_user_onboarded_at"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
-        Assert.Null(parameters.Relationship);
-        Assert.False(parameters.RawBodyData.ContainsKey("relationship"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
@@ -112,7 +104,6 @@ public class UserProfileCreateParamsTest : TestBase
             AccessType = AccessType.Application,
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
-            Relationship = Relationship.External,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -130,7 +121,6 @@ public class UserProfileCreateParamsTest : TestBase
             AccessType = AccessType.Application,
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
-            Relationship = Relationship.External,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
 
             ExternalID = null,
@@ -182,7 +172,6 @@ public class UserProfileCreateParamsTest : TestBase
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "x",
-            Relationship = Relationship.External,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -242,66 +231,6 @@ public class AccessTypeTest : TestBase
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AccessType>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-}
-
-public class RelationshipTest : TestBase
-{
-    [Theory]
-    [InlineData(Relationship.External)]
-    [InlineData(Relationship.Resold)]
-    [InlineData(Relationship.Internal)]
-    public void Validation_Works(Relationship rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Relationship> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Relationship>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(Relationship.External)]
-    [InlineData(Relationship.Resold)]
-    [InlineData(Relationship.Internal)]
-    public void SerializationRoundtrip_Works(Relationship rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Relationship> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Relationship>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Relationship>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Relationship>>(
             json,
             ModelBase.SerializerOptions
         );

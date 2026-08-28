@@ -127,23 +127,6 @@ public record class UserProfileUpdateParams : ParamsBase
     }
 
     /// <summary>
-    /// How the entity behind a user profile relates to the platform that owns the
-    /// API key. `external`: an individual end-user of the platform. `resold`: a company
-    /// the platform resells Claude access to. `internal`: the platform's own usage.
-    /// </summary>
-    public ApiEnum<string, UserProfileUpdateParamsRelationship>? Relationship
-    {
-        get
-        {
-            this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableClass<
-                ApiEnum<string, UserProfileUpdateParamsRelationship>
-            >("relationship");
-        }
-        init { this._rawBodyData.Set("relationship", value); }
-    }
-
-    /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
@@ -334,59 +317,6 @@ sealed class UserProfileUpdateParamsAccessTypeConverter
             {
                 UserProfileUpdateParamsAccessType.Application => "application",
                 UserProfileUpdateParamsAccessType.Passthrough => "passthrough",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-/// <summary>
-/// How the entity behind a user profile relates to the platform that owns the API
-/// key. `external`: an individual end-user of the platform. `resold`: a company
-/// the platform resells Claude access to. `internal`: the platform's own usage.
-/// </summary>
-[JsonConverter(typeof(UserProfileUpdateParamsRelationshipConverter))]
-public enum UserProfileUpdateParamsRelationship
-{
-    External,
-    Resold,
-    Internal,
-}
-
-sealed class UserProfileUpdateParamsRelationshipConverter
-    : JsonConverter<UserProfileUpdateParamsRelationship>
-{
-    public override UserProfileUpdateParamsRelationship Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "external" => UserProfileUpdateParamsRelationship.External,
-            "resold" => UserProfileUpdateParamsRelationship.Resold,
-            "internal" => UserProfileUpdateParamsRelationship.Internal,
-            _ => (UserProfileUpdateParamsRelationship)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        UserProfileUpdateParamsRelationship value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                UserProfileUpdateParamsRelationship.External => "external",
-                UserProfileUpdateParamsRelationship.Resold => "resold",
-                UserProfileUpdateParamsRelationship.Internal => "internal",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
