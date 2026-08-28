@@ -42,6 +42,7 @@ public sealed class OrganizationService : IOrganizationService
         _users = new(() => new UserService(client));
         _workspaces = new(() => new WorkspaceService(client));
         _rateLimits = new(() => new RateLimitService(client));
+        _complianceSettings = new(() => new ComplianceSettingService(client));
     }
 
     readonly Lazy<IApiKeyService> _apiKeys;
@@ -92,6 +93,12 @@ public sealed class OrganizationService : IOrganizationService
         get { return _rateLimits.Value; }
     }
 
+    readonly Lazy<IComplianceSettingService> _complianceSettings;
+    public IComplianceSettingService ComplianceSettings
+    {
+        get { return _complianceSettings.Value; }
+    }
+
     /// <inheritdoc/>
     public async Task<BetaOrganization> Retrieve(
         OrganizationRetrieveParams? parameters = null,
@@ -130,6 +137,7 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
         _users = new(() => new UserServiceWithRawResponse(client));
         _workspaces = new(() => new WorkspaceServiceWithRawResponse(client));
         _rateLimits = new(() => new RateLimitServiceWithRawResponse(client));
+        _complianceSettings = new(() => new ComplianceSettingServiceWithRawResponse(client));
     }
 
     readonly Lazy<IApiKeyServiceWithRawResponse> _apiKeys;
@@ -178,6 +186,12 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
     public IRateLimitServiceWithRawResponse RateLimits
     {
         get { return _rateLimits.Value; }
+    }
+
+    readonly Lazy<IComplianceSettingServiceWithRawResponse> _complianceSettings;
+    public IComplianceSettingServiceWithRawResponse ComplianceSettings
+    {
+        get { return _complianceSettings.Value; }
     }
 
     /// <inheritdoc/>
