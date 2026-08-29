@@ -701,6 +701,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, UserProfiles::AccessType>(),
             new ApiEnumConverter<string, UserProfiles::UserProfileUpdateParamsAccessType>(),
             new ApiEnumConverter<string, UserProfiles::Order>(),
+            new ApiEnumConverter<string, UserProfiles::OrderBy>(),
             new ApiEnumConverter<string, Dreams::Type>(),
             new ApiEnumConverter<string, Dreams::BetaDreamMemoryStoreInputType>(),
             new ApiEnumConverter<string, Dreams::BetaDreamMemoryStoreOutputType>(),
