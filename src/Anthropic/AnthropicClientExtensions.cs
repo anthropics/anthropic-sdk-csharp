@@ -989,7 +989,7 @@ public static class AnthropicClientExtensions
                         case AIContent ac
                             when ToServerToolBlockParam(ac.RawRepresentation)
                                 is { } serverToolBlock:
-                            contents.Add(serverToolBlock);
+                            contents.Add(WithCacheControlFrom(serverToolBlock, ac));
                             break;
 
                         case TextContent tc:
@@ -1402,9 +1402,35 @@ public static class AnthropicClientExtensions
                 ToolUseBlockParam tub => (tub with { CacheControl = cacheControl }) as T ?? block,
                 ToolResultBlockParam trb => (trb with { CacheControl = cacheControl }) as T
                     ?? block,
+                // Replayed server-tool blocks (see ToServerToolBlockParam) arrive wrapped in the
+                // request union.
+                ContentBlockParam union => WithCacheControl(union, cacheControl) as T ?? block,
                 _ => block,
             };
         }
+
+        /// <summary>
+        /// Applies cache control to the server-tool block wrapped in a <see cref="ContentBlockParam"/>.
+        /// </summary>
+        private static ContentBlockParam WithCacheControl(
+            ContentBlockParam block,
+            CacheControlEphemeral cacheControl
+        ) =>
+            block.Value switch
+            {
+                ServerToolUseBlockParam p => p with { CacheControl = cacheControl },
+                WebSearchToolResultBlockParam p => p with { CacheControl = cacheControl },
+                WebFetchToolResultBlockParam p => p with { CacheControl = cacheControl },
+                CodeExecutionToolResultBlockParam p => p with { CacheControl = cacheControl },
+                BashCodeExecutionToolResultBlockParam p => p with { CacheControl = cacheControl },
+                TextEditorCodeExecutionToolResultBlockParam p => p with
+                {
+                    CacheControl = cacheControl,
+                },
+                ToolSearchToolResultBlockParam p => p with { CacheControl = cacheControl },
+                ContainerUploadBlockParam p => p with { CacheControl = cacheControl },
+                _ => block,
+            };
 
         private MessageCreateParams GetMessageCreateParams(
             List<MessageParam> messages,
@@ -1818,8 +1844,6 @@ public static class AnthropicClientExtensions
                 StopReason.Refusal => ChatFinishReason.ContentFilter,
                 // Anything else (pause_turn, compaction, or a stop reason newer than this SDK) marks a turn
                 // the caller has to act on, so surface the wire value instead of folding it into Stop.
-                // Note that CreateMessageParams does not yet round-trip server-tool blocks, so re-sending a
-                // paused turn through this client restarts the server-side loop rather than resuming it.
                 _ => FromRaw(stopReason.Raw()),
             };
 
@@ -2292,17 +2316,13 @@ public static class AnthropicClientExtensions
 
             // The content_block_start block carries an empty input (streamed inputs arrive
             // via input_json deltas); rebuild the RawRepresentation with the accumulated
-            // input so the block replays faithfully when the turn is sent back.
+            // input so the block replays faithfully when the turn is sent back. `with`
+            // copies the raw data, so every other field (caller, anything newer than this
+            // SDK) survives the rebuild verbatim.
             object? rawRepresentation = functionData.RawRepresentation;
             if (rawRepresentation is ServerToolUseBlock rawBlock && input is not null)
             {
-                rawRepresentation = new ServerToolUseBlock
-                {
-                    ID = rawBlock.ID,
-                    Caller = rawBlock.Caller,
-                    Input = input,
-                    Name = rawBlock.Name,
-                };
+                rawRepresentation = rawBlock with { Input = input };
             }
 
             switch (serverToolName)

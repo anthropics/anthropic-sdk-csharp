@@ -2884,11 +2884,176 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     }
 
     [Fact]
+    public async Task GetResponseAsync_ReplayedServerToolBlocks_ApplyCacheControl()
+    {
+        // Cache control set on the MEAI content lands on the replayed server-tool block,
+        // like it does for every other block the adapter converts.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{"type": "text", "text": "Find a tool"}]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [
+                            {
+                                "type": "server_tool_use",
+                                "id": "srvtoolu_01",
+                                "name": "tool_search_tool_bm25",
+                                "input": {"query": "weather"}
+                            },
+                            {
+                                "type": "tool_search_tool_result",
+                                "tool_use_id": "srvtoolu_01",
+                                "content": [],
+                                "cache_control": {"type": "ephemeral"}
+                            }
+                        ]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{"type": "text", "text": "Thanks, continue"}]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_server_tool_cache_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{"type": "text", "text": "Continuing."}],
+                "stop_reason": "end_turn",
+                "usage": {"input_tokens": 10, "output_tokens": 5}
+            }
+            """
+        );
+
+        var serverToolUse = JsonSerializer.Deserialize<BetaServerToolUseBlock>(
+            """{"type":"server_tool_use","id":"srvtoolu_01","name":"tool_search_tool_bm25","input":{"query":"weather"}}"""
+        )!;
+        var toolSearchResult = JsonSerializer.Deserialize<BetaToolSearchToolResultBlock>(
+            """{"type":"tool_search_tool_result","tool_use_id":"srvtoolu_01","content":[]}"""
+        )!;
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Find a tool"),
+            new(
+                ChatRole.Assistant,
+                [
+                    new ToolCallContent("srvtoolu_01") { RawRepresentation = serverToolUse },
+                    new ToolResultContent("srvtoolu_01")
+                    {
+                        RawRepresentation = toolSearchResult,
+                    }.WithCacheControl(new Anthropic.Models.Messages.CacheControlEphemeral()),
+                ]
+            ),
+            new(ChatRole.User, "Thanks, continue"),
+        ];
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ReplayedContainerUpload_RoundTripsToParams()
+    {
+        // The adapter surfaces container_upload blocks (files the code execution tool wrote)
+        // as HostedFileContent. Replaying one must reproduce the container_upload block,
+        // not the document-with-file-source block a plain hosted file becomes.
+        IEnumerable<string>? capturedBetaHeaders = null;
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{"type": "text", "text": "Plot it"}]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [
+                            {"type": "text", "text": "Saved the chart."},
+                            {"type": "container_upload", "file_id": "file_01"}
+                        ]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{"type": "text", "text": "Thanks"}]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_container_upload_replay_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{"type": "text", "text": "You're welcome."}],
+                "stop_reason": "end_turn",
+                "usage": {"input_tokens": 10, "output_tokens": 5}
+            }
+            """
+        )
+        {
+            OnRequestHeaders = headers =>
+                headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
+        };
+
+        var containerUpload = JsonSerializer.Deserialize<BetaContainerUploadBlock>(
+            """{"type":"container_upload","file_id":"file_01"}"""
+        )!;
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Plot it"),
+            new(
+                ChatRole.Assistant,
+                [
+                    new TextContent("Saved the chart."),
+                    new HostedFileContent("file_01") { RawRepresentation = containerUpload },
+                ]
+            ),
+            new(ChatRole.User, "Thanks"),
+        ];
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+
+        // The block references a Files API file id, so the files beta opt-in still goes out.
+        Assert.NotNull(capturedBetaHeaders);
+        Assert.Contains("files-api-2025-04-14", capturedBetaHeaders);
+    }
+
+    [Fact]
     public async Task GetStreamingResponseAsync_ServerToolUse_CapturesStreamedInputOnRawRepresentation()
     {
         // Streamed server_tool_use inputs arrive via input_json deltas while the start
         // block carries an empty input. The RawRepresentation must be rebuilt with the
-        // accumulated input, or the block replays with "input": {}.
+        // accumulated input, or the block replays with "input": {}. Every other field of
+        // the start block (here "caller") must survive the rebuild.
         VerbatimHttpHandler handler = new(
             expectedRequest: """
             {
@@ -2906,7 +3071,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
             data: {"type":"message_start","message":{"id":"msg_stream_tool_search_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
 
             event: content_block_start
-            data: {"type":"content_block_start","index":0,"content_block":{"type":"server_tool_use","id":"srvtoolu_01","name":"tool_search_tool_bm25","input":{}}}
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"server_tool_use","id":"srvtoolu_01","name":"tool_search_tool_bm25","input":{},"caller":{"type":"direct"}}}
 
             event: content_block_delta
             data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"query\":\"weather\"}"}}
@@ -2941,5 +3106,128 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.Equal("srvtoolu_01", toolCall.CallId);
         var rawBlock = Assert.IsType<BetaServerToolUseBlock>(toolCall.RawRepresentation);
         Assert.Equal("weather", rawBlock.Input["query"].GetString());
+        Assert.Equal("direct", rawBlock.RawData["caller"].GetProperty("type").GetString());
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_ServerToolTurn_ReplaysVerbatim()
+    {
+        // End to end over the streaming path: a streamed tool-search turn, collected into
+        // a ChatResponse, replays as the exact blocks the model generated, including the
+        // input accumulated from deltas and the whole tool_search_tool_result block.
+        VerbatimHttpHandler streamingHandler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{"type": "text", "text": "Find a tool"}]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_stream_tool_search_02","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"server_tool_use","id":"srvtoolu_01","name":"tool_search_tool_bm25","input":{},"caller":{"type":"direct"}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"query\":"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"\"weather\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":1,"content_block":{"type":"tool_search_tool_result","tool_use_id":"srvtoolu_01","content":[{"type":"tool_reference","tool_name":"get_weather"}]}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":1}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":2,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":2,"delta":{"type":"text_delta","text":"Found it."}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":2}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":5}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        ChatResponse streamed = await CreateChatClient(streamingHandler, "claude-haiku-4-5")
+            .GetStreamingResponseAsync("Find a tool", new(), TestContext.Current.CancellationToken)
+            .ToChatResponseAsync(TestContext.Current.CancellationToken);
+
+        VerbatimHttpHandler replayHandler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{"type": "text", "text": "Find a tool"}]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [
+                            {
+                                "type": "server_tool_use",
+                                "id": "srvtoolu_01",
+                                "name": "tool_search_tool_bm25",
+                                "input": {"query": "weather"},
+                                "caller": {"type": "direct"}
+                            },
+                            {
+                                "type": "tool_search_tool_result",
+                                "tool_use_id": "srvtoolu_01",
+                                "content": [{"type": "tool_reference", "tool_name": "get_weather"}]
+                            },
+                            {"type": "text", "text": "Found it."}
+                        ]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{"type": "text", "text": "Thanks, continue"}]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_server_tool_replay_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{"type": "text", "text": "Continuing."}],
+                "stop_reason": "end_turn",
+                "usage": {"input_tokens": 10, "output_tokens": 5}
+            }
+            """
+        );
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Find a tool"),
+            .. streamed.Messages,
+            new(ChatRole.User, "Thanks, continue"),
+        ];
+
+        ChatResponse response = await CreateChatClient(replayHandler, "claude-haiku-4-5")
+            .GetResponseAsync(messages, new(), TestContext.Current.CancellationToken);
+        Assert.NotNull(response);
     }
 }

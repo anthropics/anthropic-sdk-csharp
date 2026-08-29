@@ -683,7 +683,10 @@ public static class AnthropicBetaClientExtensions
                         case AIContent ac
                             when ToServerToolBlockParam(ac.RawRepresentation)
                                 is { } serverToolBlock:
-                            contents.Add(serverToolBlock);
+                            // A container_upload block references a Files API file id, so keep
+                            // the files beta opt-in the HostedFileContent arms below would set.
+                            hasHostedFiles |= ac.RawRepresentation is BetaContainerUploadBlock;
+                            contents.Add(WithCacheControlFrom(serverToolBlock, ac));
                             break;
 
                         case TextContent tc:
@@ -1157,9 +1160,41 @@ public static class AnthropicBetaClientExtensions
                     ?? block,
                 BetaToolResultBlockParam trb => (trb with { CacheControl = betaCacheControl }) as T
                     ?? block,
+                // Replayed server-tool blocks (see ToServerToolBlockParam) arrive wrapped in the
+                // request union.
+                BetaContentBlockParam union => WithCacheControl(union, betaCacheControl) as T
+                    ?? block,
                 _ => block,
             };
         }
+
+        /// <summary>
+        /// Applies cache control to the server-tool block wrapped in a <see cref="BetaContentBlockParam"/>.
+        /// </summary>
+        private static BetaContentBlockParam WithCacheControl(
+            BetaContentBlockParam block,
+            BetaCacheControlEphemeral cacheControl
+        ) =>
+            block.Value switch
+            {
+                BetaServerToolUseBlockParam p => p with { CacheControl = cacheControl },
+                BetaWebSearchToolResultBlockParam p => p with { CacheControl = cacheControl },
+                BetaWebFetchToolResultBlockParam p => p with { CacheControl = cacheControl },
+                BetaCodeExecutionToolResultBlockParam p => p with { CacheControl = cacheControl },
+                BetaBashCodeExecutionToolResultBlockParam p => p with
+                {
+                    CacheControl = cacheControl,
+                },
+                BetaTextEditorCodeExecutionToolResultBlockParam p => p with
+                {
+                    CacheControl = cacheControl,
+                },
+                BetaToolSearchToolResultBlockParam p => p with { CacheControl = cacheControl },
+                BetaMcpToolUseBlockParam p => p with { CacheControl = cacheControl },
+                BetaRequestMcpToolResultBlockParam p => p with { CacheControl = cacheControl },
+                BetaContainerUploadBlockParam p => p with { CacheControl = cacheControl },
+                _ => block,
+            };
 
         /// <summary>
         /// Converts the non-beta <see cref="Anthropic.Models.Messages.CacheControlEphemeral"/> (the type
@@ -1704,8 +1739,6 @@ public static class AnthropicBetaClientExtensions
                 BetaStopReason.Refusal => ChatFinishReason.ContentFilter,
                 // Anything else (pause_turn, compaction, or a stop reason newer than this SDK) marks a turn
                 // the caller has to act on, so surface the wire value instead of folding it into Stop.
-                // Note that CreateMessageParams does not yet round-trip server-tool blocks, so re-sending a
-                // paused turn through this client restarts the server-side loop rather than resuming it.
                 _ => FromRaw(stopReason.Raw()),
             };
 
@@ -2232,17 +2265,13 @@ public static class AnthropicBetaClientExtensions
 
             // The content_block_start block carries an empty input (streamed inputs arrive
             // via input_json deltas); rebuild the RawRepresentation with the accumulated
-            // input so the block replays faithfully when the turn is sent back.
+            // input so the block replays faithfully when the turn is sent back. `with`
+            // copies the raw data, so every other field (caller, anything newer than this
+            // SDK) survives the rebuild verbatim.
             object? rawRepresentation = functionData.RawRepresentation;
             if (rawRepresentation is BetaServerToolUseBlock rawBlock && input is not null)
             {
-                rawRepresentation = new BetaServerToolUseBlock
-                {
-                    ID = rawBlock.ID,
-                    Input = input,
-                    Name = rawBlock.Name,
-                    Caller = rawBlock.Caller,
-                };
+                rawRepresentation = rawBlock with { Input = input };
             }
 
             switch (serverToolName)
