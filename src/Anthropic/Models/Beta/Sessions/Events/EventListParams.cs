@@ -134,7 +134,7 @@ public record class EventListParams : ParamsBase
 
     /// <summary>
     /// Sort direction for results, ordered by the event's `processed_at`. Defaults
-    /// to asc (chronological).
+    /// to `asc` (chronological).
     /// </summary>
     public ApiEnum<string, Order>? Order
     {
@@ -155,7 +155,7 @@ public record class EventListParams : ParamsBase
     }
 
     /// <summary>
-    /// Opaque pagination cursor from a previous response's next_page.
+    /// Opaque pagination cursor from a previous response's `next_page`.
     /// </summary>
     public string? Page
     {
@@ -332,7 +332,7 @@ public record class EventListParams : ParamsBase
 
 /// <summary>
 /// Sort direction for results, ordered by the event's `processed_at`. Defaults to
-/// asc (chronological).
+/// `asc` (chronological).
 /// </summary>
 [JsonConverter(typeof(OrderConverter))]
 public enum Order

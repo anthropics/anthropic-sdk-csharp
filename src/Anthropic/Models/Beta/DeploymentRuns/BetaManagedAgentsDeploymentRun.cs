@@ -89,8 +89,8 @@ public sealed record class BetaManagedAgentsDeploymentRun : JsonModel
     }
 
     /// <summary>
-    /// Populated on success. Null on creation failure. Exactly one of session_id
-    /// or error is non-null.
+    /// Populated on success. Null on creation failure. Exactly one of `session_id`
+    /// or `error` is non-null.
     /// </summary>
     public required string? SessionID
     {

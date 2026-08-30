@@ -10,7 +10,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Sessions;
 
 /// <summary>
-/// Evaluation state for a single outcome defined via a define_outcome event.
+/// Evaluation state for a single outcome defined via a `define_outcome` event.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<
@@ -47,9 +47,9 @@ public sealed record class BetaManagedAgentsOutcomeEvaluationResource : JsonMode
     }
 
     /// <summary>
-    /// Grader's verdict text from the most recent evaluation. For satisfied, explains
-    /// why criteria are met; for needs_revision (intermediate), what's missing;
-    /// for failed, why unrecoverable.
+    /// Grader's verdict text from the most recent evaluation. For `satisfied`, explains
+    /// why criteria are met; for `needs_revision` (intermediate), what's missing;
+    /// for `failed`, why unrecoverable.
     /// </summary>
     public required string? Explanation
     {

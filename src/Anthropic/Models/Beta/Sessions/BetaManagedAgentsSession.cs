@@ -110,7 +110,7 @@ public sealed record class BetaManagedAgentsSession : JsonModel
     }
 
     /// <summary>
-    /// Per-outcome evaluation state. One entry per define_outcome event sent to
+    /// Per-outcome evaluation state. One entry per `define_outcome` event sent to
     /// the session.
     /// </summary>
     public required IReadOnlyList<BetaManagedAgentsOutcomeEvaluationResource> OutcomeEvaluations

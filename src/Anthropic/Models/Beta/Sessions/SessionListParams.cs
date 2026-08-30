@@ -43,7 +43,7 @@ public record class SessionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Filter by agent version. Only applies when agent_id is also set.
+    /// Filter by agent version. Only applies when `agent_id` is also set.
     /// </summary>
     public int? AgentVersion
     {
@@ -211,7 +211,8 @@ public record class SessionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Filter sessions whose resources contain a memory_store with this memory store ID.
+    /// Filter sessions whose resources contain a `memory_store` with this memory
+    /// store ID.
     /// </summary>
     public string? MemoryStoreID
     {
@@ -232,7 +233,7 @@ public record class SessionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Sort direction for results, ordered by created_at. Defaults to desc (newest first).
+    /// Sort direction for results, ordered by `created_at`. Defaults to `desc` (newest first).
     /// </summary>
     public ApiEnum<string, Order>? Order
     {
@@ -418,7 +419,7 @@ public record class SessionListParams : ParamsBase
 }
 
 /// <summary>
-/// Sort direction for results, ordered by created_at. Defaults to desc (newest first).
+/// Sort direction for results, ordered by `created_at`. Defaults to `desc` (newest first).
 /// </summary>
 [JsonConverter(typeof(OrderConverter))]
 public enum Order

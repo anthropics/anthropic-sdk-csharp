@@ -146,8 +146,8 @@ public record class DeploymentListParams : ParamsBase
     }
 
     /// <summary>
-    /// Filter by status: active or paused. Omit for both. To include archived deployments,
-    /// use include_archived instead; the two cannot be combined.
+    /// Filter by status: `active` or `paused`. Omit for both. To include archived
+    /// deployments, use `include_archived` instead; the two cannot be combined.
     /// </summary>
     public ApiEnum<string, BetaManagedAgentsDeploymentStatus>? Status
     {

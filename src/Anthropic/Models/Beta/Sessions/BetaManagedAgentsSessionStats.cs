@@ -16,7 +16,8 @@ namespace Anthropic.Models.Beta.Sessions;
 public sealed record class BetaManagedAgentsSessionStats : JsonModel
 {
     /// <summary>
-    /// Cumulative time in seconds the session spent in running status. Excludes idle time.
+    /// Cumulative time in seconds the session spent in `running` status. Excludes
+    /// idle time.
     /// </summary>
     public double? ActiveSeconds
     {
