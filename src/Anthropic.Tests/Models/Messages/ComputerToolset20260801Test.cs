@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -13,7 +11,6 @@ public class ComputerToolset20260801Test : TestBase
     {
         var model = new ComputerToolset20260801
         {
-            AllowedCallers = [ComputerToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -38,10 +35,6 @@ public class ComputerToolset20260801Test : TestBase
         };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("computer_toolset_20260801");
-        List<ApiEnum<string, ComputerToolset20260801AllowedCaller>> expectedAllowedCallers =
-        [
-            ComputerToolset20260801AllowedCaller.Direct,
-        ];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         ComputerToolsetConfigs expectedConfigs = new()
         {
@@ -65,12 +58,6 @@ public class ComputerToolset20260801Test : TestBase
         };
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
-        Assert.NotNull(model.AllowedCallers);
-        Assert.Equal(expectedAllowedCallers.Count, model.AllowedCallers.Count);
-        for (int i = 0; i < expectedAllowedCallers.Count; i++)
-        {
-            Assert.Equal(expectedAllowedCallers[i], model.AllowedCallers[i]);
-        }
         Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedConfigs, model.Configs);
     }
@@ -80,7 +67,6 @@ public class ComputerToolset20260801Test : TestBase
     {
         var model = new ComputerToolset20260801
         {
-            AllowedCallers = [ComputerToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -118,7 +104,6 @@ public class ComputerToolset20260801Test : TestBase
     {
         var model = new ComputerToolset20260801
         {
-            AllowedCallers = [ComputerToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -150,10 +135,6 @@ public class ComputerToolset20260801Test : TestBase
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("computer_toolset_20260801");
-        List<ApiEnum<string, ComputerToolset20260801AllowedCaller>> expectedAllowedCallers =
-        [
-            ComputerToolset20260801AllowedCaller.Direct,
-        ];
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         ComputerToolsetConfigs expectedConfigs = new()
         {
@@ -177,12 +158,6 @@ public class ComputerToolset20260801Test : TestBase
         };
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
-        Assert.NotNull(deserialized.AllowedCallers);
-        Assert.Equal(expectedAllowedCallers.Count, deserialized.AllowedCallers.Count);
-        for (int i = 0; i < expectedAllowedCallers.Count; i++)
-        {
-            Assert.Equal(expectedAllowedCallers[i], deserialized.AllowedCallers[i]);
-        }
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedConfigs, deserialized.Configs);
     }
@@ -192,7 +167,6 @@ public class ComputerToolset20260801Test : TestBase
     {
         var model = new ComputerToolset20260801
         {
-            AllowedCallers = [ComputerToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -214,138 +188,6 @@ public class ComputerToolset20260801Test : TestBase
                 Wait = new() { DeferLoading = true, Enabled = true },
                 Zoom = new() { DeferLoading = true, Enabled = true },
             },
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
-    {
-        var model = new ComputerToolset20260801
-        {
-            CacheControl = new() { Ttl = Ttl.Ttl5m },
-            Configs = new()
-            {
-                CursorPosition = new() { DeferLoading = true, Enabled = true },
-                DoubleClick = new() { DeferLoading = true, Enabled = true },
-                HoldKey = new() { DeferLoading = true, Enabled = true },
-                Key = new() { DeferLoading = true, Enabled = true },
-                LeftClick = new() { DeferLoading = true, Enabled = true },
-                LeftClickDrag = new() { DeferLoading = true, Enabled = true },
-                LeftMouseDown = new() { DeferLoading = true, Enabled = true },
-                LeftMouseUp = new() { DeferLoading = true, Enabled = true },
-                MiddleClick = new() { DeferLoading = true, Enabled = true },
-                MouseMove = new() { DeferLoading = true, Enabled = true },
-                RightClick = new() { DeferLoading = true, Enabled = true },
-                Screenshot = new() { DeferLoading = true, Enabled = true },
-                Scroll = new() { DeferLoading = true, Enabled = true },
-                TripleClick = new() { DeferLoading = true, Enabled = true },
-                Type = new() { DeferLoading = true, Enabled = true },
-                Wait = new() { DeferLoading = true, Enabled = true },
-                Zoom = new() { DeferLoading = true, Enabled = true },
-            },
-        };
-
-        Assert.Null(model.AllowedCallers);
-        Assert.False(model.RawData.ContainsKey("allowed_callers"));
-    }
-
-    [Fact]
-    public void OptionalNonNullablePropertiesUnsetValidation_Works()
-    {
-        var model = new ComputerToolset20260801
-        {
-            CacheControl = new() { Ttl = Ttl.Ttl5m },
-            Configs = new()
-            {
-                CursorPosition = new() { DeferLoading = true, Enabled = true },
-                DoubleClick = new() { DeferLoading = true, Enabled = true },
-                HoldKey = new() { DeferLoading = true, Enabled = true },
-                Key = new() { DeferLoading = true, Enabled = true },
-                LeftClick = new() { DeferLoading = true, Enabled = true },
-                LeftClickDrag = new() { DeferLoading = true, Enabled = true },
-                LeftMouseDown = new() { DeferLoading = true, Enabled = true },
-                LeftMouseUp = new() { DeferLoading = true, Enabled = true },
-                MiddleClick = new() { DeferLoading = true, Enabled = true },
-                MouseMove = new() { DeferLoading = true, Enabled = true },
-                RightClick = new() { DeferLoading = true, Enabled = true },
-                Screenshot = new() { DeferLoading = true, Enabled = true },
-                Scroll = new() { DeferLoading = true, Enabled = true },
-                TripleClick = new() { DeferLoading = true, Enabled = true },
-                Type = new() { DeferLoading = true, Enabled = true },
-                Wait = new() { DeferLoading = true, Enabled = true },
-                Zoom = new() { DeferLoading = true, Enabled = true },
-            },
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
-    {
-        var model = new ComputerToolset20260801
-        {
-            CacheControl = new() { Ttl = Ttl.Ttl5m },
-            Configs = new()
-            {
-                CursorPosition = new() { DeferLoading = true, Enabled = true },
-                DoubleClick = new() { DeferLoading = true, Enabled = true },
-                HoldKey = new() { DeferLoading = true, Enabled = true },
-                Key = new() { DeferLoading = true, Enabled = true },
-                LeftClick = new() { DeferLoading = true, Enabled = true },
-                LeftClickDrag = new() { DeferLoading = true, Enabled = true },
-                LeftMouseDown = new() { DeferLoading = true, Enabled = true },
-                LeftMouseUp = new() { DeferLoading = true, Enabled = true },
-                MiddleClick = new() { DeferLoading = true, Enabled = true },
-                MouseMove = new() { DeferLoading = true, Enabled = true },
-                RightClick = new() { DeferLoading = true, Enabled = true },
-                Screenshot = new() { DeferLoading = true, Enabled = true },
-                Scroll = new() { DeferLoading = true, Enabled = true },
-                TripleClick = new() { DeferLoading = true, Enabled = true },
-                Type = new() { DeferLoading = true, Enabled = true },
-                Wait = new() { DeferLoading = true, Enabled = true },
-                Zoom = new() { DeferLoading = true, Enabled = true },
-            },
-
-            // Null should be interpreted as omitted for these properties
-            AllowedCallers = null,
-        };
-
-        Assert.Null(model.AllowedCallers);
-        Assert.False(model.RawData.ContainsKey("allowed_callers"));
-    }
-
-    [Fact]
-    public void OptionalNonNullablePropertiesSetToNullValidation_Works()
-    {
-        var model = new ComputerToolset20260801
-        {
-            CacheControl = new() { Ttl = Ttl.Ttl5m },
-            Configs = new()
-            {
-                CursorPosition = new() { DeferLoading = true, Enabled = true },
-                DoubleClick = new() { DeferLoading = true, Enabled = true },
-                HoldKey = new() { DeferLoading = true, Enabled = true },
-                Key = new() { DeferLoading = true, Enabled = true },
-                LeftClick = new() { DeferLoading = true, Enabled = true },
-                LeftClickDrag = new() { DeferLoading = true, Enabled = true },
-                LeftMouseDown = new() { DeferLoading = true, Enabled = true },
-                LeftMouseUp = new() { DeferLoading = true, Enabled = true },
-                MiddleClick = new() { DeferLoading = true, Enabled = true },
-                MouseMove = new() { DeferLoading = true, Enabled = true },
-                RightClick = new() { DeferLoading = true, Enabled = true },
-                Screenshot = new() { DeferLoading = true, Enabled = true },
-                Scroll = new() { DeferLoading = true, Enabled = true },
-                TripleClick = new() { DeferLoading = true, Enabled = true },
-                Type = new() { DeferLoading = true, Enabled = true },
-                Wait = new() { DeferLoading = true, Enabled = true },
-                Zoom = new() { DeferLoading = true, Enabled = true },
-            },
-
-            // Null should be interpreted as omitted for these properties
-            AllowedCallers = null,
         };
 
         model.Validate();
@@ -354,10 +196,7 @@ public class ComputerToolset20260801Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new ComputerToolset20260801
-        {
-            AllowedCallers = [ComputerToolset20260801AllowedCaller.Direct],
-        };
+        var model = new ComputerToolset20260801 { };
 
         Assert.Null(model.CacheControl);
         Assert.False(model.RawData.ContainsKey("cache_control"));
@@ -368,10 +207,7 @@ public class ComputerToolset20260801Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new ComputerToolset20260801
-        {
-            AllowedCallers = [ComputerToolset20260801AllowedCaller.Direct],
-        };
+        var model = new ComputerToolset20260801 { };
 
         model.Validate();
     }
@@ -379,13 +215,7 @@ public class ComputerToolset20260801Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new ComputerToolset20260801
-        {
-            AllowedCallers = [ComputerToolset20260801AllowedCaller.Direct],
-
-            CacheControl = null,
-            Configs = null,
-        };
+        var model = new ComputerToolset20260801 { CacheControl = null, Configs = null };
 
         Assert.Null(model.CacheControl);
         Assert.True(model.RawData.ContainsKey("cache_control"));
@@ -396,13 +226,7 @@ public class ComputerToolset20260801Test : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new ComputerToolset20260801
-        {
-            AllowedCallers = [ComputerToolset20260801AllowedCaller.Direct],
-
-            CacheControl = null,
-            Configs = null,
-        };
+        var model = new ComputerToolset20260801 { CacheControl = null, Configs = null };
 
         model.Validate();
     }
@@ -412,7 +236,6 @@ public class ComputerToolset20260801Test : TestBase
     {
         var model = new ComputerToolset20260801
         {
-            AllowedCallers = [ComputerToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -439,63 +262,5 @@ public class ComputerToolset20260801Test : TestBase
         ComputerToolset20260801 copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class ComputerToolset20260801AllowedCallerTest : TestBase
-{
-    [Theory]
-    [InlineData(ComputerToolset20260801AllowedCaller.Direct)]
-    [InlineData(ComputerToolset20260801AllowedCaller.CodeExecution20250825)]
-    [InlineData(ComputerToolset20260801AllowedCaller.CodeExecution20260120)]
-    [InlineData(ComputerToolset20260801AllowedCaller.CodeExecution20260521)]
-    public void Validation_Works(ComputerToolset20260801AllowedCaller rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, ComputerToolset20260801AllowedCaller> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, ComputerToolset20260801AllowedCaller>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(ComputerToolset20260801AllowedCaller.Direct)]
-    [InlineData(ComputerToolset20260801AllowedCaller.CodeExecution20250825)]
-    [InlineData(ComputerToolset20260801AllowedCaller.CodeExecution20260120)]
-    [InlineData(ComputerToolset20260801AllowedCaller.CodeExecution20260521)]
-    public void SerializationRoundtrip_Works(ComputerToolset20260801AllowedCaller rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, ComputerToolset20260801AllowedCaller> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, ComputerToolset20260801AllowedCaller>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, ComputerToolset20260801AllowedCaller>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, ComputerToolset20260801AllowedCaller>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

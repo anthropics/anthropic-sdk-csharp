@@ -1,12 +1,10 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
@@ -28,28 +26,6 @@ public sealed record class BetaBrowserToolset20260801 : JsonModel
             return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
-    }
-
-    public IReadOnlyList<ApiEnum<string, BetaBrowserToolset20260801AllowedCaller>>? AllowedCallers
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<
-                ImmutableArray<ApiEnum<string, BetaBrowserToolset20260801AllowedCaller>>
-            >("allowed_callers");
-        }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawData.Set<ImmutableArray<
-                ApiEnum<string, BetaBrowserToolset20260801AllowedCaller>
-            >?>("allowed_callers", value == null ? null : ImmutableArray.ToImmutableArray(value));
-        }
     }
 
     /// <summary>
@@ -93,10 +69,6 @@ public sealed record class BetaBrowserToolset20260801 : JsonModel
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
-        }
-        foreach (var item in this.AllowedCallers ?? [])
-        {
-            item.Validate();
         }
         this.CacheControl?.Validate();
         this.Configs?.Validate();
@@ -143,70 +115,4 @@ class BetaBrowserToolset20260801FromRaw : IFromRawJson<BetaBrowserToolset2026080
     public BetaBrowserToolset20260801 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaBrowserToolset20260801.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// Specifies who can invoke a tool.
-///
-/// <para>Values:     direct: The model can call this tool directly.     code_execution_20250825:
-/// The tool can be called from the code execution environment (v1).     code_execution_20260120:
-/// The tool can be called from the code execution environment (v2 with persistence).
-///     code_execution_20260521: The tool can be called from the code execution environment
-/// (v2 with persistence).</para>
-/// </summary>
-[JsonConverter(typeof(BetaBrowserToolset20260801AllowedCallerConverter))]
-public enum BetaBrowserToolset20260801AllowedCaller
-{
-    Direct,
-    CodeExecution20250825,
-    CodeExecution20260120,
-    CodeExecution20260521,
-}
-
-sealed class BetaBrowserToolset20260801AllowedCallerConverter
-    : JsonConverter<BetaBrowserToolset20260801AllowedCaller>
-{
-    public override BetaBrowserToolset20260801AllowedCaller Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "direct" => BetaBrowserToolset20260801AllowedCaller.Direct,
-            "code_execution_20250825" =>
-                BetaBrowserToolset20260801AllowedCaller.CodeExecution20250825,
-            "code_execution_20260120" =>
-                BetaBrowserToolset20260801AllowedCaller.CodeExecution20260120,
-            "code_execution_20260521" =>
-                BetaBrowserToolset20260801AllowedCaller.CodeExecution20260521,
-            _ => (BetaBrowserToolset20260801AllowedCaller)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaBrowserToolset20260801AllowedCaller value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaBrowserToolset20260801AllowedCaller.Direct => "direct",
-                BetaBrowserToolset20260801AllowedCaller.CodeExecution20250825 =>
-                    "code_execution_20250825",
-                BetaBrowserToolset20260801AllowedCaller.CodeExecution20260120 =>
-                    "code_execution_20260120",
-                BetaBrowserToolset20260801AllowedCaller.CodeExecution20260521 =>
-                    "code_execution_20260521",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

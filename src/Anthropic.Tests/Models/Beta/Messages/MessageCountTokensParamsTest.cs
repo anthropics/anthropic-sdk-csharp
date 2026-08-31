@@ -1001,7 +1001,6 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaBrowserToolset20260801()
         {
-            AllowedCallers = [BetaBrowserToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -1156,7 +1155,6 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaComputerToolset20260801()
         {
-            AllowedCallers = [BetaComputerToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -1603,7 +1601,6 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaBrowserToolset20260801()
         {
-            AllowedCallers = [BetaBrowserToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -1776,7 +1773,6 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaComputerToolset20260801()
         {
-            AllowedCallers = [BetaComputerToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
