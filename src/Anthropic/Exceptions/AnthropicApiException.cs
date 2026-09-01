@@ -30,6 +30,11 @@ public class AnthropicApiException : AnthropicServiceException
 
     public override string Message
     {
-        get { return string.Format("Status Code: {0}\n{1}", StatusCode, ResponseBody); }
+        get
+        {
+            return ResponseBody.Length == 0
+                ? string.Format("Status Code: {0}", StatusCode)
+                : string.Format("Status Code: {0}\n{1}", StatusCode, ResponseBody);
+        }
     }
 }
