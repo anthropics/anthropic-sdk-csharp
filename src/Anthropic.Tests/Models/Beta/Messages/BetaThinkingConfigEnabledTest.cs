@@ -13,16 +13,25 @@ public class BetaThinkingConfigEnabledTest : TestBase
         var model = new BetaThinkingConfigEnabled
         {
             BudgetTokens = 1024,
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = BetaThinkingConfigEnabledDisplay.Summarized,
         };
 
         long expectedBudgetTokens = 1024;
         JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
+        BetaThinkingBlockBinding expectedBlockBinding = new()
+        {
+            PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+        };
         ApiEnum<string, BetaThinkingConfigEnabledDisplay> expectedDisplay =
             BetaThinkingConfigEnabledDisplay.Summarized;
 
         Assert.Equal(expectedBudgetTokens, model.BudgetTokens);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.Equal(expectedBlockBinding, model.BlockBinding);
         Assert.Equal(expectedDisplay, model.Display);
     }
 
@@ -32,6 +41,10 @@ public class BetaThinkingConfigEnabledTest : TestBase
         var model = new BetaThinkingConfigEnabled
         {
             BudgetTokens = 1024,
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = BetaThinkingConfigEnabledDisplay.Summarized,
         };
 
@@ -50,6 +63,10 @@ public class BetaThinkingConfigEnabledTest : TestBase
         var model = new BetaThinkingConfigEnabled
         {
             BudgetTokens = 1024,
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = BetaThinkingConfigEnabledDisplay.Summarized,
         };
 
@@ -62,11 +79,16 @@ public class BetaThinkingConfigEnabledTest : TestBase
 
         long expectedBudgetTokens = 1024;
         JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
+        BetaThinkingBlockBinding expectedBlockBinding = new()
+        {
+            PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+        };
         ApiEnum<string, BetaThinkingConfigEnabledDisplay> expectedDisplay =
             BetaThinkingConfigEnabledDisplay.Summarized;
 
         Assert.Equal(expectedBudgetTokens, deserialized.BudgetTokens);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.Equal(expectedBlockBinding, deserialized.BlockBinding);
         Assert.Equal(expectedDisplay, deserialized.Display);
     }
 
@@ -76,6 +98,10 @@ public class BetaThinkingConfigEnabledTest : TestBase
         var model = new BetaThinkingConfigEnabled
         {
             BudgetTokens = 1024,
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = BetaThinkingConfigEnabledDisplay.Summarized,
         };
 
@@ -87,6 +113,8 @@ public class BetaThinkingConfigEnabledTest : TestBase
     {
         var model = new BetaThinkingConfigEnabled { BudgetTokens = 1024 };
 
+        Assert.Null(model.BlockBinding);
+        Assert.False(model.RawData.ContainsKey("block_binding"));
         Assert.Null(model.Display);
         Assert.False(model.RawData.ContainsKey("display"));
     }
@@ -106,9 +134,12 @@ public class BetaThinkingConfigEnabledTest : TestBase
         {
             BudgetTokens = 1024,
 
+            BlockBinding = null,
             Display = null,
         };
 
+        Assert.Null(model.BlockBinding);
+        Assert.True(model.RawData.ContainsKey("block_binding"));
         Assert.Null(model.Display);
         Assert.True(model.RawData.ContainsKey("display"));
     }
@@ -120,6 +151,7 @@ public class BetaThinkingConfigEnabledTest : TestBase
         {
             BudgetTokens = 1024,
 
+            BlockBinding = null,
             Display = null,
         };
 
@@ -132,6 +164,10 @@ public class BetaThinkingConfigEnabledTest : TestBase
         var model = new BetaThinkingConfigEnabled
         {
             BudgetTokens = 1024,
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = BetaThinkingConfigEnabledDisplay.Summarized,
         };
 

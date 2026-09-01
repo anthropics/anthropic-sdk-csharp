@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Messages;
@@ -70,7 +71,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeSonnet5,
+                        Model = Model.ClaudeFable5_1,
                         OutputTokens = 0,
                     },
                 ],
@@ -78,6 +79,15 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
+            InputTransformations =
+            [
+                new()
+                {
+                    Path = "path",
+                    Reason =
+                        Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                },
+            ],
         };
 
         Messages::BetaContextManagementResponse expectedContextManagement = new(
@@ -136,7 +146,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeSonnet5,
+                    Model = Model.ClaudeFable5_1,
                     OutputTokens = 0,
                 },
             ],
@@ -144,11 +154,26 @@ public class BetaRawMessageDeltaEventTest : TestBase
             OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
+        List<Messages::BetaThinkingDroppedInputTransformation> expectedInputTransformations =
+        [
+            new()
+            {
+                Path = "path",
+                Reason =
+                    Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+            },
+        ];
 
         Assert.Equal(expectedContextManagement, model.ContextManagement);
         Assert.Equal(expectedDelta, model.Delta);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUsage, model.Usage);
+        Assert.NotNull(model.InputTransformations);
+        Assert.Equal(expectedInputTransformations.Count, model.InputTransformations.Count);
+        for (int i = 0; i < expectedInputTransformations.Count; i++)
+        {
+            Assert.Equal(expectedInputTransformations[i], model.InputTransformations[i]);
+        }
     }
 
     [Fact]
@@ -213,7 +238,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeSonnet5,
+                        Model = Model.ClaudeFable5_1,
                         OutputTokens = 0,
                     },
                 ],
@@ -221,6 +246,15 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
+            InputTransformations =
+            [
+                new()
+                {
+                    Path = "path",
+                    Reason =
+                        Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                },
+            ],
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -294,7 +328,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeSonnet5,
+                        Model = Model.ClaudeFable5_1,
                         OutputTokens = 0,
                     },
                 ],
@@ -302,6 +336,15 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
+            InputTransformations =
+            [
+                new()
+                {
+                    Path = "path",
+                    Reason =
+                        Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                },
+            ],
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -367,7 +410,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeSonnet5,
+                    Model = Model.ClaudeFable5_1,
                     OutputTokens = 0,
                 },
             ],
@@ -375,11 +418,26 @@ public class BetaRawMessageDeltaEventTest : TestBase
             OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
+        List<Messages::BetaThinkingDroppedInputTransformation> expectedInputTransformations =
+        [
+            new()
+            {
+                Path = "path",
+                Reason =
+                    Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+            },
+        ];
 
         Assert.Equal(expectedContextManagement, deserialized.ContextManagement);
         Assert.Equal(expectedDelta, deserialized.Delta);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUsage, deserialized.Usage);
+        Assert.NotNull(deserialized.InputTransformations);
+        Assert.Equal(expectedInputTransformations.Count, deserialized.InputTransformations.Count);
+        for (int i = 0; i < expectedInputTransformations.Count; i++)
+        {
+            Assert.Equal(expectedInputTransformations[i], deserialized.InputTransformations[i]);
+        }
     }
 
     [Fact]
@@ -444,7 +502,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeSonnet5,
+                        Model = Model.ClaudeFable5_1,
                         OutputTokens = 0,
                     },
                 ],
@@ -452,6 +510,321 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
+            InputTransformations =
+            [
+                new()
+                {
+                    Path = "path",
+                    Reason =
+                        Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                },
+            ],
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new Messages::BetaRawMessageDeltaEvent
+        {
+            ContextManagement = new(
+                [
+                    new Messages::BetaClearToolUses20250919EditResponse()
+                    {
+                        ClearedInputTokens = 0,
+                        ClearedToolUses = 0,
+                    },
+                ]
+            ),
+            Delta = new()
+            {
+                Container = new()
+                {
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = Messages::Type.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
+                },
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                    FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
+                    FallbackHasPrefillClaim = true,
+                    RecommendedModel = "claude-opus-4-8",
+                },
+                StopReason = Messages::BetaStopReason.EndTurn,
+                StopSequence = "stop_sequence",
+            },
+            Usage = new()
+            {
+                CacheCreationInputTokens = 2051,
+                CacheReadInputTokens = 2051,
+                FallbackCredit = new(
+                    new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
+                ),
+                InputTokens = 2095,
+                Iterations =
+                [
+                    new Messages::BetaMessageIterationUsage()
+                    {
+                        CacheCreation = new()
+                        {
+                            Ephemeral1hInputTokens = 0,
+                            Ephemeral5mInputTokens = 0,
+                        },
+                        CacheCreationInputTokens = 0,
+                        CacheReadInputTokens = 0,
+                        InputTokens = 0,
+                        Model = Model.ClaudeFable5_1,
+                        OutputTokens = 0,
+                    },
+                ],
+                OutputTokens = 503,
+                OutputTokensDetails = new(0),
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
+            },
+        };
+
+        Assert.Null(model.InputTransformations);
+        Assert.False(model.RawData.ContainsKey("input_transformations"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new Messages::BetaRawMessageDeltaEvent
+        {
+            ContextManagement = new(
+                [
+                    new Messages::BetaClearToolUses20250919EditResponse()
+                    {
+                        ClearedInputTokens = 0,
+                        ClearedToolUses = 0,
+                    },
+                ]
+            ),
+            Delta = new()
+            {
+                Container = new()
+                {
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = Messages::Type.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
+                },
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                    FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
+                    FallbackHasPrefillClaim = true,
+                    RecommendedModel = "claude-opus-4-8",
+                },
+                StopReason = Messages::BetaStopReason.EndTurn,
+                StopSequence = "stop_sequence",
+            },
+            Usage = new()
+            {
+                CacheCreationInputTokens = 2051,
+                CacheReadInputTokens = 2051,
+                FallbackCredit = new(
+                    new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
+                ),
+                InputTokens = 2095,
+                Iterations =
+                [
+                    new Messages::BetaMessageIterationUsage()
+                    {
+                        CacheCreation = new()
+                        {
+                            Ephemeral1hInputTokens = 0,
+                            Ephemeral5mInputTokens = 0,
+                        },
+                        CacheCreationInputTokens = 0,
+                        CacheReadInputTokens = 0,
+                        InputTokens = 0,
+                        Model = Model.ClaudeFable5_1,
+                        OutputTokens = 0,
+                    },
+                ],
+                OutputTokens = 503,
+                OutputTokensDetails = new(0),
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
+            },
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
+    {
+        var model = new Messages::BetaRawMessageDeltaEvent
+        {
+            ContextManagement = new(
+                [
+                    new Messages::BetaClearToolUses20250919EditResponse()
+                    {
+                        ClearedInputTokens = 0,
+                        ClearedToolUses = 0,
+                    },
+                ]
+            ),
+            Delta = new()
+            {
+                Container = new()
+                {
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = Messages::Type.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
+                },
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                    FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
+                    FallbackHasPrefillClaim = true,
+                    RecommendedModel = "claude-opus-4-8",
+                },
+                StopReason = Messages::BetaStopReason.EndTurn,
+                StopSequence = "stop_sequence",
+            },
+            Usage = new()
+            {
+                CacheCreationInputTokens = 2051,
+                CacheReadInputTokens = 2051,
+                FallbackCredit = new(
+                    new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
+                ),
+                InputTokens = 2095,
+                Iterations =
+                [
+                    new Messages::BetaMessageIterationUsage()
+                    {
+                        CacheCreation = new()
+                        {
+                            Ephemeral1hInputTokens = 0,
+                            Ephemeral5mInputTokens = 0,
+                        },
+                        CacheCreationInputTokens = 0,
+                        CacheReadInputTokens = 0,
+                        InputTokens = 0,
+                        Model = Model.ClaudeFable5_1,
+                        OutputTokens = 0,
+                    },
+                ],
+                OutputTokens = 503,
+                OutputTokensDetails = new(0),
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
+            },
+
+            InputTransformations = null,
+        };
+
+        Assert.Null(model.InputTransformations);
+        Assert.True(model.RawData.ContainsKey("input_transformations"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new Messages::BetaRawMessageDeltaEvent
+        {
+            ContextManagement = new(
+                [
+                    new Messages::BetaClearToolUses20250919EditResponse()
+                    {
+                        ClearedInputTokens = 0,
+                        ClearedToolUses = 0,
+                    },
+                ]
+            ),
+            Delta = new()
+            {
+                Container = new()
+                {
+                    ID = "container_011CpZohnwH4vuy7gazohgSP",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "pdf",
+                            Type = Messages::Type.Anthropic,
+                            Version = "latest",
+                        },
+                    ],
+                },
+                StopDetails = new()
+                {
+                    Category = Messages::Category.Cyber,
+                    Explanation =
+                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
+                    FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
+                    FallbackHasPrefillClaim = true,
+                    RecommendedModel = "claude-opus-4-8",
+                },
+                StopReason = Messages::BetaStopReason.EndTurn,
+                StopSequence = "stop_sequence",
+            },
+            Usage = new()
+            {
+                CacheCreationInputTokens = 2051,
+                CacheReadInputTokens = 2051,
+                FallbackCredit = new(
+                    new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
+                ),
+                InputTokens = 2095,
+                Iterations =
+                [
+                    new Messages::BetaMessageIterationUsage()
+                    {
+                        CacheCreation = new()
+                        {
+                            Ephemeral1hInputTokens = 0,
+                            Ephemeral5mInputTokens = 0,
+                        },
+                        CacheCreationInputTokens = 0,
+                        CacheReadInputTokens = 0,
+                        InputTokens = 0,
+                        Model = Model.ClaudeFable5_1,
+                        OutputTokens = 0,
+                    },
+                ],
+                OutputTokens = 503,
+                OutputTokensDetails = new(0),
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
+            },
+
+            InputTransformations = null,
         };
 
         model.Validate();
@@ -519,7 +892,7 @@ public class BetaRawMessageDeltaEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeSonnet5,
+                        Model = Model.ClaudeFable5_1,
                         OutputTokens = 0,
                     },
                 ],
@@ -527,6 +900,15 @@ public class BetaRawMessageDeltaEventTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
+            InputTransformations =
+            [
+                new()
+                {
+                    Path = "path",
+                    Reason =
+                        Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                },
+            ],
         };
 
         Messages::BetaRawMessageDeltaEvent copied = new(model);

@@ -18,7 +18,16 @@ public class MessageCreateParamsTest : TestBase
         var parameters = new MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Container = new BetaContainerParams()
@@ -106,7 +115,14 @@ public class MessageCreateParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
+            Thinking = new BetaThinkingConfigAdaptive()
+            {
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
+                Display = Display.Summarized,
+            },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -147,7 +163,13 @@ public class MessageCreateParamsTest : TestBase
         long expectedMaxTokens = 1024;
         List<BetaMessageParam> expectedMessages =
         [
-            new() { Content = "Hello, world", Role = Role.User },
+            new()
+            {
+                Content = "Hello, world",
+                Role = Role.User,
+                ClearAt = ClearAt.NextUserMessage,
+                OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+            },
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5;
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
@@ -241,6 +263,10 @@ public class MessageCreateParamsTest : TestBase
         double expectedTemperature = 1;
         BetaThinkingConfigParam expectedThinking = new BetaThinkingConfigAdaptive()
         {
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = Display.Summarized,
         };
         BetaToolChoice expectedToolChoice = new BetaToolChoiceAuto()
@@ -343,7 +369,16 @@ public class MessageCreateParamsTest : TestBase
         var parameters = new MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Container = new BetaContainerParams()
@@ -423,7 +458,16 @@ public class MessageCreateParamsTest : TestBase
         var parameters = new MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Container = new BetaContainerParams()
@@ -519,7 +563,16 @@ public class MessageCreateParamsTest : TestBase
         var parameters = new MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             McpServers =
             [
@@ -567,7 +620,14 @@ public class MessageCreateParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
+            Thinking = new BetaThinkingConfigAdaptive()
+            {
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
+                Display = Display.Summarized,
+            },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -631,7 +691,16 @@ public class MessageCreateParamsTest : TestBase
         var parameters = new MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             McpServers =
             [
@@ -679,7 +748,14 @@ public class MessageCreateParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
+            Thinking = new BetaThinkingConfigAdaptive()
+            {
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
+                Display = Display.Summarized,
+            },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -753,7 +829,16 @@ public class MessageCreateParamsTest : TestBase
         MessageCreateParams parameters = new()
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
         };
 
@@ -771,7 +856,16 @@ public class MessageCreateParamsTest : TestBase
         MessageCreateParams parameters = new()
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             UserProfileID = "anthropic-user-profile-id",
@@ -795,7 +889,16 @@ public class MessageCreateParamsTest : TestBase
         var parameters = new MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Container = new BetaContainerParams()
@@ -883,7 +986,14 @@ public class MessageCreateParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
+            Thinking = new BetaThinkingConfigAdaptive()
+            {
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
+                Display = Display.Summarized,
+            },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [

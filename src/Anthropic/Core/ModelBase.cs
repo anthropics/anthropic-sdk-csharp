@@ -133,12 +133,14 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Messages::OversizedImage>(),
             new ApiEnumConverter<string, Messages::BetaMemoryTool20250818AllowedCaller>(),
             new ApiEnumConverter<string, Messages::Role>(),
+            new ApiEnumConverter<string, Messages::ClearAt>(),
             new ApiEnumConverter<string, Messages::Effort>(),
             new ApiEnumConverter<string, Messages::Category>(),
             new ApiEnumConverter<string, Messages::Name>(),
             new ApiEnumConverter<string, Messages::BetaServerToolUseBlockParamName>(),
             new ApiEnumConverter<string, Messages::BetaSkillParamsType>(),
             new ApiEnumConverter<string, Messages::BetaStopReason>(),
+            new ApiEnumConverter<string, Messages::BetaSystemMessageOutputConfigEffort>(),
             new ApiEnumConverter<
                 string,
                 Messages::BetaTextEditorCodeExecutionToolResultErrorErrorCode
@@ -154,6 +156,8 @@ public abstract record class ModelBase
             >(),
             new ApiEnumConverter<string, Messages::Display>(),
             new ApiEnumConverter<string, Messages::BetaThinkingConfigEnabledDisplay>(),
+            new ApiEnumConverter<string, Messages::BetaThinkingDroppedInputTransformationReason>(),
+            new ApiEnumConverter<string, Messages::BetaThinkingPrefixMismatchBehavior>(),
             new ApiEnumConverter<string, Messages::BetaToolAllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaToolType>(),
             new ApiEnumConverter<string, Messages::BetaToolBash20241022AllowedCaller>(),

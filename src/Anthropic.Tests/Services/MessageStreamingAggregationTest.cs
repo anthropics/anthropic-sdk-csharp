@@ -7,6 +7,7 @@ using Anthropic.Helpers;
 using Anthropic.Models.Messages;
 using Anthropic.Services;
 using Moq;
+using static Anthropic.Tests.TestHelpers.ReflectionTripwire;
 
 namespace Anthropic.Tests.Services;
 
@@ -883,5 +884,30 @@ public class MessageStreamingAggregationTest
         Assert.Equal(2, citations.GetArrayLength());
         Assert.Equal("char_location", citations[0].GetProperty("type").GetString());
         Assert.Equal("web_search_result_location", citations[1].GetProperty("type").GetString());
+    }
+
+    [Fact]
+    public void MessageDeltaEventFields_AreAllHandledByAggregator()
+    {
+        // tripwire: handle a new field in MessageContentAggregator, then list it here
+        Assert.Equal(
+            ["Delta", "Type", "Usage"],
+            DeclaredPropertyNames(typeof(RawMessageDeltaEvent))
+        );
+        Assert.Equal(
+            ["Container", "StopDetails", "StopReason", "StopSequence"],
+            DeclaredPropertyNames(typeof(RawMessageDeltaEvent).GetProperty("Delta")!.PropertyType)
+        );
+        Assert.Equal(
+            [
+                "CacheCreationInputTokens",
+                "CacheReadInputTokens",
+                "InputTokens",
+                "OutputTokens",
+                "OutputTokensDetails",
+                "ServerToolUse",
+            ],
+            DeclaredPropertyNames(typeof(MessageDeltaUsage))
+        );
     }
 }

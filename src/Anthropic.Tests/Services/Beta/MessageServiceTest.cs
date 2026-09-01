@@ -12,7 +12,16 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                Messages =
+                [
+                    new()
+                    {
+                        Content = "Hello, world",
+                        Role = Role.User,
+                        ClearAt = ClearAt.NextUserMessage,
+                        OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                    },
+                ],
                 Model = Messages::Model.ClaudeOpus5,
             },
             TestContext.Current.CancellationToken
@@ -26,7 +35,16 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                Messages =
+                [
+                    new()
+                    {
+                        Content = "Hello, world",
+                        Role = Role.User,
+                        ClearAt = ClearAt.NextUserMessage,
+                        OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                    },
+                ],
                 Model = Messages::Model.ClaudeOpus5,
             },
             TestContext.Current.CancellationToken
@@ -43,7 +61,16 @@ public class MessageServiceTest : TestBase
         var betaMessageTokensCount = await this.client.Beta.Messages.CountTokens(
             new()
             {
-                Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                Messages =
+                [
+                    new()
+                    {
+                        Content = "Hello, world",
+                        Role = Role.User,
+                        ClearAt = ClearAt.NextUserMessage,
+                        OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                    },
+                ],
                 Model = Messages::Model.ClaudeOpus5,
             },
             TestContext.Current.CancellationToken

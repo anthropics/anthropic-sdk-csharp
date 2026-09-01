@@ -49,6 +49,9 @@ public enum AnthropicBeta
     TaskBudgets2026_03_13,
     ThinkingDisplayUpdates2026_08_18,
     CEUserManagement2026_07_13,
+    MidConversationOutputConfig2026_07_01,
+    ThinkingBindingControls2026_08_01,
+    MidConversationSystemClearAt2026_08_21,
 }
 
 sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
@@ -104,6 +107,12 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "task-budgets-2026-03-13" => AnthropicBeta.TaskBudgets2026_03_13,
             "thinking-display-updates-2026-08-18" => AnthropicBeta.ThinkingDisplayUpdates2026_08_18,
             "ce-user-management-2026-07-13" => AnthropicBeta.CEUserManagement2026_07_13,
+            "mid-conversation-output-config-2026-07-01" =>
+                AnthropicBeta.MidConversationOutputConfig2026_07_01,
+            "thinking-binding-controls-2026-08-01" =>
+                AnthropicBeta.ThinkingBindingControls2026_08_01,
+            "mid-conversation-system-clear-at-2026-08-21" =>
+                AnthropicBeta.MidConversationSystemClearAt2026_08_21,
             _ => (AnthropicBeta)(-1),
         };
     }
@@ -162,6 +171,12 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.ThinkingDisplayUpdates2026_08_18 =>
                     "thinking-display-updates-2026-08-18",
                 AnthropicBeta.CEUserManagement2026_07_13 => "ce-user-management-2026-07-13",
+                AnthropicBeta.MidConversationOutputConfig2026_07_01 =>
+                    "mid-conversation-output-config-2026-07-01",
+                AnthropicBeta.ThinkingBindingControls2026_08_01 =>
+                    "thinking-binding-controls-2026-08-01",
+                AnthropicBeta.MidConversationSystemClearAt2026_08_21 =>
+                    "mid-conversation-system-clear-at-2026-08-21",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

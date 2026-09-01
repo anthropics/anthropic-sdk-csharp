@@ -14,7 +14,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5,
+            Model = Messages::Model.ClaudeFable5_1,
             MaxTokens = 0,
             OutputConfig = new()
             {
@@ -32,11 +32,15 @@ public class BetaFallbackParamTest : TestBase
             Thinking = new BetaThinkingConfigEnabled()
             {
                 BudgetTokens = 1024,
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
                 Display = BetaThinkingConfigEnabledDisplay.Summarized,
             },
         };
 
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeSonnet5;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeFable5_1;
         long expectedMaxTokens = 0;
         BetaOutputConfig expectedOutputConfig = new()
         {
@@ -54,6 +58,10 @@ public class BetaFallbackParamTest : TestBase
         Thinking expectedThinking = new BetaThinkingConfigEnabled()
         {
             BudgetTokens = 1024,
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = BetaThinkingConfigEnabledDisplay.Summarized,
         };
 
@@ -69,7 +77,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5,
+            Model = Messages::Model.ClaudeFable5_1,
             MaxTokens = 0,
             OutputConfig = new()
             {
@@ -87,6 +95,10 @@ public class BetaFallbackParamTest : TestBase
             Thinking = new BetaThinkingConfigEnabled()
             {
                 BudgetTokens = 1024,
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
                 Display = BetaThinkingConfigEnabledDisplay.Summarized,
             },
         };
@@ -105,7 +117,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5,
+            Model = Messages::Model.ClaudeFable5_1,
             MaxTokens = 0,
             OutputConfig = new()
             {
@@ -123,6 +135,10 @@ public class BetaFallbackParamTest : TestBase
             Thinking = new BetaThinkingConfigEnabled()
             {
                 BudgetTokens = 1024,
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
                 Display = BetaThinkingConfigEnabledDisplay.Summarized,
             },
         };
@@ -134,7 +150,7 @@ public class BetaFallbackParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeSonnet5;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeFable5_1;
         long expectedMaxTokens = 0;
         BetaOutputConfig expectedOutputConfig = new()
         {
@@ -152,6 +168,10 @@ public class BetaFallbackParamTest : TestBase
         Thinking expectedThinking = new BetaThinkingConfigEnabled()
         {
             BudgetTokens = 1024,
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = BetaThinkingConfigEnabledDisplay.Summarized,
         };
 
@@ -167,7 +187,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5,
+            Model = Messages::Model.ClaudeFable5_1,
             MaxTokens = 0,
             OutputConfig = new()
             {
@@ -185,6 +205,10 @@ public class BetaFallbackParamTest : TestBase
             Thinking = new BetaThinkingConfigEnabled()
             {
                 BudgetTokens = 1024,
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
                 Display = BetaThinkingConfigEnabledDisplay.Summarized,
             },
         };
@@ -195,7 +219,7 @@ public class BetaFallbackParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaFallbackParam { Model = Messages::Model.ClaudeSonnet5 };
+        var model = new BetaFallbackParam { Model = Messages::Model.ClaudeFable5_1 };
 
         Assert.Null(model.MaxTokens);
         Assert.False(model.RawData.ContainsKey("max_tokens"));
@@ -210,7 +234,7 @@ public class BetaFallbackParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaFallbackParam { Model = Messages::Model.ClaudeSonnet5 };
+        var model = new BetaFallbackParam { Model = Messages::Model.ClaudeFable5_1 };
 
         model.Validate();
     }
@@ -220,7 +244,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5,
+            Model = Messages::Model.ClaudeFable5_1,
 
             MaxTokens = null,
             OutputConfig = null,
@@ -243,7 +267,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5,
+            Model = Messages::Model.ClaudeFable5_1,
 
             MaxTokens = null,
             OutputConfig = null,
@@ -259,7 +283,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5,
+            Model = Messages::Model.ClaudeFable5_1,
             MaxTokens = 0,
             OutputConfig = new()
             {
@@ -277,6 +301,10 @@ public class BetaFallbackParamTest : TestBase
             Thinking = new BetaThinkingConfigEnabled()
             {
                 BudgetTokens = 1024,
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
                 Display = BetaThinkingConfigEnabledDisplay.Summarized,
             },
         };
@@ -353,6 +381,10 @@ public class ThinkingTest : TestBase
         Thinking value = new BetaThinkingConfigEnabled()
         {
             BudgetTokens = 1024,
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = BetaThinkingConfigEnabledDisplay.Summarized,
         };
         value.Validate();
@@ -368,7 +400,14 @@ public class ThinkingTest : TestBase
     [Fact]
     public void BetaThinkingConfigAdaptiveValidationWorks()
     {
-        Thinking value = new BetaThinkingConfigAdaptive() { Display = Display.Summarized };
+        Thinking value = new BetaThinkingConfigAdaptive()
+        {
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
+            Display = Display.Summarized,
+        };
         value.Validate();
     }
 
@@ -378,6 +417,10 @@ public class ThinkingTest : TestBase
         Thinking value = new BetaThinkingConfigEnabled()
         {
             BudgetTokens = 1024,
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = BetaThinkingConfigEnabledDisplay.Summarized,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -405,7 +448,14 @@ public class ThinkingTest : TestBase
     [Fact]
     public void BetaThinkingConfigAdaptiveSerializationRoundtripWorks()
     {
-        Thinking value = new BetaThinkingConfigAdaptive() { Display = Display.Summarized };
+        Thinking value = new BetaThinkingConfigAdaptive()
+        {
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
+            Display = Display.Summarized,
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Thinking>(
             element,

@@ -133,7 +133,9 @@ internal static class WireShape
 
     /// <summary>
     /// Emits a held refusal's message_delta verbatim, so fields the splice doesn't use
-    /// (<c>context_management</c>, unknown fields, ...) ride along on the captured wire event.
+    /// (<c>context_management</c>, unknown fields, ...) stay on the captured event, along with
+    /// any <c>input_transformations</c> copied from the refused fallback's message_start when it
+    /// was not re-emitted.
     /// <c>recommended_model</c> is pointed at the entry last tried and the usage is replaced by
     /// the accumulated iterations chain (failed hops contributed no usage), so even a degraded
     /// close reports every hop.

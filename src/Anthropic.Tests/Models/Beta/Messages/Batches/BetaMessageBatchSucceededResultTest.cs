@@ -100,7 +100,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                             CacheCreationInputTokens = 0,
                             CacheReadInputTokens = 0,
                             InputTokens = 0,
-                            Model = Model.ClaudeSonnet5,
+                            Model = Model.ClaudeFable5_1,
                             OutputTokens = 0,
                         },
                     ],
@@ -110,6 +110,15 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
                     Speed = Messages::BetaUsageSpeed.Standard,
                 },
+                InputTransformations =
+                [
+                    new()
+                    {
+                        Path = "path",
+                        Reason =
+                            Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                    },
+                ],
             },
         };
 
@@ -195,7 +204,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeSonnet5,
+                        Model = Model.ClaudeFable5_1,
                         OutputTokens = 0,
                     },
                 ],
@@ -205,6 +214,15 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
                 Speed = Messages::BetaUsageSpeed.Standard,
             },
+            InputTransformations =
+            [
+                new()
+                {
+                    Path = "path",
+                    Reason =
+                        Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                },
+            ],
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("succeeded");
 
@@ -303,7 +321,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                             CacheCreationInputTokens = 0,
                             CacheReadInputTokens = 0,
                             InputTokens = 0,
-                            Model = Model.ClaudeSonnet5,
+                            Model = Model.ClaudeFable5_1,
                             OutputTokens = 0,
                         },
                     ],
@@ -313,6 +331,15 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
                     Speed = Messages::BetaUsageSpeed.Standard,
                 },
+                InputTransformations =
+                [
+                    new()
+                    {
+                        Path = "path",
+                        Reason =
+                            Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                    },
+                ],
             },
         };
 
@@ -416,7 +443,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                             CacheCreationInputTokens = 0,
                             CacheReadInputTokens = 0,
                             InputTokens = 0,
-                            Model = Model.ClaudeSonnet5,
+                            Model = Model.ClaudeFable5_1,
                             OutputTokens = 0,
                         },
                     ],
@@ -426,6 +453,15 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
                     Speed = Messages::BetaUsageSpeed.Standard,
                 },
+                InputTransformations =
+                [
+                    new()
+                    {
+                        Path = "path",
+                        Reason =
+                            Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                    },
+                ],
             },
         };
 
@@ -518,7 +554,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeSonnet5,
+                        Model = Model.ClaudeFable5_1,
                         OutputTokens = 0,
                     },
                 ],
@@ -528,6 +564,15 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                 ServiceTier = Messages::BetaUsageServiceTier.Standard,
                 Speed = Messages::BetaUsageSpeed.Standard,
             },
+            InputTransformations =
+            [
+                new()
+                {
+                    Path = "path",
+                    Reason =
+                        Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                },
+            ],
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("succeeded");
 
@@ -626,7 +671,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                             CacheCreationInputTokens = 0,
                             CacheReadInputTokens = 0,
                             InputTokens = 0,
-                            Model = Model.ClaudeSonnet5,
+                            Model = Model.ClaudeFable5_1,
                             OutputTokens = 0,
                         },
                     ],
@@ -636,6 +681,15 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
                     Speed = Messages::BetaUsageSpeed.Standard,
                 },
+                InputTransformations =
+                [
+                    new()
+                    {
+                        Path = "path",
+                        Reason =
+                            Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                    },
+                ],
             },
         };
 
@@ -733,7 +787,7 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                             CacheCreationInputTokens = 0,
                             CacheReadInputTokens = 0,
                             InputTokens = 0,
-                            Model = Model.ClaudeSonnet5,
+                            Model = Model.ClaudeFable5_1,
                             OutputTokens = 0,
                         },
                     ],
@@ -743,6 +797,15 @@ public class BetaMessageBatchSucceededResultTest : TestBase
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
                     Speed = Messages::BetaUsageSpeed.Standard,
                 },
+                InputTransformations =
+                [
+                    new()
+                    {
+                        Path = "path",
+                        Reason =
+                            Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                    },
+                ],
             },
         };
 

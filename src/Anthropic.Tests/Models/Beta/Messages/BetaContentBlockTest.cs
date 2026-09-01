@@ -227,8 +227,8 @@ public class BetaContentBlockTest : TestBase
     {
         BetaContentBlock value = new BetaFallbackBlock()
         {
-            From = new(Messages::Model.ClaudeSonnet5),
-            To = new(Messages::Model.ClaudeSonnet5),
+            From = new(Messages::Model.ClaudeFable5_1),
+            To = new(Messages::Model.ClaudeFable5_1),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
         value.Validate();
@@ -549,8 +549,8 @@ public class BetaContentBlockTest : TestBase
     {
         BetaContentBlock value = new BetaFallbackBlock()
         {
-            From = new(Messages::Model.ClaudeSonnet5),
-            To = new(Messages::Model.ClaudeSonnet5),
+            From = new(Messages::Model.ClaudeFable5_1),
+            To = new(Messages::Model.ClaudeFable5_1),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

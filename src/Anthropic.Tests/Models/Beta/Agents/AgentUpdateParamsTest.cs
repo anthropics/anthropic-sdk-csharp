@@ -557,7 +557,7 @@ public class AgentUpdateParamsModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsValidationWorks()
     {
-        AgentUpdateParamsModel value = BetaManagedAgentsModel.ClaudeSonnet5;
+        AgentUpdateParamsModel value = BetaManagedAgentsModel.ClaudeFable5_1;
         value.Validate();
     }
 
@@ -577,7 +577,7 @@ public class AgentUpdateParamsModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsSerializationRoundtripWorks()
     {
-        AgentUpdateParamsModel value = BetaManagedAgentsModel.ClaudeSonnet5;
+        AgentUpdateParamsModel value = BetaManagedAgentsModel.ClaudeFable5_1;
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<AgentUpdateParamsModel>(
             element,

@@ -45,6 +45,21 @@ public sealed record class BetaThinkingConfigEnabled : JsonModel
     }
 
     /// <summary>
+    /// Controls for block binding: what happens when a thinking block this request
+    /// sends back fails the conversation check. Every field is optional; an empty
+    /// object means every default.
+    /// </summary>
+    public BetaThinkingBlockBinding? BlockBinding
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaThinkingBlockBinding>("block_binding");
+        }
+        init { this._rawData.Set("block_binding", value); }
+    }
+
+    /// <summary>
     /// Controls how thinking content appears in the response. When set to `summarized`,
     /// thinking is returned normally. When set to `omitted`, thinking content is
     /// redacted but a signature is returned for multi-turn continuity. Defaults to `summarized`.
@@ -69,6 +84,7 @@ public sealed record class BetaThinkingConfigEnabled : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
+        this.BlockBinding?.Validate();
         this.Display?.Validate();
     }
 

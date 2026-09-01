@@ -98,7 +98,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                             CacheCreationInputTokens = 0,
                             CacheReadInputTokens = 0,
                             InputTokens = 0,
-                            Model = Model.ClaudeSonnet5,
+                            Model = Model.ClaudeFable5_1,
                             OutputTokens = 0,
                         },
                     ],
@@ -108,6 +108,15 @@ public class BetaRawMessageStreamEventTest : TestBase
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
                     Speed = Messages::BetaUsageSpeed.Standard,
                 },
+                InputTransformations =
+                [
+                    new()
+                    {
+                        Path = "path",
+                        Reason =
+                            Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                    },
+                ],
             }
         );
         value.Validate();
@@ -175,7 +184,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeSonnet5,
+                        Model = Model.ClaudeFable5_1,
                         OutputTokens = 0,
                     },
                 ],
@@ -183,6 +192,15 @@ public class BetaRawMessageStreamEventTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
+            InputTransformations =
+            [
+                new()
+                {
+                    Path = "path",
+                    Reason =
+                        Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                },
+            ],
         };
         value.Validate();
     }
@@ -328,7 +346,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                             CacheCreationInputTokens = 0,
                             CacheReadInputTokens = 0,
                             InputTokens = 0,
-                            Model = Model.ClaudeSonnet5,
+                            Model = Model.ClaudeFable5_1,
                             OutputTokens = 0,
                         },
                     ],
@@ -338,6 +356,15 @@ public class BetaRawMessageStreamEventTest : TestBase
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
                     Speed = Messages::BetaUsageSpeed.Standard,
                 },
+                InputTransformations =
+                [
+                    new()
+                    {
+                        Path = "path",
+                        Reason =
+                            Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                    },
+                ],
             }
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -411,7 +438,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeSonnet5,
+                        Model = Model.ClaudeFable5_1,
                         OutputTokens = 0,
                     },
                 ],
@@ -419,6 +446,15 @@ public class BetaRawMessageStreamEventTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
+            InputTransformations =
+            [
+                new()
+                {
+                    Path = "path",
+                    Reason =
+                        Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                },
+            ],
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(
