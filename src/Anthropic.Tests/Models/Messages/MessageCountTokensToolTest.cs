@@ -117,7 +117,6 @@ public class MessageCountTokensToolTest : TestBase
     {
         MessageCountTokensTool value = new BrowserToolset20260801()
         {
-            AllowedCallers = [BrowserToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -182,7 +181,6 @@ public class MessageCountTokensToolTest : TestBase
     {
         MessageCountTokensTool value = new ComputerToolset20260801()
         {
-            AllowedCallers = [ComputerToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -588,7 +586,6 @@ public class MessageCountTokensToolTest : TestBase
     {
         MessageCountTokensTool value = new BrowserToolset20260801()
         {
-            AllowedCallers = [BrowserToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -665,7 +662,6 @@ public class MessageCountTokensToolTest : TestBase
     {
         MessageCountTokensTool value = new ComputerToolset20260801()
         {
-            AllowedCallers = [ComputerToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {

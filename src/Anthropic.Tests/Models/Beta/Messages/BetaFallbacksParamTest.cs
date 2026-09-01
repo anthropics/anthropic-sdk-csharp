@@ -16,7 +16,7 @@ public class BetaFallbacksParamTest : TestBase
             [
                 new BetaFallbackParam()
                 {
-                    Model = Messages::Model.ClaudeSonnet5,
+                    Model = Messages::Model.ClaudeFable5_1,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -34,6 +34,10 @@ public class BetaFallbacksParamTest : TestBase
                     Thinking = new BetaThinkingConfigEnabled()
                     {
                         BudgetTokens = 1024,
+                        BlockBinding = new()
+                        {
+                            PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                        },
                         Display = BetaThinkingConfigEnabledDisplay.Summarized,
                     },
                 },
@@ -56,7 +60,7 @@ public class BetaFallbacksParamTest : TestBase
             [
                 new BetaFallbackParam()
                 {
-                    Model = Messages::Model.ClaudeSonnet5,
+                    Model = Messages::Model.ClaudeFable5_1,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -74,6 +78,10 @@ public class BetaFallbacksParamTest : TestBase
                     Thinking = new BetaThinkingConfigEnabled()
                     {
                         BudgetTokens = 1024,
+                        BlockBinding = new()
+                        {
+                            PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                        },
                         Display = BetaThinkingConfigEnabledDisplay.Summarized,
                     },
                 },

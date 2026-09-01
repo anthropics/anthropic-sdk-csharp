@@ -43,6 +43,18 @@ public record class BetaThinkingConfigParam : ModelBase
         }
     }
 
+    public BetaThinkingBlockBinding? BlockBinding
+    {
+        get
+        {
+            return Match<BetaThinkingBlockBinding?>(
+                enabled: (x) => x.BlockBinding,
+                disabled: (_) => null,
+                adaptive: (x) => x.BlockBinding
+            );
+        }
+    }
+
     public BetaThinkingConfigParam(BetaThinkingConfigEnabled value, JsonElement? element = null)
     {
         this.Value = value;

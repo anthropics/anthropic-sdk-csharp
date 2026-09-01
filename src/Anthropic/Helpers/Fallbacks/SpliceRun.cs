@@ -56,8 +56,10 @@ internal sealed class SpliceRun : LazySseBody.ISource
         /// <summary>Set when the refusal chained: its backfilled usage.</summary>
         public JsonObject? HeldUsage { get; set; }
 
-        /// <summary>Set when the refusal chained: its message_delta wire event, delivered verbatim
-        /// if the whole chain degrades.</summary>
+        /// <summary>Set when the refusal chained: its message_delta wire event, replayed if the
+        /// whole chain degrades. The <c>input_transformations</c> field from a spliced fallback
+        /// hop's suppressed <c>message_start</c> event is already forwarded onto it, so the
+        /// replayed refusal <c>message_delta</c> event carries it.</summary>
         public JsonObject? HeldEvent { get; set; }
 
         /// <summary>The hop's serving model, from its message_start.</summary>
@@ -405,6 +407,10 @@ internal sealed class SpliceRun : LazySseBody.ISource
         BlockAccumulator accumulator = new(_snapshot.Diagnostics, indexBase);
         string? model = null;
         JsonObject? startUsage = null;
+        // `input_transformations` from a spliced fallback's `message_start`, which is not
+        // re-emitted. Copied onto the emitted message_delta, as a server-side fallback does.
+        JsonNode? startInputTransformations = null;
+        var hasStartInputTransformations = false;
 
         using var stream = await response
             .Content.ReadAsStreamAsync(cancellationToken)
@@ -424,6 +430,11 @@ internal sealed class SpliceRun : LazySseBody.ISource
                     var message = @event!["message"] as JsonObject;
                     model = GetString(message?["model"]);
                     startUsage = (message?["usage"] as JsonObject)?.DeepClone() as JsonObject;
+                    if (message != null && message.ContainsKey("input_transformations"))
+                    {
+                        hasStartInputTransformations = true;
+                        startInputTransformations = message["input_transformations"]?.DeepClone();
+                    }
                     if (splice != null)
                     {
                         continue;
@@ -501,6 +512,18 @@ internal sealed class SpliceRun : LazySseBody.ISource
                             }
                             outcome.HeldUsage = usage;
                             outcome.HeldEvent = (JsonObject)@event.DeepClone();
+                            // Emitted as the final message_delta if the chain degrades, so
+                            // copy the spliced fallback's `input_transformations` onto it
+                            // (its message_start was not re-emitted).
+                            if (
+                                splice != null
+                                && hasStartInputTransformations
+                                && !outcome.HeldEvent.ContainsKey("input_transformations")
+                            )
+                            {
+                                outcome.HeldEvent["input_transformations"] =
+                                    startInputTransformations?.DeepClone();
+                            }
                             outcome.Model = model;
                             outcome.Blocks = accumulator.Blocks;
                             outcome.NextIndex = accumulator.NextIndex;
@@ -531,6 +554,14 @@ internal sealed class SpliceRun : LazySseBody.ISource
                             splice.Model,
                             refused
                         );
+                        if (
+                            hasStartInputTransformations
+                            && !@event.ContainsKey("input_transformations")
+                        )
+                        {
+                            @event["input_transformations"] =
+                                startInputTransformations?.DeepClone();
+                        }
                         yield return WireShape.Emit(@event);
                         continue;
                     }

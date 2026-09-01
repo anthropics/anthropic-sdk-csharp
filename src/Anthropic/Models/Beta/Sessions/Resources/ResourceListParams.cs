@@ -44,7 +44,7 @@ public record class ResourceListParams : ParamsBase
     }
 
     /// <summary>
-    /// Opaque cursor from a previous response's next_page field.
+    /// Opaque cursor from a previous response's `next_page` field.
     /// </summary>
     public string? Page
     {

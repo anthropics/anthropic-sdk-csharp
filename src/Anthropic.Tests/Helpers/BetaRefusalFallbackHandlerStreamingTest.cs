@@ -64,7 +64,10 @@ public class BetaRefusalFallbackHandlerStreamingTest
         // message_start is suppressed.
         Assert.Equal(1, events.Count(e => Type(e) == "message_start"));
         Assert.Equal(1, events.Count(e => Type(e) == "message_stop"));
-        Assert.Equal(1, events.Count(e => Type(e) == "message_delta"));
+        var messageDelta = Assert.Single(events, e => Type(e) == "message_delta");
+        // B's message_start (not re-emitted) has no `input_transformations`, so the emitted
+        // message_delta gains none.
+        Assert.False(messageDelta.ContainsKey("input_transformations"));
     }
 
     [Fact]
@@ -662,9 +665,10 @@ public class BetaRefusalFallbackHandlerStreamingTest
     // --- fallback chain ---
 
     /// <summary>
-    /// A fallback hop that contributes one text block, then refuses with a fresh token.
+    /// A fallback hop that contributes one text block, then refuses with a fresh token; its
+    /// refusal message_delta carries <paramref name="deltaExtra"/>.
     /// </summary>
-    static string HopRefusal() =>
+    static string HopRefusal(string deltaExtra = "") =>
         MessageStartEvent()
         + Event(
             """{"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}"""
@@ -673,7 +677,7 @@ public class BetaRefusalFallbackHandlerStreamingTest
             """{"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Partial from B. "}}"""
         )
         + Event("""{"type":"content_block_stop","index":0}""")
-        + RefusalDelta("tok_b")
+        + RefusalDelta("tok_b", deltaExtra: deltaExtra)
         + Event("""{"type":"message_stop"}""");
 
     [Fact]
@@ -901,6 +905,135 @@ public class BetaRefusalFallbackHandlerStreamingTest
         );
     }
 
+    const string InputTransformations =
+        """[{"type":"thinking_dropped","path":"messages.1.content.0","reason":"model_binding_mismatch"}]""";
+
+    /// <summary>A fallback hop's message_start reporting <c>input_transformations</c>.</summary>
+    static string HopStartWithInputTransformations() =>
+        Event(
+            """{"type":"message_start","message":{"id":"msg_b","type":"message","role":"assistant","model":"fallback-model","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":12,"output_tokens":1},"input_transformations":"""
+                + InputTransformations
+                + "}}"
+        );
+
+    /// <summary>
+    /// A fallback hop that serves one text block; its message_start reports
+    /// <c>input_transformations</c> and its terminal message_delta carries
+    /// <paramref name="deltaExtra"/>.
+    /// </summary>
+    static string HopServedWithInputTransformations(string deltaExtra = "") =>
+        HopStartWithInputTransformations()
+        + Event(
+            """{"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}"""
+        )
+        + Event(
+            """{"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"From B."}}"""
+        )
+        + Event("""{"type":"content_block_stop","index":0}""")
+        + Event(
+            """{"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":5}"""
+                + deltaExtra
+                + "}"
+        )
+        + Event("""{"type":"message_stop"}""");
+
+    [Fact]
+    public async Task ForwardsTheSplicedHopInputTransformationsOnTheTerminalDelta()
+    {
+        var transport = new FakeTransport()
+            .EnqueueSse(StreamA)
+            .EnqueueSse(HopServedWithInputTransformations());
+        using var invoker = Intercepted(transport, FallbackModel);
+
+        var events = await Consume(invoker);
+
+        // B's message_start is not re-emitted, so the list it reported is copied onto the
+        // emitted message_delta, matching what a server-side fallback sends.
+        var messageDelta = events.First(e => Type(e) == "message_delta");
+        Assert.True(
+            JsonNode.DeepEquals(
+                JsonNode.Parse(InputTransformations),
+                messageDelta["input_transformations"]
+            )
+        );
+    }
+
+    [Fact]
+    public async Task KeepsInputTransformationsAlreadyOnTheSplicedTerminalDelta()
+    {
+        var transport = new FakeTransport()
+            .EnqueueSse(StreamA)
+            .EnqueueSse(HopServedWithInputTransformations(""","input_transformations":[]"""));
+        using var invoker = Intercepted(transport, FallbackModel);
+
+        var events = await Consume(invoker);
+
+        var messageDelta = events.First(e => Type(e) == "message_delta");
+        var forwarded = Assert.IsType<JsonArray>(messageDelta["input_transformations"]);
+        Assert.Empty(forwarded);
+    }
+
+    [Fact]
+    public async Task AHeldRefusalCarriesTheRefusedHopInputTransformations()
+    {
+        // B (spliced, message_start not re-emitted) reports the list, contributes a block, then
+        // refuses with a fresh token; C's request throws, so B's held refusal closes the stream.
+        var transport = new FakeTransport()
+            .EnqueueSse(StreamA)
+            .EnqueueSse(
+                HopRefusal().Replace(MessageStartEvent(), HopStartWithInputTransformations())
+            )
+            .EnqueueFailure(new IOException("connection reset"));
+        using var invoker = Intercepted(transport, FallbackModel, SecondModel);
+
+        List<JsonObject>? events = null;
+        var stderr = await FallbackTestSupport.CaptureStderr(async () =>
+        {
+            events = await Consume(invoker);
+        });
+
+        Assert.Contains($"fallback request to {SecondModel} failed", stderr);
+        var delta = Assert.Single(events!, e => Type(e) == "message_delta");
+        Assert.Equal("refusal", StopReason(delta));
+        Assert.Equal(
+            SecondModel,
+            delta["delta"]?["stop_details"]?["recommended_model"]?.GetValue<string>()
+        );
+        Assert.True(
+            JsonNode.DeepEquals(
+                JsonNode.Parse(InputTransformations),
+                delta["input_transformations"]
+            )
+        );
+    }
+
+    [Fact]
+    public async Task AHeldRefusalKeepsInputTransformationsAlreadyOnItsDelta()
+    {
+        // B's message_start (not re-emitted) reports the list, but its refusal message_delta
+        // already has its own (empty) one; C's request throws, so B's held refusal closes the
+        // stream with the delta's own list, not the start's.
+        var transport = new FakeTransport()
+            .EnqueueSse(StreamA)
+            .EnqueueSse(
+                HopRefusal(deltaExtra: ""","input_transformations":[]""")
+                    .Replace(MessageStartEvent(), HopStartWithInputTransformations())
+            )
+            .EnqueueFailure(new IOException("connection reset"));
+        using var invoker = Intercepted(transport, FallbackModel, SecondModel);
+
+        List<JsonObject>? events = null;
+        await FallbackTestSupport.CaptureStderr(async () =>
+        {
+            events = await Consume(invoker);
+        });
+
+        var delta = Assert.Single(events!, e => Type(e) == "message_delta");
+        Assert.Equal("refusal", StopReason(delta));
+        var forwarded = Assert.IsType<JsonArray>(delta["input_transformations"]);
+        Assert.Empty(forwarded);
+    }
+
     [Fact]
     public async Task AccumulatesChunkedSignatureDeltas()
     {
@@ -1037,7 +1170,7 @@ public class BetaRefusalFallbackHandlerStreamingTest
             """{"type":"message_start","message":{"id":"msg_a","type":"message","role":"assistant","model":"claude-fable-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":12,"output_tokens":1}}}"""
         );
 
-    static string RefusalDelta(string? token, bool hasPrefillClaim = true)
+    static string RefusalDelta(string? token, bool hasPrefillClaim = true, string deltaExtra = "")
     {
         var tokenJson = token == null ? "null" : $"\"{token}\"";
         var claimJson = hasPrefillClaim ? "true" : "false";
@@ -1046,7 +1179,9 @@ public class BetaRefusalFallbackHandlerStreamingTest
                 + tokenJson
                 + ""","fallback_has_prefill_claim":"""
                 + claimJson
-                + """}},"usage":{"output_tokens":20}}"""
+                + """}},"usage":{"output_tokens":20}"""
+                + deltaExtra
+                + "}"
         );
     }
 

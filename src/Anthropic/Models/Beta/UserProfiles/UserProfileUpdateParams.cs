@@ -64,6 +64,29 @@ public record class UserProfileUpdateParams : ParamsBase
     }
 
     /// <summary>
+    /// A timestamp in RFC 3339 format
+    /// </summary>
+    public System::DateTimeOffset? ExternalUserOnboardedAt
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<System::DateTimeOffset>(
+                "external_user_onboarded_at"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("external_user_onboarded_at", value);
+        }
+    }
+
+    /// <summary>
     /// Key-value pairs to merge into the stored metadata. Keys provided overwrite
     /// existing values. To remove a key, set its value to an empty string. Keys not
     /// provided are left unchanged. Maximum 16 keys, with keys up to 64 characters
@@ -101,23 +124,6 @@ public record class UserProfileUpdateParams : ParamsBase
             return this._rawBodyData.GetNullableClass<string>("name");
         }
         init { this._rawBodyData.Set("name", value); }
-    }
-
-    /// <summary>
-    /// How the entity behind a user profile relates to the platform that owns the
-    /// API key. `external`: an individual end-user of the platform. `resold`: a company
-    /// the platform resells Claude access to. `internal`: the platform's own usage.
-    /// </summary>
-    public ApiEnum<string, UserProfileUpdateParamsRelationship>? Relationship
-    {
-        get
-        {
-            this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableClass<
-                ApiEnum<string, UserProfileUpdateParamsRelationship>
-            >("relationship");
-        }
-        init { this._rawBodyData.Set("relationship", value); }
     }
 
     /// <summary>
@@ -311,59 +317,6 @@ sealed class UserProfileUpdateParamsAccessTypeConverter
             {
                 UserProfileUpdateParamsAccessType.Application => "application",
                 UserProfileUpdateParamsAccessType.Passthrough => "passthrough",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-/// <summary>
-/// How the entity behind a user profile relates to the platform that owns the API
-/// key. `external`: an individual end-user of the platform. `resold`: a company
-/// the platform resells Claude access to. `internal`: the platform's own usage.
-/// </summary>
-[JsonConverter(typeof(UserProfileUpdateParamsRelationshipConverter))]
-public enum UserProfileUpdateParamsRelationship
-{
-    External,
-    Resold,
-    Internal,
-}
-
-sealed class UserProfileUpdateParamsRelationshipConverter
-    : JsonConverter<UserProfileUpdateParamsRelationship>
-{
-    public override UserProfileUpdateParamsRelationship Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "external" => UserProfileUpdateParamsRelationship.External,
-            "resold" => UserProfileUpdateParamsRelationship.Resold,
-            "internal" => UserProfileUpdateParamsRelationship.Internal,
-            _ => (UserProfileUpdateParamsRelationship)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        UserProfileUpdateParamsRelationship value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                UserProfileUpdateParamsRelationship.External => "external",
-                UserProfileUpdateParamsRelationship.Resold => "resold",
-                UserProfileUpdateParamsRelationship.Internal => "internal",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

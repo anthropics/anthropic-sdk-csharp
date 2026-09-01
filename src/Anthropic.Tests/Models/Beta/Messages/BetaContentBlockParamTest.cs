@@ -352,8 +352,8 @@ public class BetaContentBlockParamTest : TestBase
     {
         BetaContentBlockParam value = new BetaFallbackBlockParam()
         {
-            From = new(Messages::Model.ClaudeSonnet5),
-            To = new(Messages::Model.ClaudeSonnet5),
+            From = new(Messages::Model.ClaudeFable5_1),
+            To = new(Messages::Model.ClaudeFable5_1),
             Trigger = JsonSerializer.Deserialize<JsonElement>("{}"),
         };
         value.Validate();
@@ -835,8 +835,8 @@ public class BetaContentBlockParamTest : TestBase
     {
         BetaContentBlockParam value = new BetaFallbackBlockParam()
         {
-            From = new(Messages::Model.ClaudeSonnet5),
-            To = new(Messages::Model.ClaudeSonnet5),
+            From = new(Messages::Model.ClaudeFable5_1),
+            To = new(Messages::Model.ClaudeFable5_1),
             Trigger = JsonSerializer.Deserialize<JsonElement>("{}"),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

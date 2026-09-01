@@ -35,6 +35,8 @@ public class BetaMessageParamTest : TestBase
                 ]
             ),
             Role = Role.User,
+            ClearAt = ClearAt.NextUserMessage,
+            OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
         };
 
         BetaMessageParamContent expectedContent = new(
@@ -60,9 +62,16 @@ public class BetaMessageParamTest : TestBase
             ]
         );
         ApiEnum<string, Role> expectedRole = Role.User;
+        ApiEnum<string, ClearAt> expectedClearAt = ClearAt.NextUserMessage;
+        BetaSystemMessageOutputConfig expectedOutputConfig = new()
+        {
+            Effort = BetaSystemMessageOutputConfigEffort.Low,
+        };
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedRole, model.Role);
+        Assert.Equal(expectedClearAt, model.ClearAt);
+        Assert.Equal(expectedOutputConfig, model.OutputConfig);
     }
 
     [Fact]
@@ -93,6 +102,8 @@ public class BetaMessageParamTest : TestBase
                 ]
             ),
             Role = Role.User,
+            ClearAt = ClearAt.NextUserMessage,
+            OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -132,6 +143,8 @@ public class BetaMessageParamTest : TestBase
                 ]
             ),
             Role = Role.User,
+            ClearAt = ClearAt.NextUserMessage,
+            OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -164,9 +177,16 @@ public class BetaMessageParamTest : TestBase
             ]
         );
         ApiEnum<string, Role> expectedRole = Role.User;
+        ApiEnum<string, ClearAt> expectedClearAt = ClearAt.NextUserMessage;
+        BetaSystemMessageOutputConfig expectedOutputConfig = new()
+        {
+            Effort = BetaSystemMessageOutputConfigEffort.Low,
+        };
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedRole, deserialized.Role);
+        Assert.Equal(expectedClearAt, deserialized.ClearAt);
+        Assert.Equal(expectedOutputConfig, deserialized.OutputConfig);
     }
 
     [Fact]
@@ -197,6 +217,152 @@ public class BetaMessageParamTest : TestBase
                 ]
             ),
             Role = Role.User,
+            ClearAt = ClearAt.NextUserMessage,
+            OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new BetaMessageParam
+        {
+            Content = new(
+                [
+                    new BetaContentBlockParam(
+                        new BetaTextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new BetaCitationCharLocationParam()
+                                {
+                                    CitedText = "The grass is green. The sky is blue.",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            ),
+            Role = Role.User,
+        };
+
+        Assert.Null(model.ClearAt);
+        Assert.False(model.RawData.ContainsKey("clear_at"));
+        Assert.Null(model.OutputConfig);
+        Assert.False(model.RawData.ContainsKey("output_config"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new BetaMessageParam
+        {
+            Content = new(
+                [
+                    new BetaContentBlockParam(
+                        new BetaTextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new BetaCitationCharLocationParam()
+                                {
+                                    CitedText = "The grass is green. The sky is blue.",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            ),
+            Role = Role.User,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
+    {
+        var model = new BetaMessageParam
+        {
+            Content = new(
+                [
+                    new BetaContentBlockParam(
+                        new BetaTextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new BetaCitationCharLocationParam()
+                                {
+                                    CitedText = "The grass is green. The sky is blue.",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            ),
+            Role = Role.User,
+
+            ClearAt = null,
+            OutputConfig = null,
+        };
+
+        Assert.Null(model.ClearAt);
+        Assert.True(model.RawData.ContainsKey("clear_at"));
+        Assert.Null(model.OutputConfig);
+        Assert.True(model.RawData.ContainsKey("output_config"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new BetaMessageParam
+        {
+            Content = new(
+                [
+                    new BetaContentBlockParam(
+                        new BetaTextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new BetaCitationCharLocationParam()
+                                {
+                                    CitedText = "The grass is green. The sky is blue.",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            ),
+            Role = Role.User,
+
+            ClearAt = null,
+            OutputConfig = null,
         };
 
         model.Validate();
@@ -230,6 +396,8 @@ public class BetaMessageParamTest : TestBase
                 ]
             ),
             Role = Role.User,
+            ClearAt = ClearAt.NextUserMessage,
+            OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
         };
 
         BetaMessageParam copied = new(model);
@@ -375,6 +543,64 @@ public class RoleTest : TestBase
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Role>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class ClearAtTest : TestBase
+{
+    [Theory]
+    [InlineData(ClearAt.NextUserMessage)]
+    [InlineData(ClearAt.Never)]
+    public void Validation_Works(ClearAt rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ClearAt> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ClearAt>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ClearAt.NextUserMessage)]
+    [InlineData(ClearAt.Never)]
+    public void SerializationRoundtrip_Works(ClearAt rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ClearAt> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ClearAt>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ClearAt>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ClearAt>>(
             json,
             ModelBase.SerializerOptions
         );

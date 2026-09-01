@@ -43,7 +43,7 @@ public record class ThreadListParams : ParamsBase
     }
 
     /// <summary>
-    /// Opaque pagination cursor from a previous response's next_page. Forward-only.
+    /// Opaque pagination cursor from a previous response's `next_page`. Forward-only.
     /// </summary>
     public string? Page
     {

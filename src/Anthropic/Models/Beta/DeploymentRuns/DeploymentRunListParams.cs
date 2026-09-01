@@ -105,7 +105,7 @@ public record class DeploymentRunListParams : ParamsBase
 
     /// <summary>
     /// Filter to a specific deployment. Omit to list across all deployments in the
-    /// workspace. Filtering by a non-existent deployment_id returns 200 with empty data.
+    /// workspace. Filtering by a non-existent `deployment_id` returns 200 with empty data.
     /// </summary>
     public string? DeploymentID
     {
@@ -126,8 +126,8 @@ public record class DeploymentRunListParams : ParamsBase
     }
 
     /// <summary>
-    /// Filter: true for runs with non-null error, false for runs with non-null session_id.
-    /// Omit for all.
+    /// Filter: true for runs with non-null `error`, false for runs with non-null
+    /// `session_id`. Omit for all.
     /// </summary>
     public bool? HasError
     {
@@ -169,7 +169,7 @@ public record class DeploymentRunListParams : ParamsBase
     }
 
     /// <summary>
-    /// Opaque pagination cursor. Pass next_page from the previous response. Invalid
+    /// Opaque pagination cursor. Pass `next_page` from the previous response. Invalid
     /// or expired cursors return 400.
     /// </summary>
     public string? Page

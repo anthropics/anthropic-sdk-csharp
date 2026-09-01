@@ -17,7 +17,16 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new MessageCountTokensParams
         {
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             ContextManagement = new()
@@ -84,7 +93,14 @@ public class MessageCountTokensParamsTest : TestBase
                     },
                 ]
             ),
-            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
+            Thinking = new BetaThinkingConfigAdaptive()
+            {
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
+                Display = Display.Summarized,
+            },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -122,7 +138,13 @@ public class MessageCountTokensParamsTest : TestBase
 
         List<BetaMessageParam> expectedMessages =
         [
-            new() { Content = "Hello, world", Role = Role.User },
+            new()
+            {
+                Content = "Hello, world",
+                Role = Role.User,
+                ClearAt = ClearAt.NextUserMessage,
+                OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+            },
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5;
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
@@ -193,6 +215,10 @@ public class MessageCountTokensParamsTest : TestBase
         );
         BetaThinkingConfigParam expectedThinking = new BetaThinkingConfigAdaptive()
         {
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = Display.Summarized,
         };
         BetaToolChoice expectedToolChoice = new BetaToolChoiceAuto()
@@ -275,7 +301,16 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new MessageCountTokensParams
         {
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             ContextManagement = new()
@@ -325,7 +360,16 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new MessageCountTokensParams
         {
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             ContextManagement = new()
@@ -385,7 +429,16 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new MessageCountTokensParams
         {
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             McpServers =
             [
@@ -429,7 +482,14 @@ public class MessageCountTokensParamsTest : TestBase
                     },
                 ]
             ),
-            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
+            Thinking = new BetaThinkingConfigAdaptive()
+            {
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
+                Display = Display.Summarized,
+            },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -480,7 +540,16 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new MessageCountTokensParams
         {
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             McpServers =
             [
@@ -524,7 +593,14 @@ public class MessageCountTokensParamsTest : TestBase
                     },
                 ]
             ),
-            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
+            Thinking = new BetaThinkingConfigAdaptive()
+            {
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
+                Display = Display.Summarized,
+            },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -580,7 +656,16 @@ public class MessageCountTokensParamsTest : TestBase
     {
         MessageCountTokensParams parameters = new()
         {
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
         };
 
@@ -600,7 +685,16 @@ public class MessageCountTokensParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         MessageCountTokensParams parameters = new()
         {
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             UserProfileID = "anthropic-user-profile-id",
@@ -623,7 +717,16 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new MessageCountTokensParams
         {
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             ContextManagement = new()
@@ -690,7 +793,14 @@ public class MessageCountTokensParamsTest : TestBase
                     },
                 ]
             ),
-            Thinking = new BetaThinkingConfigAdaptive() { Display = Display.Summarized },
+            Thinking = new BetaThinkingConfigAdaptive()
+            {
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
+                Display = Display.Summarized,
+            },
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -1001,7 +1111,6 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaBrowserToolset20260801()
         {
-            AllowedCallers = [BetaBrowserToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -1156,7 +1265,6 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaComputerToolset20260801()
         {
-            AllowedCallers = [BetaComputerToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -1393,7 +1501,7 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeSonnet5,
+            Model = Messages::Model.ClaudeFable5_1,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -1603,7 +1711,6 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaBrowserToolset20260801()
         {
-            AllowedCallers = [BetaBrowserToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -1776,7 +1883,6 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaComputerToolset20260801()
         {
-            AllowedCallers = [BetaComputerToolset20260801AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Configs = new()
             {
@@ -2046,7 +2152,7 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeSonnet5,
+            Model = Messages::Model.ClaudeFable5_1,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },

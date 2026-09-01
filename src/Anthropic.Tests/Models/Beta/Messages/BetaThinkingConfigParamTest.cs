@@ -12,6 +12,10 @@ public class BetaThinkingConfigParamTest : TestBase
         BetaThinkingConfigParam value = new BetaThinkingConfigEnabled()
         {
             BudgetTokens = 1024,
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = BetaThinkingConfigEnabledDisplay.Summarized,
         };
         value.Validate();
@@ -29,6 +33,10 @@ public class BetaThinkingConfigParamTest : TestBase
     {
         BetaThinkingConfigParam value = new BetaThinkingConfigAdaptive()
         {
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = Display.Summarized,
         };
         value.Validate();
@@ -40,6 +48,10 @@ public class BetaThinkingConfigParamTest : TestBase
         BetaThinkingConfigParam value = new BetaThinkingConfigEnabled()
         {
             BudgetTokens = 1024,
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = BetaThinkingConfigEnabledDisplay.Summarized,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -69,6 +81,10 @@ public class BetaThinkingConfigParamTest : TestBase
     {
         BetaThinkingConfigParam value = new BetaThinkingConfigAdaptive()
         {
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
             Display = Display.Summarized,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

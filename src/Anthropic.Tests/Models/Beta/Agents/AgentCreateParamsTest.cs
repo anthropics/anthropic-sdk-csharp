@@ -502,7 +502,7 @@ public class ModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsValidationWorks()
     {
-        Model value = BetaManagedAgentsModel.ClaudeSonnet5;
+        Model value = BetaManagedAgentsModel.ClaudeFable5_1;
         value.Validate();
     }
 
@@ -522,7 +522,7 @@ public class ModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsSerializationRoundtripWorks()
     {
-        Model value = BetaManagedAgentsModel.ClaudeSonnet5;
+        Model value = BetaManagedAgentsModel.ClaudeFable5_1;
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Model>(element, ModelBase.SerializerOptions);
 

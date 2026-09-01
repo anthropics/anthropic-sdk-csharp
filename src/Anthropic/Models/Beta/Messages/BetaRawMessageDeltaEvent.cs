@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -75,6 +76,40 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
         init { this._rawData.Set("usage", value); }
     }
 
+    /// <summary>
+    /// Changes the API made to the request's input before showing it to the model:
+    /// one entry per change, in request order. Today the only entry type is `thinking_dropped`
+    /// — a `thinking`, `redacted_thinking` or `connector_text` block from the request's
+    /// `messages` that was removed from the prompt instead of being shown to the
+    /// model because it failed a binding check. More entry types may be added over
+    /// time; ignore types you do not recognize.
+    ///
+    /// <para>Requires `anthropic-beta: thinking-binding-controls-2026-08-01`. Present
+    /// on every such response from a model that supports extended thinking, as `[]`
+    /// when nothing was changed; without the beta, blocks are removed all the same
+    /// but nothing is reported. Removed blocks contribute nothing to `usage.input_tokens`.
+    /// When streaming, the array is final in `message_start`; the final `message_delta`
+    /// event carries it only when a server-side model fallback happened mid-stream,
+    /// in which case it holds the serving model's entries and replaces the one in `message_start`.</para>
+    /// </summary>
+    public IReadOnlyList<BetaThinkingDroppedInputTransformation>? InputTransformations
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<BetaThinkingDroppedInputTransformation>
+            >("input_transformations");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaThinkingDroppedInputTransformation>?>(
+                "input_transformations",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -85,6 +120,10 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         this.Usage.Validate();
+        foreach (var item in this.InputTransformations ?? [])
+        {
+            item.Validate();
+        }
     }
 
     public BetaRawMessageDeltaEvent()

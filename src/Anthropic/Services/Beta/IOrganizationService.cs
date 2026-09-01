@@ -43,6 +43,8 @@ public interface IOrganizationService
 
     IRateLimitService RateLimits { get; }
 
+    IComplianceSettingService ComplianceSettings { get; }
+
     /// <summary>
     /// Retrieve information about the organization associated with the authenticated
     /// API key.
@@ -81,6 +83,8 @@ public interface IOrganizationServiceWithRawResponse
     IWorkspaceServiceWithRawResponse Workspaces { get; }
 
     IRateLimitServiceWithRawResponse RateLimits { get; }
+
+    IComplianceSettingServiceWithRawResponse ComplianceSettings { get; }
 
     /// <summary>
     /// Returns a raw HTTP response for <c>get /v1/organizations/me?beta=true</c>, but is otherwise the

@@ -149,9 +149,24 @@ public sealed record class BetaUserProfile : JsonModel
     }
 
     /// <summary>
+    /// A timestamp in RFC 3339 format
+    /// </summary>
+    public System::DateTimeOffset? ExternalUserOnboardedAt
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<System::DateTimeOffset>(
+                "external_user_onboarded_at"
+            );
+        }
+        init { this._rawData.Set("external_user_onboarded_at", value); }
+    }
+
+    /// <summary>
     /// Real-world name of the entity this profile represents (company or individual).
-    /// For a resold-to company (`access_type` `passthrough`, or `relationship` `resold`
-    /// under the `user-profiles-2026-03-24` header) this is that company's name.
+    /// For a company the platform resells Claude access to (`access_type` `passthrough`)
+    /// this is that company's name.
     /// </summary>
     public string? Name
     {
@@ -161,31 +176,6 @@ public sealed record class BetaUserProfile : JsonModel
             return this._rawData.GetNullableClass<string>("name");
         }
         init { this._rawData.Set("name", value); }
-    }
-
-    /// <summary>
-    /// How the entity behind a user profile relates to the platform that owns the
-    /// API key. `external`: an individual end-user of the platform. `resold`: a company
-    /// the platform resells Claude access to. `internal`: the platform's own usage.
-    /// </summary>
-    public ApiEnum<string, BetaUserProfileRelationship>? Relationship
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<ApiEnum<string, BetaUserProfileRelationship>>(
-                "relationship"
-            );
-        }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawData.Set("relationship", value);
-        }
     }
 
     /// <inheritdoc/>
@@ -202,8 +192,8 @@ public sealed record class BetaUserProfile : JsonModel
         _ = this.UpdatedAt;
         this.AccessType?.Validate();
         _ = this.ExternalID;
+        _ = this.ExternalUserOnboardedAt;
         _ = this.Name;
-        this.Relationship?.Validate();
     }
 
     public BetaUserProfile() { }
@@ -326,58 +316,6 @@ sealed class BetaUserProfileAccessTypeConverter : JsonConverter<BetaUserProfileA
             {
                 BetaUserProfileAccessType.Application => "application",
                 BetaUserProfileAccessType.Passthrough => "passthrough",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-/// <summary>
-/// How the entity behind a user profile relates to the platform that owns the API
-/// key. `external`: an individual end-user of the platform. `resold`: a company
-/// the platform resells Claude access to. `internal`: the platform's own usage.
-/// </summary>
-[JsonConverter(typeof(BetaUserProfileRelationshipConverter))]
-public enum BetaUserProfileRelationship
-{
-    External,
-    Resold,
-    Internal,
-}
-
-sealed class BetaUserProfileRelationshipConverter : JsonConverter<BetaUserProfileRelationship>
-{
-    public override BetaUserProfileRelationship Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "external" => BetaUserProfileRelationship.External,
-            "resold" => BetaUserProfileRelationship.Resold,
-            "internal" => BetaUserProfileRelationship.Internal,
-            _ => (BetaUserProfileRelationship)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaUserProfileRelationship value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaUserProfileRelationship.External => "external",
-                BetaUserProfileRelationship.Resold => "resold",
-                BetaUserProfileRelationship.Internal => "internal",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

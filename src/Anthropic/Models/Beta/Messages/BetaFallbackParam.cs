@@ -214,6 +214,18 @@ public record class Thinking : ModelBase
         }
     }
 
+    public BetaThinkingBlockBinding? BlockBinding
+    {
+        get
+        {
+            return Match<BetaThinkingBlockBinding?>(
+                betaThinkingConfigEnabled: (x) => x.BlockBinding,
+                betaThinkingConfigDisabled: (_) => null,
+                betaThinkingConfigAdaptive: (x) => x.BlockBinding
+            );
+        }
+    }
+
     public Thinking(BetaThinkingConfigEnabled value, JsonElement? element = null)
     {
         this.Value = value;

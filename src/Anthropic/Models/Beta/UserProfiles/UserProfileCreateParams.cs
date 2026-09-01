@@ -67,6 +67,29 @@ public record class UserProfileCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// A timestamp in RFC 3339 format
+    /// </summary>
+    public System::DateTimeOffset? ExternalUserOnboardedAt
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<System::DateTimeOffset>(
+                "external_user_onboarded_at"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("external_user_onboarded_at", value);
+        }
+    }
+
+    /// <summary>
     /// Free-form key-value data to attach to this user profile. Maximum 16 keys,
     /// with keys up to 64 characters and values up to 512 characters. Values must
     /// be non-empty strings.
@@ -94,8 +117,8 @@ public record class UserProfileCreateParams : ParamsBase
 
     /// <summary>
     /// Optional for all profiles. Real-world name of the entity this profile represents
-    /// (company or individual); for a resold-to company (`relationship` `resold`
-    /// / `access_type` `passthrough`), that company's name where known. Maximum
+    /// (company or individual); for a company the platform resells Claude access
+    /// to (`access_type` `passthrough`), that company's name where known. Maximum
     /// 255 characters.
     /// </summary>
     public string? Name
@@ -106,31 +129,6 @@ public record class UserProfileCreateParams : ParamsBase
             return this._rawBodyData.GetNullableClass<string>("name");
         }
         init { this._rawBodyData.Set("name", value); }
-    }
-
-    /// <summary>
-    /// How the entity behind a user profile relates to the platform that owns the
-    /// API key. `external`: an individual end-user of the platform. `resold`: a company
-    /// the platform resells Claude access to. `internal`: the platform's own usage.
-    /// </summary>
-    public ApiEnum<string, Relationship>? Relationship
-    {
-        get
-        {
-            this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableClass<ApiEnum<string, Relationship>>(
-                "relationship"
-            );
-        }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawBodyData.Set("relationship", value);
-        }
     }
 
     /// <summary>
@@ -312,58 +310,6 @@ sealed class AccessTypeConverter : JsonConverter<AccessType>
             {
                 AccessType.Application => "application",
                 AccessType.Passthrough => "passthrough",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-/// <summary>
-/// How the entity behind a user profile relates to the platform that owns the API
-/// key. `external`: an individual end-user of the platform. `resold`: a company
-/// the platform resells Claude access to. `internal`: the platform's own usage.
-/// </summary>
-[JsonConverter(typeof(RelationshipConverter))]
-public enum Relationship
-{
-    External,
-    Resold,
-    Internal,
-}
-
-sealed class RelationshipConverter : JsonConverter<Relationship>
-{
-    public override Relationship Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "external" => Relationship.External,
-            "resold" => Relationship.Resold,
-            "internal" => Relationship.Internal,
-            _ => (Relationship)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        Relationship value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                Relationship.External => "external",
-                Relationship.Resold => "resold",
-                Relationship.Internal => "internal",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

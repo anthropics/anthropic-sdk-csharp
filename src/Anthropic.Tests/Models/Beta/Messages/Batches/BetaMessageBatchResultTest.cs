@@ -100,7 +100,7 @@ public class BetaMessageBatchResultTest : TestBase
                             CacheCreationInputTokens = 0,
                             CacheReadInputTokens = 0,
                             InputTokens = 0,
-                            Model = Model.ClaudeSonnet5,
+                            Model = Model.ClaudeFable5_1,
                             OutputTokens = 0,
                         },
                     ],
@@ -110,6 +110,15 @@ public class BetaMessageBatchResultTest : TestBase
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
                     Speed = Messages::BetaUsageSpeed.Standard,
                 },
+                InputTransformations =
+                [
+                    new()
+                    {
+                        Path = "path",
+                        Reason =
+                            Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                    },
+                ],
             }
         );
         value.Validate();
@@ -232,7 +241,7 @@ public class BetaMessageBatchResultTest : TestBase
                             CacheCreationInputTokens = 0,
                             CacheReadInputTokens = 0,
                             InputTokens = 0,
-                            Model = Model.ClaudeSonnet5,
+                            Model = Model.ClaudeFable5_1,
                             OutputTokens = 0,
                         },
                     ],
@@ -242,6 +251,15 @@ public class BetaMessageBatchResultTest : TestBase
                     ServiceTier = Messages::BetaUsageServiceTier.Standard,
                     Speed = Messages::BetaUsageSpeed.Standard,
                 },
+                InputTransformations =
+                [
+                    new()
+                    {
+                        Path = "path",
+                        Reason =
+                            Messages::BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+                    },
+                ],
             }
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

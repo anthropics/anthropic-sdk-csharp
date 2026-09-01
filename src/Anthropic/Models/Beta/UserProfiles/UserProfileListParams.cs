@@ -64,6 +64,27 @@ public record class UserProfileListParams : ParamsBase
     }
 
     /// <summary>
+    /// Query parameter for order_by
+    /// </summary>
+    public ApiEnum<string, OrderBy>? OrderBy
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableClass<ApiEnum<string, OrderBy>>("order_by");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set("order_by", value);
+        }
+    }
+
+    /// <summary>
     /// Query parameter for page
     /// </summary>
     public string? Page
@@ -236,6 +257,49 @@ sealed class OrderConverter : JsonConverter<Order>
             {
                 Order.Asc => "asc",
                 Order.Desc => "desc",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
+/// Query parameter for order_by
+/// </summary>
+[JsonConverter(typeof(OrderByConverter))]
+public enum OrderBy
+{
+    CreatedAt,
+    Name,
+}
+
+sealed class OrderByConverter : JsonConverter<OrderBy>
+{
+    public override OrderBy Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "created_at" => OrderBy.CreatedAt,
+            "name" => OrderBy.Name,
+            _ => (OrderBy)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, OrderBy value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                OrderBy.CreatedAt => "created_at",
+                OrderBy.Name => "name",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

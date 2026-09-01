@@ -10,19 +10,38 @@ public class BetaThinkingConfigAdaptiveTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaThinkingConfigAdaptive { Display = Display.Summarized };
+        var model = new BetaThinkingConfigAdaptive
+        {
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
+            Display = Display.Summarized,
+        };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("adaptive");
+        BetaThinkingBlockBinding expectedBlockBinding = new()
+        {
+            PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+        };
         ApiEnum<string, Display> expectedDisplay = Display.Summarized;
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.Equal(expectedBlockBinding, model.BlockBinding);
         Assert.Equal(expectedDisplay, model.Display);
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaThinkingConfigAdaptive { Display = Display.Summarized };
+        var model = new BetaThinkingConfigAdaptive
+        {
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
+            Display = Display.Summarized,
+        };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigAdaptive>(
@@ -36,7 +55,14 @@ public class BetaThinkingConfigAdaptiveTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaThinkingConfigAdaptive { Display = Display.Summarized };
+        var model = new BetaThinkingConfigAdaptive
+        {
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
+            Display = Display.Summarized,
+        };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigAdaptive>(
@@ -46,16 +72,28 @@ public class BetaThinkingConfigAdaptiveTest : TestBase
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("adaptive");
+        BetaThinkingBlockBinding expectedBlockBinding = new()
+        {
+            PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+        };
         ApiEnum<string, Display> expectedDisplay = Display.Summarized;
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.Equal(expectedBlockBinding, deserialized.BlockBinding);
         Assert.Equal(expectedDisplay, deserialized.Display);
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaThinkingConfigAdaptive { Display = Display.Summarized };
+        var model = new BetaThinkingConfigAdaptive
+        {
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
+            Display = Display.Summarized,
+        };
 
         model.Validate();
     }
@@ -65,6 +103,8 @@ public class BetaThinkingConfigAdaptiveTest : TestBase
     {
         var model = new BetaThinkingConfigAdaptive { };
 
+        Assert.Null(model.BlockBinding);
+        Assert.False(model.RawData.ContainsKey("block_binding"));
         Assert.Null(model.Display);
         Assert.False(model.RawData.ContainsKey("display"));
     }
@@ -80,8 +120,10 @@ public class BetaThinkingConfigAdaptiveTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new BetaThinkingConfigAdaptive { Display = null };
+        var model = new BetaThinkingConfigAdaptive { BlockBinding = null, Display = null };
 
+        Assert.Null(model.BlockBinding);
+        Assert.True(model.RawData.ContainsKey("block_binding"));
         Assert.Null(model.Display);
         Assert.True(model.RawData.ContainsKey("display"));
     }
@@ -89,7 +131,7 @@ public class BetaThinkingConfigAdaptiveTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new BetaThinkingConfigAdaptive { Display = null };
+        var model = new BetaThinkingConfigAdaptive { BlockBinding = null, Display = null };
 
         model.Validate();
     }
@@ -97,7 +139,14 @@ public class BetaThinkingConfigAdaptiveTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaThinkingConfigAdaptive { Display = Display.Summarized };
+        var model = new BetaThinkingConfigAdaptive
+        {
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
+            Display = Display.Summarized,
+        };
 
         BetaThinkingConfigAdaptive copied = new(model);
 

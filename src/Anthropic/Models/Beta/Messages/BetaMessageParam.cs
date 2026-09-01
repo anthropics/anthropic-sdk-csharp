@@ -33,11 +33,47 @@ public sealed record class BetaMessageParam : JsonModel
         init { this._rawData.Set("role", value); }
     }
 
+    /// <summary>
+    /// How long this system message's text stays in front of the model. `"never"`
+    /// (the default) renders it on every request that includes it. `"next_user_message"`
+    /// renders it only for the user turn it follows: once a later `role: "user"`
+    /// message exists in `messages` the message stays in the array (send it unchanged)
+    /// but is no longer shown to the model. Only permitted on `role: "system"` messages.
+    /// </summary>
+    public ApiEnum<string, ClearAt>? ClearAt
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, ClearAt>>("clear_at");
+        }
+        init { this._rawData.Set("clear_at", value); }
+    }
+
+    /// <summary>
+    /// Per-message output configuration on a role:"system" input message.
+    ///
+    /// <para>Fields here apply per-turn; ``format`` remains top-level only. An empty
+    /// ``{}`` is accepted on a message that carries content; a message with neither
+    /// content nor output_config fields is rejected.</para>
+    /// </summary>
+    public BetaSystemMessageOutputConfig? OutputConfig
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaSystemMessageOutputConfig>("output_config");
+        }
+        init { this._rawData.Set("output_config", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Content.Validate();
         this.Role.Validate();
+        this.ClearAt?.Validate();
+        this.OutputConfig?.Validate();
     }
 
     public BetaMessageParam() { }
@@ -386,6 +422,53 @@ sealed class RoleConverter : JsonConverter<Role>
                 Role.User => "user",
                 Role.Assistant => "assistant",
                 Role.System => "system",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
+/// How long this system message's text stays in front of the model. `"never"` (the
+/// default) renders it on every request that includes it. `"next_user_message"`
+/// renders it only for the user turn it follows: once a later `role: "user"` message
+/// exists in `messages` the message stays in the array (send it unchanged) but is
+/// no longer shown to the model. Only permitted on `role: "system"` messages.
+/// </summary>
+[JsonConverter(typeof(ClearAtConverter))]
+public enum ClearAt
+{
+    NextUserMessage,
+    Never,
+}
+
+sealed class ClearAtConverter : JsonConverter<ClearAt>
+{
+    public override ClearAt Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "next_user_message" => ClearAt.NextUserMessage,
+            "never" => ClearAt.Never,
+            _ => (ClearAt)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, ClearAt value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ClearAt.NextUserMessage => "next_user_message",
+                ClearAt.Never => "never",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

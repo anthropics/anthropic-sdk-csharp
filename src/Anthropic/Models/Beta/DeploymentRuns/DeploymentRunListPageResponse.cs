@@ -9,7 +9,7 @@ using Anthropic.Core;
 namespace Anthropic.Models.Beta.DeploymentRuns;
 
 /// <summary>
-/// Paginated list of deployment runs. Sorted by created_at descending (most recent first).
+/// Paginated list of deployment runs. Sorted by `created_at` descending (most recent first).
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<DeploymentRunListPageResponse, DeploymentRunListPageResponseFromRaw>)
