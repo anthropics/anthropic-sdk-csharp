@@ -121,6 +121,7 @@ public class BatchCreateParamsTest : TestBase
                 },
             ],
             UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         List<Request> expectedRequests =
@@ -225,6 +226,7 @@ public class BatchCreateParamsTest : TestBase
             },
         ];
         string expectedUserProfileID = "anthropic-user-profile-id";
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedRequests.Count, parameters.Requests.Count);
         for (int i = 0; i < expectedRequests.Count; i++)
@@ -232,6 +234,7 @@ public class BatchCreateParamsTest : TestBase
             Assert.Equal(expectedRequests[i], parameters.Requests[i]);
         }
         Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -347,6 +350,8 @@ public class BatchCreateParamsTest : TestBase
 
         Assert.Null(parameters.UserProfileID);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -461,10 +466,13 @@ public class BatchCreateParamsTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             UserProfileID = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.UserProfileID);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -696,6 +704,7 @@ public class BatchCreateParamsTest : TestBase
                 },
             ],
             UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -703,6 +712,10 @@ public class BatchCreateParamsTest : TestBase
         Assert.Equal(
             ["anthropic-user-profile-id"],
             requestMessage.Headers.GetValues("anthropic-user-profile-id")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -816,6 +829,7 @@ public class BatchCreateParamsTest : TestBase
                 },
             ],
             UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         BatchCreateParams copied = new(parameters);

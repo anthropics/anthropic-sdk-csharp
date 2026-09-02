@@ -541,6 +541,18 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         {
             foreach (var header in extraHeaders)
             {
+                // Per-request params may already carry this single-valued header; appending
+                // a second value would put "a, b" on the wire.
+                if (
+                    string.Equals(
+                        header.Key,
+                        "anthropic-workspace-id",
+                        StringComparison.OrdinalIgnoreCase
+                    ) && requestMessage.Headers.Contains(header.Key)
+                )
+                {
+                    continue;
+                }
                 requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value);
             }
         }

@@ -18,6 +18,7 @@ public class WorkUpdateParamsTest : TestBase
             WorkID = "work_id",
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedEnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW";
@@ -27,6 +28,7 @@ public class WorkUpdateParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedEnvironmentID, parameters.EnvironmentID);
         Assert.Equal(expectedWorkID, parameters.WorkID);
@@ -43,6 +45,7 @@ public class WorkUpdateParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -57,6 +60,8 @@ public class WorkUpdateParamsTest : TestBase
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -70,10 +75,13 @@ public class WorkUpdateParamsTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -108,6 +116,7 @@ public class WorkUpdateParamsTest : TestBase
             WorkID = "work_id",
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -115,6 +124,10 @@ public class WorkUpdateParamsTest : TestBase
         Assert.Equal(
             ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -127,6 +140,7 @@ public class WorkUpdateParamsTest : TestBase
             WorkID = "work_id",
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         WorkUpdateParams copied = new(parameters);

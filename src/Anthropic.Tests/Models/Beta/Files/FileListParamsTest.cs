@@ -19,6 +19,7 @@ public class FileListParamsTest : TestBase
             Page = "page",
             ScopeID = "scope_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         List<string> expectedIds = ["string"];
@@ -29,6 +30,7 @@ public class FileListParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.NotNull(parameters.Ids);
         Assert.Equal(expectedIds.Count, parameters.Ids.Count);
@@ -45,6 +47,7 @@ public class FileListParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -58,6 +61,8 @@ public class FileListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("scope_id"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -72,6 +77,7 @@ public class FileListParamsTest : TestBase
             Limit = null,
             ScopeID = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Limit);
@@ -80,6 +86,8 @@ public class FileListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("scope_id"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -90,6 +98,7 @@ public class FileListParamsTest : TestBase
             Limit = 1,
             ScopeID = "scope_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         Assert.Null(parameters.Ids);
@@ -106,6 +115,7 @@ public class FileListParamsTest : TestBase
             Limit = 1,
             ScopeID = "scope_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Ids = null,
             Page = null,
@@ -144,13 +154,21 @@ public class FileListParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        FileListParams parameters = new() { Betas = [AnthropicBeta.MessageBatches2024_09_24] };
+        FileListParams parameters = new()
+        {
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
             ["message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -164,6 +182,7 @@ public class FileListParamsTest : TestBase
             Page = "page",
             ScopeID = "scope_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         FileListParams copied = new(parameters);

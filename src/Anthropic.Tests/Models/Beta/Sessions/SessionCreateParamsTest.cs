@@ -52,6 +52,7 @@ public class SessionCreateParamsTest : TestBase
             Title = "Order #1234 inquiry",
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         Agent expectedAgent = "agent_011CZkYpogX7uDKUyvBTophP";
@@ -92,6 +93,7 @@ public class SessionCreateParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedAgent, parameters.Agent);
         Assert.Equal(expectedEnvironmentID, parameters.EnvironmentID);
@@ -129,6 +131,7 @@ public class SessionCreateParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -153,6 +156,8 @@ public class SessionCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("vault_ids"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -171,6 +176,7 @@ public class SessionCreateParamsTest : TestBase
             Resources = null,
             VaultIds = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Budget);
@@ -185,6 +191,8 @@ public class SessionCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("vault_ids"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -226,6 +234,7 @@ public class SessionCreateParamsTest : TestBase
             ],
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         Assert.Null(parameters.Title);
@@ -271,6 +280,7 @@ public class SessionCreateParamsTest : TestBase
             ],
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Title = null,
         };
@@ -304,6 +314,7 @@ public class SessionCreateParamsTest : TestBase
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -311,6 +322,10 @@ public class SessionCreateParamsTest : TestBase
         Assert.Equal(
             ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -354,6 +369,7 @@ public class SessionCreateParamsTest : TestBase
             Title = "Order #1234 inquiry",
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         SessionCreateParams copied = new(parameters);

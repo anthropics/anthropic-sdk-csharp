@@ -21,6 +21,7 @@ public class DreamListParamsTest : TestBase
             Page = "page",
             Statuses = [BetaDreamStatus.Pending],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         DateTimeOffset expectedCreatedAtGt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
@@ -33,6 +34,7 @@ public class DreamListParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedCreatedAtGt, parameters.CreatedAtGt);
         Assert.Equal(expectedCreatedAtLt, parameters.CreatedAtLt);
@@ -51,6 +53,7 @@ public class DreamListParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -72,6 +75,8 @@ public class DreamListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("statuses"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -87,6 +92,7 @@ public class DreamListParamsTest : TestBase
             Page = null,
             Statuses = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.CreatedAtGt);
@@ -103,6 +109,8 @@ public class DreamListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("statuses"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -134,13 +142,21 @@ public class DreamListParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        DreamListParams parameters = new() { Betas = [AnthropicBeta.MessageBatches2024_09_24] };
+        DreamListParams parameters = new()
+        {
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
             ["dreaming-2026-04-21", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -156,6 +172,7 @@ public class DreamListParamsTest : TestBase
             Page = "page",
             Statuses = [BetaDreamStatus.Pending],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         DreamListParams copied = new(parameters);

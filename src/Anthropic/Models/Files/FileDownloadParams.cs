@@ -19,6 +19,24 @@ public record class FileDownloadParams : ParamsBase
 {
     public string? FileID { get; init; }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public FileDownloadParams() { }
 
 #pragma warning disable CS8618

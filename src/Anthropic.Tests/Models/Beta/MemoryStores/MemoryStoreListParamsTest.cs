@@ -20,6 +20,7 @@ public class MemoryStoreListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         DateTimeOffset expectedCreatedAtGte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
@@ -31,6 +32,7 @@ public class MemoryStoreListParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedCreatedAtGte, parameters.CreatedAtGte);
         Assert.Equal(expectedCreatedAtLte, parameters.CreatedAtLte);
@@ -43,6 +45,7 @@ public class MemoryStoreListParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -62,6 +65,8 @@ public class MemoryStoreListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -76,6 +81,7 @@ public class MemoryStoreListParamsTest : TestBase
             Limit = null,
             Page = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.CreatedAtGte);
@@ -90,6 +96,8 @@ public class MemoryStoreListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -123,6 +131,7 @@ public class MemoryStoreListParamsTest : TestBase
         MemoryStoreListParams parameters = new()
         {
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -130,6 +139,10 @@ public class MemoryStoreListParamsTest : TestBase
         Assert.Equal(
             ["agent-memory-2026-07-22", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -144,6 +157,7 @@ public class MemoryStoreListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         MemoryStoreListParams copied = new(parameters);

@@ -17,6 +17,7 @@ public class ResourceRetrieveParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             ResourceID = "sesrsc_011CZkZBJq5dWxk9fVLNcPht",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedSessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7";
@@ -25,6 +26,7 @@ public class ResourceRetrieveParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedSessionID, parameters.SessionID);
         Assert.Equal(expectedResourceID, parameters.ResourceID);
@@ -34,6 +36,7 @@ public class ResourceRetrieveParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -47,6 +50,8 @@ public class ResourceRetrieveParamsTest : TestBase
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -59,10 +64,13 @@ public class ResourceRetrieveParamsTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -95,6 +103,7 @@ public class ResourceRetrieveParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             ResourceID = "sesrsc_011CZkZBJq5dWxk9fVLNcPht",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -102,6 +111,10 @@ public class ResourceRetrieveParamsTest : TestBase
         Assert.Equal(
             ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -113,6 +126,7 @@ public class ResourceRetrieveParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             ResourceID = "sesrsc_011CZkZBJq5dWxk9fVLNcPht",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         ResourceRetrieveParams copied = new(parameters);

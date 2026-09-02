@@ -85,6 +85,7 @@ public class AgentUpdateParamsTest : TestBase
             ],
             Version = 1,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedAgentID = "agent_011CZkYpogX7uDKUyvBTophP";
@@ -159,6 +160,7 @@ public class AgentUpdateParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedAgentID, parameters.AgentID);
         Assert.Equal(expectedDescription, parameters.Description);
@@ -199,6 +201,7 @@ public class AgentUpdateParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -275,6 +278,8 @@ public class AgentUpdateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("version"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -347,6 +352,7 @@ public class AgentUpdateParamsTest : TestBase
             Name = null,
             Version = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Model);
@@ -357,6 +363,8 @@ public class AgentUpdateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("version"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -375,6 +383,7 @@ public class AgentUpdateParamsTest : TestBase
             Name = "name",
             Version = 1,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         Assert.Null(parameters.Description);
@@ -409,6 +418,7 @@ public class AgentUpdateParamsTest : TestBase
             Name = "name",
             Version = 1,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Description = null,
             McpServers = null,
@@ -460,6 +470,7 @@ public class AgentUpdateParamsTest : TestBase
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -467,6 +478,10 @@ public class AgentUpdateParamsTest : TestBase
         Assert.Equal(
             ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -544,6 +559,7 @@ public class AgentUpdateParamsTest : TestBase
             ],
             Version = 1,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         AgentUpdateParams copied = new(parameters);

@@ -107,6 +107,24 @@ public record class CredentialCreateParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public CredentialCreateParams() { }
 
 #pragma warning disable CS8618

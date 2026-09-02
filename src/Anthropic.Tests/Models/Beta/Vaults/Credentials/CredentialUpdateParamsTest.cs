@@ -37,6 +37,7 @@ public class CredentialUpdateParamsTest : TestBase
             DisplayName = "Example credential",
             Metadata = new Dictionary<string, string?>() { { "environment", "production" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedVaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv";
@@ -63,6 +64,7 @@ public class CredentialUpdateParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedVaultID, parameters.VaultID);
         Assert.Equal(expectedCredentialID, parameters.CredentialID);
@@ -82,6 +84,7 @@ public class CredentialUpdateParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -99,6 +102,8 @@ public class CredentialUpdateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("auth"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -114,12 +119,15 @@ public class CredentialUpdateParamsTest : TestBase
             // Null should be interpreted as omitted for these properties
             Auth = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Auth);
         Assert.False(parameters.RawBodyData.ContainsKey("auth"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -147,6 +155,7 @@ public class CredentialUpdateParamsTest : TestBase
                 },
             },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         Assert.Null(parameters.DisplayName);
@@ -180,6 +189,7 @@ public class CredentialUpdateParamsTest : TestBase
                 },
             },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             DisplayName = null,
             Metadata = null,
@@ -221,6 +231,7 @@ public class CredentialUpdateParamsTest : TestBase
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
             CredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -228,6 +239,10 @@ public class CredentialUpdateParamsTest : TestBase
         Assert.Equal(
             ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -258,6 +273,7 @@ public class CredentialUpdateParamsTest : TestBase
             DisplayName = "Example credential",
             Metadata = new Dictionary<string, string?>() { { "environment", "production" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         CredentialUpdateParams copied = new(parameters);

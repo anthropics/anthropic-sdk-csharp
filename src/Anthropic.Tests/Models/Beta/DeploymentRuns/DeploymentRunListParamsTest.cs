@@ -24,6 +24,7 @@ public class DeploymentRunListParamsTest : TestBase
             Page = "page",
             TriggerType = BetaManagedAgentsTriggerType.Schedule,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         DateTimeOffset expectedCreatedAtGt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
@@ -40,6 +41,7 @@ public class DeploymentRunListParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedCreatedAtGt, parameters.CreatedAtGt);
         Assert.Equal(expectedCreatedAtGte, parameters.CreatedAtGte);
@@ -56,6 +58,7 @@ public class DeploymentRunListParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -83,6 +86,8 @@ public class DeploymentRunListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("trigger_type"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -101,6 +106,7 @@ public class DeploymentRunListParamsTest : TestBase
             Page = null,
             TriggerType = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.CreatedAtGt);
@@ -123,6 +129,8 @@ public class DeploymentRunListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("trigger_type"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -160,6 +168,7 @@ public class DeploymentRunListParamsTest : TestBase
         DeploymentRunListParams parameters = new()
         {
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -167,6 +176,10 @@ public class DeploymentRunListParamsTest : TestBase
         Assert.Equal(
             ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -185,6 +198,7 @@ public class DeploymentRunListParamsTest : TestBase
             Page = "page",
             TriggerType = BetaManagedAgentsTriggerType.Schedule,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         DeploymentRunListParams copied = new(parameters);
