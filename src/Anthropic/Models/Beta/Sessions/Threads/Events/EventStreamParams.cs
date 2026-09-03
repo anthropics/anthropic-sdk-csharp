@@ -191,8 +191,8 @@ public record class EventStreamParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/sessions/{0}/threads/{1}/stream",
-                    this.SessionID,
-                    this.ThreadID
+                    ParamsBase.EncodePathSegment(this.SessionID, nameof(this.SessionID)),
+                    ParamsBase.EncodePathSegment(this.ThreadID, nameof(this.ThreadID))
                 )
         )
         {

@@ -361,7 +361,10 @@ public record class MemoryVersionListParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/memory_stores/{0}/memory_versions", this.MemoryStoreID)
+                + string.Format(
+                    "/v1/memory_stores/{0}/memory_versions",
+                    ParamsBase.EncodePathSegment(this.MemoryStoreID, nameof(this.MemoryStoreID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

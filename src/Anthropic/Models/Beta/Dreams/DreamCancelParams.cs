@@ -146,7 +146,10 @@ public record class DreamCancelParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/dreams/{0}/cancel", this.DreamID)
+                + string.Format(
+                    "/v1/dreams/{0}/cancel",
+                    ParamsBase.EncodePathSegment(this.DreamID, nameof(this.DreamID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

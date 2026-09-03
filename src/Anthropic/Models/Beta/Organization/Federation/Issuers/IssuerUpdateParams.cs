@@ -249,7 +249,13 @@ public record class IssuerUpdateParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/organizations/federation_issuers/{0}", this.FederationIssuerID)
+                + string.Format(
+                    "/v1/organizations/federation_issuers/{0}",
+                    ParamsBase.EncodePathSegment(
+                        this.FederationIssuerID,
+                        nameof(this.FederationIssuerID)
+                    )
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

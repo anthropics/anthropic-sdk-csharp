@@ -166,7 +166,11 @@ public record class AgentRetrieveParams : ParamsBase
     {
         var queryString = this.QueryString(options);
         return new UriBuilder(
-            options.BaseUrl.ToString().TrimEnd('/') + string.Format("/v1/agents/{0}", this.AgentID)
+            options.BaseUrl.ToString().TrimEnd('/')
+                + string.Format(
+                    "/v1/agents/{0}",
+                    ParamsBase.EncodePathSegment(this.AgentID, nameof(this.AgentID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

@@ -260,7 +260,10 @@ public record class SessionUpdateParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/sessions/{0}", this.SessionID)
+                + string.Format(
+                    "/v1/sessions/{0}",
+                    ParamsBase.EncodePathSegment(this.SessionID, nameof(this.SessionID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

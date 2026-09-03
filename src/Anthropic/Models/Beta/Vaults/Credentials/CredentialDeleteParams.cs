@@ -155,7 +155,11 @@ public record class CredentialDeleteParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/vaults/{0}/credentials/{1}", this.VaultID, this.CredentialID)
+                + string.Format(
+                    "/v1/vaults/{0}/credentials/{1}",
+                    ParamsBase.EncodePathSegment(this.VaultID, nameof(this.VaultID)),
+                    ParamsBase.EncodePathSegment(this.CredentialID, nameof(this.CredentialID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

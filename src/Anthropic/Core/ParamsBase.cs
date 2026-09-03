@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Web;
+using Anthropic.Exceptions;
 
 namespace Anthropic.Core;
 
@@ -191,6 +192,37 @@ public abstract record class ParamsBase
             }
         }
         return sb.ToString();
+    }
+
+    internal static string EncodePathSegment(string? value, string paramName)
+    {
+        if (value == null)
+        {
+            return "";
+        }
+        // "." is unreserved, so escaping leaves it as is and the segment would still resolve as a dot-segment.
+        if (value == "." || value == "..")
+        {
+            throw new AnthropicInvalidDataException(
+                $"'{paramName}' value \"{value}\" is a dot-segment and can't be safely passed as a path parameter"
+            );
+        }
+        return Uri.EscapeDataString(value);
+    }
+
+    internal static string EncodePathSegment(JsonElement? value, string paramName)
+    {
+        return EncodePathSegment(
+            value?.ValueKind switch
+            {
+                null or JsonValueKind.Undefined or JsonValueKind.Null => null,
+                JsonValueKind.String => value.Value.GetString(),
+                JsonValueKind.True => "true",
+                JsonValueKind.False => "false",
+                _ => value.Value.GetRawText(),
+            },
+            paramName
+        );
     }
 
     internal abstract void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options);

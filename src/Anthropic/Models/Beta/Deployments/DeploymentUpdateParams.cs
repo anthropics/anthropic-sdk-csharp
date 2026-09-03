@@ -363,7 +363,10 @@ public record class DeploymentUpdateParams : ParamsBase
         var queryString = this.QueryString(options);
         return new System::UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/deployments/{0}", this.DeploymentID)
+                + string.Format(
+                    "/v1/deployments/{0}",
+                    ParamsBase.EncodePathSegment(this.DeploymentID, nameof(this.DeploymentID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

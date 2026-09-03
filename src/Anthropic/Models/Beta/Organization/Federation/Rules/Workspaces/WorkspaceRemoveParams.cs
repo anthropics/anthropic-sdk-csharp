@@ -146,8 +146,11 @@ public record class WorkspaceRemoveParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/organizations/federation_rules/{0}/workspaces/{1}",
-                    this.FederationRuleID,
-                    this.WorkspaceID
+                    ParamsBase.EncodePathSegment(
+                        this.FederationRuleID,
+                        nameof(this.FederationRuleID)
+                    ),
+                    ParamsBase.EncodePathSegment(this.WorkspaceID, nameof(this.WorkspaceID))
                 )
         )
         {

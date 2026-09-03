@@ -128,7 +128,10 @@ public record class UserProfileRetrieveParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/user_profiles/{0}", this.UserProfileID)
+                + string.Format(
+                    "/v1/user_profiles/{0}",
+                    ParamsBase.EncodePathSegment(this.UserProfileID, nameof(this.UserProfileID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

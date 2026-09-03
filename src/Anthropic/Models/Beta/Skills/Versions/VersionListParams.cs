@@ -173,7 +173,10 @@ public record class VersionListParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/skills/{0}/versions", this.SkillID)
+                + string.Format(
+                    "/v1/skills/{0}/versions",
+                    ParamsBase.EncodePathSegment(this.SkillID, nameof(this.SkillID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

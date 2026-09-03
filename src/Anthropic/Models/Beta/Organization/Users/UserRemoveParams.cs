@@ -100,7 +100,10 @@ public record class UserRemoveParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/organizations/users/{0}", this.UserID)
+                + string.Format(
+                    "/v1/organizations/users/{0}",
+                    ParamsBase.EncodePathSegment(this.UserID, nameof(this.UserID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

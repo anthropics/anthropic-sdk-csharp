@@ -186,7 +186,11 @@ public record class ResourceUpdateParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/sessions/{0}/resources/{1}", this.SessionID, this.ResourceID)
+                + string.Format(
+                    "/v1/sessions/{0}/resources/{1}",
+                    ParamsBase.EncodePathSegment(this.SessionID, nameof(this.SessionID)),
+                    ParamsBase.EncodePathSegment(this.ResourceID, nameof(this.ResourceID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

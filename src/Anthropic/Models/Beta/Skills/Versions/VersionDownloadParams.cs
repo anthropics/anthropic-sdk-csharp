@@ -154,7 +154,11 @@ public record class VersionDownloadParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/skills/{0}/versions/{1}/content", this.SkillID, this.Version)
+                + string.Format(
+                    "/v1/skills/{0}/versions/{1}/content",
+                    ParamsBase.EncodePathSegment(this.SkillID, nameof(this.SkillID)),
+                    ParamsBase.EncodePathSegment(this.Version, nameof(this.Version))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

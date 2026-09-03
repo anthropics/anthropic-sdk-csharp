@@ -130,7 +130,10 @@ public record class UserProfileCreateEnrollmentUrlParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/user_profiles/{0}/enrollment_url", this.UserProfileID)
+                + string.Format(
+                    "/v1/user_profiles/{0}/enrollment_url",
+                    ParamsBase.EncodePathSegment(this.UserProfileID, nameof(this.UserProfileID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

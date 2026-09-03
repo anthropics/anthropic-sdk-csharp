@@ -116,7 +116,11 @@ public record class SkillDeleteParams : ParamsBase
     public override Uri Url(ClientOptions options)
     {
         return new UriBuilder(
-            options.BaseUrl.ToString().TrimEnd('/') + string.Format("/v1/skills/{0}", this.SkillID)
+            options.BaseUrl.ToString().TrimEnd('/')
+                + string.Format(
+                    "/v1/skills/{0}",
+                    ParamsBase.EncodePathSegment(this.SkillID, nameof(this.SkillID))
+                )
         )
         {
             Query = this.QueryString(options),

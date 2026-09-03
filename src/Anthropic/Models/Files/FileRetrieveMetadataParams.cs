@@ -116,7 +116,11 @@ public record class FileRetrieveMetadataParams : ParamsBase
     public override Uri Url(ClientOptions options)
     {
         return new UriBuilder(
-            options.BaseUrl.ToString().TrimEnd('/') + string.Format("/v1/files/{0}", this.FileID)
+            options.BaseUrl.ToString().TrimEnd('/')
+                + string.Format(
+                    "/v1/files/{0}",
+                    ParamsBase.EncodePathSegment(this.FileID, nameof(this.FileID))
+                )
         )
         {
             Query = this.QueryString(options),

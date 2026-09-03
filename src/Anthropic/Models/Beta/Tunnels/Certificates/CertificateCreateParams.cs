@@ -183,7 +183,10 @@ public record class CertificateCreateParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/tunnels/{0}/certificates", this.TunnelID)
+                + string.Format(
+                    "/v1/tunnels/{0}/certificates",
+                    ParamsBase.EncodePathSegment(this.TunnelID, nameof(this.TunnelID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

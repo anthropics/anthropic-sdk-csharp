@@ -147,7 +147,11 @@ public record class ModelRetrieveParams : ParamsBase
     public override Uri Url(ClientOptions options)
     {
         return new UriBuilder(
-            options.BaseUrl.ToString().TrimEnd('/') + string.Format("/v1/models/{0}", this.ModelID)
+            options.BaseUrl.ToString().TrimEnd('/')
+                + string.Format(
+                    "/v1/models/{0}",
+                    ParamsBase.EncodePathSegment(this.ModelID, nameof(this.ModelID))
+                )
         )
         {
             Query = this.QueryString(options),

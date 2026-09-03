@@ -122,7 +122,10 @@ public record class BatchDeleteParams : ParamsBase
     {
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/messages/batches/{0}", this.MessageBatchID)
+                + string.Format(
+                    "/v1/messages/batches/{0}",
+                    ParamsBase.EncodePathSegment(this.MessageBatchID, nameof(this.MessageBatchID))
+                )
         )
         {
             Query = this.QueryString(options),

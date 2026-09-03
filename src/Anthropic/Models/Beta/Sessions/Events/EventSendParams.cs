@@ -184,7 +184,10 @@ public record class EventSendParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/sessions/{0}/events", this.SessionID)
+                + string.Format(
+                    "/v1/sessions/{0}/events",
+                    ParamsBase.EncodePathSegment(this.SessionID, nameof(this.SessionID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

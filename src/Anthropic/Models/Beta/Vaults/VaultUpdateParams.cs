@@ -197,7 +197,11 @@ public record class VaultUpdateParams : ParamsBase
     {
         var queryString = this.QueryString(options);
         return new UriBuilder(
-            options.BaseUrl.ToString().TrimEnd('/') + string.Format("/v1/vaults/{0}", this.VaultID)
+            options.BaseUrl.ToString().TrimEnd('/')
+                + string.Format(
+                    "/v1/vaults/{0}",
+                    ParamsBase.EncodePathSegment(this.VaultID, nameof(this.VaultID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

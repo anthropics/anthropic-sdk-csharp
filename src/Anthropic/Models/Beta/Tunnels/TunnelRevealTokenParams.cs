@@ -152,7 +152,10 @@ public record class TunnelRevealTokenParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/tunnels/{0}/reveal_token", this.TunnelID)
+                + string.Format(
+                    "/v1/tunnels/{0}/reveal_token",
+                    ParamsBase.EncodePathSegment(this.TunnelID, nameof(this.TunnelID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

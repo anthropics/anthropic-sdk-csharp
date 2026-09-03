@@ -187,7 +187,13 @@ public record class ServiceAccountUpdateParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/organizations/service_accounts/{0}", this.ServiceAccountID)
+                + string.Format(
+                    "/v1/organizations/service_accounts/{0}",
+                    ParamsBase.EncodePathSegment(
+                        this.ServiceAccountID,
+                        nameof(this.ServiceAccountID)
+                    )
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

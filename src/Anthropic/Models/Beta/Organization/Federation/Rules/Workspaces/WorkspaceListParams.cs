@@ -175,7 +175,10 @@ public record class WorkspaceListParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/organizations/federation_rules/{0}/workspaces",
-                    this.FederationRuleID
+                    ParamsBase.EncodePathSegment(
+                        this.FederationRuleID,
+                        nameof(this.FederationRuleID)
+                    )
                 )
         )
         {

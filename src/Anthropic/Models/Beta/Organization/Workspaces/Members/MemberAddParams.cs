@@ -145,7 +145,10 @@ public record class MemberAddParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/organizations/workspaces/{0}/members", this.WorkspaceID)
+                + string.Format(
+                    "/v1/organizations/workspaces/{0}/members",
+                    ParamsBase.EncodePathSegment(this.WorkspaceID, nameof(this.WorkspaceID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

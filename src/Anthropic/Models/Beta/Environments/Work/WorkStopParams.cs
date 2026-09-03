@@ -200,8 +200,8 @@ public record class WorkStopParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/environments/{0}/work/{1}/stop",
-                    this.EnvironmentID,
-                    this.WorkID
+                    ParamsBase.EncodePathSegment(this.EnvironmentID, nameof(this.EnvironmentID)),
+                    ParamsBase.EncodePathSegment(this.WorkID, nameof(this.WorkID))
                 )
         )
         {

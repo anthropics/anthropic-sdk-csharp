@@ -117,7 +117,10 @@ public record class FileDownloadParams : ParamsBase
     {
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/files/{0}/content", this.FileID)
+                + string.Format(
+                    "/v1/files/{0}/content",
+                    ParamsBase.EncodePathSegment(this.FileID, nameof(this.FileID))
+                )
         )
         {
             Query = this.QueryString(options),

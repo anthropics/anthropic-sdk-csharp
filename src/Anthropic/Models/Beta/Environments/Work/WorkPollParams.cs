@@ -183,7 +183,10 @@ public record class WorkPollParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/environments/{0}/work/poll", this.EnvironmentID)
+                + string.Format(
+                    "/v1/environments/{0}/work/poll",
+                    ParamsBase.EncodePathSegment(this.EnvironmentID, nameof(this.EnvironmentID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

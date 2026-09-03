@@ -143,8 +143,8 @@ public record class MemberUpdateParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/organizations/workspaces/{0}/members/{1}",
-                    this.WorkspaceID,
-                    this.UserID
+                    ParamsBase.EncodePathSegment(this.WorkspaceID, nameof(this.WorkspaceID)),
+                    ParamsBase.EncodePathSegment(this.UserID, nameof(this.UserID))
                 )
         )
         {

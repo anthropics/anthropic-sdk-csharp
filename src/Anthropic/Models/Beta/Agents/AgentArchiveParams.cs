@@ -146,7 +146,10 @@ public record class AgentArchiveParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/agents/{0}/archive", this.AgentID)
+                + string.Format(
+                    "/v1/agents/{0}/archive",
+                    ParamsBase.EncodePathSegment(this.AgentID, nameof(this.AgentID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

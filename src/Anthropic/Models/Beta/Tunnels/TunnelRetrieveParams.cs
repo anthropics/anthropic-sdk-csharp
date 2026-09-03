@@ -150,7 +150,10 @@ public record class TunnelRetrieveParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/tunnels/{0}", this.TunnelID)
+                + string.Format(
+                    "/v1/tunnels/{0}",
+                    ParamsBase.EncodePathSegment(this.TunnelID, nameof(this.TunnelID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

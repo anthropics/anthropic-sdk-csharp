@@ -145,7 +145,10 @@ public record class FileDownloadParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/files/{0}/content", this.FileID)
+                + string.Format(
+                    "/v1/files/{0}/content",
+                    ParamsBase.EncodePathSegment(this.FileID, nameof(this.FileID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

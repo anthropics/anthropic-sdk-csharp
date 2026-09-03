@@ -147,7 +147,10 @@ public record class EnvironmentArchiveParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/environments/{0}/archive", this.EnvironmentID)
+                + string.Format(
+                    "/v1/environments/{0}/archive",
+                    ParamsBase.EncodePathSegment(this.EnvironmentID, nameof(this.EnvironmentID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

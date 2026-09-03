@@ -161,8 +161,8 @@ public record class CertificateRetrieveParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/tunnels/{0}/certificates/{1}",
-                    this.TunnelID,
-                    this.CertificateID
+                    ParamsBase.EncodePathSegment(this.TunnelID, nameof(this.TunnelID)),
+                    ParamsBase.EncodePathSegment(this.CertificateID, nameof(this.CertificateID))
                 )
         )
         {

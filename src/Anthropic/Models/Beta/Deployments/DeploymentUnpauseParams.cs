@@ -146,7 +146,10 @@ public record class DeploymentUnpauseParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/deployments/{0}/unpause", this.DeploymentID)
+                + string.Format(
+                    "/v1/deployments/{0}/unpause",
+                    ParamsBase.EncodePathSegment(this.DeploymentID, nameof(this.DeploymentID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

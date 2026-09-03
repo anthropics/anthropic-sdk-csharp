@@ -144,7 +144,11 @@ public record class SkillDeleteParams : ParamsBase
     {
         var queryString = this.QueryString(options);
         return new UriBuilder(
-            options.BaseUrl.ToString().TrimEnd('/') + string.Format("/v1/skills/{0}", this.SkillID)
+            options.BaseUrl.ToString().TrimEnd('/')
+                + string.Format(
+                    "/v1/skills/{0}",
+                    ParamsBase.EncodePathSegment(this.SkillID, nameof(this.SkillID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

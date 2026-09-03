@@ -307,7 +307,13 @@ public record class RuleUpdateParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/organizations/federation_rules/{0}", this.FederationRuleID)
+                + string.Format(
+                    "/v1/organizations/federation_rules/{0}",
+                    ParamsBase.EncodePathSegment(
+                        this.FederationRuleID,
+                        nameof(this.FederationRuleID)
+                    )
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

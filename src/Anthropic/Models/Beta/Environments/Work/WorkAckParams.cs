@@ -145,8 +145,8 @@ public record class WorkAckParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/environments/{0}/work/{1}/ack",
-                    this.EnvironmentID,
-                    this.WorkID
+                    ParamsBase.EncodePathSegment(this.EnvironmentID, nameof(this.EnvironmentID)),
+                    ParamsBase.EncodePathSegment(this.WorkID, nameof(this.WorkID))
                 )
         )
         {
