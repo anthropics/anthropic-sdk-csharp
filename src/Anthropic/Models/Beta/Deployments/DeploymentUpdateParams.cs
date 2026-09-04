@@ -254,6 +254,24 @@ public record class DeploymentUpdateParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public DeploymentUpdateParams() { }
 
 #pragma warning disable CS8618
@@ -345,7 +363,10 @@ public record class DeploymentUpdateParams : ParamsBase
         var queryString = this.QueryString(options);
         return new System::UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/deployments/{0}", this.DeploymentID)
+                + string.Format(
+                    "/v1/deployments/{0}",
+                    ParamsBase.EncodePathSegment(this.DeploymentID, nameof(this.DeploymentID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
@@ -674,11 +695,16 @@ public record class DeploymentUpdateParamsResource : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaManagedAgentsGitHubRepositoryResourceParams: (x) => x.MountPath,
-                betaManagedAgentsFileResourceParams: (x) => x.MountPath,
-                betaManagedAgentsMemoryStoreResourceParam: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsGitHubRepositoryResourceParams x => x.MountPath,
+                BetaManagedAgentsFileResourceParams x => x.MountPath,
+                BetaManagedAgentsMemoryStoreResourceParam _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "mount_path"
+                ),
+            };
         }
     }
 

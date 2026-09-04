@@ -188,6 +188,30 @@ public class AnthropicClientCredentialsTests
         Assert.Equal("wrkspc_test", req.Headers.GetValues("anthropic-workspace-id").Single());
     }
 
+    [Fact]
+    public async Task PerRequestWorkspaceId_OverridesProfileWorkspaceIdHeader()
+    {
+        var handler = new FakeHandler();
+        using var client = new AnthropicClient(
+            new ClientOptions
+            {
+                Credentials = new FakeCredentials(),
+                ExtraHeaders = new Dictionary<string, string>
+                {
+                    ["anthropic-workspace-id"] = "wrkspc_profile",
+                },
+                HttpClient = new HttpClient(handler),
+            }
+        );
+
+        await client.Messages.Create(TestParams() with { WorkspaceID = "wrkspc_request" });
+
+        Assert.Equal(
+            "wrkspc_request",
+            handler.LastRequest!.Headers.GetValues("anthropic-workspace-id").Single()
+        );
+    }
+
     private sealed class TestSubclassClient : AnthropicClient
     {
         public TestSubclassClient(ClientOptions options)

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
@@ -1894,5 +1895,126 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsStreamSessionThreadEvents value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "id": "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+                  "processed_at": "2026-03-15T10:00:00Z",
+                  "session_thread_id": "session_thread_id",
+                  "tool_use_id": "tool_use_id",
+                  "is_error": true,
+                  "name": "name",
+                  "agent_name": "Researcher",
+                  "iteration": 0,
+                  "outcome_id": "outc_011CZkZRSw2kEfs6ncTVljxP",
+                  "budget": {
+                    "max_list_cost": {
+                      "amount": "2500",
+                      "currency": "USD"
+                    },
+                    "type": "limit"
+                  }
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedID = "sevt_011CZkZGOp0iBcp4kaQSihUmy";
+        DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
+        string expectedSessionThreadID = "session_thread_id";
+        string expectedToolUseID = "tool_use_id";
+        bool expectedIsError = true;
+        string expectedName = "name";
+        string expectedAgentName = "Researcher";
+        int expectedIteration = 0;
+        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP";
+        BetaManagedAgentsBudgetLimit expectedBudget = new()
+        {
+            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+            Type = BetaManagedAgentsBudgetLimitType.Limit,
+        };
+
+        Assert.Equal(expectedID, value.ID);
+        Assert.Equal(expectedProcessedAt, value.ProcessedAt);
+        Assert.Equal(expectedSessionThreadID, value.SessionThreadID);
+        Assert.Equal(expectedToolUseID, value.ToolUseID);
+        Assert.Equal(expectedIsError, value.IsError);
+        Assert.Equal(expectedName, value.Name);
+        Assert.Equal(expectedAgentName, value.AgentName);
+        Assert.Equal(expectedIteration, value.Iteration);
+        Assert.Equal(expectedOutcomeID, value.OutcomeID);
+        Assert.Equal(expectedBudget, value.Budget);
+
+        BetaManagedAgentsStreamSessionThreadEvents emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Null(emptyValue.ID);
+        Assert.Null(emptyValue.ProcessedAt);
+        Assert.Null(emptyValue.SessionThreadID);
+        Assert.Null(emptyValue.ToolUseID);
+        Assert.Null(emptyValue.IsError);
+        Assert.Null(emptyValue.Name);
+        Assert.Null(emptyValue.AgentName);
+        Assert.Null(emptyValue.Iteration);
+        Assert.Null(emptyValue.OutcomeID);
+        Assert.Null(emptyValue.Budget);
+
+        BetaManagedAgentsStreamSessionThreadEvents mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "id": [
+                    "invalid"
+                  ],
+                  "processed_at": [
+                    "invalid"
+                  ],
+                  "session_thread_id": [
+                    "invalid"
+                  ],
+                  "tool_use_id": [
+                    "invalid"
+                  ],
+                  "is_error": [
+                    "invalid"
+                  ],
+                  "name": [
+                    "invalid"
+                  ],
+                  "agent_name": [
+                    "invalid"
+                  ],
+                  "iteration": [
+                    "invalid"
+                  ],
+                  "outcome_id": [
+                    "invalid"
+                  ],
+                  "budget": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.ID);
+        Assert.Null(mismatchedValue.ProcessedAt);
+        Assert.Null(mismatchedValue.SessionThreadID);
+        Assert.Null(mismatchedValue.ToolUseID);
+        Assert.Null(mismatchedValue.IsError);
+        Assert.Null(mismatchedValue.Name);
+        Assert.Null(mismatchedValue.AgentName);
+        Assert.Null(mismatchedValue.Iteration);
+        Assert.Null(mismatchedValue.OutcomeID);
+        Assert.Null(mismatchedValue.Budget);
     }
 }

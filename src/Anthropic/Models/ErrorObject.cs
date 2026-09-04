@@ -29,17 +29,19 @@ public record class ErrorObject : ModelBase
     {
         get
         {
-            return Match(
-                invalidRequestError: (x) => x.Message,
-                authenticationError: (x) => x.Message,
-                billingError: (x) => x.Message,
-                permissionError: (x) => x.Message,
-                notFoundError: (x) => x.Message,
-                rateLimitError: (x) => x.Message,
-                gatewayTimeoutError: (x) => x.Message,
-                api: (x) => x.Message,
-                overloadedError: (x) => x.Message
-            );
+            return this.Value switch
+            {
+                InvalidRequestError x => x.Message,
+                AuthenticationError x => x.Message,
+                BillingError x => x.Message,
+                PermissionError x => x.Message,
+                NotFoundError x => x.Message,
+                RateLimitError x => x.Message,
+                GatewayTimeoutError x => x.Message,
+                ApiErrorObject x => x.Message,
+                OverloadedError x => x.Message,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "message"),
+            };
         }
     }
 
@@ -47,17 +49,19 @@ public record class ErrorObject : ModelBase
     {
         get
         {
-            return Match(
-                invalidRequestError: (x) => x.Type,
-                authenticationError: (x) => x.Type,
-                billingError: (x) => x.Type,
-                permissionError: (x) => x.Type,
-                notFoundError: (x) => x.Type,
-                rateLimitError: (x) => x.Type,
-                gatewayTimeoutError: (x) => x.Type,
-                api: (x) => x.Type,
-                overloadedError: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                InvalidRequestError x => x.Type,
+                AuthenticationError x => x.Type,
+                BillingError x => x.Type,
+                PermissionError x => x.Type,
+                NotFoundError x => x.Type,
+                RateLimitError x => x.Type,
+                GatewayTimeoutError x => x.Type,
+                ApiErrorObject x => x.Type,
+                OverloadedError x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

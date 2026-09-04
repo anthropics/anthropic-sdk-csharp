@@ -167,7 +167,10 @@ public record class WorkListParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/environments/{0}/work", this.EnvironmentID)
+                + string.Format(
+                    "/v1/environments/{0}/work",
+                    ParamsBase.EncodePathSegment(this.EnvironmentID, nameof(this.EnvironmentID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

@@ -149,12 +149,14 @@ public record class TextEditorCodeExecutionToolResultBlockParamContent : ModelBa
     {
         get
         {
-            return Match(
-                textEditorCodeExecutionToolResultErrorParam: (x) => x.Type,
-                textEditorCodeExecutionViewResultBlockParam: (x) => x.Type,
-                textEditorCodeExecutionCreateResultBlockParam: (x) => x.Type,
-                textEditorCodeExecutionStrReplaceResultBlockParam: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                TextEditorCodeExecutionToolResultErrorParam x => x.Type,
+                TextEditorCodeExecutionViewResultBlockParam x => x.Type,
+                TextEditorCodeExecutionCreateResultBlockParam x => x.Type,
+                TextEditorCodeExecutionStrReplaceResultBlockParam x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

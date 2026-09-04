@@ -217,6 +217,24 @@ public record class SessionCreateParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public SessionCreateParams() { }
 
 #pragma warning disable CS8618
@@ -355,11 +373,13 @@ public record class Agent : ModelBase
     {
         get
         {
-            return Match<string?>(
-                @string: (_) => null,
-                betaManagedAgentsAgentParams: (x) => x.ID,
-                betaManagedAgentsAgentWithOverridesParams: (x) => x.ID
-            );
+            return this.Value switch
+            {
+                string _ => null,
+                BetaManagedAgentsAgentParams x => x.ID,
+                BetaManagedAgentsAgentWithOverridesParams x => x.ID,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "id"),
+            };
         }
     }
 
@@ -367,11 +387,13 @@ public record class Agent : ModelBase
     {
         get
         {
-            return Match<int?>(
-                @string: (_) => null,
-                betaManagedAgentsAgentParams: (x) => x.Version,
-                betaManagedAgentsAgentWithOverridesParams: (x) => x.Version
-            );
+            return this.Value switch
+            {
+                string _ => null,
+                BetaManagedAgentsAgentParams x => x.Version,
+                BetaManagedAgentsAgentWithOverridesParams x => x.Version,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<int>(this.Json, "version"),
+            };
         }
     }
 
@@ -1011,11 +1033,16 @@ public record class Resource : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaManagedAgentsGitHubRepositoryResourceParams: (x) => x.MountPath,
-                betaManagedAgentsFileResourceParams: (x) => x.MountPath,
-                betaManagedAgentsMemoryStoreResourceParam: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsGitHubRepositoryResourceParams x => x.MountPath,
+                BetaManagedAgentsFileResourceParams x => x.MountPath,
+                BetaManagedAgentsMemoryStoreResourceParam _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "mount_path"
+                ),
+            };
         }
     }
 

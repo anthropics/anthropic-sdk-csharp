@@ -16,6 +16,7 @@ public class DreamCancelParamsTest : TestBase
         {
             DreamID = "dream_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedDreamID = "dream_id";
@@ -23,6 +24,7 @@ public class DreamCancelParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedDreamID, parameters.DreamID);
         Assert.NotNull(parameters.Betas);
@@ -31,6 +33,7 @@ public class DreamCancelParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -40,6 +43,8 @@ public class DreamCancelParamsTest : TestBase
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -51,10 +56,13 @@ public class DreamCancelParamsTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -80,6 +88,7 @@ public class DreamCancelParamsTest : TestBase
         {
             DreamID = "dream_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -87,6 +96,10 @@ public class DreamCancelParamsTest : TestBase
         Assert.Equal(
             ["dreaming-2026-04-21", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -97,6 +110,7 @@ public class DreamCancelParamsTest : TestBase
         {
             DreamID = "dream_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         DreamCancelParams copied = new(parameters);

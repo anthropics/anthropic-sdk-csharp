@@ -142,10 +142,12 @@ public record class BetaCloudConfigParamsNetworking : ModelBase
     {
         get
         {
-            return Match(
-                betaUnrestrictedNetwork: (x) => x.Type,
-                betaLimitedNetworkParams: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaUnrestrictedNetwork x => x.Type,
+                BetaLimitedNetworkParams x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

@@ -133,12 +133,14 @@ public record class TextEditorCodeExecutionToolResultBlockContent : ModelBase
     {
         get
         {
-            return Match(
-                textEditorCodeExecutionToolResultError: (x) => x.Type,
-                textEditorCodeExecutionViewResultBlock: (x) => x.Type,
-                textEditorCodeExecutionCreateResultBlock: (x) => x.Type,
-                textEditorCodeExecutionStrReplaceResultBlock: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                TextEditorCodeExecutionToolResultError x => x.Type,
+                TextEditorCodeExecutionViewResultBlock x => x.Type,
+                TextEditorCodeExecutionCreateResultBlock x => x.Type,
+                TextEditorCodeExecutionStrReplaceResultBlock x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

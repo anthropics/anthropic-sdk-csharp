@@ -82,6 +82,24 @@ public record class WorkStopParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public WorkStopParams() { }
 
 #pragma warning disable CS8618
@@ -182,8 +200,8 @@ public record class WorkStopParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/environments/{0}/work/{1}/stop",
-                    this.EnvironmentID,
-                    this.WorkID
+                    ParamsBase.EncodePathSegment(this.EnvironmentID, nameof(this.EnvironmentID)),
+                    ParamsBase.EncodePathSegment(this.WorkID, nameof(this.WorkID))
                 )
         )
         {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 using Messages = Anthropic.Models.Messages;
 
@@ -755,5 +756,54 @@ public class ContentBlockTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        ContentBlock value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "text",
+                  "id": "id",
+                  "tool_use_id": "srvtoolu_SQfNkl1n_JR_"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
+        string expectedID = "id";
+        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedID, value.ID);
+        Assert.Equal(expectedToolUseID, value.ToolUseID);
+
+        ContentBlock emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.ID);
+        Assert.Null(emptyValue.ToolUseID);
+
+        ContentBlock mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "id": [
+                    "invalid"
+                  ],
+                  "tool_use_id": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.ID);
+        Assert.Null(mismatchedValue.ToolUseID);
     }
 }

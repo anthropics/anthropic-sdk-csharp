@@ -25,7 +25,9 @@ public record class FileUploadParams : ParamsBase
     }
 
     /// <summary>
-    /// The file to upload
+    /// The file to upload. Only the final path component of the part's `filename`
+    /// is kept; an absent or empty `filename` is replaced with `unnamed` plus the
+    /// extension for the file's stored `mime_type`, when known.
     /// </summary>
     public required BinaryContent File
     {
@@ -82,6 +84,24 @@ public record class FileUploadParams : ParamsBase
                 "anthropic-beta",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
+        }
+    }
+
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
         }
     }
 

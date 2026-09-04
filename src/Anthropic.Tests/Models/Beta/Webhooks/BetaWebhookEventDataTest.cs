@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Webhooks;
 
 namespace Anthropic.Tests.Models.Beta.Webhooks;
@@ -1338,5 +1339,78 @@ public class BetaWebhookEventDataTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaWebhookEventData value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "id": "id",
+                  "organization_id": "organization_id",
+                  "type": "session.created",
+                  "workspace_id": "workspace_id",
+                  "session_thread_id": "session_thread_id",
+                  "vault_id": "vault_id"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedID = "id";
+        string expectedOrganizationID = "organization_id";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("session.created");
+        string expectedWorkspaceID = "workspace_id";
+        string expectedSessionThreadID = "session_thread_id";
+        string expectedVaultID = "vault_id";
+
+        Assert.Equal(expectedID, value.ID);
+        Assert.Equal(expectedOrganizationID, value.OrganizationID);
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedWorkspaceID, value.WorkspaceID);
+        Assert.Equal(expectedSessionThreadID, value.SessionThreadID);
+        Assert.Equal(expectedVaultID, value.VaultID);
+
+        BetaWebhookEventData emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.ID);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.OrganizationID);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.WorkspaceID);
+        Assert.Null(emptyValue.SessionThreadID);
+        Assert.Null(emptyValue.VaultID);
+
+        BetaWebhookEventData mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "id": [
+                    "invalid"
+                  ],
+                  "organization_id": [
+                    "invalid"
+                  ],
+                  "workspace_id": [
+                    "invalid"
+                  ],
+                  "session_thread_id": [
+                    "invalid"
+                  ],
+                  "vault_id": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.ID);
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.OrganizationID);
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.WorkspaceID);
+        Assert.Null(mismatchedValue.SessionThreadID);
+        Assert.Null(mismatchedValue.VaultID);
     }
 }

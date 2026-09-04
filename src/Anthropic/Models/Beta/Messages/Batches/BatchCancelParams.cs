@@ -55,6 +55,24 @@ public record class BatchCancelParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public BatchCancelParams() { }
 
 #pragma warning disable CS8618
@@ -136,7 +154,10 @@ public record class BatchCancelParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/messages/batches/{0}/cancel", this.MessageBatchID)
+                + string.Format(
+                    "/v1/messages/batches/{0}/cancel",
+                    ParamsBase.EncodePathSegment(this.MessageBatchID, nameof(this.MessageBatchID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

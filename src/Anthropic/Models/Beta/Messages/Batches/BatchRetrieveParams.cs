@@ -51,6 +51,24 @@ public record class BatchRetrieveParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public BatchRetrieveParams() { }
 
 #pragma warning disable CS8618
@@ -132,7 +150,10 @@ public record class BatchRetrieveParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/messages/batches/{0}", this.MessageBatchID)
+                + string.Format(
+                    "/v1/messages/batches/{0}",
+                    ParamsBase.EncodePathSegment(this.MessageBatchID, nameof(this.MessageBatchID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

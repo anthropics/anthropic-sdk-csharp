@@ -32,16 +32,18 @@ public record class BetaManagedAgentsAgentToolConfig : ModelBase
     {
         get
         {
-            return Match(
-                bash: (x) => x.Enabled,
-                edit: (x) => x.Enabled,
-                read: (x) => x.Enabled,
-                write: (x) => x.Enabled,
-                glob: (x) => x.Enabled,
-                grep: (x) => x.Enabled,
-                webFetch: (x) => x.Enabled,
-                webSearch: (x) => x.Enabled
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsBashToolConfig x => x.Enabled,
+                BetaManagedAgentsEditToolConfig x => x.Enabled,
+                BetaManagedAgentsReadToolConfig x => x.Enabled,
+                BetaManagedAgentsWriteToolConfig x => x.Enabled,
+                BetaManagedAgentsGlobToolConfig x => x.Enabled,
+                BetaManagedAgentsGrepToolConfig x => x.Enabled,
+                BetaManagedAgentsWebFetchToolConfig x => x.Enabled,
+                BetaManagedAgentsWebSearchToolConfig x => x.Enabled,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<bool>(this.Json, "enabled"),
+            };
         }
     }
 
@@ -49,16 +51,18 @@ public record class BetaManagedAgentsAgentToolConfig : ModelBase
     {
         get
         {
-            return Match(
-                bash: (x) => x.Name,
-                edit: (x) => x.Name,
-                read: (x) => x.Name,
-                write: (x) => x.Name,
-                glob: (x) => x.Name,
-                grep: (x) => x.Name,
-                webFetch: (x) => x.Name,
-                webSearch: (x) => x.Name
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsBashToolConfig x => x.Name,
+                BetaManagedAgentsEditToolConfig x => x.Name,
+                BetaManagedAgentsReadToolConfig x => x.Name,
+                BetaManagedAgentsWriteToolConfig x => x.Name,
+                BetaManagedAgentsGlobToolConfig x => x.Name,
+                BetaManagedAgentsGrepToolConfig x => x.Name,
+                BetaManagedAgentsWebFetchToolConfig x => x.Name,
+                BetaManagedAgentsWebSearchToolConfig x => x.Name,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "name"),
+            };
         }
     }
 
@@ -66,16 +70,18 @@ public record class BetaManagedAgentsAgentToolConfig : ModelBase
     {
         get
         {
-            return Match(
-                bash: (x) => x.Type,
-                edit: (x) => x.Type,
-                read: (x) => x.Type,
-                write: (x) => x.Type,
-                glob: (x) => x.Type,
-                grep: (x) => x.Type,
-                webFetch: (x) => x.Type,
-                webSearch: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsBashToolConfig x => x.Type,
+                BetaManagedAgentsEditToolConfig x => x.Type,
+                BetaManagedAgentsReadToolConfig x => x.Type,
+                BetaManagedAgentsWriteToolConfig x => x.Type,
+                BetaManagedAgentsGlobToolConfig x => x.Type,
+                BetaManagedAgentsGrepToolConfig x => x.Type,
+                BetaManagedAgentsWebFetchToolConfig x => x.Type,
+                BetaManagedAgentsWebSearchToolConfig x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

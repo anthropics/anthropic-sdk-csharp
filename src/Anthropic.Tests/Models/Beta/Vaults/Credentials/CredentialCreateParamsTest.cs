@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -25,6 +26,7 @@ public class CredentialCreateParamsTest : TestBase
             DisplayName = "Example credential",
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedVaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv";
@@ -40,6 +42,7 @@ public class CredentialCreateParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedVaultID, parameters.VaultID);
         Assert.Equal(expectedAuth, parameters.Auth);
@@ -58,6 +61,7 @@ public class CredentialCreateParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -79,6 +83,8 @@ public class CredentialCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -98,12 +104,15 @@ public class CredentialCreateParamsTest : TestBase
             // Null should be interpreted as omitted for these properties
             Metadata = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -120,6 +129,7 @@ public class CredentialCreateParamsTest : TestBase
             },
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         Assert.Null(parameters.DisplayName);
@@ -140,6 +150,7 @@ public class CredentialCreateParamsTest : TestBase
             },
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             DisplayName = null,
         };
@@ -188,6 +199,7 @@ public class CredentialCreateParamsTest : TestBase
                 Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
             },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -195,6 +207,10 @@ public class CredentialCreateParamsTest : TestBase
         Assert.Equal(
             ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -213,6 +229,7 @@ public class CredentialCreateParamsTest : TestBase
             DisplayName = "Example credential",
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         CredentialCreateParams copied = new(parameters);
@@ -334,5 +351,42 @@ public class AuthTest : TestBase
         var deserialized = JsonSerializer.Deserialize<Auth>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Auth value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "mcp_server_url": "x"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedMcpServerUrl = "x";
+
+        Assert.Equal(expectedMcpServerUrl, value.McpServerUrl);
+
+        Auth emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Null(emptyValue.McpServerUrl);
+
+        Auth mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "mcp_server_url": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.McpServerUrl);
     }
 }

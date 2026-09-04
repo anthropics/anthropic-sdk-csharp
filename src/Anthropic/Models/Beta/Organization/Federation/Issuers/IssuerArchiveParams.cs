@@ -143,7 +143,10 @@ public record class IssuerArchiveParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/organizations/federation_issuers/{0}/archive",
-                    this.FederationIssuerID
+                    ParamsBase.EncodePathSegment(
+                        this.FederationIssuerID,
+                        nameof(this.FederationIssuerID)
+                    )
                 )
         )
         {

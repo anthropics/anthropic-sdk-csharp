@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.MemoryStores.Memories;
 
@@ -273,5 +274,42 @@ public class BetaManagedAgentsErrorTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsError value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "message": "message"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedMessage = "message";
+
+        Assert.Equal(expectedMessage, value.Message);
+
+        BetaManagedAgentsError emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Null(emptyValue.Message);
+
+        BetaManagedAgentsError mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "message": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.Message);
     }
 }

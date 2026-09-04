@@ -19,6 +19,7 @@ public class MemoryCreateParamsTest : TestBase
             Path = "xx",
             View = BetaManagedAgentsMemoryView.Basic,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedMemoryStoreID = "memory_store_id";
@@ -30,6 +31,7 @@ public class MemoryCreateParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedMemoryStoreID, parameters.MemoryStoreID);
         Assert.Equal(expectedContent, parameters.Content);
@@ -41,6 +43,7 @@ public class MemoryCreateParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -57,6 +60,8 @@ public class MemoryCreateParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("view"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -71,12 +76,15 @@ public class MemoryCreateParamsTest : TestBase
             // Null should be interpreted as omitted for these properties
             View = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.View);
         Assert.False(parameters.RawQueryData.ContainsKey("view"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -112,6 +120,7 @@ public class MemoryCreateParamsTest : TestBase
             Content = "content",
             Path = "xx",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -119,6 +128,10 @@ public class MemoryCreateParamsTest : TestBase
         Assert.Equal(
             ["agent-memory-2026-07-22", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -132,6 +145,7 @@ public class MemoryCreateParamsTest : TestBase
             Path = "xx",
             View = BetaManagedAgentsMemoryView.Basic,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         MemoryCreateParams copied = new(parameters);

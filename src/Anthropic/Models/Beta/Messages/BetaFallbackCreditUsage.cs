@@ -114,10 +114,12 @@ public record class Status : ModelBase
     {
         get
         {
-            return Match(
-                betaFallbackCreditRedeemed: (x) => x.Type,
-                betaFallbackCreditNotApplied: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaFallbackCreditRedeemed x => x.Type,
+                BetaFallbackCreditNotApplied x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

@@ -35,7 +35,7 @@ public class DeploymentServiceTest : TestBase
         betaManagedAgentsDeployment.Validate();
     }
 
-    [Fact(Skip = "buildURL drops path-level query params (SDK-4349)")]
+    [Fact(Skip = "buildURL drops path-level query params")]
     public async Task Retrieve_Works()
     {
         var betaManagedAgentsDeployment = await this.client.Beta.Deployments.Retrieve(
@@ -57,7 +57,7 @@ public class DeploymentServiceTest : TestBase
         betaManagedAgentsDeployment.Validate();
     }
 
-    [Fact(Skip = "buildURL drops path-level query params (SDK-4349)")]
+    [Fact(Skip = "buildURL drops path-level query params")]
     public async Task List_Works()
     {
         var page = await this.client.Beta.Deployments.List(

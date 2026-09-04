@@ -20,6 +20,7 @@ public class FileUploadParamsTest : TestBase
             File = file,
             ExpiresInSeconds = 3600,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         BinaryContent expectedFile = file;
@@ -28,6 +29,7 @@ public class FileUploadParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedFile, parameters.File);
         Assert.Equal(expectedExpiresInSeconds, parameters.ExpiresInSeconds);
@@ -37,6 +39,7 @@ public class FileUploadParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -50,6 +53,8 @@ public class FileUploadParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("expires_in_seconds"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -64,12 +69,15 @@ public class FileUploadParamsTest : TestBase
             // Null should be interpreted as omitted for these properties
             ExpiresInSeconds = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.ExpiresInSeconds);
         Assert.False(parameters.RawBodyData.ContainsKey("expires_in_seconds"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -92,6 +100,7 @@ public class FileUploadParamsTest : TestBase
         {
             File = Encoding.UTF8.GetBytes("Example data"),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -99,6 +108,10 @@ public class FileUploadParamsTest : TestBase
         Assert.Equal(
             ["message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -110,6 +123,7 @@ public class FileUploadParamsTest : TestBase
             File = Encoding.UTF8.GetBytes("Example data"),
             ExpiresInSeconds = 3600,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         FileUploadParams copied = new(parameters);

@@ -24,7 +24,7 @@ MessageCreateParams parameters = new()
     [
         new() { Content = "Tell me a story about building the best SDK!", Role = Role.User },
     ],
-    Model = "global.anthropic.claude-haiku-4-5-20251001-v1:0",
+    Model = "global.anthropic.claude-sonnet-5",
 };
 
 var response = await client.Messages.Create(parameters);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Deployments;
 using Anthropic.Models.Beta.Sessions.Events;
@@ -59,6 +60,7 @@ public class DeploymentCreateParamsTest : TestBase
             },
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         Agent expectedAgent = "string";
@@ -106,6 +108,7 @@ public class DeploymentCreateParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedAgent, parameters.Agent);
         Assert.Equal(expectedEnvironmentID, parameters.EnvironmentID);
@@ -144,6 +147,7 @@ public class DeploymentCreateParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -191,6 +195,8 @@ public class DeploymentCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("vault_ids"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -234,6 +240,7 @@ public class DeploymentCreateParamsTest : TestBase
             Resources = null,
             VaultIds = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Metadata);
@@ -244,6 +251,8 @@ public class DeploymentCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("vault_ids"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -281,6 +290,7 @@ public class DeploymentCreateParamsTest : TestBase
             ],
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         Assert.Null(parameters.Budget);
@@ -326,6 +336,7 @@ public class DeploymentCreateParamsTest : TestBase
             ],
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Budget = null,
             Description = null,
@@ -397,6 +408,7 @@ public class DeploymentCreateParamsTest : TestBase
             ],
             Name = "x",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -404,6 +416,10 @@ public class DeploymentCreateParamsTest : TestBase
         Assert.Equal(
             ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -454,6 +470,7 @@ public class DeploymentCreateParamsTest : TestBase
             },
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         DeploymentCreateParams copied = new(parameters);
@@ -613,5 +630,42 @@ public class ResourceTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Resource value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "mount_path": "x"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedMountPath = "x";
+
+        Assert.Equal(expectedMountPath, value.MountPath);
+
+        Resource emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Null(emptyValue.MountPath);
+
+        Resource mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "mount_path": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.MountPath);
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 using Anthropic.Models.Skills;
 
 namespace Anthropic.Tests.Models.Skills;
@@ -13,15 +14,18 @@ public class SkillListParamsTest : TestBase
             Limit = 1,
             Page = "page",
             Source = "source",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         long expectedLimit = 1;
         string expectedPage = "page";
         string expectedSource = "source";
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedLimit, parameters.Limit);
         Assert.Equal(expectedPage, parameters.Page);
         Assert.Equal(expectedSource, parameters.Source);
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -31,6 +35,8 @@ public class SkillListParamsTest : TestBase
 
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -43,16 +49,23 @@ public class SkillListParamsTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             Limit = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new SkillListParams { Limit = 1 };
+        var parameters = new SkillListParams
+        {
+            Limit = 1,
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
 
         Assert.Null(parameters.Page);
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
@@ -66,6 +79,7 @@ public class SkillListParamsTest : TestBase
         var parameters = new SkillListParams
         {
             Limit = 1,
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Page = null,
             Source = null,
@@ -98,6 +112,20 @@ public class SkillListParamsTest : TestBase
     }
 
     [Fact]
+    public void AddHeadersToRequest_Works()
+    {
+        HttpRequestMessage requestMessage = new();
+        SkillListParams parameters = new() { WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy" };
+
+        parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
+        );
+    }
+
+    [Fact]
     public void CopyConstructor_Works()
     {
         var parameters = new SkillListParams
@@ -105,6 +133,7 @@ public class SkillListParamsTest : TestBase
             Limit = 1,
             Page = "page",
             Source = "source",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         SkillListParams copied = new(parameters);

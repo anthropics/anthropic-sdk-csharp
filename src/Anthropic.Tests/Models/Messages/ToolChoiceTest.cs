@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -84,5 +85,46 @@ public class ToolChoiceTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        ToolChoice value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "auto",
+                  "disable_parallel_tool_use": true
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("auto");
+        bool expectedDisableParallelToolUse = true;
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedDisableParallelToolUse, value.DisableParallelToolUse);
+
+        ToolChoice emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.DisableParallelToolUse);
+
+        ToolChoice mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "disable_parallel_tool_use": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.DisableParallelToolUse);
     }
 }

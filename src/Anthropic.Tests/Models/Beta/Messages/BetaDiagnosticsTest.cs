@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -186,5 +187,46 @@ public class CacheMissReasonTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        CacheMissReason value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "cache_missed_input_tokens": 0,
+                  "type": "model_changed"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        long expectedCacheMissedInputTokens = 0;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("model_changed");
+
+        Assert.Equal(expectedCacheMissedInputTokens, value.CacheMissedInputTokens);
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        CacheMissReason emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Null(emptyValue.CacheMissedInputTokens);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+
+        CacheMissReason mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "cache_missed_input_tokens": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.CacheMissedInputTokens);
     }
 }

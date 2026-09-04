@@ -139,6 +139,24 @@ public record class EnvironmentUpdateParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public EnvironmentUpdateParams() { }
 
 #pragma warning disable CS8618
@@ -230,7 +248,10 @@ public record class EnvironmentUpdateParams : ParamsBase
         var queryString = this.QueryString(options);
         return new System::UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/environments/{0}", this.EnvironmentID)
+                + string.Format(
+                    "/v1/environments/{0}",
+                    ParamsBase.EncodePathSegment(this.EnvironmentID, nameof(this.EnvironmentID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
@@ -287,10 +308,12 @@ public record class EnvironmentUpdateParamsConfig : ModelBase
     {
         get
         {
-            return Match(
-                betaCloudConfigParams: (x) => x.Type,
-                betaSelfHostedConfigParams: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaCloudConfigParams x => x.Type,
+                BetaSelfHostedConfigParams x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

@@ -216,11 +216,16 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaManagedAgentsMcpOAuthAuthResponse: (x) => x.McpServerUrl,
-                betaManagedAgentsStaticBearerAuthResponse: (x) => x.McpServerUrl,
-                betaManagedAgentsEnvironmentVariableAuthResponse: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsMcpOAuthAuthResponse x => x.McpServerUrl,
+                BetaManagedAgentsStaticBearerAuthResponse x => x.McpServerUrl,
+                BetaManagedAgentsEnvironmentVariableAuthResponse _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "mcp_server_url"
+                ),
+            };
         }
     }
 

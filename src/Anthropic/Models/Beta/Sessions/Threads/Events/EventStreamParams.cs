@@ -83,6 +83,24 @@ public record class EventStreamParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public EventStreamParams() { }
 
 #pragma warning disable CS8618
@@ -173,8 +191,8 @@ public record class EventStreamParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/sessions/{0}/threads/{1}/stream",
-                    this.SessionID,
-                    this.ThreadID
+                    ParamsBase.EncodePathSegment(this.SessionID, nameof(this.SessionID)),
+                    ParamsBase.EncodePathSegment(this.ThreadID, nameof(this.ThreadID))
                 )
         )
         {

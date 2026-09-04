@@ -70,6 +70,24 @@ public record class MemoryDeleteParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public MemoryDeleteParams() { }
 
 #pragma warning disable CS8618
@@ -160,8 +178,8 @@ public record class MemoryDeleteParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/memory_stores/{0}/memories/{1}",
-                    this.MemoryStoreID,
-                    this.MemoryID
+                    ParamsBase.EncodePathSegment(this.MemoryStoreID, nameof(this.MemoryStoreID)),
+                    ParamsBase.EncodePathSegment(this.MemoryID, nameof(this.MemoryID))
                 )
         )
         {

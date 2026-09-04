@@ -125,11 +125,13 @@ public record class Content : ModelBase
     {
         get
         {
-            return Match(
-                betaAdvisorToolResultError: (x) => x.Type,
-                betaAdvisorResultBlock: (x) => x.Type,
-                betaAdvisorRedactedResultBlock: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaAdvisorToolResultError x => x.Type,
+                BetaAdvisorResultBlock x => x.Type,
+                BetaAdvisorRedactedResultBlock x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -137,11 +139,16 @@ public record class Content : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaAdvisorToolResultError: (_) => null,
-                betaAdvisorResultBlock: (x) => x.StopReason,
-                betaAdvisorRedactedResultBlock: (x) => x.StopReason
-            );
+            return this.Value switch
+            {
+                BetaAdvisorToolResultError _ => null,
+                BetaAdvisorResultBlock x => x.StopReason,
+                BetaAdvisorRedactedResultBlock x => x.StopReason,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "stop_reason"
+                ),
+            };
         }
     }
 

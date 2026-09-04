@@ -32,11 +32,13 @@ public record class BetaCodeExecutionToolResultBlockContent : ModelBase
     {
         get
         {
-            return Match(
-                error: (x) => x.Type,
-                resultBlock: (x) => x.Type,
-                encryptedCodeExecutionResultBlock: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaCodeExecutionToolResultError x => x.Type,
+                BetaCodeExecutionResultBlock x => x.Type,
+                BetaEncryptedCodeExecutionResultBlock x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -44,11 +46,16 @@ public record class BetaCodeExecutionToolResultBlockContent : ModelBase
     {
         get
         {
-            return Match<long?>(
-                error: (_) => null,
-                resultBlock: (x) => x.ReturnCode,
-                encryptedCodeExecutionResultBlock: (x) => x.ReturnCode
-            );
+            return this.Value switch
+            {
+                BetaCodeExecutionToolResultError _ => null,
+                BetaCodeExecutionResultBlock x => x.ReturnCode,
+                BetaEncryptedCodeExecutionResultBlock x => x.ReturnCode,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "return_code"
+                ),
+            };
         }
     }
 
@@ -56,11 +63,13 @@ public record class BetaCodeExecutionToolResultBlockContent : ModelBase
     {
         get
         {
-            return Match<string?>(
-                error: (_) => null,
-                resultBlock: (x) => x.Stderr,
-                encryptedCodeExecutionResultBlock: (x) => x.Stderr
-            );
+            return this.Value switch
+            {
+                BetaCodeExecutionToolResultError _ => null,
+                BetaCodeExecutionResultBlock x => x.Stderr,
+                BetaEncryptedCodeExecutionResultBlock x => x.Stderr,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "stderr"),
+            };
         }
     }
 

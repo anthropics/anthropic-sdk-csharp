@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -287,5 +288,51 @@ public class DocumentBlockParamSourceTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        DocumentBlockParamSource value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "data": "U3RhaW5sZXNzIHJvY2tz",
+                  "media_type": "application/pdf",
+                  "type": "base64"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedData = "U3RhaW5sZXNzIHJvY2tz";
+        JsonElement expectedMediaType = JsonSerializer.SerializeToElement("application/pdf");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("base64");
+
+        Assert.Equal(expectedData, value.Data);
+        Assert.NotNull(value.MediaType);
+        Assert.True(JsonElement.DeepEquals(expectedMediaType, value.MediaType.Value));
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        DocumentBlockParamSource emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Null(emptyValue.Data);
+        Assert.Null(emptyValue.MediaType);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+
+        DocumentBlockParamSource mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "data": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.Data);
     }
 }

@@ -38,18 +38,20 @@ public record class BetaDreamingError : ModelBase
     {
         get
         {
-            return Match<string?>(
-                invalidRequest: (x) => x.Message,
-                authentication: (x) => x.Message,
-                billing: (x) => x.Message,
-                permission: (x) => x.Message,
-                notFound: (x) => x.Message,
-                rateLimit: (x) => x.Message,
-                gatewayTimeout: (x) => x.Message,
-                api: (x) => x.Message,
-                overloaded: (x) => x.Message,
-                targetStoreHeld: (x) => x.Message
-            );
+            return this.Value switch
+            {
+                BetaInvalidRequestError x => x.Message,
+                BetaAuthenticationError x => x.Message,
+                BetaBillingError x => x.Message,
+                BetaPermissionError x => x.Message,
+                BetaNotFoundError x => x.Message,
+                BetaRateLimitError x => x.Message,
+                BetaGatewayTimeoutError x => x.Message,
+                BetaApiError x => x.Message,
+                BetaOverloadedError x => x.Message,
+                BetaTargetStoreHeldError x => x.Message,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "message"),
+            };
         }
     }
 
@@ -57,18 +59,20 @@ public record class BetaDreamingError : ModelBase
     {
         get
         {
-            return Match(
-                invalidRequest: (x) => x.Type,
-                authentication: (x) => x.Type,
-                billing: (x) => x.Type,
-                permission: (x) => x.Type,
-                notFound: (x) => x.Type,
-                rateLimit: (x) => x.Type,
-                gatewayTimeout: (x) => x.Type,
-                api: (x) => x.Type,
-                overloaded: (x) => x.Type,
-                targetStoreHeld: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaInvalidRequestError x => x.Type,
+                BetaAuthenticationError x => x.Type,
+                BetaBillingError x => x.Type,
+                BetaPermissionError x => x.Type,
+                BetaNotFoundError x => x.Type,
+                BetaRateLimitError x => x.Type,
+                BetaGatewayTimeoutError x => x.Type,
+                BetaApiError x => x.Type,
+                BetaOverloadedError x => x.Type,
+                BetaTargetStoreHeldError x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

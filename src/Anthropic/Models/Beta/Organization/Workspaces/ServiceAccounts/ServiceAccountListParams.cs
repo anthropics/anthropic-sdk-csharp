@@ -173,7 +173,7 @@ public record class ServiceAccountListParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/organizations/workspaces/{0}/service_accounts",
-                    this.WorkspaceID
+                    ParamsBase.EncodePathSegment(this.WorkspaceID, nameof(this.WorkspaceID))
                 )
         )
         {

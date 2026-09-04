@@ -17,6 +17,7 @@ public class AgentRetrieveParamsTest : TestBase
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Version = 0,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedAgentID = "agent_011CZkYpogX7uDKUyvBTophP";
@@ -25,6 +26,7 @@ public class AgentRetrieveParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedAgentID, parameters.AgentID);
         Assert.Equal(expectedVersion, parameters.Version);
@@ -34,6 +36,7 @@ public class AgentRetrieveParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -45,6 +48,8 @@ public class AgentRetrieveParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("version"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -57,12 +62,15 @@ public class AgentRetrieveParamsTest : TestBase
             // Null should be interpreted as omitted for these properties
             Version = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Version);
         Assert.False(parameters.RawQueryData.ContainsKey("version"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -94,6 +102,7 @@ public class AgentRetrieveParamsTest : TestBase
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -101,6 +110,10 @@ public class AgentRetrieveParamsTest : TestBase
         Assert.Equal(
             ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -112,6 +125,7 @@ public class AgentRetrieveParamsTest : TestBase
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Version = 0,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         AgentRetrieveParams copied = new(parameters);

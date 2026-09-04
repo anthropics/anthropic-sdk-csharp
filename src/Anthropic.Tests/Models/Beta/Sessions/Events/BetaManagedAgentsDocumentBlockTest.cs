@@ -331,6 +331,43 @@ public class SourceTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Source value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "data": "x"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedData = "x";
+
+        Assert.Equal(expectedData, value.Data);
+
+        Source emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Null(emptyValue.Data);
+
+        Source mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "data": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.Data);
+    }
 }
 
 public class BetaManagedAgentsDocumentBlockTypeTest : TestBase

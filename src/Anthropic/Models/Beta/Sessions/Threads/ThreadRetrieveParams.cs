@@ -49,6 +49,24 @@ public record class ThreadRetrieveParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public ThreadRetrieveParams() { }
 
 #pragma warning disable CS8618
@@ -137,7 +155,11 @@ public record class ThreadRetrieveParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/sessions/{0}/threads/{1}", this.SessionID, this.ThreadID)
+                + string.Format(
+                    "/v1/sessions/{0}/threads/{1}",
+                    ParamsBase.EncodePathSegment(this.SessionID, nameof(this.SessionID)),
+                    ParamsBase.EncodePathSegment(this.ThreadID, nameof(this.ThreadID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

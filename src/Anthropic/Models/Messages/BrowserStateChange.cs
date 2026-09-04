@@ -37,12 +37,14 @@ public record class BrowserStateChange : ModelBase
     {
         get
         {
-            return Match(
-                tabOpened: (x) => x.Type,
-                downloadStarted: (x) => x.Type,
-                downloadCompleted: (x) => x.Type,
-                downloadFailed: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BrowserStateChangeTabOpened x => x.Type,
+                BrowserStateChangeDownloadStarted x => x.Type,
+                BrowserStateChangeDownloadCompleted x => x.Type,
+                BrowserStateChangeDownloadFailed x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -50,12 +52,17 @@ public record class BrowserStateChange : ModelBase
     {
         get
         {
-            return Match<string?>(
-                tabOpened: (_) => null,
-                downloadStarted: (x) => x.DownloadID,
-                downloadCompleted: (x) => x.DownloadID,
-                downloadFailed: (x) => x.DownloadID
-            );
+            return this.Value switch
+            {
+                BrowserStateChangeTabOpened _ => null,
+                BrowserStateChangeDownloadStarted x => x.DownloadID,
+                BrowserStateChangeDownloadCompleted x => x.DownloadID,
+                BrowserStateChangeDownloadFailed x => x.DownloadID,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "download_id"
+                ),
+            };
         }
     }
 
@@ -63,12 +70,14 @@ public record class BrowserStateChange : ModelBase
     {
         get
         {
-            return Match<string?>(
-                tabOpened: (_) => null,
-                downloadStarted: (x) => x.Url,
-                downloadCompleted: (x) => x.Url,
-                downloadFailed: (x) => x.Url
-            );
+            return this.Value switch
+            {
+                BrowserStateChangeTabOpened _ => null,
+                BrowserStateChangeDownloadStarted x => x.Url,
+                BrowserStateChangeDownloadCompleted x => x.Url,
+                BrowserStateChangeDownloadFailed x => x.Url,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "url"),
+            };
         }
     }
 

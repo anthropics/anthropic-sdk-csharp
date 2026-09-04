@@ -147,10 +147,12 @@ public record class BashCodeExecutionToolResultBlockParamContent : ModelBase
     {
         get
         {
-            return Match(
-                bashCodeExecutionToolResultErrorParam: (x) => x.Type,
-                bashCodeExecutionResultBlockParam: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BashCodeExecutionToolResultErrorParam x => x.Type,
+                BashCodeExecutionResultBlockParam x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

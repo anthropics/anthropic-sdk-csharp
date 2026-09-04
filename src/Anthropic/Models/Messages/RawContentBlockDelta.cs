@@ -29,13 +29,15 @@ public record class RawContentBlockDelta : ModelBase
     {
         get
         {
-            return Match(
-                text: (x) => x.Type,
-                inputJson: (x) => x.Type,
-                citations: (x) => x.Type,
-                thinking: (x) => x.Type,
-                signature: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                TextDelta x => x.Type,
+                InputJsonDelta x => x.Type,
+                CitationsDelta x => x.Type,
+                ThinkingDelta x => x.Type,
+                SignatureDelta x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

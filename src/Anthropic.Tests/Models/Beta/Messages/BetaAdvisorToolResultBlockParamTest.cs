@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -261,5 +262,48 @@ public class BetaAdvisorToolResultBlockParamContentTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaAdvisorToolResultBlockParamContent value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "advisor_tool_result_error",
+                  "stop_reason": "stop_reason"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_tool_result_error");
+        string expectedStopReason = "stop_reason";
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedStopReason, value.StopReason);
+
+        BetaAdvisorToolResultBlockParamContent emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.StopReason);
+
+        BetaAdvisorToolResultBlockParamContent mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "stop_reason": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.StopReason);
     }
 }

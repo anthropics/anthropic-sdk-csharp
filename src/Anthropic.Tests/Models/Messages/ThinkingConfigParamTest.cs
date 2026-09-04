@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -72,5 +73,28 @@ public class ThinkingConfigParamTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        ThinkingConfigParam value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "enabled"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        ThinkingConfigParam emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
     }
 }

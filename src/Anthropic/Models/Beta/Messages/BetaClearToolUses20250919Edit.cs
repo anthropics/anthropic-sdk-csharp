@@ -446,12 +446,28 @@ public record class Trigger : ModelBase
 
     public JsonElement Type
     {
-        get { return Match(betaInputTokens: (x) => x.Type, betaToolUses: (x) => x.Type); }
+        get
+        {
+            return this.Value switch
+            {
+                BetaInputTokensTrigger x => x.Type,
+                BetaToolUsesTrigger x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
     }
 
     public long ValueValue
     {
-        get { return Match(betaInputTokens: (x) => x.ValueValue, betaToolUses: (x) => x.Value); }
+        get
+        {
+            return this.Value switch
+            {
+                BetaInputTokensTrigger x => x.ValueValue,
+                BetaToolUsesTrigger x => x.Value,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<long>(this.Json, "value"),
+            };
+        }
     }
 
     public Trigger(BetaInputTokensTrigger value, JsonElement? element = null)

@@ -748,6 +748,51 @@ public class SkillTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Skill value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "skill_id": "xlsx",
+                  "version": "1"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedSkillID = "xlsx";
+        string expectedVersion = "1";
+
+        Assert.Equal(expectedSkillID, value.SkillID);
+        Assert.Equal(expectedVersion, value.Version);
+
+        Skill emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.SkillID);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Version);
+
+        Skill mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "skill_id": [
+                    "invalid"
+                  ],
+                  "version": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.SkillID);
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.Version);
+    }
 }
 
 public class BetaManagedAgentsAgentToolTest : TestBase

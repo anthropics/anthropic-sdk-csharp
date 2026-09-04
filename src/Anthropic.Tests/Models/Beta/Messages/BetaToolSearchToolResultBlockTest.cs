@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -174,5 +175,32 @@ public class BetaToolSearchToolResultBlockContentTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaToolSearchToolResultBlockContent value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "tool_search_tool_result_error"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "tool_search_tool_result_error"
+        );
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        BetaToolSearchToolResultBlockContent emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
     }
 }

@@ -81,6 +81,24 @@ public record class WorkUpdateParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public WorkUpdateParams() { }
 
 #pragma warning disable CS8618
@@ -179,7 +197,11 @@ public record class WorkUpdateParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/environments/{0}/work/{1}", this.EnvironmentID, this.WorkID)
+                + string.Format(
+                    "/v1/environments/{0}/work/{1}",
+                    ParamsBase.EncodePathSegment(this.EnvironmentID, nameof(this.EnvironmentID)),
+                    ParamsBase.EncodePathSegment(this.WorkID, nameof(this.WorkID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

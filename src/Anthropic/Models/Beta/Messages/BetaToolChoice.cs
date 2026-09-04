@@ -33,12 +33,14 @@ public record class BetaToolChoice : ModelBase
     {
         get
         {
-            return Match(
-                auto: (x) => x.Type,
-                any: (x) => x.Type,
-                tool: (x) => x.Type,
-                none: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaToolChoiceAuto x => x.Type,
+                BetaToolChoiceAny x => x.Type,
+                BetaToolChoiceTool x => x.Type,
+                BetaToolChoiceNone x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -46,12 +48,17 @@ public record class BetaToolChoice : ModelBase
     {
         get
         {
-            return Match<bool?>(
-                auto: (x) => x.DisableParallelToolUse,
-                any: (x) => x.DisableParallelToolUse,
-                tool: (x) => x.DisableParallelToolUse,
-                none: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaToolChoiceAuto x => x.DisableParallelToolUse,
+                BetaToolChoiceAny x => x.DisableParallelToolUse,
+                BetaToolChoiceTool x => x.DisableParallelToolUse,
+                BetaToolChoiceNone _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(
+                    this.Json,
+                    "disable_parallel_tool_use"
+                ),
+            };
         }
     }
 

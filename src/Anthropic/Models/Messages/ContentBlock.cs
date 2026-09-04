@@ -32,20 +32,22 @@ public record class ContentBlock : ModelBase
     {
         get
         {
-            return Match(
-                text: (x) => x.Type,
-                thinking: (x) => x.Type,
-                redactedThinking: (x) => x.Type,
-                toolUse: (x) => x.Type,
-                serverToolUse: (x) => x.Type,
-                webSearchToolResult: (x) => x.Type,
-                webFetchToolResult: (x) => x.Type,
-                codeExecutionToolResult: (x) => x.Type,
-                bashCodeExecutionToolResult: (x) => x.Type,
-                textEditorCodeExecutionToolResult: (x) => x.Type,
-                toolSearchToolResult: (x) => x.Type,
-                containerUpload: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                TextBlock x => x.Type,
+                ThinkingBlock x => x.Type,
+                RedactedThinkingBlock x => x.Type,
+                ToolUseBlock x => x.Type,
+                ServerToolUseBlock x => x.Type,
+                WebSearchToolResultBlock x => x.Type,
+                WebFetchToolResultBlock x => x.Type,
+                CodeExecutionToolResultBlock x => x.Type,
+                BashCodeExecutionToolResultBlock x => x.Type,
+                TextEditorCodeExecutionToolResultBlock x => x.Type,
+                ToolSearchToolResultBlock x => x.Type,
+                ContainerUploadBlock x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -53,20 +55,22 @@ public record class ContentBlock : ModelBase
     {
         get
         {
-            return Match<string?>(
-                text: (_) => null,
-                thinking: (_) => null,
-                redactedThinking: (_) => null,
-                toolUse: (x) => x.ID,
-                serverToolUse: (x) => x.ID,
-                webSearchToolResult: (_) => null,
-                webFetchToolResult: (_) => null,
-                codeExecutionToolResult: (_) => null,
-                bashCodeExecutionToolResult: (_) => null,
-                textEditorCodeExecutionToolResult: (_) => null,
-                toolSearchToolResult: (_) => null,
-                containerUpload: (_) => null
-            );
+            return this.Value switch
+            {
+                TextBlock _ => null,
+                ThinkingBlock _ => null,
+                RedactedThinkingBlock _ => null,
+                ToolUseBlock x => x.ID,
+                ServerToolUseBlock x => x.ID,
+                WebSearchToolResultBlock _ => null,
+                WebFetchToolResultBlock _ => null,
+                CodeExecutionToolResultBlock _ => null,
+                BashCodeExecutionToolResultBlock _ => null,
+                TextEditorCodeExecutionToolResultBlock _ => null,
+                ToolSearchToolResultBlock _ => null,
+                ContainerUploadBlock _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "id"),
+            };
         }
     }
 
@@ -74,20 +78,25 @@ public record class ContentBlock : ModelBase
     {
         get
         {
-            return Match<string?>(
-                text: (_) => null,
-                thinking: (_) => null,
-                redactedThinking: (_) => null,
-                toolUse: (_) => null,
-                serverToolUse: (_) => null,
-                webSearchToolResult: (x) => x.ToolUseID,
-                webFetchToolResult: (x) => x.ToolUseID,
-                codeExecutionToolResult: (x) => x.ToolUseID,
-                bashCodeExecutionToolResult: (x) => x.ToolUseID,
-                textEditorCodeExecutionToolResult: (x) => x.ToolUseID,
-                toolSearchToolResult: (x) => x.ToolUseID,
-                containerUpload: (_) => null
-            );
+            return this.Value switch
+            {
+                TextBlock _ => null,
+                ThinkingBlock _ => null,
+                RedactedThinkingBlock _ => null,
+                ToolUseBlock _ => null,
+                ServerToolUseBlock _ => null,
+                WebSearchToolResultBlock x => x.ToolUseID,
+                WebFetchToolResultBlock x => x.ToolUseID,
+                CodeExecutionToolResultBlock x => x.ToolUseID,
+                BashCodeExecutionToolResultBlock x => x.ToolUseID,
+                TextEditorCodeExecutionToolResultBlock x => x.ToolUseID,
+                ToolSearchToolResultBlock x => x.ToolUseID,
+                ContainerUploadBlock _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "tool_use_id"
+                ),
+            };
         }
     }
 

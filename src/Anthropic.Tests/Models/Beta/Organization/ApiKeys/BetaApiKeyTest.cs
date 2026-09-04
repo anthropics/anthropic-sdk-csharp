@@ -235,6 +235,29 @@ public class PrincipalTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        ApiKeys::Principal value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "user_actor"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        ApiKeys::Principal emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
 public class ScopeTest : TestBase
@@ -281,6 +304,29 @@ public class ScopeTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        ApiKeys::Scope value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "organization"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("organization");
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        ApiKeys::Scope emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
     }
 }
 

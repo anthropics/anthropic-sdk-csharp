@@ -150,8 +150,11 @@ public record class ServiceAccountRemoveParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/organizations/workspaces/{0}/service_accounts/{1}",
-                    this.WorkspaceID,
-                    this.ServiceAccountID
+                    ParamsBase.EncodePathSegment(this.WorkspaceID, nameof(this.WorkspaceID)),
+                    ParamsBase.EncodePathSegment(
+                        this.ServiceAccountID,
+                        nameof(this.ServiceAccountID)
+                    )
                 )
         )
         {

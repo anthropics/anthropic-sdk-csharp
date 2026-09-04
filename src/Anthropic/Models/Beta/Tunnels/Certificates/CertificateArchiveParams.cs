@@ -56,6 +56,24 @@ public record class CertificateArchiveParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public CertificateArchiveParams() { }
 
 #pragma warning disable CS8618
@@ -146,8 +164,8 @@ public record class CertificateArchiveParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/tunnels/{0}/certificates/{1}/archive",
-                    this.TunnelID,
-                    this.CertificateID
+                    ParamsBase.EncodePathSegment(this.TunnelID, nameof(this.TunnelID)),
+                    ParamsBase.EncodePathSegment(this.CertificateID, nameof(this.CertificateID))
                 )
         )
         {

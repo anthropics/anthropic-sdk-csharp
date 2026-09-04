@@ -25,6 +25,24 @@ public record class BatchResultsParams : ParamsBase
 {
     public string? MessageBatchID { get; init; }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public BatchResultsParams() { }
 
 #pragma warning disable CS8618
@@ -105,7 +123,10 @@ public record class BatchResultsParams : ParamsBase
     {
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/messages/batches/{0}/results", this.MessageBatchID)
+                + string.Format(
+                    "/v1/messages/batches/{0}/results",
+                    ParamsBase.EncodePathSegment(this.MessageBatchID, nameof(this.MessageBatchID))
+                )
         )
         {
             Query = this.QueryString(options),

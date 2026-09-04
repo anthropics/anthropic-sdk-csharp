@@ -107,6 +107,24 @@ public record class CredentialCreateParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public CredentialCreateParams() { }
 
 #pragma warning disable CS8618
@@ -198,7 +216,10 @@ public record class CredentialCreateParams : ParamsBase
         var queryString = this.QueryString(options);
         return new System::UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/vaults/{0}/credentials", this.VaultID)
+                + string.Format(
+                    "/v1/vaults/{0}/credentials",
+                    ParamsBase.EncodePathSegment(this.VaultID, nameof(this.VaultID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
@@ -255,11 +276,16 @@ public record class Auth : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaManagedAgentsMcpOAuthCreateParams: (x) => x.McpServerUrl,
-                betaManagedAgentsStaticBearerCreateParams: (x) => x.McpServerUrl,
-                betaManagedAgentsEnvironmentVariableCreateParams: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsMcpOAuthCreateParams x => x.McpServerUrl,
+                BetaManagedAgentsStaticBearerCreateParams x => x.McpServerUrl,
+                BetaManagedAgentsEnvironmentVariableCreateParams _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "mcp_server_url"
+                ),
+            };
         }
     }
 

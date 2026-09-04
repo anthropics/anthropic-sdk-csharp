@@ -18,6 +18,7 @@ public class VersionListParamsTest : TestBase
             Limit = 1,
             Page = "page",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedSkillID = "skill_id";
@@ -27,6 +28,7 @@ public class VersionListParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedSkillID, parameters.SkillID);
         Assert.Equal(expectedLimit, parameters.Limit);
@@ -37,6 +39,7 @@ public class VersionListParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -51,6 +54,8 @@ public class VersionListParamsTest : TestBase
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -64,10 +69,13 @@ public class VersionListParamsTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -77,6 +85,7 @@ public class VersionListParamsTest : TestBase
         {
             SkillID = "skill_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         Assert.Null(parameters.Limit);
@@ -92,6 +101,7 @@ public class VersionListParamsTest : TestBase
         {
             SkillID = "skill_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Limit = null,
             Page = null,
@@ -133,6 +143,7 @@ public class VersionListParamsTest : TestBase
         {
             SkillID = "skill_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -140,6 +151,10 @@ public class VersionListParamsTest : TestBase
         Assert.Equal(
             ["message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -152,6 +167,7 @@ public class VersionListParamsTest : TestBase
             Limit = 1,
             Page = "page",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         VersionListParams copied = new(parameters);

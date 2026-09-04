@@ -39,7 +39,13 @@ public record class BetaThinkingConfigParam : ModelBase
     {
         get
         {
-            return Match(enabled: (x) => x.Type, disabled: (x) => x.Type, adaptive: (x) => x.Type);
+            return this.Value switch
+            {
+                BetaThinkingConfigEnabled x => x.Type,
+                BetaThinkingConfigDisabled x => x.Type,
+                BetaThinkingConfigAdaptive x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -47,11 +53,16 @@ public record class BetaThinkingConfigParam : ModelBase
     {
         get
         {
-            return Match<BetaThinkingBlockBinding?>(
-                enabled: (x) => x.BlockBinding,
-                disabled: (_) => null,
-                adaptive: (x) => x.BlockBinding
-            );
+            return this.Value switch
+            {
+                BetaThinkingConfigEnabled x => x.BlockBinding,
+                BetaThinkingConfigDisabled _ => null,
+                BetaThinkingConfigAdaptive x => x.BlockBinding,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<BetaThinkingBlockBinding>(
+                    this.Json,
+                    "block_binding"
+                ),
+            };
         }
     }
 

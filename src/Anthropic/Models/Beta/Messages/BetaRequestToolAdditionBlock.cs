@@ -146,11 +146,13 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaToolChangeToolReference: (x) => x.Name,
-                betaToolChangeMcpToolReference: (x) => x.Name,
-                betaToolChangeMcpToolsetReference: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaToolChangeToolReference x => x.Name,
+                BetaToolChangeMcpToolReference x => x.Name,
+                BetaToolChangeMcpToolsetReference _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "name"),
+            };
         }
     }
 
@@ -158,11 +160,13 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
     {
         get
         {
-            return Match(
-                betaToolChangeToolReference: (x) => x.Type,
-                betaToolChangeMcpToolReference: (x) => x.Type,
-                betaToolChangeMcpToolsetReference: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaToolChangeToolReference x => x.Type,
+                BetaToolChangeMcpToolReference x => x.Type,
+                BetaToolChangeMcpToolsetReference x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -170,11 +174,16 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaToolChangeToolReference: (_) => null,
-                betaToolChangeMcpToolReference: (x) => x.ServerName,
-                betaToolChangeMcpToolsetReference: (x) => x.ServerName
-            );
+            return this.Value switch
+            {
+                BetaToolChangeToolReference _ => null,
+                BetaToolChangeMcpToolReference x => x.ServerName,
+                BetaToolChangeMcpToolsetReference x => x.ServerName,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "server_name"
+                ),
+            };
         }
     }
 

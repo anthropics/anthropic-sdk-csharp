@@ -254,10 +254,12 @@ public record class Skill : ModelBase
     {
         get
         {
-            return Match(
-                betaManagedAgentsAnthropic: (x) => x.SkillID,
-                betaManagedAgentsCustom: (x) => x.SkillID
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsAnthropicSkill x => x.SkillID,
+                BetaManagedAgentsCustomSkill x => x.SkillID,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "skill_id"),
+            };
         }
     }
 
@@ -265,10 +267,12 @@ public record class Skill : ModelBase
     {
         get
         {
-            return Match(
-                betaManagedAgentsAnthropic: (x) => x.Version,
-                betaManagedAgentsCustom: (x) => x.Version
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsAnthropicSkill x => x.Version,
+                BetaManagedAgentsCustomSkill x => x.Version,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "version"),
+            };
         }
     }
 

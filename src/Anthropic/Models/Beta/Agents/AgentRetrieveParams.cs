@@ -68,6 +68,24 @@ public record class AgentRetrieveParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public AgentRetrieveParams() { }
 
 #pragma warning disable CS8618
@@ -148,7 +166,11 @@ public record class AgentRetrieveParams : ParamsBase
     {
         var queryString = this.QueryString(options);
         return new UriBuilder(
-            options.BaseUrl.ToString().TrimEnd('/') + string.Format("/v1/agents/{0}", this.AgentID)
+            options.BaseUrl.ToString().TrimEnd('/')
+                + string.Format(
+                    "/v1/agents/{0}",
+                    ParamsBase.EncodePathSegment(this.AgentID, nameof(this.AgentID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

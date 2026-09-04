@@ -420,6 +420,51 @@ public class ErrorTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Error value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "message": "message",
+                  "mcp_server_name": "mcp_server_name"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedMessage = "message";
+        string expectedMcpServerName = "mcp_server_name";
+
+        Assert.Equal(expectedMessage, value.Message);
+        Assert.Equal(expectedMcpServerName, value.McpServerName);
+
+        Error emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Message);
+        Assert.Null(emptyValue.McpServerName);
+
+        Error mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "message": [
+                    "invalid"
+                  ],
+                  "mcp_server_name": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.Message);
+        Assert.Null(mismatchedValue.McpServerName);
+    }
 }
 
 public class BetaManagedAgentsSessionErrorEventTypeTest : TestBase

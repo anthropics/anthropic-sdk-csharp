@@ -49,6 +49,24 @@ public record class CredentialMcpOAuthValidateParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public CredentialMcpOAuthValidateParams() { }
 
 #pragma warning disable CS8618
@@ -141,8 +159,8 @@ public record class CredentialMcpOAuthValidateParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/vaults/{0}/credentials/{1}/mcp_oauth_validate",
-                    this.VaultID,
-                    this.CredentialID
+                    ParamsBase.EncodePathSegment(this.VaultID, nameof(this.VaultID)),
+                    ParamsBase.EncodePathSegment(this.CredentialID, nameof(this.CredentialID))
                 )
         )
         {

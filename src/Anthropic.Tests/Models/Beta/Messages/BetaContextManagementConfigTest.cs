@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -279,5 +280,28 @@ public class EditTest : TestBase
         var deserialized = JsonSerializer.Deserialize<Edit>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Edit value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "clear_tool_uses_20250919"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        Edit emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
     }
 }

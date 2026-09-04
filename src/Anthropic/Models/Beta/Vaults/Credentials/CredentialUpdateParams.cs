@@ -114,6 +114,24 @@ public record class CredentialUpdateParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public CredentialUpdateParams() { }
 
 #pragma warning disable CS8618
@@ -212,7 +230,11 @@ public record class CredentialUpdateParams : ParamsBase
         var queryString = this.QueryString(options);
         return new System::UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/vaults/{0}/credentials/{1}", this.VaultID, this.CredentialID)
+                + string.Format(
+                    "/v1/vaults/{0}/credentials/{1}",
+                    ParamsBase.EncodePathSegment(this.VaultID, nameof(this.VaultID)),
+                    ParamsBase.EncodePathSegment(this.CredentialID, nameof(this.CredentialID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

@@ -18,6 +18,7 @@ public class ModelListParamsTest : TestBase
             BeforeID = "before_id",
             Limit = 1,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedAfterID = "after_id";
@@ -27,6 +28,7 @@ public class ModelListParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedAfterID, parameters.AfterID);
         Assert.Equal(expectedBeforeID, parameters.BeforeID);
@@ -37,6 +39,7 @@ public class ModelListParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -52,6 +55,8 @@ public class ModelListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -64,6 +69,7 @@ public class ModelListParamsTest : TestBase
             BeforeID = null,
             Limit = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.AfterID);
@@ -74,6 +80,8 @@ public class ModelListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -102,13 +110,21 @@ public class ModelListParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        ModelListParams parameters = new() { Betas = [AnthropicBeta.MessageBatches2024_09_24] };
+        ModelListParams parameters = new()
+        {
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
             ["message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -121,6 +137,7 @@ public class ModelListParamsTest : TestBase
             BeforeID = "before_id",
             Limit = 1,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         ModelListParams copied = new(parameters);

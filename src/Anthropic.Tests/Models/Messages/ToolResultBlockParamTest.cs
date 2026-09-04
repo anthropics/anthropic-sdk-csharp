@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -586,5 +587,57 @@ public class BlockTest : TestBase
         var deserialized = JsonSerializer.Deserialize<Block>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Block value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "text",
+                  "cache_control": {
+                    "type": "ephemeral",
+                    "ttl": "5m"
+                  },
+                  "title": "title"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        string expectedTitle = "title";
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedCacheControl, value.CacheControl);
+        Assert.Equal(expectedTitle, value.Title);
+
+        Block emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.CacheControl);
+        Assert.Null(emptyValue.Title);
+
+        Block mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "cache_control": [
+                    "invalid"
+                  ],
+                  "title": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.CacheControl);
+        Assert.Null(mismatchedValue.Title);
     }
 }

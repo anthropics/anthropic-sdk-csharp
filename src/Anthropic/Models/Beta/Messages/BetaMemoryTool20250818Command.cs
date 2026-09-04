@@ -29,14 +29,19 @@ public record class BetaMemoryTool20250818Command : ModelBase
     {
         get
         {
-            return Match(
-                tool20250818View: (x) => x.Command,
-                tool20250818Create: (x) => x.Command,
-                tool20250818StrReplace: (x) => x.Command,
-                tool20250818Insert: (x) => x.Command,
-                tool20250818Delete: (x) => x.Command,
-                tool20250818Rename: (x) => x.Command
-            );
+            return this.Value switch
+            {
+                BetaMemoryTool20250818ViewCommand x => x.Command,
+                BetaMemoryTool20250818CreateCommand x => x.Command,
+                BetaMemoryTool20250818StrReplaceCommand x => x.Command,
+                BetaMemoryTool20250818InsertCommand x => x.Command,
+                BetaMemoryTool20250818DeleteCommand x => x.Command,
+                BetaMemoryTool20250818RenameCommand x => x.Command,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(
+                    this.Json,
+                    "command"
+                ),
+            };
         }
     }
 
@@ -44,14 +49,16 @@ public record class BetaMemoryTool20250818Command : ModelBase
     {
         get
         {
-            return Match<string?>(
-                tool20250818View: (x) => x.Path,
-                tool20250818Create: (x) => x.Path,
-                tool20250818StrReplace: (x) => x.Path,
-                tool20250818Insert: (x) => x.Path,
-                tool20250818Delete: (x) => x.Path,
-                tool20250818Rename: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaMemoryTool20250818ViewCommand x => x.Path,
+                BetaMemoryTool20250818CreateCommand x => x.Path,
+                BetaMemoryTool20250818StrReplaceCommand x => x.Path,
+                BetaMemoryTool20250818InsertCommand x => x.Path,
+                BetaMemoryTool20250818DeleteCommand x => x.Path,
+                BetaMemoryTool20250818RenameCommand _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "path"),
+            };
         }
     }
 

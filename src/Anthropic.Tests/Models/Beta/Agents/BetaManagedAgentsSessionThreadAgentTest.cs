@@ -573,6 +573,53 @@ public class BetaManagedAgentsSessionThreadAgentSkillTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsSessionThreadAgentSkill value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "skill_id": "xlsx",
+                  "version": "1"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedSkillID = "xlsx";
+        string expectedVersion = "1";
+
+        Assert.Equal(expectedSkillID, value.SkillID);
+        Assert.Equal(expectedVersion, value.Version);
+
+        BetaManagedAgentsSessionThreadAgentSkill emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.SkillID);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Version);
+
+        BetaManagedAgentsSessionThreadAgentSkill mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "skill_id": [
+                    "invalid"
+                  ],
+                  "version": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.SkillID);
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.Version);
+    }
 }
 
 public class BetaManagedAgentsSessionThreadAgentToolTest : TestBase

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
@@ -304,5 +305,48 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsAgentToolConfigParams value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "name": "bash",
+                  "enabled": true
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
+        bool expectedEnabled = true;
+
+        Assert.True(JsonElement.DeepEquals(expectedName, value.Name));
+        Assert.Equal(expectedEnabled, value.Enabled);
+
+        BetaManagedAgentsAgentToolConfigParams emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Name);
+        Assert.Null(emptyValue.Enabled);
+
+        BetaManagedAgentsAgentToolConfigParams mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "enabled": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.Enabled);
     }
 }

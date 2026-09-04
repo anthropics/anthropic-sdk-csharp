@@ -135,12 +135,14 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent : ModelBas
     {
         get
         {
-            return Match(
-                betaTextEditorCodeExecutionToolResultError: (x) => x.Type,
-                betaTextEditorCodeExecutionViewResultBlock: (x) => x.Type,
-                betaTextEditorCodeExecutionCreateResultBlock: (x) => x.Type,
-                betaTextEditorCodeExecutionStrReplaceResultBlock: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaTextEditorCodeExecutionToolResultError x => x.Type,
+                BetaTextEditorCodeExecutionViewResultBlock x => x.Type,
+                BetaTextEditorCodeExecutionCreateResultBlock x => x.Type,
+                BetaTextEditorCodeExecutionStrReplaceResultBlock x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

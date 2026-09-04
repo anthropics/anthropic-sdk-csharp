@@ -73,6 +73,24 @@ public record class MemoryVersionRetrieveParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public MemoryVersionRetrieveParams() { }
 
 #pragma warning disable CS8618
@@ -165,8 +183,8 @@ public record class MemoryVersionRetrieveParams : ParamsBase
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/memory_stores/{0}/memory_versions/{1}",
-                    this.MemoryStoreID,
-                    this.MemoryVersionID
+                    ParamsBase.EncodePathSegment(this.MemoryStoreID, nameof(this.MemoryStoreID)),
+                    ParamsBase.EncodePathSegment(this.MemoryVersionID, nameof(this.MemoryVersionID))
                 )
         )
         {

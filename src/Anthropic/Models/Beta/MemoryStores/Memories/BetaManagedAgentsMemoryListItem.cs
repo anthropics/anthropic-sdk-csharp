@@ -31,7 +31,15 @@ public record class BetaManagedAgentsMemoryListItem : ModelBase
 
     public string Path
     {
-        get { return Match(betaManagedAgentsMemory: (x) => x.Path, prefix: (x) => x.Path); }
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsMemory x => x.Path,
+                BetaManagedAgentsMemoryPrefix x => x.Path,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "path"),
+            };
+        }
     }
 
     public BetaManagedAgentsMemoryListItem(

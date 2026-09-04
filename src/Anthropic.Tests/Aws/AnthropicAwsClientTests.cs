@@ -11,6 +11,7 @@ using Anthropic.Exceptions;
 using Anthropic.Models.Files;
 using Moq;
 using Moq.Protected;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Aws;
 
@@ -256,6 +257,48 @@ public class AnthropicAwsClientTests : IDisposable
 
         Assert.True(req.Headers.Contains("anthropic-workspace-id"));
         Assert.Equal("ws-abc", req.Headers.GetValues("anthropic-workspace-id").Single());
+    }
+
+    [Fact]
+    public async Task PerRequestWorkspaceId_OverridesClientWorkspaceId()
+    {
+        var client = new AnthropicAwsClient(
+            new()
+            {
+                ApiKey = "sk-test-key",
+                WorkspaceId = "ws-client",
+                BaseUrl = "http://localhost",
+            }
+        );
+        var (httpClient, captured) = CreateCapturingClient();
+        var rawClient = client
+            .WithOptions(opts =>
+            {
+                opts.HttpClient = httpClient;
+                return opts;
+            })
+            .WithRawResponse;
+
+        await rawClient.Execute(
+            new HttpRequest<Messages::MessageCreateParams>
+            {
+                Method = HttpMethod.Post,
+                Params = new()
+                {
+                    MaxTokens = 1,
+                    Model = "claude-test",
+                    Messages = [new() { Role = Messages::Role.User, Content = "hi" }],
+                    WorkspaceID = "ws-request",
+                },
+            },
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Single(captured);
+        Assert.Equal(
+            "ws-request",
+            captured[0].Headers.GetValues("anthropic-workspace-id").Single()
+        );
     }
 
     [Fact]

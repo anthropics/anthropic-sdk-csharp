@@ -144,10 +144,12 @@ public record class ToolSearchToolResultBlockParamContent : ModelBase
     {
         get
         {
-            return Match(
-                toolSearchToolResultErrorParam: (x) => x.Type,
-                toolSearchToolSearchResultBlockParam: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                ToolSearchToolResultErrorParam x => x.Type,
+                ToolSearchToolSearchResultBlockParam x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

@@ -47,6 +47,24 @@ public record class VersionListParams : ParamsBase
         init { this._rawQueryData.Set("page", value); }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public VersionListParams() { }
 
 #pragma warning disable CS8618
@@ -127,7 +145,10 @@ public record class VersionListParams : ParamsBase
     {
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/skills/{0}/versions", this.SkillID)
+                + string.Format(
+                    "/v1/skills/{0}/versions",
+                    ParamsBase.EncodePathSegment(this.SkillID, nameof(this.SkillID))
+                )
         )
         {
             Query = this.QueryString(options),

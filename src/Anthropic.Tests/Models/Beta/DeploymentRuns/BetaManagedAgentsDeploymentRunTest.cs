@@ -742,6 +742,43 @@ public class ErrorTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        DeploymentRuns::Error value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "message": "message"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedMessage = "message";
+
+        Assert.Equal(expectedMessage, value.Message);
+
+        DeploymentRuns::Error emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Message);
+
+        DeploymentRuns::Error mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "message": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.Message);
+    }
 }
 
 public class BetaManagedAgentsDeploymentRunTypeTest : TestBase

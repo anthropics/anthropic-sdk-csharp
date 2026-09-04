@@ -140,11 +140,13 @@ public record class WebFetchToolResultBlockCaller : ModelBase
     {
         get
         {
-            return Match(
-                direct: (x) => x.Type,
-                serverTool: (x) => x.Type,
-                serverToolCaller20260120: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                DirectCaller x => x.Type,
+                ServerToolCaller x => x.Type,
+                ServerToolCaller20260120 x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -152,11 +154,13 @@ public record class WebFetchToolResultBlockCaller : ModelBase
     {
         get
         {
-            return Match<string?>(
-                direct: (_) => null,
-                serverTool: (x) => x.ToolID,
-                serverToolCaller20260120: (x) => x.ToolID
-            );
+            return this.Value switch
+            {
+                DirectCaller _ => null,
+                ServerToolCaller x => x.ToolID,
+                ServerToolCaller20260120 x => x.ToolID,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "tool_id"),
+            };
         }
     }
 
@@ -513,7 +517,12 @@ public record class WebFetchToolResultBlockContent : ModelBase
     {
         get
         {
-            return Match(webFetchToolResultErrorBlock: (x) => x.Type, webFetchBlock: (x) => x.Type);
+            return this.Value switch
+            {
+                WebFetchToolResultErrorBlock x => x.Type,
+                WebFetchBlock x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

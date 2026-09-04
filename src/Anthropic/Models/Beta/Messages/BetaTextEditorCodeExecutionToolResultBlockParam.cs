@@ -149,12 +149,14 @@ public record class BetaTextEditorCodeExecutionToolResultBlockParamContent : Mod
     {
         get
         {
-            return Match(
-                betaTextEditorCodeExecutionToolResultErrorParam: (x) => x.Type,
-                betaTextEditorCodeExecutionViewResultBlockParam: (x) => x.Type,
-                betaTextEditorCodeExecutionCreateResultBlockParam: (x) => x.Type,
-                betaTextEditorCodeExecutionStrReplaceResultBlockParam: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaTextEditorCodeExecutionToolResultErrorParam x => x.Type,
+                BetaTextEditorCodeExecutionViewResultBlockParam x => x.Type,
+                BetaTextEditorCodeExecutionCreateResultBlockParam x => x.Type,
+                BetaTextEditorCodeExecutionStrReplaceResultBlockParam x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

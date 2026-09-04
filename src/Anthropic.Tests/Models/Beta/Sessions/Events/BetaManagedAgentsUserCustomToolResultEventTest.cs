@@ -584,4 +584,43 @@ public class BetaManagedAgentsUserCustomToolResultEventContentTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsUserCustomToolResultEventContent value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "title": "title"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedTitle = "title";
+
+        Assert.Equal(expectedTitle, value.Title);
+
+        BetaManagedAgentsUserCustomToolResultEventContent emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Null(emptyValue.Title);
+
+        BetaManagedAgentsUserCustomToolResultEventContent mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "title": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.Title);
+    }
 }

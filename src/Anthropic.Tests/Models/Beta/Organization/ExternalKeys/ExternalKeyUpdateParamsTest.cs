@@ -259,4 +259,47 @@ public class ExternalKeyUpdateParamsProviderConfigTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        ExternalKeyUpdateParamsProviderConfig value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "aws",
+                  "key_name": "projects/my-proj/locations/us/keyRings/my-ring/cryptoKeys/my-key"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("aws");
+        string expectedKeyName = "projects/my-proj/locations/us/keyRings/my-ring/cryptoKeys/my-key";
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedKeyName, value.KeyName);
+
+        ExternalKeyUpdateParamsProviderConfig emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.KeyName);
+
+        ExternalKeyUpdateParamsProviderConfig mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "key_name": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.KeyName);
+    }
 }

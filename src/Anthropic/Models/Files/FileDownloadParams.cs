@@ -19,6 +19,24 @@ public record class FileDownloadParams : ParamsBase
 {
     public string? FileID { get; init; }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public FileDownloadParams() { }
 
 #pragma warning disable CS8618
@@ -99,7 +117,10 @@ public record class FileDownloadParams : ParamsBase
     {
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/files/{0}/content", this.FileID)
+                + string.Format(
+                    "/v1/files/{0}/content",
+                    ParamsBase.EncodePathSegment(this.FileID, nameof(this.FileID))
+                )
         )
         {
             Query = this.QueryString(options),

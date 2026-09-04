@@ -144,11 +144,13 @@ public record class BetaImageBlockParamSource : ModelBase
     {
         get
         {
-            return Match(
-                betaBase64Image: (x) => x.Type,
-                betaUrlImage: (x) => x.Type,
-                betaFileImage: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaBase64ImageSource x => x.Type,
+                BetaUrlImageSource x => x.Type,
+                BetaFileImageSource x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

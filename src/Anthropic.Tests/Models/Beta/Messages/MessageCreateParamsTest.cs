@@ -158,6 +158,7 @@ public class MessageCreateParamsTest : TestBase
             TopP = 0.7,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         long expectedMaxTokens = 1024;
@@ -310,6 +311,7 @@ public class MessageCreateParamsTest : TestBase
             AnthropicBeta.MessageBatches2024_09_24,
         ];
         string expectedUserProfileID = "anthropic-user-profile-id";
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedMaxTokens, parameters.MaxTokens);
         Assert.Equal(expectedMessages.Count, parameters.Messages.Count);
@@ -361,6 +363,7 @@ public class MessageCreateParamsTest : TestBase
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
         Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -450,6 +453,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
         Assert.Null(parameters.UserProfileID);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -525,6 +530,7 @@ public class MessageCreateParamsTest : TestBase
             TopP = null,
             Betas = null,
             UserProfileID = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.McpServers);
@@ -555,6 +561,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
         Assert.Null(parameters.UserProfileID);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -663,6 +671,7 @@ public class MessageCreateParamsTest : TestBase
             TopP = 0.7,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         Assert.Null(parameters.CacheControl);
@@ -791,6 +800,7 @@ public class MessageCreateParamsTest : TestBase
             TopP = 0.7,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             CacheControl = null,
             Container = null,
@@ -869,6 +879,7 @@ public class MessageCreateParamsTest : TestBase
             Model = Messages::Model.ClaudeOpus5,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -880,6 +891,10 @@ public class MessageCreateParamsTest : TestBase
         Assert.Equal(
             ["anthropic-user-profile-id"],
             requestMessage.Headers.GetValues("anthropic-user-profile-id")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -1029,6 +1044,7 @@ public class MessageCreateParamsTest : TestBase
             TopP = 0.7,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         MessageCreateParams copied = new(parameters);

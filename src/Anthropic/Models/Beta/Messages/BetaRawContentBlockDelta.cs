@@ -29,14 +29,16 @@ public record class BetaRawContentBlockDelta : ModelBase
     {
         get
         {
-            return Match(
-                text: (x) => x.Type,
-                inputJson: (x) => x.Type,
-                citations: (x) => x.Type,
-                thinking: (x) => x.Type,
-                signature: (x) => x.Type,
-                compaction: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaTextDelta x => x.Type,
+                BetaInputJsonDelta x => x.Type,
+                BetaCitationsDelta x => x.Type,
+                BetaThinkingDelta x => x.Type,
+                BetaSignatureDelta x => x.Type,
+                BetaCompactionContentBlockDelta x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

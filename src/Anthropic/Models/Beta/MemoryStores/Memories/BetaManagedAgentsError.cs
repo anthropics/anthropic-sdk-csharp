@@ -29,20 +29,22 @@ public record class BetaManagedAgentsError : ModelBase
     {
         get
         {
-            return Match<string?>(
-                invalidRequest: (x) => x.Message,
-                authentication: (x) => x.Message,
-                billing: (x) => x.Message,
-                permission: (x) => x.Message,
-                notFound: (x) => x.Message,
-                rateLimit: (x) => x.Message,
-                gatewayTimeout: (x) => x.Message,
-                api: (x) => x.Message,
-                overloaded: (x) => x.Message,
-                memoryPreconditionFailed: (x) => x.Message,
-                memoryPathConflict: (x) => x.Message,
-                conflict: (x) => x.Message
-            );
+            return this.Value switch
+            {
+                BetaInvalidRequestError x => x.Message,
+                BetaAuthenticationError x => x.Message,
+                BetaBillingError x => x.Message,
+                BetaPermissionError x => x.Message,
+                BetaNotFoundError x => x.Message,
+                BetaRateLimitError x => x.Message,
+                BetaGatewayTimeoutError x => x.Message,
+                BetaApiError x => x.Message,
+                BetaOverloadedError x => x.Message,
+                BetaManagedAgentsMemoryPreconditionFailedError x => x.Message,
+                BetaManagedAgentsMemoryPathConflictError x => x.Message,
+                BetaManagedAgentsConflictError x => x.Message,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "message"),
+            };
         }
     }
 

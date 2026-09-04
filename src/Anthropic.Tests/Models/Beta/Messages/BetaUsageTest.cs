@@ -450,6 +450,92 @@ public class BetaUsageIterationTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaUsageIteration value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "cache_creation": {
+                    "ephemeral_1h_input_tokens": 0,
+                    "ephemeral_5m_input_tokens": 0
+                  },
+                  "cache_creation_input_tokens": 0,
+                  "cache_read_input_tokens": 0,
+                  "input_tokens": 0,
+                  "model": "claude-fable-5-1",
+                  "output_tokens": 0,
+                  "type": "message"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        BetaCacheCreation expectedCacheCreation = new()
+        {
+            Ephemeral1hInputTokens = 0,
+            Ephemeral5mInputTokens = 0,
+        };
+        long expectedCacheCreationInputTokens = 0;
+        long expectedCacheReadInputTokens = 0;
+        long expectedInputTokens = 0;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeFable5_1;
+        long expectedOutputTokens = 0;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message");
+
+        Assert.Equal(expectedCacheCreation, value.CacheCreation);
+        Assert.Equal(expectedCacheCreationInputTokens, value.CacheCreationInputTokens);
+        Assert.Equal(expectedCacheReadInputTokens, value.CacheReadInputTokens);
+        Assert.Equal(expectedInputTokens, value.InputTokens);
+        Assert.Equal(expectedModel, value.Model);
+        Assert.Equal(expectedOutputTokens, value.OutputTokens);
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        BetaUsageIteration emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Null(emptyValue.CacheCreation);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.CacheCreationInputTokens);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.CacheReadInputTokens);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.InputTokens);
+        Assert.Null(emptyValue.Model);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.OutputTokens);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+
+        BetaUsageIteration mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "cache_creation": [
+                    "invalid"
+                  ],
+                  "cache_creation_input_tokens": [
+                    "invalid"
+                  ],
+                  "cache_read_input_tokens": [
+                    "invalid"
+                  ],
+                  "input_tokens": [
+                    "invalid"
+                  ],
+                  "output_tokens": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.CacheCreation);
+        Assert.Throws<AnthropicInvalidDataException>(() =>
+            mismatchedValue.CacheCreationInputTokens
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.CacheReadInputTokens);
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.InputTokens);
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.OutputTokens);
+    }
 }
 
 public class BetaUsageServiceTierTest : TestBase

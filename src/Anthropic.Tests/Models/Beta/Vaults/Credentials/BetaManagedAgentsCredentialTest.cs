@@ -417,6 +417,45 @@ public class BetaManagedAgentsCredentialAuthTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Credentials::BetaManagedAgentsCredentialAuth value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "mcp_server_url": "mcp_server_url"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedMcpServerUrl = "mcp_server_url";
+
+        Assert.Equal(expectedMcpServerUrl, value.McpServerUrl);
+
+        Credentials::BetaManagedAgentsCredentialAuth emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Null(emptyValue.McpServerUrl);
+
+        Credentials::BetaManagedAgentsCredentialAuth mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "mcp_server_url": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.McpServerUrl);
+    }
 }
 
 public class TypeTest : TestBase

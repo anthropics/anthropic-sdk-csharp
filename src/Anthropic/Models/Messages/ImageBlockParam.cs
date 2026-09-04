@@ -142,11 +142,13 @@ public record class ImageBlockParamSource : ModelBase
     {
         get
         {
-            return Match(
-                base64Image: (x) => x.Type,
-                urlImage: (x) => x.Type,
-                fileImage: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                Base64ImageSource x => x.Type,
+                UrlImageSource x => x.Type,
+                FileImageSource x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

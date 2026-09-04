@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Organization.Federation.Issuers;
 
@@ -310,5 +311,46 @@ public class IssuerUpdateParamsJwksTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        IssuerUpdateParamsJwks value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "discovery",
+                  "ca_cert_pem": "ca_cert_pem"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("discovery");
+        string expectedCACertPem = "ca_cert_pem";
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedCACertPem, value.CACertPem);
+
+        IssuerUpdateParamsJwks emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.CACertPem);
+
+        IssuerUpdateParamsJwks mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "ca_cert_pem": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.CACertPem);
     }
 }

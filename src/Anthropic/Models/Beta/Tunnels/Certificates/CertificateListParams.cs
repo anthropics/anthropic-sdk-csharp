@@ -115,6 +115,24 @@ public record class CertificateListParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public CertificateListParams() { }
 
 #pragma warning disable CS8618
@@ -196,7 +214,10 @@ public record class CertificateListParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/tunnels/{0}/certificates", this.TunnelID)
+                + string.Format(
+                    "/v1/tunnels/{0}/certificates",
+                    ParamsBase.EncodePathSegment(this.TunnelID, nameof(this.TunnelID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

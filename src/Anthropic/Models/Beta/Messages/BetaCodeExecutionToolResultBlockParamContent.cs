@@ -32,11 +32,13 @@ public record class BetaCodeExecutionToolResultBlockParamContent : ModelBase
     {
         get
         {
-            return Match(
-                errorParam: (x) => x.Type,
-                resultBlockParam: (x) => x.Type,
-                encryptedCodeExecutionResultBlockParam: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaCodeExecutionToolResultErrorParam x => x.Type,
+                BetaCodeExecutionResultBlockParam x => x.Type,
+                BetaEncryptedCodeExecutionResultBlockParam x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -44,11 +46,16 @@ public record class BetaCodeExecutionToolResultBlockParamContent : ModelBase
     {
         get
         {
-            return Match<long?>(
-                errorParam: (_) => null,
-                resultBlockParam: (x) => x.ReturnCode,
-                encryptedCodeExecutionResultBlockParam: (x) => x.ReturnCode
-            );
+            return this.Value switch
+            {
+                BetaCodeExecutionToolResultErrorParam _ => null,
+                BetaCodeExecutionResultBlockParam x => x.ReturnCode,
+                BetaEncryptedCodeExecutionResultBlockParam x => x.ReturnCode,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "return_code"
+                ),
+            };
         }
     }
 
@@ -56,11 +63,13 @@ public record class BetaCodeExecutionToolResultBlockParamContent : ModelBase
     {
         get
         {
-            return Match<string?>(
-                errorParam: (_) => null,
-                resultBlockParam: (x) => x.Stderr,
-                encryptedCodeExecutionResultBlockParam: (x) => x.Stderr
-            );
+            return this.Value switch
+            {
+                BetaCodeExecutionToolResultErrorParam _ => null,
+                BetaCodeExecutionResultBlockParam x => x.Stderr,
+                BetaEncryptedCodeExecutionResultBlockParam x => x.Stderr,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "stderr"),
+            };
         }
     }
 

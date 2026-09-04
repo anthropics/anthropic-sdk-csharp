@@ -420,6 +420,24 @@ public record class MessageCountTokensParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public MessageCountTokensParams() { }
 
 #pragma warning disable CS8618
@@ -889,36 +907,41 @@ public record class Tool : ModelBase
     {
         get
         {
-            return Match<BetaCacheControlEphemeral?>(
-                beta: (x) => x.CacheControl,
-                betaToolBash20241022: (x) => x.CacheControl,
-                betaToolBash20250124: (x) => x.CacheControl,
-                betaCodeExecutionTool20250522: (x) => x.CacheControl,
-                betaCodeExecutionTool20250825: (x) => x.CacheControl,
-                betaCodeExecutionTool20260120: (x) => x.CacheControl,
-                betaCodeExecutionTool20260521: (x) => x.CacheControl,
-                betaBrowserToolset20260801: (x) => x.CacheControl,
-                betaToolComputerUse20241022: (x) => x.CacheControl,
-                betaMemoryTool20250818: (x) => x.CacheControl,
-                betaToolComputerUse20250124: (x) => x.CacheControl,
-                betaToolTextEditor20241022: (x) => x.CacheControl,
-                betaToolComputerUse20251124: (x) => x.CacheControl,
-                betaComputerToolset20260801: (x) => x.CacheControl,
-                betaToolTextEditor20250124: (x) => x.CacheControl,
-                betaToolTextEditor20250429: (x) => x.CacheControl,
-                betaToolTextEditor20250728: (x) => x.CacheControl,
-                betaWebSearchTool20250305: (x) => x.CacheControl,
-                betaWebFetchTool20250910: (x) => x.CacheControl,
-                betaWebSearchTool20260209: (x) => x.CacheControl,
-                betaWebFetchTool20260209: (x) => x.CacheControl,
-                betaWebFetchTool20260309: (x) => x.CacheControl,
-                betaWebSearchTool20260318: (x) => x.CacheControl,
-                betaWebFetchTool20260318: (x) => x.CacheControl,
-                betaAdvisorTool20260301: (x) => x.CacheControl,
-                betaToolSearchToolBm25_20251119: (x) => x.CacheControl,
-                betaToolSearchToolRegex20251119: (x) => x.CacheControl,
-                betaMcpToolset: (x) => x.CacheControl
-            );
+            return this.Value switch
+            {
+                BetaTool x => x.CacheControl,
+                BetaToolBash20241022 x => x.CacheControl,
+                BetaToolBash20250124 x => x.CacheControl,
+                BetaCodeExecutionTool20250522 x => x.CacheControl,
+                BetaCodeExecutionTool20250825 x => x.CacheControl,
+                BetaCodeExecutionTool20260120 x => x.CacheControl,
+                BetaCodeExecutionTool20260521 x => x.CacheControl,
+                BetaBrowserToolset20260801 x => x.CacheControl,
+                BetaToolComputerUse20241022 x => x.CacheControl,
+                BetaMemoryTool20250818 x => x.CacheControl,
+                BetaToolComputerUse20250124 x => x.CacheControl,
+                BetaToolTextEditor20241022 x => x.CacheControl,
+                BetaToolComputerUse20251124 x => x.CacheControl,
+                BetaComputerToolset20260801 x => x.CacheControl,
+                BetaToolTextEditor20250124 x => x.CacheControl,
+                BetaToolTextEditor20250429 x => x.CacheControl,
+                BetaToolTextEditor20250728 x => x.CacheControl,
+                BetaWebSearchTool20250305 x => x.CacheControl,
+                BetaWebFetchTool20250910 x => x.CacheControl,
+                BetaWebSearchTool20260209 x => x.CacheControl,
+                BetaWebFetchTool20260209 x => x.CacheControl,
+                BetaWebFetchTool20260309 x => x.CacheControl,
+                BetaWebSearchTool20260318 x => x.CacheControl,
+                BetaWebFetchTool20260318 x => x.CacheControl,
+                BetaAdvisorTool20260301 x => x.CacheControl,
+                BetaToolSearchToolBm25_20251119 x => x.CacheControl,
+                BetaToolSearchToolRegex20251119 x => x.CacheControl,
+                BetaMcpToolset x => x.CacheControl,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<BetaCacheControlEphemeral>(
+                    this.Json,
+                    "cache_control"
+                ),
+            };
         }
     }
 
@@ -926,36 +949,41 @@ public record class Tool : ModelBase
     {
         get
         {
-            return Match<bool?>(
-                beta: (x) => x.DeferLoading,
-                betaToolBash20241022: (x) => x.DeferLoading,
-                betaToolBash20250124: (x) => x.DeferLoading,
-                betaCodeExecutionTool20250522: (x) => x.DeferLoading,
-                betaCodeExecutionTool20250825: (x) => x.DeferLoading,
-                betaCodeExecutionTool20260120: (x) => x.DeferLoading,
-                betaCodeExecutionTool20260521: (x) => x.DeferLoading,
-                betaBrowserToolset20260801: (_) => null,
-                betaToolComputerUse20241022: (x) => x.DeferLoading,
-                betaMemoryTool20250818: (x) => x.DeferLoading,
-                betaToolComputerUse20250124: (x) => x.DeferLoading,
-                betaToolTextEditor20241022: (x) => x.DeferLoading,
-                betaToolComputerUse20251124: (x) => x.DeferLoading,
-                betaComputerToolset20260801: (_) => null,
-                betaToolTextEditor20250124: (x) => x.DeferLoading,
-                betaToolTextEditor20250429: (x) => x.DeferLoading,
-                betaToolTextEditor20250728: (x) => x.DeferLoading,
-                betaWebSearchTool20250305: (x) => x.DeferLoading,
-                betaWebFetchTool20250910: (x) => x.DeferLoading,
-                betaWebSearchTool20260209: (x) => x.DeferLoading,
-                betaWebFetchTool20260209: (x) => x.DeferLoading,
-                betaWebFetchTool20260309: (x) => x.DeferLoading,
-                betaWebSearchTool20260318: (x) => x.DeferLoading,
-                betaWebFetchTool20260318: (x) => x.DeferLoading,
-                betaAdvisorTool20260301: (x) => x.DeferLoading,
-                betaToolSearchToolBm25_20251119: (x) => x.DeferLoading,
-                betaToolSearchToolRegex20251119: (x) => x.DeferLoading,
-                betaMcpToolset: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaTool x => x.DeferLoading,
+                BetaToolBash20241022 x => x.DeferLoading,
+                BetaToolBash20250124 x => x.DeferLoading,
+                BetaCodeExecutionTool20250522 x => x.DeferLoading,
+                BetaCodeExecutionTool20250825 x => x.DeferLoading,
+                BetaCodeExecutionTool20260120 x => x.DeferLoading,
+                BetaCodeExecutionTool20260521 x => x.DeferLoading,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 x => x.DeferLoading,
+                BetaMemoryTool20250818 x => x.DeferLoading,
+                BetaToolComputerUse20250124 x => x.DeferLoading,
+                BetaToolTextEditor20241022 x => x.DeferLoading,
+                BetaToolComputerUse20251124 x => x.DeferLoading,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 x => x.DeferLoading,
+                BetaToolTextEditor20250429 x => x.DeferLoading,
+                BetaToolTextEditor20250728 x => x.DeferLoading,
+                BetaWebSearchTool20250305 x => x.DeferLoading,
+                BetaWebFetchTool20250910 x => x.DeferLoading,
+                BetaWebSearchTool20260209 x => x.DeferLoading,
+                BetaWebFetchTool20260209 x => x.DeferLoading,
+                BetaWebFetchTool20260309 x => x.DeferLoading,
+                BetaWebSearchTool20260318 x => x.DeferLoading,
+                BetaWebFetchTool20260318 x => x.DeferLoading,
+                BetaAdvisorTool20260301 x => x.DeferLoading,
+                BetaToolSearchToolBm25_20251119 x => x.DeferLoading,
+                BetaToolSearchToolRegex20251119 x => x.DeferLoading,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(
+                    this.Json,
+                    "defer_loading"
+                ),
+            };
         }
     }
 
@@ -963,36 +991,38 @@ public record class Tool : ModelBase
     {
         get
         {
-            return Match<bool?>(
-                beta: (x) => x.Strict,
-                betaToolBash20241022: (x) => x.Strict,
-                betaToolBash20250124: (x) => x.Strict,
-                betaCodeExecutionTool20250522: (x) => x.Strict,
-                betaCodeExecutionTool20250825: (x) => x.Strict,
-                betaCodeExecutionTool20260120: (x) => x.Strict,
-                betaCodeExecutionTool20260521: (x) => x.Strict,
-                betaBrowserToolset20260801: (_) => null,
-                betaToolComputerUse20241022: (x) => x.Strict,
-                betaMemoryTool20250818: (x) => x.Strict,
-                betaToolComputerUse20250124: (x) => x.Strict,
-                betaToolTextEditor20241022: (x) => x.Strict,
-                betaToolComputerUse20251124: (x) => x.Strict,
-                betaComputerToolset20260801: (_) => null,
-                betaToolTextEditor20250124: (x) => x.Strict,
-                betaToolTextEditor20250429: (x) => x.Strict,
-                betaToolTextEditor20250728: (x) => x.Strict,
-                betaWebSearchTool20250305: (x) => x.Strict,
-                betaWebFetchTool20250910: (x) => x.Strict,
-                betaWebSearchTool20260209: (x) => x.Strict,
-                betaWebFetchTool20260209: (x) => x.Strict,
-                betaWebFetchTool20260309: (x) => x.Strict,
-                betaWebSearchTool20260318: (x) => x.Strict,
-                betaWebFetchTool20260318: (x) => x.Strict,
-                betaAdvisorTool20260301: (x) => x.Strict,
-                betaToolSearchToolBm25_20251119: (x) => x.Strict,
-                betaToolSearchToolRegex20251119: (x) => x.Strict,
-                betaMcpToolset: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaTool x => x.Strict,
+                BetaToolBash20241022 x => x.Strict,
+                BetaToolBash20250124 x => x.Strict,
+                BetaCodeExecutionTool20250522 x => x.Strict,
+                BetaCodeExecutionTool20250825 x => x.Strict,
+                BetaCodeExecutionTool20260120 x => x.Strict,
+                BetaCodeExecutionTool20260521 x => x.Strict,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 x => x.Strict,
+                BetaMemoryTool20250818 x => x.Strict,
+                BetaToolComputerUse20250124 x => x.Strict,
+                BetaToolTextEditor20241022 x => x.Strict,
+                BetaToolComputerUse20251124 x => x.Strict,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 x => x.Strict,
+                BetaToolTextEditor20250429 x => x.Strict,
+                BetaToolTextEditor20250728 x => x.Strict,
+                BetaWebSearchTool20250305 x => x.Strict,
+                BetaWebFetchTool20250910 x => x.Strict,
+                BetaWebSearchTool20260209 x => x.Strict,
+                BetaWebFetchTool20260209 x => x.Strict,
+                BetaWebFetchTool20260309 x => x.Strict,
+                BetaWebSearchTool20260318 x => x.Strict,
+                BetaWebFetchTool20260318 x => x.Strict,
+                BetaAdvisorTool20260301 x => x.Strict,
+                BetaToolSearchToolBm25_20251119 x => x.Strict,
+                BetaToolSearchToolRegex20251119 x => x.Strict,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(this.Json, "strict"),
+            };
         }
     }
 
@@ -1000,36 +1030,41 @@ public record class Tool : ModelBase
     {
         get
         {
-            return Match<long?>(
-                beta: (_) => null,
-                betaToolBash20241022: (_) => null,
-                betaToolBash20250124: (_) => null,
-                betaCodeExecutionTool20250522: (_) => null,
-                betaCodeExecutionTool20250825: (_) => null,
-                betaCodeExecutionTool20260120: (_) => null,
-                betaCodeExecutionTool20260521: (_) => null,
-                betaBrowserToolset20260801: (_) => null,
-                betaToolComputerUse20241022: (x) => x.DisplayHeightPx,
-                betaMemoryTool20250818: (_) => null,
-                betaToolComputerUse20250124: (x) => x.DisplayHeightPx,
-                betaToolTextEditor20241022: (_) => null,
-                betaToolComputerUse20251124: (x) => x.DisplayHeightPx,
-                betaComputerToolset20260801: (_) => null,
-                betaToolTextEditor20250124: (_) => null,
-                betaToolTextEditor20250429: (_) => null,
-                betaToolTextEditor20250728: (_) => null,
-                betaWebSearchTool20250305: (_) => null,
-                betaWebFetchTool20250910: (_) => null,
-                betaWebSearchTool20260209: (_) => null,
-                betaWebFetchTool20260209: (_) => null,
-                betaWebFetchTool20260309: (_) => null,
-                betaWebSearchTool20260318: (_) => null,
-                betaWebFetchTool20260318: (_) => null,
-                betaAdvisorTool20260301: (_) => null,
-                betaToolSearchToolBm25_20251119: (_) => null,
-                betaToolSearchToolRegex20251119: (_) => null,
-                betaMcpToolset: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 x => x.DisplayHeightPx,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 x => x.DisplayHeightPx,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 x => x.DisplayHeightPx,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 _ => null,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 _ => null,
+                BetaWebFetchTool20260309 _ => null,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 _ => null,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "display_height_px"
+                ),
+            };
         }
     }
 
@@ -1037,36 +1072,41 @@ public record class Tool : ModelBase
     {
         get
         {
-            return Match<long?>(
-                beta: (_) => null,
-                betaToolBash20241022: (_) => null,
-                betaToolBash20250124: (_) => null,
-                betaCodeExecutionTool20250522: (_) => null,
-                betaCodeExecutionTool20250825: (_) => null,
-                betaCodeExecutionTool20260120: (_) => null,
-                betaCodeExecutionTool20260521: (_) => null,
-                betaBrowserToolset20260801: (_) => null,
-                betaToolComputerUse20241022: (x) => x.DisplayWidthPx,
-                betaMemoryTool20250818: (_) => null,
-                betaToolComputerUse20250124: (x) => x.DisplayWidthPx,
-                betaToolTextEditor20241022: (_) => null,
-                betaToolComputerUse20251124: (x) => x.DisplayWidthPx,
-                betaComputerToolset20260801: (_) => null,
-                betaToolTextEditor20250124: (_) => null,
-                betaToolTextEditor20250429: (_) => null,
-                betaToolTextEditor20250728: (_) => null,
-                betaWebSearchTool20250305: (_) => null,
-                betaWebFetchTool20250910: (_) => null,
-                betaWebSearchTool20260209: (_) => null,
-                betaWebFetchTool20260209: (_) => null,
-                betaWebFetchTool20260309: (_) => null,
-                betaWebSearchTool20260318: (_) => null,
-                betaWebFetchTool20260318: (_) => null,
-                betaAdvisorTool20260301: (_) => null,
-                betaToolSearchToolBm25_20251119: (_) => null,
-                betaToolSearchToolRegex20251119: (_) => null,
-                betaMcpToolset: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 x => x.DisplayWidthPx,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 x => x.DisplayWidthPx,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 x => x.DisplayWidthPx,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 _ => null,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 _ => null,
+                BetaWebFetchTool20260309 _ => null,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 _ => null,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "display_width_px"
+                ),
+            };
         }
     }
 
@@ -1074,36 +1114,41 @@ public record class Tool : ModelBase
     {
         get
         {
-            return Match<long?>(
-                beta: (_) => null,
-                betaToolBash20241022: (_) => null,
-                betaToolBash20250124: (_) => null,
-                betaCodeExecutionTool20250522: (_) => null,
-                betaCodeExecutionTool20250825: (_) => null,
-                betaCodeExecutionTool20260120: (_) => null,
-                betaCodeExecutionTool20260521: (_) => null,
-                betaBrowserToolset20260801: (_) => null,
-                betaToolComputerUse20241022: (x) => x.DisplayNumber,
-                betaMemoryTool20250818: (_) => null,
-                betaToolComputerUse20250124: (x) => x.DisplayNumber,
-                betaToolTextEditor20241022: (_) => null,
-                betaToolComputerUse20251124: (x) => x.DisplayNumber,
-                betaComputerToolset20260801: (_) => null,
-                betaToolTextEditor20250124: (_) => null,
-                betaToolTextEditor20250429: (_) => null,
-                betaToolTextEditor20250728: (_) => null,
-                betaWebSearchTool20250305: (_) => null,
-                betaWebFetchTool20250910: (_) => null,
-                betaWebSearchTool20260209: (_) => null,
-                betaWebFetchTool20260209: (_) => null,
-                betaWebFetchTool20260309: (_) => null,
-                betaWebSearchTool20260318: (_) => null,
-                betaWebFetchTool20260318: (_) => null,
-                betaAdvisorTool20260301: (_) => null,
-                betaToolSearchToolBm25_20251119: (_) => null,
-                betaToolSearchToolRegex20251119: (_) => null,
-                betaMcpToolset: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 x => x.DisplayNumber,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 x => x.DisplayNumber,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 x => x.DisplayNumber,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 _ => null,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 _ => null,
+                BetaWebFetchTool20260309 _ => null,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 _ => null,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "display_number"
+                ),
+            };
         }
     }
 
@@ -1111,36 +1156,38 @@ public record class Tool : ModelBase
     {
         get
         {
-            return Match<long?>(
-                beta: (_) => null,
-                betaToolBash20241022: (_) => null,
-                betaToolBash20250124: (_) => null,
-                betaCodeExecutionTool20250522: (_) => null,
-                betaCodeExecutionTool20250825: (_) => null,
-                betaCodeExecutionTool20260120: (_) => null,
-                betaCodeExecutionTool20260521: (_) => null,
-                betaBrowserToolset20260801: (_) => null,
-                betaToolComputerUse20241022: (_) => null,
-                betaMemoryTool20250818: (_) => null,
-                betaToolComputerUse20250124: (_) => null,
-                betaToolTextEditor20241022: (_) => null,
-                betaToolComputerUse20251124: (_) => null,
-                betaComputerToolset20260801: (_) => null,
-                betaToolTextEditor20250124: (_) => null,
-                betaToolTextEditor20250429: (_) => null,
-                betaToolTextEditor20250728: (_) => null,
-                betaWebSearchTool20250305: (x) => x.MaxUses,
-                betaWebFetchTool20250910: (x) => x.MaxUses,
-                betaWebSearchTool20260209: (x) => x.MaxUses,
-                betaWebFetchTool20260209: (x) => x.MaxUses,
-                betaWebFetchTool20260309: (x) => x.MaxUses,
-                betaWebSearchTool20260318: (x) => x.MaxUses,
-                betaWebFetchTool20260318: (x) => x.MaxUses,
-                betaAdvisorTool20260301: (x) => x.MaxUses,
-                betaToolSearchToolBm25_20251119: (_) => null,
-                betaToolSearchToolRegex20251119: (_) => null,
-                betaMcpToolset: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 x => x.MaxUses,
+                BetaWebFetchTool20250910 x => x.MaxUses,
+                BetaWebSearchTool20260209 x => x.MaxUses,
+                BetaWebFetchTool20260209 x => x.MaxUses,
+                BetaWebFetchTool20260309 x => x.MaxUses,
+                BetaWebSearchTool20260318 x => x.MaxUses,
+                BetaWebFetchTool20260318 x => x.MaxUses,
+                BetaAdvisorTool20260301 x => x.MaxUses,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(this.Json, "max_uses"),
+            };
         }
     }
 
@@ -1148,36 +1195,41 @@ public record class Tool : ModelBase
     {
         get
         {
-            return Match<BetaUserLocation?>(
-                beta: (_) => null,
-                betaToolBash20241022: (_) => null,
-                betaToolBash20250124: (_) => null,
-                betaCodeExecutionTool20250522: (_) => null,
-                betaCodeExecutionTool20250825: (_) => null,
-                betaCodeExecutionTool20260120: (_) => null,
-                betaCodeExecutionTool20260521: (_) => null,
-                betaBrowserToolset20260801: (_) => null,
-                betaToolComputerUse20241022: (_) => null,
-                betaMemoryTool20250818: (_) => null,
-                betaToolComputerUse20250124: (_) => null,
-                betaToolTextEditor20241022: (_) => null,
-                betaToolComputerUse20251124: (_) => null,
-                betaComputerToolset20260801: (_) => null,
-                betaToolTextEditor20250124: (_) => null,
-                betaToolTextEditor20250429: (_) => null,
-                betaToolTextEditor20250728: (_) => null,
-                betaWebSearchTool20250305: (x) => x.UserLocation,
-                betaWebFetchTool20250910: (_) => null,
-                betaWebSearchTool20260209: (x) => x.UserLocation,
-                betaWebFetchTool20260209: (_) => null,
-                betaWebFetchTool20260309: (_) => null,
-                betaWebSearchTool20260318: (x) => x.UserLocation,
-                betaWebFetchTool20260318: (_) => null,
-                betaAdvisorTool20260301: (_) => null,
-                betaToolSearchToolBm25_20251119: (_) => null,
-                betaToolSearchToolRegex20251119: (_) => null,
-                betaMcpToolset: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 x => x.UserLocation,
+                BetaWebFetchTool20250910 _ => null,
+                BetaWebSearchTool20260209 x => x.UserLocation,
+                BetaWebFetchTool20260209 _ => null,
+                BetaWebFetchTool20260309 _ => null,
+                BetaWebSearchTool20260318 x => x.UserLocation,
+                BetaWebFetchTool20260318 _ => null,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<BetaUserLocation>(
+                    this.Json,
+                    "user_location"
+                ),
+            };
         }
     }
 
@@ -1185,36 +1237,41 @@ public record class Tool : ModelBase
     {
         get
         {
-            return Match<BetaCitationsConfigParam?>(
-                beta: (_) => null,
-                betaToolBash20241022: (_) => null,
-                betaToolBash20250124: (_) => null,
-                betaCodeExecutionTool20250522: (_) => null,
-                betaCodeExecutionTool20250825: (_) => null,
-                betaCodeExecutionTool20260120: (_) => null,
-                betaCodeExecutionTool20260521: (_) => null,
-                betaBrowserToolset20260801: (_) => null,
-                betaToolComputerUse20241022: (_) => null,
-                betaMemoryTool20250818: (_) => null,
-                betaToolComputerUse20250124: (_) => null,
-                betaToolTextEditor20241022: (_) => null,
-                betaToolComputerUse20251124: (_) => null,
-                betaComputerToolset20260801: (_) => null,
-                betaToolTextEditor20250124: (_) => null,
-                betaToolTextEditor20250429: (_) => null,
-                betaToolTextEditor20250728: (_) => null,
-                betaWebSearchTool20250305: (_) => null,
-                betaWebFetchTool20250910: (x) => x.Citations,
-                betaWebSearchTool20260209: (_) => null,
-                betaWebFetchTool20260209: (x) => x.Citations,
-                betaWebFetchTool20260309: (x) => x.Citations,
-                betaWebSearchTool20260318: (_) => null,
-                betaWebFetchTool20260318: (x) => x.Citations,
-                betaAdvisorTool20260301: (_) => null,
-                betaToolSearchToolBm25_20251119: (_) => null,
-                betaToolSearchToolRegex20251119: (_) => null,
-                betaMcpToolset: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 x => x.Citations,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 x => x.Citations,
+                BetaWebFetchTool20260309 x => x.Citations,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 x => x.Citations,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<BetaCitationsConfigParam>(
+                    this.Json,
+                    "citations"
+                ),
+            };
         }
     }
 
@@ -1222,36 +1279,41 @@ public record class Tool : ModelBase
     {
         get
         {
-            return Match<long?>(
-                beta: (_) => null,
-                betaToolBash20241022: (_) => null,
-                betaToolBash20250124: (_) => null,
-                betaCodeExecutionTool20250522: (_) => null,
-                betaCodeExecutionTool20250825: (_) => null,
-                betaCodeExecutionTool20260120: (_) => null,
-                betaCodeExecutionTool20260521: (_) => null,
-                betaBrowserToolset20260801: (_) => null,
-                betaToolComputerUse20241022: (_) => null,
-                betaMemoryTool20250818: (_) => null,
-                betaToolComputerUse20250124: (_) => null,
-                betaToolTextEditor20241022: (_) => null,
-                betaToolComputerUse20251124: (_) => null,
-                betaComputerToolset20260801: (_) => null,
-                betaToolTextEditor20250124: (_) => null,
-                betaToolTextEditor20250429: (_) => null,
-                betaToolTextEditor20250728: (_) => null,
-                betaWebSearchTool20250305: (_) => null,
-                betaWebFetchTool20250910: (x) => x.MaxContentTokens,
-                betaWebSearchTool20260209: (_) => null,
-                betaWebFetchTool20260209: (x) => x.MaxContentTokens,
-                betaWebFetchTool20260309: (x) => x.MaxContentTokens,
-                betaWebSearchTool20260318: (_) => null,
-                betaWebFetchTool20260318: (x) => x.MaxContentTokens,
-                betaAdvisorTool20260301: (_) => null,
-                betaToolSearchToolBm25_20251119: (_) => null,
-                betaToolSearchToolRegex20251119: (_) => null,
-                betaMcpToolset: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 x => x.MaxContentTokens,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 x => x.MaxContentTokens,
+                BetaWebFetchTool20260309 x => x.MaxContentTokens,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 x => x.MaxContentTokens,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "max_content_tokens"
+                ),
+            };
         }
     }
 
@@ -1259,36 +1321,38 @@ public record class Tool : ModelBase
     {
         get
         {
-            return Match<bool?>(
-                beta: (_) => null,
-                betaToolBash20241022: (_) => null,
-                betaToolBash20250124: (_) => null,
-                betaCodeExecutionTool20250522: (_) => null,
-                betaCodeExecutionTool20250825: (_) => null,
-                betaCodeExecutionTool20260120: (_) => null,
-                betaCodeExecutionTool20260521: (_) => null,
-                betaBrowserToolset20260801: (_) => null,
-                betaToolComputerUse20241022: (_) => null,
-                betaMemoryTool20250818: (_) => null,
-                betaToolComputerUse20250124: (_) => null,
-                betaToolTextEditor20241022: (_) => null,
-                betaToolComputerUse20251124: (_) => null,
-                betaComputerToolset20260801: (_) => null,
-                betaToolTextEditor20250124: (_) => null,
-                betaToolTextEditor20250429: (_) => null,
-                betaToolTextEditor20250728: (_) => null,
-                betaWebSearchTool20250305: (_) => null,
-                betaWebFetchTool20250910: (_) => null,
-                betaWebSearchTool20260209: (_) => null,
-                betaWebFetchTool20260209: (_) => null,
-                betaWebFetchTool20260309: (x) => x.UseCache,
-                betaWebSearchTool20260318: (_) => null,
-                betaWebFetchTool20260318: (x) => x.UseCache,
-                betaAdvisorTool20260301: (_) => null,
-                betaToolSearchToolBm25_20251119: (_) => null,
-                betaToolSearchToolRegex20251119: (_) => null,
-                betaMcpToolset: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 _ => null,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 _ => null,
+                BetaWebFetchTool20260309 x => x.UseCache,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 x => x.UseCache,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(this.Json, "use_cache"),
+            };
         }
     }
 

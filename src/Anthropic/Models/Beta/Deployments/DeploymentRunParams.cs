@@ -47,6 +47,24 @@ public record class DeploymentRunParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public DeploymentRunParams() { }
 
 #pragma warning disable CS8618
@@ -128,7 +146,10 @@ public record class DeploymentRunParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/deployments/{0}/run", this.DeploymentID)
+                + string.Format(
+                    "/v1/deployments/{0}/run",
+                    ParamsBase.EncodePathSegment(this.DeploymentID, nameof(this.DeploymentID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

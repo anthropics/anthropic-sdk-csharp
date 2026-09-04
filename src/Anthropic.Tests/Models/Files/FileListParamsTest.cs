@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using Anthropic.Models.Files;
 
 namespace Anthropic.Tests.Models.Files;
@@ -14,11 +15,13 @@ public class FileListParamsTest : TestBase
             Ids = ["string"],
             Limit = 1,
             Page = "page",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         List<string> expectedIds = ["string"];
         long expectedLimit = 1;
         string expectedPage = "page";
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.NotNull(parameters.Ids);
         Assert.Equal(expectedIds.Count, parameters.Ids.Count);
@@ -28,6 +31,7 @@ public class FileListParamsTest : TestBase
         }
         Assert.Equal(expectedLimit, parameters.Limit);
         Assert.Equal(expectedPage, parameters.Page);
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -37,6 +41,8 @@ public class FileListParamsTest : TestBase
 
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -49,16 +55,23 @@ public class FileListParamsTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             Limit = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new FileListParams { Limit = 1 };
+        var parameters = new FileListParams
+        {
+            Limit = 1,
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
 
         Assert.Null(parameters.Ids);
         Assert.False(parameters.RawQueryData.ContainsKey("ids"));
@@ -72,6 +85,7 @@ public class FileListParamsTest : TestBase
         var parameters = new FileListParams
         {
             Limit = 1,
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Ids = null,
             Page = null,
@@ -104,6 +118,20 @@ public class FileListParamsTest : TestBase
     }
 
     [Fact]
+    public void AddHeadersToRequest_Works()
+    {
+        HttpRequestMessage requestMessage = new();
+        FileListParams parameters = new() { WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy" };
+
+        parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
+        );
+    }
+
+    [Fact]
     public void CopyConstructor_Works()
     {
         var parameters = new FileListParams
@@ -111,6 +139,7 @@ public class FileListParamsTest : TestBase
             Ids = ["string"],
             Limit = 1,
             Page = "page",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         FileListParams copied = new(parameters);

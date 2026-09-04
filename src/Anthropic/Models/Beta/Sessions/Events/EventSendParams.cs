@@ -75,6 +75,24 @@ public record class EventSendParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public EventSendParams() { }
 
 #pragma warning disable CS8618
@@ -166,7 +184,10 @@ public record class EventSendParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/sessions/{0}/events", this.SessionID)
+                + string.Format(
+                    "/v1/sessions/{0}/events",
+                    ParamsBase.EncodePathSegment(this.SessionID, nameof(this.SessionID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

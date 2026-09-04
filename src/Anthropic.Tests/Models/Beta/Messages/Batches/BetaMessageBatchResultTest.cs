@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Messages.Batches;
 using Anthropic.Models.Messages;
@@ -314,5 +315,28 @@ public class BetaMessageBatchResultTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaMessageBatchResult value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "succeeded"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("succeeded");
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        BetaMessageBatchResult emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
     }
 }

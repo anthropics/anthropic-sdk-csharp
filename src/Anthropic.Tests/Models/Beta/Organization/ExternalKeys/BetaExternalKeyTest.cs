@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Organization.ExternalKeys;
 
 namespace Anthropic.Tests.Models.Beta.Organization.ExternalKeys;
@@ -221,6 +222,29 @@ public class AttachmentTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Attachment value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "attached"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("attached");
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        Attachment emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
 public class BetaExternalKeyProviderConfigTest : TestBase
@@ -309,5 +333,48 @@ public class BetaExternalKeyProviderConfigTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaExternalKeyProviderConfig value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "aws",
+                  "key_name": "projects/my-proj/locations/us/keyRings/my-ring/cryptoKeys/my-key"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("aws");
+        string expectedKeyName = "projects/my-proj/locations/us/keyRings/my-ring/cryptoKeys/my-key";
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedKeyName, value.KeyName);
+
+        BetaExternalKeyProviderConfig emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.KeyName);
+
+        BetaExternalKeyProviderConfig mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "key_name": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.KeyName);
     }
 }

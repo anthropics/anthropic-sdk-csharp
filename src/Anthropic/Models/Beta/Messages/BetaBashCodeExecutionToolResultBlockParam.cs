@@ -149,10 +149,12 @@ public record class BetaBashCodeExecutionToolResultBlockParamContent : ModelBase
     {
         get
         {
-            return Match(
-                betaBashCodeExecutionToolResultErrorParam: (x) => x.Type,
-                betaBashCodeExecutionResultBlockParam: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaBashCodeExecutionToolResultErrorParam x => x.Type,
+                BetaBashCodeExecutionResultBlockParam x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

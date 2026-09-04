@@ -524,6 +524,29 @@ public class BetaEnvironmentConfigTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaEnvironmentConfig value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "cloud"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("cloud");
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        BetaEnvironmentConfig emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
 public class BetaEnvironmentScopeTest : TestBase

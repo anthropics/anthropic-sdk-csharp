@@ -19,6 +19,7 @@ public class CertificateListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedTunnelID = "tunnel_id";
@@ -29,6 +30,7 @@ public class CertificateListParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedTunnelID, parameters.TunnelID);
         Assert.Equal(expectedIncludeArchived, parameters.IncludeArchived);
@@ -40,6 +42,7 @@ public class CertificateListParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -55,6 +58,8 @@ public class CertificateListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -69,6 +74,7 @@ public class CertificateListParamsTest : TestBase
             Limit = null,
             Page = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.IncludeArchived);
@@ -79,6 +85,8 @@ public class CertificateListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -112,6 +120,7 @@ public class CertificateListParamsTest : TestBase
         {
             TunnelID = "tunnel_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -119,6 +128,10 @@ public class CertificateListParamsTest : TestBase
         Assert.Equal(
             ["mcp-tunnels-2026-06-22", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -132,6 +145,7 @@ public class CertificateListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         CertificateListParams copied = new(parameters);

@@ -47,6 +47,24 @@ public record class VaultDeleteParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public VaultDeleteParams() { }
 
 #pragma warning disable CS8618
@@ -127,7 +145,11 @@ public record class VaultDeleteParams : ParamsBase
     {
         var queryString = this.QueryString(options);
         return new UriBuilder(
-            options.BaseUrl.ToString().TrimEnd('/') + string.Format("/v1/vaults/{0}", this.VaultID)
+            options.BaseUrl.ToString().TrimEnd('/')
+                + string.Format(
+                    "/v1/vaults/{0}",
+                    ParamsBase.EncodePathSegment(this.VaultID, nameof(this.VaultID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

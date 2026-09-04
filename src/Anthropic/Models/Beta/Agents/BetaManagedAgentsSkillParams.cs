@@ -30,12 +30,28 @@ public record class BetaManagedAgentsSkillParams : ModelBase
 
     public string SkillID
     {
-        get { return Match(anthropic: (x) => x.SkillID, custom: (x) => x.SkillID); }
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAnthropicSkillParams x => x.SkillID,
+                BetaManagedAgentsCustomSkillParams x => x.SkillID,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "skill_id"),
+            };
+        }
     }
 
     public string? Version
     {
-        get { return Match<string?>(anthropic: (x) => x.Version, custom: (x) => x.Version); }
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAnthropicSkillParams x => x.Version,
+                BetaManagedAgentsCustomSkillParams x => x.Version,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "version"),
+            };
+        }
     }
 
     public BetaManagedAgentsSkillParams(

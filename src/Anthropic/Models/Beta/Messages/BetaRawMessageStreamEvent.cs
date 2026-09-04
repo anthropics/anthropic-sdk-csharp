@@ -29,14 +29,16 @@ public record class BetaRawMessageStreamEvent : ModelBase
     {
         get
         {
-            return Match(
-                start: (x) => x.Type,
-                delta: (x) => x.Type,
-                stop: (x) => x.Type,
-                contentBlockStart: (x) => x.Type,
-                contentBlockDelta: (x) => x.Type,
-                contentBlockStop: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaRawMessageStartEvent x => x.Type,
+                BetaRawMessageDeltaEvent x => x.Type,
+                BetaRawMessageStopEvent x => x.Type,
+                BetaRawContentBlockStartEvent x => x.Type,
+                BetaRawContentBlockDeltaEvent x => x.Type,
+                BetaRawContentBlockStopEvent x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -44,14 +46,16 @@ public record class BetaRawMessageStreamEvent : ModelBase
     {
         get
         {
-            return Match<long?>(
-                start: (_) => null,
-                delta: (_) => null,
-                stop: (_) => null,
-                contentBlockStart: (x) => x.Index,
-                contentBlockDelta: (x) => x.Index,
-                contentBlockStop: (x) => x.Index
-            );
+            return this.Value switch
+            {
+                BetaRawMessageStartEvent _ => null,
+                BetaRawMessageDeltaEvent _ => null,
+                BetaRawMessageStopEvent _ => null,
+                BetaRawContentBlockStartEvent x => x.Index,
+                BetaRawContentBlockDeltaEvent x => x.Index,
+                BetaRawContentBlockStopEvent x => x.Index,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(this.Json, "index"),
+            };
         }
     }
 

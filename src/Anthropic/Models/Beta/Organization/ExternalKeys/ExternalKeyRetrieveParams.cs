@@ -100,7 +100,10 @@ public record class ExternalKeyRetrieveParams : ParamsBase
         var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
-                + string.Format("/v1/organizations/external_keys/{0}", this.ExternalKeyID)
+                + string.Format(
+                    "/v1/organizations/external_keys/{0}",
+                    ParamsBase.EncodePathSegment(this.ExternalKeyID, nameof(this.ExternalKeyID))
+                )
         )
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),

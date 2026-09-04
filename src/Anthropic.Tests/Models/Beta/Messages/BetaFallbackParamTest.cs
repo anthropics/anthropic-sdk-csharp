@@ -464,4 +464,50 @@ public class ThinkingTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Thinking value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "enabled",
+                  "block_binding": {
+                    "prefix_mismatch_behavior": "error"
+                  }
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
+        BetaThinkingBlockBinding expectedBlockBinding = new()
+        {
+            PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+        };
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedBlockBinding, value.BlockBinding);
+
+        Thinking emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.BlockBinding);
+
+        Thinking mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "block_binding": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.BlockBinding);
+    }
 }

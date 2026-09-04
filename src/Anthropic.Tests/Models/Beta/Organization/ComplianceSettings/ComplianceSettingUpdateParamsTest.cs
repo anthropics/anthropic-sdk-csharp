@@ -1,6 +1,4 @@
 using System;
-using System.Text.Json;
-using Anthropic.Core;
 using Anthropic.Models.Beta.Organization.ComplianceSettings;
 
 namespace Anthropic.Tests.Models.Beta.Organization.ComplianceSettings;
@@ -15,7 +13,8 @@ public class ComplianceSettingUpdateParamsTest : TestBase
             State = new BetaComplianceSettingsStateEnabledParam(),
         };
 
-        State expectedState = new BetaComplianceSettingsStateEnabledParam();
+        BetaComplianceSettingsStateParam expectedState =
+            new BetaComplianceSettingsStateEnabledParam();
 
         Assert.Equal(expectedState, parameters.State);
     }
@@ -49,42 +48,5 @@ public class ComplianceSettingUpdateParamsTest : TestBase
         ComplianceSettingUpdateParams copied = new(parameters);
 
         Assert.Equal(parameters, copied);
-    }
-}
-
-public class StateTest : TestBase
-{
-    [Fact]
-    public void BetaComplianceSettingsStateEnabledParamValidationWorks()
-    {
-        State value = new BetaComplianceSettingsStateEnabledParam();
-        value.Validate();
-    }
-
-    [Fact]
-    public void BetaComplianceSettingsStateDisabledParamValidationWorks()
-    {
-        State value = new BetaComplianceSettingsStateDisabledParam();
-        value.Validate();
-    }
-
-    [Fact]
-    public void BetaComplianceSettingsStateEnabledParamSerializationRoundtripWorks()
-    {
-        State value = new BetaComplianceSettingsStateEnabledParam();
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<State>(element, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void BetaComplianceSettingsStateDisabledParamSerializationRoundtripWorks()
-    {
-        State value = new BetaComplianceSettingsStateDisabledParam();
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<State>(element, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

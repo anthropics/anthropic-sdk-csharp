@@ -133,25 +133,27 @@ public record class ContentBlock : ModelBase
     {
         get
         {
-            return Match(
-                betaText: (x) => x.Type,
-                betaThinking: (x) => x.Type,
-                betaRedactedThinking: (x) => x.Type,
-                betaToolUse: (x) => x.Type,
-                betaServerToolUse: (x) => x.Type,
-                betaWebSearchToolResult: (x) => x.Type,
-                betaWebFetchToolResult: (x) => x.Type,
-                betaAdvisorToolResult: (x) => x.Type,
-                betaCodeExecutionToolResult: (x) => x.Type,
-                betaBashCodeExecutionToolResult: (x) => x.Type,
-                betaTextEditorCodeExecutionToolResult: (x) => x.Type,
-                betaToolSearchToolResult: (x) => x.Type,
-                betaMcpToolUse: (x) => x.Type,
-                betaMcpToolResult: (x) => x.Type,
-                betaContainerUpload: (x) => x.Type,
-                betaCompaction: (x) => x.Type,
-                betaFallback: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaTextBlock x => x.Type,
+                BetaThinkingBlock x => x.Type,
+                BetaRedactedThinkingBlock x => x.Type,
+                BetaToolUseBlock x => x.Type,
+                BetaServerToolUseBlock x => x.Type,
+                BetaWebSearchToolResultBlock x => x.Type,
+                BetaWebFetchToolResultBlock x => x.Type,
+                BetaAdvisorToolResultBlock x => x.Type,
+                BetaCodeExecutionToolResultBlock x => x.Type,
+                BetaBashCodeExecutionToolResultBlock x => x.Type,
+                BetaTextEditorCodeExecutionToolResultBlock x => x.Type,
+                BetaToolSearchToolResultBlock x => x.Type,
+                BetaMcpToolUseBlock x => x.Type,
+                BetaMcpToolResultBlock x => x.Type,
+                BetaContainerUploadBlock x => x.Type,
+                BetaCompactionBlock x => x.Type,
+                BetaFallbackBlock x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -159,25 +161,27 @@ public record class ContentBlock : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaText: (_) => null,
-                betaThinking: (_) => null,
-                betaRedactedThinking: (_) => null,
-                betaToolUse: (x) => x.ID,
-                betaServerToolUse: (x) => x.ID,
-                betaWebSearchToolResult: (_) => null,
-                betaWebFetchToolResult: (_) => null,
-                betaAdvisorToolResult: (_) => null,
-                betaCodeExecutionToolResult: (_) => null,
-                betaBashCodeExecutionToolResult: (_) => null,
-                betaTextEditorCodeExecutionToolResult: (_) => null,
-                betaToolSearchToolResult: (_) => null,
-                betaMcpToolUse: (x) => x.ID,
-                betaMcpToolResult: (_) => null,
-                betaContainerUpload: (_) => null,
-                betaCompaction: (_) => null,
-                betaFallback: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaTextBlock _ => null,
+                BetaThinkingBlock _ => null,
+                BetaRedactedThinkingBlock _ => null,
+                BetaToolUseBlock x => x.ID,
+                BetaServerToolUseBlock x => x.ID,
+                BetaWebSearchToolResultBlock _ => null,
+                BetaWebFetchToolResultBlock _ => null,
+                BetaAdvisorToolResultBlock _ => null,
+                BetaCodeExecutionToolResultBlock _ => null,
+                BetaBashCodeExecutionToolResultBlock _ => null,
+                BetaTextEditorCodeExecutionToolResultBlock _ => null,
+                BetaToolSearchToolResultBlock _ => null,
+                BetaMcpToolUseBlock x => x.ID,
+                BetaMcpToolResultBlock _ => null,
+                BetaContainerUploadBlock _ => null,
+                BetaCompactionBlock _ => null,
+                BetaFallbackBlock _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "id"),
+            };
         }
     }
 
@@ -185,25 +189,30 @@ public record class ContentBlock : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaText: (_) => null,
-                betaThinking: (_) => null,
-                betaRedactedThinking: (_) => null,
-                betaToolUse: (_) => null,
-                betaServerToolUse: (_) => null,
-                betaWebSearchToolResult: (x) => x.ToolUseID,
-                betaWebFetchToolResult: (x) => x.ToolUseID,
-                betaAdvisorToolResult: (x) => x.ToolUseID,
-                betaCodeExecutionToolResult: (x) => x.ToolUseID,
-                betaBashCodeExecutionToolResult: (x) => x.ToolUseID,
-                betaTextEditorCodeExecutionToolResult: (x) => x.ToolUseID,
-                betaToolSearchToolResult: (x) => x.ToolUseID,
-                betaMcpToolUse: (_) => null,
-                betaMcpToolResult: (x) => x.ToolUseID,
-                betaContainerUpload: (_) => null,
-                betaCompaction: (_) => null,
-                betaFallback: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaTextBlock _ => null,
+                BetaThinkingBlock _ => null,
+                BetaRedactedThinkingBlock _ => null,
+                BetaToolUseBlock _ => null,
+                BetaServerToolUseBlock _ => null,
+                BetaWebSearchToolResultBlock x => x.ToolUseID,
+                BetaWebFetchToolResultBlock x => x.ToolUseID,
+                BetaAdvisorToolResultBlock x => x.ToolUseID,
+                BetaCodeExecutionToolResultBlock x => x.ToolUseID,
+                BetaBashCodeExecutionToolResultBlock x => x.ToolUseID,
+                BetaTextEditorCodeExecutionToolResultBlock x => x.ToolUseID,
+                BetaToolSearchToolResultBlock x => x.ToolUseID,
+                BetaMcpToolUseBlock _ => null,
+                BetaMcpToolResultBlock x => x.ToolUseID,
+                BetaContainerUploadBlock _ => null,
+                BetaCompactionBlock _ => null,
+                BetaFallbackBlock _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "tool_use_id"
+                ),
+            };
         }
     }
 

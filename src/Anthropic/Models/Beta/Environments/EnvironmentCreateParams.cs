@@ -133,6 +133,24 @@ public record class EnvironmentCreateParams : ParamsBase
         }
     }
 
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
     public EnvironmentCreateParams() { }
 
 #pragma warning disable CS8618
@@ -270,10 +288,12 @@ public record class Config : ModelBase
     {
         get
         {
-            return Match(
-                betaCloudConfigParams: (x) => x.Type,
-                betaSelfHostedConfigParams: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaCloudConfigParams x => x.Type,
+                BetaSelfHostedConfigParams x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

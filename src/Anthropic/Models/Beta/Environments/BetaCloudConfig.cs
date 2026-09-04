@@ -130,7 +130,12 @@ public record class Networking : ModelBase
     {
         get
         {
-            return Match(betaUnrestrictedNetwork: (x) => x.Type, betaLimitedNetwork: (x) => x.Type);
+            return this.Value switch
+            {
+                BetaUnrestrictedNetwork x => x.Type,
+                BetaLimitedNetwork x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

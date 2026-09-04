@@ -144,11 +144,13 @@ public record class BetaAdvisorToolResultBlockParamContent : ModelBase
     {
         get
         {
-            return Match(
-                betaAdvisorToolResultErrorParam: (x) => x.Type,
-                betaAdvisorResultBlockParam: (x) => x.Type,
-                betaAdvisorRedactedResultBlockParam: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaAdvisorToolResultErrorParam x => x.Type,
+                BetaAdvisorResultBlockParam x => x.Type,
+                BetaAdvisorRedactedResultBlockParam x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -156,11 +158,16 @@ public record class BetaAdvisorToolResultBlockParamContent : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaAdvisorToolResultErrorParam: (_) => null,
-                betaAdvisorResultBlockParam: (x) => x.StopReason,
-                betaAdvisorRedactedResultBlockParam: (x) => x.StopReason
-            );
+            return this.Value switch
+            {
+                BetaAdvisorToolResultErrorParam _ => null,
+                BetaAdvisorResultBlockParam x => x.StopReason,
+                BetaAdvisorRedactedResultBlockParam x => x.StopReason,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "stop_reason"
+                ),
+            };
         }
     }
 

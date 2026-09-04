@@ -84,6 +84,7 @@ public class MessageCountTokensParamsTest : TestBase
                 },
             ],
             UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         List<Messages::MessageParam> expectedMessages =
@@ -162,6 +163,7 @@ public class MessageCountTokensParamsTest : TestBase
             },
         ];
         string expectedUserProfileID = "anthropic-user-profile-id";
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedMessages.Count, parameters.Messages.Count);
         for (int i = 0; i < expectedMessages.Count; i++)
@@ -181,6 +183,7 @@ public class MessageCountTokensParamsTest : TestBase
             Assert.Equal(expectedTools[i], parameters.Tools[i]);
         }
         Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -205,6 +208,8 @@ public class MessageCountTokensParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("tools"));
         Assert.Null(parameters.UserProfileID);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -223,6 +228,7 @@ public class MessageCountTokensParamsTest : TestBase
             ToolChoice = null,
             Tools = null,
             UserProfileID = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.OutputConfig);
@@ -237,6 +243,8 @@ public class MessageCountTokensParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("tools"));
         Assert.Null(parameters.UserProfileID);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -313,6 +321,7 @@ public class MessageCountTokensParamsTest : TestBase
                 },
             ],
             UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         Assert.Null(parameters.CacheControl);
@@ -393,6 +402,7 @@ public class MessageCountTokensParamsTest : TestBase
                 },
             ],
             UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             CacheControl = null,
         };
@@ -426,6 +436,7 @@ public class MessageCountTokensParamsTest : TestBase
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
             Model = Messages::Model.ClaudeOpus5,
             UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -433,6 +444,10 @@ public class MessageCountTokensParamsTest : TestBase
         Assert.Equal(
             ["anthropic-user-profile-id"],
             requestMessage.Headers.GetValues("anthropic-user-profile-id")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -511,6 +526,7 @@ public class MessageCountTokensParamsTest : TestBase
                 },
             ],
             UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         Messages::MessageCountTokensParams copied = new(parameters);

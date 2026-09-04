@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -108,5 +109,28 @@ public class StatusTest : TestBase
         var deserialized = JsonSerializer.Deserialize<Status>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Status value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "redeemed"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("redeemed");
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        Status emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
     }
 }
