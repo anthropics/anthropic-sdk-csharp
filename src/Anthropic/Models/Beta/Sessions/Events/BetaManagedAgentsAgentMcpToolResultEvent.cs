@@ -235,12 +235,14 @@ public record class Content : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaManagedAgentsTextBlock: (_) => null,
-                betaManagedAgentsImageBlock: (_) => null,
-                betaManagedAgentsDocumentBlock: (x) => x.Title,
-                betaManagedAgentsSearchResultBlock: (x) => x.Title
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsTextBlock _ => null,
+                BetaManagedAgentsImageBlock _ => null,
+                BetaManagedAgentsDocumentBlock x => x.Title,
+                BetaManagedAgentsSearchResultBlock x => x.Title,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "title"),
+            };
         }
     }
 

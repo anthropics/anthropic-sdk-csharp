@@ -130,10 +130,12 @@ public record class Content : ModelBase
     {
         get
         {
-            return Match(
-                bashCodeExecutionToolResultError: (x) => x.Type,
-                bashCodeExecutionResultBlock: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BashCodeExecutionToolResultError x => x.Type,
+                BashCodeExecutionResultBlock x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

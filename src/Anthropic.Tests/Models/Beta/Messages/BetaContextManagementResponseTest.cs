@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -195,5 +196,46 @@ public class AppliedEditTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        AppliedEdit value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "cleared_input_tokens": 0,
+                  "type": "clear_tool_uses_20250919"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        long expectedClearedInputTokens = 0;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
+
+        Assert.Equal(expectedClearedInputTokens, value.ClearedInputTokens);
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        AppliedEdit emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.ClearedInputTokens);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+
+        AppliedEdit mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "cleared_input_tokens": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.ClearedInputTokens);
     }
 }

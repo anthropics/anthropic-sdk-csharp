@@ -130,17 +130,44 @@ public record class Source : ModelBase
 
     public string Data
     {
-        get { return Match(base64Pdf: (x) => x.Data, plainText: (x) => x.Data); }
+        get
+        {
+            return this.Value switch
+            {
+                Base64PdfSource x => x.Data,
+                PlainTextSource x => x.Data,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "data"),
+            };
+        }
     }
 
     public JsonElement MediaType
     {
-        get { return Match(base64Pdf: (x) => x.MediaType, plainText: (x) => x.MediaType); }
+        get
+        {
+            return this.Value switch
+            {
+                Base64PdfSource x => x.MediaType,
+                PlainTextSource x => x.MediaType,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(
+                    this.Json,
+                    "media_type"
+                ),
+            };
+        }
     }
 
     public JsonElement Type
     {
-        get { return Match(base64Pdf: (x) => x.Type, plainText: (x) => x.Type); }
+        get
+        {
+            return this.Value switch
+            {
+                Base64PdfSource x => x.Type,
+                PlainTextSource x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
     }
 
     public Source(Base64PdfSource value, JsonElement? element = null)

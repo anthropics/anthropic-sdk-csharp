@@ -165,6 +165,30 @@ public class KeepTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Keep value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "thinking_turns"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("thinking_turns");
+
+        Assert.NotNull(value.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type.Value));
+
+        Keep emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Null(emptyValue.Type);
+    }
 }
 
 public class AllTest : TestBase

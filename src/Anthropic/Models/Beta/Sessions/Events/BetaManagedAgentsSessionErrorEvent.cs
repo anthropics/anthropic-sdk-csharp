@@ -149,16 +149,18 @@ public record class Error : ModelBase
     {
         get
         {
-            return Match(
-                betaManagedAgentsUnknown: (x) => x.Message,
-                betaManagedAgentsModelOverloaded: (x) => x.Message,
-                betaManagedAgentsModelRateLimited: (x) => x.Message,
-                betaManagedAgentsModelRequestFailed: (x) => x.Message,
-                betaManagedAgentsMcpConnectionFailed: (x) => x.Message,
-                betaManagedAgentsMcpAuthenticationFailed: (x) => x.Message,
-                betaManagedAgentsBilling: (x) => x.Message,
-                betaManagedAgentsCredentialHostUnreachable: (x) => x.Message
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsUnknownError x => x.Message,
+                BetaManagedAgentsModelOverloadedError x => x.Message,
+                BetaManagedAgentsModelRateLimitedError x => x.Message,
+                BetaManagedAgentsModelRequestFailedError x => x.Message,
+                BetaManagedAgentsMcpConnectionFailedError x => x.Message,
+                BetaManagedAgentsMcpAuthenticationFailedError x => x.Message,
+                BetaManagedAgentsBillingError x => x.Message,
+                BetaManagedAgentsCredentialHostUnreachableError x => x.Message,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "message"),
+            };
         }
     }
 
@@ -166,16 +168,21 @@ public record class Error : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaManagedAgentsUnknown: (_) => null,
-                betaManagedAgentsModelOverloaded: (_) => null,
-                betaManagedAgentsModelRateLimited: (_) => null,
-                betaManagedAgentsModelRequestFailed: (_) => null,
-                betaManagedAgentsMcpConnectionFailed: (x) => x.McpServerName,
-                betaManagedAgentsMcpAuthenticationFailed: (x) => x.McpServerName,
-                betaManagedAgentsBilling: (_) => null,
-                betaManagedAgentsCredentialHostUnreachable: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsUnknownError _ => null,
+                BetaManagedAgentsModelOverloadedError _ => null,
+                BetaManagedAgentsModelRateLimitedError _ => null,
+                BetaManagedAgentsModelRequestFailedError _ => null,
+                BetaManagedAgentsMcpConnectionFailedError x => x.McpServerName,
+                BetaManagedAgentsMcpAuthenticationFailedError x => x.McpServerName,
+                BetaManagedAgentsBillingError _ => null,
+                BetaManagedAgentsCredentialHostUnreachableError _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "mcp_server_name"
+                ),
+            };
         }
     }
 

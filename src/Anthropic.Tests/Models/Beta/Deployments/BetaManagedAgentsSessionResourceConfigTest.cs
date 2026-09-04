@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Deployments;
 using Sessions = Anthropic.Models.Beta.Sessions;
 
@@ -111,5 +112,44 @@ public class BetaManagedAgentsSessionResourceConfigTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsSessionResourceConfig value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "mount_path": "mount_path"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedMountPath = "mount_path";
+
+        Assert.Equal(expectedMountPath, value.MountPath);
+
+        BetaManagedAgentsSessionResourceConfig emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Null(emptyValue.MountPath);
+
+        BetaManagedAgentsSessionResourceConfig mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "mount_path": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.MountPath);
     }
 }

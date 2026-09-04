@@ -163,13 +163,15 @@ public record class BetaRequestDocumentBlockSource : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaBase64Pdf: (x) => x.Data,
-                betaPlainText: (x) => x.Data,
-                betaContentBlock: (_) => null,
-                betaUrlPdf: (_) => null,
-                betaFileDocument: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaBase64PdfSource x => x.Data,
+                BetaPlainTextSource x => x.Data,
+                BetaContentBlockSource _ => null,
+                BetaUrlPdfSource _ => null,
+                BetaFileDocumentSource _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "data"),
+            };
         }
     }
 
@@ -177,13 +179,18 @@ public record class BetaRequestDocumentBlockSource : ModelBase
     {
         get
         {
-            return Match<JsonElement?>(
-                betaBase64Pdf: (x) => x.MediaType,
-                betaPlainText: (x) => x.MediaType,
-                betaContentBlock: (_) => null,
-                betaUrlPdf: (_) => null,
-                betaFileDocument: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaBase64PdfSource x => x.MediaType,
+                BetaPlainTextSource x => x.MediaType,
+                BetaContentBlockSource _ => null,
+                BetaUrlPdfSource _ => null,
+                BetaFileDocumentSource _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(
+                    this.Json,
+                    "media_type"
+                ),
+            };
         }
     }
 
@@ -191,13 +198,15 @@ public record class BetaRequestDocumentBlockSource : ModelBase
     {
         get
         {
-            return Match(
-                betaBase64Pdf: (x) => x.Type,
-                betaPlainText: (x) => x.Type,
-                betaContentBlock: (x) => x.Type,
-                betaUrlPdf: (x) => x.Type,
-                betaFileDocument: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaBase64PdfSource x => x.Type,
+                BetaPlainTextSource x => x.Type,
+                BetaContentBlockSource x => x.Type,
+                BetaUrlPdfSource x => x.Type,
+                BetaFileDocumentSource x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

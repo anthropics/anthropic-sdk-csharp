@@ -119,15 +119,17 @@ public record class Data : ModelBase
     {
         get
         {
-            return Match(
-                betaManagedAgentsUserMessageEvent: (x) => x.ID,
-                betaManagedAgentsUserInterruptEvent: (x) => x.ID,
-                betaManagedAgentsUserToolConfirmationEvent: (x) => x.ID,
-                betaManagedAgentsUserCustomToolResultEvent: (x) => x.ID,
-                betaManagedAgentsUserDefineOutcomeEvent: (x) => x.ID,
-                betaManagedAgentsUserToolResultEvent: (x) => x.ID,
-                betaManagedAgentsSystemMessageEvent: (x) => x.ID
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEvent x => x.ID,
+                BetaManagedAgentsUserInterruptEvent x => x.ID,
+                BetaManagedAgentsUserToolConfirmationEvent x => x.ID,
+                BetaManagedAgentsUserCustomToolResultEvent x => x.ID,
+                BetaManagedAgentsUserDefineOutcomeEvent x => x.ID,
+                BetaManagedAgentsUserToolResultEvent x => x.ID,
+                BetaManagedAgentsSystemMessageEvent x => x.ID,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "id"),
+            };
         }
     }
 
@@ -135,15 +137,20 @@ public record class Data : ModelBase
     {
         get
         {
-            return Match<System::DateTimeOffset?>(
-                betaManagedAgentsUserMessageEvent: (x) => x.ProcessedAt,
-                betaManagedAgentsUserInterruptEvent: (x) => x.ProcessedAt,
-                betaManagedAgentsUserToolConfirmationEvent: (x) => x.ProcessedAt,
-                betaManagedAgentsUserCustomToolResultEvent: (x) => x.ProcessedAt,
-                betaManagedAgentsUserDefineOutcomeEvent: (x) => x.ProcessedAt,
-                betaManagedAgentsUserToolResultEvent: (x) => x.ProcessedAt,
-                betaManagedAgentsSystemMessageEvent: (x) => x.ProcessedAt
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEvent x => x.ProcessedAt,
+                BetaManagedAgentsUserInterruptEvent x => x.ProcessedAt,
+                BetaManagedAgentsUserToolConfirmationEvent x => x.ProcessedAt,
+                BetaManagedAgentsUserCustomToolResultEvent x => x.ProcessedAt,
+                BetaManagedAgentsUserDefineOutcomeEvent x => x.ProcessedAt,
+                BetaManagedAgentsUserToolResultEvent x => x.ProcessedAt,
+                BetaManagedAgentsSystemMessageEvent x => x.ProcessedAt,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<System::DateTimeOffset>(
+                    this.Json,
+                    "processed_at"
+                ),
+            };
         }
     }
 
@@ -151,15 +158,20 @@ public record class Data : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaManagedAgentsUserMessageEvent: (_) => null,
-                betaManagedAgentsUserInterruptEvent: (x) => x.SessionThreadID,
-                betaManagedAgentsUserToolConfirmationEvent: (x) => x.SessionThreadID,
-                betaManagedAgentsUserCustomToolResultEvent: (x) => x.SessionThreadID,
-                betaManagedAgentsUserDefineOutcomeEvent: (_) => null,
-                betaManagedAgentsUserToolResultEvent: (x) => x.SessionThreadID,
-                betaManagedAgentsSystemMessageEvent: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEvent _ => null,
+                BetaManagedAgentsUserInterruptEvent x => x.SessionThreadID,
+                BetaManagedAgentsUserToolConfirmationEvent x => x.SessionThreadID,
+                BetaManagedAgentsUserCustomToolResultEvent x => x.SessionThreadID,
+                BetaManagedAgentsUserDefineOutcomeEvent _ => null,
+                BetaManagedAgentsUserToolResultEvent x => x.SessionThreadID,
+                BetaManagedAgentsSystemMessageEvent _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "session_thread_id"
+                ),
+            };
         }
     }
 
@@ -167,15 +179,20 @@ public record class Data : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaManagedAgentsUserMessageEvent: (_) => null,
-                betaManagedAgentsUserInterruptEvent: (_) => null,
-                betaManagedAgentsUserToolConfirmationEvent: (x) => x.ToolUseID,
-                betaManagedAgentsUserCustomToolResultEvent: (_) => null,
-                betaManagedAgentsUserDefineOutcomeEvent: (_) => null,
-                betaManagedAgentsUserToolResultEvent: (x) => x.ToolUseID,
-                betaManagedAgentsSystemMessageEvent: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEvent _ => null,
+                BetaManagedAgentsUserInterruptEvent _ => null,
+                BetaManagedAgentsUserToolConfirmationEvent x => x.ToolUseID,
+                BetaManagedAgentsUserCustomToolResultEvent _ => null,
+                BetaManagedAgentsUserDefineOutcomeEvent _ => null,
+                BetaManagedAgentsUserToolResultEvent x => x.ToolUseID,
+                BetaManagedAgentsSystemMessageEvent _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "tool_use_id"
+                ),
+            };
         }
     }
 
@@ -183,15 +200,17 @@ public record class Data : ModelBase
     {
         get
         {
-            return Match<bool?>(
-                betaManagedAgentsUserMessageEvent: (_) => null,
-                betaManagedAgentsUserInterruptEvent: (_) => null,
-                betaManagedAgentsUserToolConfirmationEvent: (_) => null,
-                betaManagedAgentsUserCustomToolResultEvent: (x) => x.IsError,
-                betaManagedAgentsUserDefineOutcomeEvent: (_) => null,
-                betaManagedAgentsUserToolResultEvent: (x) => x.IsError,
-                betaManagedAgentsSystemMessageEvent: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEvent _ => null,
+                BetaManagedAgentsUserInterruptEvent _ => null,
+                BetaManagedAgentsUserToolConfirmationEvent _ => null,
+                BetaManagedAgentsUserCustomToolResultEvent x => x.IsError,
+                BetaManagedAgentsUserDefineOutcomeEvent _ => null,
+                BetaManagedAgentsUserToolResultEvent x => x.IsError,
+                BetaManagedAgentsSystemMessageEvent _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(this.Json, "is_error"),
+            };
         }
     }
 

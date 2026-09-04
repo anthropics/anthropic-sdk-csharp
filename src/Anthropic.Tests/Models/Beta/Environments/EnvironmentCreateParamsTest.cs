@@ -358,6 +358,29 @@ public class ConfigTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Config value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "cloud"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("cloud");
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        Config emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
 public class ScopeTest : TestBase

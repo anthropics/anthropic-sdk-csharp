@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Environments;
 
 namespace Anthropic.Tests.Models.Beta.Environments;
@@ -242,5 +243,28 @@ public class NetworkingTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Networking value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "unrestricted"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("unrestricted");
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        Networking emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
     }
 }

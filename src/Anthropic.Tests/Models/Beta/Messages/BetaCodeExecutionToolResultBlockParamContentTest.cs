@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -96,5 +97,58 @@ public class BetaCodeExecutionToolResultBlockParamContentTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaCodeExecutionToolResultBlockParamContent value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "code_execution_tool_result_error",
+                  "return_code": 0,
+                  "stderr": "stderr"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "code_execution_tool_result_error"
+        );
+        long expectedReturnCode = 0;
+        string expectedStderr = "stderr";
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedReturnCode, value.ReturnCode);
+        Assert.Equal(expectedStderr, value.Stderr);
+
+        BetaCodeExecutionToolResultBlockParamContent emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.ReturnCode);
+        Assert.Null(emptyValue.Stderr);
+
+        BetaCodeExecutionToolResultBlockParamContent mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "return_code": [
+                    "invalid"
+                  ],
+                  "stderr": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.ReturnCode);
+        Assert.Null(mismatchedValue.Stderr);
     }
 }

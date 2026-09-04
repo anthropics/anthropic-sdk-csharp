@@ -132,17 +132,44 @@ public record class Source : ModelBase
 
     public string Data
     {
-        get { return Match(betaBase64Pdf: (x) => x.Data, betaPlainText: (x) => x.Data); }
+        get
+        {
+            return this.Value switch
+            {
+                BetaBase64PdfSource x => x.Data,
+                BetaPlainTextSource x => x.Data,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "data"),
+            };
+        }
     }
 
     public JsonElement MediaType
     {
-        get { return Match(betaBase64Pdf: (x) => x.MediaType, betaPlainText: (x) => x.MediaType); }
+        get
+        {
+            return this.Value switch
+            {
+                BetaBase64PdfSource x => x.MediaType,
+                BetaPlainTextSource x => x.MediaType,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(
+                    this.Json,
+                    "media_type"
+                ),
+            };
+        }
     }
 
     public JsonElement Type
     {
-        get { return Match(betaBase64Pdf: (x) => x.Type, betaPlainText: (x) => x.Type); }
+        get
+        {
+            return this.Value switch
+            {
+                BetaBase64PdfSource x => x.Type,
+                BetaPlainTextSource x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
     }
 
     public Source(BetaBase64PdfSource value, JsonElement? element = null)

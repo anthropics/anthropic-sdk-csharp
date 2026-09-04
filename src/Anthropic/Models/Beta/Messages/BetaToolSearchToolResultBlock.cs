@@ -127,10 +127,12 @@ public record class BetaToolSearchToolResultBlockContent : ModelBase
     {
         get
         {
-            return Match(
-                betaToolSearchToolResultError: (x) => x.Type,
-                betaToolSearchToolSearchResultBlock: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaToolSearchToolResultError x => x.Type,
+                BetaToolSearchToolSearchResultBlock x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

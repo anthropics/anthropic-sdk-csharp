@@ -106,14 +106,19 @@ public record class CacheMissReason : ModelBase
     {
         get
         {
-            return Match<long?>(
-                betaCacheMissModelChanged: (x) => x.CacheMissedInputTokens,
-                betaCacheMissSystemChanged: (x) => x.CacheMissedInputTokens,
-                betaCacheMissToolsChanged: (x) => x.CacheMissedInputTokens,
-                betaCacheMissMessagesChanged: (x) => x.CacheMissedInputTokens,
-                betaCacheMissPreviousMessageNotFound: (_) => null,
-                betaCacheMissUnavailable: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaCacheMissModelChanged x => x.CacheMissedInputTokens,
+                BetaCacheMissSystemChanged x => x.CacheMissedInputTokens,
+                BetaCacheMissToolsChanged x => x.CacheMissedInputTokens,
+                BetaCacheMissMessagesChanged x => x.CacheMissedInputTokens,
+                BetaCacheMissPreviousMessageNotFound _ => null,
+                BetaCacheMissUnavailable _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "cache_missed_input_tokens"
+                ),
+            };
         }
     }
 
@@ -121,14 +126,16 @@ public record class CacheMissReason : ModelBase
     {
         get
         {
-            return Match(
-                betaCacheMissModelChanged: (x) => x.Type,
-                betaCacheMissSystemChanged: (x) => x.Type,
-                betaCacheMissToolsChanged: (x) => x.Type,
-                betaCacheMissMessagesChanged: (x) => x.Type,
-                betaCacheMissPreviousMessageNotFound: (x) => x.Type,
-                betaCacheMissUnavailable: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaCacheMissModelChanged x => x.Type,
+                BetaCacheMissSystemChanged x => x.Type,
+                BetaCacheMissToolsChanged x => x.Type,
+                BetaCacheMissMessagesChanged x => x.Type,
+                BetaCacheMissPreviousMessageNotFound x => x.Type,
+                BetaCacheMissUnavailable x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

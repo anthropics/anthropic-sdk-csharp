@@ -146,12 +146,14 @@ public record class Source : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaManagedAgentsBase64Document: (x) => x.Data,
-                betaManagedAgentsPlainTextDocument: (x) => x.Data,
-                betaManagedAgentsUrlDocument: (_) => null,
-                betaManagedAgentsFileDocument: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsBase64DocumentSource x => x.Data,
+                BetaManagedAgentsPlainTextDocumentSource x => x.Data,
+                BetaManagedAgentsUrlDocumentSource _ => null,
+                BetaManagedAgentsFileDocumentSource _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "data"),
+            };
         }
     }
 

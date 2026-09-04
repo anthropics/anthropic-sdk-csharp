@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 
 namespace Anthropic.Tests.Models.Beta;
@@ -184,5 +185,46 @@ public class BetaErrorTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaError value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "message": "message",
+                  "type": "invalid_request_error"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedMessage = "message";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("invalid_request_error");
+
+        Assert.Equal(expectedMessage, value.Message);
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        BetaError emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Message);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+
+        BetaError mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "message": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.Message);
     }
 }

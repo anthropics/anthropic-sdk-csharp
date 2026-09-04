@@ -175,11 +175,16 @@ public record class TokenEndpointAuth : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaManagedAgentsTokenEndpointAuthNoneParam: (_) => null,
-                betaManagedAgentsTokenEndpointAuthBasicParam: (x) => x.ClientSecret,
-                betaManagedAgentsTokenEndpointAuthPostParam: (x) => x.ClientSecret
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsTokenEndpointAuthNoneParam _ => null,
+                BetaManagedAgentsTokenEndpointAuthBasicParam x => x.ClientSecret,
+                BetaManagedAgentsTokenEndpointAuthPostParam x => x.ClientSecret,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "client_secret"
+                ),
+            };
         }
     }
 

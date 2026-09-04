@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -331,6 +332,31 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaWebFetchToolResultBlockParamContent value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "web_fetch_tool_result_error"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_tool_result_error");
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        BetaWebFetchToolResultBlockParamContent emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
 public class BetaWebFetchToolResultBlockParamCallerTest : TestBase
@@ -401,5 +427,48 @@ public class BetaWebFetchToolResultBlockParamCallerTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaWebFetchToolResultBlockParamCaller value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "direct",
+                  "tool_id": "srvtoolu_SQfNkl1n_JR_"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("direct");
+        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedToolID, value.ToolID);
+
+        BetaWebFetchToolResultBlockParamCaller emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.ToolID);
+
+        BetaWebFetchToolResultBlockParamCaller mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "tool_id": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.ToolID);
     }
 }

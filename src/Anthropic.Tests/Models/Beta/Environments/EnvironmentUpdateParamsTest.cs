@@ -384,6 +384,31 @@ public class EnvironmentUpdateParamsConfigTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        EnvironmentUpdateParamsConfig value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "cloud"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("cloud");
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        EnvironmentUpdateParamsConfig emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
 public class EnvironmentUpdateParamsScopeTest : TestBase

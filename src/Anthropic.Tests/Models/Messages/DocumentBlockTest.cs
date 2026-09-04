@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -137,5 +138,50 @@ public class SourceTest : TestBase
         var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Source value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "data": "U3RhaW5sZXNzIHJvY2tz",
+                  "media_type": "application/pdf",
+                  "type": "base64"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedData = "U3RhaW5sZXNzIHJvY2tz";
+        JsonElement expectedMediaType = JsonSerializer.SerializeToElement("application/pdf");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("base64");
+
+        Assert.Equal(expectedData, value.Data);
+        Assert.True(JsonElement.DeepEquals(expectedMediaType, value.MediaType));
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        Source emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Data);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.MediaType);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+
+        Source mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "data": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.Data);
     }
 }

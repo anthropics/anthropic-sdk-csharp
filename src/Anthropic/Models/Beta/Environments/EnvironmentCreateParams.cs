@@ -288,10 +288,12 @@ public record class Config : ModelBase
     {
         get
         {
-            return Match(
-                betaCloudConfigParams: (x) => x.Type,
-                betaSelfHostedConfigParams: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaCloudConfigParams x => x.Type,
+                BetaSelfHostedConfigParams x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

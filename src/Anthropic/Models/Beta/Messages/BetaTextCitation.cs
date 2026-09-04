@@ -29,13 +29,15 @@ public record class BetaTextCitation : ModelBase
     {
         get
         {
-            return Match(
-                citationCharLocation: (x) => x.CitedText,
-                citationPageLocation: (x) => x.CitedText,
-                citationContentBlockLocation: (x) => x.CitedText,
-                citationsWebSearchResultLocation: (x) => x.CitedText,
-                citationSearchResultLocation: (x) => x.CitedText
-            );
+            return this.Value switch
+            {
+                BetaCitationCharLocation x => x.CitedText,
+                BetaCitationPageLocation x => x.CitedText,
+                BetaCitationContentBlockLocation x => x.CitedText,
+                BetaCitationsWebSearchResultLocation x => x.CitedText,
+                BetaCitationSearchResultLocation x => x.CitedText,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "cited_text"),
+            };
         }
     }
 
@@ -43,13 +45,18 @@ public record class BetaTextCitation : ModelBase
     {
         get
         {
-            return Match<long?>(
-                citationCharLocation: (x) => x.DocumentIndex,
-                citationPageLocation: (x) => x.DocumentIndex,
-                citationContentBlockLocation: (x) => x.DocumentIndex,
-                citationsWebSearchResultLocation: (_) => null,
-                citationSearchResultLocation: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaCitationCharLocation x => x.DocumentIndex,
+                BetaCitationPageLocation x => x.DocumentIndex,
+                BetaCitationContentBlockLocation x => x.DocumentIndex,
+                BetaCitationsWebSearchResultLocation _ => null,
+                BetaCitationSearchResultLocation _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "document_index"
+                ),
+            };
         }
     }
 
@@ -57,13 +64,18 @@ public record class BetaTextCitation : ModelBase
     {
         get
         {
-            return Match<string?>(
-                citationCharLocation: (x) => x.DocumentTitle,
-                citationPageLocation: (x) => x.DocumentTitle,
-                citationContentBlockLocation: (x) => x.DocumentTitle,
-                citationsWebSearchResultLocation: (_) => null,
-                citationSearchResultLocation: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaCitationCharLocation x => x.DocumentTitle,
+                BetaCitationPageLocation x => x.DocumentTitle,
+                BetaCitationContentBlockLocation x => x.DocumentTitle,
+                BetaCitationsWebSearchResultLocation _ => null,
+                BetaCitationSearchResultLocation _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "document_title"
+                ),
+            };
         }
     }
 
@@ -71,13 +83,15 @@ public record class BetaTextCitation : ModelBase
     {
         get
         {
-            return Match<string?>(
-                citationCharLocation: (x) => x.FileID,
-                citationPageLocation: (x) => x.FileID,
-                citationContentBlockLocation: (x) => x.FileID,
-                citationsWebSearchResultLocation: (_) => null,
-                citationSearchResultLocation: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaCitationCharLocation x => x.FileID,
+                BetaCitationPageLocation x => x.FileID,
+                BetaCitationContentBlockLocation x => x.FileID,
+                BetaCitationsWebSearchResultLocation _ => null,
+                BetaCitationSearchResultLocation _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "file_id"),
+            };
         }
     }
 
@@ -85,13 +99,15 @@ public record class BetaTextCitation : ModelBase
     {
         get
         {
-            return Match(
-                citationCharLocation: (x) => x.Type,
-                citationPageLocation: (x) => x.Type,
-                citationContentBlockLocation: (x) => x.Type,
-                citationsWebSearchResultLocation: (x) => x.Type,
-                citationSearchResultLocation: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaCitationCharLocation x => x.Type,
+                BetaCitationPageLocation x => x.Type,
+                BetaCitationContentBlockLocation x => x.Type,
+                BetaCitationsWebSearchResultLocation x => x.Type,
+                BetaCitationSearchResultLocation x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -99,13 +115,18 @@ public record class BetaTextCitation : ModelBase
     {
         get
         {
-            return Match<long?>(
-                citationCharLocation: (_) => null,
-                citationPageLocation: (_) => null,
-                citationContentBlockLocation: (x) => x.EndBlockIndex,
-                citationsWebSearchResultLocation: (_) => null,
-                citationSearchResultLocation: (x) => x.EndBlockIndex
-            );
+            return this.Value switch
+            {
+                BetaCitationCharLocation _ => null,
+                BetaCitationPageLocation _ => null,
+                BetaCitationContentBlockLocation x => x.EndBlockIndex,
+                BetaCitationsWebSearchResultLocation _ => null,
+                BetaCitationSearchResultLocation x => x.EndBlockIndex,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "end_block_index"
+                ),
+            };
         }
     }
 
@@ -113,13 +134,18 @@ public record class BetaTextCitation : ModelBase
     {
         get
         {
-            return Match<long?>(
-                citationCharLocation: (_) => null,
-                citationPageLocation: (_) => null,
-                citationContentBlockLocation: (x) => x.StartBlockIndex,
-                citationsWebSearchResultLocation: (_) => null,
-                citationSearchResultLocation: (x) => x.StartBlockIndex
-            );
+            return this.Value switch
+            {
+                BetaCitationCharLocation _ => null,
+                BetaCitationPageLocation _ => null,
+                BetaCitationContentBlockLocation x => x.StartBlockIndex,
+                BetaCitationsWebSearchResultLocation _ => null,
+                BetaCitationSearchResultLocation x => x.StartBlockIndex,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "start_block_index"
+                ),
+            };
         }
     }
 
@@ -127,13 +153,15 @@ public record class BetaTextCitation : ModelBase
     {
         get
         {
-            return Match<string?>(
-                citationCharLocation: (_) => null,
-                citationPageLocation: (_) => null,
-                citationContentBlockLocation: (_) => null,
-                citationsWebSearchResultLocation: (x) => x.Title,
-                citationSearchResultLocation: (x) => x.Title
-            );
+            return this.Value switch
+            {
+                BetaCitationCharLocation _ => null,
+                BetaCitationPageLocation _ => null,
+                BetaCitationContentBlockLocation _ => null,
+                BetaCitationsWebSearchResultLocation x => x.Title,
+                BetaCitationSearchResultLocation x => x.Title,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "title"),
+            };
         }
     }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Resources;
 using Sessions = Anthropic.Models.Beta.Sessions;
 
@@ -126,5 +127,66 @@ public class ResourceRetrieveResponseTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        ResourceRetrieveResponse value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "id": "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+                  "created_at": "2026-03-15T10:00:00Z",
+                  "mount_path": "/workspace/example-repo",
+                  "updated_at": "2026-03-15T10:00:00Z"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu";
+        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
+        string expectedMountPath = "/workspace/example-repo";
+        DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
+
+        Assert.Equal(expectedID, value.ID);
+        Assert.Equal(expectedCreatedAt, value.CreatedAt);
+        Assert.Equal(expectedMountPath, value.MountPath);
+        Assert.Equal(expectedUpdatedAt, value.UpdatedAt);
+
+        ResourceRetrieveResponse emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Null(emptyValue.ID);
+        Assert.Null(emptyValue.CreatedAt);
+        Assert.Null(emptyValue.MountPath);
+        Assert.Null(emptyValue.UpdatedAt);
+
+        ResourceRetrieveResponse mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "id": [
+                    "invalid"
+                  ],
+                  "created_at": [
+                    "invalid"
+                  ],
+                  "mount_path": [
+                    "invalid"
+                  ],
+                  "updated_at": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.ID);
+        Assert.Null(mismatchedValue.CreatedAt);
+        Assert.Null(mismatchedValue.MountPath);
+        Assert.Null(mismatchedValue.UpdatedAt);
     }
 }

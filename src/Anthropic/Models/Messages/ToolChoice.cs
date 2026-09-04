@@ -33,12 +33,14 @@ public record class ToolChoice : ModelBase
     {
         get
         {
-            return Match(
-                auto: (x) => x.Type,
-                any: (x) => x.Type,
-                tool: (x) => x.Type,
-                none: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                ToolChoiceAuto x => x.Type,
+                ToolChoiceAny x => x.Type,
+                ToolChoiceTool x => x.Type,
+                ToolChoiceNone x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -46,12 +48,17 @@ public record class ToolChoice : ModelBase
     {
         get
         {
-            return Match<bool?>(
-                auto: (x) => x.DisableParallelToolUse,
-                any: (x) => x.DisableParallelToolUse,
-                tool: (x) => x.DisableParallelToolUse,
-                none: (_) => null
-            );
+            return this.Value switch
+            {
+                ToolChoiceAuto x => x.DisableParallelToolUse,
+                ToolChoiceAny x => x.DisableParallelToolUse,
+                ToolChoiceTool x => x.DisableParallelToolUse,
+                ToolChoiceNone _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(
+                    this.Json,
+                    "disable_parallel_tool_use"
+                ),
+            };
         }
     }
 

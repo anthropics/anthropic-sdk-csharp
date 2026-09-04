@@ -125,10 +125,12 @@ public record class ToolSearchToolResultBlockContent : ModelBase
     {
         get
         {
-            return Match(
-                toolSearchToolResultError: (x) => x.Type,
-                toolSearchToolSearchResultBlock: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                ToolSearchToolResultError x => x.Type,
+                ToolSearchToolSearchResultBlock x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

@@ -160,13 +160,15 @@ public record class DocumentBlockParamSource : ModelBase
     {
         get
         {
-            return Match<string?>(
-                base64Pdf: (x) => x.Data,
-                plainText: (x) => x.Data,
-                contentBlock: (_) => null,
-                urlPdf: (_) => null,
-                fileDocument: (_) => null
-            );
+            return this.Value switch
+            {
+                Base64PdfSource x => x.Data,
+                PlainTextSource x => x.Data,
+                ContentBlockSource _ => null,
+                UrlPdfSource _ => null,
+                FileDocumentSource _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "data"),
+            };
         }
     }
 
@@ -174,13 +176,18 @@ public record class DocumentBlockParamSource : ModelBase
     {
         get
         {
-            return Match<JsonElement?>(
-                base64Pdf: (x) => x.MediaType,
-                plainText: (x) => x.MediaType,
-                contentBlock: (_) => null,
-                urlPdf: (_) => null,
-                fileDocument: (_) => null
-            );
+            return this.Value switch
+            {
+                Base64PdfSource x => x.MediaType,
+                PlainTextSource x => x.MediaType,
+                ContentBlockSource _ => null,
+                UrlPdfSource _ => null,
+                FileDocumentSource _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(
+                    this.Json,
+                    "media_type"
+                ),
+            };
         }
     }
 
@@ -188,13 +195,15 @@ public record class DocumentBlockParamSource : ModelBase
     {
         get
         {
-            return Match(
-                base64Pdf: (x) => x.Type,
-                plainText: (x) => x.Type,
-                contentBlock: (x) => x.Type,
-                urlPdf: (x) => x.Type,
-                fileDocument: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                Base64PdfSource x => x.Type,
+                PlainTextSource x => x.Type,
+                ContentBlockSource x => x.Type,
+                UrlPdfSource x => x.Type,
+                FileDocumentSource x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

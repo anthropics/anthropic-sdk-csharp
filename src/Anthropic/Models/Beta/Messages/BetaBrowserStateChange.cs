@@ -37,12 +37,14 @@ public record class BetaBrowserStateChange : ModelBase
     {
         get
         {
-            return Match(
-                tabOpened: (x) => x.Type,
-                downloadStarted: (x) => x.Type,
-                downloadCompleted: (x) => x.Type,
-                downloadFailed: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaBrowserStateChangeTabOpened x => x.Type,
+                BetaBrowserStateChangeDownloadStarted x => x.Type,
+                BetaBrowserStateChangeDownloadCompleted x => x.Type,
+                BetaBrowserStateChangeDownloadFailed x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -50,12 +52,17 @@ public record class BetaBrowserStateChange : ModelBase
     {
         get
         {
-            return Match<string?>(
-                tabOpened: (_) => null,
-                downloadStarted: (x) => x.DownloadID,
-                downloadCompleted: (x) => x.DownloadID,
-                downloadFailed: (x) => x.DownloadID
-            );
+            return this.Value switch
+            {
+                BetaBrowserStateChangeTabOpened _ => null,
+                BetaBrowserStateChangeDownloadStarted x => x.DownloadID,
+                BetaBrowserStateChangeDownloadCompleted x => x.DownloadID,
+                BetaBrowserStateChangeDownloadFailed x => x.DownloadID,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "download_id"
+                ),
+            };
         }
     }
 
@@ -63,12 +70,14 @@ public record class BetaBrowserStateChange : ModelBase
     {
         get
         {
-            return Match<string?>(
-                tabOpened: (_) => null,
-                downloadStarted: (x) => x.Url,
-                downloadCompleted: (x) => x.Url,
-                downloadFailed: (x) => x.Url
-            );
+            return this.Value switch
+            {
+                BetaBrowserStateChangeTabOpened _ => null,
+                BetaBrowserStateChangeDownloadStarted x => x.Url,
+                BetaBrowserStateChangeDownloadCompleted x => x.Url,
+                BetaBrowserStateChangeDownloadFailed x => x.Url,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "url"),
+            };
         }
     }
 

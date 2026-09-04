@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Events;
 
@@ -539,5 +540,74 @@ public class DataTest : TestBase
         var deserialized = JsonSerializer.Deserialize<Data>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Data value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "id": "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+                  "processed_at": "2026-03-15T10:00:00Z",
+                  "session_thread_id": "session_thread_id",
+                  "tool_use_id": "tool_use_id",
+                  "is_error": true
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedID = "sevt_011CZkZGOp0iBcp4kaQSihUmy";
+        DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
+        string expectedSessionThreadID = "session_thread_id";
+        string expectedToolUseID = "tool_use_id";
+        bool expectedIsError = true;
+
+        Assert.Equal(expectedID, value.ID);
+        Assert.Equal(expectedProcessedAt, value.ProcessedAt);
+        Assert.Equal(expectedSessionThreadID, value.SessionThreadID);
+        Assert.Equal(expectedToolUseID, value.ToolUseID);
+        Assert.Equal(expectedIsError, value.IsError);
+
+        Data emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.ID);
+        Assert.Null(emptyValue.ProcessedAt);
+        Assert.Null(emptyValue.SessionThreadID);
+        Assert.Null(emptyValue.ToolUseID);
+        Assert.Null(emptyValue.IsError);
+
+        Data mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "id": [
+                    "invalid"
+                  ],
+                  "processed_at": [
+                    "invalid"
+                  ],
+                  "session_thread_id": [
+                    "invalid"
+                  ],
+                  "tool_use_id": [
+                    "invalid"
+                  ],
+                  "is_error": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.ID);
+        Assert.Null(mismatchedValue.ProcessedAt);
+        Assert.Null(mismatchedValue.SessionThreadID);
+        Assert.Null(mismatchedValue.ToolUseID);
+        Assert.Null(mismatchedValue.IsError);
     }
 }

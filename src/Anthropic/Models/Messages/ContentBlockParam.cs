@@ -32,24 +32,26 @@ public record class ContentBlockParam : ModelBase
     {
         get
         {
-            return Match(
-                text: (x) => x.Type,
-                image: (x) => x.Type,
-                document: (x) => x.Type,
-                searchResult: (x) => x.Type,
-                thinking: (x) => x.Type,
-                redactedThinking: (x) => x.Type,
-                toolUse: (x) => x.Type,
-                toolResult: (x) => x.Type,
-                serverToolUse: (x) => x.Type,
-                webSearchToolResult: (x) => x.Type,
-                webFetchToolResult: (x) => x.Type,
-                codeExecutionToolResult: (x) => x.Type,
-                bashCodeExecutionToolResult: (x) => x.Type,
-                textEditorCodeExecutionToolResult: (x) => x.Type,
-                toolSearchToolResult: (x) => x.Type,
-                containerUpload: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                TextBlockParam x => x.Type,
+                ImageBlockParam x => x.Type,
+                DocumentBlockParam x => x.Type,
+                SearchResultBlockParam x => x.Type,
+                ThinkingBlockParam x => x.Type,
+                RedactedThinkingBlockParam x => x.Type,
+                ToolUseBlockParam x => x.Type,
+                ToolResultBlockParam x => x.Type,
+                ServerToolUseBlockParam x => x.Type,
+                WebSearchToolResultBlockParam x => x.Type,
+                WebFetchToolResultBlockParam x => x.Type,
+                CodeExecutionToolResultBlockParam x => x.Type,
+                BashCodeExecutionToolResultBlockParam x => x.Type,
+                TextEditorCodeExecutionToolResultBlockParam x => x.Type,
+                ToolSearchToolResultBlockParam x => x.Type,
+                ContainerUploadBlockParam x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -57,24 +59,29 @@ public record class ContentBlockParam : ModelBase
     {
         get
         {
-            return Match<CacheControlEphemeral?>(
-                text: (x) => x.CacheControl,
-                image: (x) => x.CacheControl,
-                document: (x) => x.CacheControl,
-                searchResult: (x) => x.CacheControl,
-                thinking: (_) => null,
-                redactedThinking: (_) => null,
-                toolUse: (x) => x.CacheControl,
-                toolResult: (x) => x.CacheControl,
-                serverToolUse: (x) => x.CacheControl,
-                webSearchToolResult: (x) => x.CacheControl,
-                webFetchToolResult: (x) => x.CacheControl,
-                codeExecutionToolResult: (x) => x.CacheControl,
-                bashCodeExecutionToolResult: (x) => x.CacheControl,
-                textEditorCodeExecutionToolResult: (x) => x.CacheControl,
-                toolSearchToolResult: (x) => x.CacheControl,
-                containerUpload: (x) => x.CacheControl
-            );
+            return this.Value switch
+            {
+                TextBlockParam x => x.CacheControl,
+                ImageBlockParam x => x.CacheControl,
+                DocumentBlockParam x => x.CacheControl,
+                SearchResultBlockParam x => x.CacheControl,
+                ThinkingBlockParam _ => null,
+                RedactedThinkingBlockParam _ => null,
+                ToolUseBlockParam x => x.CacheControl,
+                ToolResultBlockParam x => x.CacheControl,
+                ServerToolUseBlockParam x => x.CacheControl,
+                WebSearchToolResultBlockParam x => x.CacheControl,
+                WebFetchToolResultBlockParam x => x.CacheControl,
+                CodeExecutionToolResultBlockParam x => x.CacheControl,
+                BashCodeExecutionToolResultBlockParam x => x.CacheControl,
+                TextEditorCodeExecutionToolResultBlockParam x => x.CacheControl,
+                ToolSearchToolResultBlockParam x => x.CacheControl,
+                ContainerUploadBlockParam x => x.CacheControl,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<CacheControlEphemeral>(
+                    this.Json,
+                    "cache_control"
+                ),
+            };
         }
     }
 
@@ -82,24 +89,26 @@ public record class ContentBlockParam : ModelBase
     {
         get
         {
-            return Match<string?>(
-                text: (_) => null,
-                image: (_) => null,
-                document: (x) => x.Title,
-                searchResult: (x) => x.Title,
-                thinking: (_) => null,
-                redactedThinking: (_) => null,
-                toolUse: (_) => null,
-                toolResult: (_) => null,
-                serverToolUse: (_) => null,
-                webSearchToolResult: (_) => null,
-                webFetchToolResult: (_) => null,
-                codeExecutionToolResult: (_) => null,
-                bashCodeExecutionToolResult: (_) => null,
-                textEditorCodeExecutionToolResult: (_) => null,
-                toolSearchToolResult: (_) => null,
-                containerUpload: (_) => null
-            );
+            return this.Value switch
+            {
+                TextBlockParam _ => null,
+                ImageBlockParam _ => null,
+                DocumentBlockParam x => x.Title,
+                SearchResultBlockParam x => x.Title,
+                ThinkingBlockParam _ => null,
+                RedactedThinkingBlockParam _ => null,
+                ToolUseBlockParam _ => null,
+                ToolResultBlockParam _ => null,
+                ServerToolUseBlockParam _ => null,
+                WebSearchToolResultBlockParam _ => null,
+                WebFetchToolResultBlockParam _ => null,
+                CodeExecutionToolResultBlockParam _ => null,
+                BashCodeExecutionToolResultBlockParam _ => null,
+                TextEditorCodeExecutionToolResultBlockParam _ => null,
+                ToolSearchToolResultBlockParam _ => null,
+                ContainerUploadBlockParam _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "title"),
+            };
         }
     }
 
@@ -107,24 +116,26 @@ public record class ContentBlockParam : ModelBase
     {
         get
         {
-            return Match<string?>(
-                text: (_) => null,
-                image: (_) => null,
-                document: (_) => null,
-                searchResult: (_) => null,
-                thinking: (_) => null,
-                redactedThinking: (_) => null,
-                toolUse: (x) => x.ID,
-                toolResult: (_) => null,
-                serverToolUse: (x) => x.ID,
-                webSearchToolResult: (_) => null,
-                webFetchToolResult: (_) => null,
-                codeExecutionToolResult: (_) => null,
-                bashCodeExecutionToolResult: (_) => null,
-                textEditorCodeExecutionToolResult: (_) => null,
-                toolSearchToolResult: (_) => null,
-                containerUpload: (_) => null
-            );
+            return this.Value switch
+            {
+                TextBlockParam _ => null,
+                ImageBlockParam _ => null,
+                DocumentBlockParam _ => null,
+                SearchResultBlockParam _ => null,
+                ThinkingBlockParam _ => null,
+                RedactedThinkingBlockParam _ => null,
+                ToolUseBlockParam x => x.ID,
+                ToolResultBlockParam _ => null,
+                ServerToolUseBlockParam x => x.ID,
+                WebSearchToolResultBlockParam _ => null,
+                WebFetchToolResultBlockParam _ => null,
+                CodeExecutionToolResultBlockParam _ => null,
+                BashCodeExecutionToolResultBlockParam _ => null,
+                TextEditorCodeExecutionToolResultBlockParam _ => null,
+                ToolSearchToolResultBlockParam _ => null,
+                ContainerUploadBlockParam _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "id"),
+            };
         }
     }
 
@@ -132,24 +143,29 @@ public record class ContentBlockParam : ModelBase
     {
         get
         {
-            return Match<string?>(
-                text: (_) => null,
-                image: (_) => null,
-                document: (_) => null,
-                searchResult: (_) => null,
-                thinking: (_) => null,
-                redactedThinking: (_) => null,
-                toolUse: (x) => x.ToolsetName,
-                toolResult: (x) => x.ToolsetName,
-                serverToolUse: (_) => null,
-                webSearchToolResult: (_) => null,
-                webFetchToolResult: (_) => null,
-                codeExecutionToolResult: (_) => null,
-                bashCodeExecutionToolResult: (_) => null,
-                textEditorCodeExecutionToolResult: (_) => null,
-                toolSearchToolResult: (_) => null,
-                containerUpload: (_) => null
-            );
+            return this.Value switch
+            {
+                TextBlockParam _ => null,
+                ImageBlockParam _ => null,
+                DocumentBlockParam _ => null,
+                SearchResultBlockParam _ => null,
+                ThinkingBlockParam _ => null,
+                RedactedThinkingBlockParam _ => null,
+                ToolUseBlockParam x => x.ToolsetName,
+                ToolResultBlockParam x => x.ToolsetName,
+                ServerToolUseBlockParam _ => null,
+                WebSearchToolResultBlockParam _ => null,
+                WebFetchToolResultBlockParam _ => null,
+                CodeExecutionToolResultBlockParam _ => null,
+                BashCodeExecutionToolResultBlockParam _ => null,
+                TextEditorCodeExecutionToolResultBlockParam _ => null,
+                ToolSearchToolResultBlockParam _ => null,
+                ContainerUploadBlockParam _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "toolset_name"
+                ),
+            };
         }
     }
 
@@ -157,24 +173,29 @@ public record class ContentBlockParam : ModelBase
     {
         get
         {
-            return Match<string?>(
-                text: (_) => null,
-                image: (_) => null,
-                document: (_) => null,
-                searchResult: (_) => null,
-                thinking: (_) => null,
-                redactedThinking: (_) => null,
-                toolUse: (_) => null,
-                toolResult: (x) => x.ToolUseID,
-                serverToolUse: (_) => null,
-                webSearchToolResult: (x) => x.ToolUseID,
-                webFetchToolResult: (x) => x.ToolUseID,
-                codeExecutionToolResult: (x) => x.ToolUseID,
-                bashCodeExecutionToolResult: (x) => x.ToolUseID,
-                textEditorCodeExecutionToolResult: (x) => x.ToolUseID,
-                toolSearchToolResult: (x) => x.ToolUseID,
-                containerUpload: (_) => null
-            );
+            return this.Value switch
+            {
+                TextBlockParam _ => null,
+                ImageBlockParam _ => null,
+                DocumentBlockParam _ => null,
+                SearchResultBlockParam _ => null,
+                ThinkingBlockParam _ => null,
+                RedactedThinkingBlockParam _ => null,
+                ToolUseBlockParam _ => null,
+                ToolResultBlockParam x => x.ToolUseID,
+                ServerToolUseBlockParam _ => null,
+                WebSearchToolResultBlockParam x => x.ToolUseID,
+                WebFetchToolResultBlockParam x => x.ToolUseID,
+                CodeExecutionToolResultBlockParam x => x.ToolUseID,
+                BashCodeExecutionToolResultBlockParam x => x.ToolUseID,
+                TextEditorCodeExecutionToolResultBlockParam x => x.ToolUseID,
+                ToolSearchToolResultBlockParam x => x.ToolUseID,
+                ContainerUploadBlockParam _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "tool_use_id"
+                ),
+            };
         }
     }
 

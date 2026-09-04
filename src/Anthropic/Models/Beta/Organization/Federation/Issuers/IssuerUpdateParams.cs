@@ -311,11 +311,13 @@ public record class IssuerUpdateParamsJwks : ModelBase
     {
         get
         {
-            return Match(
-                betaJwksDiscovery: (x) => x.Type,
-                betaJwksExplicitUrl: (x) => x.Type,
-                betaJwksInline: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaJwksDiscovery x => x.Type,
+                BetaJwksExplicitUrl x => x.Type,
+                BetaJwksInline x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -323,11 +325,16 @@ public record class IssuerUpdateParamsJwks : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaJwksDiscovery: (x) => x.CACertPem,
-                betaJwksExplicitUrl: (x) => x.CACertPem,
-                betaJwksInline: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaJwksDiscovery x => x.CACertPem,
+                BetaJwksExplicitUrl x => x.CACertPem,
+                BetaJwksInline _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "ca_cert_pem"
+                ),
+            };
         }
     }
 

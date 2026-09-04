@@ -32,15 +32,20 @@ public record class BetaManagedAgentsEventParams : ModelBase
     {
         get
         {
-            return Match<string?>(
-                userMessage: (_) => null,
-                userInterrupt: (_) => null,
-                userToolConfirmation: (x) => x.ToolUseID,
-                userCustomToolResult: (_) => null,
-                userDefineOutcome: (_) => null,
-                userToolResult: (x) => x.ToolUseID,
-                systemMessage: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEventParams _ => null,
+                BetaManagedAgentsUserInterruptEventParams _ => null,
+                BetaManagedAgentsUserToolConfirmationEventParams x => x.ToolUseID,
+                BetaManagedAgentsUserCustomToolResultEventParams _ => null,
+                BetaManagedAgentsUserDefineOutcomeEventParams _ => null,
+                BetaManagedAgentsUserToolResultEventParams x => x.ToolUseID,
+                BetaManagedAgentsSystemMessageEventParams _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "tool_use_id"
+                ),
+            };
         }
     }
 
@@ -48,15 +53,17 @@ public record class BetaManagedAgentsEventParams : ModelBase
     {
         get
         {
-            return Match<bool?>(
-                userMessage: (_) => null,
-                userInterrupt: (_) => null,
-                userToolConfirmation: (_) => null,
-                userCustomToolResult: (x) => x.IsError,
-                userDefineOutcome: (_) => null,
-                userToolResult: (x) => x.IsError,
-                systemMessage: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEventParams _ => null,
+                BetaManagedAgentsUserInterruptEventParams _ => null,
+                BetaManagedAgentsUserToolConfirmationEventParams _ => null,
+                BetaManagedAgentsUserCustomToolResultEventParams x => x.IsError,
+                BetaManagedAgentsUserDefineOutcomeEventParams _ => null,
+                BetaManagedAgentsUserToolResultEventParams x => x.IsError,
+                BetaManagedAgentsSystemMessageEventParams _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(this.Json, "is_error"),
+            };
         }
     }
 

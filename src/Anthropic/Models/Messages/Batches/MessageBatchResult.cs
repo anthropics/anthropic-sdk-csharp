@@ -36,12 +36,14 @@ public record class MessageBatchResult : ModelBase
     {
         get
         {
-            return Match(
-                succeeded: (x) => x.Type,
-                errored: (x) => x.Type,
-                canceled: (x) => x.Type,
-                expired: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                MessageBatchSucceededResult x => x.Type,
+                MessageBatchErroredResult x => x.Type,
+                MessageBatchCanceledResult x => x.Type,
+                MessageBatchExpiredResult x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

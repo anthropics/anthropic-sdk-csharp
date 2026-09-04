@@ -112,10 +112,15 @@ public record class AppliedEdit : ModelBase
     {
         get
         {
-            return Match(
-                betaClearToolUses20250919EditResponse: (x) => x.ClearedInputTokens,
-                betaClearThinking20251015EditResponse: (x) => x.ClearedInputTokens
-            );
+            return this.Value switch
+            {
+                BetaClearToolUses20250919EditResponse x => x.ClearedInputTokens,
+                BetaClearThinking20251015EditResponse x => x.ClearedInputTokens,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<long>(
+                    this.Json,
+                    "cleared_input_tokens"
+                ),
+            };
         }
     }
 
@@ -123,10 +128,12 @@ public record class AppliedEdit : ModelBase
     {
         get
         {
-            return Match(
-                betaClearToolUses20250919EditResponse: (x) => x.Type,
-                betaClearThinking20251015EditResponse: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaClearToolUses20250919EditResponse x => x.Type,
+                BetaClearThinking20251015EditResponse x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

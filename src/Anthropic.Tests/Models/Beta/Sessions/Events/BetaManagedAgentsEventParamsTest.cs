@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Events;
 
@@ -281,5 +282,52 @@ public class BetaManagedAgentsEventParamsTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsEventParams value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "tool_use_id": "x",
+                  "is_error": true
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedToolUseID = "x";
+        bool expectedIsError = true;
+
+        Assert.Equal(expectedToolUseID, value.ToolUseID);
+        Assert.Equal(expectedIsError, value.IsError);
+
+        BetaManagedAgentsEventParams emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Null(emptyValue.ToolUseID);
+        Assert.Null(emptyValue.IsError);
+
+        BetaManagedAgentsEventParams mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "tool_use_id": [
+                    "invalid"
+                  ],
+                  "is_error": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.ToolUseID);
+        Assert.Null(mismatchedValue.IsError);
     }
 }

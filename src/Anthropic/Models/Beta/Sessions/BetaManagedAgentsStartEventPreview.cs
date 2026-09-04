@@ -27,7 +27,15 @@ public record class BetaManagedAgentsStartEventPreview : ModelBase
 
     public string ID
     {
-        get { return Match(agentMessage: (x) => x.ID, agentThinking: (x) => x.ID); }
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAgentMessagePreview x => x.ID,
+                BetaManagedAgentsAgentThinkingPreview x => x.ID,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "id"),
+            };
+        }
     }
 
     public BetaManagedAgentsStartEventPreview(

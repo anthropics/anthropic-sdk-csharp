@@ -145,10 +145,15 @@ public record class BetaManagedAgentsMcpOAuthRefreshUpdateParamsTokenEndpointAut
     {
         get
         {
-            return Match<string?>(
-                betaManagedAgentsTokenEndpointAuthBasicUpdateParam: (x) => x.ClientSecret,
-                betaManagedAgentsTokenEndpointAuthPostUpdateParam: (x) => x.ClientSecret
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsTokenEndpointAuthBasicUpdateParam x => x.ClientSecret,
+                BetaManagedAgentsTokenEndpointAuthPostUpdateParam x => x.ClientSecret,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "client_secret"
+                ),
+            };
         }
     }
 

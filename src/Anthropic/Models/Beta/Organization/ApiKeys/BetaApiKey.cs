@@ -257,10 +257,12 @@ public record class Principal : ModelBase
     {
         get
         {
-            return Match(
-                betaApiKeyUserActor: (x) => x.Type,
-                betaApiKeyServiceAccountActor: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaApiKeyUserActor x => x.Type,
+                BetaApiKeyServiceAccountActor x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -560,7 +562,12 @@ public record class Scope : ModelBase
     {
         get
         {
-            return Match(betaApiKeyOrganization: (x) => x.Type, betaApiKeyWorkspace: (x) => x.Type);
+            return this.Value switch
+            {
+                BetaApiKeyOrganizationScope x => x.Type,
+                BetaApiKeyWorkspaceScope x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

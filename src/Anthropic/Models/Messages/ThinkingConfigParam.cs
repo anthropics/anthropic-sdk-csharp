@@ -39,7 +39,13 @@ public record class ThinkingConfigParam : ModelBase
     {
         get
         {
-            return Match(enabled: (x) => x.Type, disabled: (x) => x.Type, adaptive: (x) => x.Type);
+            return this.Value switch
+            {
+                ThinkingConfigEnabled x => x.Type,
+                ThinkingConfigDisabled x => x.Type,
+                ThinkingConfigAdaptive x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

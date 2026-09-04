@@ -211,11 +211,13 @@ public record class ProviderConfig : ModelBase
     {
         get
         {
-            return Match(
-                betaAwsExternalKey: (x) => x.Type,
-                betaGcpExternalKey: (x) => x.Type,
-                betaAzureExternalKeyConfigParam: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaAwsExternalKeyConfig x => x.Type,
+                BetaGcpExternalKeyConfig x => x.Type,
+                BetaAzureExternalKeyConfigParam x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -223,11 +225,13 @@ public record class ProviderConfig : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaAwsExternalKey: (_) => null,
-                betaGcpExternalKey: (x) => x.KeyName,
-                betaAzureExternalKeyConfigParam: (x) => x.KeyName
-            );
+            return this.Value switch
+            {
+                BetaAwsExternalKeyConfig _ => null,
+                BetaGcpExternalKeyConfig x => x.KeyName,
+                BetaAzureExternalKeyConfigParam x => x.KeyName,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "key_name"),
+            };
         }
     }
 

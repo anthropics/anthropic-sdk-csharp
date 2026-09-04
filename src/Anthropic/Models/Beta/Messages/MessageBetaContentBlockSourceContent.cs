@@ -27,17 +27,30 @@ public record class MessageBetaContentBlockSourceContent : ModelBase
 
     public JsonElement Type
     {
-        get { return Match(textBlockParam: (x) => x.Type, imageBlockParam: (x) => x.Type); }
+        get
+        {
+            return this.Value switch
+            {
+                BetaTextBlockParam x => x.Type,
+                BetaImageBlockParam x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
     }
 
     public BetaCacheControlEphemeral? CacheControl
     {
         get
         {
-            return Match<BetaCacheControlEphemeral?>(
-                textBlockParam: (x) => x.CacheControl,
-                imageBlockParam: (x) => x.CacheControl
-            );
+            return this.Value switch
+            {
+                BetaTextBlockParam x => x.CacheControl,
+                BetaImageBlockParam x => x.CacheControl,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<BetaCacheControlEphemeral>(
+                    this.Json,
+                    "cache_control"
+                ),
+            };
         }
     }
 

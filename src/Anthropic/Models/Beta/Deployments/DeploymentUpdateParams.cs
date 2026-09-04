@@ -695,11 +695,16 @@ public record class DeploymentUpdateParamsResource : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaManagedAgentsGitHubRepositoryResourceParams: (x) => x.MountPath,
-                betaManagedAgentsFileResourceParams: (x) => x.MountPath,
-                betaManagedAgentsMemoryStoreResourceParam: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsGitHubRepositoryResourceParams x => x.MountPath,
+                BetaManagedAgentsFileResourceParams x => x.MountPath,
+                BetaManagedAgentsMemoryStoreResourceParam _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "mount_path"
+                ),
+            };
         }
     }
 

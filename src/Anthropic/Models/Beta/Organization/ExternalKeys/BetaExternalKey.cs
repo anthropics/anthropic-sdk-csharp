@@ -202,10 +202,12 @@ public record class Attachment : ModelBase
     {
         get
         {
-            return Match(
-                betaExternalKeyAttached: (x) => x.Type,
-                betaExternalKeyUnattached: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaExternalKeyAttachedAttachment x => x.Type,
+                BetaExternalKeyUnattachedAttachment x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -508,11 +510,13 @@ public record class BetaExternalKeyProviderConfig : ModelBase
     {
         get
         {
-            return Match(
-                betaAwsExternalKey: (x) => x.Type,
-                betaGcpExternalKey: (x) => x.Type,
-                betaAzureExternalKey: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaAwsExternalKeyConfig x => x.Type,
+                BetaGcpExternalKeyConfig x => x.Type,
+                BetaAzureExternalKeyConfig x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -520,11 +524,13 @@ public record class BetaExternalKeyProviderConfig : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaAwsExternalKey: (_) => null,
-                betaGcpExternalKey: (x) => x.KeyName,
-                betaAzureExternalKey: (x) => x.KeyName
-            );
+            return this.Value switch
+            {
+                BetaAwsExternalKeyConfig _ => null,
+                BetaGcpExternalKeyConfig x => x.KeyName,
+                BetaAzureExternalKeyConfig x => x.KeyName,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "key_name"),
+            };
         }
     }
 

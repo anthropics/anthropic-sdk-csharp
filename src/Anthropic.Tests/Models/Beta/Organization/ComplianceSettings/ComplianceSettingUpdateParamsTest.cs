@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Organization.ComplianceSettings;
 
 namespace Anthropic.Tests.Models.Beta.Organization.ComplianceSettings;
@@ -86,5 +87,28 @@ public class StateTest : TestBase
         var deserialized = JsonSerializer.Deserialize<State>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        State value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "enabled"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
+
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+
+        State emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
     }
 }

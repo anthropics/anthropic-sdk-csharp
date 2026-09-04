@@ -287,12 +287,17 @@ public record class BetaUsageIteration : ModelBase
     {
         get
         {
-            return Match<BetaCacheCreation?>(
-                betaMessageIterationUsage: (x) => x.CacheCreation,
-                betaCompactionIterationUsage: (x) => x.CacheCreation,
-                betaAdvisorMessageIterationUsage: (x) => x.CacheCreation,
-                betaFallbackMessageIterationUsage: (x) => x.CacheCreation
-            );
+            return this.Value switch
+            {
+                BetaMessageIterationUsage x => x.CacheCreation,
+                BetaCompactionIterationUsage x => x.CacheCreation,
+                BetaAdvisorMessageIterationUsage x => x.CacheCreation,
+                BetaFallbackMessageIterationUsage x => x.CacheCreation,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<BetaCacheCreation>(
+                    this.Json,
+                    "cache_creation"
+                ),
+            };
         }
     }
 
@@ -300,12 +305,17 @@ public record class BetaUsageIteration : ModelBase
     {
         get
         {
-            return Match(
-                betaMessageIterationUsage: (x) => x.CacheCreationInputTokens,
-                betaCompactionIterationUsage: (x) => x.CacheCreationInputTokens,
-                betaAdvisorMessageIterationUsage: (x) => x.CacheCreationInputTokens,
-                betaFallbackMessageIterationUsage: (x) => x.CacheCreationInputTokens
-            );
+            return this.Value switch
+            {
+                BetaMessageIterationUsage x => x.CacheCreationInputTokens,
+                BetaCompactionIterationUsage x => x.CacheCreationInputTokens,
+                BetaAdvisorMessageIterationUsage x => x.CacheCreationInputTokens,
+                BetaFallbackMessageIterationUsage x => x.CacheCreationInputTokens,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<long>(
+                    this.Json,
+                    "cache_creation_input_tokens"
+                ),
+            };
         }
     }
 
@@ -313,12 +323,17 @@ public record class BetaUsageIteration : ModelBase
     {
         get
         {
-            return Match(
-                betaMessageIterationUsage: (x) => x.CacheReadInputTokens,
-                betaCompactionIterationUsage: (x) => x.CacheReadInputTokens,
-                betaAdvisorMessageIterationUsage: (x) => x.CacheReadInputTokens,
-                betaFallbackMessageIterationUsage: (x) => x.CacheReadInputTokens
-            );
+            return this.Value switch
+            {
+                BetaMessageIterationUsage x => x.CacheReadInputTokens,
+                BetaCompactionIterationUsage x => x.CacheReadInputTokens,
+                BetaAdvisorMessageIterationUsage x => x.CacheReadInputTokens,
+                BetaFallbackMessageIterationUsage x => x.CacheReadInputTokens,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<long>(
+                    this.Json,
+                    "cache_read_input_tokens"
+                ),
+            };
         }
     }
 
@@ -326,12 +341,17 @@ public record class BetaUsageIteration : ModelBase
     {
         get
         {
-            return Match(
-                betaMessageIterationUsage: (x) => x.InputTokens,
-                betaCompactionIterationUsage: (x) => x.InputTokens,
-                betaAdvisorMessageIterationUsage: (x) => x.InputTokens,
-                betaFallbackMessageIterationUsage: (x) => x.InputTokens
-            );
+            return this.Value switch
+            {
+                BetaMessageIterationUsage x => x.InputTokens,
+                BetaCompactionIterationUsage x => x.InputTokens,
+                BetaAdvisorMessageIterationUsage x => x.InputTokens,
+                BetaFallbackMessageIterationUsage x => x.InputTokens,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<long>(
+                    this.Json,
+                    "input_tokens"
+                ),
+            };
         }
     }
 
@@ -339,12 +359,17 @@ public record class BetaUsageIteration : ModelBase
     {
         get
         {
-            return Match<ApiEnum<string, Model>?>(
-                betaMessageIterationUsage: (x) => x.Model,
-                betaCompactionIterationUsage: (_) => null,
-                betaAdvisorMessageIterationUsage: (x) => x.Model,
-                betaFallbackMessageIterationUsage: (x) => x.Model
-            );
+            return this.Value switch
+            {
+                BetaMessageIterationUsage x => x.Model,
+                BetaCompactionIterationUsage _ => null,
+                BetaAdvisorMessageIterationUsage x => x.Model,
+                BetaFallbackMessageIterationUsage x => x.Model,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<ApiEnum<string, Model>>(
+                    this.Json,
+                    "model"
+                ),
+            };
         }
     }
 
@@ -352,12 +377,17 @@ public record class BetaUsageIteration : ModelBase
     {
         get
         {
-            return Match(
-                betaMessageIterationUsage: (x) => x.OutputTokens,
-                betaCompactionIterationUsage: (x) => x.OutputTokens,
-                betaAdvisorMessageIterationUsage: (x) => x.OutputTokens,
-                betaFallbackMessageIterationUsage: (x) => x.OutputTokens
-            );
+            return this.Value switch
+            {
+                BetaMessageIterationUsage x => x.OutputTokens,
+                BetaCompactionIterationUsage x => x.OutputTokens,
+                BetaAdvisorMessageIterationUsage x => x.OutputTokens,
+                BetaFallbackMessageIterationUsage x => x.OutputTokens,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<long>(
+                    this.Json,
+                    "output_tokens"
+                ),
+            };
         }
     }
 
@@ -365,12 +395,14 @@ public record class BetaUsageIteration : ModelBase
     {
         get
         {
-            return Match(
-                betaMessageIterationUsage: (x) => x.Type,
-                betaCompactionIterationUsage: (x) => x.Type,
-                betaAdvisorMessageIterationUsage: (x) => x.Type,
-                betaFallbackMessageIterationUsage: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaMessageIterationUsage x => x.Type,
+                BetaCompactionIterationUsage x => x.Type,
+                BetaAdvisorMessageIterationUsage x => x.Type,
+                BetaFallbackMessageIterationUsage x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

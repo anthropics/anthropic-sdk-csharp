@@ -2238,4 +2238,138 @@ public class ToolTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Tool value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "cache_control": {
+                    "type": "ephemeral",
+                    "ttl": "5m"
+                  },
+                  "defer_loading": true,
+                  "strict": true,
+                  "display_height_px": 1,
+                  "display_width_px": 1,
+                  "display_number": 0,
+                  "max_uses": 1,
+                  "user_location": {
+                    "type": "approximate",
+                    "city": "New York",
+                    "country": "US",
+                    "region": "California",
+                    "timezone": "America/New_York"
+                  },
+                  "citations": {
+                    "enabled": true
+                  },
+                  "max_content_tokens": 1,
+                  "use_cache": true
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        bool expectedDeferLoading = true;
+        bool expectedStrict = true;
+        long expectedDisplayHeightPx = 1;
+        long expectedDisplayWidthPx = 1;
+        long expectedDisplayNumber = 0;
+        long expectedMaxUses = 1;
+        BetaUserLocation expectedUserLocation = new()
+        {
+            City = "New York",
+            Country = "US",
+            Region = "California",
+            Timezone = "America/New_York",
+        };
+        BetaCitationsConfigParam expectedCitations = new() { Enabled = true };
+        long expectedMaxContentTokens = 1;
+        bool expectedUseCache = true;
+
+        Assert.Equal(expectedCacheControl, value.CacheControl);
+        Assert.Equal(expectedDeferLoading, value.DeferLoading);
+        Assert.Equal(expectedStrict, value.Strict);
+        Assert.Equal(expectedDisplayHeightPx, value.DisplayHeightPx);
+        Assert.Equal(expectedDisplayWidthPx, value.DisplayWidthPx);
+        Assert.Equal(expectedDisplayNumber, value.DisplayNumber);
+        Assert.Equal(expectedMaxUses, value.MaxUses);
+        Assert.Equal(expectedUserLocation, value.UserLocation);
+        Assert.Equal(expectedCitations, value.Citations);
+        Assert.Equal(expectedMaxContentTokens, value.MaxContentTokens);
+        Assert.Equal(expectedUseCache, value.UseCache);
+
+        Tool emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Null(emptyValue.CacheControl);
+        Assert.Null(emptyValue.DeferLoading);
+        Assert.Null(emptyValue.Strict);
+        Assert.Null(emptyValue.DisplayHeightPx);
+        Assert.Null(emptyValue.DisplayWidthPx);
+        Assert.Null(emptyValue.DisplayNumber);
+        Assert.Null(emptyValue.MaxUses);
+        Assert.Null(emptyValue.UserLocation);
+        Assert.Null(emptyValue.Citations);
+        Assert.Null(emptyValue.MaxContentTokens);
+        Assert.Null(emptyValue.UseCache);
+
+        Tool mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "cache_control": [
+                    "invalid"
+                  ],
+                  "defer_loading": [
+                    "invalid"
+                  ],
+                  "strict": [
+                    "invalid"
+                  ],
+                  "display_height_px": [
+                    "invalid"
+                  ],
+                  "display_width_px": [
+                    "invalid"
+                  ],
+                  "display_number": [
+                    "invalid"
+                  ],
+                  "max_uses": [
+                    "invalid"
+                  ],
+                  "user_location": [
+                    "invalid"
+                  ],
+                  "citations": [
+                    "invalid"
+                  ],
+                  "max_content_tokens": [
+                    "invalid"
+                  ],
+                  "use_cache": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.CacheControl);
+        Assert.Null(mismatchedValue.DeferLoading);
+        Assert.Null(mismatchedValue.Strict);
+        Assert.Null(mismatchedValue.DisplayHeightPx);
+        Assert.Null(mismatchedValue.DisplayWidthPx);
+        Assert.Null(mismatchedValue.DisplayNumber);
+        Assert.Null(mismatchedValue.MaxUses);
+        Assert.Null(mismatchedValue.UserLocation);
+        Assert.Null(mismatchedValue.Citations);
+        Assert.Null(mismatchedValue.MaxContentTokens);
+        Assert.Null(mismatchedValue.UseCache);
+    }
 }

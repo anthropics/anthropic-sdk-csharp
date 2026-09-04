@@ -208,24 +208,26 @@ public record class Error : ModelBase
     {
         get
         {
-            return Match(
-                betaManagedAgentsEnvironmentArchivedRun: (x) => x.Message,
-                betaManagedAgentsAgentArchivedRun: (x) => x.Message,
-                betaManagedAgentsEnvironmentNotFoundRun: (x) => x.Message,
-                betaManagedAgentsVaultNotFoundRun: (x) => x.Message,
-                betaManagedAgentsVaultArchivedRun: (x) => x.Message,
-                betaManagedAgentsFileNotFoundRun: (x) => x.Message,
-                betaManagedAgentsMemoryStoreArchivedRun: (x) => x.Message,
-                betaManagedAgentsSkillNotFoundRun: (x) => x.Message,
-                betaManagedAgentsSessionResourceNotFoundRun: (x) => x.Message,
-                betaManagedAgentsWorkspaceArchivedRun: (x) => x.Message,
-                betaManagedAgentsOrganizationDisabledRun: (x) => x.Message,
-                betaManagedAgentsSessionRateLimitedRun: (x) => x.Message,
-                betaManagedAgentsSessionCreationRejectedRun: (x) => x.Message,
-                betaManagedAgentsUnknownRun: (x) => x.Message,
-                betaManagedAgentsSelfHostedResourcesUnsupportedRun: (x) => x.Message,
-                betaManagedAgentsMcpEgressBlockedRun: (x) => x.Message
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsEnvironmentArchivedRunError x => x.Message,
+                BetaManagedAgentsAgentArchivedRunError x => x.Message,
+                BetaManagedAgentsEnvironmentNotFoundRunError x => x.Message,
+                BetaManagedAgentsVaultNotFoundRunError x => x.Message,
+                BetaManagedAgentsVaultArchivedRunError x => x.Message,
+                BetaManagedAgentsFileNotFoundRunError x => x.Message,
+                BetaManagedAgentsMemoryStoreArchivedRunError x => x.Message,
+                BetaManagedAgentsSkillNotFoundRunError x => x.Message,
+                BetaManagedAgentsSessionResourceNotFoundRunError x => x.Message,
+                BetaManagedAgentsWorkspaceArchivedRunError x => x.Message,
+                BetaManagedAgentsOrganizationDisabledRunError x => x.Message,
+                BetaManagedAgentsSessionRateLimitedRunError x => x.Message,
+                BetaManagedAgentsSessionCreationRejectedRunError x => x.Message,
+                BetaManagedAgentsUnknownRunError x => x.Message,
+                BetaManagedAgentsSelfHostedResourcesUnsupportedRunError x => x.Message,
+                BetaManagedAgentsMcpEgressBlockedRunError x => x.Message,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "message"),
+            };
         }
     }
 

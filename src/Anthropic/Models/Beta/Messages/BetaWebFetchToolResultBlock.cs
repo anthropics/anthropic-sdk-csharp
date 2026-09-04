@@ -147,10 +147,12 @@ public record class BetaWebFetchToolResultBlockContent : ModelBase
     {
         get
         {
-            return Match(
-                betaWebFetchToolResultErrorBlock: (x) => x.Type,
-                betaWebFetchBlock: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaWebFetchToolResultErrorBlock x => x.Type,
+                BetaWebFetchBlock x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -431,11 +433,13 @@ public record class BetaWebFetchToolResultBlockCaller : ModelBase
     {
         get
         {
-            return Match(
-                betaDirect: (x) => x.Type,
-                betaServerTool: (x) => x.Type,
-                betaServerToolCaller20260120: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaDirectCaller x => x.Type,
+                BetaServerToolCaller x => x.Type,
+                BetaServerToolCaller20260120 x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -443,11 +447,13 @@ public record class BetaWebFetchToolResultBlockCaller : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaDirect: (_) => null,
-                betaServerTool: (x) => x.ToolID,
-                betaServerToolCaller20260120: (x) => x.ToolID
-            );
+            return this.Value switch
+            {
+                BetaDirectCaller _ => null,
+                BetaServerToolCaller x => x.ToolID,
+                BetaServerToolCaller20260120 x => x.ToolID,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "tool_id"),
+            };
         }
     }
 

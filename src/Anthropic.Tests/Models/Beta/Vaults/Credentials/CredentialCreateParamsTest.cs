@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -350,5 +351,42 @@ public class AuthTest : TestBase
         var deserialized = JsonSerializer.Deserialize<Auth>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Auth value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "mcp_server_url": "x"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedMcpServerUrl = "x";
+
+        Assert.Equal(expectedMcpServerUrl, value.McpServerUrl);
+
+        Auth emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Null(emptyValue.McpServerUrl);
+
+        Auth mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "mcp_server_url": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.McpServerUrl);
     }
 }

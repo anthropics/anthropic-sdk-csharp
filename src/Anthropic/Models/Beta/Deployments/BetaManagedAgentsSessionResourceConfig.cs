@@ -32,11 +32,16 @@ public record class BetaManagedAgentsSessionResourceConfig : ModelBase
     {
         get
         {
-            return Match<string?>(
-                githubRepository: (x) => x.MountPath,
-                file: (x) => x.MountPath,
-                memoryStore: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsGitHubRepositoryResourceConfig x => x.MountPath,
+                BetaManagedAgentsFileResourceConfig x => x.MountPath,
+                BetaManagedAgentsMemoryStoreResourceConfig _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "mount_path"
+                ),
+            };
         }
     }
 

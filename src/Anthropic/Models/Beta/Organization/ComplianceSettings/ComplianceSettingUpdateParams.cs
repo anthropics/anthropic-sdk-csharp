@@ -192,10 +192,12 @@ public record class State : ModelBase
     {
         get
         {
-            return Match(
-                betaComplianceSettingsStateEnabledParam: (x) => x.Type,
-                betaComplianceSettingsStateDisabledParam: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                BetaComplianceSettingsStateEnabledParam x => x.Type,
+                BetaComplianceSettingsStateDisabledParam x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 

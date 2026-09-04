@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -216,5 +217,56 @@ public class BetaRequestToolRemovalBlockToolTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaRequestToolRemovalBlockTool value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "name": "name",
+                  "type": "tool_reference",
+                  "server_name": "server_name"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedName = "name";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_reference");
+        string expectedServerName = "server_name";
+
+        Assert.Equal(expectedName, value.Name);
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedServerName, value.ServerName);
+
+        BetaRequestToolRemovalBlockTool emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Null(emptyValue.Name);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.ServerName);
+
+        BetaRequestToolRemovalBlockTool mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "name": [
+                    "invalid"
+                  ],
+                  "server_name": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.Name);
+        Assert.Null(mismatchedValue.ServerName);
     }
 }

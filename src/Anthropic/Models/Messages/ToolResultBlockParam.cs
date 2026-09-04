@@ -445,14 +445,16 @@ public record class Block : ModelBase
     {
         get
         {
-            return Match(
-                textBlockParam: (x) => x.Type,
-                imageBlockParam: (x) => x.Type,
-                searchResultBlockParam: (x) => x.Type,
-                documentBlockParam: (x) => x.Type,
-                toolReferenceBlockParam: (x) => x.Type,
-                browserStateBlockParam: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                TextBlockParam x => x.Type,
+                ImageBlockParam x => x.Type,
+                SearchResultBlockParam x => x.Type,
+                DocumentBlockParam x => x.Type,
+                ToolReferenceBlockParam x => x.Type,
+                BrowserStateBlockParam x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -460,14 +462,19 @@ public record class Block : ModelBase
     {
         get
         {
-            return Match<CacheControlEphemeral?>(
-                textBlockParam: (x) => x.CacheControl,
-                imageBlockParam: (x) => x.CacheControl,
-                searchResultBlockParam: (x) => x.CacheControl,
-                documentBlockParam: (x) => x.CacheControl,
-                toolReferenceBlockParam: (x) => x.CacheControl,
-                browserStateBlockParam: (x) => x.CacheControl
-            );
+            return this.Value switch
+            {
+                TextBlockParam x => x.CacheControl,
+                ImageBlockParam x => x.CacheControl,
+                SearchResultBlockParam x => x.CacheControl,
+                DocumentBlockParam x => x.CacheControl,
+                ToolReferenceBlockParam x => x.CacheControl,
+                BrowserStateBlockParam x => x.CacheControl,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<CacheControlEphemeral>(
+                    this.Json,
+                    "cache_control"
+                ),
+            };
         }
     }
 
@@ -475,14 +482,16 @@ public record class Block : ModelBase
     {
         get
         {
-            return Match<string?>(
-                textBlockParam: (_) => null,
-                imageBlockParam: (_) => null,
-                searchResultBlockParam: (x) => x.Title,
-                documentBlockParam: (x) => x.Title,
-                toolReferenceBlockParam: (_) => null,
-                browserStateBlockParam: (_) => null
-            );
+            return this.Value switch
+            {
+                TextBlockParam _ => null,
+                ImageBlockParam _ => null,
+                SearchResultBlockParam x => x.Title,
+                DocumentBlockParam x => x.Title,
+                ToolReferenceBlockParam _ => null,
+                BrowserStateBlockParam _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "title"),
+            };
         }
     }
 

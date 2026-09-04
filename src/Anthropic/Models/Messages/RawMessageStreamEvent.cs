@@ -29,14 +29,16 @@ public record class RawMessageStreamEvent : ModelBase
     {
         get
         {
-            return Match(
-                start: (x) => x.Type,
-                delta: (x) => x.Type,
-                stop: (x) => x.Type,
-                contentBlockStart: (x) => x.Type,
-                contentBlockDelta: (x) => x.Type,
-                contentBlockStop: (x) => x.Type
-            );
+            return this.Value switch
+            {
+                RawMessageStartEvent x => x.Type,
+                RawMessageDeltaEvent x => x.Type,
+                RawMessageStopEvent x => x.Type,
+                RawContentBlockStartEvent x => x.Type,
+                RawContentBlockDeltaEvent x => x.Type,
+                RawContentBlockStopEvent x => x.Type,
+                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
         }
     }
 
@@ -44,14 +46,16 @@ public record class RawMessageStreamEvent : ModelBase
     {
         get
         {
-            return Match<long?>(
-                start: (_) => null,
-                delta: (_) => null,
-                stop: (_) => null,
-                contentBlockStart: (x) => x.Index,
-                contentBlockDelta: (x) => x.Index,
-                contentBlockStop: (x) => x.Index
-            );
+            return this.Value switch
+            {
+                RawMessageStartEvent _ => null,
+                RawMessageDeltaEvent _ => null,
+                RawMessageStopEvent _ => null,
+                RawContentBlockStartEvent x => x.Index,
+                RawContentBlockDeltaEvent x => x.Index,
+                RawContentBlockStopEvent x => x.Index,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(this.Json, "index"),
+            };
         }
     }
 

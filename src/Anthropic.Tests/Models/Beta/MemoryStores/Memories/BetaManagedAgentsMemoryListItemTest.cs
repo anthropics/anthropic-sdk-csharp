@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.MemoryStores.Memories;
 
 namespace Anthropic.Tests.Models.Beta.MemoryStores.Memories;
@@ -77,5 +78,44 @@ public class BetaManagedAgentsMemoryListItemTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsMemoryListItem value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "path": "path"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedPath = "path";
+
+        Assert.Equal(expectedPath, value.Path);
+
+        BetaManagedAgentsMemoryListItem emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Path);
+
+        BetaManagedAgentsMemoryListItem mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "path": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.Path);
     }
 }

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -172,5 +173,48 @@ public class BetaMemoryTool20250818CommandTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaMemoryTool20250818Command value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "command": "view",
+                  "path": "/memories"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("view");
+        string expectedPath = "/memories";
+
+        Assert.True(JsonElement.DeepEquals(expectedCommand, value.Command));
+        Assert.Equal(expectedPath, value.Path);
+
+        BetaMemoryTool20250818Command emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Command);
+        Assert.Null(emptyValue.Path);
+
+        BetaMemoryTool20250818Command mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "path": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.Path);
     }
 }

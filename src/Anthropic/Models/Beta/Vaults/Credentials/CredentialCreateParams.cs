@@ -276,11 +276,16 @@ public record class Auth : ModelBase
     {
         get
         {
-            return Match<string?>(
-                betaManagedAgentsMcpOAuthCreateParams: (x) => x.McpServerUrl,
-                betaManagedAgentsStaticBearerCreateParams: (x) => x.McpServerUrl,
-                betaManagedAgentsEnvironmentVariableCreateParams: (_) => null
-            );
+            return this.Value switch
+            {
+                BetaManagedAgentsMcpOAuthCreateParams x => x.McpServerUrl,
+                BetaManagedAgentsStaticBearerCreateParams x => x.McpServerUrl,
+                BetaManagedAgentsEnvironmentVariableCreateParams _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "mcp_server_url"
+                ),
+            };
         }
     }
 
