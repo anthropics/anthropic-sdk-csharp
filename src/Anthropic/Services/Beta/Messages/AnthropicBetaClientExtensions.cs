@@ -2588,7 +2588,13 @@ public static class AnthropicBetaClientExtensions
     {
         public BetaToolUnion Tool => tool;
 
-        public override string Name => tool.Value?.GetType().Name ?? base.Name;
+        // Toolsets have no `name`, so they keep the variant type name.
+        public override string Name =>
+            tool.Json is { ValueKind: JsonValueKind.Object } json
+            && json.TryGetProperty("name", out JsonElement name)
+            && name.ValueKind == JsonValueKind.String
+                ? name.GetString()!
+                : tool.Value?.GetType().Name ?? base.Name;
 
         public override object? GetService(System.Type serviceType, object? serviceKey = null) =>
             serviceKey is null && serviceType?.IsInstanceOfType(tool) is true

@@ -884,7 +884,21 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.Null(aiTool.GetService<BetaToolUnion>("key"));
         Assert.Null(aiTool.GetService<string>());
 
-        Assert.Contains(nameof(BetaWebSearchTool20250305), aiTool.Name);
+        Assert.Equal("web_search", aiTool.Name);
+    }
+
+    [Fact]
+    public void AsAITool_Name_ReturnsCustomToolName()
+    {
+        BetaToolUnion weather = new BetaTool
+        {
+            Name = "get_weather",
+            InputSchema = new InputSchema(),
+        };
+        BetaToolUnion time = new BetaTool { Name = "get_time", InputSchema = new InputSchema() };
+
+        Assert.Equal("get_weather", weather.AsAITool().Name);
+        Assert.Equal("get_time", time.AsAITool().Name);
     }
 
     [Fact]
