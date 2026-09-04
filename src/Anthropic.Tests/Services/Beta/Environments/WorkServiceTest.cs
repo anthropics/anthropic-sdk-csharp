@@ -31,7 +31,7 @@ public class WorkServiceTest : TestBase
         betaSelfHostedWork.Validate();
     }
 
-    [Fact(Skip = "buildURL drops path-level query params (SDK-4349)")]
+    [Fact(Skip = "buildURL drops path-level query params")]
     public async Task List_Works()
     {
         var page = await this.client.Beta.Environments.Work.List(
@@ -76,7 +76,7 @@ public class WorkServiceTest : TestBase
         betaSelfHostedWork?.Validate();
     }
 
-    [Fact(Skip = "buildURL drops path-level query params (SDK-4349)")]
+    [Fact(Skip = "buildURL drops path-level query params")]
     public async Task Stats_Works()
     {
         var betaSelfHostedWorkQueueStats = await this.client.Beta.Environments.Work.Stats(

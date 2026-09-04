@@ -4,7 +4,7 @@ namespace Anthropic.Tests.Services.Beta.Sessions.Threads;
 
 public class EventServiceTest : TestBase
 {
-    [Fact(Skip = "buildURL drops path-level query params (SDK-4349)")]
+    [Fact(Skip = "buildURL drops path-level query params")]
     public async Task List_Works()
     {
         var page = await this.client.Beta.Sessions.Threads.Events.List(
