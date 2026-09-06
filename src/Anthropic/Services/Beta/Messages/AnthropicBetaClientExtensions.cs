@@ -680,6 +680,15 @@ public static class AnthropicBetaClientExtensions
                             contents.Add(rawContent);
                             break;
 
+                        case AIContent ac
+                            when ToServerToolBlockParam(ac.RawRepresentation)
+                                is { } serverToolBlock:
+                            // A container_upload block references a Files API file id, so keep
+                            // the files beta opt-in the HostedFileContent arms below would set.
+                            hasHostedFiles |= ac.RawRepresentation is BetaContainerUploadBlock;
+                            contents.Add(WithCacheControlFrom(serverToolBlock, ac));
+                            break;
+
                         case TextContent tc:
                             string text = tc.Text;
                             if (message.Role == ChatRole.Assistant)
@@ -1151,9 +1160,41 @@ public static class AnthropicBetaClientExtensions
                     ?? block,
                 BetaToolResultBlockParam trb => (trb with { CacheControl = betaCacheControl }) as T
                     ?? block,
+                // Replayed server-tool blocks (see ToServerToolBlockParam) arrive wrapped in the
+                // request union.
+                BetaContentBlockParam union => WithCacheControl(union, betaCacheControl) as T
+                    ?? block,
                 _ => block,
             };
         }
+
+        /// <summary>
+        /// Applies cache control to the server-tool block wrapped in a <see cref="BetaContentBlockParam"/>.
+        /// </summary>
+        private static BetaContentBlockParam WithCacheControl(
+            BetaContentBlockParam block,
+            BetaCacheControlEphemeral cacheControl
+        ) =>
+            block.Value switch
+            {
+                BetaServerToolUseBlockParam p => p with { CacheControl = cacheControl },
+                BetaWebSearchToolResultBlockParam p => p with { CacheControl = cacheControl },
+                BetaWebFetchToolResultBlockParam p => p with { CacheControl = cacheControl },
+                BetaCodeExecutionToolResultBlockParam p => p with { CacheControl = cacheControl },
+                BetaBashCodeExecutionToolResultBlockParam p => p with
+                {
+                    CacheControl = cacheControl,
+                },
+                BetaTextEditorCodeExecutionToolResultBlockParam p => p with
+                {
+                    CacheControl = cacheControl,
+                },
+                BetaToolSearchToolResultBlockParam p => p with { CacheControl = cacheControl },
+                BetaMcpToolUseBlockParam p => p with { CacheControl = cacheControl },
+                BetaRequestMcpToolResultBlockParam p => p with { CacheControl = cacheControl },
+                BetaContainerUploadBlockParam p => p with { CacheControl = cacheControl },
+                _ => block,
+            };
 
         /// <summary>
         /// Converts the non-beta <see cref="Anthropic.Models.Messages.CacheControlEphemeral"/> (the type
@@ -1698,14 +1739,55 @@ public static class AnthropicBetaClientExtensions
                 BetaStopReason.Refusal => ChatFinishReason.ContentFilter,
                 // Anything else (pause_turn, compaction, or a stop reason newer than this SDK) marks a turn
                 // the caller has to act on, so surface the wire value instead of folding it into Stop.
-                // Note that CreateMessageParams does not yet round-trip server-tool blocks, so re-sending a
-                // paused turn through this client restarts the server-side loop rather than resuming it.
                 _ => FromRaw(stopReason.Raw()),
             };
 
             // ChatFinishReason rejects blank values; treat a blank stop_reason as a natural stop.
             static ChatFinishReason FromRaw(string raw) =>
                 string.IsNullOrWhiteSpace(raw) ? ChatFinishReason.Stop : new(raw);
+        }
+
+        /// <summary>
+        /// Maps a server-tool response block (the <see cref="AIContent.RawRepresentation"/>
+        /// of the contents the adapter creates for server tool use and results) back onto
+        /// the request-side union so replayed assistant turns keep these blocks. Dropping
+        /// them modifies the replayed turn: the API rejects requests whose latest assistant
+        /// message no longer matches what the model generated (with interleaved thinking,
+        /// "`thinking` ... blocks in the latest assistant message cannot be modified"), and
+        /// tool-search results must be replayed for deferred tools to remain available.
+        /// Response and param blocks are wire-compatible JSON, so they round-trip through
+        /// the serializer verbatim.
+        /// </summary>
+        private static BetaContentBlockParam? ToServerToolBlockParam(object? rawRepresentation)
+        {
+            switch (rawRepresentation)
+            {
+                case BetaServerToolUseBlock:
+                case BetaWebSearchToolResultBlock:
+                case BetaWebFetchToolResultBlock:
+                case BetaCodeExecutionToolResultBlock:
+                case BetaBashCodeExecutionToolResultBlock:
+                case BetaTextEditorCodeExecutionToolResultBlock:
+                case BetaToolSearchToolResultBlock:
+                case BetaMcpToolUseBlock:
+                case BetaMcpToolResultBlock:
+                case BetaContainerUploadBlock:
+                    try
+                    {
+                        string json = JsonSerializer.Serialize(
+                            rawRepresentation,
+                            rawRepresentation.GetType()
+                        );
+                        return JsonSerializer.Deserialize<BetaContentBlockParam>(json);
+                    }
+                    catch (JsonException)
+                    {
+                        return null;
+                    }
+
+                default:
+                    return null;
+            }
         }
 
         private static AIContent ContentBlockValueToAIContent(object? blockValue)
@@ -2181,13 +2263,24 @@ public static class AnthropicBetaClientExtensions
                 catch (JsonException) { }
             }
 
+            // The content_block_start block carries an empty input (streamed inputs arrive
+            // via input_json deltas); rebuild the RawRepresentation with the accumulated
+            // input so the block replays faithfully when the turn is sent back. `with`
+            // copies the raw data, so every other field (caller, anything newer than this
+            // SDK) survives the rebuild verbatim.
+            object? rawRepresentation = functionData.RawRepresentation;
+            if (rawRepresentation is BetaServerToolUseBlock rawBlock && input is not null)
+            {
+                rawRepresentation = rawBlock with { Input = input };
+            }
+
             switch (serverToolName)
             {
                 case Name.WebSearch:
                 case Name.WebFetch:
                     WebSearchToolCallContent wsc = new(functionData.CallId)
                     {
-                        RawRepresentation = functionData.RawRepresentation,
+                        RawRepresentation = rawRepresentation,
                     };
                     if (
                         input?.TryGetValue("query", out JsonElement queryElement) == true
@@ -2204,7 +2297,7 @@ public static class AnthropicBetaClientExtensions
                 case Name.TextEditorCodeExecution:
                     CodeInterpreterToolCallContent cic = new(functionData.CallId)
                     {
-                        RawRepresentation = functionData.RawRepresentation,
+                        RawRepresentation = rawRepresentation,
                     };
 
                     // CodeExecution (Python) uses "code"; Bash/TextEditor use "command".
@@ -2231,7 +2324,7 @@ public static class AnthropicBetaClientExtensions
                 default:
                     return new ToolCallContent(functionData.CallId)
                     {
-                        RawRepresentation = functionData.RawRepresentation,
+                        RawRepresentation = rawRepresentation,
                     };
             }
         }
