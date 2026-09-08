@@ -17,6 +17,7 @@ public enum BetaWebFetchToolResultErrorCode
     TooManyRequests,
     MaxUsesExceeded,
     Unavailable,
+    ContentTooLarge,
 }
 
 sealed class BetaWebFetchToolResultErrorCodeConverter
@@ -39,6 +40,7 @@ sealed class BetaWebFetchToolResultErrorCodeConverter
             "too_many_requests" => BetaWebFetchToolResultErrorCode.TooManyRequests,
             "max_uses_exceeded" => BetaWebFetchToolResultErrorCode.MaxUsesExceeded,
             "unavailable" => BetaWebFetchToolResultErrorCode.Unavailable,
+            "content_too_large" => BetaWebFetchToolResultErrorCode.ContentTooLarge,
             _ => (BetaWebFetchToolResultErrorCode)(-1),
         };
     }
@@ -63,6 +65,7 @@ sealed class BetaWebFetchToolResultErrorCodeConverter
                 BetaWebFetchToolResultErrorCode.TooManyRequests => "too_many_requests",
                 BetaWebFetchToolResultErrorCode.MaxUsesExceeded => "max_uses_exceeded",
                 BetaWebFetchToolResultErrorCode.Unavailable => "unavailable",
+                BetaWebFetchToolResultErrorCode.ContentTooLarge => "content_too_large",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
