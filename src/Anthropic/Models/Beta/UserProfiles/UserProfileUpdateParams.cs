@@ -51,7 +51,8 @@ public record class UserProfileUpdateParams : ParamsBase
 
     /// <summary>
     /// If present, replaces the stored external_id. Omit to leave unchanged. Maximum
-    /// 255 characters.
+    /// 255 characters. Accepted under the `user-profiles-2026-03-24` and `user-profiles-2026-08-18`
+    /// beta headers; under `user-profiles-2026-09-04` send `external_user_details.reference_id` instead.
     /// </summary>
     public string? ExternalID
     {
@@ -61,6 +62,32 @@ public record class UserProfileUpdateParams : ParamsBase
             return this._rawBodyData.GetNullableClass<string>("external_id");
         }
         init { this._rawBodyData.Set("external_id", value); }
+    }
+
+    /// <summary>
+    /// Details about the entity this profile represents, as the platform states them.
+    /// Each field sent replaces the stored value; omit a field to leave it unchanged.
+    /// Once set, a value cannot be cleared and `null` is rejected. Accepted under
+    /// the `user-profiles-2026-09-04` beta header only.
+    /// </summary>
+    public BetaUserProfileExternalUserDetailsParams? ExternalUserDetails
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaUserProfileExternalUserDetailsParams>(
+                "external_user_details"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData.Set("external_user_details", value);
+        }
     }
 
     /// <summary>

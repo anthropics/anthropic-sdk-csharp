@@ -19,6 +19,16 @@ public class UserProfileUpdateParamsTest : TestBase
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileUpdateParamsAccessType.Application,
             ExternalID = "user_12345",
+            ExternalUserDetails = new()
+            {
+                AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
+                Country = "country",
+                EmailHash = "x",
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                NameHash = "x",
+                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ReferenceID = "x",
+            },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "x",
@@ -29,6 +39,16 @@ public class UserProfileUpdateParamsTest : TestBase
         ApiEnum<string, UserProfileUpdateParamsAccessType> expectedAccessType =
             UserProfileUpdateParamsAccessType.Application;
         string expectedExternalID = "user_12345";
+        BetaUserProfileExternalUserDetailsParams expectedExternalUserDetails = new()
+        {
+            AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
+            Country = "country",
+            EmailHash = "x",
+            EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+            NameHash = "x",
+            OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ReferenceID = "x",
+        };
         DateTimeOffset expectedExternalUserOnboardedAt = DateTimeOffset.Parse(
             "2019-12-27T18:11:19.117Z"
         );
@@ -42,6 +62,7 @@ public class UserProfileUpdateParamsTest : TestBase
         Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
         Assert.Equal(expectedAccessType, parameters.AccessType);
         Assert.Equal(expectedExternalID, parameters.ExternalID);
+        Assert.Equal(expectedExternalUserDetails, parameters.ExternalUserDetails);
         Assert.Equal(expectedExternalUserOnboardedAt, parameters.ExternalUserOnboardedAt);
         Assert.NotNull(parameters.Metadata);
         Assert.Equal(expectedMetadata.Count, parameters.Metadata.Count);
@@ -71,6 +92,8 @@ public class UserProfileUpdateParamsTest : TestBase
             Name = "x",
         };
 
+        Assert.Null(parameters.ExternalUserDetails);
+        Assert.False(parameters.RawBodyData.ContainsKey("external_user_details"));
         Assert.Null(parameters.ExternalUserOnboardedAt);
         Assert.False(parameters.RawBodyData.ContainsKey("external_user_onboarded_at"));
         Assert.Null(parameters.Metadata);
@@ -90,11 +113,14 @@ public class UserProfileUpdateParamsTest : TestBase
             Name = "x",
 
             // Null should be interpreted as omitted for these properties
+            ExternalUserDetails = null,
             ExternalUserOnboardedAt = null,
             Metadata = null,
             Betas = null,
         };
 
+        Assert.Null(parameters.ExternalUserDetails);
+        Assert.False(parameters.RawBodyData.ContainsKey("external_user_details"));
         Assert.Null(parameters.ExternalUserOnboardedAt);
         Assert.False(parameters.RawBodyData.ContainsKey("external_user_onboarded_at"));
         Assert.Null(parameters.Metadata);
@@ -109,6 +135,16 @@ public class UserProfileUpdateParamsTest : TestBase
         var parameters = new UserProfileUpdateParams
         {
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            ExternalUserDetails = new()
+            {
+                AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
+                Country = "country",
+                EmailHash = "x",
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                NameHash = "x",
+                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ReferenceID = "x",
+            },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -128,6 +164,16 @@ public class UserProfileUpdateParamsTest : TestBase
         var parameters = new UserProfileUpdateParams
         {
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            ExternalUserDetails = new()
+            {
+                AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
+                Country = "country",
+                EmailHash = "x",
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                NameHash = "x",
+                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ReferenceID = "x",
+            },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -191,6 +237,16 @@ public class UserProfileUpdateParamsTest : TestBase
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileUpdateParamsAccessType.Application,
             ExternalID = "user_12345",
+            ExternalUserDetails = new()
+            {
+                AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
+                Country = "country",
+                EmailHash = "x",
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                NameHash = "x",
+                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ReferenceID = "x",
+            },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "x",

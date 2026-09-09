@@ -697,6 +697,16 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, UserProfiles::Type>(),
             new ApiEnumConverter<string, UserProfiles::BetaUserProfileAccessType>(),
             new ApiEnumConverter<string, UserProfiles::BetaUserProfileEnrollmentUrlType>(),
+            new ApiEnumConverter<string, UserProfiles::AccountStatus>(),
+            new ApiEnumConverter<string, UserProfiles::EntityType>(),
+            new ApiEnumConverter<
+                string,
+                UserProfiles::BetaUserProfileExternalUserDetailsParamsAccountStatus
+            >(),
+            new ApiEnumConverter<
+                string,
+                UserProfiles::BetaUserProfileExternalUserDetailsParamsEntityType
+            >(),
             new ApiEnumConverter<string, UserProfiles::Status>(),
             new ApiEnumConverter<string, UserProfiles::AccessType>(),
             new ApiEnumConverter<string, UserProfiles::UserProfileUpdateParamsAccessType>(),
