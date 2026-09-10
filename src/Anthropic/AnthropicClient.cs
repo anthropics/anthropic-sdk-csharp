@@ -484,8 +484,8 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
             }
             finally
             {
-                // A malformed Retry-After header makes the computation throw; the response
-                // being retried is abandoned either way.
+                // The response being retried is abandoned whether or not the computation
+                // succeeds.
                 response?.Dispose();
             }
             await Task.Delay(backoff, cancellationToken).ConfigureAwait(false);
