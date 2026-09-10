@@ -674,6 +674,16 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
 
         if (float.TryParse(headerValue, out var retryAfterMs))
         {
+            // NaN, infinite or out-of-range values can't be converted to a TimeSpan (the conversion
+            // throws), so treat them like an unparsable header.
+            if (
+                float.IsNaN(retryAfterMs)
+                || Math.Abs(retryAfterMs) >= TimeSpan.MaxValue.TotalMilliseconds
+            )
+            {
+                return null;
+            }
+
             return TimeSpan.FromMilliseconds(retryAfterMs);
         }
 
@@ -692,6 +702,16 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
 
         if (float.TryParse(headerValue, out var retryAfterSeconds))
         {
+            // NaN, infinite or out-of-range values can't be converted to a TimeSpan (the conversion
+            // throws), so treat them like an unparsable header.
+            if (
+                float.IsNaN(retryAfterSeconds)
+                || Math.Abs(retryAfterSeconds) >= TimeSpan.MaxValue.TotalSeconds
+            )
+            {
+                return null;
+            }
+
             return TimeSpan.FromSeconds(retryAfterSeconds);
         }
         else if (DateTimeOffset.TryParse(headerValue, out var retryAfterDate))
