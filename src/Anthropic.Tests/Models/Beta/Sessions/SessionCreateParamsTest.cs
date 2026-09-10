@@ -694,9 +694,9 @@ public class ResourceTest : TestBase
     {
         Resource value = new BetaManagedAgentsGitHubRepositoryResourceParams()
         {
-            AuthorizationToken = "ghp_exampletoken",
             Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
             Checkout = new BetaManagedAgentsBranchCheckout()
             {
                 Name = "main",
@@ -737,9 +737,9 @@ public class ResourceTest : TestBase
     {
         Resource value = new BetaManagedAgentsGitHubRepositoryResourceParams()
         {
-            AuthorizationToken = "ghp_exampletoken",
             Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
             Checkout = new BetaManagedAgentsBranchCheckout()
             {
                 Name = "main",

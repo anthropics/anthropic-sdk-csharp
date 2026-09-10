@@ -533,9 +533,9 @@ public class ResourceTest : TestBase
     {
         Resource value = new Sessions::BetaManagedAgentsGitHubRepositoryResourceParams()
         {
-            AuthorizationToken = "ghp_exampletoken",
             Type = Sessions::BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
             Checkout = new Sessions::BetaManagedAgentsBranchCheckout()
             {
                 Name = "main",
@@ -576,9 +576,9 @@ public class ResourceTest : TestBase
     {
         Resource value = new Sessions::BetaManagedAgentsGitHubRepositoryResourceParams()
         {
-            AuthorizationToken = "ghp_exampletoken",
             Type = Sessions::BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
             Checkout = new Sessions::BetaManagedAgentsBranchCheckout()
             {
                 Name = "main",
