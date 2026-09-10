@@ -338,6 +338,61 @@ public class RetriesTest : TestBase
             );
     }
 
+    [Theory]
+    [InlineData("Retry-After-Ms", "1e20")]
+    [InlineData("Retry-After-Ms", "-1e20")]
+    [InlineData("Retry-After-Ms", "NaN")]
+    [InlineData("Retry-After", "1e20")]
+    public async Task UnrepresentableRetryAfter_FallsBackToDefaultBackoff(
+        string header,
+        string value
+    )
+    {
+        var failResponse = new HttpResponseMessage()
+        {
+            StatusCode = HttpStatusCode.ServiceUnavailable,
+            Content = new StringContent("foo"),
+        };
+        // Parses as a float, but is not a duration a TimeSpan can represent.
+        failResponse.Headers.TryAddWithoutValidation(header, value);
+
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock
+            .Protected()
+            .SetupSequence<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(failResponse)
+            .ReturnsAsync(
+                new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent("foo"),
+                }
+            );
+
+        var httpClient = new HttpClient(handlerMock.Object);
+
+        AnthropicClient client = new() { HttpClient = httpClient, MaxRetries = 1 };
+
+        var resp = await client.WithRawResponse.Execute(
+            new HttpRequest<BlankParams> { Method = HttpMethod.Get, Params = new() },
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal(HttpStatusCode.OK, resp.StatusCode);
+        handlerMock
+            .Protected()
+            .Verify(
+                "SendAsync",
+                Times.Exactly(2),
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            );
+    }
+
     [Fact]
     public async Task RetryableException_Works()
     {

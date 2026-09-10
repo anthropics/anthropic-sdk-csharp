@@ -135,6 +135,13 @@ public class BetaManagedAgentsBashToolConfigPermissionPolicyTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsAutoValidationWorks()
+    {
+        BetaManagedAgentsBashToolConfigPermissionPolicy value = new BetaManagedAgentsAutoPolicy();
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
     {
         BetaManagedAgentsBashToolConfigPermissionPolicy value =
@@ -156,6 +163,20 @@ public class BetaManagedAgentsBashToolConfigPermissionPolicyTest : TestBase
     {
         BetaManagedAgentsBashToolConfigPermissionPolicy value =
             new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaManagedAgentsBashToolConfigPermissionPolicy>(
+                element,
+                ModelBase.SerializerOptions
+            );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAutoSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsBashToolConfigPermissionPolicy value = new BetaManagedAgentsAutoPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsBashToolConfigPermissionPolicy>(

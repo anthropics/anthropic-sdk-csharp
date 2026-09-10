@@ -263,6 +263,14 @@ public class BetaManagedAgentsGrepToolConfigParamsPermissionPolicyTest : TestBas
     }
 
     [Fact]
+    public void BetaManagedAgentsAutoValidationWorks()
+    {
+        BetaManagedAgentsGrepToolConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
     {
         BetaManagedAgentsGrepToolConfigParamsPermissionPolicy value =
@@ -284,6 +292,21 @@ public class BetaManagedAgentsGrepToolConfigParamsPermissionPolicyTest : TestBas
     {
         BetaManagedAgentsGrepToolConfigParamsPermissionPolicy value =
             new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaManagedAgentsGrepToolConfigParamsPermissionPolicy>(
+                element,
+                ModelBase.SerializerOptions
+            );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAutoSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsGrepToolConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsGrepToolConfigParamsPermissionPolicy>(

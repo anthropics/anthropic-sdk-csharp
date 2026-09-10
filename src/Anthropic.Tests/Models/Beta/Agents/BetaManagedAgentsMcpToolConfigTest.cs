@@ -137,6 +137,13 @@ public class BetaManagedAgentsMcpToolConfigPermissionPolicyTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsAutoValidationWorks()
+    {
+        BetaManagedAgentsMcpToolConfigPermissionPolicy value = new BetaManagedAgentsAutoPolicy();
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
     {
         BetaManagedAgentsMcpToolConfigPermissionPolicy value =
@@ -159,6 +166,20 @@ public class BetaManagedAgentsMcpToolConfigPermissionPolicyTest : TestBase
         BetaManagedAgentsMcpToolConfigPermissionPolicy value = new BetaManagedAgentsAlwaysAskPolicy(
             BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
         );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaManagedAgentsMcpToolConfigPermissionPolicy>(
+                element,
+                ModelBase.SerializerOptions
+            );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAutoSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsMcpToolConfigPermissionPolicy value = new BetaManagedAgentsAutoPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsMcpToolConfigPermissionPolicy>(

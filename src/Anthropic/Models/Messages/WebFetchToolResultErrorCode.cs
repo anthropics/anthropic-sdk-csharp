@@ -17,6 +17,7 @@ public enum WebFetchToolResultErrorCode
     TooManyRequests,
     MaxUsesExceeded,
     Unavailable,
+    ContentTooLarge,
 }
 
 sealed class WebFetchToolResultErrorCodeConverter : JsonConverter<WebFetchToolResultErrorCode>
@@ -38,6 +39,7 @@ sealed class WebFetchToolResultErrorCodeConverter : JsonConverter<WebFetchToolRe
             "too_many_requests" => WebFetchToolResultErrorCode.TooManyRequests,
             "max_uses_exceeded" => WebFetchToolResultErrorCode.MaxUsesExceeded,
             "unavailable" => WebFetchToolResultErrorCode.Unavailable,
+            "content_too_large" => WebFetchToolResultErrorCode.ContentTooLarge,
             _ => (WebFetchToolResultErrorCode)(-1),
         };
     }
@@ -61,6 +63,7 @@ sealed class WebFetchToolResultErrorCodeConverter : JsonConverter<WebFetchToolRe
                 WebFetchToolResultErrorCode.TooManyRequests => "too_many_requests",
                 WebFetchToolResultErrorCode.MaxUsesExceeded => "max_uses_exceeded",
                 WebFetchToolResultErrorCode.Unavailable => "unavailable",
+                WebFetchToolResultErrorCode.ContentTooLarge => "content_too_large",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

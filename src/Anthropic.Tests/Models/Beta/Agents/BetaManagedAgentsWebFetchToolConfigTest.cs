@@ -327,6 +327,14 @@ public class BetaManagedAgentsWebFetchToolConfigPermissionPolicyTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsAutoValidationWorks()
+    {
+        BetaManagedAgentsWebFetchToolConfigPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
     {
         BetaManagedAgentsWebFetchToolConfigPermissionPolicy value =
@@ -348,6 +356,21 @@ public class BetaManagedAgentsWebFetchToolConfigPermissionPolicyTest : TestBase
     {
         BetaManagedAgentsWebFetchToolConfigPermissionPolicy value =
             new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaManagedAgentsWebFetchToolConfigPermissionPolicy>(
+                element,
+                ModelBase.SerializerOptions
+            );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAutoSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsWebFetchToolConfigPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsWebFetchToolConfigPermissionPolicy>(

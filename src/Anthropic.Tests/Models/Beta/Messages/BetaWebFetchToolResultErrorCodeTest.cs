@@ -17,6 +17,7 @@ public class BetaWebFetchToolResultErrorCodeTest : TestBase
     [InlineData(BetaWebFetchToolResultErrorCode.TooManyRequests)]
     [InlineData(BetaWebFetchToolResultErrorCode.MaxUsesExceeded)]
     [InlineData(BetaWebFetchToolResultErrorCode.Unavailable)]
+    [InlineData(BetaWebFetchToolResultErrorCode.ContentTooLarge)]
     public void Validation_Works(BetaWebFetchToolResultErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -46,6 +47,7 @@ public class BetaWebFetchToolResultErrorCodeTest : TestBase
     [InlineData(BetaWebFetchToolResultErrorCode.TooManyRequests)]
     [InlineData(BetaWebFetchToolResultErrorCode.MaxUsesExceeded)]
     [InlineData(BetaWebFetchToolResultErrorCode.Unavailable)]
+    [InlineData(BetaWebFetchToolResultErrorCode.ContentTooLarge)]
     public void SerializationRoundtrip_Works(BetaWebFetchToolResultErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us

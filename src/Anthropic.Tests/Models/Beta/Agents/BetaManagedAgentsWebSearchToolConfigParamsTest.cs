@@ -407,6 +407,14 @@ public class BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicyTest : Te
     }
 
     [Fact]
+    public void BetaManagedAgentsAutoValidationWorks()
+    {
+        BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
     {
         BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicy value =
@@ -428,6 +436,21 @@ public class BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicyTest : Te
     {
         BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicy value =
             new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicy>(
+                element,
+                ModelBase.SerializerOptions
+            );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAutoSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicy>(

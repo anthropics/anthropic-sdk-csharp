@@ -127,6 +127,14 @@ public class BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyTest : Test
     }
 
     [Fact]
+    public void BetaManagedAgentsAutoValidationWorks()
+    {
+        BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
     {
         BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicy value =
@@ -148,6 +156,21 @@ public class BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyTest : Test
     {
         BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicy value =
             new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicy>(
+                element,
+                ModelBase.SerializerOptions
+            );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAutoSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicy>(

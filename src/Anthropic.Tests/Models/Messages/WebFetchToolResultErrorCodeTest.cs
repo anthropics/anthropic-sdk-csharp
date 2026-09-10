@@ -17,6 +17,7 @@ public class WebFetchToolResultErrorCodeTest : TestBase
     [InlineData(WebFetchToolResultErrorCode.TooManyRequests)]
     [InlineData(WebFetchToolResultErrorCode.MaxUsesExceeded)]
     [InlineData(WebFetchToolResultErrorCode.Unavailable)]
+    [InlineData(WebFetchToolResultErrorCode.ContentTooLarge)]
     public void Validation_Works(WebFetchToolResultErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -46,6 +47,7 @@ public class WebFetchToolResultErrorCodeTest : TestBase
     [InlineData(WebFetchToolResultErrorCode.TooManyRequests)]
     [InlineData(WebFetchToolResultErrorCode.MaxUsesExceeded)]
     [InlineData(WebFetchToolResultErrorCode.Unavailable)]
+    [InlineData(WebFetchToolResultErrorCode.ContentTooLarge)]
     public void SerializationRoundtrip_Works(WebFetchToolResultErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us

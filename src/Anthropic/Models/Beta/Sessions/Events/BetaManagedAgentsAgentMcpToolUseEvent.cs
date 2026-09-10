@@ -127,6 +127,30 @@ public sealed record class BetaManagedAgentsAgentMcpToolUseEvent : JsonModel
     }
 
     /// <summary>
+    /// Names the resolved permission_policy that produced evaluated_permission, and
+    /// under auto carries the judgement. Open union: clients must tolerate unknown variants.
+    /// </summary>
+    public BetaManagedAgentsAgentToolEvaluation? Evaluation
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaManagedAgentsAgentToolEvaluation>(
+                "evaluation"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("evaluation", value);
+        }
+    }
+
+    /// <summary>
     /// When set, this event was cross-posted from a subagent's thread to surface
     /// its permission request on the primary thread's stream. Empty on the thread's
     /// own events. Echo this on a `user.tool_confirmation` event to route the approval back.
@@ -151,6 +175,7 @@ public sealed record class BetaManagedAgentsAgentMcpToolUseEvent : JsonModel
         _ = this.ProcessedAt;
         this.Type.Validate();
         this.EvaluatedPermission?.Validate();
+        this.Evaluation?.Validate();
         _ = this.SessionThreadID;
     }
 

@@ -18,6 +18,16 @@ public class UserProfileCreateParamsTest : TestBase
         {
             AccessType = AccessType.Application,
             ExternalID = "user_12345",
+            ExternalUserDetails = new()
+            {
+                AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
+                Country = "country",
+                EmailHash = "x",
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                NameHash = "x",
+                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ReferenceID = "x",
+            },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "x",
@@ -26,6 +36,16 @@ public class UserProfileCreateParamsTest : TestBase
 
         ApiEnum<string, AccessType> expectedAccessType = AccessType.Application;
         string expectedExternalID = "user_12345";
+        BetaUserProfileExternalUserDetailsParams expectedExternalUserDetails = new()
+        {
+            AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
+            Country = "country",
+            EmailHash = "x",
+            EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+            NameHash = "x",
+            OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ReferenceID = "x",
+        };
         DateTimeOffset expectedExternalUserOnboardedAt = DateTimeOffset.Parse(
             "2024-11-02T08:15:00Z"
         );
@@ -38,6 +58,7 @@ public class UserProfileCreateParamsTest : TestBase
 
         Assert.Equal(expectedAccessType, parameters.AccessType);
         Assert.Equal(expectedExternalID, parameters.ExternalID);
+        Assert.Equal(expectedExternalUserDetails, parameters.ExternalUserDetails);
         Assert.Equal(expectedExternalUserOnboardedAt, parameters.ExternalUserOnboardedAt);
         Assert.NotNull(parameters.Metadata);
         Assert.Equal(expectedMetadata.Count, parameters.Metadata.Count);
@@ -63,6 +84,8 @@ public class UserProfileCreateParamsTest : TestBase
 
         Assert.Null(parameters.AccessType);
         Assert.False(parameters.RawBodyData.ContainsKey("access_type"));
+        Assert.Null(parameters.ExternalUserDetails);
+        Assert.False(parameters.RawBodyData.ContainsKey("external_user_details"));
         Assert.Null(parameters.ExternalUserOnboardedAt);
         Assert.False(parameters.RawBodyData.ContainsKey("external_user_onboarded_at"));
         Assert.Null(parameters.Metadata);
@@ -81,6 +104,7 @@ public class UserProfileCreateParamsTest : TestBase
 
             // Null should be interpreted as omitted for these properties
             AccessType = null,
+            ExternalUserDetails = null,
             ExternalUserOnboardedAt = null,
             Metadata = null,
             Betas = null,
@@ -88,6 +112,8 @@ public class UserProfileCreateParamsTest : TestBase
 
         Assert.Null(parameters.AccessType);
         Assert.False(parameters.RawBodyData.ContainsKey("access_type"));
+        Assert.Null(parameters.ExternalUserDetails);
+        Assert.False(parameters.RawBodyData.ContainsKey("external_user_details"));
         Assert.Null(parameters.ExternalUserOnboardedAt);
         Assert.False(parameters.RawBodyData.ContainsKey("external_user_onboarded_at"));
         Assert.Null(parameters.Metadata);
@@ -102,6 +128,16 @@ public class UserProfileCreateParamsTest : TestBase
         var parameters = new UserProfileCreateParams
         {
             AccessType = AccessType.Application,
+            ExternalUserDetails = new()
+            {
+                AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
+                Country = "country",
+                EmailHash = "x",
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                NameHash = "x",
+                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ReferenceID = "x",
+            },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -119,6 +155,16 @@ public class UserProfileCreateParamsTest : TestBase
         var parameters = new UserProfileCreateParams
         {
             AccessType = AccessType.Application,
+            ExternalUserDetails = new()
+            {
+                AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
+                Country = "country",
+                EmailHash = "x",
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                NameHash = "x",
+                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ReferenceID = "x",
+            },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -169,6 +215,16 @@ public class UserProfileCreateParamsTest : TestBase
         {
             AccessType = AccessType.Application,
             ExternalID = "user_12345",
+            ExternalUserDetails = new()
+            {
+                AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
+                Country = "country",
+                EmailHash = "x",
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                NameHash = "x",
+                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ReferenceID = "x",
+            },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "x",

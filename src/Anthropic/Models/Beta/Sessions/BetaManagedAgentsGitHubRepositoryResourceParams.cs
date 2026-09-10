@@ -20,19 +20,6 @@ namespace Anthropic.Models.Beta.Sessions;
 )]
 public sealed record class BetaManagedAgentsGitHubRepositoryResourceParams : JsonModel
 {
-    /// <summary>
-    /// GitHub authorization token used to clone the repository.
-    /// </summary>
-    public required string AuthorizationToken
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<string>("authorization_token");
-        }
-        init { this._rawData.Set("authorization_token", value); }
-    }
-
     public required ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceParamsType> Type
     {
         get
@@ -56,6 +43,28 @@ public sealed record class BetaManagedAgentsGitHubRepositoryResourceParams : Jso
             return this._rawData.GetNotNullClass<string>("url");
         }
         init { this._rawData.Set("url", value); }
+    }
+
+    /// <summary>
+    /// GitHub authorization token used to clone the repository. Required for private
+    /// repositories; optional for public ones.
+    /// </summary>
+    public string? AuthorizationToken
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("authorization_token");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("authorization_token", value);
+        }
     }
 
     /// <summary>
@@ -87,9 +96,9 @@ public sealed record class BetaManagedAgentsGitHubRepositoryResourceParams : Jso
     /// <inheritdoc/>
     public override void Validate()
     {
-        _ = this.AuthorizationToken;
         this.Type.Validate();
         _ = this.Url;
+        _ = this.AuthorizationToken;
         this.Checkout?.Validate();
         _ = this.MountPath;
     }

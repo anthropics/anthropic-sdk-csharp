@@ -12,9 +12,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            AuthorizationToken = "ghp_exampletoken",
             Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
             Checkout = new BetaManagedAgentsBranchCheckout()
             {
                 Name = "main",
@@ -23,10 +23,10 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
             MountPath = "x",
         };
 
-        string expectedAuthorizationToken = "ghp_exampletoken";
         ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceParamsType> expectedType =
             BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository;
         string expectedUrl = "https://github.com/example-org/example-repo";
+        string expectedAuthorizationToken = "ghp_exampletoken";
         Checkout expectedCheckout = new BetaManagedAgentsBranchCheckout()
         {
             Name = "main",
@@ -34,9 +34,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
         };
         string expectedMountPath = "x";
 
-        Assert.Equal(expectedAuthorizationToken, model.AuthorizationToken);
         Assert.Equal(expectedType, model.Type);
         Assert.Equal(expectedUrl, model.Url);
+        Assert.Equal(expectedAuthorizationToken, model.AuthorizationToken);
         Assert.Equal(expectedCheckout, model.Checkout);
         Assert.Equal(expectedMountPath, model.MountPath);
     }
@@ -46,9 +46,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            AuthorizationToken = "ghp_exampletoken",
             Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
             Checkout = new BetaManagedAgentsBranchCheckout()
             {
                 Name = "main",
@@ -72,9 +72,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            AuthorizationToken = "ghp_exampletoken",
             Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
             Checkout = new BetaManagedAgentsBranchCheckout()
             {
                 Name = "main",
@@ -91,10 +91,10 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
             );
         Assert.NotNull(deserialized);
 
-        string expectedAuthorizationToken = "ghp_exampletoken";
         ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceParamsType> expectedType =
             BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository;
         string expectedUrl = "https://github.com/example-org/example-repo";
+        string expectedAuthorizationToken = "ghp_exampletoken";
         Checkout expectedCheckout = new BetaManagedAgentsBranchCheckout()
         {
             Name = "main",
@@ -102,9 +102,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
         };
         string expectedMountPath = "x";
 
-        Assert.Equal(expectedAuthorizationToken, deserialized.AuthorizationToken);
         Assert.Equal(expectedType, deserialized.Type);
         Assert.Equal(expectedUrl, deserialized.Url);
+        Assert.Equal(expectedAuthorizationToken, deserialized.AuthorizationToken);
         Assert.Equal(expectedCheckout, deserialized.Checkout);
         Assert.Equal(expectedMountPath, deserialized.MountPath);
     }
@@ -114,7 +114,44 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
+            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
+            Url = "https://github.com/example-org/example-repo",
             AuthorizationToken = "ghp_exampletoken",
+            Checkout = new BetaManagedAgentsBranchCheckout()
+            {
+                Name = "main",
+                Type = BetaManagedAgentsBranchCheckoutType.Branch,
+            },
+            MountPath = "x",
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new BetaManagedAgentsGitHubRepositoryResourceParams
+        {
+            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
+            Url = "https://github.com/example-org/example-repo",
+            Checkout = new BetaManagedAgentsBranchCheckout()
+            {
+                Name = "main",
+                Type = BetaManagedAgentsBranchCheckoutType.Branch,
+            },
+            MountPath = "x",
+        };
+
+        Assert.Null(model.AuthorizationToken);
+        Assert.False(model.RawData.ContainsKey("authorization_token"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new BetaManagedAgentsGitHubRepositoryResourceParams
+        {
             Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
             Checkout = new BetaManagedAgentsBranchCheckout()
@@ -129,13 +166,56 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
+    {
+        var model = new BetaManagedAgentsGitHubRepositoryResourceParams
+        {
+            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
+            Url = "https://github.com/example-org/example-repo",
+            Checkout = new BetaManagedAgentsBranchCheckout()
+            {
+                Name = "main",
+                Type = BetaManagedAgentsBranchCheckoutType.Branch,
+            },
+            MountPath = "x",
+
+            // Null should be interpreted as omitted for these properties
+            AuthorizationToken = null,
+        };
+
+        Assert.Null(model.AuthorizationToken);
+        Assert.False(model.RawData.ContainsKey("authorization_token"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new BetaManagedAgentsGitHubRepositoryResourceParams
+        {
+            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
+            Url = "https://github.com/example-org/example-repo",
+            Checkout = new BetaManagedAgentsBranchCheckout()
+            {
+                Name = "main",
+                Type = BetaManagedAgentsBranchCheckoutType.Branch,
+            },
+            MountPath = "x",
+
+            // Null should be interpreted as omitted for these properties
+            AuthorizationToken = null,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            AuthorizationToken = "ghp_exampletoken",
             Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
         };
 
         Assert.Null(model.Checkout);
@@ -149,9 +229,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            AuthorizationToken = "ghp_exampletoken",
             Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
         };
 
         model.Validate();
@@ -162,9 +242,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            AuthorizationToken = "ghp_exampletoken",
             Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
 
             Checkout = null,
             MountPath = null,
@@ -181,9 +261,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            AuthorizationToken = "ghp_exampletoken",
             Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
 
             Checkout = null,
             MountPath = null,
@@ -197,9 +277,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            AuthorizationToken = "ghp_exampletoken",
             Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
             Checkout = new BetaManagedAgentsBranchCheckout()
             {
                 Name = "main",

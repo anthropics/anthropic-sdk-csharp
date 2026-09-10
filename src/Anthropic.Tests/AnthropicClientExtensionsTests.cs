@@ -18,8 +18,9 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
     protected override IChatClient CreateChatClient(
         AnthropicClient client,
         string? modelId = null,
-        int? defaultMaxOutputTokens = null
-    ) => client.AsIChatClient(modelId, defaultMaxOutputTokens);
+        int? defaultMaxOutputTokens = null,
+        AnthropicThinkingMode thinkingMode = AnthropicThinkingMode.Adaptive
+    ) => client.AsIChatClient(modelId, defaultMaxOutputTokens, thinkingMode);
 
     [Fact]
     public void AsIChatClient_ReturnsValidChatClient()

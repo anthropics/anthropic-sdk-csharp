@@ -136,7 +136,9 @@ public sealed record class BetaUserProfile : JsonModel
     }
 
     /// <summary>
-    /// Platform's own identifier for this user. Not enforced unique.
+    /// Platform's own identifier for this user. Not enforced unique. Present under
+    /// the `user-profiles-2026-03-24` and `user-profiles-2026-08-18` beta headers;
+    /// under `user-profiles-2026-09-04` the value is `external_user_details.reference_id`.
     /// </summary>
     public string? ExternalID
     {
@@ -146,6 +148,31 @@ public sealed record class BetaUserProfile : JsonModel
             return this._rawData.GetNullableClass<string>("external_id");
         }
         init { this._rawData.Set("external_id", value); }
+    }
+
+    /// <summary>
+    /// Details about the entity this profile represents, as the platform states them.
+    /// Anthropic does not verify them. Every field is present, `null` until the
+    /// platform supplies a value.
+    /// </summary>
+    public BetaUserProfileExternalUserDetails? ExternalUserDetails
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaUserProfileExternalUserDetails>(
+                "external_user_details"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData.Set("external_user_details", value);
+        }
     }
 
     /// <summary>
@@ -192,6 +219,7 @@ public sealed record class BetaUserProfile : JsonModel
         _ = this.UpdatedAt;
         this.AccessType?.Validate();
         _ = this.ExternalID;
+        this.ExternalUserDetails?.Validate();
         _ = this.ExternalUserOnboardedAt;
         _ = this.Name;
     }
