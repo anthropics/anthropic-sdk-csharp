@@ -157,6 +157,7 @@ public class BetaManagedAgentsSessionEventTest : TestBase
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
                 EvaluatedPermission = Events::EvaluatedPermission.Allow,
+                Evaluation = new Events::BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
                 SessionThreadID = "session_thread_id",
             };
         value.Validate();
@@ -201,6 +202,7 @@ public class BetaManagedAgentsSessionEventTest : TestBase
                 Type = Events::BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
                 EvaluatedPermission =
                     Events::BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+                Evaluation = new Events::BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
                 SessionThreadID = "session_thread_id",
             };
         value.Validate();
@@ -992,6 +994,7 @@ public class BetaManagedAgentsSessionEventTest : TestBase
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
                 EvaluatedPermission = Events::EvaluatedPermission.Allow,
+                Evaluation = new Events::BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
                 SessionThreadID = "session_thread_id",
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -1048,6 +1051,7 @@ public class BetaManagedAgentsSessionEventTest : TestBase
                 Type = Events::BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
                 EvaluatedPermission =
                     Events::BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+                Evaluation = new Events::BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
                 SessionThreadID = "session_thread_id",
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -1821,6 +1825,9 @@ public class BetaManagedAgentsSessionEventTest : TestBase
                   "tool_use_id": "tool_use_id",
                   "is_error": true,
                   "name": "name",
+                  "evaluation": {
+                    "type": "always_allow"
+                  },
                   "agent_name": "Researcher",
                   "iteration": 0,
                   "outcome_id": "outc_011CZkZRSw2kEfs6ncTVljxP",
@@ -1843,6 +1850,8 @@ public class BetaManagedAgentsSessionEventTest : TestBase
         string expectedToolUseID = "tool_use_id";
         bool expectedIsError = true;
         string expectedName = "name";
+        Events::BetaManagedAgentsAgentToolEvaluation expectedEvaluation =
+            new Events::BetaManagedAgentsAgentToolEvaluationAlwaysAllow();
         string expectedAgentName = "Researcher";
         int expectedIteration = 0;
         string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP";
@@ -1858,6 +1867,7 @@ public class BetaManagedAgentsSessionEventTest : TestBase
         Assert.Equal(expectedToolUseID, value.ToolUseID);
         Assert.Equal(expectedIsError, value.IsError);
         Assert.Equal(expectedName, value.Name);
+        Assert.Equal(expectedEvaluation, value.Evaluation);
         Assert.Equal(expectedAgentName, value.AgentName);
         Assert.Equal(expectedIteration, value.Iteration);
         Assert.Equal(expectedOutcomeID, value.OutcomeID);
@@ -1873,6 +1883,7 @@ public class BetaManagedAgentsSessionEventTest : TestBase
         Assert.Null(emptyValue.ToolUseID);
         Assert.Null(emptyValue.IsError);
         Assert.Null(emptyValue.Name);
+        Assert.Null(emptyValue.Evaluation);
         Assert.Null(emptyValue.AgentName);
         Assert.Null(emptyValue.Iteration);
         Assert.Null(emptyValue.OutcomeID);
