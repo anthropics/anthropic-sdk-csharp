@@ -6570,6 +6570,120 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetResponseAsync_WithThinkingTokens_PopulatesReasoningTokenCount()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test with thinking"
+                    }]
+                }],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_thinking_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 100,
+                    "output_tokens": 40,
+                    "output_tokens_details": {
+                        "thinking_tokens": 30
+                    }
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Test with thinking",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(response.Usage);
+        Assert.Equal(40, response.Usage.OutputTokenCount);
+        Assert.Equal(30, response.Usage.ReasoningTokenCount);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_ThinkingTokensFromDelta_PopulateReasoningTokenCount()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "hello"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":8,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":1,"output_tokens_details":{"thinking_tokens":0}}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello!"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":42,"output_tokens_details":{"thinking_tokens":25}}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "hello",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var usageContent = updates
+            .SelectMany(u => u.Contents.OfType<UsageContent>())
+            .LastOrDefault();
+        Assert.NotNull(usageContent);
+        Assert.Equal(42, usageContent.Details.OutputTokenCount);
+        Assert.Equal(25, usageContent.Details.ReasoningTokenCount);
+    }
+
+    [Fact]
     public async Task GetStreamingResponseAsync_DeltaWithoutCacheTokens_PreservesStartCacheTokens()
     {
         VerbatimHttpHandler handler = new(
