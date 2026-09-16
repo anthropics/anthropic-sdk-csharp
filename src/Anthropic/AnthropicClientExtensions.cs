@@ -1655,6 +1655,14 @@ public static class AnthropicClientExtensions
                                 DisableParallelToolUse = !options.AllowMultipleToolCalls,
                             }
                         : toolMode is NoneChatToolMode ? new ToolChoiceNone()
+                        // RequiredChatToolMode covers both "any tool" and "this tool";
+                        // only RequiredFunctionName tells the two apart.
+                        : toolMode is RequiredChatToolMode { RequiredFunctionName: { } name }
+                            ? new ToolChoiceTool()
+                            {
+                                Name = name,
+                                DisableParallelToolUse = !options.AllowMultipleToolCalls,
+                            }
                         : toolMode is RequiredChatToolMode
                             ? new ToolChoiceAny()
                             {

@@ -1524,6 +1524,14 @@ public static class AnthropicBetaClientExtensions
                                 DisableParallelToolUse = !options.AllowMultipleToolCalls,
                             }
                         : toolMode is NoneChatToolMode ? new BetaToolChoiceNone()
+                        // RequiredChatToolMode covers both "any tool" and "this tool";
+                        // only RequiredFunctionName tells the two apart.
+                        : toolMode is RequiredChatToolMode { RequiredFunctionName: { } name }
+                            ? new BetaToolChoiceTool()
+                            {
+                                Name = name,
+                                DisableParallelToolUse = !options.AllowMultipleToolCalls,
+                            }
                         : toolMode is RequiredChatToolMode
                             ? new BetaToolChoiceAny()
                             {

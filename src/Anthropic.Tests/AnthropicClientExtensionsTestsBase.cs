@@ -1968,6 +1968,106 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetResponseAsync_WithToolModeRequireSpecific()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Tell me the weather"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tool_choice": {
+                    "type": "tool",
+                    "name": "get_weather"
+                },
+                "tools": [{
+                    "name": "get_weather",
+                    "description": "Get weather",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "location": { "type": "string", "description": "The location" }
+                        },
+                        "required": ["location"],
+                        "additionalProperties": false
+                    }
+                }, {
+                    "name": "get_location",
+                    "description": "Get location",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {},
+                        "additionalProperties": false
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_toolmode_04",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "tool_use",
+                    "id": "toolu_abc",
+                    "name": "get_weather",
+                    "input": {"location": "Paris"},
+                    "caller": {"type": "direct"}
+                }],
+                "stop_reason": "tool_use",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 10
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var weatherFunction = AIFunctionFactory.CreateDeclaration(
+            "get_weather",
+            "Get weather",
+            JsonElement.Parse(
+                """
+                {
+                    "type": "object",
+                    "properties": {
+                        "location": { "type": "string", "description": "The location" }
+                    },
+                    "required": ["location"]
+                }
+                """
+            )
+        );
+        var locationFunction = AIFunctionFactory.CreateDeclaration(
+            "get_location",
+            "Get location",
+            JsonElement.Parse("""{ "type": "object", "properties": {} }""")
+        );
+
+        ChatOptions options = new()
+        {
+            Tools = [weatherFunction, locationFunction],
+            ToolMode = ChatToolMode.RequireSpecific("get_weather"),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Tell me the weather",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_WithToolModeNone()
     {
         VerbatimHttpHandler handler = new(
