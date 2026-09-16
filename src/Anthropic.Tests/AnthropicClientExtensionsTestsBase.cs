@@ -8566,6 +8566,143 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     /// <summary>
+    /// Validates that a union type ("type": ["string","null"], the shape System.Text.Json emits
+    /// for Nullable&lt;T&gt; and for a nullable reference type) keeps the keywords of every member
+    /// it names. Tests:
+    /// <list type="bullet">
+    /// <item>Supported string format preserved on ["string", "null"], as on "string"</item>
+    /// <item>Unsupported string format → description on ["string", "null"], as on "string"</item>
+    /// <item>properties/required preserved on ["object", "null"], as on "object"</item>
+    /// <item>Array minItems handling applies to ["array", "null"], as to "array"</item>
+    /// </list>
+    /// </summary>
+    [Fact]
+    public async Task GetResponseAsync_ResponseFormatSchema_UnionTypeKeepsTypeSpecificKeywords()
+    {
+        string inputSchema = """
+            {
+                "type": "object",
+                "properties": {
+                    "startsOn": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "endsOn": {
+                        "type": ["string", "null"],
+                        "description": "An end date, or null.",
+                        "format": "date"
+                    },
+                    "phone": {
+                        "type": ["string", "null"],
+                        "format": "phone"
+                    },
+                    "tags": {
+                        "type": ["array", "null"],
+                        "items": { "type": "string" },
+                        "minItems": 3
+                    },
+                    "nested": {
+                        "type": ["object", "null"],
+                        "properties": {
+                            "id": { "type": "string" }
+                        },
+                        "required": ["id"]
+                    }
+                },
+                "required": ["startsOn", "endsOn", "phone", "tags", "nested"]
+            }
+            """;
+
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "test"
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "startsOn": {
+                                    "type": "string",
+                                    "format": "date"
+                                },
+                                "endsOn": {
+                                    "type": ["string", "null"],
+                                    "description": "An end date, or null.",
+                                    "format": "date"
+                                },
+                                "phone": {
+                                    "type": ["string", "null"],
+                                    "description": "{format: \"phone\"}"
+                                },
+                                "tags": {
+                                    "type": ["array", "null"],
+                                    "items": { "type": "string" },
+                                    "description": "{minItems: 3}"
+                                },
+                                "nested": {
+                                    "type": ["object", "null"],
+                                    "properties": {
+                                        "id": { "type": "string" }
+                                    },
+                                    "required": ["id"],
+                                    "additionalProperties": false
+                                }
+                            },
+                            "required": ["startsOn", "endsOn", "phone", "tags", "nested"],
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_union_type_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "{}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema(
+                JsonElement.Parse(inputSchema),
+                "test_schema"
+            ),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "test",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    /// <summary>
     /// Validates the same schema transformations as
     /// <see cref="GetResponseAsync_ResponseFormatSchema_AllTransformationsApplied"/> but through
     /// the <see cref="AIFunctionDeclaration"/> tool path, ensuring both code paths apply the same

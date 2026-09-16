@@ -254,6 +254,16 @@ public static class AnthropicClientExtensions
         "minItems",
     };
 
+    /// <summary>Gets the properties supported for schemas of the given JSON Schema type.</summary>
+    private static HashSet<string> GetSupportedSchemaProperties(string? type) =>
+        type switch
+        {
+            "object" => s_supportedObjectSchemaProperties,
+            "string" => s_supportedStringSchemaProperties,
+            "array" => s_supportedArraySchemaProperties,
+            _ => s_supportedBaseSchemaProperties,
+        };
+
     /// <summary>
     /// Gets a shared cache for JSON schema transformations for Anthropic's structured output features.
     /// </summary>
@@ -289,18 +299,40 @@ public static class AnthropicClientExtensions
                         schemaObj["anyOf"] = oneOfNode;
                     }
 
-                    // Determine the schema type for type-specific handling.
-                    string? type =
-                        schemaObj.TryGetPropertyValue("type", out JsonNode? typeNode)
-                        && typeNode is JsonValue
-                            ? typeNode.GetValue<string>()
-                            : null;
+                    // Determine the schema type(s) for type-specific handling. A union type
+                    // ("type": ["string","null"], the shape System.Text.Json emits for
+                    // Nullable<T> and for a nullable reference type) is a JSON array rather
+                    // than a string, and carries the keywords of every member it names.
+                    HashSet<string> types = new(StringComparer.Ordinal);
+                    if (schemaObj.TryGetPropertyValue("type", out JsonNode? typeNode))
+                    {
+                        if (typeNode is JsonArray typeArray)
+                        {
+                            foreach (JsonNode? typeMember in typeArray)
+                            {
+                                if (
+                                    typeMember is JsonValue memberValue
+                                    && memberValue.TryGetValue(out string? memberName)
+                                )
+                                {
+                                    types.Add(memberName);
+                                }
+                            }
+                        }
+                        else if (
+                            typeNode is JsonValue typeValue
+                            && typeValue.TryGetValue(out string? typeName)
+                        )
+                        {
+                            types.Add(typeName);
+                        }
+                    }
 
                     List<KeyValuePair<string, string>>? removed = null;
 
                     // String format: only supported formats are kept.
                     if (
-                        type == "string"
+                        types.Contains("string")
                         && schemaObj.TryGetPropertyValue("format", out JsonNode? formatNode)
                         && formatNode?.GetValue<string>() is string format
                         && !s_supportedStringFormats.Contains(format)
@@ -313,7 +345,7 @@ public static class AnthropicClientExtensions
 
                     // Array minItems: only 0 and 1 are directly supported.
                     if (
-                        type == "array"
+                        types.Contains("array")
                         && schemaObj.TryGetPropertyValue("minItems", out JsonNode? minItemsNode)
                         && minItemsNode is JsonValue minItemsJsonValue
                         && minItemsJsonValue.TryGetValue(out int minItems)
@@ -326,13 +358,21 @@ public static class AnthropicClientExtensions
                     }
 
                     // Remove all properties not in the supported set for this schema type.
-                    HashSet<string> supported = type switch
+                    // A union type is supported by the union of its members' sets, so
+                    // ["string","null"] keeps "format" exactly as "string" does.
+                    HashSet<string> supported;
+                    if (types.Count > 1)
                     {
-                        "object" => s_supportedObjectSchemaProperties,
-                        "string" => s_supportedStringSchemaProperties,
-                        "array" => s_supportedArraySchemaProperties,
-                        _ => s_supportedBaseSchemaProperties,
-                    };
+                        supported = new(s_supportedBaseSchemaProperties, StringComparer.Ordinal);
+                        foreach (string typeName in types)
+                        {
+                            supported.UnionWith(GetSupportedSchemaProperties(typeName));
+                        }
+                    }
+                    else
+                    {
+                        supported = GetSupportedSchemaProperties(types.FirstOrDefault());
+                    }
 
                     foreach (KeyValuePair<string, JsonNode?> prop in schemaObj.ToArray())
                     {
