@@ -1457,19 +1457,27 @@ public static class AnthropicBetaClientExtensions
                             case HostedMcpServerTool mcp:
                                 (betaHeaders ??= []).Add("mcp-client-2025-11-20");
                                 (mcpServers ??= []).Add(
-                                    mcp.AllowedTools is { Count: > 0 } allowedTools
-                                        ? new()
-                                        {
-                                            Name = mcp.Name,
-                                            Url = mcp.ServerAddress,
-                                            ToolConfiguration = new()
-                                            {
-                                                AllowedTools = [.. allowedTools],
-                                                Enabled = true,
-                                            },
-                                        }
-                                        : new() { Name = mcp.Name, Url = mcp.ServerAddress }
+                                    new() { Name = mcp.ServerName, Url = mcp.ServerAddress }
                                 );
+
+                                // The API requires each server to be referenced by exactly one
+                                // mcp_toolset, which is also where tool allowlisting now lives.
+                                BetaMcpToolset mcpToolset = new(mcp.ServerName);
+                                if (mcp.AllowedTools is { Count: > 0 } allowedTools)
+                                {
+                                    Dictionary<string, BetaMcpToolConfig> configs = [];
+                                    foreach (string allowedTool in allowedTools)
+                                    {
+                                        configs[allowedTool] = new() { Enabled = true };
+                                    }
+
+                                    mcpToolset = mcpToolset with
+                                    {
+                                        DefaultConfig = new() { Enabled = false },
+                                        Configs = configs,
+                                    };
+                                }
+                                (createdTools ??= []).Add(mcpToolset);
                                 break;
                         }
                     }

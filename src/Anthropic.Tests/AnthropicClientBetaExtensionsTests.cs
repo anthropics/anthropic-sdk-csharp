@@ -130,8 +130,12 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                         "text": "Use the MCP server"
                     }]
                 }],
+                "tools": [{
+                    "type": "mcp_toolset",
+                    "mcp_server_name": "my-mcp-server"
+                }],
                 "mcp_servers": [{
-                    "name": "mcp",
+                    "name": "my-mcp-server",
                     "type": "url",
                     "url": "https://mcp.example.com/server"
                 }]
@@ -195,14 +199,22 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                         }
                     ]
                 }],
-                "mcp_servers": [{
-                    "name": "mcp",
-                    "type": "url",
-                    "url": "https://mcp.example.com/server",
-                    "tool_configuration": {
-                        "enabled": true,
-                        "allowed_tools": ["tool1", "tool2", "tool3"]
+                "tools": [{
+                    "type": "mcp_toolset",
+                    "mcp_server_name": "my-mcp-server",
+                    "default_config": {
+                        "enabled": false
+                    },
+                    "configs": {
+                        "tool1": { "enabled": true },
+                        "tool2": { "enabled": true },
+                        "tool3": { "enabled": true }
                     }
+                }],
+                "mcp_servers": [{
+                    "name": "my-mcp-server",
+                    "type": "url",
+                    "url": "https://mcp.example.com/server"
                 }]
             }
             """,
@@ -263,20 +275,33 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                         }
                     ]
                 }],
+                "tools": [
+                    {
+                        "type": "mcp_toolset",
+                        "mcp_server_name": "server1"
+                    },
+                    {
+                        "type": "mcp_toolset",
+                        "mcp_server_name": "server2",
+                        "default_config": {
+                            "enabled": false
+                        },
+                        "configs": {
+                            "tool_a": { "enabled": true },
+                            "tool_b": { "enabled": true }
+                        }
+                    }
+                ],
                 "mcp_servers": [
                     {
-                        "name": "mcp",
+                        "name": "server1",
                         "type": "url",
                         "url": "https://server1.example.com/"
                     },
                     {
-                        "name": "mcp",
+                        "name": "server2",
                         "type": "url",
-                        "url": "https://server2.example.com/",
-                        "tool_configuration": {
-                            "enabled": true,
-                            "allowed_tools": ["tool_a", "tool_b"]
-                        }
+                        "url": "https://server2.example.com/"
                     }
                 ]
             }
@@ -1554,12 +1579,18 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                         "text": "Use both tools"
                     }]
                 }],
-                "tools": [{
-                    "type": "code_execution_20250825",
-                    "name": "code_execution"
-                }],
+                "tools": [
+                    {
+                        "type": "code_execution_20250825",
+                        "name": "code_execution"
+                    },
+                    {
+                        "type": "mcp_toolset",
+                        "mcp_server_name": "my-mcp-server"
+                    }
+                ],
                 "mcp_servers": [{
-                    "name": "mcp",
+                    "name": "my-mcp-server",
                     "type": "url",
                     "url": "https://mcp.example.com/server"
                 }]
@@ -1626,12 +1657,18 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                         "text": "Test"
                     }]
                 }],
-                "tools": [{
-                    "type": "code_execution_20250825",
-                    "name": "code_execution"
-                }],
+                "tools": [
+                    {
+                        "type": "code_execution_20250825",
+                        "name": "code_execution"
+                    },
+                    {
+                        "type": "mcp_toolset",
+                        "mcp_server_name": "my-mcp-server"
+                    }
+                ],
                 "mcp_servers": [{
-                    "name": "mcp",
+                    "name": "my-mcp-server",
                     "type": "url",
                     "url": "https://mcp.example.com/server"
                 }]
