@@ -8703,6 +8703,130 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     /// <summary>
+    /// Validates that a type-specific keyword whose value is malformed is removed and described
+    /// rather than read as the wrong type or forwarded to the API unvalidated. Covers union and
+    /// scalar nodes alike, since both select the same type-specific pre-checks.
+    /// </summary>
+    [Fact]
+    public async Task GetResponseAsync_ResponseFormatSchema_MalformedKeywordValuesAreStripped()
+    {
+        string inputSchema = """
+            {
+                "type": "object",
+                "properties": {
+                    "nonStringFormat": {
+                        "type": ["string", "null"],
+                        "format": 3
+                    },
+                    "nullFormat": {
+                        "type": ["string", "null"],
+                        "format": null
+                    },
+                    "nonIntegerMinItems": {
+                        "type": ["array", "null"],
+                        "items": { "type": "string" },
+                        "minItems": "5"
+                    },
+                    "overflowingMinItems": {
+                        "type": ["array", "null"],
+                        "items": { "type": "string" },
+                        "minItems": 2147483648
+                    },
+                    "nonStringFormatOnScalar": {
+                        "type": "string",
+                        "format": 3
+                    }
+                },
+                "required": ["nonStringFormat", "nullFormat", "nonIntegerMinItems", "overflowingMinItems", "nonStringFormatOnScalar"]
+            }
+            """;
+
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "test"
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "nonStringFormat": {
+                                    "type": ["string", "null"],
+                                    "description": "{format: 3}"
+                                },
+                                "nullFormat": {
+                                    "type": ["string", "null"],
+                                    "description": "{format: null}"
+                                },
+                                "nonIntegerMinItems": {
+                                    "type": ["array", "null"],
+                                    "items": { "type": "string" },
+                                    "description": "{minItems: \"5\"}"
+                                },
+                                "overflowingMinItems": {
+                                    "type": ["array", "null"],
+                                    "items": { "type": "string" },
+                                    "description": "{minItems: 2147483648}"
+                                },
+                                "nonStringFormatOnScalar": {
+                                    "type": "string",
+                                    "description": "{format: 3}"
+                                }
+                            },
+                            "required": ["nonStringFormat", "nullFormat", "nonIntegerMinItems", "overflowingMinItems", "nonStringFormatOnScalar"],
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_malformed_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "{}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema(
+                JsonElement.Parse(inputSchema),
+                "test_schema"
+            ),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "test",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    /// <summary>
     /// Validates the same schema transformations as
     /// <see cref="GetResponseAsync_ResponseFormatSchema_AllTransformationsApplied"/> but through
     /// the <see cref="AIFunctionDeclaration"/> tool path, ensuring both code paths apply the same

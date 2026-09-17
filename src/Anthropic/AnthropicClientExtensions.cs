@@ -270,7 +270,10 @@ public static class AnthropicClientExtensions
     /// <remarks>
     /// Transforms schemas using the same whitelist approach as the TypeScript and Python SDKs:
     /// unsupported constraints are removed and appended to the description so the model
-    /// might still follow them. See:
+    /// might still follow them. Union types diverge deliberately: those SDKs compare
+    /// <c>type</c> against a single string, so a type array matches no branch (TypeScript
+    /// strips its keywords, Python raises). Here a type array keeps the keywords of every
+    /// member it names. See:
     /// <list type="bullet">
     /// <item><see href="https://github.com/anthropics/anthropic-sdk-typescript/blob/main/src/lib/transform-json-schema.ts"/></item>
     /// <item><see href="https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/lib/_parse/_transform.py"/></item>
@@ -303,56 +306,66 @@ public static class AnthropicClientExtensions
                     // ("type": ["string","null"], the shape System.Text.Json emits for
                     // Nullable<T> and for a nullable reference type) is a JSON array rather
                     // than a string, and carries the keywords of every member it names.
-                    HashSet<string> types = new(StringComparer.Ordinal);
-                    if (schemaObj.TryGetPropertyValue("type", out JsonNode? typeNode))
+                    schemaObj.TryGetPropertyValue("type", out JsonNode? typeNode);
+                    string? type =
+                        typeNode is JsonValue typeValue
+                        && typeValue.TryGetValue(out string? typeName)
+                            ? typeName
+                            : null;
+                    HashSet<string>? unionTypes = null;
+                    if (type is null && typeNode is JsonArray typeArray)
                     {
-                        if (typeNode is JsonArray typeArray)
+                        unionTypes = new(StringComparer.Ordinal);
+                        foreach (JsonNode? typeMember in typeArray)
                         {
-                            foreach (JsonNode? typeMember in typeArray)
+                            if (
+                                typeMember is JsonValue memberValue
+                                && memberValue.TryGetValue(out string? memberName)
+                            )
                             {
-                                if (
-                                    typeMember is JsonValue memberValue
-                                    && memberValue.TryGetValue(out string? memberName)
-                                )
-                                {
-                                    types.Add(memberName);
-                                }
+                                unionTypes.Add(memberName);
                             }
-                        }
-                        else if (
-                            typeNode is JsonValue typeValue
-                            && typeValue.TryGetValue(out string? typeName)
-                        )
-                        {
-                            types.Add(typeName);
                         }
                     }
 
+                    bool HasType(string candidate) =>
+                        unionTypes is null ? type == candidate : unionTypes.Contains(candidate);
+
                     List<KeyValuePair<string, string>>? removed = null;
 
-                    // String format: only supported formats are kept.
+                    // String format: only supported formats are kept. A value that is not a
+                    // supported format string -- including a non-string one -- is removed too,
+                    // rather than being read as a string or reaching the wire unvalidated.
                     if (
-                        types.Contains("string")
+                        HasType("string")
                         && schemaObj.TryGetPropertyValue("format", out JsonNode? formatNode)
-                        && formatNode?.GetValue<string>() is string format
-                        && !s_supportedStringFormats.Contains(format)
+                        && !(
+                            formatNode is JsonValue formatValue
+                            && formatValue.TryGetValue(out string? format)
+                            && s_supportedStringFormats.Contains(format)
+                        )
                     )
                     {
-                        string serialized = formatNode!.ToJsonString(s_relaxedJsonOptions);
+                        string serialized =
+                            formatNode?.ToJsonString(s_relaxedJsonOptions) ?? "null";
                         schemaObj.Remove("format");
                         (removed ??= []).Add(new("format", serialized));
                     }
 
-                    // Array minItems: only 0 and 1 are directly supported.
+                    // Array minItems: only 0 and 1 are directly supported. A value outside that
+                    // range -- or one that is not an integer at all -- is removed.
                     if (
-                        types.Contains("array")
+                        HasType("array")
                         && schemaObj.TryGetPropertyValue("minItems", out JsonNode? minItemsNode)
-                        && minItemsNode is JsonValue minItemsJsonValue
-                        && minItemsJsonValue.TryGetValue(out int minItems)
-                        && minItems is not (0 or 1)
+                        && !(
+                            minItemsNode is JsonValue minItemsValue
+                            && minItemsValue.TryGetValue(out int minItems)
+                            && minItems is 0 or 1
+                        )
                     )
                     {
-                        string serialized = minItemsNode.ToJsonString(s_relaxedJsonOptions);
+                        string serialized =
+                            minItemsNode?.ToJsonString(s_relaxedJsonOptions) ?? "null";
                         schemaObj.Remove("minItems");
                         (removed ??= []).Add(new("minItems", serialized));
                     }
@@ -361,17 +374,17 @@ public static class AnthropicClientExtensions
                     // A union type is supported by the union of its members' sets, so
                     // ["string","null"] keeps "format" exactly as "string" does.
                     HashSet<string> supported;
-                    if (types.Count > 1)
+                    if (unionTypes is null)
                     {
-                        supported = new(s_supportedBaseSchemaProperties, StringComparer.Ordinal);
-                        foreach (string typeName in types)
-                        {
-                            supported.UnionWith(GetSupportedSchemaProperties(typeName));
-                        }
+                        supported = GetSupportedSchemaProperties(type);
                     }
                     else
                     {
-                        supported = GetSupportedSchemaProperties(types.FirstOrDefault());
+                        supported = new(s_supportedBaseSchemaProperties, StringComparer.Ordinal);
+                        foreach (string memberType in unionTypes)
+                        {
+                            supported.UnionWith(GetSupportedSchemaProperties(memberType));
+                        }
                     }
 
                     foreach (KeyValuePair<string, JsonNode?> prop in schemaObj.ToArray())
