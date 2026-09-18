@@ -38,6 +38,24 @@ public sealed class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCre
         var payloadHash = AWSSigner.CalculateHash(content);
         requestMessage.Headers.TryAddWithoutValidation("x-amz-content-sha256", payloadHash);
 
+        // Collapse any multi-value request headers (e.g. anthropic-beta when several betas are
+        // supplied) to a single comma-joined value before signing AND sending. HttpClient
+        // serializes multi-value headers with ", " on the wire, which would not match the
+        // canonical request and cause a SigV4 signature mismatch. By mutating the message
+        // headers here, the signed bytes and the wire bytes agree.
+        foreach (var header in requestMessage.Headers.ToList())
+        {
+            var values = header.Value.ToList();
+            if (values.Count > 1)
+            {
+                requestMessage.Headers.Remove(header.Key);
+                requestMessage.Headers.TryAddWithoutValidation(
+                    header.Key,
+                    string.Join(",", values)
+                );
+            }
+        }
+
         var authorizationHeader = AWSSigner.GetAuthorizationHeader(
             "bedrock",
             Region,
@@ -46,7 +64,7 @@ public sealed class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCre
             now,
             requestMessage.Headers.ToDictionary(
                 e => e.Key,
-                e => string.Join(" ", e.Value),
+                e => string.Join(",", e.Value),
                 StringComparer.InvariantCultureIgnoreCase
             ),
             payloadHash,
