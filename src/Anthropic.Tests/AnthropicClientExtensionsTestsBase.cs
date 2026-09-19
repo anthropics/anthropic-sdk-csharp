@@ -6684,6 +6684,72 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetStreamingResponseAsync_DeltaWithoutThinkingTokens_PreservesStartThinkingTokens()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "hello"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            // message_start reports a non-zero thinking_tokens, but the terminal
+            // message_delta omits output_tokens_details entirely (as the API
+            // typically does once thinking has stopped). The start value must
+            // survive instead of being wiped by the delta's ?? fallback.
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":8,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":1,"output_tokens_details":{"thinking_tokens":7}}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello!"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":42}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "hello",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var usageContent = updates
+            .SelectMany(u => u.Contents.OfType<UsageContent>())
+            .LastOrDefault();
+        Assert.NotNull(usageContent);
+        Assert.Equal(42, usageContent.Details.OutputTokenCount);
+        Assert.Equal(7, usageContent.Details.ReasoningTokenCount);
+    }
+
+    [Fact]
     public async Task GetStreamingResponseAsync_DeltaWithoutCacheTokens_PreservesStartCacheTokens()
     {
         VerbatimHttpHandler handler = new(
