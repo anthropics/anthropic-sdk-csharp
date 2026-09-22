@@ -501,6 +501,19 @@ public static class AnthropicBetaClientExtensions
                                     )
                                 );
                                 break;
+
+                            case BetaFallbackBlock fallback:
+                                // Streaming latches modelID at message_start, but a fallback block
+                                // means a different model served the rest of the turn. The
+                                // aggregator relabels the message from this block; without doing the
+                                // same here every later update names the model that declined.
+                                modelID = fallback.To.Model.Raw();
+                                contents.Add(
+                                    ContentBlockValueToAIContent(
+                                        contentBlockStart.ContentBlock.Value
+                                    )
+                                );
+                                break;
                         }
                         break;
 
