@@ -1009,6 +1009,8 @@ public static class AnthropicClientExtensions
         {
             List<MessageParam> messageParams = [];
             Dictionary<string, string>? toolsetNames = null;
+            List<ContentBlockParam>? lastTurn = null;
+            bool lastTurnIsAssistant = false;
             systemMessages = null;
 
             foreach (ChatMessage message in NormalizeConsecutiveSystemMessages(messages))
@@ -1046,6 +1048,7 @@ public static class AnthropicClientExtensions
                             // rejects the request if the model or the placement does not support
                             // mid-conversation system messages.
                             messageParams.Add(new SystemMessageParam { Content = systemBlocks });
+                            lastTurn = null;
                         }
                     }
 
@@ -1449,8 +1452,22 @@ public static class AnthropicClientExtensions
                     continue;
                 }
 
+                bool isAssistant = message.Role == ChatRole.Assistant;
+                if (lastTurn is not null && isAssistant == lastTurnIsAssistant)
+                {
+                    // The API combines consecutive same-role messages into a single turn. Doing
+                    // that here keeps the request bytes, and so the prompt-cache prefix, the same
+                    // whether a turn arrives as one ChatMessage (as FunctionInvokingChatClient
+                    // produces it) or split across several (as history rebuilt from storage often
+                    // is), rather than relying on the API's combining to line them up.
+                    messageParams.RemoveAt(messageParams.Count - 1);
+                    contents = [.. lastTurn, .. contents];
+                }
+
+                lastTurn = contents;
+                lastTurnIsAssistant = isAssistant;
                 messageParams.Add(
-                    message.Role == ChatRole.Assistant
+                    isAssistant
                         ? new AssistantMessageParam { Content = contents }
                         : new UserMessageParam { Content = contents }
                 );
