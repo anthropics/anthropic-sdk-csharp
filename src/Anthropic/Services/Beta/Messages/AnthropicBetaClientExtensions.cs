@@ -648,6 +648,8 @@ public static class AnthropicBetaClientExtensions
         {
             List<BetaMessageParam> messageParams = [];
             Dictionary<string, string>? toolsetNames = null;
+            List<BetaContentBlockParam>? lastTurn = null;
+            Role lastTurnRole = default;
             systemMessages = null;
             hasHostedFiles = false;
 
@@ -694,6 +696,7 @@ public static class AnthropicBetaClientExtensions
                                         .ToList(),
                                 }
                             );
+                            lastTurn = null;
                         }
                     }
 
@@ -1148,13 +1151,21 @@ public static class AnthropicBetaClientExtensions
                     continue;
                 }
 
-                messageParams.Add(
-                    new()
-                    {
-                        Role = message.Role == ChatRole.Assistant ? Role.Assistant : Role.User,
-                        Content = contents,
-                    }
-                );
+                Role role = message.Role == ChatRole.Assistant ? Role.Assistant : Role.User;
+                if (lastTurn is not null && role == lastTurnRole)
+                {
+                    // The API combines consecutive same-role messages into a single turn. Doing
+                    // that here keeps the request bytes, and so the prompt-cache prefix, the same
+                    // whether a turn arrives as one ChatMessage (as FunctionInvokingChatClient
+                    // produces it) or split across several (as history rebuilt from storage often
+                    // is), rather than relying on the API's combining to line them up.
+                    messageParams.RemoveAt(messageParams.Count - 1);
+                    contents = [.. lastTurn, .. contents];
+                }
+
+                lastTurn = contents;
+                lastTurnRole = role;
+                messageParams.Add(new() { Role = role, Content = contents });
             }
 
             return messageParams;
