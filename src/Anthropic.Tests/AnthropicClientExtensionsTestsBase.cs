@@ -2851,6 +2851,313 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.NotNull(response);
     }
 
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task GetResponseAsync_SplitAndGroupedHistories_SerializeIdentically(bool grouped)
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Weather in Paris and London?" }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [
+                            {
+                                "type": "thinking",
+                                "thinking": "Two cities, two calls.",
+                                "signature": "sig_1"
+                            },
+                            { "type": "text", "text": "Checking both." },
+                            {
+                                "type": "tool_use",
+                                "id": "toolu_1",
+                                "name": "get_weather",
+                                "input": { "city": "Paris" }
+                            },
+                            {
+                                "type": "tool_use",
+                                "id": "toolu_2",
+                                "name": "get_weather",
+                                "input": { "city": "London" }
+                            }
+                        ]
+                    },
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "tool_result",
+                                "tool_use_id": "toolu_1",
+                                "content": "Sunny",
+                                "is_error": false
+                            },
+                            {
+                                "type": "tool_result",
+                                "tool_use_id": "toolu_2",
+                                "content": "Rainy",
+                                "is_error": false
+                            }
+                        ]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_same_role_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{ "type": "text", "text": "Sunny in Paris, rainy in London." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 40, "output_tokens": 10 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        AIContent reasoning = new TextReasoningContent("Two cities, two calls.")
+        {
+            ProtectedData = "sig_1",
+        };
+        AIContent text = new TextContent("Checking both.");
+        AIContent call1 = new FunctionCallContent(
+            "toolu_1",
+            "get_weather",
+            new Dictionary<string, object?> { ["city"] = "Paris" }
+        );
+        AIContent call2 = new FunctionCallContent(
+            "toolu_2",
+            "get_weather",
+            new Dictionary<string, object?> { ["city"] = "London" }
+        );
+        AIContent result1 = new FunctionResultContent("toolu_1", "Sunny");
+        AIContent result2 = new FunctionResultContent("toolu_2", "Rainy");
+
+        // The grouped shape is what FunctionInvokingChatClient produces in-run; the split shape is
+        // the same turn rebuilt from persisted history, one message per stored item.
+        List<ChatMessage> messages = grouped
+            ?
+            [
+                new(ChatRole.User, "Weather in Paris and London?"),
+                new(ChatRole.Assistant, [reasoning, text, call1, call2]),
+                new(ChatRole.Tool, [result1, result2]),
+            ]
+            :
+            [
+                new(ChatRole.User, "Weather in Paris and London?"),
+                new(ChatRole.Assistant, [reasoning]),
+                new(ChatRole.Assistant, [text, call1, call2]),
+                new(ChatRole.Tool, [result1]),
+                new(ChatRole.Tool, [result2]),
+            ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ConsecutiveUserMessages_AreMergedPreservingCacheControl()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [
+                            { "type": "text", "text": "Here is the context." },
+                            {
+                                "type": "text",
+                                "text": "Now the question.",
+                                "cache_control": { "type": "ephemeral", "ttl": "1h" }
+                            }
+                        ]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_same_role_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{ "type": "text", "text": "Answer." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 15, "output_tokens": 5 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Here is the context."),
+            new(
+                ChatRole.User,
+                [
+                    new TextContent("Now the question.").WithCacheControl(
+                        Anthropic.Models.Messages.Ttl.Ttl1h
+                    ),
+                ]
+            ),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_ToolResultsFollowedByUserMessage_AreMerged()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "What's the weather?" }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "toolu_1",
+                            "name": "get_weather",
+                            "input": {}
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "tool_result",
+                                "tool_use_id": "toolu_1",
+                                "content": "Sunny",
+                                "is_error": false
+                            },
+                            { "type": "text", "text": "Answer in French." }
+                        ]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_same_role_03",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{ "type": "text", "text": "Ensoleillé." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 30, "output_tokens": 5 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "What's the weather?"),
+            new(
+                ChatRole.Assistant,
+                [
+                    new FunctionCallContent(
+                        "toolu_1",
+                        "get_weather",
+                        new Dictionary<string, object?>()
+                    ),
+                ]
+            ),
+            new(ChatRole.Tool, [new FunctionResultContent("toolu_1", "Sunny")]),
+            new(ChatRole.User, "Answer in French."),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_MidConversationSystemMessage_SeparatesSameRoleMessages()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-opus-4-8",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Hello" }]
+                    },
+                    {
+                        "role": "system",
+                        "content": [{ "type": "text", "text": "Rule A." }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Continue" }]
+                    }
+                ],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_same_role_04",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-opus-4-8",
+                "content": [{ "type": "text", "text": "Understood." }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 15, "output_tokens": 5 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-opus-4-8");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Hello"),
+            new(ChatRole.System, "Rule A."),
+            new(ChatRole.User, "Continue"),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            messages,
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
     [Fact]
     public async Task GetResponseAsync_LeadingSystemMessage_StaysTopLevel()
     {
@@ -5495,17 +5802,16 @@ public abstract class AnthropicClientExtensionsTestsBase
                 "messages": [
                     {
                         "role": "user",
-                        "content": [{
-                            "type": "text",
-                            "text": "Question"
-                        }]
-                    },
-                    {
-                        "role": "user",
-                        "content": [{
-                            "type": "text",
-                            "text": "Follow up"
-                        }]
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "Question"
+                            },
+                            {
+                                "type": "text",
+                                "text": "Follow up"
+                            }
+                        ]
                     }
                 ]
             }
