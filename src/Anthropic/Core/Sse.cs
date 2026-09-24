@@ -74,6 +74,13 @@ static class Sse
                 case "event_start":
                 case "event_delta":
                 case "system.message":
+                    if (item.Data == "[DONE]")
+                    {
+                        // This is a terminal event that may be sent by Azure APIM to 
+                        // indicate the end of the stream. It should not be treated as
+                        // a message and should not be deserialized.
+                        continue;
+                    }
                     T? message;
                     try
                     {
