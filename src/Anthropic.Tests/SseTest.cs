@@ -219,4 +219,50 @@ public class SseTest : TestBase
         Assert.IsType<AnthropicServiceException>(sseEx, exactMatch: false);
         Assert.Equal(ErrorType.OverloadedError, sseEx.ErrorType);
     }
+
+    [Fact]
+    public async Task Sse_SkipsDoneTerminalEvent()
+    {
+        // Azure APIM may send "data: [DONE]" (without an event: field) after
+        // message_stop to signal end-of-stream. SseParser assigns it the default
+        // EventType "message", which matches the deserialization case. Without the
+        // [DONE] guard this would throw a JsonException.
+        var events = """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":5}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            data: [DONE]
+
+
+            """;
+
+        var resp = new HttpResponseMessage() { Content = new StringContent(events) };
+
+        var actualMessages = new List<JsonElement>();
+        await foreach (
+            var message in Sse.Enumerate<JsonElement>(resp, TestContext.Current.CancellationToken)
+        )
+        {
+            actualMessages.Add(message);
+        }
+
+        // Should have received 6 events (start, block_start, delta, block_stop, message_delta, message_stop)
+        // and NOT throw on [DONE]
+        Assert.Equal(6, actualMessages.Count);
+    }
 }
