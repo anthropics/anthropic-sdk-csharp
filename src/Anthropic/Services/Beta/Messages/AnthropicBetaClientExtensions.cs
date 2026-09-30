@@ -486,12 +486,25 @@ public static class AnthropicBetaClientExtensions
                                 };
                                 break;
 
+                            case BetaMcpToolUseBlock mcpToolUse:
+                                streamingFunctions ??= [];
+                                streamingFunctions[contentBlockStart.Index] = new()
+                                {
+                                    CallId = mcpToolUse.ID,
+                                    Name = mcpToolUse.Name,
+                                    McpServerName = mcpToolUse.ServerName,
+                                    InitialInput = mcpToolUse.Input is { Count: > 0 }
+                                        ? mcpToolUse.Input
+                                        : null,
+                                    RawRepresentation = mcpToolUse,
+                                };
+                                break;
+
                             case BetaWebSearchToolResultBlock:
                             case BetaWebFetchToolResultBlock:
                             case BetaCodeExecutionToolResultBlock:
                             case BetaBashCodeExecutionToolResultBlock:
                             case BetaTextEditorCodeExecutionToolResultBlock:
-                            case BetaMcpToolUseBlock:
                             case BetaMcpToolResultBlock:
                             case BetaToolSearchToolResultBlock:
                             case BetaContainerUploadBlock:
@@ -2227,6 +2240,22 @@ public static class AnthropicBetaClientExtensions
 
         private static AIContent CreateStreamingToolCallContent(StreamingFunctionData functionData)
         {
+            if (functionData.McpServerName is string mcpServerName)
+            {
+                IReadOnlyDictionary<string, JsonElement>? mcpInput = FoldedInput(functionData);
+                return new McpServerToolCallContent(
+                    functionData.CallId,
+                    functionData.Name,
+                    mcpServerName
+                )
+                {
+                    Arguments =
+                        mcpInput?.ToDictionary(e => e.Key, e => (object?)e.Value)
+                        ?? new Dictionary<string, object?>(),
+                    RawRepresentation = functionData.RawRepresentation,
+                };
+            }
+
             if (functionData.ServerToolName is not Name serverToolName)
             {
                 var fcc = FunctionCallContent.CreateFromParsedArguments(
@@ -2248,17 +2277,7 @@ public static class AnthropicBetaClientExtensions
                 return fcc;
             }
 
-            IReadOnlyDictionary<string, JsonElement>? input = functionData.InitialInput;
-            if (functionData.Arguments.Length > 0)
-            {
-                try
-                {
-                    input = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                        functionData.Arguments.ToString()
-                    );
-                }
-                catch (JsonException) { }
-            }
+            IReadOnlyDictionary<string, JsonElement>? input = FoldedInput(functionData);
 
             switch (serverToolName)
             {
@@ -2313,6 +2332,29 @@ public static class AnthropicBetaClientExtensions
                         RawRepresentation = functionData.RawRepresentation,
                     };
             }
+        }
+
+        /// <summary>
+        /// The input of a streamed tool block: the fragments accumulated from
+        /// <c>input_json_delta</c>, falling back to whatever <c>content_block_start</c> carried when
+        /// no fragment arrived or the accumulated JSON was truncated by an early stream stop.
+        /// </summary>
+        private static IReadOnlyDictionary<string, JsonElement>? FoldedInput(
+            StreamingFunctionData functionData
+        )
+        {
+            IReadOnlyDictionary<string, JsonElement>? input = functionData.InitialInput;
+            if (functionData.Arguments.Length > 0)
+            {
+                try
+                {
+                    input = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                        functionData.Arguments.ToString()
+                    );
+                }
+                catch (JsonException) { }
+            }
+            return input;
         }
 
         private static AIAnnotation? ToAIAnnotation(BetaTextCitation citation)
@@ -2386,6 +2428,7 @@ public static class AnthropicBetaClientExtensions
             public string CallId { get; set; } = "";
             public string Name { get; set; } = "";
             public Name? ServerToolName { get; set; }
+            public string? McpServerName { get; set; }
             public IReadOnlyDictionary<string, JsonElement>? InitialInput { get; set; }
             public object? RawRepresentation { get; set; }
             public StringBuilder Arguments { get; } = new();
