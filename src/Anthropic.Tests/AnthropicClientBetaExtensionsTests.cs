@@ -1823,6 +1823,98 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.Contains(capturedUserAgentValues, v => v.Contains("AnthropicClient"));
     }
 
+    /// <summary>
+    /// A <c>fallback</c> block marks where a declining model's output gives way to the model that
+    /// served the rest of the turn. The non-streaming adapter reads the model from the response,
+    /// which the API already relabels, and <c>BetaMessageContentAggregator</c> relabels the
+    /// aggregated message from this block. Streaming latched <c>ModelId</c> at
+    /// <c>message_start</c>, so without relabelling it names the model that declined.
+    /// </summary>
+    [Fact]
+    public async Task GetStreamingResponseAsync_FallbackBlock_RelabelsModelIdAndSurfacesTheBlock()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "model-a",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test fallback streaming"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_fallback_01","type":"message","role":"assistant","model":"model-a","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"fallback","from":{"model":"model-a"},"to":{"model":"model-b"},"trigger":{"type":"refusal","category":null}}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":1,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":1,"delta":{"type":"text_delta","text":"Fallback Output"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":1}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":5}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "model-a");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Test fallback streaming",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        // The update carrying the post-fallback text reports the model that produced it, not the
+        // one that declined.
+        List<ChatResponseUpdate> textUpdates =
+        [
+            .. updates.Where(u =>
+                u.Contents.OfType<TextContent>().Any(t => t.Text == "Fallback Output")
+            ),
+        ];
+        ChatResponseUpdate textUpdate = Assert.Single(textUpdates);
+        Assert.Equal("model-b", textUpdate.ModelId);
+
+        // The boundary itself reaches the caller, as it does through the non-streaming adapter.
+        List<AIContent> fallbackContents =
+        [
+            .. updates
+                .SelectMany(u => u.Contents)
+                .Where(c => c.RawRepresentation is BetaFallbackBlock),
+        ];
+        AIContent fallbackContent = Assert.Single(fallbackContents);
+        BetaFallbackBlock block = Assert.IsType<BetaFallbackBlock>(
+            fallbackContent.RawRepresentation
+        );
+        Assert.Equal("model-b", block.To.Model.Raw());
+    }
+
     [Fact]
     public async Task GetResponseAsync_MeaiUserAgentHeader_HasCorrectFormat()
     {
