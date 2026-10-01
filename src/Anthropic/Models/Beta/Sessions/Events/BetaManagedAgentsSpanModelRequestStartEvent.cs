@@ -34,7 +34,7 @@ public sealed record class BetaManagedAgentsSpanModelRequestStartEvent : JsonMod
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the model request started.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {

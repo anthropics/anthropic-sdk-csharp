@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Organization.Workspaces.RateLimits;
+using RateLimits = Anthropic.Models.Beta.Organization.RateLimits;
 
 namespace Anthropic.Tests.Models.Beta.Organization.Workspaces.RateLimits;
 
@@ -16,12 +17,18 @@ public class RateLimitListPageResponseTest : TestBase
             [
                 new()
                 {
+                    Group = new RateLimits::BetaOrganizationRateLimitModelGroup()
+                    {
+                        ID = "id",
+                        DisplayName = "display_name",
+                    },
                     GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                     Limits =
                     [
                         new()
                         {
                             OrgLimit = 0,
+                            Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                             Type = "type",
                             Value = 0,
                         },
@@ -38,12 +45,18 @@ public class RateLimitListPageResponseTest : TestBase
         [
             new()
             {
+                Group = new RateLimits::BetaOrganizationRateLimitModelGroup()
+                {
+                    ID = "id",
+                    DisplayName = "display_name",
+                },
                 GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                 Limits =
                 [
                     new()
                     {
                         OrgLimit = 0,
+                        Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                         Type = "type",
                         Value = 0,
                     },
@@ -72,12 +85,18 @@ public class RateLimitListPageResponseTest : TestBase
             [
                 new()
                 {
+                    Group = new RateLimits::BetaOrganizationRateLimitModelGroup()
+                    {
+                        ID = "id",
+                        DisplayName = "display_name",
+                    },
                     GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                     Limits =
                     [
                         new()
                         {
                             OrgLimit = 0,
+                            Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                             Type = "type",
                             Value = 0,
                         },
@@ -108,12 +127,18 @@ public class RateLimitListPageResponseTest : TestBase
             [
                 new()
                 {
+                    Group = new RateLimits::BetaOrganizationRateLimitModelGroup()
+                    {
+                        ID = "id",
+                        DisplayName = "display_name",
+                    },
                     GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                     Limits =
                     [
                         new()
                         {
                             OrgLimit = 0,
+                            Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                             Type = "type",
                             Value = 0,
                         },
@@ -137,12 +162,18 @@ public class RateLimitListPageResponseTest : TestBase
         [
             new()
             {
+                Group = new RateLimits::BetaOrganizationRateLimitModelGroup()
+                {
+                    ID = "id",
+                    DisplayName = "display_name",
+                },
                 GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                 Limits =
                 [
                     new()
                     {
                         OrgLimit = 0,
+                        Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                         Type = "type",
                         Value = 0,
                     },
@@ -171,12 +202,18 @@ public class RateLimitListPageResponseTest : TestBase
             [
                 new()
                 {
+                    Group = new RateLimits::BetaOrganizationRateLimitModelGroup()
+                    {
+                        ID = "id",
+                        DisplayName = "display_name",
+                    },
                     GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                     Limits =
                     [
                         new()
                         {
                             OrgLimit = 0,
+                            Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                             Type = "type",
                             Value = 0,
                         },
@@ -201,12 +238,18 @@ public class RateLimitListPageResponseTest : TestBase
             [
                 new()
                 {
+                    Group = new RateLimits::BetaOrganizationRateLimitModelGroup()
+                    {
+                        ID = "id",
+                        DisplayName = "display_name",
+                    },
                     GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                     Limits =
                     [
                         new()
                         {
                             OrgLimit = 0,
+                            Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                             Type = "type",
                             Value = 0,
                         },

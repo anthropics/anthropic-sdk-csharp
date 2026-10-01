@@ -67,7 +67,7 @@ public sealed record class BetaManagedAgentsAgentCustomToolUseEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when this tool use was processed.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {
@@ -94,7 +94,8 @@ public sealed record class BetaManagedAgentsAgentCustomToolUseEvent : JsonModel
     /// <summary>
     /// When set, this event was cross-posted from a subagent's thread to surface
     /// its custom tool use on the primary thread's stream. Empty on the thread's
-    /// own events. Echo this on a `user.custom_tool_result` event to route the result back.
+    /// own events. Informational only: the server routes the matching `user.custom_tool_result`
+    /// by `custom_tool_use_id`, so clients do not send it back.
     /// </summary>
     public string? SessionThreadID
     {

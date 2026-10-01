@@ -47,7 +47,7 @@ public sealed record class BetaManagedAgentsMcpConnectionFailedError : JsonModel
     }
 
     /// <summary>
-    /// What the client should do next in response to this error.
+    /// What the client should do next.
     /// </summary>
     public required BetaManagedAgentsMcpConnectionFailedErrorRetryStatus RetryStatus
     {
@@ -126,7 +126,7 @@ class BetaManagedAgentsMcpConnectionFailedErrorFromRaw
 }
 
 /// <summary>
-/// What the client should do next in response to this error.
+/// What the client should do next.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsMcpConnectionFailedErrorRetryStatusConverter))]
 public record class BetaManagedAgentsMcpConnectionFailedErrorRetryStatus : ModelBase

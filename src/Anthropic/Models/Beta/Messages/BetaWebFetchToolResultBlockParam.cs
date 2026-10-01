@@ -62,9 +62,6 @@ public sealed record class BetaWebFetchToolResultBlockParam : JsonModel
         init { this._rawData.Set("cache_control", value); }
     }
 
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public BetaWebFetchToolResultBlockParamCaller? Caller
     {
         get
@@ -439,9 +436,6 @@ sealed class BetaWebFetchToolResultBlockParamContentConverter
     }
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(BetaWebFetchToolResultBlockParamCallerConverter))]
 public record class BetaWebFetchToolResultBlockParamCaller : ModelBase
 {

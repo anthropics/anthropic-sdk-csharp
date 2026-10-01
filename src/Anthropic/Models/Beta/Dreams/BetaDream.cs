@@ -11,15 +11,25 @@ using System = System;
 namespace Anthropic.Models.Beta.Dreams;
 
 /// <summary>
-/// An asynchronous memory-consolidation job that reads a memory store plus a set
-/// of session transcripts and writes consolidated memories into an output memory
-/// store — a new store by default, or an existing store chosen via output_behavior.
-/// The Dreams API is in research preview: the request and response shapes are volatile
-/// and may change without the deprecation period that applies to generally-available endpoints.
+/// An asynchronous job that reads a memory store and past sessions, then writes a
+/// reorganized version of that memory store.
+///
+/// <para>By default the dream writes its result to a new memory store and doesn't
+/// change the input memory store. With `output_behavior` set to `update_existing`,
+/// it writes its result into the input memory store instead.</para>
+///
+/// <para>The Dreams API is in research preview: the request and response shapes
+/// are volatile and may change without the deprecation period that applies to generally-available endpoints.</para>
+///
+/// <para>See the [Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#how-it-works)
+/// for what a dream reads and produces.</para>
 /// </summary>
 [JsonConverter(typeof(JsonModelConverter<BetaDream, BetaDreamFromRaw>))]
 public sealed record class BetaDream : JsonModel
 {
+    /// <summary>
+    /// The unique ID of the dream (`drm_...`).
+    /// </summary>
     public required string ID
     {
         get
@@ -31,7 +41,7 @@ public sealed record class BetaDream : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When the dream was archived, in RFC 3339, or `null` if it hasn't been archived.
     /// </summary>
     public required System::DateTimeOffset? ArchivedAt
     {
@@ -44,7 +54,9 @@ public sealed record class BetaDream : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When the dream was created, in RFC 3339.
+    ///
+    /// <para>Lists of dreams are sorted by this time, newest first.</para>
     /// </summary>
     public required System::DateTimeOffset CreatedAt
     {
@@ -57,7 +69,8 @@ public sealed record class BetaDream : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When the dream reached `completed`, `failed`, or `canceled`, in RFC 3339,
+    /// or `null` if it is still `pending` or `running`.
     /// </summary>
     public required System::DateTimeOffset? EndedAt
     {
@@ -70,7 +83,7 @@ public sealed record class BetaDream : JsonModel
     }
 
     /// <summary>
-    /// Failure detail for a Dream whose `status` is `failed`.
+    /// Why the dream failed, or `null` if `status` isn't `failed`.
     /// </summary>
     public required BetaDreamError? Error
     {
@@ -82,6 +95,9 @@ public sealed record class BetaDream : JsonModel
         init { this._rawData.Set("error", value); }
     }
 
+    /// <summary>
+    /// The sources that the dream reads, from the request that created it.
+    /// </summary>
     public required IReadOnlyList<BetaDreamInput> Inputs
     {
         get
@@ -98,6 +114,9 @@ public sealed record class BetaDream : JsonModel
         }
     }
 
+    /// <summary>
+    /// The guidance given when the dream was created, or `null` if none was given.
+    /// </summary>
     public required string? Instructions
     {
         get
@@ -109,8 +128,10 @@ public sealed record class BetaDream : JsonModel
     }
 
     /// <summary>
-    /// Model identifier and configuration applied to every pipeline stage. Same
-    /// wire shape as the Agents API ModelConfig.
+    /// The model that runs a dream, from the request that created it.
+    ///
+    /// <para>The dream uses this model for all of its work. The response always gives
+    /// the model as an object, even if the request gave only a model ID.</para>
     /// </summary>
     public required BetaDreamModelConfig Model
     {
@@ -123,9 +144,8 @@ public sealed record class BetaDream : JsonModel
     }
 
     /// <summary>
-    /// The default destination: the job creates a new output memory store as a clone
-    /// of the memory_store input and writes the consolidated memories into it. The
-    /// input store is never mutated.
+    /// Where the dream writes its result, as set in the request that created the
+    /// dream. If that request left out `output_behavior`, the dream used the `create_new` behavior.
     /// </summary>
     public required BetaOutputBehavior OutputBehavior
     {
@@ -137,6 +157,18 @@ public sealed record class BetaDream : JsonModel
         init { this._rawData.Set("output_behavior", value); }
     }
 
+    /// <summary>
+    /// The memory store that holds the dream's result, as a one-item array, or an
+    /// empty array until the dream records that memory store.
+    ///
+    /// <para>The array is empty while the dream is `pending` and for a short time
+    /// after it starts `running`. It can stay empty if the dream fails or is canceled
+    /// before then. The memory store holds the complete result only once `status`
+    /// is `completed`.</para>
+    ///
+    /// <para>See the [Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#use-the-output)
+    /// for how to review and use the result.</para>
+    /// </summary>
     public required IReadOnlyList<BetaDreamOutput> Outputs
     {
         get
@@ -153,6 +185,15 @@ public sealed record class BetaDream : JsonModel
         }
     }
 
+    /// <summary>
+    /// The ID of the session that runs the dream (`sesn_...`), or `null` if that
+    /// session hasn't started.
+    ///
+    /// <para>Stream that session's events to follow what the dream reads and writes.</para>
+    ///
+    /// <para>See the [Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#watch-the-pipeline-run)
+    /// for how to watch a running dream.</para>
+    /// </summary>
     public required string? SessionID
     {
         get
@@ -164,7 +205,13 @@ public sealed record class BetaDream : JsonModel
     }
 
     /// <summary>
-    /// Lifecycle status of a Dream.
+    /// Where a dream is in its lifecycle.
+    ///
+    /// <para>`completed`, `failed`, and `canceled` are final: once a dream has one
+    /// of these statuses, its status doesn't change again.</para>
+    ///
+    /// <para>See the [Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#lifecycle)
+    /// for what each status means.</para>
     /// </summary>
     public required ApiEnum<string, BetaDreamStatus> Status
     {
@@ -189,7 +236,8 @@ public sealed record class BetaDream : JsonModel
     }
 
     /// <summary>
-    /// Cumulative token usage for the dream across every pipeline stage.
+    /// The dream's token counts, which stop changing once its `status` is `completed`
+    /// or `failed`. After a cancel, they can keep changing.
     /// </summary>
     public required BetaDreamUsage Usage
     {

@@ -32,6 +32,7 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -129,6 +130,10 @@ public class MessageCreateParamsTest : TestBase
                 },
             ],
         };
+        Messages::DiagnosticsParam expectedDiagnostics = new()
+        {
+            PreviousMessageID = "previous_message_id",
+        };
         string expectedInferenceGeo = "inference_geo";
         Messages::Metadata expectedMetadata = new()
         {
@@ -220,6 +225,7 @@ public class MessageCreateParamsTest : TestBase
         Assert.Equal(expectedModel, parameters.Model);
         Assert.Equal(expectedCacheControl, parameters.CacheControl);
         Assert.Equal(expectedContainer, parameters.Container);
+        Assert.Equal(expectedDiagnostics, parameters.Diagnostics);
         Assert.Equal(expectedInferenceGeo, parameters.InferenceGeo);
         Assert.Equal(expectedMetadata, parameters.Metadata);
         Assert.Equal(expectedOutputConfig, parameters.OutputConfig);
@@ -268,6 +274,7 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
         };
 
@@ -321,6 +328,7 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
 
             // Null should be interpreted as omitted for these properties
@@ -455,6 +463,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("cache_control"));
         Assert.Null(parameters.Container);
         Assert.False(parameters.RawBodyData.ContainsKey("container"));
+        Assert.Null(parameters.Diagnostics);
+        Assert.False(parameters.RawBodyData.ContainsKey("diagnostics"));
         Assert.Null(parameters.InferenceGeo);
         Assert.False(parameters.RawBodyData.ContainsKey("inference_geo"));
     }
@@ -544,6 +554,7 @@ public class MessageCreateParamsTest : TestBase
 
             CacheControl = null,
             Container = null,
+            Diagnostics = null,
             InferenceGeo = null,
         };
 
@@ -551,6 +562,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.True(parameters.RawBodyData.ContainsKey("cache_control"));
         Assert.Null(parameters.Container);
         Assert.True(parameters.RawBodyData.ContainsKey("container"));
+        Assert.Null(parameters.Diagnostics);
+        Assert.True(parameters.RawBodyData.ContainsKey("diagnostics"));
         Assert.Null(parameters.InferenceGeo);
         Assert.True(parameters.RawBodyData.ContainsKey("inference_geo"));
     }
@@ -617,6 +630,7 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()

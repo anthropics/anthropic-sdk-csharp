@@ -37,14 +37,14 @@ public sealed record class BetaDataResidencyCreateConfig : JsonModel
     /// to 'global' if omitted. Must be a member of `allowed_inference_geos` unless
     /// `allowed_inference_geos` is `"unrestricted"`.
     /// </summary>
-    public ApiEnum<string, DefaultInferenceGeo>? DefaultInferenceGeo
+    public ApiEnum<string, BetaDataResidencyCreateConfigDefaultInferenceGeo>? DefaultInferenceGeo
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<ApiEnum<string, DefaultInferenceGeo>>(
-                "default_inference_geo"
-            );
+            return this._rawData.GetNullableClass<
+                ApiEnum<string, BetaDataResidencyCreateConfigDefaultInferenceGeo>
+            >("default_inference_geo");
         }
         init { this._rawData.Set("default_inference_geo", value); }
     }
@@ -53,12 +53,14 @@ public sealed record class BetaDataResidencyCreateConfig : JsonModel
     /// Geographic region for workspace data storage. Immutable after creation. Defaults
     /// to 'us' if omitted.
     /// </summary>
-    public ApiEnum<string, WorkspaceGeo>? WorkspaceGeo
+    public ApiEnum<string, BetaDataResidencyCreateConfigWorkspaceGeo>? WorkspaceGeo
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<ApiEnum<string, WorkspaceGeo>>("workspace_geo");
+            return this._rawData.GetNullableClass<
+                ApiEnum<string, BetaDataResidencyCreateConfigWorkspaceGeo>
+            >("workspace_geo");
         }
         init { this._rawData.Set("workspace_geo", value); }
     }
@@ -483,16 +485,17 @@ class BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestrictedConverter
 /// if omitted. Must be a member of `allowed_inference_geos` unless `allowed_inference_geos`
 /// is `"unrestricted"`.
 /// </summary>
-[JsonConverter(typeof(DefaultInferenceGeoConverter))]
-public enum DefaultInferenceGeo
+[JsonConverter(typeof(BetaDataResidencyCreateConfigDefaultInferenceGeoConverter))]
+public enum BetaDataResidencyCreateConfigDefaultInferenceGeo
 {
     Global,
     Us,
 }
 
-sealed class DefaultInferenceGeoConverter : JsonConverter<DefaultInferenceGeo>
+sealed class BetaDataResidencyCreateConfigDefaultInferenceGeoConverter
+    : JsonConverter<BetaDataResidencyCreateConfigDefaultInferenceGeo>
 {
-    public override DefaultInferenceGeo Read(
+    public override BetaDataResidencyCreateConfigDefaultInferenceGeo Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
         JsonSerializerOptions options
@@ -500,15 +503,15 @@ sealed class DefaultInferenceGeoConverter : JsonConverter<DefaultInferenceGeo>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "global" => DefaultInferenceGeo.Global,
-            "us" => DefaultInferenceGeo.Us,
-            _ => (DefaultInferenceGeo)(-1),
+            "global" => BetaDataResidencyCreateConfigDefaultInferenceGeo.Global,
+            "us" => BetaDataResidencyCreateConfigDefaultInferenceGeo.Us,
+            _ => (BetaDataResidencyCreateConfigDefaultInferenceGeo)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        DefaultInferenceGeo value,
+        BetaDataResidencyCreateConfigDefaultInferenceGeo value,
         JsonSerializerOptions options
     )
     {
@@ -516,8 +519,8 @@ sealed class DefaultInferenceGeoConverter : JsonConverter<DefaultInferenceGeo>
             writer,
             value switch
             {
-                DefaultInferenceGeo.Global => "global",
-                DefaultInferenceGeo.Us => "us",
+                BetaDataResidencyCreateConfigDefaultInferenceGeo.Global => "global",
+                BetaDataResidencyCreateConfigDefaultInferenceGeo.Us => "us",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
@@ -531,15 +534,16 @@ sealed class DefaultInferenceGeoConverter : JsonConverter<DefaultInferenceGeo>
 /// Geographic region for workspace data storage. Immutable after creation. Defaults
 /// to 'us' if omitted.
 /// </summary>
-[JsonConverter(typeof(WorkspaceGeoConverter))]
-public enum WorkspaceGeo
+[JsonConverter(typeof(BetaDataResidencyCreateConfigWorkspaceGeoConverter))]
+public enum BetaDataResidencyCreateConfigWorkspaceGeo
 {
     Us,
 }
 
-sealed class WorkspaceGeoConverter : JsonConverter<WorkspaceGeo>
+sealed class BetaDataResidencyCreateConfigWorkspaceGeoConverter
+    : JsonConverter<BetaDataResidencyCreateConfigWorkspaceGeo>
 {
-    public override WorkspaceGeo Read(
+    public override BetaDataResidencyCreateConfigWorkspaceGeo Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
         JsonSerializerOptions options
@@ -547,14 +551,14 @@ sealed class WorkspaceGeoConverter : JsonConverter<WorkspaceGeo>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "us" => WorkspaceGeo.Us,
-            _ => (WorkspaceGeo)(-1),
+            "us" => BetaDataResidencyCreateConfigWorkspaceGeo.Us,
+            _ => (BetaDataResidencyCreateConfigWorkspaceGeo)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        WorkspaceGeo value,
+        BetaDataResidencyCreateConfigWorkspaceGeo value,
         JsonSerializerOptions options
     )
     {
@@ -562,7 +566,7 @@ sealed class WorkspaceGeoConverter : JsonConverter<WorkspaceGeo>
             writer,
             value switch
             {
-                WorkspaceGeo.Us => "us",
+                BetaDataResidencyCreateConfigWorkspaceGeo.Us => "us",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

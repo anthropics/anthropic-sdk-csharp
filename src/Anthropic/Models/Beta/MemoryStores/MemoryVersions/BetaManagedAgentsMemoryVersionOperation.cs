@@ -12,8 +12,22 @@ namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 [JsonConverter(typeof(BetaManagedAgentsMemoryVersionOperationConverter))]
 public enum BetaManagedAgentsMemoryVersionOperation
 {
+    /// <summary>
+    /// The memory was created. The first version in any memory's lineage.
+    /// </summary>
     Created,
+
+    /// <summary>
+    /// The memory's `content`, `path`, or both were changed via update. Writes the
+    /// agent makes through the filesystem mount also appear as `modified`.
+    /// </summary>
     Modified,
+
+    /// <summary>
+    /// The memory was deleted. The `content`, `content_size_bytes`, and `content_sha256`
+    /// fields are `null` on this version. The preceding version, while it is retained,
+    /// records the deleted content's size and hash.
+    /// </summary>
     Deleted,
 }
 

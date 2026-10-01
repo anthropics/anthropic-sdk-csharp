@@ -305,6 +305,12 @@ public class ToolUnionTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
         };
         value.Validate();
     }
@@ -346,6 +352,12 @@ public class ToolUnionTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
         };
         value.Validate();
     }
@@ -364,6 +376,12 @@ public class ToolUnionTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
             UseCache = true,
         };
         value.Validate();
@@ -408,6 +426,12 @@ public class ToolUnionTest : TestBase
             MaxUses = 1,
             ResponseInclusion = ResponseInclusion.Full,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
             UseCache = true,
         };
         value.Validate();
@@ -816,6 +840,12 @@ public class ToolUnionTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ToolUnion>(
@@ -869,6 +899,12 @@ public class ToolUnionTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ToolUnion>(
@@ -893,6 +929,12 @@ public class ToolUnionTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
             UseCache = true,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -949,6 +991,12 @@ public class ToolUnionTest : TestBase
             MaxUses = 1,
             ResponseInclusion = ResponseInclusion.Full,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
             UseCache = true,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -1025,6 +1073,17 @@ public class ToolUnionTest : TestBase
                     "enabled": true
                   },
                   "max_content_tokens": 1,
+                  "url_sources": {
+                    "client_tool_results": {
+                      "type": "all"
+                    },
+                    "server_tool_results": {
+                      "type": "all"
+                    },
+                    "user_input": {
+                      "type": "all"
+                    }
+                  },
                   "use_cache": true
                 }
                 """
@@ -1045,6 +1104,12 @@ public class ToolUnionTest : TestBase
         };
         CitationsConfigParam expectedCitations = new() { Enabled = true };
         long expectedMaxContentTokens = 1;
+        WebFetchUrlSources expectedUrlSources = new()
+        {
+            ClientToolResults = new WebFetchUrlSourceAll(),
+            ServerToolResults = new WebFetchUrlSourceAll(),
+            UserInput = new WebFetchUrlSourceAll(),
+        };
         bool expectedUseCache = true;
 
         Assert.Equal(expectedCacheControl, value.CacheControl);
@@ -1054,6 +1119,7 @@ public class ToolUnionTest : TestBase
         Assert.Equal(expectedUserLocation, value.UserLocation);
         Assert.Equal(expectedCitations, value.Citations);
         Assert.Equal(expectedMaxContentTokens, value.MaxContentTokens);
+        Assert.Equal(expectedUrlSources, value.UrlSources);
         Assert.Equal(expectedUseCache, value.UseCache);
 
         ToolUnion emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -1065,6 +1131,7 @@ public class ToolUnionTest : TestBase
         Assert.Null(emptyValue.UserLocation);
         Assert.Null(emptyValue.Citations);
         Assert.Null(emptyValue.MaxContentTokens);
+        Assert.Null(emptyValue.UrlSources);
         Assert.Null(emptyValue.UseCache);
 
         ToolUnion mismatchedValue = new(
@@ -1092,6 +1159,9 @@ public class ToolUnionTest : TestBase
                   "max_content_tokens": [
                     "invalid"
                   ],
+                  "url_sources": [
+                    "invalid"
+                  ],
                   "use_cache": [
                     "invalid"
                   ]
@@ -1107,6 +1177,7 @@ public class ToolUnionTest : TestBase
         Assert.Null(mismatchedValue.UserLocation);
         Assert.Null(mismatchedValue.Citations);
         Assert.Null(mismatchedValue.MaxContentTokens);
+        Assert.Null(mismatchedValue.UrlSources);
         Assert.Null(mismatchedValue.UseCache);
     }
 }

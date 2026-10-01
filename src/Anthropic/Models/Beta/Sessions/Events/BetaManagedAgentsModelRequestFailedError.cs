@@ -34,7 +34,7 @@ public sealed record class BetaManagedAgentsModelRequestFailedError : JsonModel
     }
 
     /// <summary>
-    /// What the client should do next in response to this error.
+    /// What the client should do next.
     /// </summary>
     public required BetaManagedAgentsModelRequestFailedErrorRetryStatus RetryStatus
     {
@@ -112,7 +112,7 @@ class BetaManagedAgentsModelRequestFailedErrorFromRaw
 }
 
 /// <summary>
-/// What the client should do next in response to this error.
+/// What the client should do next.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsModelRequestFailedErrorRetryStatusConverter))]
 public record class BetaManagedAgentsModelRequestFailedErrorRetryStatus : ModelBase

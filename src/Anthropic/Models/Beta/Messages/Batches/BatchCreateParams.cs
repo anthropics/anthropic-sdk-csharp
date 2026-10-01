@@ -105,6 +105,14 @@ public record class BatchCreateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -444,6 +452,27 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
+    /// Compaction configuration.
+    ///
+    /// <para>When set on `POST /v1/messages`, the request is a compaction request:
+    /// the conversation in `messages` is summarized and the response holds only
+    /// the resulting `compaction` block (`stop_reason` `"compaction"`), which later
+    /// requests send first in `messages` in place of the messages it summarizes.
+    /// `POST /v1/messages/count_tokens` accepts this parameter and ignores it: the
+    /// count it returns is for the conversation in `messages` as sent. Cannot be
+    /// combined with `context_management`.</para>
+    /// </summary>
+    public BetaCompactionConfig? Compaction
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCompactionConfig>("compaction");
+        }
+        init { this._rawData.Set("compaction", value); }
+    }
+
+    /// <summary>
     /// Container identifier for reuse across requests.
     /// </summary>
     public global::Anthropic.Models.Beta.Messages.Batches.Container? Container
@@ -477,8 +506,9 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
-    /// Request-level diagnostics. Currently carries the previous response id for
-    /// prompt-cache divergence reporting.
+    /// Request-level diagnostics. Supply `previous_message_id` to have the response
+    /// include `diagnostics.cache_miss_reason` explaining any prompt-cache divergence
+    /// from that prior request.
     /// </summary>
     public BetaDiagnosticsParam? Diagnostics
     {
@@ -665,9 +695,7 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
-    /// Inference speed mode. `fast` provides significantly faster output token generation
-    /// at premium pricing. Not all models support `fast`; invalid combinations are
-    /// rejected at create time.
+    /// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
     /// </summary>
     public ApiEnum<string, Speed>? Speed
     {
@@ -713,10 +741,13 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
-    /// Whether to incrementally stream the response using server-sent events.
+    /// Whether to incrementally stream the response using server-sent events. When
+    /// `true`, SDKs return a raw event stream.
     ///
-    /// <para>See [streaming](https://platform.claude.com/docs/en/build-with-claude/streaming)
-    /// for details.</para>
+    /// <para>In the TypeScript, Python and Ruby SDKs, the recommended way to stream
+    /// is `messages.stream()`. It sets `stream` for you and accumulates the events
+    /// into the final message. See [Streaming with SDKs](https://platform.claude.com/docs/en/build-with-claude/streaming#streaming-with-sdks)
+    /// for an example in each language.</para>
     /// </summary>
     public bool? Stream
     {
@@ -771,7 +802,7 @@ public sealed record class Params : JsonModel
     /// fully deterministic.</para>
     /// </summary>
     [System::Obsolete(
-        "Deprecated. Models released after Claude Opus 4.6 do not support setting temperature. A value of 1.0 of will be accepted for backwards compatibility, all other values will be rejected with a 400 error."
+        "Deprecated. Models released after Claude Opus 4.6 do not support setting temperature. A value of 1.0 will be accepted for backwards compatibility, all other values will be rejected with a 400 error."
     )]
     public double? Temperature
     {
@@ -979,6 +1010,7 @@ public sealed record class Params : JsonModel
         }
         this.Model.Raw();
         this.CacheControl?.Validate();
+        this.Compaction?.Validate();
         this.Container?.Validate();
         this.ContextManagement?.Validate();
         this.Diagnostics?.Validate();
@@ -1646,9 +1678,7 @@ sealed class ServiceTierConverter
 }
 
 /// <summary>
-/// Inference speed mode. `fast` provides significantly faster output token generation
-/// at premium pricing. Not all models support `fast`; invalid combinations are rejected
-/// at create time.
+/// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
 /// </summary>
 [JsonConverter(typeof(SpeedConverter))]
 public enum Speed

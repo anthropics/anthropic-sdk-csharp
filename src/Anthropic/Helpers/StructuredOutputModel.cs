@@ -59,7 +59,7 @@ namespace Anthropic.Helpers;
 /// {
 ///     MaxTokens = 1024,
 ///     Messages = [new MessageParam { Role = "user", Content = "Give me some famous numbers" }],
-///     Model = "claude-sonnet-5",
+///     Model = "claude-sonnet-5-5",
 /// });
 ///
 /// // Find the first text block and access the parsed output:

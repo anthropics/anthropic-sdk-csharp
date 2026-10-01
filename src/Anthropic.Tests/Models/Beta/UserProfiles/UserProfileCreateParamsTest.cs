@@ -32,6 +32,7 @@ public class UserProfileCreateParamsTest : TestBase
             Metadata = new Dictionary<string, string>(),
             Name = "x",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         ApiEnum<string, AccessType> expectedAccessType = AccessType.Application;
@@ -55,6 +56,7 @@ public class UserProfileCreateParamsTest : TestBase
         [
             AnthropicBeta.MessageBatches2024_09_24,
         ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedAccessType, parameters.AccessType);
         Assert.Equal(expectedExternalID, parameters.ExternalID);
@@ -75,6 +77,7 @@ public class UserProfileCreateParamsTest : TestBase
         {
             Assert.Equal(expectedBetas[i], parameters.Betas[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
     [Fact]
@@ -92,6 +95,8 @@ public class UserProfileCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -108,6 +113,7 @@ public class UserProfileCreateParamsTest : TestBase
             ExternalUserOnboardedAt = null,
             Metadata = null,
             Betas = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.AccessType);
@@ -120,6 +126,8 @@ public class UserProfileCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
 
     [Fact]
@@ -141,6 +149,7 @@ public class UserProfileCreateParamsTest : TestBase
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         Assert.Null(parameters.ExternalID);
@@ -168,6 +177,7 @@ public class UserProfileCreateParamsTest : TestBase
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             Metadata = new Dictionary<string, string>(),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             ExternalID = null,
             Name = null,
@@ -198,6 +208,7 @@ public class UserProfileCreateParamsTest : TestBase
         UserProfileCreateParams parameters = new()
         {
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
@@ -205,6 +216,10 @@ public class UserProfileCreateParamsTest : TestBase
         Assert.Equal(
             ["user-profiles-2026-08-18", "message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
     }
 
@@ -229,6 +244,7 @@ public class UserProfileCreateParamsTest : TestBase
             Metadata = new Dictionary<string, string>(),
             Name = "x",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         UserProfileCreateParams copied = new(parameters);

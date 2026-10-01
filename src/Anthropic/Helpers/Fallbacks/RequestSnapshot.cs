@@ -118,7 +118,28 @@ internal sealed class RequestSnapshot
                 Patch(body, field.Key, field.Value);
             }
         }
+        if (!Entries[index].RawData.ContainsKey("thinking"))
+        {
+            DegradeBetweenToolsThinking(body);
+        }
         return body;
+    }
+
+    /// <summary>
+    /// Sends a <c>between_tools</c> thinking config as <c>disabled</c>: the fallback model may
+    /// not accept <c>between_tools</c>.
+    /// </summary>
+    static void DegradeBetweenToolsThinking(JsonObject body)
+    {
+        if (
+            body["thinking"] is JsonObject thinking
+            && thinking["type"] is JsonValue type
+            && type.TryGetValue(out string? value)
+            && value == "between_tools"
+        )
+        {
+            body["thinking"] = new JsonObject { ["type"] = "disabled" };
+        }
     }
 
     /// <summary>Applies one patch field: JSON null removes the key, anything else sets
@@ -176,6 +197,7 @@ internal sealed class RequestSnapshot
 
         body["model"] = model;
         body["fallback_credit_token"] = CreditTokenNode(fallbackCreditToken);
+        DegradeBetweenToolsThinking(body);
 
         // The token is only redeemable against the same body, so model, fallback_credit_token,
         // and the one appended assistant turn are the only permitted deltas; anything else,

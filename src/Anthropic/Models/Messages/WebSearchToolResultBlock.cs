@@ -14,9 +14,6 @@ namespace Anthropic.Models.Messages;
 )]
 public sealed record class WebSearchToolResultBlock : JsonModel
 {
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public required WebSearchToolResultBlockCaller Caller
     {
         get
@@ -117,9 +114,6 @@ class WebSearchToolResultBlockFromRaw : IFromRawJson<WebSearchToolResultBlock>
     ) => WebSearchToolResultBlock.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(WebSearchToolResultBlockCallerConverter))]
 public record class WebSearchToolResultBlockCaller : ModelBase
 {

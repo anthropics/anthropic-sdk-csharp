@@ -10,7 +10,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Sessions;
 
 /// <summary>
-/// Regular text content.
+/// Content block in a mid-conversation system message. Text-only.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<

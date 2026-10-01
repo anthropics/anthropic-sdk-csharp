@@ -60,7 +60,7 @@ public sealed record class BetaManagedAgentsSpanModelRequestEndEvent : JsonModel
     }
 
     /// <summary>
-    /// Token usage for a single model request.
+    /// Token usage for this model request.
     /// </summary>
     public required BetaManagedAgentsSpanModelUsage ModelUsage
     {
@@ -73,7 +73,7 @@ public sealed record class BetaManagedAgentsSpanModelRequestEndEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the model request completed.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {

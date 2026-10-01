@@ -35,8 +35,7 @@ public sealed record class BetaManagedAgentsAgentToolset20260401ReadInput : Json
 
     /// <summary>
     /// Optional `[start_line, end_line]` 1-indexed inclusive range. When omitted
-    /// the entire file is returned. `end_line` of 0 or negative means "to end of
-    /// file".
+    /// the entire file is returned. `end_line` of 0 or negative means "to end of file".
     /// </summary>
     public IReadOnlyList<long>? ViewRange
     {

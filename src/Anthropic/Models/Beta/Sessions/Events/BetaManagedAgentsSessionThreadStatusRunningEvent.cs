@@ -48,7 +48,7 @@ public sealed record class BetaManagedAgentsSessionThreadStatusRunningEvent : Js
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp of the status transition.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {

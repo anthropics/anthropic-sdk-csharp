@@ -28,7 +28,9 @@ public sealed record class Message : JsonModel
     }
 
     /// <summary>
-    /// Information about the container used in the request (for the code execution tool)
+    /// Information about the container used in this request.
+    ///
+    /// <para>This will be non-null if a container tool (e.g. code execution) was used.</para>
     /// </summary>
     public required Container? Container
     {
@@ -79,6 +81,20 @@ public sealed record class Message : JsonModel
     }
 
     /// <summary>
+    /// Request-level diagnostics. `null` when the request did not supply `diagnostics`,
+    /// or when it did and no prompt-cache divergence was detected.
+    /// </summary>
+    public required Diagnostics? Diagnostics
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<Diagnostics>("diagnostics");
+        }
+        init { this._rawData.Set("diagnostics", value); }
+    }
+
+    /// <summary>
     /// The model that will complete your prompt.
     ///
     /// <para>See [models](https://docs.anthropic.com/en/docs/models-overview) for
@@ -110,7 +126,9 @@ public sealed record class Message : JsonModel
     }
 
     /// <summary>
-    /// Structured information about a refusal.
+    /// Structured information about why model output stopped.
+    ///
+    /// <para>This is `null` when the `stop_reason` has no additional detail to report.</para>
     /// </summary>
     public required RefusalStopDetails? StopDetails
     {
@@ -214,6 +232,7 @@ public sealed record class Message : JsonModel
         {
             item.Validate();
         }
+        this.Diagnostics?.Validate();
         this.Model.Raw();
         if (!JsonElement.DeepEquals(this.Role, JsonSerializer.SerializeToElement("assistant")))
         {

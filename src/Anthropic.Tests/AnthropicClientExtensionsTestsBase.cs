@@ -1968,6 +1968,195 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetResponseAsync_WithToolModeRequireSpecific()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Tell me the weather"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tool_choice": {
+                    "type": "tool",
+                    "name": "get_location"
+                },
+                "tools": [{
+                    "name": "get_weather",
+                    "description": "Get weather",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "location": { "type": "string", "description": "The location" }
+                        },
+                        "required": ["location"],
+                        "additionalProperties": false
+                    }
+                }, {
+                    "name": "get_location",
+                    "description": "Get location",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {},
+                        "additionalProperties": false
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_toolmode_04",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "tool_use",
+                    "id": "toolu_abc",
+                    "name": "get_weather",
+                    "input": {"location": "Paris"},
+                    "caller": {"type": "direct"}
+                }],
+                "stop_reason": "tool_use",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 10
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var weatherFunction = AIFunctionFactory.CreateDeclaration(
+            "get_weather",
+            "Get weather",
+            JsonElement.Parse(
+                """
+                {
+                    "type": "object",
+                    "properties": {
+                        "location": { "type": "string", "description": "The location" }
+                    },
+                    "required": ["location"]
+                }
+                """
+            )
+        );
+        var locationFunction = AIFunctionFactory.CreateDeclaration(
+            "get_location",
+            "Get location",
+            JsonElement.Parse("""{ "type": "object", "properties": {} }""")
+        );
+
+        ChatOptions options = new()
+        {
+            Tools = [weatherFunction, locationFunction],
+            ToolMode = ChatToolMode.RequireSpecific("get_location"),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Tell me the weather",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithToolModeRequireSpecificAndParallelToolCallsDisabled()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Tell me the weather"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tool_choice": {
+                    "type": "tool",
+                    "name": "get_weather",
+                    "disable_parallel_tool_use": true
+                },
+                "tools": [{
+                    "name": "get_weather",
+                    "description": "Get weather",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "location": { "type": "string", "description": "The location" }
+                        },
+                        "required": ["location"],
+                        "additionalProperties": false
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_toolmode_05",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "tool_use",
+                    "id": "toolu_abc",
+                    "name": "get_weather",
+                    "input": {"location": "Paris"},
+                    "caller": {"type": "direct"}
+                }],
+                "stop_reason": "tool_use",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 10
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var weatherFunction = AIFunctionFactory.CreateDeclaration(
+            "get_weather",
+            "Get weather",
+            JsonElement.Parse(
+                """
+                {
+                    "type": "object",
+                    "properties": {
+                        "location": { "type": "string", "description": "The location" }
+                    },
+                    "required": ["location"]
+                }
+                """
+            )
+        );
+
+        ChatOptions options = new()
+        {
+            Tools = [weatherFunction],
+            ToolMode = ChatToolMode.RequireSpecific("get_weather"),
+            AllowMultipleToolCalls = false,
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Tell me the weather",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_WithToolModeNone()
     {
         VerbatimHttpHandler handler = new(
@@ -8722,6 +8911,267 @@ public abstract class AnthropicClientExtensionsTestsBase
                 "usage": {
                     "input_tokens": 25,
                     "output_tokens": 10
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema(
+                JsonElement.Parse(inputSchema),
+                "test_schema"
+            ),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "test",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    /// <summary>
+    /// Validates that a union type ("type": ["string","null"], the shape System.Text.Json emits
+    /// for Nullable&lt;T&gt; and for a nullable reference type) keeps the keywords of every member
+    /// it names. Tests:
+    /// <list type="bullet">
+    /// <item>Supported string format preserved on ["string", "null"], as on "string"</item>
+    /// <item>Unsupported string format → description on ["string", "null"], as on "string"</item>
+    /// <item>properties/required preserved on ["object", "null"], as on "object"</item>
+    /// <item>Array minItems handling applies to ["array", "null"], as to "array"</item>
+    /// </list>
+    /// </summary>
+    [Fact]
+    public async Task GetResponseAsync_ResponseFormatSchema_UnionTypeKeepsTypeSpecificKeywords()
+    {
+        string inputSchema = """
+            {
+                "type": "object",
+                "properties": {
+                    "startsOn": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "endsOn": {
+                        "type": ["string", "null"],
+                        "description": "An end date, or null.",
+                        "format": "date"
+                    },
+                    "phone": {
+                        "type": ["string", "null"],
+                        "format": "phone"
+                    },
+                    "tags": {
+                        "type": ["array", "null"],
+                        "items": { "type": "string" },
+                        "minItems": 3
+                    },
+                    "nested": {
+                        "type": ["object", "null"],
+                        "properties": {
+                            "id": { "type": "string" }
+                        },
+                        "required": ["id"]
+                    }
+                },
+                "required": ["startsOn", "endsOn", "phone", "tags", "nested"]
+            }
+            """;
+
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "test"
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "startsOn": {
+                                    "type": "string",
+                                    "format": "date"
+                                },
+                                "endsOn": {
+                                    "type": ["string", "null"],
+                                    "description": "An end date, or null.",
+                                    "format": "date"
+                                },
+                                "phone": {
+                                    "type": ["string", "null"],
+                                    "description": "{format: \"phone\"}"
+                                },
+                                "tags": {
+                                    "type": ["array", "null"],
+                                    "items": { "type": "string" },
+                                    "description": "{minItems: 3}"
+                                },
+                                "nested": {
+                                    "type": ["object", "null"],
+                                    "properties": {
+                                        "id": { "type": "string" }
+                                    },
+                                    "required": ["id"],
+                                    "additionalProperties": false
+                                }
+                            },
+                            "required": ["startsOn", "endsOn", "phone", "tags", "nested"],
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_union_type_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "{}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema(
+                JsonElement.Parse(inputSchema),
+                "test_schema"
+            ),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "test",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    /// <summary>
+    /// Validates that a type-specific keyword whose value is malformed is removed and described
+    /// rather than read as the wrong type or forwarded to the API unvalidated. Covers union and
+    /// scalar nodes alike, since both select the same type-specific pre-checks.
+    /// </summary>
+    [Fact]
+    public async Task GetResponseAsync_ResponseFormatSchema_MalformedKeywordValuesAreStripped()
+    {
+        string inputSchema = """
+            {
+                "type": "object",
+                "properties": {
+                    "nonStringFormat": {
+                        "type": ["string", "null"],
+                        "format": 3
+                    },
+                    "nullFormat": {
+                        "type": ["string", "null"],
+                        "format": null
+                    },
+                    "nonIntegerMinItems": {
+                        "type": ["array", "null"],
+                        "items": { "type": "string" },
+                        "minItems": "5"
+                    },
+                    "overflowingMinItems": {
+                        "type": ["array", "null"],
+                        "items": { "type": "string" },
+                        "minItems": 2147483648
+                    },
+                    "nonStringFormatOnScalar": {
+                        "type": "string",
+                        "format": 3
+                    }
+                },
+                "required": ["nonStringFormat", "nullFormat", "nonIntegerMinItems", "overflowingMinItems", "nonStringFormatOnScalar"]
+            }
+            """;
+
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "test"
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "nonStringFormat": {
+                                    "type": ["string", "null"],
+                                    "description": "{format: 3}"
+                                },
+                                "nullFormat": {
+                                    "type": ["string", "null"],
+                                    "description": "{format: null}"
+                                },
+                                "nonIntegerMinItems": {
+                                    "type": ["array", "null"],
+                                    "items": { "type": "string" },
+                                    "description": "{minItems: \"5\"}"
+                                },
+                                "overflowingMinItems": {
+                                    "type": ["array", "null"],
+                                    "items": { "type": "string" },
+                                    "description": "{minItems: 2147483648}"
+                                },
+                                "nonStringFormatOnScalar": {
+                                    "type": "string",
+                                    "description": "{format: 3}"
+                                }
+                            },
+                            "required": ["nonStringFormat", "nullFormat", "nonIntegerMinItems", "overflowingMinItems", "nonStringFormatOnScalar"],
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_malformed_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "{}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
                 }
             }
             """

@@ -23,6 +23,12 @@ public class BetaWebFetchTool20260318Test : TestBase
             MaxUses = 1,
             ResponseInclusion = ResponseInclusion.Full,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
             UseCache = true,
         };
 
@@ -41,6 +47,12 @@ public class BetaWebFetchTool20260318Test : TestBase
         long expectedMaxUses = 1;
         ApiEnum<string, ResponseInclusion> expectedResponseInclusion = ResponseInclusion.Full;
         bool expectedStrict = true;
+        BetaWebFetchUrlSources expectedUrlSources = new()
+        {
+            ClientToolResults = new BetaWebFetchUrlSourceAll(),
+            ServerToolResults = new BetaWebFetchUrlSourceAll(),
+            UserInput = new BetaWebFetchUrlSourceAll(),
+        };
         bool expectedUseCache = true;
 
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
@@ -70,6 +82,7 @@ public class BetaWebFetchTool20260318Test : TestBase
         Assert.Equal(expectedMaxUses, model.MaxUses);
         Assert.Equal(expectedResponseInclusion, model.ResponseInclusion);
         Assert.Equal(expectedStrict, model.Strict);
+        Assert.Equal(expectedUrlSources, model.UrlSources);
         Assert.Equal(expectedUseCache, model.UseCache);
     }
 
@@ -88,6 +101,12 @@ public class BetaWebFetchTool20260318Test : TestBase
             MaxUses = 1,
             ResponseInclusion = ResponseInclusion.Full,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
             UseCache = true,
         };
 
@@ -115,6 +134,12 @@ public class BetaWebFetchTool20260318Test : TestBase
             MaxUses = 1,
             ResponseInclusion = ResponseInclusion.Full,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
             UseCache = true,
         };
 
@@ -140,6 +165,12 @@ public class BetaWebFetchTool20260318Test : TestBase
         long expectedMaxUses = 1;
         ApiEnum<string, ResponseInclusion> expectedResponseInclusion = ResponseInclusion.Full;
         bool expectedStrict = true;
+        BetaWebFetchUrlSources expectedUrlSources = new()
+        {
+            ClientToolResults = new BetaWebFetchUrlSourceAll(),
+            ServerToolResults = new BetaWebFetchUrlSourceAll(),
+            UserInput = new BetaWebFetchUrlSourceAll(),
+        };
         bool expectedUseCache = true;
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
@@ -169,6 +200,7 @@ public class BetaWebFetchTool20260318Test : TestBase
         Assert.Equal(expectedMaxUses, deserialized.MaxUses);
         Assert.Equal(expectedResponseInclusion, deserialized.ResponseInclusion);
         Assert.Equal(expectedStrict, deserialized.Strict);
+        Assert.Equal(expectedUrlSources, deserialized.UrlSources);
         Assert.Equal(expectedUseCache, deserialized.UseCache);
     }
 
@@ -187,6 +219,12 @@ public class BetaWebFetchTool20260318Test : TestBase
             MaxUses = 1,
             ResponseInclusion = ResponseInclusion.Full,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
             UseCache = true,
         };
 
@@ -204,6 +242,12 @@ public class BetaWebFetchTool20260318Test : TestBase
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
         };
 
         Assert.Null(model.AllowedCallers);
@@ -229,6 +273,12 @@ public class BetaWebFetchTool20260318Test : TestBase
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
         };
 
         model.Validate();
@@ -245,6 +295,12 @@ public class BetaWebFetchTool20260318Test : TestBase
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -277,6 +333,12 @@ public class BetaWebFetchTool20260318Test : TestBase
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -313,6 +375,8 @@ public class BetaWebFetchTool20260318Test : TestBase
         Assert.False(model.RawData.ContainsKey("max_content_tokens"));
         Assert.Null(model.MaxUses);
         Assert.False(model.RawData.ContainsKey("max_uses"));
+        Assert.Null(model.UrlSources);
+        Assert.False(model.RawData.ContainsKey("url_sources"));
     }
 
     [Fact]
@@ -347,6 +411,7 @@ public class BetaWebFetchTool20260318Test : TestBase
             Citations = null,
             MaxContentTokens = null,
             MaxUses = null,
+            UrlSources = null,
         };
 
         Assert.Null(model.AllowedDomains);
@@ -361,6 +426,8 @@ public class BetaWebFetchTool20260318Test : TestBase
         Assert.True(model.RawData.ContainsKey("max_content_tokens"));
         Assert.Null(model.MaxUses);
         Assert.True(model.RawData.ContainsKey("max_uses"));
+        Assert.Null(model.UrlSources);
+        Assert.True(model.RawData.ContainsKey("url_sources"));
     }
 
     [Fact]
@@ -380,6 +447,7 @@ public class BetaWebFetchTool20260318Test : TestBase
             Citations = null,
             MaxContentTokens = null,
             MaxUses = null,
+            UrlSources = null,
         };
 
         model.Validate();
@@ -400,6 +468,12 @@ public class BetaWebFetchTool20260318Test : TestBase
             MaxUses = 1,
             ResponseInclusion = ResponseInclusion.Full,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
             UseCache = true,
         };
 

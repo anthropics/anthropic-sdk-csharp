@@ -61,7 +61,7 @@ public sealed record class BetaManagedAgentsAgentToolset20260401Params : JsonMod
     }
 
     /// <summary>
-    /// Default configuration for all tools in a toolset.
+    /// Default configuration applied to all tools in this set.
     /// </summary>
     public BetaManagedAgentsAgentToolsetDefaultConfigParams? DefaultConfig
     {

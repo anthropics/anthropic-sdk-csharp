@@ -102,7 +102,8 @@ public sealed record class BetaManagedAgentsWebSearchToolConfigParams : JsonMode
     }
 
     /// <summary>
-    /// Permission policy for tool execution.
+    /// Permission policy for this tool. Controls whether tool calls are auto-approved
+    /// or require confirmation.
     /// </summary>
     public BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicy? PermissionPolicy
     {
@@ -213,7 +214,8 @@ class BetaManagedAgentsWebSearchToolConfigParamsFromRaw
 }
 
 /// <summary>
-/// Permission policy for tool execution.
+/// Permission policy for this tool. Controls whether tool calls are auto-approved
+/// or require confirmation.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicyConverter))]
 public record class BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicy : ModelBase

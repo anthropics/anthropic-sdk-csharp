@@ -123,8 +123,8 @@ public record class AgentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// A coordinator topology: the session's primary thread orchestrates work by
-    /// spawning session threads, each running an agent drawn from the `agents` roster.
+    /// Multiagent orchestration configuration. Currently supports the `coordinator`
+    /// topology with a roster of 1-20 agents.
     /// </summary>
     public Sessions::BetaManagedAgentsMultiagentParams? Multiagent
     {
@@ -228,6 +228,14 @@ public record class AgentCreateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get

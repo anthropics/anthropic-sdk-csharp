@@ -116,7 +116,8 @@ public sealed record class BetaManagedAgentsWebFetchToolConfigParams : JsonModel
     }
 
     /// <summary>
-    /// Permission policy for tool execution.
+    /// Permission policy for this tool. Controls whether tool calls are auto-approved
+    /// or require confirmation.
     /// </summary>
     public BetaManagedAgentsWebFetchToolConfigParamsPermissionPolicy? PermissionPolicy
     {
@@ -214,7 +215,8 @@ class BetaManagedAgentsWebFetchToolConfigParamsFromRaw
 }
 
 /// <summary>
-/// Permission policy for tool execution.
+/// Permission policy for this tool. Controls whether tool calls are auto-approved
+/// or require confirmation.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsWebFetchToolConfigParamsPermissionPolicyConverter))]
 public record class BetaManagedAgentsWebFetchToolConfigParamsPermissionPolicy : ModelBase

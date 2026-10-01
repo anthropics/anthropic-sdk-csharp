@@ -35,7 +35,8 @@ public sealed record class BetaManagedAgentsAgentToolsetDefaultConfigParams : Js
     }
 
     /// <summary>
-    /// Permission policy for tool execution.
+    /// Default permission policy for tools. Controls whether tool calls are auto-approved
+    /// or require confirmation.
     /// </summary>
     public BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicy? PermissionPolicy
     {
@@ -100,7 +101,8 @@ class BetaManagedAgentsAgentToolsetDefaultConfigParamsFromRaw
 }
 
 /// <summary>
-/// Permission policy for tool execution.
+/// Default permission policy for tools. Controls whether tool calls are auto-approved
+/// or require confirmation.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyConverter))]
 public record class BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicy : ModelBase

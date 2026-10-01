@@ -15,25 +15,65 @@ public class RateLimitListParamsTest : TestBase
         {
             WorkspaceID = "workspace_id",
             GroupType = GroupType.Batch,
+            IncludeInherited = true,
             Limit = 1,
             Page = "page",
         };
 
         string expectedWorkspaceID = "workspace_id";
         ApiEnum<string, GroupType> expectedGroupType = GroupType.Batch;
+        bool expectedIncludeInherited = true;
         long expectedLimit = 1;
         string expectedPage = "page";
 
         Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
         Assert.Equal(expectedGroupType, parameters.GroupType);
+        Assert.Equal(expectedIncludeInherited, parameters.IncludeInherited);
         Assert.Equal(expectedLimit, parameters.Limit);
         Assert.Equal(expectedPage, parameters.Page);
     }
 
     [Fact]
+    public void OptionalNonNullableParamsUnsetAreNotSet_Works()
+    {
+        var parameters = new RateLimitListParams
+        {
+            WorkspaceID = "workspace_id",
+            GroupType = GroupType.Batch,
+            Limit = 1,
+            Page = "page",
+        };
+
+        Assert.Null(parameters.IncludeInherited);
+        Assert.False(parameters.RawQueryData.ContainsKey("include_inherited"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
+    {
+        var parameters = new RateLimitListParams
+        {
+            WorkspaceID = "workspace_id",
+            GroupType = GroupType.Batch,
+            Limit = 1,
+            Page = "page",
+
+            // Null should be interpreted as omitted for these properties
+            IncludeInherited = null,
+        };
+
+        Assert.Null(parameters.IncludeInherited);
+        Assert.False(parameters.RawQueryData.ContainsKey("include_inherited"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new RateLimitListParams { WorkspaceID = "workspace_id" };
+        var parameters = new RateLimitListParams
+        {
+            WorkspaceID = "workspace_id",
+            IncludeInherited = true,
+        };
 
         Assert.Null(parameters.GroupType);
         Assert.False(parameters.RawQueryData.ContainsKey("group_type"));
@@ -49,6 +89,7 @@ public class RateLimitListParamsTest : TestBase
         var parameters = new RateLimitListParams
         {
             WorkspaceID = "workspace_id",
+            IncludeInherited = true,
 
             GroupType = null,
             Limit = null,
@@ -70,6 +111,7 @@ public class RateLimitListParamsTest : TestBase
         {
             WorkspaceID = "workspace_id",
             GroupType = GroupType.Batch,
+            IncludeInherited = true,
             Limit = 1,
             Page = "page",
         };
@@ -79,7 +121,7 @@ public class RateLimitListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/workspaces/workspace_id/rate_limits?beta=true&group_type=batch&limit=1&page=page"
+                    "https://api.anthropic.com/v1/organizations/workspaces/workspace_id/rate_limits?beta=true&group_type=batch&include_inherited=true&limit=1&page=page"
                 ),
                 url
             )
@@ -93,6 +135,7 @@ public class RateLimitListParamsTest : TestBase
         {
             WorkspaceID = "workspace_id",
             GroupType = GroupType.Batch,
+            IncludeInherited = true,
             Limit = 1,
             Page = "page",
         };

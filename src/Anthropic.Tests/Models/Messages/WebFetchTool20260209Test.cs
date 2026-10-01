@@ -22,6 +22,12 @@ public class WebFetchTool20260209Test : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
         };
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("web_fetch");
@@ -38,6 +44,12 @@ public class WebFetchTool20260209Test : TestBase
         long expectedMaxContentTokens = 1;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
+        WebFetchUrlSources expectedUrlSources = new()
+        {
+            ClientToolResults = new WebFetchUrlSourceAll(),
+            ServerToolResults = new WebFetchUrlSourceAll(),
+            UserInput = new WebFetchUrlSourceAll(),
+        };
 
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -65,6 +77,7 @@ public class WebFetchTool20260209Test : TestBase
         Assert.Equal(expectedMaxContentTokens, model.MaxContentTokens);
         Assert.Equal(expectedMaxUses, model.MaxUses);
         Assert.Equal(expectedStrict, model.Strict);
+        Assert.Equal(expectedUrlSources, model.UrlSources);
     }
 
     [Fact]
@@ -81,6 +94,12 @@ public class WebFetchTool20260209Test : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -106,6 +125,12 @@ public class WebFetchTool20260209Test : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -129,6 +154,12 @@ public class WebFetchTool20260209Test : TestBase
         long expectedMaxContentTokens = 1;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
+        WebFetchUrlSources expectedUrlSources = new()
+        {
+            ClientToolResults = new WebFetchUrlSourceAll(),
+            ServerToolResults = new WebFetchUrlSourceAll(),
+            UserInput = new WebFetchUrlSourceAll(),
+        };
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -156,6 +187,7 @@ public class WebFetchTool20260209Test : TestBase
         Assert.Equal(expectedMaxContentTokens, deserialized.MaxContentTokens);
         Assert.Equal(expectedMaxUses, deserialized.MaxUses);
         Assert.Equal(expectedStrict, deserialized.Strict);
+        Assert.Equal(expectedUrlSources, deserialized.UrlSources);
     }
 
     [Fact]
@@ -172,6 +204,12 @@ public class WebFetchTool20260209Test : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
         };
 
         model.Validate();
@@ -188,6 +226,12 @@ public class WebFetchTool20260209Test : TestBase
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
         };
 
         Assert.Null(model.AllowedCallers);
@@ -209,6 +253,12 @@ public class WebFetchTool20260209Test : TestBase
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
         };
 
         model.Validate();
@@ -225,6 +275,12 @@ public class WebFetchTool20260209Test : TestBase
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -251,6 +307,12 @@ public class WebFetchTool20260209Test : TestBase
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -283,6 +345,8 @@ public class WebFetchTool20260209Test : TestBase
         Assert.False(model.RawData.ContainsKey("max_content_tokens"));
         Assert.Null(model.MaxUses);
         Assert.False(model.RawData.ContainsKey("max_uses"));
+        Assert.Null(model.UrlSources);
+        Assert.False(model.RawData.ContainsKey("url_sources"));
     }
 
     [Fact]
@@ -313,6 +377,7 @@ public class WebFetchTool20260209Test : TestBase
             Citations = null,
             MaxContentTokens = null,
             MaxUses = null,
+            UrlSources = null,
         };
 
         Assert.Null(model.AllowedDomains);
@@ -327,6 +392,8 @@ public class WebFetchTool20260209Test : TestBase
         Assert.True(model.RawData.ContainsKey("max_content_tokens"));
         Assert.Null(model.MaxUses);
         Assert.True(model.RawData.ContainsKey("max_uses"));
+        Assert.Null(model.UrlSources);
+        Assert.True(model.RawData.ContainsKey("url_sources"));
     }
 
     [Fact]
@@ -344,6 +411,7 @@ public class WebFetchTool20260209Test : TestBase
             Citations = null,
             MaxContentTokens = null,
             MaxUses = null,
+            UrlSources = null,
         };
 
         model.Validate();
@@ -363,6 +431,12 @@ public class WebFetchTool20260209Test : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
         };
 
         WebFetchTool20260209 copied = new(model);

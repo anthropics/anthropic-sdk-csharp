@@ -57,9 +57,6 @@ public sealed record class WebSearchToolResultBlockParam : JsonModel
         init { this._rawData.Set("cache_control", value); }
     }
 
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public WebSearchToolResultBlockParamCaller? Caller
     {
         get
@@ -141,9 +138,6 @@ class WebSearchToolResultBlockParamFromRaw : IFromRawJson<WebSearchToolResultBlo
     ) => WebSearchToolResultBlockParam.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(WebSearchToolResultBlockParamCallerConverter))]
 public record class WebSearchToolResultBlockParamCaller : ModelBase
 {

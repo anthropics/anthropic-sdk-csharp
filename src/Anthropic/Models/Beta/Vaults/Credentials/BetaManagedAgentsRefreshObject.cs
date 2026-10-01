@@ -21,7 +21,8 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class BetaManagedAgentsRefreshObject : JsonModel
 {
     /// <summary>
-    /// An HTTP response captured during a credential validation probe.
+    /// The captured HTTP error response from the token endpoint. Populated only when
+    /// `status` is `failed`.
     /// </summary>
     public required BetaManagedAgentsRefreshHttpResponse? HttpResponse
     {
@@ -36,7 +37,7 @@ public sealed record class BetaManagedAgentsRefreshObject : JsonModel
     }
 
     /// <summary>
-    /// Outcome of a refresh-token exchange attempted during credential validation.
+    /// Outcome of the refresh attempt.
     /// </summary>
     public required ApiEnum<string, Status> Status
     {
@@ -96,14 +97,29 @@ class BetaManagedAgentsRefreshObjectFromRaw : IFromRawJson<BetaManagedAgentsRefr
 }
 
 /// <summary>
-/// Outcome of a refresh-token exchange attempted during credential validation.
+/// Outcome of the refresh attempt.
 /// </summary>
 [JsonConverter(typeof(StatusConverter))]
 public enum Status
 {
+    /// <summary>
+    /// The token endpoint returned a new access token.
+    /// </summary>
     Succeeded,
+
+    /// <summary>
+    /// The token endpoint returned an error response. See `http_response` for detail.
+    /// </summary>
     Failed,
+
+    /// <summary>
+    /// The token endpoint could not be reached (DNS, TLS, or connection error).
+    /// </summary>
     ConnectError,
+
+    /// <summary>
+    /// No refresh token is stored for the credential, so no exchange was attempted.
+    /// </summary>
     NoRefreshToken,
 }
 

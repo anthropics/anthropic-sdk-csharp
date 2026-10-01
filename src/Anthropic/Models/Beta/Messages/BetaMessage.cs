@@ -29,7 +29,9 @@ public sealed record class BetaMessage : JsonModel
     }
 
     /// <summary>
-    /// Information about the container used in the request (for the code execution tool)
+    /// Information about the container used in this request.
+    ///
+    /// <para>This will be non-null if a container tool (e.g. code execution) was used.</para>
     /// </summary>
     public required BetaContainer? Container
     {
@@ -97,8 +99,8 @@ public sealed record class BetaMessage : JsonModel
     }
 
     /// <summary>
-    /// Response envelope for request-level diagnostics. Present (possibly null)
-    /// whenever the caller supplied `diagnostics` on the request.
+    /// Request-level diagnostics. `null` when the request did not supply `diagnostics`,
+    /// or when it did and no prompt-cache divergence was detected.
     /// </summary>
     public required BetaDiagnostics? Diagnostics
     {
@@ -142,7 +144,9 @@ public sealed record class BetaMessage : JsonModel
     }
 
     /// <summary>
-    /// Structured information about a refusal.
+    /// Structured information about why model output stopped.
+    ///
+    /// <para>This is `null` when the `stop_reason` has no additional detail to report.</para>
     /// </summary>
     public required BetaRefusalStopDetails? StopDetails
     {
@@ -238,33 +242,39 @@ public sealed record class BetaMessage : JsonModel
     }
 
     /// <summary>
-    /// Changes the API made to the request's input before showing it to the model:
-    /// one entry per change, in request order. Today the only entry type is `thinking_dropped`
-    /// — a `thinking`, `redacted_thinking` or `connector_text` block from the request's
+    /// Changes the API made to the request's input before showing it to the model,
+    /// and blocks that failed a binding check but were left unchanged: one entry
+    /// per block, in request order. Two entry types today. `thinking_dropped` —
+    /// a `thinking`, `redacted_thinking` or `connector_text` block from the request's
     /// `messages` that was removed from the prompt instead of being shown to the
-    /// model because it failed a binding check. More entry types may be added over
-    /// time; ignore types you do not recognize.
+    /// model because it failed a binding check. `thinking_mismatch_allowed` — a
+    /// `thinking` or `redacted_thinking` block that failed the conversation check
+    /// (the conversation before it differs from the one it was created in, or it
+    /// carries no record of one on a model that requires it) and was shown to the
+    /// model all the same, because that check is not enforced for this request.
+    /// More entry types may be added over time; ignore types you do not recognize.
     ///
     /// <para>Requires `anthropic-beta: thinking-binding-controls-2026-08-01`. Present
     /// on every such response from a model that supports extended thinking, as `[]`
-    /// when nothing was changed; without the beta, blocks are removed all the same
-    /// but nothing is reported. Removed blocks contribute nothing to `usage.input_tokens`.
-    /// When streaming, the array is final in `message_start`; the final `message_delta`
+    /// when there is no entry to report; without the beta, blocks are removed or
+    /// left in place all the same but nothing is reported. Removed blocks contribute
+    /// nothing to `usage.input_tokens`; blocks left in place count as sent. When
+    /// streaming, the array is final in `message_start`; the final `message_delta`
     /// event carries it only when a server-side model fallback happened mid-stream,
     /// in which case it holds the serving model's entries and replaces the one in `message_start`.</para>
     /// </summary>
-    public IReadOnlyList<BetaThinkingDroppedInputTransformation>? InputTransformations
+    public IReadOnlyList<BetaInputTransformation>? InputTransformations
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<
-                ImmutableArray<BetaThinkingDroppedInputTransformation>
-            >("input_transformations");
+            return this._rawData.GetNullableStruct<ImmutableArray<BetaInputTransformation>>(
+                "input_transformations"
+            );
         }
         init
         {
-            this._rawData.Set<ImmutableArray<BetaThinkingDroppedInputTransformation>?>(
+            this._rawData.Set<ImmutableArray<BetaInputTransformation>?>(
                 "input_transformations",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );

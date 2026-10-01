@@ -200,6 +200,20 @@ public sealed record class BetaWebFetchTool20260309 : JsonModel
     }
 
     /// <summary>
+    /// Which sources contribute to the set of URLs the tool may fetch. Omitted means
+    /// every source.
+    /// </summary>
+    public BetaWebFetchUrlSources? UrlSources
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaWebFetchUrlSources>("url_sources");
+        }
+        init { this._rawData.Set("url_sources", value); }
+    }
+
+    /// <summary>
     /// Whether to use cached content. Set to false to bypass the cache and fetch
     /// fresh content. Only set to false when the user explicitly requests fresh
     /// content or when fetching rapidly-changing sources.
@@ -250,6 +264,7 @@ public sealed record class BetaWebFetchTool20260309 : JsonModel
         _ = this.MaxContentTokens;
         _ = this.MaxUses;
         _ = this.Strict;
+        this.UrlSources?.Validate();
         _ = this.UseCache;
     }
 

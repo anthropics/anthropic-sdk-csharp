@@ -18,13 +18,13 @@ public class MemoryStoreListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Description = "description",
+                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                     Name = "name",
                     Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                 },
             ],
             NextPage = "next_page",
@@ -35,13 +35,13 @@ public class MemoryStoreListPageResponseTest : TestBase
             new()
             {
                 ID = "id",
+                ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Description = "description",
+                Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                 Name = "name",
                 Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
                 UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Description = "description",
-                Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             },
         ];
         string expectedNextPage = "next_page";
@@ -65,13 +65,13 @@ public class MemoryStoreListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Description = "description",
+                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                     Name = "name",
                     Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                 },
             ],
             NextPage = "next_page",
@@ -96,13 +96,13 @@ public class MemoryStoreListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Description = "description",
+                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                     Name = "name",
                     Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                 },
             ],
             NextPage = "next_page",
@@ -120,13 +120,13 @@ public class MemoryStoreListPageResponseTest : TestBase
             new()
             {
                 ID = "id",
+                ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Description = "description",
+                Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                 Name = "name",
                 Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
                 UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Description = "description",
-                Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             },
         ];
         string expectedNextPage = "next_page";
@@ -150,13 +150,13 @@ public class MemoryStoreListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Description = "description",
+                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                     Name = "name",
                     Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                 },
             ],
             NextPage = "next_page",
@@ -221,13 +221,13 @@ public class MemoryStoreListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Description = "description",
+                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                     Name = "name",
                     Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                 },
             ],
         };
@@ -246,13 +246,13 @@ public class MemoryStoreListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Description = "description",
+                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                     Name = "name",
                     Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                 },
             ],
         };
@@ -270,13 +270,13 @@ public class MemoryStoreListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Description = "description",
+                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                     Name = "name",
                     Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                 },
             ],
 
@@ -297,13 +297,13 @@ public class MemoryStoreListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Description = "description",
+                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                     Name = "name",
                     Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                 },
             ],
 
@@ -323,13 +323,13 @@ public class MemoryStoreListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Description = "description",
+                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                     Name = "name",
                     Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Description = "description",
-                    Metadata = new Dictionary<string, string>() { { "foo", "string" } },
                 },
             ],
             NextPage = "next_page",

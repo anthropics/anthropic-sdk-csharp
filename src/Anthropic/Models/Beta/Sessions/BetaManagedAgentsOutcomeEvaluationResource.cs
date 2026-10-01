@@ -21,7 +21,7 @@ namespace Anthropic.Models.Beta.Sessions;
 public sealed record class BetaManagedAgentsOutcomeEvaluationResource : JsonModel
 {
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When the outcome reached a terminal result. Null while `pending`/`running`/`evaluating`.
     /// </summary>
     public required System::DateTimeOffset? CompletedAt
     {

@@ -73,9 +73,6 @@ public sealed record class ServerToolUseBlockParam : JsonModel
         init { this._rawData.Set("cache_control", value); }
     }
 
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public ServerToolUseBlockParamCaller? Caller
     {
         get
@@ -212,9 +209,6 @@ sealed class ServerToolUseBlockParamNameConverter : JsonConverter<ServerToolUseB
     }
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(ServerToolUseBlockParamCallerConverter))]
 public record class ServerToolUseBlockParamCaller : ModelBase
 {

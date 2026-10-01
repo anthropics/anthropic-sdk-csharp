@@ -53,6 +53,20 @@ public sealed record class BetaModelCapabilities : JsonModel
     }
 
     /// <summary>
+    /// Server-side compaction support (the top-level `compaction` parameter) and
+    /// the accepted `compaction.type` values.
+    /// </summary>
+    public required BetaCompactionCapability? Compaction
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCompactionCapability>("compaction");
+        }
+        init { this._rawData.Set("compaction", value); }
+    }
+
+    /// <summary>
     /// Context management support and available strategies.
     /// </summary>
     public required BetaContextManagementCapability ContextManagement
@@ -138,6 +152,7 @@ public sealed record class BetaModelCapabilities : JsonModel
         this.Batch.Validate();
         this.Citations.Validate();
         this.CodeExecution.Validate();
+        this.Compaction?.Validate();
         this.ContextManagement.Validate();
         this.Effort.Validate();
         this.ImageInput.Validate();

@@ -33,7 +33,7 @@ public sealed record class BetaManagedAgentsBillingError : JsonModel
     }
 
     /// <summary>
-    /// What the client should do next in response to this error.
+    /// What the client should do next.
     /// </summary>
     public required RetryStatus RetryStatus
     {
@@ -106,7 +106,7 @@ class BetaManagedAgentsBillingErrorFromRaw : IFromRawJson<BetaManagedAgentsBilli
 }
 
 /// <summary>
-/// What the client should do next in response to this error.
+/// What the client should do next.
 /// </summary>
 [JsonConverter(typeof(RetryStatusConverter))]
 public record class RetryStatus : ModelBase

@@ -9,7 +9,7 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 /// <summary>
-/// Reference to a single MCP tool by its server and remote name — the same ``server_name``/``name``
+/// Reference to a single MCP tool by its server and remote name; the same ``server_name``/``name``
 /// pair ``mcp_tool_use`` carries.
 /// </summary>
 [JsonConverter(

@@ -16,9 +16,6 @@ namespace Anthropic.Models.Messages;
 )]
 public sealed record class CodeExecutionToolResultBlockParam : JsonModel
 {
-    /// <summary>
-    /// Code execution result with encrypted stdout for PFC + web_search results.
-    /// </summary>
     public required CodeExecutionToolResultBlockParamContent Content
     {
         get

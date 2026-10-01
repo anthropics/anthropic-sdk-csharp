@@ -59,7 +59,7 @@ public sealed record class BetaManagedAgentsMcpOAuthAuthResponse : JsonModel
     }
 
     /// <summary>
-    /// OAuth refresh token configuration returned in credential responses.
+    /// Refresh token configuration, if the credential supports token refresh.
     /// </summary>
     public BetaManagedAgentsMcpOAuthRefreshResponse? Refresh
     {

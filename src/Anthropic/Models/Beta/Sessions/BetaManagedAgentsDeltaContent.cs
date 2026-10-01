@@ -16,7 +16,8 @@ namespace Anthropic.Models.Beta.Sessions;
 public sealed record class BetaManagedAgentsDeltaContent : JsonModel
 {
     /// <summary>
-    /// Regular text content.
+    /// A partial element of the content array at index, typed like the element itself
+    /// — the same shape the buffered agent.message carries in content.
     /// </summary>
     public required BetaManagedAgentsTextBlock Content
     {

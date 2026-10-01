@@ -26,7 +26,8 @@ public sealed record class ModelInfo : JsonModel
     }
 
     /// <summary>
-    /// Model capability information.
+    /// Object mapping capability names to their support details. Keys are always
+    /// present for all known capabilities.
     /// </summary>
     public required ModelCapabilities? Capabilities
     {

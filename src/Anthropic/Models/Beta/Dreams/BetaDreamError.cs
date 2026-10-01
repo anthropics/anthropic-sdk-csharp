@@ -13,6 +13,9 @@ namespace Anthropic.Models.Beta.Dreams;
 [JsonConverter(typeof(JsonModelConverter<BetaDreamError, BetaDreamErrorFromRaw>))]
 public sealed record class BetaDreamError : JsonModel
 {
+    /// <summary>
+    /// A human-readable explanation of why the dream failed.
+    /// </summary>
     public required string Message
     {
         get
@@ -23,6 +26,12 @@ public sealed record class BetaDreamError : JsonModel
         init { this._rawData.Set("message", value); }
     }
 
+    /// <summary>
+    /// A code for why the dream failed, such as `timeout` or `internal_error`.
+    ///
+    /// <para>The [Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#errors)
+    /// lists common error codes and when they occur.</para>
+    /// </summary>
     public required string Type
     {
         get

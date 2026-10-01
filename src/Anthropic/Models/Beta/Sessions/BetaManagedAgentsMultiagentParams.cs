@@ -11,8 +11,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Sessions;
 
 /// <summary>
-/// A coordinator topology: the session's primary thread orchestrates work by spawning
-/// session threads, each running an agent drawn from the `agents` roster.
+/// Multiagent orchestration configuration. Currently supports the `coordinator` topology.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<

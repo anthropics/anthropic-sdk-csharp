@@ -34,7 +34,7 @@ public sealed record class BetaManagedAgentsSessionStatusTerminatedEvent : JsonM
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp of status change.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {

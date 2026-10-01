@@ -11,7 +11,7 @@ MessageCreateParams parameters = new()
     [
         new() { Content = "Tell me a story about building the best SDK!", Role = Role.User },
     ],
-    Model = Model.ClaudeSonnet5,
+    Model = Model.ClaudeSonnet5_5,
 };
 
 IAsyncEnumerable<RawMessageStreamEvent> responseUpdates = client.Messages.CreateStreaming(

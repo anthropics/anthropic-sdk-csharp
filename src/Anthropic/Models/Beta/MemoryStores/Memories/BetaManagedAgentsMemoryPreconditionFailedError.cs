@@ -9,6 +9,17 @@ using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
+/// <summary>
+/// The error returned with HTTP status 409 when a request's precondition doesn't
+/// hold for the memory's current state, such as `precondition` on an update or `expected_content_sha256`
+/// on a delete.
+///
+/// <para>The error doesn't include the memory's current state. Retrieve the memory
+/// to see its current content and `content_sha256` before you retry.</para>
+///
+/// <para>See the [memory guide](https://platform.claude.com/docs/en/managed-agents/memory#safe-content-edits-optimistic-concurrency)
+/// to learn more about safe content edits with content hash preconditions.</para>
+/// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<
         BetaManagedAgentsMemoryPreconditionFailedError,
@@ -29,6 +40,9 @@ public sealed record class BetaManagedAgentsMemoryPreconditionFailedError : Json
         init { this._rawData.Set("type", value); }
     }
 
+    /// <summary>
+    /// A human-readable explanation of why the precondition failed.
+    /// </summary>
     public string? Message
     {
         get

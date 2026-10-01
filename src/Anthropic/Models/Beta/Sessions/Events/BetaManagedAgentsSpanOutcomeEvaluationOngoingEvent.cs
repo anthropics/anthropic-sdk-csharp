@@ -62,7 +62,7 @@ public sealed record class BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent : 
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when this heartbeat was emitted.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {

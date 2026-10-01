@@ -4,37 +4,66 @@ using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments.Work;
 using Anthropic.Models.Beta.Organization;
-using Anthropic.Models.Beta.Organization.ExternalKeys;
-using Anthropic.Models.Beta.Organization.ServiceAccounts;
-using Anthropic.Models.Beta.Organization.Workspaces;
-using Anthropic.Models.Beta.Organization.Workspaces.RateLimits;
+using Anthropic.Models.Beta.Organization.Analytics;
+using Anthropic.Models.Beta.Organization.Analytics.Users;
+using Anthropic.Models.Beta.Organization.Plugins.InstallationSettings;
+using Anthropic.Models.Beta.Organization.Plugins.Versions;
+using Anthropic.Models.Beta.Organization.RbacGroups;
+using Anthropic.Models.Beta.Organization.SpendLimits;
+using Anthropic.Models.Beta.Organization.SpendLimits.Effective;
+using Anthropic.Models.Beta.Organization.SpendLimits.IncreaseRequests;
 using Anthropic.Models.Messages;
+using Anthropic.Models.Organization;
+using Anthropic.Models.Organization.ExternalKeys;
+using Anthropic.Models.Organization.Workspaces;
+using Anthropic.Models.Organization.Workspaces.RateLimits;
 using Agents = Anthropic.Models.Beta.Agents;
-using ApiKeys = Anthropic.Models.Beta.Organization.ApiKeys;
+using AnalyticsSkills = Anthropic.Models.Beta.Organization.Analytics.Skills;
+using ApiKeys = Anthropic.Models.Organization.ApiKeys;
+using Artifacts = Anthropic.Models.Beta.Organization.Analytics.Artifacts;
 using Batches = Anthropic.Models.Messages.Batches;
 using BetaFiles = Anthropic.Models.Beta.Files;
 using BetaSkills = Anthropic.Models.Beta.Skills;
+using Connectors = Anthropic.Models.Beta.Organization.Analytics.Connectors;
+using CostReport = Anthropic.Models.Beta.Organization.Analytics.CostReport;
 using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
 using DeploymentRuns = Anthropic.Models.Beta.DeploymentRuns;
 using Deployments = Anthropic.Models.Beta.Deployments;
 using Dreams = Anthropic.Models.Beta.Dreams;
 using Environments = Anthropic.Models.Beta.Environments;
 using Events = Anthropic.Models.Beta.Sessions.Events;
+using ExternalKeys = Anthropic.Models.Beta.Organization.ExternalKeys;
 using Files = Anthropic.Models.Files;
-using Invites = Anthropic.Models.Beta.Organization.Invites;
+using Invites = Anthropic.Models.Organization.Invites;
 using Memories = Anthropic.Models.Beta.MemoryStores.Memories;
 using MemoryStores = Anthropic.Models.Beta.MemoryStores;
 using MemoryVersions = Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 using Messages = Anthropic.Models.Beta.Messages;
 using MessagesBatches = Anthropic.Models.Beta.Messages.Batches;
-using RateLimits = Anthropic.Models.Beta.Organization.RateLimits;
+using OrganizationApiKeys = Anthropic.Models.Beta.Organization.ApiKeys;
+using OrganizationInvites = Anthropic.Models.Beta.Organization.Invites;
+using OrganizationPlugins = Anthropic.Models.Beta.Organization.Plugins;
+using OrganizationRateLimits = Anthropic.Models.Beta.Organization.RateLimits;
+using OrganizationServiceAccounts = Anthropic.Models.Beta.Organization.ServiceAccounts;
+using OrganizationUsers = Anthropic.Models.Beta.Organization.Users;
+using PluginMarketplaces = Anthropic.Models.Beta.Organization.PluginMarketplaces;
+using Plugins = Anthropic.Models.Beta.Organization.Analytics.Plugins;
+using Projects = Anthropic.Models.Beta.Organization.Analytics.Apps.Chat.Projects;
+using RateLimits = Anthropic.Models.Organization.RateLimits;
 using Resources = Anthropic.Models.Beta.Sessions.Resources;
+using ServiceAccounts = Anthropic.Models.Organization.ServiceAccounts;
 using Sessions = Anthropic.Models.Beta.Sessions;
+using Shares = Anthropic.Models.Beta.Organization.Plugins.Shares;
 using Skills = Anthropic.Models.Skills;
 using Threads = Anthropic.Models.Beta.Sessions.Threads;
+using UsageReport = Anthropic.Models.Beta.Organization.Analytics.UsageReport;
+using UserCostReport = Anthropic.Models.Beta.Organization.Analytics.UserCostReport;
 using UserProfiles = Anthropic.Models.Beta.UserProfiles;
-using Users = Anthropic.Models.Beta.Organization.Users;
+using Users = Anthropic.Models.Organization.Users;
+using UserUsageReport = Anthropic.Models.Beta.Organization.Analytics.UserUsageReport;
 using Vaults = Anthropic.Models.Beta.Vaults;
+using Workspaces = Anthropic.Models.Beta.Organization.Workspaces;
+using WorkspacesRateLimits = Anthropic.Models.Beta.Organization.Workspaces.RateLimits;
 
 namespace Anthropic.Core;
 
@@ -108,6 +137,34 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Batches::ServiceTier>(),
             new ApiEnumConverter<string, Files::Type>(),
             new ApiEnumConverter<string, Skills::Type>(),
+            new ApiEnumConverter<string, OrganizationRole>(),
+            new ApiEnumConverter<string, ApiKeys::ApiKeyStatus>(),
+            new ApiEnumConverter<string, ApiKeys::Type>(),
+            new ApiEnumConverter<string, ApiKeys::Status>(),
+            new ApiEnumConverter<string, ApiKeys::ApiKeyListParamsStatus>(),
+            new ApiEnumConverter<string, Status>(),
+            new ApiEnumConverter<string, Geo>(),
+            new ApiEnumConverter<string, ExternalKeyUpdateParamsGeo>(),
+            new ApiEnumConverter<string, Invites::OrganizationInviteStatus>(),
+            new ApiEnumConverter<string, Invites::Role>(),
+            new ApiEnumConverter<string, Invites::Status>(),
+            new ApiEnumConverter<string, ServiceAccounts::ServiceAccountOrganizationRole>(),
+            new ApiEnumConverter<string, ServiceAccounts::OrganizationRole>(),
+            new ApiEnumConverter<
+                string,
+                ServiceAccounts::ServiceAccountUpdateParamsOrganizationRole
+            >(),
+            new ApiEnumConverter<string, NoBillingWorkspaceRole>(),
+            new ApiEnumConverter<string, Users::Role>(),
+            new ApiEnumConverter<string, AllowedInferenceGeo>(),
+            new ApiEnumConverter<string, DefaultInferenceGeo>(),
+            new ApiEnumConverter<string, WorkspaceGeo>(),
+            new ApiEnumConverter<string, DataResidencyCreateConfigDefaultInferenceGeo>(),
+            new ApiEnumConverter<string, DataResidencyCreateConfigWorkspaceGeo>(),
+            new ApiEnumConverter<string, DataResidencyUpdateConfigDefaultInferenceGeo>(),
+            new ApiEnumConverter<string, WorkspaceRole>(),
+            new ApiEnumConverter<string, GroupType>(),
+            new ApiEnumConverter<string, RateLimits::GroupType>(),
             new ApiEnumConverter<string, AnthropicBeta>(),
             new ApiEnumConverter<string, BetaCurrency>(),
             new ApiEnumConverter<string, Messages::AllowedCaller>(),
@@ -136,6 +193,8 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Messages::ClearAt>(),
             new ApiEnumConverter<string, Messages::Effort>(),
             new ApiEnumConverter<string, Messages::Category>(),
+            new ApiEnumConverter<string, Messages::BetaResponseToolAllowedCaller>(),
+            new ApiEnumConverter<string, Messages::BetaResponseToolType>(),
             new ApiEnumConverter<string, Messages::Name>(),
             new ApiEnumConverter<string, Messages::BetaServerToolUseBlockParamName>(),
             new ApiEnumConverter<string, Messages::BetaSkillParamsType>(),
@@ -157,6 +216,10 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Messages::Display>(),
             new ApiEnumConverter<string, Messages::BetaThinkingConfigEnabledDisplay>(),
             new ApiEnumConverter<string, Messages::BetaThinkingDroppedInputTransformationReason>(),
+            new ApiEnumConverter<
+                string,
+                Messages::BetaThinkingMismatchAllowedInputTransformationReason
+            >(),
             new ApiEnumConverter<string, Messages::BetaThinkingPrefixMismatchBehavior>(),
             new ApiEnumConverter<string, Messages::BetaToolAllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaToolType>(),
@@ -284,9 +347,9 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Sessions::Order>(),
             new ApiEnumConverter<string, Sessions::Status>(),
             new ApiEnumConverter<string, Events::Type>(),
+            new ApiEnumConverter<string, Events::BetaManagedAgentsAgentEvaluatedPermission>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsAgentMcpToolResultEventType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsAgentMcpToolUseEventType>(),
-            new ApiEnumConverter<string, Events::EvaluatedPermission>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsAgentMessageEventType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsAgentThinkingEventType>(),
             new ApiEnumConverter<
@@ -303,10 +366,6 @@ public abstract record class ModelBase
             >(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsAgentToolResultEventType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsAgentToolUseEventType>(),
-            new ApiEnumConverter<
-                string,
-                Events::BetaManagedAgentsAgentToolUseEventEvaluatedPermission
-            >(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsBase64DocumentSourceType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsBase64ImageSourceType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsBillingErrorType>(),
@@ -340,6 +399,8 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Events::BetaManagedAgentsSessionDeletedEventType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsSessionEndTurnType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsSessionErrorEventType>(),
+            new ApiEnumConverter<string, Events::BetaManagedAgentsSessionEventType>(),
+            new ApiEnumConverter<string, Events::Category>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsSessionRequiresActionType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsSessionRetriesExhaustedType>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsSessionStatusIdleEventType>(),
@@ -723,30 +784,114 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Dreams::BetaOutputBehaviorCreateNewType>(),
             new ApiEnumConverter<string, Dreams::BetaOutputBehaviorUpdateExistingType>(),
             new ApiEnumConverter<string, BetaOrganizationRole>(),
-            new ApiEnumConverter<string, ApiKeys::BetaApiKeyStatus>(),
-            new ApiEnumConverter<string, ApiKeys::Type>(),
-            new ApiEnumConverter<string, ApiKeys::Status>(),
-            new ApiEnumConverter<string, ApiKeys::ApiKeyListParamsStatus>(),
-            new ApiEnumConverter<string, Status>(),
-            new ApiEnumConverter<string, Geo>(),
-            new ApiEnumConverter<string, ExternalKeyUpdateParamsGeo>(),
-            new ApiEnumConverter<string, Invites::BetaOrganizationInviteStatus>(),
-            new ApiEnumConverter<string, Invites::Role>(),
-            new ApiEnumConverter<string, Invites::Status>(),
-            new ApiEnumConverter<string, BetaServiceAccountOrganizationRole>(),
-            new ApiEnumConverter<string, OrganizationRole>(),
-            new ApiEnumConverter<string, ServiceAccountUpdateParamsOrganizationRole>(),
-            new ApiEnumConverter<string, BetaNoBillingWorkspaceRole>(),
-            new ApiEnumConverter<string, Users::Role>(),
-            new ApiEnumConverter<string, BetaAllowedInferenceGeo>(),
-            new ApiEnumConverter<string, DefaultInferenceGeo>(),
-            new ApiEnumConverter<string, WorkspaceGeo>(),
-            new ApiEnumConverter<string, BetaDataResidencyUpdateConfigDefaultInferenceGeo>(),
-            new ApiEnumConverter<string, BetaWorkspaceRole>(),
-            new ApiEnumConverter<string, BetaWorkspaceRateLimitGroupType>(),
-            new ApiEnumConverter<string, GroupType>(),
-            new ApiEnumConverter<string, RateLimits::BetaOrganizationRateLimitGroupType>(),
-            new ApiEnumConverter<string, RateLimits::GroupType>(),
+            new ApiEnumConverter<string, OrganizationApiKeys::BetaApiKeyStatus>(),
+            new ApiEnumConverter<string, OrganizationApiKeys::Type>(),
+            new ApiEnumConverter<string, OrganizationApiKeys::Status>(),
+            new ApiEnumConverter<string, OrganizationApiKeys::ApiKeyListParamsStatus>(),
+            new ApiEnumConverter<string, ExternalKeys::Status>(),
+            new ApiEnumConverter<string, ExternalKeys::Geo>(),
+            new ApiEnumConverter<string, ExternalKeys::ExternalKeyUpdateParamsGeo>(),
+            new ApiEnumConverter<string, OrganizationInvites::BetaOrganizationInviteStatus>(),
+            new ApiEnumConverter<string, OrganizationInvites::Role>(),
+            new ApiEnumConverter<string, OrganizationInvites::Status>(),
+            new ApiEnumConverter<
+                string,
+                OrganizationServiceAccounts::BetaServiceAccountOrganizationRole
+            >(),
+            new ApiEnumConverter<string, OrganizationServiceAccounts::OrganizationRole>(),
+            new ApiEnumConverter<
+                string,
+                OrganizationServiceAccounts::ServiceAccountUpdateParamsOrganizationRole
+            >(),
+            new ApiEnumConverter<string, Workspaces::BetaNoBillingWorkspaceRole>(),
+            new ApiEnumConverter<string, OrganizationUsers::Role>(),
+            new ApiEnumConverter<string, Workspaces::BetaAllowedInferenceGeo>(),
+            new ApiEnumConverter<string, Workspaces::DefaultInferenceGeo>(),
+            new ApiEnumConverter<string, Workspaces::WorkspaceGeo>(),
+            new ApiEnumConverter<
+                string,
+                Workspaces::BetaDataResidencyCreateConfigDefaultInferenceGeo
+            >(),
+            new ApiEnumConverter<string, Workspaces::BetaDataResidencyCreateConfigWorkspaceGeo>(),
+            new ApiEnumConverter<
+                string,
+                Workspaces::BetaDataResidencyUpdateConfigDefaultInferenceGeo
+            >(),
+            new ApiEnumConverter<string, Workspaces::BetaWorkspaceRole>(),
+            new ApiEnumConverter<string, WorkspacesRateLimits::BetaWorkspaceRateLimitGroupType>(),
+            new ApiEnumConverter<string, WorkspacesRateLimits::GroupType>(),
+            new ApiEnumConverter<
+                string,
+                OrganizationRateLimits::BetaOrganizationRateLimitGroupType
+            >(),
+            new ApiEnumConverter<string, OrganizationRateLimits::GroupType>(),
+            new ApiEnumConverter<string, BetaAnalyticsClaudeTagCategory>(),
+            new ApiEnumConverter<string, BetaAnalyticsContextWindow>(),
+            new ApiEnumConverter<string, InferenceGeo>(),
+            new ApiEnumConverter<string, Speed>(),
+            new ApiEnumConverter<string, BetaAnalyticsCostType>(),
+            new ApiEnumConverter<string, BetaAnalyticsCostUsersItemInferenceGeo>(),
+            new ApiEnumConverter<string, BetaAnalyticsCostUsersItemSpeed>(),
+            new ApiEnumConverter<string, BetaAnalyticsInferenceGeoFilter>(),
+            new ApiEnumConverter<string, BetaAnalyticsProductFilter>(),
+            new ApiEnumConverter<string, ShareStatus>(),
+            new ApiEnumConverter<string, BetaAnalyticsTokenType>(),
+            new ApiEnumConverter<string, BetaAnalyticsUsageBucketedResultInferenceGeo>(),
+            new ApiEnumConverter<string, BetaAnalyticsUsageBucketedResultSpeed>(),
+            new ApiEnumConverter<string, BetaAnalyticsUsageUsersItemInferenceGeo>(),
+            new ApiEnumConverter<string, BetaAnalyticsUsageUsersItemSpeed>(),
+            new ApiEnumConverter<string, GroupBy>(),
+            new ApiEnumConverter<string, Order>(),
+            new ApiEnumConverter<string, Projects::GroupBy>(),
+            new ApiEnumConverter<string, Projects::Order>(),
+            new ApiEnumConverter<string, Connectors::GroupBy>(),
+            new ApiEnumConverter<string, Connectors::Order>(),
+            new ApiEnumConverter<string, Plugins::GroupBy>(),
+            new ApiEnumConverter<string, Plugins::Order>(),
+            new ApiEnumConverter<string, AnalyticsSkills::GroupBy>(),
+            new ApiEnumConverter<string, AnalyticsSkills::Order>(),
+            new ApiEnumConverter<string, Artifacts::GroupBy>(),
+            new ApiEnumConverter<string, UsageReport::BucketWidth>(),
+            new ApiEnumConverter<string, UsageReport::GroupBy>(),
+            new ApiEnumConverter<string, UsageReport::Speed>(),
+            new ApiEnumConverter<string, UserUsageReport::BucketWidth>(),
+            new ApiEnumConverter<string, UserUsageReport::GroupBy>(),
+            new ApiEnumConverter<string, UserUsageReport::Order>(),
+            new ApiEnumConverter<string, UserUsageReport::OrderBy>(),
+            new ApiEnumConverter<string, UserUsageReport::Speed>(),
+            new ApiEnumConverter<string, CostReport::BucketWidth>(),
+            new ApiEnumConverter<string, CostReport::GroupBy>(),
+            new ApiEnumConverter<string, CostReport::Speed>(),
+            new ApiEnumConverter<string, UserCostReport::BucketWidth>(),
+            new ApiEnumConverter<string, UserCostReport::GroupBy>(),
+            new ApiEnumConverter<string, UserCostReport::Order>(),
+            new ApiEnumConverter<string, UserCostReport::OrderBy>(),
+            new ApiEnumConverter<string, UserCostReport::Speed>(),
+            new ApiEnumConverter<string, BetaSpendLimitPeriod>(),
+            new ApiEnumConverter<string, ScopeType>(),
+            new ApiEnumConverter<string, Period>(),
+            new ApiEnumConverter<string, BetaSpendLimitIncreaseRequestStatus>(),
+            new ApiEnumConverter<string, SourceType>(),
+            new ApiEnumConverter<string, OrganizationPlugins::OrganizationInstallationPreference>(),
+            new ApiEnumConverter<string, OrganizationPlugins::Reach>(),
+            new ApiEnumConverter<string, OrganizationPlugins::Type>(),
+            new ApiEnumConverter<string, OrganizationPlugins::Assessment>(),
+            new ApiEnumConverter<string, OrganizationPlugins::Status>(),
+            new ApiEnumConverter<string, OrganizationPlugins::OwnerType>(),
+            new ApiEnumConverter<string, Reach>(),
+            new ApiEnumConverter<string, BetaPluginInstallationSettingInstallationPreference>(),
+            new ApiEnumConverter<string, TargetType>(),
+            new ApiEnumConverter<string, InstallationPreference>(),
+            new ApiEnumConverter<string, Shares::TargetType>(),
+            new ApiEnumConverter<
+                string,
+                PluginMarketplaces::BetaPluginMarketplaceDefaultInstallationPreference
+            >(),
+            new ApiEnumConverter<string, PluginMarketplaces::BetaPluginMarketplaceSource>(),
+            new ApiEnumConverter<string, PluginMarketplaces::SyncStatus>(),
+            new ApiEnumConverter<string, PluginMarketplaces::DefaultInstallationPreference>(),
+            new ApiEnumConverter<string, PluginMarketplaces::OwnerType>(),
+            new ApiEnumConverter<string, PluginMarketplaces::Source>(),
         },
     };
 

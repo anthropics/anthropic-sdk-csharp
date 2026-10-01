@@ -58,7 +58,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(
-                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+                new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
@@ -94,7 +94,7 @@ public class BetaMessageTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeFable5_1,
+                        Model = Model.ClaudeSonnet5_5,
                         OutputTokens = 0,
                     },
                 ],
@@ -106,7 +106,7 @@ public class BetaMessageTest : TestBase
             },
             InputTransformations =
             [
-                new()
+                new Messages::BetaThinkingDroppedInputTransformation()
                 {
                     Path = "path",
                     Reason =
@@ -159,7 +159,7 @@ public class BetaMessageTest : TestBase
             ]
         );
         Messages::BetaDiagnostics expectedDiagnostics = new(
-            new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+            new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
         );
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
@@ -195,7 +195,7 @@ public class BetaMessageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeFable5_1,
+                    Model = Model.ClaudeSonnet5_5,
                     OutputTokens = 0,
                 },
             ],
@@ -205,9 +205,9 @@ public class BetaMessageTest : TestBase
             ServiceTier = Messages::BetaUsageServiceTier.Standard,
             Speed = Messages::BetaUsageSpeed.Standard,
         };
-        List<Messages::BetaThinkingDroppedInputTransformation> expectedInputTransformations =
+        List<Messages::BetaInputTransformation> expectedInputTransformations =
         [
-            new()
+            new Messages::BetaThinkingDroppedInputTransformation()
             {
                 Path = "path",
                 Reason =
@@ -288,7 +288,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(
-                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+                new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
@@ -324,7 +324,7 @@ public class BetaMessageTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeFable5_1,
+                        Model = Model.ClaudeSonnet5_5,
                         OutputTokens = 0,
                     },
                 ],
@@ -336,7 +336,7 @@ public class BetaMessageTest : TestBase
             },
             InputTransformations =
             [
-                new()
+                new Messages::BetaThinkingDroppedInputTransformation()
                 {
                     Path = "path",
                     Reason =
@@ -403,7 +403,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(
-                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+                new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
@@ -439,7 +439,7 @@ public class BetaMessageTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeFable5_1,
+                        Model = Model.ClaudeSonnet5_5,
                         OutputTokens = 0,
                     },
                 ],
@@ -451,7 +451,7 @@ public class BetaMessageTest : TestBase
             },
             InputTransformations =
             [
-                new()
+                new Messages::BetaThinkingDroppedInputTransformation()
                 {
                     Path = "path",
                     Reason =
@@ -511,7 +511,7 @@ public class BetaMessageTest : TestBase
             ]
         );
         Messages::BetaDiagnostics expectedDiagnostics = new(
-            new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+            new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
         );
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
@@ -547,7 +547,7 @@ public class BetaMessageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeFable5_1,
+                    Model = Model.ClaudeSonnet5_5,
                     OutputTokens = 0,
                 },
             ],
@@ -557,9 +557,9 @@ public class BetaMessageTest : TestBase
             ServiceTier = Messages::BetaUsageServiceTier.Standard,
             Speed = Messages::BetaUsageSpeed.Standard,
         };
-        List<Messages::BetaThinkingDroppedInputTransformation> expectedInputTransformations =
+        List<Messages::BetaInputTransformation> expectedInputTransformations =
         [
-            new()
+            new Messages::BetaThinkingDroppedInputTransformation()
             {
                 Path = "path",
                 Reason =
@@ -640,7 +640,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(
-                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+                new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
@@ -676,7 +676,7 @@ public class BetaMessageTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeFable5_1,
+                        Model = Model.ClaudeSonnet5_5,
                         OutputTokens = 0,
                     },
                 ],
@@ -688,7 +688,7 @@ public class BetaMessageTest : TestBase
             },
             InputTransformations =
             [
-                new()
+                new Messages::BetaThinkingDroppedInputTransformation()
                 {
                     Path = "path",
                     Reason =
@@ -749,7 +749,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(
-                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+                new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
@@ -785,7 +785,7 @@ public class BetaMessageTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeFable5_1,
+                        Model = Model.ClaudeSonnet5_5,
                         OutputTokens = 0,
                     },
                 ],
@@ -850,7 +850,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(
-                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+                new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
@@ -886,7 +886,7 @@ public class BetaMessageTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeFable5_1,
+                        Model = Model.ClaudeSonnet5_5,
                         OutputTokens = 0,
                     },
                 ],
@@ -950,7 +950,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(
-                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+                new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
@@ -986,7 +986,7 @@ public class BetaMessageTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeFable5_1,
+                        Model = Model.ClaudeSonnet5_5,
                         OutputTokens = 0,
                     },
                 ],
@@ -1053,7 +1053,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(
-                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+                new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
@@ -1089,7 +1089,7 @@ public class BetaMessageTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeFable5_1,
+                        Model = Model.ClaudeSonnet5_5,
                         OutputTokens = 0,
                     },
                 ],
@@ -1155,7 +1155,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(
-                new Messages::CacheMissReason(new Messages::BetaCacheMissModelChanged(0))
+                new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
             ),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
@@ -1191,7 +1191,7 @@ public class BetaMessageTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeFable5_1,
+                        Model = Model.ClaudeSonnet5_5,
                         OutputTokens = 0,
                     },
                 ],
@@ -1203,7 +1203,7 @@ public class BetaMessageTest : TestBase
             },
             InputTransformations =
             [
-                new()
+                new Messages::BetaThinkingDroppedInputTransformation()
                 {
                     Path = "path",
                     Reason =

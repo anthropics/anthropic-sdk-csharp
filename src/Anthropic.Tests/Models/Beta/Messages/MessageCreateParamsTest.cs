@@ -30,6 +30,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()
             {
                 ID = "id",
@@ -174,6 +175,7 @@ public class MessageCreateParamsTest : TestBase
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5;
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        BetaCompactionConfig expectedCompaction = new() { Instructions = "instructions" };
         Container expectedContainer = new BetaContainerParams()
         {
             ID = "id",
@@ -321,6 +323,7 @@ public class MessageCreateParamsTest : TestBase
         }
         Assert.Equal(expectedModel, parameters.Model);
         Assert.Equal(expectedCacheControl, parameters.CacheControl);
+        Assert.Equal(expectedCompaction, parameters.Compaction);
         Assert.Equal(expectedContainer, parameters.Container);
         Assert.Equal(expectedContextManagement, parameters.ContextManagement);
         Assert.Equal(expectedDiagnostics, parameters.Diagnostics);
@@ -384,6 +387,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()
             {
                 ID = "id",
@@ -475,6 +479,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()
             {
                 ID = "id",
@@ -676,6 +681,8 @@ public class MessageCreateParamsTest : TestBase
 
         Assert.Null(parameters.CacheControl);
         Assert.False(parameters.RawBodyData.ContainsKey("cache_control"));
+        Assert.Null(parameters.Compaction);
+        Assert.False(parameters.RawBodyData.ContainsKey("compaction"));
         Assert.Null(parameters.Container);
         Assert.False(parameters.RawBodyData.ContainsKey("container"));
         Assert.Null(parameters.ContextManagement);
@@ -803,6 +810,7 @@ public class MessageCreateParamsTest : TestBase
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             CacheControl = null,
+            Compaction = null,
             Container = null,
             ContextManagement = null,
             Diagnostics = null,
@@ -815,6 +823,8 @@ public class MessageCreateParamsTest : TestBase
 
         Assert.Null(parameters.CacheControl);
         Assert.True(parameters.RawBodyData.ContainsKey("cache_control"));
+        Assert.Null(parameters.Compaction);
+        Assert.True(parameters.RawBodyData.ContainsKey("compaction"));
         Assert.Null(parameters.Container);
         Assert.True(parameters.RawBodyData.ContainsKey("container"));
         Assert.Null(parameters.ContextManagement);
@@ -916,6 +926,7 @@ public class MessageCreateParamsTest : TestBase
             ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()
             {
                 ID = "id",

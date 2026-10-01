@@ -36,7 +36,7 @@ public sealed record class BetaManagedAgentsSessionUpdatedEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the update was applied.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {
@@ -61,8 +61,9 @@ public sealed record class BetaManagedAgentsSessionUpdatedEvent : JsonModel
     }
 
     /// <summary>
-    /// Resolved `agent` definition for a `session`. Snapshot of the `agent` at `session`
-    /// creation time.
+    /// The session's effective agent configuration after the update. Present only
+    /// when the update changed `agent` (tools or mcp_servers); when present it is
+    /// the full materialised snapshot, not a diff.
     /// </summary>
     public BetaManagedAgentsSessionAgent? Agent
     {
@@ -75,8 +76,9 @@ public sealed record class BetaManagedAgentsSessionUpdatedEvent : JsonModel
     }
 
     /// <summary>
-    /// A hard spend ceiling. The session stops issuing new model requests once the
-    /// tracked list cost reaches `max_list_cost`.
+    /// The session's budget after the update: the new budget when set or replaced,
+    /// or null when the update removed it. Present only when the update changed
+    /// the budget.
     /// </summary>
     public BetaManagedAgentsBudgetLimit? Budget
     {

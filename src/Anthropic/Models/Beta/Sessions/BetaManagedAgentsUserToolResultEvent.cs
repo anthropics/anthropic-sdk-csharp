@@ -102,7 +102,7 @@ public sealed record class BetaManagedAgentsUserToolResultEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when this result was processed.
     /// </summary>
     public System::DateTimeOffset? ProcessedAt
     {
@@ -115,7 +115,8 @@ public sealed record class BetaManagedAgentsUserToolResultEvent : JsonModel
     }
 
     /// <summary>
-    /// Routes this result to a subagent thread. Copy from the `agent.tool_use` event's `session_thread_id`.
+    /// Set by the server to the subagent thread this result was routed to. Omitted
+    /// when it was routed to the primary thread.
     /// </summary>
     public string? SessionThreadID
     {

@@ -11,8 +11,21 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 [JsonConverter(typeof(BetaManagedAgentsCredentialValidationStatusConverter))]
 public enum BetaManagedAgentsCredentialValidationStatus
 {
+    /// <summary>
+    /// The credential successfully authenticated against its MCP server.
+    /// </summary>
     Valid,
+
+    /// <summary>
+    /// The probe reached the MCP server and was rejected, and a refresh (if attempted)
+    /// did not recover it.
+    /// </summary>
     Invalid,
+
+    /// <summary>
+    /// The probe could not determine validity — for example, a transport error or
+    /// a successful refresh that was not re-probed.
+    /// </summary>
     Unknown,
 }
 

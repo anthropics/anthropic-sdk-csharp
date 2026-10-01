@@ -24,7 +24,11 @@ public record class MemoryDeleteParams : ParamsBase
     public string? MemoryID { get; init; }
 
     /// <summary>
-    /// Query parameter for expected_content_sha256
+    /// Delete the memory only if its current `content_sha256` equals this value,
+    /// given as 64 lowercase hexadecimal characters. Omit it to delete unconditionally.
+    ///
+    /// <para>If the hashes differ, the request fails with HTTP status 409 and nothing
+    /// is deleted.</para>
     /// </summary>
     public string? ExpectedContentSha256
     {
@@ -70,6 +74,14 @@ public record class MemoryDeleteParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get

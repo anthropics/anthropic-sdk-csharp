@@ -67,6 +67,8 @@ public interface IAnthropicClient : IDisposable
 
     ISkillService Skills { get; }
 
+    IOrganizationService Organization { get; }
+
     IBetaService Beta { get; }
 }
 
@@ -113,6 +115,8 @@ public interface IAnthropicClientWithRawResponse : IDisposable
     IFileServiceWithRawResponse Files { get; }
 
     ISkillServiceWithRawResponse Skills { get; }
+
+    IOrganizationServiceWithRawResponse Organization { get; }
 
     IBetaServiceWithRawResponse Beta { get; }
 

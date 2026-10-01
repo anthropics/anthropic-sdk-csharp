@@ -86,9 +86,6 @@ class BetaContextManagementConfigFromRaw : IFromRawJson<BetaContextManagementCon
     ) => BetaContextManagementConfig.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// Automatically compact older context when reaching the configured trigger threshold.
-/// </summary>
 [JsonConverter(typeof(EditConverter))]
 public record class Edit : ModelBase
 {

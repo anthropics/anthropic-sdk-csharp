@@ -18,11 +18,8 @@ namespace Anthropic.Models.Beta.UserProfiles;
 public sealed record class BetaUserProfileExternalUserDetailsParams : JsonModel
 {
     /// <summary>
-    /// The status of the entity's account on the platform, as the platform states
-    /// it: `active`; `suspended`, when the platform has restricted the account and
-    /// may restore it; or `blocked`, when the platform has barred it. It records
-    /// the platform's decision only; the statuses in `trust_grants` are Anthropic's
-    /// and do not follow it.
+    /// The status of the entity's account on the platform: `active`, `suspended`
+    /// or `blocked`.
     /// </summary>
     public ApiEnum<string, BetaUserProfileExternalUserDetailsParamsAccountStatus>? AccountStatus
     {
@@ -67,8 +64,8 @@ public sealed record class BetaUserProfileExternalUserDetailsParams : JsonModel
     }
 
     /// <summary>
-    /// What kind of entity the profile represents, as the platform states it: `individual`,
-    /// `business`, `non_profit` or `government`.
+    /// What kind of entity the profile represents: `individual`, `business`, `non_profit`
+    /// or `government`.
     /// </summary>
     public ApiEnum<string, BetaUserProfileExternalUserDetailsParamsEntityType>? EntityType
     {
@@ -97,7 +94,10 @@ public sealed record class BetaUserProfileExternalUserDetailsParams : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When the entity opened its account with the platform, in RFC 3339 format:
+    /// for an `application` profile, when the end-user signed up; for a `passthrough`
+    /// profile, when the company became the platform's customer. Must be a complete
+    /// timestamp no more than 1 minute in the future.
     /// </summary>
     public System::DateTimeOffset? OnboardedAt
     {
@@ -188,16 +188,26 @@ class BetaUserProfileExternalUserDetailsParamsFromRaw
 }
 
 /// <summary>
-/// The status of the entity's account on the platform, as the platform states it:
-/// `active`; `suspended`, when the platform has restricted the account and may restore
-/// it; or `blocked`, when the platform has barred it. It records the platform's decision
-/// only; the statuses in `trust_grants` are Anthropic's and do not follow it.
+/// The status of the entity's account on the platform: `active`, `suspended` or `blocked`.
 /// </summary>
 [JsonConverter(typeof(BetaUserProfileExternalUserDetailsParamsAccountStatusConverter))]
 public enum BetaUserProfileExternalUserDetailsParamsAccountStatus
 {
+    /// <summary>
+    /// The platform has neither restricted nor barred the account of the entity
+    /// that the user profile represents.
+    /// </summary>
     Active,
+
+    /// <summary>
+    /// The platform has restricted the account of the entity that the user profile
+    /// represents and may restore it.
+    /// </summary>
     Suspended,
+
+    /// <summary>
+    /// The platform has barred the account of the entity that the user profile represents.
+    /// </summary>
     Blocked,
 }
 
@@ -242,8 +252,8 @@ sealed class BetaUserProfileExternalUserDetailsParamsAccountStatusConverter
 }
 
 /// <summary>
-/// What kind of entity the profile represents, as the platform states it: `individual`,
-/// `business`, `non_profit` or `government`.
+/// What kind of entity the profile represents: `individual`, `business`, `non_profit`
+/// or `government`.
 /// </summary>
 [JsonConverter(typeof(BetaUserProfileExternalUserDetailsParamsEntityTypeConverter))]
 public enum BetaUserProfileExternalUserDetailsParamsEntityType

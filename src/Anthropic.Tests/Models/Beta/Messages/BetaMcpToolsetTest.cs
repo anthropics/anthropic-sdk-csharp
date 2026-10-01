@@ -22,6 +22,18 @@ public class BetaMcpToolsetTest : TestBase
                 },
             },
             DefaultConfig = new() { DeferLoading = true, Enabled = true },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
         };
 
         string expectedMcpServerName = "x";
@@ -39,6 +51,18 @@ public class BetaMcpToolsetTest : TestBase
             DeferLoading = true,
             Enabled = true,
         };
+        List<BetaMcpToolParam> expectedTools =
+        [
+            new()
+            {
+                InputSchema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+                Name = "x",
+                Description = "description",
+            },
+        ];
 
         Assert.Equal(expectedMcpServerName, model.McpServerName);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -52,6 +76,12 @@ public class BetaMcpToolsetTest : TestBase
             Assert.Equal(value, model.Configs[item.Key]);
         }
         Assert.Equal(expectedDefaultConfig, model.DefaultConfig);
+        Assert.NotNull(model.Tools);
+        Assert.Equal(expectedTools.Count, model.Tools.Count);
+        for (int i = 0; i < expectedTools.Count; i++)
+        {
+            Assert.Equal(expectedTools[i], model.Tools[i]);
+        }
     }
 
     [Fact]
@@ -69,6 +99,18 @@ public class BetaMcpToolsetTest : TestBase
                 },
             },
             DefaultConfig = new() { DeferLoading = true, Enabled = true },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -95,6 +137,18 @@ public class BetaMcpToolsetTest : TestBase
                 },
             },
             DefaultConfig = new() { DeferLoading = true, Enabled = true },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -119,6 +173,18 @@ public class BetaMcpToolsetTest : TestBase
             DeferLoading = true,
             Enabled = true,
         };
+        List<BetaMcpToolParam> expectedTools =
+        [
+            new()
+            {
+                InputSchema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+                Name = "x",
+                Description = "description",
+            },
+        ];
 
         Assert.Equal(expectedMcpServerName, deserialized.McpServerName);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -132,6 +198,12 @@ public class BetaMcpToolsetTest : TestBase
             Assert.Equal(value, deserialized.Configs[item.Key]);
         }
         Assert.Equal(expectedDefaultConfig, deserialized.DefaultConfig);
+        Assert.NotNull(deserialized.Tools);
+        Assert.Equal(expectedTools.Count, deserialized.Tools.Count);
+        for (int i = 0; i < expectedTools.Count; i++)
+        {
+            Assert.Equal(expectedTools[i], deserialized.Tools[i]);
+        }
     }
 
     [Fact]
@@ -149,6 +221,18 @@ public class BetaMcpToolsetTest : TestBase
                 },
             },
             DefaultConfig = new() { DeferLoading = true, Enabled = true },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
         };
 
         model.Validate();
@@ -168,6 +252,18 @@ public class BetaMcpToolsetTest : TestBase
                     new() { DeferLoading = true, Enabled = true }
                 },
             },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
         };
 
         Assert.Null(model.DefaultConfig);
@@ -188,6 +284,18 @@ public class BetaMcpToolsetTest : TestBase
                     new() { DeferLoading = true, Enabled = true }
                 },
             },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
         };
 
         model.Validate();
@@ -207,6 +315,18 @@ public class BetaMcpToolsetTest : TestBase
                     new() { DeferLoading = true, Enabled = true }
                 },
             },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
 
             // Null should be interpreted as omitted for these properties
             DefaultConfig = null,
@@ -230,6 +350,18 @@ public class BetaMcpToolsetTest : TestBase
                     new() { DeferLoading = true, Enabled = true }
                 },
             },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
 
             // Null should be interpreted as omitted for these properties
             DefaultConfig = null,
@@ -251,6 +383,8 @@ public class BetaMcpToolsetTest : TestBase
         Assert.False(model.RawData.ContainsKey("cache_control"));
         Assert.Null(model.Configs);
         Assert.False(model.RawData.ContainsKey("configs"));
+        Assert.Null(model.Tools);
+        Assert.False(model.RawData.ContainsKey("tools"));
     }
 
     [Fact]
@@ -275,12 +409,15 @@ public class BetaMcpToolsetTest : TestBase
 
             CacheControl = null,
             Configs = null,
+            Tools = null,
         };
 
         Assert.Null(model.CacheControl);
         Assert.True(model.RawData.ContainsKey("cache_control"));
         Assert.Null(model.Configs);
         Assert.True(model.RawData.ContainsKey("configs"));
+        Assert.Null(model.Tools);
+        Assert.True(model.RawData.ContainsKey("tools"));
     }
 
     [Fact]
@@ -293,6 +430,7 @@ public class BetaMcpToolsetTest : TestBase
 
             CacheControl = null,
             Configs = null,
+            Tools = null,
         };
 
         model.Validate();
@@ -313,6 +451,18 @@ public class BetaMcpToolsetTest : TestBase
                 },
             },
             DefaultConfig = new() { DeferLoading = true, Enabled = true },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
         };
 
         BetaMcpToolset copied = new(model);

@@ -16,7 +16,8 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class BetaManagedAgentsMcpProbe : JsonModel
 {
     /// <summary>
-    /// An HTTP response captured during a credential validation probe.
+    /// The captured HTTP error response. Null when no HTTP response was received
+    /// (timeout, DNS, TLS).
     /// </summary>
     public required BetaManagedAgentsRefreshHttpResponse? HttpResponse
     {

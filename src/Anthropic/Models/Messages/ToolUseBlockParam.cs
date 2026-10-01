@@ -71,9 +71,6 @@ public sealed record class ToolUseBlockParam : JsonModel
         init { this._rawData.Set("cache_control", value); }
     }
 
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public ToolUseBlockParamCaller? Caller
     {
         get
@@ -162,9 +159,6 @@ class ToolUseBlockParamFromRaw : IFromRawJson<ToolUseBlockParam>
         ToolUseBlockParam.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(ToolUseBlockParamCallerConverter))]
 public record class ToolUseBlockParamCaller : ModelBase
 {

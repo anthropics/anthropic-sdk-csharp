@@ -36,7 +36,7 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
     }
 
     /// <summary>
-    /// A resolved agent reference with a concrete version.
+    /// Reference to the agent this deployment runs, resolved to a concrete version.
     /// </summary>
     public required BetaManagedAgentsAgentReference Agent
     {
@@ -49,7 +49,7 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Time the deployment was archived. Null if not archived.
     /// </summary>
     public required System::DateTimeOffset? ArchivedAt
     {
@@ -62,7 +62,7 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Time the deployment was created.
     /// </summary>
     public required System::DateTimeOffset CreatedAt
     {
@@ -154,7 +154,8 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
     }
 
     /// <summary>
-    /// Why a deployment is paused. Non-null exactly when `status` is `paused`.
+    /// Why the deployment is `paused`. Non-null exactly when `status` is `paused`;
+    /// null otherwise.
     /// </summary>
     public required BetaManagedAgentsDeploymentPausedReason? PausedReason
     {
@@ -191,7 +192,9 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
     }
 
     /// <summary>
-    /// 5-field POSIX cron schedule with computed runtime timestamps.
+    /// Recurring cron schedule. Presence enables scheduled execution; null means
+    /// manual-only. Includes computed timestamps (next fire times, last run) on the
+    /// cron variant.
     /// </summary>
     public required BetaManagedAgentsSchedule? Schedule
     {
@@ -204,7 +207,8 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
     }
 
     /// <summary>
-    /// Lifecycle status of a deployment.
+    /// Computed status of the deployment: `active` or `paused`. Archived deployments
+    /// report `active` with `archived_at` set.
     /// </summary>
     public required ApiEnum<string, BetaManagedAgentsDeploymentStatus> Status
     {
@@ -231,7 +235,7 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Time the deployment was last updated.
     /// </summary>
     public required System::DateTimeOffset UpdatedAt
     {
@@ -263,8 +267,8 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
     }
 
     /// <summary>
-    /// A hard spend ceiling. The session stops issuing new model requests once the
-    /// tracked list cost reaches `max_list_cost`.
+    /// Spend ceiling stamped onto each session created from this deployment. Absent
+    /// when no budget is set.
     /// </summary>
     public BetaManagedAgentsBudgetLimit? Budget
     {

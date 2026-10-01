@@ -11,7 +11,16 @@ namespace Anthropic.Models.Beta.Deployments;
 [JsonConverter(typeof(BetaManagedAgentsDeploymentStatusConverter))]
 public enum BetaManagedAgentsDeploymentStatus
 {
+    /// <summary>
+    /// The deployment is active and can run sessions. Archived deployments also report
+    /// this status; check `archived_at` to distinguish them.
+    /// </summary>
     Active,
+
+    /// <summary>
+    /// The deployment is paused. Autonomous triggers are suppressed; manual runs
+    /// are still permitted.
+    /// </summary>
     Paused,
 }
 

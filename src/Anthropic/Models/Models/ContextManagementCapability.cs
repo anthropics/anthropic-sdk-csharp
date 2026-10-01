@@ -16,7 +16,7 @@ namespace Anthropic.Models.Models;
 public sealed record class ContextManagementCapability : JsonModel
 {
     /// <summary>
-    /// Indicates whether a capability is supported.
+    /// Whether the clear_thinking_20251015 strategy is supported.
     /// </summary>
     public required CapabilitySupport? ClearThinking20251015
     {
@@ -29,7 +29,7 @@ public sealed record class ContextManagementCapability : JsonModel
     }
 
     /// <summary>
-    /// Indicates whether a capability is supported.
+    /// Whether the clear_tool_uses_20250919 strategy is supported.
     /// </summary>
     public required CapabilitySupport? ClearToolUses20250919
     {
@@ -42,7 +42,7 @@ public sealed record class ContextManagementCapability : JsonModel
     }
 
     /// <summary>
-    /// Indicates whether a capability is supported.
+    /// Whether the compact_20260112 strategy is supported.
     /// </summary>
     public required CapabilitySupport? Compact20260112
     {

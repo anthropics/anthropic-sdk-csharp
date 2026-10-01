@@ -74,7 +74,7 @@ public sealed record class BetaManagedAgentsMcpToolsetParams : JsonModel
     }
 
     /// <summary>
-    /// Default configuration for all tools from an MCP server.
+    /// Default configuration for all tools from this server.
     /// </summary>
     public BetaManagedAgentsMcpToolsetDefaultConfigParams? DefaultConfig
     {

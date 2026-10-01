@@ -75,12 +75,12 @@ public sealed record class BetaMessageIterationUsage : JsonModel
     /// <para>See [models](https://docs.anthropic.com/en/docs/models-overview) for
     /// additional details and options.</para>
     /// </summary>
-    public required ApiEnum<string, Model> Model
+    public required ApiEnum<string, Model>? Model
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, Model>>("model");
+            return this._rawData.GetNullableClass<ApiEnum<string, Model>>("model");
         }
         init { this._rawData.Set("model", value); }
     }
@@ -118,7 +118,7 @@ public sealed record class BetaMessageIterationUsage : JsonModel
         _ = this.CacheCreationInputTokens;
         _ = this.CacheReadInputTokens;
         _ = this.InputTokens;
-        this.Model.Raw();
+        this.Model?.Raw();
         _ = this.OutputTokens;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message")))
         {

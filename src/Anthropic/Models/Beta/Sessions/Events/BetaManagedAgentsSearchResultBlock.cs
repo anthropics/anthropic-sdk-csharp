@@ -22,7 +22,7 @@ namespace Anthropic.Models.Beta.Sessions.Events;
 public sealed record class BetaManagedAgentsSearchResultBlock : JsonModel
 {
     /// <summary>
-    /// Citation settings for a search result.
+    /// Citation settings for this search result.
     /// </summary>
     public required BetaManagedAgentsSearchResultCitations Citations
     {

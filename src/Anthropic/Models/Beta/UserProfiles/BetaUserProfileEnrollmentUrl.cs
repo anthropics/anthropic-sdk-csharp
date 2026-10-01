@@ -9,13 +9,17 @@ using System = System;
 
 namespace Anthropic.Models.Beta.UserProfiles;
 
+/// <summary>
+/// A URL to give to the entity that a user profile represents, so that the entity
+/// can enroll for a trust grant.
+/// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaUserProfileEnrollmentUrl, BetaUserProfileEnrollmentUrlFromRaw>)
 )]
 public sealed record class BetaUserProfileEnrollmentUrl : JsonModel
 {
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When this enrollment URL expires, in RFC 3339 format.
     /// </summary>
     public required System::DateTimeOffset ExpiresAt
     {

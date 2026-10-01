@@ -420,9 +420,6 @@ sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBloc
     }
 }
 
-/// <summary>
-/// Tool reference block that can be included in tool_result content.
-/// </summary>
 [JsonConverter(typeof(BlockConverter))]
 public record class Block : ModelBase
 {

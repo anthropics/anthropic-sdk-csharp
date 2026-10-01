@@ -35,7 +35,7 @@ public sealed record class BetaManagedAgentsAgentThinkingEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when this thinking was produced.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {

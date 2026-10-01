@@ -11,7 +11,12 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.Dreams;
 
 /// <summary>
-/// List Dreams
+/// List the dreams in the workspace, newest first.
+///
+/// <para>Archived dreams are left out unless `include_archived` is `true`.</para>
+///
+/// <para>See the [Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#list-dreams)
+/// for how to page through dreams.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -20,8 +25,7 @@ namespace Anthropic.Models.Beta.Dreams;
 public record class DreamListParams : ParamsBase
 {
     /// <summary>
-    /// Return dreams with `created_at` strictly after this timestamp (exclusive lower
-    /// bound, RFC 3339). Unset applies no lower bound.
+    /// Return only dreams created after this time (exclusive), in RFC 3339.
     /// </summary>
     public DateTimeOffset? CreatedAtGt
     {
@@ -42,8 +46,7 @@ public record class DreamListParams : ParamsBase
     }
 
     /// <summary>
-    /// Return dreams with `created_at` strictly before this timestamp (exclusive
-    /// upper bound, RFC 3339). Unset applies no upper bound.
+    /// Return only dreams created before this time (exclusive), in RFC 3339.
     /// </summary>
     public DateTimeOffset? CreatedAtLt
     {
@@ -64,7 +67,7 @@ public record class DreamListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for include_archived
+    /// Whether to include archived dreams. Defaults to `false`.
     /// </summary>
     public bool? IncludeArchived
     {
@@ -85,7 +88,7 @@ public record class DreamListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for limit
+    /// The maximum number of dreams to return, from 1 to 100. Defaults to 20.
     /// </summary>
     public int? Limit
     {
@@ -106,7 +109,9 @@ public record class DreamListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for page
+    /// The cursor for the page to return, taken from `next_page` in a previous response.
+    ///
+    /// <para>Leave it out to get the first page.</para>
     /// </summary>
     public string? Page
     {
@@ -127,8 +132,10 @@ public record class DreamListParams : ParamsBase
     }
 
     /// <summary>
-    /// Filter by lifecycle status. Repeat the parameter to match any of multiple
-    /// statuses. Empty applies no status filter.
+    /// Return only dreams that have one of these statuses.
+    ///
+    /// <para>Repeat the parameter to give more than one status. Leave it out to return
+    /// dreams of every status.</para>
     /// </summary>
     public IReadOnlyList<ApiEnum<string, BetaDreamStatus>>? Statuses
     {
@@ -179,6 +186,14 @@ public record class DreamListParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get

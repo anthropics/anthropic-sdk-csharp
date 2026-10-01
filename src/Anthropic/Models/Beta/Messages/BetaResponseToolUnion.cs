@@ -1,0 +1,2268 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Anthropic.Core;
+using Anthropic.Exceptions;
+using System = System;
+
+namespace Anthropic.Models.Beta.Messages;
+
+[JsonConverter(typeof(BetaResponseToolUnionConverter))]
+public record class BetaResponseToolUnion : ModelBase
+{
+    public object? Value { get; } = null;
+
+    JsonElement? _element = null;
+
+    public JsonElement Json
+    {
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public bool? DeferLoading
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaResponseTool x => x.DeferLoading,
+                BetaToolBash20241022 x => x.DeferLoading,
+                BetaToolBash20250124 x => x.DeferLoading,
+                BetaCodeExecutionTool20250522 x => x.DeferLoading,
+                BetaCodeExecutionTool20250825 x => x.DeferLoading,
+                BetaCodeExecutionTool20260120 x => x.DeferLoading,
+                BetaCodeExecutionTool20260521 x => x.DeferLoading,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 x => x.DeferLoading,
+                BetaMemoryTool20250818 x => x.DeferLoading,
+                BetaToolComputerUse20250124 x => x.DeferLoading,
+                BetaToolTextEditor20241022 x => x.DeferLoading,
+                BetaToolComputerUse20251124 x => x.DeferLoading,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 x => x.DeferLoading,
+                BetaToolTextEditor20250429 x => x.DeferLoading,
+                BetaToolTextEditor20250728 x => x.DeferLoading,
+                BetaWebSearchTool20250305 x => x.DeferLoading,
+                BetaWebFetchTool20250910 x => x.DeferLoading,
+                BetaWebSearchTool20260209 x => x.DeferLoading,
+                BetaWebFetchTool20260209 x => x.DeferLoading,
+                BetaWebFetchTool20260309 x => x.DeferLoading,
+                BetaWebSearchTool20260318 x => x.DeferLoading,
+                BetaWebFetchTool20260318 x => x.DeferLoading,
+                BetaAdvisorTool20260301 x => x.DeferLoading,
+                BetaToolSearchToolBm25_20251119 x => x.DeferLoading,
+                BetaToolSearchToolRegex20251119 x => x.DeferLoading,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(
+                    this.Json,
+                    "defer_loading"
+                ),
+            };
+        }
+    }
+
+    public bool? Strict
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaResponseTool x => x.Strict,
+                BetaToolBash20241022 x => x.Strict,
+                BetaToolBash20250124 x => x.Strict,
+                BetaCodeExecutionTool20250522 x => x.Strict,
+                BetaCodeExecutionTool20250825 x => x.Strict,
+                BetaCodeExecutionTool20260120 x => x.Strict,
+                BetaCodeExecutionTool20260521 x => x.Strict,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 x => x.Strict,
+                BetaMemoryTool20250818 x => x.Strict,
+                BetaToolComputerUse20250124 x => x.Strict,
+                BetaToolTextEditor20241022 x => x.Strict,
+                BetaToolComputerUse20251124 x => x.Strict,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 x => x.Strict,
+                BetaToolTextEditor20250429 x => x.Strict,
+                BetaToolTextEditor20250728 x => x.Strict,
+                BetaWebSearchTool20250305 x => x.Strict,
+                BetaWebFetchTool20250910 x => x.Strict,
+                BetaWebSearchTool20260209 x => x.Strict,
+                BetaWebFetchTool20260209 x => x.Strict,
+                BetaWebFetchTool20260309 x => x.Strict,
+                BetaWebSearchTool20260318 x => x.Strict,
+                BetaWebFetchTool20260318 x => x.Strict,
+                BetaAdvisorTool20260301 x => x.Strict,
+                BetaToolSearchToolBm25_20251119 x => x.Strict,
+                BetaToolSearchToolRegex20251119 x => x.Strict,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(this.Json, "strict"),
+            };
+        }
+    }
+
+    public BetaCacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaResponseTool _ => null,
+                BetaToolBash20241022 x => x.CacheControl,
+                BetaToolBash20250124 x => x.CacheControl,
+                BetaCodeExecutionTool20250522 x => x.CacheControl,
+                BetaCodeExecutionTool20250825 x => x.CacheControl,
+                BetaCodeExecutionTool20260120 x => x.CacheControl,
+                BetaCodeExecutionTool20260521 x => x.CacheControl,
+                BetaBrowserToolset20260801 x => x.CacheControl,
+                BetaToolComputerUse20241022 x => x.CacheControl,
+                BetaMemoryTool20250818 x => x.CacheControl,
+                BetaToolComputerUse20250124 x => x.CacheControl,
+                BetaToolTextEditor20241022 x => x.CacheControl,
+                BetaToolComputerUse20251124 x => x.CacheControl,
+                BetaComputerToolset20260801 x => x.CacheControl,
+                BetaToolTextEditor20250124 x => x.CacheControl,
+                BetaToolTextEditor20250429 x => x.CacheControl,
+                BetaToolTextEditor20250728 x => x.CacheControl,
+                BetaWebSearchTool20250305 x => x.CacheControl,
+                BetaWebFetchTool20250910 x => x.CacheControl,
+                BetaWebSearchTool20260209 x => x.CacheControl,
+                BetaWebFetchTool20260209 x => x.CacheControl,
+                BetaWebFetchTool20260309 x => x.CacheControl,
+                BetaWebSearchTool20260318 x => x.CacheControl,
+                BetaWebFetchTool20260318 x => x.CacheControl,
+                BetaAdvisorTool20260301 x => x.CacheControl,
+                BetaToolSearchToolBm25_20251119 x => x.CacheControl,
+                BetaToolSearchToolRegex20251119 x => x.CacheControl,
+                BetaMcpToolset x => x.CacheControl,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<BetaCacheControlEphemeral>(
+                    this.Json,
+                    "cache_control"
+                ),
+            };
+        }
+    }
+
+    public long? DisplayHeightPx
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaResponseTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 x => x.DisplayHeightPx,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 x => x.DisplayHeightPx,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 x => x.DisplayHeightPx,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 _ => null,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 _ => null,
+                BetaWebFetchTool20260309 _ => null,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 _ => null,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "display_height_px"
+                ),
+            };
+        }
+    }
+
+    public long? DisplayWidthPx
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaResponseTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 x => x.DisplayWidthPx,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 x => x.DisplayWidthPx,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 x => x.DisplayWidthPx,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 _ => null,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 _ => null,
+                BetaWebFetchTool20260309 _ => null,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 _ => null,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "display_width_px"
+                ),
+            };
+        }
+    }
+
+    public long? DisplayNumber
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaResponseTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 x => x.DisplayNumber,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 x => x.DisplayNumber,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 x => x.DisplayNumber,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 _ => null,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 _ => null,
+                BetaWebFetchTool20260309 _ => null,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 _ => null,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "display_number"
+                ),
+            };
+        }
+    }
+
+    public long? MaxUses
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaResponseTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 x => x.MaxUses,
+                BetaWebFetchTool20250910 x => x.MaxUses,
+                BetaWebSearchTool20260209 x => x.MaxUses,
+                BetaWebFetchTool20260209 x => x.MaxUses,
+                BetaWebFetchTool20260309 x => x.MaxUses,
+                BetaWebSearchTool20260318 x => x.MaxUses,
+                BetaWebFetchTool20260318 x => x.MaxUses,
+                BetaAdvisorTool20260301 x => x.MaxUses,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(this.Json, "max_uses"),
+            };
+        }
+    }
+
+    public BetaUserLocation? UserLocation
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaResponseTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 x => x.UserLocation,
+                BetaWebFetchTool20250910 _ => null,
+                BetaWebSearchTool20260209 x => x.UserLocation,
+                BetaWebFetchTool20260209 _ => null,
+                BetaWebFetchTool20260309 _ => null,
+                BetaWebSearchTool20260318 x => x.UserLocation,
+                BetaWebFetchTool20260318 _ => null,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<BetaUserLocation>(
+                    this.Json,
+                    "user_location"
+                ),
+            };
+        }
+    }
+
+    public BetaCitationsConfigParam? Citations
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaResponseTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 x => x.Citations,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 x => x.Citations,
+                BetaWebFetchTool20260309 x => x.Citations,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 x => x.Citations,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<BetaCitationsConfigParam>(
+                    this.Json,
+                    "citations"
+                ),
+            };
+        }
+    }
+
+    public long? MaxContentTokens
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaResponseTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 x => x.MaxContentTokens,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 x => x.MaxContentTokens,
+                BetaWebFetchTool20260309 x => x.MaxContentTokens,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 x => x.MaxContentTokens,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
+                    this.Json,
+                    "max_content_tokens"
+                ),
+            };
+        }
+    }
+
+    public BetaWebFetchUrlSources? UrlSources
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaResponseTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 x => x.UrlSources,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 x => x.UrlSources,
+                BetaWebFetchTool20260309 x => x.UrlSources,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 x => x.UrlSources,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<BetaWebFetchUrlSources>(
+                    this.Json,
+                    "url_sources"
+                ),
+            };
+        }
+    }
+
+    public bool? UseCache
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaResponseTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 _ => null,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 _ => null,
+                BetaWebFetchTool20260309 x => x.UseCache,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 x => x.UseCache,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(this.Json, "use_cache"),
+            };
+        }
+    }
+
+    public BetaResponseToolUnion(BetaResponseTool value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaToolBash20241022 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaToolBash20250124 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaCodeExecutionTool20250522 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaCodeExecutionTool20250825 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaCodeExecutionTool20260120 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaCodeExecutionTool20260521 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaBrowserToolset20260801 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaToolComputerUse20241022 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaMemoryTool20250818 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaToolComputerUse20250124 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaToolTextEditor20241022 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaToolComputerUse20251124 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaComputerToolset20260801 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaToolTextEditor20250124 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaToolTextEditor20250429 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaToolTextEditor20250728 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaWebSearchTool20250305 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaWebFetchTool20250910 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaWebSearchTool20260209 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaWebFetchTool20260209 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaWebFetchTool20260309 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaWebSearchTool20260318 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaWebFetchTool20260318 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaAdvisorTool20260301 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaToolSearchToolBm25_20251119 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaToolSearchToolRegex20251119 value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(BetaMcpToolset value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaResponseToolUnion(JsonElement element)
+    {
+        this._element = element;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaResponseTool"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaResponseTool(out var value)) {
+    ///     // `value` is of type `BetaResponseTool`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaResponseTool([NotNullWhen(true)] out BetaResponseTool? value)
+    {
+        value = this.Value as BetaResponseTool;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolBash20241022"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolBash20241022(out var value)) {
+    ///     // `value` is of type `BetaToolBash20241022`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickToolBash20241022([NotNullWhen(true)] out BetaToolBash20241022? value)
+    {
+        value = this.Value as BetaToolBash20241022;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolBash20250124"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolBash20250124(out var value)) {
+    ///     // `value` is of type `BetaToolBash20250124`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickToolBash20250124([NotNullWhen(true)] out BetaToolBash20250124? value)
+    {
+        value = this.Value as BetaToolBash20250124;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCodeExecutionTool20250522"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCodeExecutionTool20250522(out var value)) {
+    ///     // `value` is of type `BetaCodeExecutionTool20250522`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickCodeExecutionTool20250522(
+        [NotNullWhen(true)] out BetaCodeExecutionTool20250522? value
+    )
+    {
+        value = this.Value as BetaCodeExecutionTool20250522;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCodeExecutionTool20250825"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCodeExecutionTool20250825(out var value)) {
+    ///     // `value` is of type `BetaCodeExecutionTool20250825`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickCodeExecutionTool20250825(
+        [NotNullWhen(true)] out BetaCodeExecutionTool20250825? value
+    )
+    {
+        value = this.Value as BetaCodeExecutionTool20250825;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCodeExecutionTool20260120"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCodeExecutionTool20260120(out var value)) {
+    ///     // `value` is of type `BetaCodeExecutionTool20260120`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickCodeExecutionTool20260120(
+        [NotNullWhen(true)] out BetaCodeExecutionTool20260120? value
+    )
+    {
+        value = this.Value as BetaCodeExecutionTool20260120;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCodeExecutionTool20260521"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCodeExecutionTool20260521(out var value)) {
+    ///     // `value` is of type `BetaCodeExecutionTool20260521`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickCodeExecutionTool20260521(
+        [NotNullWhen(true)] out BetaCodeExecutionTool20260521? value
+    )
+    {
+        value = this.Value as BetaCodeExecutionTool20260521;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaBrowserToolset20260801"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBrowserToolset20260801(out var value)) {
+    ///     // `value` is of type `BetaBrowserToolset20260801`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBrowserToolset20260801(
+        [NotNullWhen(true)] out BetaBrowserToolset20260801? value
+    )
+    {
+        value = this.Value as BetaBrowserToolset20260801;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolComputerUse20241022"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolComputerUse20241022(out var value)) {
+    ///     // `value` is of type `BetaToolComputerUse20241022`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickToolComputerUse20241022(
+        [NotNullWhen(true)] out BetaToolComputerUse20241022? value
+    )
+    {
+        value = this.Value as BetaToolComputerUse20241022;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMemoryTool20250818"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickMemoryTool20250818(out var value)) {
+    ///     // `value` is of type `BetaMemoryTool20250818`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickMemoryTool20250818([NotNullWhen(true)] out BetaMemoryTool20250818? value)
+    {
+        value = this.Value as BetaMemoryTool20250818;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolComputerUse20250124"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolComputerUse20250124(out var value)) {
+    ///     // `value` is of type `BetaToolComputerUse20250124`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickToolComputerUse20250124(
+        [NotNullWhen(true)] out BetaToolComputerUse20250124? value
+    )
+    {
+        value = this.Value as BetaToolComputerUse20250124;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolTextEditor20241022"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolTextEditor20241022(out var value)) {
+    ///     // `value` is of type `BetaToolTextEditor20241022`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickToolTextEditor20241022(
+        [NotNullWhen(true)] out BetaToolTextEditor20241022? value
+    )
+    {
+        value = this.Value as BetaToolTextEditor20241022;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolComputerUse20251124"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolComputerUse20251124(out var value)) {
+    ///     // `value` is of type `BetaToolComputerUse20251124`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickToolComputerUse20251124(
+        [NotNullWhen(true)] out BetaToolComputerUse20251124? value
+    )
+    {
+        value = this.Value as BetaToolComputerUse20251124;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaComputerToolset20260801"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickComputerToolset20260801(out var value)) {
+    ///     // `value` is of type `BetaComputerToolset20260801`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickComputerToolset20260801(
+        [NotNullWhen(true)] out BetaComputerToolset20260801? value
+    )
+    {
+        value = this.Value as BetaComputerToolset20260801;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolTextEditor20250124"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolTextEditor20250124(out var value)) {
+    ///     // `value` is of type `BetaToolTextEditor20250124`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickToolTextEditor20250124(
+        [NotNullWhen(true)] out BetaToolTextEditor20250124? value
+    )
+    {
+        value = this.Value as BetaToolTextEditor20250124;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolTextEditor20250429"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolTextEditor20250429(out var value)) {
+    ///     // `value` is of type `BetaToolTextEditor20250429`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickToolTextEditor20250429(
+        [NotNullWhen(true)] out BetaToolTextEditor20250429? value
+    )
+    {
+        value = this.Value as BetaToolTextEditor20250429;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolTextEditor20250728"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolTextEditor20250728(out var value)) {
+    ///     // `value` is of type `BetaToolTextEditor20250728`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickToolTextEditor20250728(
+        [NotNullWhen(true)] out BetaToolTextEditor20250728? value
+    )
+    {
+        value = this.Value as BetaToolTextEditor20250728;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebSearchTool20250305"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebSearchTool20250305(out var value)) {
+    ///     // `value` is of type `BetaWebSearchTool20250305`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebSearchTool20250305(
+        [NotNullWhen(true)] out BetaWebSearchTool20250305? value
+    )
+    {
+        value = this.Value as BetaWebSearchTool20250305;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebFetchTool20250910"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebFetchTool20250910(out var value)) {
+    ///     // `value` is of type `BetaWebFetchTool20250910`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebFetchTool20250910([NotNullWhen(true)] out BetaWebFetchTool20250910? value)
+    {
+        value = this.Value as BetaWebFetchTool20250910;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebSearchTool20260209"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebSearchTool20260209(out var value)) {
+    ///     // `value` is of type `BetaWebSearchTool20260209`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebSearchTool20260209(
+        [NotNullWhen(true)] out BetaWebSearchTool20260209? value
+    )
+    {
+        value = this.Value as BetaWebSearchTool20260209;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebFetchTool20260209"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebFetchTool20260209(out var value)) {
+    ///     // `value` is of type `BetaWebFetchTool20260209`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebFetchTool20260209([NotNullWhen(true)] out BetaWebFetchTool20260209? value)
+    {
+        value = this.Value as BetaWebFetchTool20260209;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebFetchTool20260309"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebFetchTool20260309(out var value)) {
+    ///     // `value` is of type `BetaWebFetchTool20260309`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebFetchTool20260309([NotNullWhen(true)] out BetaWebFetchTool20260309? value)
+    {
+        value = this.Value as BetaWebFetchTool20260309;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebSearchTool20260318"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebSearchTool20260318(out var value)) {
+    ///     // `value` is of type `BetaWebSearchTool20260318`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebSearchTool20260318(
+        [NotNullWhen(true)] out BetaWebSearchTool20260318? value
+    )
+    {
+        value = this.Value as BetaWebSearchTool20260318;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebFetchTool20260318"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebFetchTool20260318(out var value)) {
+    ///     // `value` is of type `BetaWebFetchTool20260318`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWebFetchTool20260318([NotNullWhen(true)] out BetaWebFetchTool20260318? value)
+    {
+        value = this.Value as BetaWebFetchTool20260318;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaAdvisorTool20260301"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickAdvisorTool20260301(out var value)) {
+    ///     // `value` is of type `BetaAdvisorTool20260301`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickAdvisorTool20260301([NotNullWhen(true)] out BetaAdvisorTool20260301? value)
+    {
+        value = this.Value as BetaAdvisorTool20260301;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolSearchToolBm25_20251119"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolSearchToolBm25_20251119(out var value)) {
+    ///     // `value` is of type `BetaToolSearchToolBm25_20251119`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickToolSearchToolBm25_20251119(
+        [NotNullWhen(true)] out BetaToolSearchToolBm25_20251119? value
+    )
+    {
+        value = this.Value as BetaToolSearchToolBm25_20251119;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolSearchToolRegex20251119"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolSearchToolRegex20251119(out var value)) {
+    ///     // `value` is of type `BetaToolSearchToolRegex20251119`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickToolSearchToolRegex20251119(
+        [NotNullWhen(true)] out BetaToolSearchToolRegex20251119? value
+    )
+    {
+        value = this.Value as BetaToolSearchToolRegex20251119;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMcpToolset"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickMcpToolset(out var value)) {
+    ///     // `value` is of type `BetaMcpToolset`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickMcpToolset([NotNullWhen(true)] out BetaMcpToolset? value)
+    {
+        value = this.Value as BetaMcpToolset;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaResponseTool value) =&gt; {...},
+    ///     (BetaToolBash20241022 value) =&gt; {...},
+    ///     (BetaToolBash20250124 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20250522 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20250825 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20260120 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20260521 value) =&gt; {...},
+    ///     (BetaBrowserToolset20260801 value) =&gt; {...},
+    ///     (BetaToolComputerUse20241022 value) =&gt; {...},
+    ///     (BetaMemoryTool20250818 value) =&gt; {...},
+    ///     (BetaToolComputerUse20250124 value) =&gt; {...},
+    ///     (BetaToolTextEditor20241022 value) =&gt; {...},
+    ///     (BetaToolComputerUse20251124 value) =&gt; {...},
+    ///     (BetaComputerToolset20260801 value) =&gt; {...},
+    ///     (BetaToolTextEditor20250124 value) =&gt; {...},
+    ///     (BetaToolTextEditor20250429 value) =&gt; {...},
+    ///     (BetaToolTextEditor20250728 value) =&gt; {...},
+    ///     (BetaWebSearchTool20250305 value) =&gt; {...},
+    ///     (BetaWebFetchTool20250910 value) =&gt; {...},
+    ///     (BetaWebSearchTool20260209 value) =&gt; {...},
+    ///     (BetaWebFetchTool20260209 value) =&gt; {...},
+    ///     (BetaWebFetchTool20260309 value) =&gt; {...},
+    ///     (BetaWebSearchTool20260318 value) =&gt; {...},
+    ///     (BetaWebFetchTool20260318 value) =&gt; {...},
+    ///     (BetaAdvisorTool20260301 value) =&gt; {...},
+    ///     (BetaToolSearchToolBm25_20251119 value) =&gt; {...},
+    ///     (BetaToolSearchToolRegex20251119 value) =&gt; {...},
+    ///     (BetaMcpToolset value) =&gt; {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
+    public void Switch(
+        System::Action<BetaResponseTool> betaResponseTool,
+        System::Action<BetaToolBash20241022> toolBash20241022,
+        System::Action<BetaToolBash20250124> toolBash20250124,
+        System::Action<BetaCodeExecutionTool20250522> codeExecutionTool20250522,
+        System::Action<BetaCodeExecutionTool20250825> codeExecutionTool20250825,
+        System::Action<BetaCodeExecutionTool20260120> codeExecutionTool20260120,
+        System::Action<BetaCodeExecutionTool20260521> codeExecutionTool20260521,
+        System::Action<BetaBrowserToolset20260801> browserToolset20260801,
+        System::Action<BetaToolComputerUse20241022> toolComputerUse20241022,
+        System::Action<BetaMemoryTool20250818> memoryTool20250818,
+        System::Action<BetaToolComputerUse20250124> toolComputerUse20250124,
+        System::Action<BetaToolTextEditor20241022> toolTextEditor20241022,
+        System::Action<BetaToolComputerUse20251124> toolComputerUse20251124,
+        System::Action<BetaComputerToolset20260801> computerToolset20260801,
+        System::Action<BetaToolTextEditor20250124> toolTextEditor20250124,
+        System::Action<BetaToolTextEditor20250429> toolTextEditor20250429,
+        System::Action<BetaToolTextEditor20250728> toolTextEditor20250728,
+        System::Action<BetaWebSearchTool20250305> webSearchTool20250305,
+        System::Action<BetaWebFetchTool20250910> webFetchTool20250910,
+        System::Action<BetaWebSearchTool20260209> webSearchTool20260209,
+        System::Action<BetaWebFetchTool20260209> webFetchTool20260209,
+        System::Action<BetaWebFetchTool20260309> webFetchTool20260309,
+        System::Action<BetaWebSearchTool20260318> webSearchTool20260318,
+        System::Action<BetaWebFetchTool20260318> webFetchTool20260318,
+        System::Action<BetaAdvisorTool20260301> advisorTool20260301,
+        System::Action<BetaToolSearchToolBm25_20251119> toolSearchToolBm25_20251119,
+        System::Action<BetaToolSearchToolRegex20251119> toolSearchToolRegex20251119,
+        System::Action<BetaMcpToolset> mcpToolset
+    )
+    {
+        switch (this.Value)
+        {
+            case BetaResponseTool value:
+                betaResponseTool(value);
+                break;
+            case BetaToolBash20241022 value:
+                toolBash20241022(value);
+                break;
+            case BetaToolBash20250124 value:
+                toolBash20250124(value);
+                break;
+            case BetaCodeExecutionTool20250522 value:
+                codeExecutionTool20250522(value);
+                break;
+            case BetaCodeExecutionTool20250825 value:
+                codeExecutionTool20250825(value);
+                break;
+            case BetaCodeExecutionTool20260120 value:
+                codeExecutionTool20260120(value);
+                break;
+            case BetaCodeExecutionTool20260521 value:
+                codeExecutionTool20260521(value);
+                break;
+            case BetaBrowserToolset20260801 value:
+                browserToolset20260801(value);
+                break;
+            case BetaToolComputerUse20241022 value:
+                toolComputerUse20241022(value);
+                break;
+            case BetaMemoryTool20250818 value:
+                memoryTool20250818(value);
+                break;
+            case BetaToolComputerUse20250124 value:
+                toolComputerUse20250124(value);
+                break;
+            case BetaToolTextEditor20241022 value:
+                toolTextEditor20241022(value);
+                break;
+            case BetaToolComputerUse20251124 value:
+                toolComputerUse20251124(value);
+                break;
+            case BetaComputerToolset20260801 value:
+                computerToolset20260801(value);
+                break;
+            case BetaToolTextEditor20250124 value:
+                toolTextEditor20250124(value);
+                break;
+            case BetaToolTextEditor20250429 value:
+                toolTextEditor20250429(value);
+                break;
+            case BetaToolTextEditor20250728 value:
+                toolTextEditor20250728(value);
+                break;
+            case BetaWebSearchTool20250305 value:
+                webSearchTool20250305(value);
+                break;
+            case BetaWebFetchTool20250910 value:
+                webFetchTool20250910(value);
+                break;
+            case BetaWebSearchTool20260209 value:
+                webSearchTool20260209(value);
+                break;
+            case BetaWebFetchTool20260209 value:
+                webFetchTool20260209(value);
+                break;
+            case BetaWebFetchTool20260309 value:
+                webFetchTool20260309(value);
+                break;
+            case BetaWebSearchTool20260318 value:
+                webSearchTool20260318(value);
+                break;
+            case BetaWebFetchTool20260318 value:
+                webFetchTool20260318(value);
+                break;
+            case BetaAdvisorTool20260301 value:
+                advisorTool20260301(value);
+                break;
+            case BetaToolSearchToolBm25_20251119 value:
+                toolSearchToolBm25_20251119(value);
+                break;
+            case BetaToolSearchToolRegex20251119 value:
+                toolSearchToolRegex20251119(value);
+                break;
+            case BetaMcpToolset value:
+                mcpToolset(value);
+                break;
+            default:
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaResponseToolUnion"
+                );
+        }
+    }
+
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaResponseTool value) =&gt; {...},
+    ///     (BetaToolBash20241022 value) =&gt; {...},
+    ///     (BetaToolBash20250124 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20250522 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20250825 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20260120 value) =&gt; {...},
+    ///     (BetaCodeExecutionTool20260521 value) =&gt; {...},
+    ///     (BetaBrowserToolset20260801 value) =&gt; {...},
+    ///     (BetaToolComputerUse20241022 value) =&gt; {...},
+    ///     (BetaMemoryTool20250818 value) =&gt; {...},
+    ///     (BetaToolComputerUse20250124 value) =&gt; {...},
+    ///     (BetaToolTextEditor20241022 value) =&gt; {...},
+    ///     (BetaToolComputerUse20251124 value) =&gt; {...},
+    ///     (BetaComputerToolset20260801 value) =&gt; {...},
+    ///     (BetaToolTextEditor20250124 value) =&gt; {...},
+    ///     (BetaToolTextEditor20250429 value) =&gt; {...},
+    ///     (BetaToolTextEditor20250728 value) =&gt; {...},
+    ///     (BetaWebSearchTool20250305 value) =&gt; {...},
+    ///     (BetaWebFetchTool20250910 value) =&gt; {...},
+    ///     (BetaWebSearchTool20260209 value) =&gt; {...},
+    ///     (BetaWebFetchTool20260209 value) =&gt; {...},
+    ///     (BetaWebFetchTool20260309 value) =&gt; {...},
+    ///     (BetaWebSearchTool20260318 value) =&gt; {...},
+    ///     (BetaWebFetchTool20260318 value) =&gt; {...},
+    ///     (BetaAdvisorTool20260301 value) =&gt; {...},
+    ///     (BetaToolSearchToolBm25_20251119 value) =&gt; {...},
+    ///     (BetaToolSearchToolRegex20251119 value) =&gt; {...},
+    ///     (BetaMcpToolset value) =&gt; {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
+    public T Match<T>(
+        System::Func<BetaResponseTool, T> betaResponseTool,
+        System::Func<BetaToolBash20241022, T> toolBash20241022,
+        System::Func<BetaToolBash20250124, T> toolBash20250124,
+        System::Func<BetaCodeExecutionTool20250522, T> codeExecutionTool20250522,
+        System::Func<BetaCodeExecutionTool20250825, T> codeExecutionTool20250825,
+        System::Func<BetaCodeExecutionTool20260120, T> codeExecutionTool20260120,
+        System::Func<BetaCodeExecutionTool20260521, T> codeExecutionTool20260521,
+        System::Func<BetaBrowserToolset20260801, T> browserToolset20260801,
+        System::Func<BetaToolComputerUse20241022, T> toolComputerUse20241022,
+        System::Func<BetaMemoryTool20250818, T> memoryTool20250818,
+        System::Func<BetaToolComputerUse20250124, T> toolComputerUse20250124,
+        System::Func<BetaToolTextEditor20241022, T> toolTextEditor20241022,
+        System::Func<BetaToolComputerUse20251124, T> toolComputerUse20251124,
+        System::Func<BetaComputerToolset20260801, T> computerToolset20260801,
+        System::Func<BetaToolTextEditor20250124, T> toolTextEditor20250124,
+        System::Func<BetaToolTextEditor20250429, T> toolTextEditor20250429,
+        System::Func<BetaToolTextEditor20250728, T> toolTextEditor20250728,
+        System::Func<BetaWebSearchTool20250305, T> webSearchTool20250305,
+        System::Func<BetaWebFetchTool20250910, T> webFetchTool20250910,
+        System::Func<BetaWebSearchTool20260209, T> webSearchTool20260209,
+        System::Func<BetaWebFetchTool20260209, T> webFetchTool20260209,
+        System::Func<BetaWebFetchTool20260309, T> webFetchTool20260309,
+        System::Func<BetaWebSearchTool20260318, T> webSearchTool20260318,
+        System::Func<BetaWebFetchTool20260318, T> webFetchTool20260318,
+        System::Func<BetaAdvisorTool20260301, T> advisorTool20260301,
+        System::Func<BetaToolSearchToolBm25_20251119, T> toolSearchToolBm25_20251119,
+        System::Func<BetaToolSearchToolRegex20251119, T> toolSearchToolRegex20251119,
+        System::Func<BetaMcpToolset, T> mcpToolset
+    )
+    {
+        return this.Value switch
+        {
+            BetaResponseTool value => betaResponseTool(value),
+            BetaToolBash20241022 value => toolBash20241022(value),
+            BetaToolBash20250124 value => toolBash20250124(value),
+            BetaCodeExecutionTool20250522 value => codeExecutionTool20250522(value),
+            BetaCodeExecutionTool20250825 value => codeExecutionTool20250825(value),
+            BetaCodeExecutionTool20260120 value => codeExecutionTool20260120(value),
+            BetaCodeExecutionTool20260521 value => codeExecutionTool20260521(value),
+            BetaBrowserToolset20260801 value => browserToolset20260801(value),
+            BetaToolComputerUse20241022 value => toolComputerUse20241022(value),
+            BetaMemoryTool20250818 value => memoryTool20250818(value),
+            BetaToolComputerUse20250124 value => toolComputerUse20250124(value),
+            BetaToolTextEditor20241022 value => toolTextEditor20241022(value),
+            BetaToolComputerUse20251124 value => toolComputerUse20251124(value),
+            BetaComputerToolset20260801 value => computerToolset20260801(value),
+            BetaToolTextEditor20250124 value => toolTextEditor20250124(value),
+            BetaToolTextEditor20250429 value => toolTextEditor20250429(value),
+            BetaToolTextEditor20250728 value => toolTextEditor20250728(value),
+            BetaWebSearchTool20250305 value => webSearchTool20250305(value),
+            BetaWebFetchTool20250910 value => webFetchTool20250910(value),
+            BetaWebSearchTool20260209 value => webSearchTool20260209(value),
+            BetaWebFetchTool20260209 value => webFetchTool20260209(value),
+            BetaWebFetchTool20260309 value => webFetchTool20260309(value),
+            BetaWebSearchTool20260318 value => webSearchTool20260318(value),
+            BetaWebFetchTool20260318 value => webFetchTool20260318(value),
+            BetaAdvisorTool20260301 value => advisorTool20260301(value),
+            BetaToolSearchToolBm25_20251119 value => toolSearchToolBm25_20251119(value),
+            BetaToolSearchToolRegex20251119 value => toolSearchToolRegex20251119(value),
+            BetaMcpToolset value => mcpToolset(value),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaResponseToolUnion"
+            ),
+        };
+    }
+
+    public static implicit operator BetaResponseToolUnion(BetaResponseTool value) => new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaToolBash20241022 value) => new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaToolBash20250124 value) => new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaCodeExecutionTool20250522 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaCodeExecutionTool20250825 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaCodeExecutionTool20260120 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaCodeExecutionTool20260521 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaBrowserToolset20260801 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaToolComputerUse20241022 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaMemoryTool20250818 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaToolComputerUse20250124 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaToolTextEditor20241022 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaToolComputerUse20251124 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaComputerToolset20260801 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaToolTextEditor20250124 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaToolTextEditor20250429 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaToolTextEditor20250728 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaWebSearchTool20250305 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaWebFetchTool20250910 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaWebSearchTool20260209 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaWebFetchTool20260209 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaWebFetchTool20260309 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaWebSearchTool20260318 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaWebFetchTool20260318 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaAdvisorTool20260301 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaToolSearchToolBm25_20251119 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaToolSearchToolRegex20251119 value) =>
+        new(value);
+
+    public static implicit operator BetaResponseToolUnion(BetaMcpToolset value) => new(value);
+
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
+    public override void Validate()
+    {
+        if (this.Value == null)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaResponseToolUnion"
+            );
+        }
+        this.Switch(
+            (betaResponseTool) => betaResponseTool.Validate(),
+            (toolBash20241022) => toolBash20241022.Validate(),
+            (toolBash20250124) => toolBash20250124.Validate(),
+            (codeExecutionTool20250522) => codeExecutionTool20250522.Validate(),
+            (codeExecutionTool20250825) => codeExecutionTool20250825.Validate(),
+            (codeExecutionTool20260120) => codeExecutionTool20260120.Validate(),
+            (codeExecutionTool20260521) => codeExecutionTool20260521.Validate(),
+            (browserToolset20260801) => browserToolset20260801.Validate(),
+            (toolComputerUse20241022) => toolComputerUse20241022.Validate(),
+            (memoryTool20250818) => memoryTool20250818.Validate(),
+            (toolComputerUse20250124) => toolComputerUse20250124.Validate(),
+            (toolTextEditor20241022) => toolTextEditor20241022.Validate(),
+            (toolComputerUse20251124) => toolComputerUse20251124.Validate(),
+            (computerToolset20260801) => computerToolset20260801.Validate(),
+            (toolTextEditor20250124) => toolTextEditor20250124.Validate(),
+            (toolTextEditor20250429) => toolTextEditor20250429.Validate(),
+            (toolTextEditor20250728) => toolTextEditor20250728.Validate(),
+            (webSearchTool20250305) => webSearchTool20250305.Validate(),
+            (webFetchTool20250910) => webFetchTool20250910.Validate(),
+            (webSearchTool20260209) => webSearchTool20260209.Validate(),
+            (webFetchTool20260209) => webFetchTool20260209.Validate(),
+            (webFetchTool20260309) => webFetchTool20260309.Validate(),
+            (webSearchTool20260318) => webSearchTool20260318.Validate(),
+            (webFetchTool20260318) => webFetchTool20260318.Validate(),
+            (advisorTool20260301) => advisorTool20260301.Validate(),
+            (toolSearchToolBm25_20251119) => toolSearchToolBm25_20251119.Validate(),
+            (toolSearchToolRegex20251119) => toolSearchToolRegex20251119.Validate(),
+            (mcpToolset) => mcpToolset.Validate()
+        );
+    }
+
+    public virtual bool Equals(BetaResponseToolUnion? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            FriendlyJsonPrinter.PrintValue(this.Json),
+            ModelBase.ToStringSerializerOptions
+        );
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaResponseTool _ => 0,
+            BetaToolBash20241022 _ => 1,
+            BetaToolBash20250124 _ => 2,
+            BetaCodeExecutionTool20250522 _ => 3,
+            BetaCodeExecutionTool20250825 _ => 4,
+            BetaCodeExecutionTool20260120 _ => 5,
+            BetaCodeExecutionTool20260521 _ => 6,
+            BetaBrowserToolset20260801 _ => 7,
+            BetaToolComputerUse20241022 _ => 8,
+            BetaMemoryTool20250818 _ => 9,
+            BetaToolComputerUse20250124 _ => 10,
+            BetaToolTextEditor20241022 _ => 11,
+            BetaToolComputerUse20251124 _ => 12,
+            BetaComputerToolset20260801 _ => 13,
+            BetaToolTextEditor20250124 _ => 14,
+            BetaToolTextEditor20250429 _ => 15,
+            BetaToolTextEditor20250728 _ => 16,
+            BetaWebSearchTool20250305 _ => 17,
+            BetaWebFetchTool20250910 _ => 18,
+            BetaWebSearchTool20260209 _ => 19,
+            BetaWebFetchTool20260209 _ => 20,
+            BetaWebFetchTool20260309 _ => 21,
+            BetaWebSearchTool20260318 _ => 22,
+            BetaWebFetchTool20260318 _ => 23,
+            BetaAdvisorTool20260301 _ => 24,
+            BetaToolSearchToolBm25_20251119 _ => 25,
+            BetaToolSearchToolRegex20251119 _ => 26,
+            BetaMcpToolset _ => 27,
+            _ => -1,
+        };
+    }
+}
+
+sealed class BetaResponseToolUnionConverter : JsonConverter<BetaResponseToolUnion>
+{
+    public override BetaResponseToolUnion? Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaResponseTool>(element, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolBash20241022>(element, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolBash20250124>(element, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250522>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250825>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20260120>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20260521>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaBrowserToolset20260801>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20241022>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818>(element, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20250124>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20241022>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20251124>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaComputerToolset20260801>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250124>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250429>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250728>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20260209>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20260209>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20260309>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20260318>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20260318>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaAdvisorTool20260301>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolBm25_20251119>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolRegex20251119>(
+                element,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaMcpToolset>(element, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, element);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        return new(element);
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaResponseToolUnion value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}

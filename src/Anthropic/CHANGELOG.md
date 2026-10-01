@@ -1,5 +1,193 @@
 # Changelog
 
+## 12.53.0 (2026-09-30)
+
+Full Changelog: [Anthropic-v12.52.0...Anthropic-v12.53.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.52.0...Anthropic-v12.53.0)
+
+### Features
+
+* **api:** add list spend limits endpoint ([a56d638](https://github.com/anthropics/anthropic-sdk-csharp/commit/a56d638ac15490492242e6b8c46ce1e9bb12df11))
+
+
+### Chores
+
+* **api:** mark Claude Sonnet 4.5 as deprecated (end-of-life November 30, 2026) ([ad62506](https://github.com/anthropics/anthropic-sdk-csharp/commit/ad625066f996ce1009aa57484ed2ed21c9b7d39d))
+
+## 12.52.0 (2026-09-30)
+
+Full Changelog: [Anthropic-v12.51.0...Anthropic-v12.52.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.51.0...Anthropic-v12.52.0)
+
+### Features
+
+* **api:** add a refusal stop reason and stop_details to Managed Agents session idle events ([de3c72d](https://github.com/anthropics/anthropic-sdk-csharp/commit/de3c72d786e12dd3ae99e87173ecbe5db6d027cd))
+* **api:** add Claude Enterprise analytics, spend limits, and RBAC groups and roles to the Admin API ([35e80fc](https://github.com/anthropics/anthropic-sdk-csharp/commit/35e80fc97a39da48ba7b69bf3f5a385f210da0fd))
+* **api:** add per-user usage and cost reports to the Admin API analytics ([69db0bf](https://github.com/anthropics/anthropic-sdk-csharp/commit/69db0bf35c3943d38524892466f22eaeac1e0955))
+* **api:** add Plugins and Plugin Marketplaces to the Admin API ([2831b38](https://github.com/anthropics/anthropic-sdk-csharp/commit/2831b3809b404076b0a3f75cfaa2cc7db6ec829b))
+* **api:** add repository error types to Managed Agents session errors ([a3a6a94](https://github.com/anthropics/anthropic-sdk-csharp/commit/a3a6a940ceeb9cd045c57ee96355fcdc599425d3))
+* **api:** allow removing a plugin's org-wide installation setting ([8585c41](https://github.com/anthropics/anthropic-sdk-csharp/commit/8585c41b3fb702ca55430d9bffd058629661de13))
+* **api:** MCP tunnels beta: add read-only `transport` object to Tunnel and return the one-time relay `token` in the create response ([4c36f08](https://github.com/anthropics/anthropic-sdk-csharp/commit/4c36f087ccd051f533008918e4ddd6898b139273))
+* **api:** Organization API endpoints are now GA ([2804c98](https://github.com/anthropics/anthropic-sdk-csharp/commit/2804c984a0cafaa665d6c966f2589426fafe0201))
+
+
+### Bug Fixes
+
+* **api:** make memory store description, metadata, archived_at required ([24bc644](https://github.com/anthropics/anthropic-sdk-csharp/commit/24bc6445d0eebfb293fbf1f97b7045d52bd5ec8e))
+* **api:** type admin plugin preference and marketplace fields as enums ([5243b91](https://github.com/anthropics/anthropic-sdk-csharp/commit/5243b910eb815e89ceca61bc37dd6ce664c0e706))
+* **pagination:** auto-paging continues past an empty page while next_page is set ([9eaba95](https://github.com/anthropics/anthropic-sdk-csharp/commit/9eaba95eddb7347898a880cab915da1061d68bfb))
+
+
+### Chores
+
+* **api:** update MCP Tunnels types and descriptions ([b930975](https://github.com/anthropics/anthropic-sdk-csharp/commit/b9309758ab65bb6abdf5675c052ca55095d708c7))
+* **docs:** remove placeholder enum descriptions ([b061143](https://github.com/anthropics/anthropic-sdk-csharp/commit/b061143e90a696112e70c5b8763a60cd522832ee))
+
+## 12.51.0 (2026-09-28)
+
+Full Changelog: [Anthropic-v12.50.0...Anthropic-v12.51.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.50.0...Anthropic-v12.51.0)
+
+### Features
+
+* **api:** add between_tools thinking type ([7cb59af](https://github.com/anthropics/anthropic-sdk-csharp/commit/7cb59af6e4ed43f9c812a8d3c87e720d46ee5fdd))
+* **api:** add claude-sonnet-5-5 ([26ad891](https://github.com/anthropics/anthropic-sdk-csharp/commit/26ad89180b5c383fc8a28b65faf33aec97956433))
+* **api:** add include_inherited and source to workspace rate limits ([bc781fc](https://github.com/anthropics/anthropic-sdk-csharp/commit/bc781fc9a8f202078416d2a92a159277de3ecebc))
+* **api:** add typed event type values to the Managed Agents events list filter ([51c641e](https://github.com/anthropics/anthropic-sdk-csharp/commit/51c641e9bb68784bf9d732b060725efba268cd44))
+* **api:** cache diagnostics GA — diagnostics on Message / MessageCreateParams ([005a47e](https://github.com/anthropics/anthropic-sdk-csharp/commit/005a47e033edeb8cb396a9ff635c08f8fd34876d))
+
+
+### Bug Fixes
+
+* **client:** accept an empty file name on file uploads ([70f0773](https://github.com/anthropics/anthropic-sdk-csharp/commit/70f07736fa38f88e8c343213ad9b7190a4379973))
+* **client:** send multipart filenames as raw UTF-8 instead of RFC 2047/filename* ([5c42233](https://github.com/anthropics/anthropic-sdk-csharp/commit/5c42233f2df3e3743c1c00029f98e6dbd0dc0fb6))
+* **helpers:** degrade between_tools thinking to disabled on fallback hops ([#259](https://github.com/anthropics/anthropic-sdk-csharp/issues/259)) ([f7f51b5](https://github.com/anthropics/anthropic-sdk-csharp/commit/f7f51b5d42c9aeb3d85024318d6b637494484e07))
+
+
+### Chores
+
+* **api:** deprecate the betas param on GA models and completions methods ([0d9b5bc](https://github.com/anthropics/anthropic-sdk-csharp/commit/0d9b5bc8a320889f1a9fd83383d6b9e272969ad9))
+* **docs:** clarify that stream: true returns the raw event stream ([270aafd](https://github.com/anthropics/anthropic-sdk-csharp/commit/270aafdec8fe32d8f2ad8fca8efca20bac489463))
+* **docs:** make Managed Agents actor descriptions resource-neutral ([ef5b868](https://github.com/anthropics/anthropic-sdk-csharp/commit/ef5b868a573457dddf699763076b95b28b63dfcd))
+* **docs:** restore the research-preview notice on the Dream type ([5a5afae](https://github.com/anthropics/anthropic-sdk-csharp/commit/5a5afae313c8d541d70c3b2a6c2a26455d1ab9ad))
+
+
+### Documentation
+
+* **api:** prefer each field's own description over its shared type's ([20145a2](https://github.com/anthropics/anthropic-sdk-csharp/commit/20145a2e10454b91b18d13dc0e6f5f01f6ca90ed))
+
+## 12.50.0 (2026-09-22)
+
+Full Changelog: [Anthropic-v12.49.0...Anthropic-v12.50.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.49.0...Anthropic-v12.50.0)
+
+### Features
+
+* **api:** add support for claude-opus-5-5, inline tool definitions and MCP tool-list pinning (beta) ([f9c7c55](https://github.com/anthropics/anthropic-sdk-csharp/commit/f9c7c553b3e2c751892a4f1289d3da7097a77b96))
+
+
+### Bug Fixes
+
+* **api:** share one evaluated_permission enum across Managed Agents events ([783d859](https://github.com/anthropics/anthropic-sdk-csharp/commit/783d85902f02ca3310b3dd36fe93a7de00539c76))
+* **tools:** AddTools takes effect straight away ([#250](https://github.com/anthropics/anthropic-sdk-csharp/issues/250)) ([ec16fde](https://github.com/anthropics/anthropic-sdk-csharp/commit/ec16fdeed473d69a119ef50336ce1c80ce999786))
+* **tools:** leave reply-only params off the tool runner's compaction request ([#249](https://github.com/anthropics/anthropic-sdk-csharp/issues/249)) ([bd1483f](https://github.com/anthropics/anthropic-sdk-csharp/commit/bd1483f04861ce9c0c35b704d6b2d1fad3445dfc))
+
+
+### Chores
+
+* **docs:** add descriptions to the Dreams API reference ([5a28b92](https://github.com/anthropics/anthropic-sdk-csharp/commit/5a28b925987f0dda88cba8254b5ee2eb2abfc5e8))
+* **docs:** add descriptions to the User Profiles API reference ([5a28b92](https://github.com/anthropics/anthropic-sdk-csharp/commit/5a28b925987f0dda88cba8254b5ee2eb2abfc5e8))
+* **docs:** add memory store descriptions to the Managed Agents API reference ([5a28b92](https://github.com/anthropics/anthropic-sdk-csharp/commit/5a28b925987f0dda88cba8254b5ee2eb2abfc5e8))
+* **docs:** improve descriptions in the Dreams API reference ([63d26f3](https://github.com/anthropics/anthropic-sdk-csharp/commit/63d26f3e891fc57b7a9ae6b596cf42f06795acf2))
+* **docs:** remove placeholder parameter descriptions ([17905a0](https://github.com/anthropics/anthropic-sdk-csharp/commit/17905a0f319d97cbf5fe219fd25427a567dce400))
+* **docs:** simplify the session thread agent type description ([be046f0](https://github.com/anthropics/anthropic-sdk-csharp/commit/be046f04733f26745bf521b51d20c5cb98065b4d))
+* **docs:** update diagnostics field descriptions on beta messages ([a521395](https://github.com/anthropics/anthropic-sdk-csharp/commit/a5213954db41037d7c0234a31921bf3bfaa38bfe))
+
+
+### Documentation
+
+* add path and header parameter descriptions ([dfa3f27](https://github.com/anthropics/anthropic-sdk-csharp/commit/dfa3f2758b37e716bcdb38608e124c234e776683))
+
+## 12.49.0 (2026-09-18)
+
+Full Changelog: [Anthropic-v12.48.0...Anthropic-v12.49.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.48.0...Anthropic-v12.49.0)
+
+### Features
+
+* **api:** add group with display_name to rate limits, deprecate group_type ([05fd63c](https://github.com/anthropics/anthropic-sdk-csharp/commit/05fd63cfa6ac3a9f8dde84bc24b7682fae2de199))
+* **tools:** add CompactBeforeNextTurn() to the tool runner ([#239](https://github.com/anthropics/anthropic-sdk-csharp/issues/239)) ([61cbe8b](https://github.com/anthropics/anthropic-sdk-csharp/commit/61cbe8b9b0b32e3a1f8342da3a4fef1fb5c1440f))
+
+
+### Bug Fixes
+
+* **client:** don't replay a stream upload on the 401 token-refresh retry ([#240](https://github.com/anthropics/anthropic-sdk-csharp/issues/240)) ([2617360](https://github.com/anthropics/anthropic-sdk-csharp/commit/26173606cc35caf987a26ba5273d75e29df115b0))
+* **client:** join multiple anthropic-beta values with a comma and no space ([#237](https://github.com/anthropics/anthropic-sdk-csharp/issues/237)) ([5e47840](https://github.com/anthropics/anthropic-sdk-csharp/commit/5e47840dbc37598481cf86fd0720969ea4887690))
+* **client:** retry file uploads given as bytes; send stream uploads once ([6e4229e](https://github.com/anthropics/anthropic-sdk-csharp/commit/6e4229ed833485f0b41231584049d6288d0870d7))
+* **helpers:** keep absent encrypted_content out of streamed compaction blocks ([#242](https://github.com/anthropics/anthropic-sdk-csharp/issues/242)) ([716475c](https://github.com/anthropics/anthropic-sdk-csharp/commit/716475ca4e95a2448feefc96992e97dc230ce524))
+* **meai:** honour RequiredChatToolMode.RequiredFunctionName as tool_choice.tool ([#265](https://github.com/anthropics/anthropic-sdk-csharp/issues/265)) ([dd51ea0](https://github.com/anthropics/anthropic-sdk-csharp/commit/dd51ea06dee67c254bd46117132bf67db5e79058))
+* **meai:** keep type-specific keywords on union-typed schema nodes ([#266](https://github.com/anthropics/anthropic-sdk-csharp/issues/266)) ([0cb6328](https://github.com/anthropics/anthropic-sdk-csharp/commit/0cb6328ccfd7307947ebb8a1ce0f03349fcbdd2a))
+
+
+### Chores
+
+* **docs:** add descriptions for enum values and path parameters ([b30baae](https://github.com/anthropics/anthropic-sdk-csharp/commit/b30baae3d5e5623e1e4081f703395792d10ac94b))
+* **docs:** clarify the compaction tool_changes and tool change descriptions ([850c348](https://github.com/anthropics/anthropic-sdk-csharp/commit/850c3481edb43e6728d0add742a1278a9f4913a3))
+
+## 12.48.0 (2026-09-15)
+
+Full Changelog: [Anthropic-v12.47.0...Anthropic-v12.48.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.47.0...Anthropic-v12.48.0)
+
+### Features
+
+* **api:** add auto mode tool permissions for Managed Agents ([0271c76](https://github.com/anthropics/anthropic-sdk-csharp/commit/0271c76f256f140dd9e65191cbaa0e83f46b6af3))
+* **api:** add compaction parameter and signed compaction blocks (beta) ([8de3a4e](https://github.com/anthropics/anthropic-sdk-csharp/commit/8de3a4e675460be51a9c9892b44b760fb7d503e6))
+* **api:** add enum types for workspace data-residency geo fields ([59cd52e](https://github.com/anthropics/anthropic-sdk-csharp/commit/59cd52ef786013f362d42bbb0c5c18cef8fdc274))
+* **api:** add thinking_mismatch_allowed entries to input_transformations (beta) ([854c852](https://github.com/anthropics/anthropic-sdk-csharp/commit/854c8525232e2110346f2d065d08a20f167311ec))
+* **api:** add url_sources to the web fetch tool ([136c43d](https://github.com/anthropics/anthropic-sdk-csharp/commit/136c43d40600541172b51d7978effa676fdfccbb))
+* **api:** add workspace_id parameter to user profiles methods ([4147e37](https://github.com/anthropics/anthropic-sdk-csharp/commit/4147e376b5d9291b20935b68c0f0de4a1c7401d6))
+
+
+### Bug Fixes
+
+* **api:** mark usage iteration model as nullable ([0a48821](https://github.com/anthropics/anthropic-sdk-csharp/commit/0a48821d9c67e2700d63c7caba5c6771b5593292))
+* **api:** use one input transformation type for message and delta event ([d289654](https://github.com/anthropics/anthropic-sdk-csharp/commit/d2896549ec6be563ca755610208a41bd4a72fd0f))
+* **client:** format and parse headers culture-invariantly ([892e6c6](https://github.com/anthropics/anthropic-sdk-csharp/commit/892e6c6c799e5fb6a665ed0d9d59da0bdf391229))
+* **client:** honor Retry-After values above 60 seconds ([892e6c6](https://github.com/anthropics/anthropic-sdk-csharp/commit/892e6c6c799e5fb6a665ed0d9d59da0bdf391229))
+* **client:** ignore invalid Retry-After values and validate maxRetries ([0271c76](https://github.com/anthropics/anthropic-sdk-csharp/commit/0271c76f256f140dd9e65191cbaa0e83f46b6af3))
+* **client:** retry connection errors in the async client and stop blocking in the coroutine retry loop ([0271c76](https://github.com/anthropics/anthropic-sdk-csharp/commit/0271c76f256f140dd9e65191cbaa0e83f46b6af3))
+* **client:** retry requests that hit the client-side timeout ([892e6c6](https://github.com/anthropics/anthropic-sdk-csharp/commit/892e6c6c799e5fb6a665ed0d9d59da0bdf391229))
+
+
+### Chores
+
+* **docs:** clarify that session_thread_id on tool use events is informational ([1650c34](https://github.com/anthropics/anthropic-sdk-csharp/commit/1650c3428fef3e4360148f9c442a5bd987680e24))
+* **docs:** correct the compaction beta's parameter descriptions ([d457980](https://github.com/anthropics/anthropic-sdk-csharp/commit/d45798001fdb3be0dcb543fbea886564b0ff5cda))
+* **internal:** await the body read in HttpResponse.Deserialize ([0271c76](https://github.com/anthropics/anthropic-sdk-csharp/commit/0271c76f256f140dd9e65191cbaa0e83f46b6af3))
+
+
+### Documentation
+
+* **api:** clarify usage.iterations entry typing under server-side fallback ([885f75b](https://github.com/anthropics/anthropic-sdk-csharp/commit/885f75b95adda0392464db5e614264a14ee7dd0a))
+* **api:** fix typo in temperature deprecation message ([68307ac](https://github.com/anthropics/anthropic-sdk-csharp/commit/68307ac30bd200569e680e88a86e8cb4a656a353))
+* stop documenting unions with their first variant's description ([39560d6](https://github.com/anthropics/anthropic-sdk-csharp/commit/39560d64fecb9b19e34b4946642165a08ef21e90))
+
+## 12.47.0 (2026-09-10)
+
+Full Changelog: [Anthropic-v12.46.0...Anthropic-v12.47.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.46.0...Anthropic-v12.47.0)
+
+### Features
+
+* **api:** add auto mode tool permissions for Managed Agents ([3b432a1](https://github.com/anthropics/anthropic-sdk-csharp/commit/3b432a1abbacc921cc729ba58c3a09b4097032e6))
+* **api:** add content_too_large web_fetch tool error code ([e6b2b4f](https://github.com/anthropics/anthropic-sdk-csharp/commit/e6b2b4f3319798fac4f173806b0cf4e4263a15b5))
+* **api:** add the user-profiles-2026-09-04 beta value and external_user_details to user profiles ([04d3216](https://github.com/anthropics/anthropic-sdk-csharp/commit/04d3216900839cb719c4869f2eba68e9621f82c6))
+* **api:** support mounting public GitHub repositories without an authorization_token in Managed Agents sessions ([278104e](https://github.com/anthropics/anthropic-sdk-csharp/commit/278104ea5390d42b5edce64deee75acde6981546))
+
+
+### Bug Fixes
+
+* **client:** use the default backoff when Retry-After is out of range ([340f7b3](https://github.com/anthropics/anthropic-sdk-csharp/commit/340f7b34b24280873dd5ce6f0afeef7200b37907))
+
+
+### Chores
+
+* **docs:** correct the environment scope field description ([2ab322d](https://github.com/anthropics/anthropic-sdk-csharp/commit/2ab322d7b10c8645ef940d2d07537c12aff64bca))
+
 ## 12.46.0 (2026-09-04)
 
 Full Changelog: [Anthropic-v12.45.0...Anthropic-v12.46.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.45.0...Anthropic-v12.46.0)

@@ -54,7 +54,11 @@ public sealed record class BetaUsage : JsonModel
     }
 
     /// <summary>
-    /// Outcome of the ``fallback_credit_token`` presented on this request.
+    /// Outcome of the `fallback_credit_token` presented on this request.
+    ///
+    /// <para>Present on every response to a non-batch request that carried a `fallback_credit_token`,
+    /// in either redemption mode; absent otherwise (batch items accept and ignore
+    /// the token and carry no outcome object).</para>
     /// </summary>
     public required BetaFallbackCreditUsage? FallbackCredit
     {
@@ -193,9 +197,7 @@ public sealed record class BetaUsage : JsonModel
     }
 
     /// <summary>
-    /// Inference speed mode. `fast` provides significantly faster output token generation
-    /// at premium pricing. Not all models support `fast`; invalid combinations are
-    /// rejected at create time.
+    /// The inference speed mode used for this request.
     /// </summary>
     public required ApiEnum<string, BetaUsageSpeed>? Speed
     {
@@ -262,9 +264,6 @@ class BetaUsageFromRaw : IFromRawJson<BetaUsage>
         BetaUsage.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// Token usage for a sampling iteration.
-/// </summary>
 [JsonConverter(typeof(BetaUsageIterationConverter))]
 public record class BetaUsageIteration : ModelBase
 {
@@ -856,9 +855,7 @@ sealed class BetaUsageServiceTierConverter : JsonConverter<BetaUsageServiceTier>
 }
 
 /// <summary>
-/// Inference speed mode. `fast` provides significantly faster output token generation
-/// at premium pricing. Not all models support `fast`; invalid combinations are rejected
-/// at create time.
+/// The inference speed mode used for this request.
 /// </summary>
 [JsonConverter(typeof(BetaUsageSpeedConverter))]
 public enum BetaUsageSpeed

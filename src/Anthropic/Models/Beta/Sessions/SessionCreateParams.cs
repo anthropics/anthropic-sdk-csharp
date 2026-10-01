@@ -57,8 +57,9 @@ public record class SessionCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// A hard spend ceiling. The session stops issuing new model requests once the
-    /// tracked list cost reaches `max_list_cost`.
+    /// Enforced spend ceiling for the session. Omit to create an uncapped session.
+    /// Every model the session can run — the agent's model and each callable agent's
+    /// model — must have a public list price, or the request is rejected with reason `model_not_budgetable`.
     /// </summary>
     public BetaManagedAgentsBudgetLimit? Budget
     {
@@ -217,6 +218,14 @@ public record class SessionCreateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get

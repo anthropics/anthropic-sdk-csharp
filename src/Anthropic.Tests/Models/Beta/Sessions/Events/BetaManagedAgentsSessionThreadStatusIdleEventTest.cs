@@ -17,6 +17,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
             ),
@@ -27,6 +28,11 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
         string expectedAgentName = "Researcher";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedSessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
+        BetaManagedAgentsSessionRefusalStopDetails expectedStopDetails = new()
+        {
+            Category = Category.Cyber,
+            Explanation = "explanation",
+        };
         BetaManagedAgentsSessionThreadStatusIdleEventStopReason expectedStopReason =
             new BetaManagedAgentsSessionEndTurn(BetaManagedAgentsSessionEndTurnType.EndTurn);
         ApiEnum<string, BetaManagedAgentsSessionThreadStatusIdleEventType> expectedType =
@@ -36,6 +42,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
         Assert.Equal(expectedAgentName, model.AgentName);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
         Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
+        Assert.Equal(expectedStopDetails, model.StopDetails);
         Assert.Equal(expectedStopReason, model.StopReason);
         Assert.Equal(expectedType, model.Type);
     }
@@ -49,6 +56,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
             ),
@@ -74,6 +82,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
             ),
@@ -92,6 +101,11 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
         string expectedAgentName = "Researcher";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedSessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
+        BetaManagedAgentsSessionRefusalStopDetails expectedStopDetails = new()
+        {
+            Category = Category.Cyber,
+            Explanation = "explanation",
+        };
         BetaManagedAgentsSessionThreadStatusIdleEventStopReason expectedStopReason =
             new BetaManagedAgentsSessionEndTurn(BetaManagedAgentsSessionEndTurnType.EndTurn);
         ApiEnum<string, BetaManagedAgentsSessionThreadStatusIdleEventType> expectedType =
@@ -101,6 +115,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
         Assert.Equal(expectedAgentName, deserialized.AgentName);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
         Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
+        Assert.Equal(expectedStopDetails, deserialized.StopDetails);
         Assert.Equal(expectedStopReason, deserialized.StopReason);
         Assert.Equal(expectedType, deserialized.Type);
     }
@@ -114,6 +129,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
             ),
@@ -132,6 +148,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
             ),
@@ -183,6 +200,14 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventStopReasonTest : TestB
             new BetaManagedAgentsSessionBudgetReached(
                 BetaManagedAgentsSessionBudgetReachedType.BudgetReached
             );
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSessionRefusalValidationWorks()
+    {
+        BetaManagedAgentsSessionThreadStatusIdleEventStopReason value =
+            new BetaManagedAgentsSessionRefusal();
         value.Validate();
     }
 
@@ -244,6 +269,21 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventStopReasonTest : TestB
             new BetaManagedAgentsSessionBudgetReached(
                 BetaManagedAgentsSessionBudgetReachedType.BudgetReached
             );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaManagedAgentsSessionThreadStatusIdleEventStopReason>(
+                element,
+                ModelBase.SerializerOptions
+            );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSessionRefusalSerializationRoundtripWorks()
+    {
+        BetaManagedAgentsSessionThreadStatusIdleEventStopReason value =
+            new BetaManagedAgentsSessionRefusal();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsSessionThreadStatusIdleEventStopReason>(

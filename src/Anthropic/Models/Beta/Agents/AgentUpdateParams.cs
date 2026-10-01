@@ -115,8 +115,8 @@ public record class AgentUpdateParams : ParamsBase
     }
 
     /// <summary>
-    /// A coordinator topology: the session's primary thread orchestrates work by
-    /// spawning session threads, each running an agent drawn from the `agents` roster.
+    /// Multiagent orchestration configuration. Full replacement. Omit to preserve;
+    /// send null to clear.
     /// </summary>
     public BetaManagedAgentsMultiagentParams? Multiagent
     {
@@ -257,6 +257,14 @@ public record class AgentUpdateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get

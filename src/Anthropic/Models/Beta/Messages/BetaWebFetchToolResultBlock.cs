@@ -44,9 +44,6 @@ public sealed record class BetaWebFetchToolResultBlock : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public BetaWebFetchToolResultBlockCaller? Caller
     {
         get
@@ -408,9 +405,6 @@ sealed class BetaWebFetchToolResultBlockContentConverter
     }
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(BetaWebFetchToolResultBlockCallerConverter))]
 public record class BetaWebFetchToolResultBlockCaller : ModelBase
 {

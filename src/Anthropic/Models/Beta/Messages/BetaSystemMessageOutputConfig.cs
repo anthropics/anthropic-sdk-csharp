@@ -22,7 +22,10 @@ namespace Anthropic.Models.Beta.Messages;
 public sealed record class BetaSystemMessageOutputConfig : JsonModel
 {
     /// <summary>
-    /// All possible effort levels.
+    /// How much effort the model should put into its response. Higher effort levels
+    /// may result in more thorough analysis but take longer.
+    ///
+    /// <para>Valid values are `low`, `medium`, `high`, `xhigh`, or `max`.</para>
     /// </summary>
     public ApiEnum<string, BetaSystemMessageOutputConfigEffort>? Effort
     {
@@ -83,7 +86,10 @@ class BetaSystemMessageOutputConfigFromRaw : IFromRawJson<BetaSystemMessageOutpu
 }
 
 /// <summary>
-/// All possible effort levels.
+/// How much effort the model should put into its response. Higher effort levels may
+/// result in more thorough analysis but take longer.
+///
+/// <para>Valid values are `low`, `medium`, `high`, `xhigh`, or `max`.</para>
 /// </summary>
 [JsonConverter(typeof(BetaSystemMessageOutputConfigEffortConverter))]
 public enum BetaSystemMessageOutputConfigEffort

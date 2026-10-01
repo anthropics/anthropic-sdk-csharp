@@ -58,9 +58,6 @@ public sealed record class BetaToolUseBlock : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public BetaToolUseBlockCaller? Caller
     {
         get
@@ -148,9 +145,6 @@ class BetaToolUseBlockFromRaw : IFromRawJson<BetaToolUseBlock>
         BetaToolUseBlock.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(BetaToolUseBlockCallerConverter))]
 public record class BetaToolUseBlockCaller : ModelBase
 {

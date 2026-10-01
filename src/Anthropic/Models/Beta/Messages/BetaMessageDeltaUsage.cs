@@ -41,7 +41,11 @@ public sealed record class BetaMessageDeltaUsage : JsonModel
     }
 
     /// <summary>
-    /// Outcome of the ``fallback_credit_token`` presented on this request.
+    /// Outcome of the `fallback_credit_token` presented on this request.
+    ///
+    /// <para>Present on every response to a non-batch request that carried a `fallback_credit_token`,
+    /// in either redemption mode; absent otherwise (batch items accept and ignore
+    /// the token and carry no outcome object).</para>
     /// </summary>
     public required BetaFallbackCreditUsage? FallbackCredit
     {
@@ -203,9 +207,6 @@ class BetaMessageDeltaUsageFromRaw : IFromRawJson<BetaMessageDeltaUsage>
     ) => BetaMessageDeltaUsage.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// Token usage for a sampling iteration.
-/// </summary>
 [JsonConverter(typeof(IterationConverter))]
 public record class Iteration : ModelBase
 {

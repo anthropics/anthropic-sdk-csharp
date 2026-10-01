@@ -24,7 +24,7 @@ public class EventListParamsTest : TestBase
             Limit = 0,
             Order = Order.Asc,
             Page = "page",
-            Types = ["string"],
+            Types = [BetaManagedAgentsSessionEventType.UserMessage],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -37,7 +37,10 @@ public class EventListParamsTest : TestBase
         int expectedLimit = 0;
         ApiEnum<string, Order> expectedOrder = Order.Asc;
         string expectedPage = "page";
-        List<string> expectedTypes = ["string"];
+        List<ApiEnum<string, BetaManagedAgentsSessionEventType>> expectedTypes =
+        [
+            BetaManagedAgentsSessionEventType.UserMessage,
+        ];
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -149,7 +152,7 @@ public class EventListParamsTest : TestBase
             Limit = 0,
             Order = Order.Asc,
             Page = "page",
-            Types = ["string"],
+            Types = [BetaManagedAgentsSessionEventType.UserMessage],
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -157,7 +160,7 @@ public class EventListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/events?beta=true&created_at%5bgt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&limit=0&order=asc&page=page&types%5b%5d=string"
+                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/events?beta=true&created_at%5bgt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&limit=0&order=asc&page=page&types%5b%5d=user.message"
                 ),
                 url
             )
@@ -200,7 +203,7 @@ public class EventListParamsTest : TestBase
             Limit = 0,
             Order = Order.Asc,
             Page = "page",
-            Types = ["string"],
+            Types = [BetaManagedAgentsSessionEventType.UserMessage],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };

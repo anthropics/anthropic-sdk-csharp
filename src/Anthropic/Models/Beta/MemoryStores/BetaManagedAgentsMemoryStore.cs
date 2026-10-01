@@ -35,7 +35,22 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the store was archived, or `null` if active. Set once and never
+    /// cleared; archiving is one-way. Archived stores are read-only and cannot be
+    /// attached to new sessions.
+    /// </summary>
+    public required System::DateTimeOffset? ArchivedAt
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
+        }
+        init { this._rawData.Set("archived_at", value); }
+    }
+
+    /// <summary>
+    /// Timestamp when the store was created.
     /// </summary>
     public required System::DateTimeOffset CreatedAt
     {
@@ -45,6 +60,42 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
             return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
+    }
+
+    /// <summary>
+    /// Free-text description of what the store contains, up to 1024 characters. Included
+    /// in the agent's system prompt when the store is attached, so word it to be
+    /// useful to the agent. Empty string when unset.
+    /// </summary>
+    public required string Description
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("description");
+        }
+        init { this._rawData.Set("description", value); }
+    }
+
+    /// <summary>
+    /// Arbitrary key-value tags for your own bookkeeping (such as the end user a
+    /// store belongs to). Up to 16 pairs; keys 1–64 characters; values up to 512
+    /// characters. Returned on retrieve/list but not filterable.
+    /// </summary>
+    public required IReadOnlyDictionary<string, string> Metadata
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<FrozenDictionary<string, string>>("metadata");
+        }
+        init
+        {
+            this._rawData.Set<FrozenDictionary<string, string>>(
+                "metadata",
+                FrozenDictionary.ToFrozenDictionary(value)
+            );
+        }
     }
 
     /// <summary>
@@ -74,7 +125,8 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the store's `name`, `description`, or `metadata` was last
+    /// modified. Memory writes inside the store do not advance this.
     /// </summary>
     public required System::DateTimeOffset UpdatedAt
     {
@@ -86,79 +138,17 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
         init { this._rawData.Set("updated_at", value); }
     }
 
-    /// <summary>
-    /// A timestamp in RFC 3339 format
-    /// </summary>
-    public System::DateTimeOffset? ArchivedAt
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
-        }
-        init { this._rawData.Set("archived_at", value); }
-    }
-
-    /// <summary>
-    /// Free-text description of what the store contains, up to 1024 characters. Included
-    /// in the agent's system prompt when the store is attached, so word it to be
-    /// useful to the agent. Empty string when unset.
-    /// </summary>
-    public string? Description
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("description");
-        }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawData.Set("description", value);
-        }
-    }
-
-    /// <summary>
-    /// Arbitrary key-value tags for your own bookkeeping (such as the end user a
-    /// store belongs to). Up to 16 pairs; keys 1–64 characters; values up to 512
-    /// characters. Returned on retrieve/list but not filterable.
-    /// </summary>
-    public IReadOnlyDictionary<string, string>? Metadata
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<FrozenDictionary<string, string>>("metadata");
-        }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawData.Set<FrozenDictionary<string, string>?>(
-                "metadata",
-                value == null ? null : FrozenDictionary.ToFrozenDictionary(value)
-            );
-        }
-    }
-
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
+        _ = this.ArchivedAt;
         _ = this.CreatedAt;
+        _ = this.Description;
+        _ = this.Metadata;
         _ = this.Name;
         this.Type.Validate();
         _ = this.UpdatedAt;
-        _ = this.ArchivedAt;
-        _ = this.Description;
-        _ = this.Metadata;
     }
 
     public BetaManagedAgentsMemoryStore() { }

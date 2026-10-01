@@ -43,6 +43,7 @@ public record class ThinkingConfigParam : ModelBase
             {
                 ThinkingConfigEnabled x => x.Type,
                 ThinkingConfigDisabled x => x.Type,
+                ThinkingConfigBetweenTools x => x.Type,
                 ThinkingConfigAdaptive x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
             };
@@ -56,6 +57,12 @@ public record class ThinkingConfigParam : ModelBase
     }
 
     public ThinkingConfigParam(ThinkingConfigDisabled value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ThinkingConfigParam(ThinkingConfigBetweenTools value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -116,6 +123,27 @@ public record class ThinkingConfigParam : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ThinkingConfigBetweenTools"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetweenTools(out var value)) {
+    ///     // `value` is of type `ThinkingConfigBetweenTools`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetweenTools([NotNullWhen(true)] out ThinkingConfigBetweenTools? value)
+    {
+        value = this.Value as ThinkingConfigBetweenTools;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="ThinkingConfigAdaptive"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -151,6 +179,7 @@ public record class ThinkingConfigParam : ModelBase
     /// instance.Switch(
     ///     (ThinkingConfigEnabled value) =&gt; {...},
     ///     (ThinkingConfigDisabled value) =&gt; {...},
+    ///     (ThinkingConfigBetweenTools value) =&gt; {...},
     ///     (ThinkingConfigAdaptive value) =&gt; {...}
     /// );
     /// </code>
@@ -159,6 +188,7 @@ public record class ThinkingConfigParam : ModelBase
     public void Switch(
         System::Action<ThinkingConfigEnabled> enabled,
         System::Action<ThinkingConfigDisabled> disabled,
+        System::Action<ThinkingConfigBetweenTools> betweenTools,
         System::Action<ThinkingConfigAdaptive> adaptive
     )
     {
@@ -169,6 +199,9 @@ public record class ThinkingConfigParam : ModelBase
                 break;
             case ThinkingConfigDisabled value:
                 disabled(value);
+                break;
+            case ThinkingConfigBetweenTools value:
+                betweenTools(value);
                 break;
             case ThinkingConfigAdaptive value:
                 adaptive(value);
@@ -197,6 +230,7 @@ public record class ThinkingConfigParam : ModelBase
     /// var result = instance.Match(
     ///     (ThinkingConfigEnabled value) =&gt; {...},
     ///     (ThinkingConfigDisabled value) =&gt; {...},
+    ///     (ThinkingConfigBetweenTools value) =&gt; {...},
     ///     (ThinkingConfigAdaptive value) =&gt; {...}
     /// );
     /// </code>
@@ -205,6 +239,7 @@ public record class ThinkingConfigParam : ModelBase
     public T Match<T>(
         System::Func<ThinkingConfigEnabled, T> enabled,
         System::Func<ThinkingConfigDisabled, T> disabled,
+        System::Func<ThinkingConfigBetweenTools, T> betweenTools,
         System::Func<ThinkingConfigAdaptive, T> adaptive
     )
     {
@@ -212,6 +247,7 @@ public record class ThinkingConfigParam : ModelBase
         {
             ThinkingConfigEnabled value => enabled(value),
             ThinkingConfigDisabled value => disabled(value),
+            ThinkingConfigBetweenTools value => betweenTools(value),
             ThinkingConfigAdaptive value => adaptive(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ThinkingConfigParam"
@@ -222,6 +258,9 @@ public record class ThinkingConfigParam : ModelBase
     public static implicit operator ThinkingConfigParam(ThinkingConfigEnabled value) => new(value);
 
     public static implicit operator ThinkingConfigParam(ThinkingConfigDisabled value) => new(value);
+
+    public static implicit operator ThinkingConfigParam(ThinkingConfigBetweenTools value) =>
+        new(value);
 
     public static implicit operator ThinkingConfigParam(ThinkingConfigAdaptive value) => new(value);
 
@@ -246,6 +285,7 @@ public record class ThinkingConfigParam : ModelBase
         this.Switch(
             (enabled) => enabled.Validate(),
             (disabled) => disabled.Validate(),
+            (betweenTools) => betweenTools.Validate(),
             (adaptive) => adaptive.Validate()
         );
     }
@@ -272,7 +312,8 @@ public record class ThinkingConfigParam : ModelBase
         {
             ThinkingConfigEnabled _ => 0,
             ThinkingConfigDisabled _ => 1,
-            ThinkingConfigAdaptive _ => 2,
+            ThinkingConfigBetweenTools _ => 2,
+            ThinkingConfigAdaptive _ => 3,
             _ => -1,
         };
     }
@@ -324,6 +365,26 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ThinkingConfigDisabled>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "between_tools":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ThinkingConfigBetweenTools>(
                         element,
                         options
                     );

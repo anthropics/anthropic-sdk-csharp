@@ -64,7 +64,7 @@ public sealed record class BetaManagedAgentsMemory : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When this memory was created, in RFC 3339 format.
     /// </summary>
     public required System::DateTimeOffset CreatedAt
     {
@@ -133,7 +133,9 @@ public sealed record class BetaManagedAgentsMemory : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When this memory was last modified, in RFC 3339 format. Use this as a cheap
+    /// freshness signal; for who made the change, look up the head version's `created_by`
+    /// via [List memory versions](/en/api/beta/memory_stores/memory_versions/list).
     /// </summary>
     public required System::DateTimeOffset UpdatedAt
     {

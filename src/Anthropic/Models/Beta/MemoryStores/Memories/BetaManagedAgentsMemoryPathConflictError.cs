@@ -9,6 +9,15 @@ using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
+/// <summary>
+/// The error returned with HTTP status 409 when a create or rename targets a path
+/// that another memory uses, or a path that overlaps another memory's path.
+///
+/// <para>Two paths overlap when one is an ancestor of the other, such as `/notes`
+/// and `/notes/todo.md`. To free the path, rename or delete the memory that `conflicting_memory_id`
+/// references, then retry. To change that memory instead of creating a new one,
+/// update it.</para>
+/// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<
         BetaManagedAgentsMemoryPathConflictError,
@@ -29,6 +38,12 @@ public sealed record class BetaManagedAgentsMemoryPathConflictError : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
+    /// <summary>
+    /// The ID of the memory that blocked the write (`mem_...`), or an empty string
+    /// if that memory can't be identified.
+    ///
+    /// <para>Retry the request when it is empty.</para>
+    /// </summary>
     public string? ConflictingMemoryID
     {
         get
@@ -47,6 +62,10 @@ public sealed record class BetaManagedAgentsMemoryPathConflictError : JsonModel
         }
     }
 
+    /// <summary>
+    /// The path that blocked the write: the requested path, or the path of a memory
+    /// that is an ancestor or descendant of it.
+    /// </summary>
     public string? ConflictingPath
     {
         get
@@ -65,6 +84,10 @@ public sealed record class BetaManagedAgentsMemoryPathConflictError : JsonModel
         }
     }
 
+    /// <summary>
+    /// A human-readable explanation of the conflict. To handle the error in code,
+    /// use `conflicting_path` and `conflicting_memory_id` instead.
+    /// </summary>
     public string? Message
     {
         get

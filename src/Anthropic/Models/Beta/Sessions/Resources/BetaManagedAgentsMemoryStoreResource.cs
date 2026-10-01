@@ -47,7 +47,8 @@ public sealed record class BetaManagedAgentsMemoryStoreResource : JsonModel
     }
 
     /// <summary>
-    /// Access mode for an attached memory store.
+    /// Access mode for the mounted store. Defaults to `read_write`. `read_only`
+    /// mounts the store as a read-only filesystem.
     /// </summary>
     public ApiEnum<string, Access>? Access
     {
@@ -219,7 +220,8 @@ sealed class BetaManagedAgentsMemoryStoreResourceTypeConverter
 }
 
 /// <summary>
-/// Access mode for an attached memory store.
+/// Access mode for the mounted store. Defaults to `read_write`. `read_only` mounts
+/// the store as a read-only filesystem.
 /// </summary>
 [JsonConverter(typeof(AccessConverter))]
 public enum Access

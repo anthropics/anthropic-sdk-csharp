@@ -47,7 +47,7 @@ public sealed record class BetaManagedAgentsMcpAuthenticationFailedError : JsonM
     }
 
     /// <summary>
-    /// What the client should do next in response to this error.
+    /// What the client should do next.
     /// </summary>
     public required BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatus RetryStatus
     {
@@ -126,7 +126,7 @@ class BetaManagedAgentsMcpAuthenticationFailedErrorFromRaw
 }
 
 /// <summary>
-/// What the client should do next in response to this error.
+/// What the client should do next.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusConverter))]
 public record class BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatus : ModelBase

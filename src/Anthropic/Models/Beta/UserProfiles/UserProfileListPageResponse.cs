@@ -8,6 +8,9 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.UserProfiles;
 
+/// <summary>
+/// A page of user profiles, sorted by the request's `order_by` and `order`.
+/// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<UserProfileListPageResponse, UserProfileListPageResponseFromRaw>)
 )]

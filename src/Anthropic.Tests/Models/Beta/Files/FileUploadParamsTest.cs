@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using Anthropic.Core;
@@ -113,6 +114,41 @@ public class FileUploadParamsTest : TestBase
             ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
             requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
+    }
+
+    [Fact]
+    public void IsBodyRepeatable_Works()
+    {
+        BinaryContent file = Encoding.UTF8.GetBytes("Example data");
+
+        var parameters = new FileUploadParams
+        {
+            File = file,
+            ExpiresInSeconds = 3600,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
+
+        Assert.True(parameters.IsBodyRepeatable());
+    }
+
+    [Fact]
+    public void IsBodyRepeatableFromStream_Works()
+    {
+        BinaryContent file = new BinaryContent
+        {
+            Stream = new MemoryStream(Encoding.UTF8.GetBytes("Example data")),
+        };
+
+        var parameters = new FileUploadParams
+        {
+            File = file,
+            ExpiresInSeconds = 3600,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
+
+        Assert.False(parameters.IsBodyRepeatable());
     }
 
     [Fact]

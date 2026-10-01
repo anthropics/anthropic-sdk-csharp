@@ -3,6 +3,7 @@ using System.Buffers.Binary;
 using System.IO.Pipelines;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Amazon.Runtime.EventStreams;
 
 namespace Anthropic.Bedrock;
 
@@ -18,7 +19,23 @@ internal static class AwsEventStreamHelpers
 {
     private static readonly JsonSerializerOptions? _jsonOptions = new() { WriteIndented = false };
 
-    public static async Task<(string? Data, bool readData)> ReadStreamMessage(
+    /// <returns>The next SSE event, or <c>null</c> at the end of the stream.</returns>
+    public static async Task<string?> ReadStreamMessage(
+        Stream source,
+        CancellationToken cancellationToken
+    )
+    {
+        while (true)
+        {
+            var (data, readData) = await ReadFrame(source, cancellationToken).ConfigureAwait(false);
+            if (!readData || data is not null)
+            {
+                return data;
+            }
+        }
+    }
+
+    private static async Task<(string? Data, bool readData)> ReadFrame(
         Stream source,
         CancellationToken cancellationToken
     )
@@ -59,8 +76,7 @@ internal static class AwsEventStreamHelpers
             throw new InvalidDataException($"The preamble lengths are invalid");
         }
 
-        // we don't care about headers so skip them
-        Memory<byte> header = new byte[headerLength];
+        var header = new byte[headerLength];
         await source.ReadExactlyAsync(header, cancellationToken).ConfigureAwait(false);
 
         // total length is without the preamble (8bytes) + preamble crc (4bytes) + headers but do not take the message crc (4 bytes)
@@ -73,7 +89,7 @@ internal static class AwsEventStreamHelpers
         await source.ReadExactlyAsync(messageCrc, cancellationToken).ConfigureAwait(false); // advance 4 bytes for EOM crc sum
         if (
             !Crc32ChecksumValidation(
-                [.. preamble.Span, .. header.Span, .. messageSpan.Span],
+                [.. preamble.Span, .. header, .. messageSpan.Span],
                 messageCrc.Span
             )
         )
@@ -82,16 +98,47 @@ internal static class AwsEventStreamHelpers
                 "The calculated crc checksum for the message content does not match the provided value from the server."
             );
         }
-        var result = await Parse(new ReadOnlySequence<byte>(messageSpan), cancellationToken)
+        var result = await Parse(
+                ReadStringHeaders(header),
+                new ReadOnlySequence<byte>(messageSpan),
+                cancellationToken
+            )
             .ConfigureAwait(false);
         return (result, true);
     }
 
     private static async Task<string?> Parse(
+        Dictionary<string, string> headers,
         ReadOnlySequence<byte> bodyData,
         CancellationToken cancellationToken
     )
     {
+        headers.TryGetValue(":message-type", out var messageType);
+        switch (messageType)
+        {
+            // Bedrock ends the stream with an exception or error frame, which we surface like a
+            // mid-stream SSE `error` event from the Anthropic API.
+            case "exception":
+                headers.TryGetValue(":exception-type", out var exceptionType);
+                var payload = await JsonSerializer
+                    .DeserializeAsync<JsonObject>(
+                        PipeReader.Create(bodyData),
+                        _jsonOptions,
+                        cancellationToken
+                    )
+                    .ConfigureAwait(false);
+                return ErrorEvent(
+                    exceptionType,
+                    payload?["message"] is JsonValue value && value.TryGetValue(out string? message)
+                        ? message
+                        : null
+                );
+            case "error":
+                headers.TryGetValue(":error-code", out var errorCode);
+                headers.TryGetValue(":error-message", out var errorMessage);
+                return ErrorEvent(errorCode, errorMessage);
+        }
+
         var eventLine = await JsonSerializer
             .DeserializeAsync<JsonObject>(
                 PipeReader.Create(bodyData),
@@ -114,13 +161,41 @@ internal static class AwsEventStreamHelpers
                 cancellationToken
             )
             .ConfigureAwait(false);
-        if (parsedEvent is null)
+        if (parsedEvent?["type"] is not JsonValue type || !type.TryGetValue(out string? eventType))
         {
             return null;
         }
 
-        // add double linebreaks at the end to force the StreamReader to emit an empty line for parsing.
-        return $"event:{parsedEvent["type"]}\ndata:{parsedEvent.ToJsonString(_jsonOptions)}\n\n";
+        return ToSse(eventType, parsedEvent);
+    }
+
+    private static string ErrorEvent(string? type, string? message) =>
+        ToSse(
+            "error",
+            new JsonObject
+            {
+                ["type"] = "error",
+                ["error"] = new JsonObject { ["type"] = type, ["message"] = message },
+            }
+        );
+
+    // add double linebreaks at the end to force the StreamReader to emit an empty line for parsing.
+    private static string ToSse(string eventType, JsonObject data) =>
+        $"event:{eventType}\ndata:{data.ToJsonString(_jsonOptions)}\n\n";
+
+    private static Dictionary<string, string> ReadStringHeaders(byte[] headers)
+    {
+        var result = new Dictionary<string, string>(StringComparer.Ordinal);
+        var offset = 0;
+        while (offset < headers.Length)
+        {
+            var header = EventStreamHeader.FromBuffer(headers, offset, ref offset);
+            if (header.HeaderType == EventStreamHeaderType.String)
+            {
+                result[header.Name] = header.AsString();
+            }
+        }
+        return result;
     }
 
     private static bool Crc32ChecksumValidation(

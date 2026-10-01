@@ -21,7 +21,7 @@ namespace Anthropic.Models.Beta.Deployments;
 public sealed record class BetaManagedAgentsErrorDeploymentPausedReason : JsonModel
 {
     /// <summary>
-    /// The error that triggered an auto-pause. Matches the failed run's `error.type`.
+    /// The failed run's error.
     /// </summary>
     public required BetaManagedAgentsDeploymentPausedReasonError Error
     {

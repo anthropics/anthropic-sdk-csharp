@@ -7,9 +7,6 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-/// <summary>
-/// Code execution tool with REPL state persistence (daemon mode + gVisor checkpoint).
-/// </summary>
 [JsonConverter(typeof(BetaToolUnionConverter))]
 public record class BetaToolUnion : ModelBase
 {
@@ -437,6 +434,48 @@ public record class BetaToolUnion : ModelBase
                 _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
                     this.Json,
                     "max_content_tokens"
+                ),
+            };
+        }
+    }
+
+    public BetaWebFetchUrlSources? UrlSources
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 _ => null,
+                BetaWebFetchTool20250910 x => x.UrlSources,
+                BetaWebSearchTool20260209 _ => null,
+                BetaWebFetchTool20260209 x => x.UrlSources,
+                BetaWebFetchTool20260309 x => x.UrlSources,
+                BetaWebSearchTool20260318 _ => null,
+                BetaWebFetchTool20260318 x => x.UrlSources,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<BetaWebFetchUrlSources>(
+                    this.Json,
+                    "url_sources"
                 ),
             };
         }

@@ -13,13 +13,14 @@ public class BetaDataResidencyTest : TestBase
         var model = new BetaDataResidency
         {
             AllowedInferenceGeos = new Unrestricted(),
-            DefaultInferenceGeo = "default_inference_geo",
-            WorkspaceGeo = "workspace_geo",
+            DefaultInferenceGeo = DefaultInferenceGeo.Global,
+            WorkspaceGeo = WorkspaceGeo.Us,
         };
 
         AllowedInferenceGeos expectedAllowedInferenceGeos = new Unrestricted();
-        string expectedDefaultInferenceGeo = "default_inference_geo";
-        string expectedWorkspaceGeo = "workspace_geo";
+        ApiEnum<string, DefaultInferenceGeo> expectedDefaultInferenceGeo =
+            DefaultInferenceGeo.Global;
+        ApiEnum<string, WorkspaceGeo> expectedWorkspaceGeo = WorkspaceGeo.Us;
 
         Assert.Equal(expectedAllowedInferenceGeos, model.AllowedInferenceGeos);
         Assert.Equal(expectedDefaultInferenceGeo, model.DefaultInferenceGeo);
@@ -32,8 +33,8 @@ public class BetaDataResidencyTest : TestBase
         var model = new BetaDataResidency
         {
             AllowedInferenceGeos = new Unrestricted(),
-            DefaultInferenceGeo = "default_inference_geo",
-            WorkspaceGeo = "workspace_geo",
+            DefaultInferenceGeo = DefaultInferenceGeo.Global,
+            WorkspaceGeo = WorkspaceGeo.Us,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -51,8 +52,8 @@ public class BetaDataResidencyTest : TestBase
         var model = new BetaDataResidency
         {
             AllowedInferenceGeos = new Unrestricted(),
-            DefaultInferenceGeo = "default_inference_geo",
-            WorkspaceGeo = "workspace_geo",
+            DefaultInferenceGeo = DefaultInferenceGeo.Global,
+            WorkspaceGeo = WorkspaceGeo.Us,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -63,8 +64,9 @@ public class BetaDataResidencyTest : TestBase
         Assert.NotNull(deserialized);
 
         AllowedInferenceGeos expectedAllowedInferenceGeos = new Unrestricted();
-        string expectedDefaultInferenceGeo = "default_inference_geo";
-        string expectedWorkspaceGeo = "workspace_geo";
+        ApiEnum<string, DefaultInferenceGeo> expectedDefaultInferenceGeo =
+            DefaultInferenceGeo.Global;
+        ApiEnum<string, WorkspaceGeo> expectedWorkspaceGeo = WorkspaceGeo.Us;
 
         Assert.Equal(expectedAllowedInferenceGeos, deserialized.AllowedInferenceGeos);
         Assert.Equal(expectedDefaultInferenceGeo, deserialized.DefaultInferenceGeo);
@@ -77,8 +79,8 @@ public class BetaDataResidencyTest : TestBase
         var model = new BetaDataResidency
         {
             AllowedInferenceGeos = new Unrestricted(),
-            DefaultInferenceGeo = "default_inference_geo",
-            WorkspaceGeo = "workspace_geo",
+            DefaultInferenceGeo = DefaultInferenceGeo.Global,
+            WorkspaceGeo = WorkspaceGeo.Us,
         };
 
         model.Validate();
@@ -90,8 +92,8 @@ public class BetaDataResidencyTest : TestBase
         var model = new BetaDataResidency
         {
             AllowedInferenceGeos = new Unrestricted(),
-            DefaultInferenceGeo = "default_inference_geo",
-            WorkspaceGeo = "workspace_geo",
+            DefaultInferenceGeo = DefaultInferenceGeo.Global,
+            WorkspaceGeo = WorkspaceGeo.Us,
         };
 
         BetaDataResidency copied = new(model);
@@ -105,7 +107,7 @@ public class AllowedInferenceGeosTest : TestBase
     [Fact]
     public void GeosValidationWorks()
     {
-        AllowedInferenceGeos value = new(["string"]);
+        AllowedInferenceGeos value = new([BetaAllowedInferenceGeo.Global]);
         value.Validate();
     }
 
@@ -119,7 +121,7 @@ public class AllowedInferenceGeosTest : TestBase
     [Fact]
     public void GeosSerializationRoundtripWorks()
     {
-        AllowedInferenceGeos value = new(["string"]);
+        AllowedInferenceGeos value = new([BetaAllowedInferenceGeo.Global]);
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<AllowedInferenceGeos>(
             element,
@@ -219,5 +221,119 @@ public class UnrestrictedTest : TestBase
         );
 
         Assert.Equal(constant, deserialized);
+    }
+}
+
+public class DefaultInferenceGeoTest : TestBase
+{
+    [Theory]
+    [InlineData(DefaultInferenceGeo.Global)]
+    [InlineData(DefaultInferenceGeo.Us)]
+    public void Validation_Works(DefaultInferenceGeo rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, DefaultInferenceGeo> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, DefaultInferenceGeo>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(DefaultInferenceGeo.Global)]
+    [InlineData(DefaultInferenceGeo.Us)]
+    public void SerializationRoundtrip_Works(DefaultInferenceGeo rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, DefaultInferenceGeo> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, DefaultInferenceGeo>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, DefaultInferenceGeo>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, DefaultInferenceGeo>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class WorkspaceGeoTest : TestBase
+{
+    [Theory]
+    [InlineData(WorkspaceGeo.Us)]
+    public void Validation_Works(WorkspaceGeo rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, WorkspaceGeo> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, WorkspaceGeo>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(WorkspaceGeo.Us)]
+    public void SerializationRoundtrip_Works(WorkspaceGeo rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, WorkspaceGeo> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, WorkspaceGeo>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, WorkspaceGeo>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, WorkspaceGeo>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

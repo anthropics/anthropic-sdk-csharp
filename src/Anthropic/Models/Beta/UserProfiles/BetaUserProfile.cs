@@ -9,6 +9,13 @@ using System = System;
 
 namespace Anthropic.Models.Beta.UserProfiles;
 
+/// <summary>
+/// A record of an entity that the platform serves through the API, such as an end-user
+/// of the platform's product or a company that the platform resells Claude access to.
+///
+/// <para>A Messages, Message Batches or token counting request can send a profile's
+/// `id` in the `anthropic-user-profile-id` header to attribute the request to that entity.</para>
+/// </summary>
 [JsonConverter(typeof(JsonModelConverter<BetaUserProfile, BetaUserProfileFromRaw>))]
 public sealed record class BetaUserProfile : JsonModel
 {
@@ -26,7 +33,7 @@ public sealed record class BetaUserProfile : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When this user profile was created, in RFC 3339 format.
     /// </summary>
     public required System::DateTimeOffset CreatedAt
     {
@@ -96,7 +103,8 @@ public sealed record class BetaUserProfile : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When this user profile was last modified, in RFC 3339 format. Trust-grant
+    /// status changes also bump this timestamp.
     /// </summary>
     public required System::DateTimeOffset UpdatedAt
     {
@@ -109,11 +117,8 @@ public sealed record class BetaUserProfile : JsonModel
     }
 
     /// <summary>
-    /// How the platform uses the API on behalf of the entity this profile represents.
-    /// `application`: the platform sells a product that uses the API behind the
-    /// scenes, and the profile represents an individual end-user of that product.
-    /// `passthrough`: the platform resells raw inference, and the profile identifies
-    /// the resold-to company.
+    /// How the platform uses the API for this entity: `application` (default) or
+    /// `passthrough`. Present under the `user-profiles-2026-08-18` and later beta headers.
     /// </summary>
     public ApiEnum<string, BetaUserProfileAccessType>? AccessType
     {
@@ -151,9 +156,11 @@ public sealed record class BetaUserProfile : JsonModel
     }
 
     /// <summary>
-    /// Details about the entity this profile represents, as the platform states them.
-    /// Anthropic does not verify them. Every field is present, `null` until the
-    /// platform supplies a value.
+    /// Details about the entity this profile represents, as the platform states them;
+    /// not verified by Anthropic. Present under the `user-profiles-2026-09-04` beta
+    /// header, with every field present and `null` until the platform supplies a
+    /// value; the earlier beta headers serve `reference_id` as the top-level `external_id`,
+    /// and `user-profiles-2026-08-18` serves `onboarded_at` as `external_user_onboarded_at`.
     /// </summary>
     public BetaUserProfileExternalUserDetails? ExternalUserDetails
     {
@@ -176,7 +183,10 @@ public sealed record class BetaUserProfile : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When the entity this profile represents opened its account with the platform,
+    /// as stated by the platform, in RFC 3339 format (UTC). `null` until the platform
+    /// supplies one. Present under the `user-profiles-2026-08-18` beta header; under
+    /// `user-profiles-2026-09-04` the value is `external_user_details.onboarded_at`.
     /// </summary>
     public System::DateTimeOffset? ExternalUserOnboardedAt
     {
@@ -304,15 +314,21 @@ sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.UserPro
 }
 
 /// <summary>
-/// How the platform uses the API on behalf of the entity this profile represents.
-/// `application`: the platform sells a product that uses the API behind the scenes,
-/// and the profile represents an individual end-user of that product. `passthrough`:
-/// the platform resells raw inference, and the profile identifies the resold-to company.
+/// How the platform uses the API for this entity: `application` (default) or `passthrough`.
+/// Present under the `user-profiles-2026-08-18` and later beta headers.
 /// </summary>
 [JsonConverter(typeof(BetaUserProfileAccessTypeConverter))]
 public enum BetaUserProfileAccessType
 {
+    /// <summary>
+    /// The user profile represents an individual end-user of a product that the
+    /// platform builds on the API. New profiles get this value by default.
+    /// </summary>
     Application,
+
+    /// <summary>
+    /// The user profile represents a company that the platform resells Claude access to.
+    /// </summary>
     Passthrough,
 }
 

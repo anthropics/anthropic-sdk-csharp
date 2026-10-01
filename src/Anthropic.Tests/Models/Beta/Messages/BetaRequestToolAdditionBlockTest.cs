@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
@@ -175,6 +176,43 @@ public class BetaRequestToolAdditionBlockToolTest : TestBase
     }
 
     [Fact]
+    public void BetaToolChangeToolDefinitionParamValidationWorks()
+    {
+        BetaRequestToolAdditionBlockTool value = new BetaToolChangeToolDefinitionParam(
+            new BetaToolUnion(
+                new BetaTool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = BetaToolType.Custom,
+                }
+            )
+        );
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaToolChangeToolReferenceSerializationRoundtripWorks()
     {
         BetaRequestToolAdditionBlockTool value = new BetaToolChangeToolReference("name");
@@ -209,6 +247,49 @@ public class BetaRequestToolAdditionBlockToolTest : TestBase
     {
         BetaRequestToolAdditionBlockTool value = new BetaToolChangeMcpToolsetReference(
             "server_name"
+        );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestToolAdditionBlockTool>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaToolChangeToolDefinitionParamSerializationRoundtripWorks()
+    {
+        BetaRequestToolAdditionBlockTool value = new BetaToolChangeToolDefinitionParam(
+            new BetaToolUnion(
+                new BetaTool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = BetaToolType.Custom,
+                }
+            )
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaRequestToolAdditionBlockTool>(

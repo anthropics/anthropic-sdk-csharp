@@ -368,6 +368,19 @@ public class BetaRefusalFallbackHandlerTest
     }
 
     [Fact]
+    public async Task AppendsToBetasAlreadyOnTheRequestWithACommaAndNoSpace()
+    {
+        var transport = new FakeTransport().EnqueueJson(200, Message("primary-model"));
+        using var invoker = Intercepted(transport, "fallback-model");
+
+        var request = MessagesRequest();
+        request.Headers.TryAddWithoutValidation("anthropic-beta", "some-other-beta");
+        await invoker.SendAsync(request, TestContext.Current.CancellationToken);
+
+        Assert.Equal(["some-other-beta,fallback-credit-2026-07-01"], transport.BetaHeaderValues(0));
+    }
+
+    [Fact]
     public async Task SendsCustomBetasInsteadOfTheDefault()
     {
         var transport = new FakeTransport().EnqueueJson(200, Message("primary-model"));
@@ -512,6 +525,57 @@ public class BetaRefusalFallbackHandlerTest
         Assert.Equal("last-model", secondHop["model"]?.GetValue<string>());
         Assert.Equal(1024, secondHop["max_tokens"]?.GetValue<int>());
         Assert.True(JsonNode.DeepEquals(thinking, secondHop["thinking"]));
+    }
+
+    [Fact]
+    public async Task DegradesBetweenToolsThinkingToDisabledOnTheRetry()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(200, Message("fallback-model"));
+        using var invoker = Intercepted(transport, "fallback-model");
+
+        var body = MessagesBody();
+        body["thinking"] = new JsonObject { ["type"] = "between_tools" };
+
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(MessagesRequest(body), TestContext.Current.CancellationToken);
+
+        Assert.True(JsonNode.DeepEquals(body["thinking"], transport.JsonBodies[0]["thinking"]));
+        Assert.True(
+            JsonNode.DeepEquals(
+                new JsonObject { ["type"] = "disabled" },
+                transport.JsonBodies[1]["thinking"]
+            )
+        );
+    }
+
+    [Fact]
+    public async Task AnEntryThatSetsThinkingOverridesBetweenTools()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(200, Message("fallback-model"));
+        var handler = new BetaRefusalFallbackHandler
+        {
+            Fallbacks =
+            [
+                new BetaFallbackParam("fallback-model")
+                {
+                    Thinking = new BetaThinkingConfigBetweenTools(),
+                },
+            ],
+            InnerHandler = transport,
+        };
+        using HttpMessageInvoker invoker = new(handler);
+
+        var body = MessagesBody();
+        body["thinking"] = new JsonObject { ["type"] = "between_tools" };
+
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(MessagesRequest(body), TestContext.Current.CancellationToken);
+
+        Assert.True(JsonNode.DeepEquals(body["thinking"], transport.JsonBodies[1]["thinking"]));
     }
 
     [Fact]

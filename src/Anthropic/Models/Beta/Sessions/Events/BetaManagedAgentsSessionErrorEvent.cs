@@ -33,11 +33,6 @@ public sealed record class BetaManagedAgentsSessionErrorEvent : JsonModel
         init { this._rawData.Set("id", value); }
     }
 
-    /// <summary>
-    /// An unknown or unexpected error occurred during session execution. A fallback
-    /// variant; clients that don't recognize a new error code can match on `retry_status`
-    /// and `message` alone.
-    /// </summary>
     public required Error Error
     {
         get
@@ -49,7 +44,7 @@ public sealed record class BetaManagedAgentsSessionErrorEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the error occurred.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {
@@ -122,11 +117,6 @@ class BetaManagedAgentsSessionErrorEventFromRaw : IFromRawJson<BetaManagedAgents
     ) => BetaManagedAgentsSessionErrorEvent.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// An unknown or unexpected error occurred during session execution. A fallback variant;
-/// clients that don't recognize a new error code can match on `retry_status` and
-/// `message` alone.
-/// </summary>
 [JsonConverter(typeof(ErrorConverter))]
 public record class Error : ModelBase
 {
@@ -159,6 +149,11 @@ public record class Error : ModelBase
                 BetaManagedAgentsMcpAuthenticationFailedError x => x.Message,
                 BetaManagedAgentsBillingError x => x.Message,
                 BetaManagedAgentsCredentialHostUnreachableError x => x.Message,
+                BetaManagedAgentsRepositoryAuthenticationError x => x.Message,
+                BetaManagedAgentsRepositoryForbiddenError x => x.Message,
+                BetaManagedAgentsRepositoryNotFoundError x => x.Message,
+                BetaManagedAgentsRepositoryCheckoutError x => x.Message,
+                BetaManagedAgentsRepositoryCloneError x => x.Message,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "message"),
             };
         }
@@ -178,9 +173,41 @@ public record class Error : ModelBase
                 BetaManagedAgentsMcpAuthenticationFailedError x => x.McpServerName,
                 BetaManagedAgentsBillingError _ => null,
                 BetaManagedAgentsCredentialHostUnreachableError _ => null,
+                BetaManagedAgentsRepositoryAuthenticationError _ => null,
+                BetaManagedAgentsRepositoryForbiddenError _ => null,
+                BetaManagedAgentsRepositoryNotFoundError _ => null,
+                BetaManagedAgentsRepositoryCheckoutError _ => null,
+                BetaManagedAgentsRepositoryCloneError _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "mcp_server_name"
+                ),
+            };
+        }
+    }
+
+    public string? RepositoryUrl
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsUnknownError _ => null,
+                BetaManagedAgentsModelOverloadedError _ => null,
+                BetaManagedAgentsModelRateLimitedError _ => null,
+                BetaManagedAgentsModelRequestFailedError _ => null,
+                BetaManagedAgentsMcpConnectionFailedError _ => null,
+                BetaManagedAgentsMcpAuthenticationFailedError _ => null,
+                BetaManagedAgentsBillingError _ => null,
+                BetaManagedAgentsCredentialHostUnreachableError _ => null,
+                BetaManagedAgentsRepositoryAuthenticationError x => x.RepositoryUrl,
+                BetaManagedAgentsRepositoryForbiddenError x => x.RepositoryUrl,
+                BetaManagedAgentsRepositoryNotFoundError x => x.RepositoryUrl,
+                BetaManagedAgentsRepositoryCheckoutError x => x.RepositoryUrl,
+                BetaManagedAgentsRepositoryCloneError x => x.RepositoryUrl,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "repository_url"
                 ),
             };
         }
@@ -229,6 +256,36 @@ public record class Error : ModelBase
     }
 
     public Error(BetaManagedAgentsCredentialHostUnreachableError value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Error(BetaManagedAgentsRepositoryAuthenticationError value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Error(BetaManagedAgentsRepositoryForbiddenError value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Error(BetaManagedAgentsRepositoryNotFoundError value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Error(BetaManagedAgentsRepositoryCheckoutError value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Error(BetaManagedAgentsRepositoryCloneError value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -424,6 +481,121 @@ public record class Error : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsRepositoryAuthenticationError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsRepositoryAuthentication(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsRepositoryAuthenticationError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsRepositoryAuthentication(
+        [NotNullWhen(true)] out BetaManagedAgentsRepositoryAuthenticationError? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsRepositoryAuthenticationError;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsRepositoryForbiddenError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsRepositoryForbidden(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsRepositoryForbiddenError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsRepositoryForbidden(
+        [NotNullWhen(true)] out BetaManagedAgentsRepositoryForbiddenError? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsRepositoryForbiddenError;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsRepositoryNotFoundError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsRepositoryNotFound(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsRepositoryNotFoundError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsRepositoryNotFound(
+        [NotNullWhen(true)] out BetaManagedAgentsRepositoryNotFoundError? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsRepositoryNotFoundError;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsRepositoryCheckoutError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsRepositoryCheckout(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsRepositoryCheckoutError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsRepositoryCheckout(
+        [NotNullWhen(true)] out BetaManagedAgentsRepositoryCheckoutError? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsRepositoryCheckoutError;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsRepositoryCloneError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsRepositoryClone(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsRepositoryCloneError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsRepositoryClone(
+        [NotNullWhen(true)] out BetaManagedAgentsRepositoryCloneError? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsRepositoryCloneError;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -444,7 +616,12 @@ public record class Error : ModelBase
     ///     (BetaManagedAgentsMcpConnectionFailedError value) =&gt; {...},
     ///     (BetaManagedAgentsMcpAuthenticationFailedError value) =&gt; {...},
     ///     (BetaManagedAgentsBillingError value) =&gt; {...},
-    ///     (BetaManagedAgentsCredentialHostUnreachableError value) =&gt; {...}
+    ///     (BetaManagedAgentsCredentialHostUnreachableError value) =&gt; {...},
+    ///     (BetaManagedAgentsRepositoryAuthenticationError value) =&gt; {...},
+    ///     (BetaManagedAgentsRepositoryForbiddenError value) =&gt; {...},
+    ///     (BetaManagedAgentsRepositoryNotFoundError value) =&gt; {...},
+    ///     (BetaManagedAgentsRepositoryCheckoutError value) =&gt; {...},
+    ///     (BetaManagedAgentsRepositoryCloneError value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -457,7 +634,12 @@ public record class Error : ModelBase
         System::Action<BetaManagedAgentsMcpConnectionFailedError> betaManagedAgentsMcpConnectionFailed,
         System::Action<BetaManagedAgentsMcpAuthenticationFailedError> betaManagedAgentsMcpAuthenticationFailed,
         System::Action<BetaManagedAgentsBillingError> betaManagedAgentsBilling,
-        System::Action<BetaManagedAgentsCredentialHostUnreachableError> betaManagedAgentsCredentialHostUnreachable
+        System::Action<BetaManagedAgentsCredentialHostUnreachableError> betaManagedAgentsCredentialHostUnreachable,
+        System::Action<BetaManagedAgentsRepositoryAuthenticationError> betaManagedAgentsRepositoryAuthentication,
+        System::Action<BetaManagedAgentsRepositoryForbiddenError> betaManagedAgentsRepositoryForbidden,
+        System::Action<BetaManagedAgentsRepositoryNotFoundError> betaManagedAgentsRepositoryNotFound,
+        System::Action<BetaManagedAgentsRepositoryCheckoutError> betaManagedAgentsRepositoryCheckout,
+        System::Action<BetaManagedAgentsRepositoryCloneError> betaManagedAgentsRepositoryClone
     )
     {
         switch (this.Value)
@@ -486,6 +668,21 @@ public record class Error : ModelBase
             case BetaManagedAgentsCredentialHostUnreachableError value:
                 betaManagedAgentsCredentialHostUnreachable(value);
                 break;
+            case BetaManagedAgentsRepositoryAuthenticationError value:
+                betaManagedAgentsRepositoryAuthentication(value);
+                break;
+            case BetaManagedAgentsRepositoryForbiddenError value:
+                betaManagedAgentsRepositoryForbidden(value);
+                break;
+            case BetaManagedAgentsRepositoryNotFoundError value:
+                betaManagedAgentsRepositoryNotFound(value);
+                break;
+            case BetaManagedAgentsRepositoryCheckoutError value:
+                betaManagedAgentsRepositoryCheckout(value);
+                break;
+            case BetaManagedAgentsRepositoryCloneError value:
+                betaManagedAgentsRepositoryClone(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Error");
         }
@@ -513,7 +710,12 @@ public record class Error : ModelBase
     ///     (BetaManagedAgentsMcpConnectionFailedError value) =&gt; {...},
     ///     (BetaManagedAgentsMcpAuthenticationFailedError value) =&gt; {...},
     ///     (BetaManagedAgentsBillingError value) =&gt; {...},
-    ///     (BetaManagedAgentsCredentialHostUnreachableError value) =&gt; {...}
+    ///     (BetaManagedAgentsCredentialHostUnreachableError value) =&gt; {...},
+    ///     (BetaManagedAgentsRepositoryAuthenticationError value) =&gt; {...},
+    ///     (BetaManagedAgentsRepositoryForbiddenError value) =&gt; {...},
+    ///     (BetaManagedAgentsRepositoryNotFoundError value) =&gt; {...},
+    ///     (BetaManagedAgentsRepositoryCheckoutError value) =&gt; {...},
+    ///     (BetaManagedAgentsRepositoryCloneError value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -538,7 +740,24 @@ public record class Error : ModelBase
         System::Func<
             BetaManagedAgentsCredentialHostUnreachableError,
             T
-        > betaManagedAgentsCredentialHostUnreachable
+        > betaManagedAgentsCredentialHostUnreachable,
+        System::Func<
+            BetaManagedAgentsRepositoryAuthenticationError,
+            T
+        > betaManagedAgentsRepositoryAuthentication,
+        System::Func<
+            BetaManagedAgentsRepositoryForbiddenError,
+            T
+        > betaManagedAgentsRepositoryForbidden,
+        System::Func<
+            BetaManagedAgentsRepositoryNotFoundError,
+            T
+        > betaManagedAgentsRepositoryNotFound,
+        System::Func<
+            BetaManagedAgentsRepositoryCheckoutError,
+            T
+        > betaManagedAgentsRepositoryCheckout,
+        System::Func<BetaManagedAgentsRepositoryCloneError, T> betaManagedAgentsRepositoryClone
     )
     {
         return this.Value switch
@@ -559,6 +778,18 @@ public record class Error : ModelBase
             BetaManagedAgentsBillingError value => betaManagedAgentsBilling(value),
             BetaManagedAgentsCredentialHostUnreachableError value =>
                 betaManagedAgentsCredentialHostUnreachable(value),
+            BetaManagedAgentsRepositoryAuthenticationError value =>
+                betaManagedAgentsRepositoryAuthentication(value),
+            BetaManagedAgentsRepositoryForbiddenError value => betaManagedAgentsRepositoryForbidden(
+                value
+            ),
+            BetaManagedAgentsRepositoryNotFoundError value => betaManagedAgentsRepositoryNotFound(
+                value
+            ),
+            BetaManagedAgentsRepositoryCheckoutError value => betaManagedAgentsRepositoryCheckout(
+                value
+            ),
+            BetaManagedAgentsRepositoryCloneError value => betaManagedAgentsRepositoryClone(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Error"),
         };
     }
@@ -583,6 +814,21 @@ public record class Error : ModelBase
     public static implicit operator Error(BetaManagedAgentsBillingError value) => new(value);
 
     public static implicit operator Error(BetaManagedAgentsCredentialHostUnreachableError value) =>
+        new(value);
+
+    public static implicit operator Error(BetaManagedAgentsRepositoryAuthenticationError value) =>
+        new(value);
+
+    public static implicit operator Error(BetaManagedAgentsRepositoryForbiddenError value) =>
+        new(value);
+
+    public static implicit operator Error(BetaManagedAgentsRepositoryNotFoundError value) =>
+        new(value);
+
+    public static implicit operator Error(BetaManagedAgentsRepositoryCheckoutError value) =>
+        new(value);
+
+    public static implicit operator Error(BetaManagedAgentsRepositoryCloneError value) =>
         new(value);
 
     /// <summary>
@@ -612,7 +858,14 @@ public record class Error : ModelBase
                 betaManagedAgentsMcpAuthenticationFailed.Validate(),
             (betaManagedAgentsBilling) => betaManagedAgentsBilling.Validate(),
             (betaManagedAgentsCredentialHostUnreachable) =>
-                betaManagedAgentsCredentialHostUnreachable.Validate()
+                betaManagedAgentsCredentialHostUnreachable.Validate(),
+            (betaManagedAgentsRepositoryAuthentication) =>
+                betaManagedAgentsRepositoryAuthentication.Validate(),
+            (betaManagedAgentsRepositoryForbidden) =>
+                betaManagedAgentsRepositoryForbidden.Validate(),
+            (betaManagedAgentsRepositoryNotFound) => betaManagedAgentsRepositoryNotFound.Validate(),
+            (betaManagedAgentsRepositoryCheckout) => betaManagedAgentsRepositoryCheckout.Validate(),
+            (betaManagedAgentsRepositoryClone) => betaManagedAgentsRepositoryClone.Validate()
         );
     }
 
@@ -644,6 +897,11 @@ public record class Error : ModelBase
             BetaManagedAgentsMcpAuthenticationFailedError _ => 5,
             BetaManagedAgentsBillingError _ => 6,
             BetaManagedAgentsCredentialHostUnreachableError _ => 7,
+            BetaManagedAgentsRepositoryAuthenticationError _ => 8,
+            BetaManagedAgentsRepositoryForbiddenError _ => 9,
+            BetaManagedAgentsRepositoryNotFoundError _ => 10,
+            BetaManagedAgentsRepositoryCheckoutError _ => 11,
+            BetaManagedAgentsRepositoryCloneError _ => 12,
             _ => -1,
         };
     }
@@ -821,6 +1079,111 @@ sealed class ErrorConverter : JsonConverter<Error>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaManagedAgentsCredentialHostUnreachableError>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "repository_authentication_error":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsRepositoryAuthenticationError>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "repository_forbidden_error":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsRepositoryForbiddenError>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "repository_not_found_error":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsRepositoryNotFoundError>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "repository_checkout_error":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsRepositoryCheckoutError>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "repository_clone_error":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsRepositoryCloneError>(
                             element,
                             options
                         );

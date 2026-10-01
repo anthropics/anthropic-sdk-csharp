@@ -14,6 +14,7 @@ public class BetaModelCapabilitiesTest : TestBase
             Batch = new(true),
             Citations = new(true),
             CodeExecution = new(true),
+            Compaction = new() { Summarize = new(true), Supported = true },
             ContextManagement = new()
             {
                 ClearThinking20251015 = new(true),
@@ -43,6 +44,11 @@ public class BetaModelCapabilitiesTest : TestBase
         BetaCapabilitySupport expectedBatch = new(true);
         BetaCapabilitySupport expectedCitations = new(true);
         BetaCapabilitySupport expectedCodeExecution = new(true);
+        BetaCompactionCapability expectedCompaction = new()
+        {
+            Summarize = new(true),
+            Supported = true,
+        };
         BetaContextManagementCapability expectedContextManagement = new()
         {
             ClearThinking20251015 = new(true),
@@ -71,6 +77,7 @@ public class BetaModelCapabilitiesTest : TestBase
         Assert.Equal(expectedBatch, model.Batch);
         Assert.Equal(expectedCitations, model.Citations);
         Assert.Equal(expectedCodeExecution, model.CodeExecution);
+        Assert.Equal(expectedCompaction, model.Compaction);
         Assert.Equal(expectedContextManagement, model.ContextManagement);
         Assert.Equal(expectedEffort, model.Effort);
         Assert.Equal(expectedImageInput, model.ImageInput);
@@ -87,6 +94,7 @@ public class BetaModelCapabilitiesTest : TestBase
             Batch = new(true),
             Citations = new(true),
             CodeExecution = new(true),
+            Compaction = new() { Summarize = new(true), Supported = true },
             ContextManagement = new()
             {
                 ClearThinking20251015 = new(true),
@@ -130,6 +138,7 @@ public class BetaModelCapabilitiesTest : TestBase
             Batch = new(true),
             Citations = new(true),
             CodeExecution = new(true),
+            Compaction = new() { Summarize = new(true), Supported = true },
             ContextManagement = new()
             {
                 ClearThinking20251015 = new(true),
@@ -166,6 +175,11 @@ public class BetaModelCapabilitiesTest : TestBase
         BetaCapabilitySupport expectedBatch = new(true);
         BetaCapabilitySupport expectedCitations = new(true);
         BetaCapabilitySupport expectedCodeExecution = new(true);
+        BetaCompactionCapability expectedCompaction = new()
+        {
+            Summarize = new(true),
+            Supported = true,
+        };
         BetaContextManagementCapability expectedContextManagement = new()
         {
             ClearThinking20251015 = new(true),
@@ -194,6 +208,7 @@ public class BetaModelCapabilitiesTest : TestBase
         Assert.Equal(expectedBatch, deserialized.Batch);
         Assert.Equal(expectedCitations, deserialized.Citations);
         Assert.Equal(expectedCodeExecution, deserialized.CodeExecution);
+        Assert.Equal(expectedCompaction, deserialized.Compaction);
         Assert.Equal(expectedContextManagement, deserialized.ContextManagement);
         Assert.Equal(expectedEffort, deserialized.Effort);
         Assert.Equal(expectedImageInput, deserialized.ImageInput);
@@ -210,6 +225,7 @@ public class BetaModelCapabilitiesTest : TestBase
             Batch = new(true),
             Citations = new(true),
             CodeExecution = new(true),
+            Compaction = new() { Summarize = new(true), Supported = true },
             ContextManagement = new()
             {
                 ClearThinking20251015 = new(true),
@@ -247,6 +263,7 @@ public class BetaModelCapabilitiesTest : TestBase
             Batch = new(true),
             Citations = new(true),
             CodeExecution = new(true),
+            Compaction = new() { Summarize = new(true), Supported = true },
             ContextManagement = new()
             {
                 ClearThinking20251015 = new(true),

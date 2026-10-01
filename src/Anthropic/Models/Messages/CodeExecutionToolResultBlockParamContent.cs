@@ -7,9 +7,6 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-/// <summary>
-/// Code execution result with encrypted stdout for PFC + web_search results.
-/// </summary>
 [JsonConverter(typeof(CodeExecutionToolResultBlockParamContentConverter))]
 public record class CodeExecutionToolResultBlockParamContent : ModelBase
 {

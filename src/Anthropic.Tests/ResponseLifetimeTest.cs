@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -17,8 +18,8 @@ namespace Anthropic.Tests;
 /// own cancellation scope is gone. These pin what has to hold across that boundary: nothing handed
 /// out on the response may hang off the disposed scope
 /// (https://github.com/anthropics/anthropic-sdk-csharp/issues/231), the tokens passed to body
-/// reads reach the read for as long as it runs, and responses <c>Execute</c> abandons on its
-/// error paths are disposed of rather than dropped.
+/// reads reach the read for as long as it runs, and responses <c>Execute</c> abandons, whether to
+/// retry or on its error paths, are disposed of rather than dropped.
 /// </summary>
 public class ResponseLifetimeTest
 {
@@ -117,28 +118,27 @@ public class ResponseLifetimeTest
     }
 
     [Fact]
-    public async Task Execute_DisposesOfTheResponseWhenTheBackoffCannotBeComputed()
+    public async Task Execute_DisposesOfTheResponseItRetries()
     {
-        TrackedStream body = new(Encoding.UTF8.GetBytes("{}"));
+        TrackedStream retriedBody = new(Encoding.UTF8.GetBytes("{}"));
+        var unavailable = Respond(HttpStatusCode.ServiceUnavailable, retriedBody);
+        // Keeps the wait before the second attempt short.
+        unavailable.Headers.TryAddWithoutValidation("Retry-After-Ms", "1");
+        var ok = Respond(HttpStatusCode.OK, new MemoryStream(Encoding.UTF8.GetBytes("{}")));
+        Queue<HttpResponseMessage> responses = new([unavailable, ok]);
         using AnthropicClient client = new()
         {
-            HttpClient = new(
-                new CannedHandler(() =>
-                {
-                    var response = Respond(HttpStatusCode.ServiceUnavailable, body);
-                    // Parses as a float, but lies far outside what a TimeSpan can hold.
-                    response.Headers.TryAddWithoutValidation("Retry-After-Ms", "1e20");
-                    return response;
-                })
-            ),
+            HttpClient = new(new CannedHandler(responses.Dequeue)),
             MaxRetries = 1,
         };
 
-        await Assert.ThrowsAsync<OverflowException>(() =>
-            client.WithRawResponse.Execute(BlankRequest, TestContext.Current.CancellationToken)
+        using var response = await client.WithRawResponse.Execute(
+            BlankRequest,
+            TestContext.Current.CancellationToken
         );
 
-        Assert.True(body.Disposed, "the abandoned 503 response was never disposed of");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.True(retriedBody.Disposed, "the abandoned 503 response was never disposed of");
     }
 
     [Fact]
@@ -193,7 +193,7 @@ public class ResponseLifetimeTest
     static CannedHandler Stalling(string prefix = "", string contentType = "application/json") =>
         new(() => Respond(HttpStatusCode.OK, new StallingStream(prefix), contentType));
 
-    /// <summary>Answers every request straight away with a freshly built response.</summary>
+    /// <summary>Answers every request straight away with the next response it is given.</summary>
     sealed class CannedHandler : HttpMessageHandler
     {
         readonly Func<HttpResponseMessage> _respond;

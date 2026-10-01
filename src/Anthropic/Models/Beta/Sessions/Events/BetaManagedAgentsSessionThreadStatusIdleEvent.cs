@@ -48,7 +48,7 @@ public sealed record class BetaManagedAgentsSessionThreadStatusIdleEvent : JsonM
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp of the status transition.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {
@@ -74,8 +74,21 @@ public sealed record class BetaManagedAgentsSessionThreadStatusIdleEvent : JsonM
     }
 
     /// <summary>
-    /// The agent completed its turn naturally and is ready for the next user message.
+    /// Structured information about why the thread stopped. `null` when there is
+    /// nothing more to report.
     /// </summary>
+    public required BetaManagedAgentsSessionRefusalStopDetails? StopDetails
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaManagedAgentsSessionRefusalStopDetails>(
+                "stop_details"
+            );
+        }
+        init { this._rawData.Set("stop_details", value); }
+    }
+
     public required BetaManagedAgentsSessionThreadStatusIdleEventStopReason StopReason
     {
         get
@@ -107,6 +120,7 @@ public sealed record class BetaManagedAgentsSessionThreadStatusIdleEvent : JsonM
         _ = this.AgentName;
         _ = this.ProcessedAt;
         _ = this.SessionThreadID;
+        this.StopDetails?.Validate();
         this.StopReason.Validate();
         this.Type.Validate();
     }
@@ -154,9 +168,6 @@ class BetaManagedAgentsSessionThreadStatusIdleEventFromRaw
     ) => BetaManagedAgentsSessionThreadStatusIdleEvent.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// The agent completed its turn naturally and is ready for the next user message.
-/// </summary>
 [JsonConverter(typeof(BetaManagedAgentsSessionThreadStatusIdleEventStopReasonConverter))]
 public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : ModelBase
 {
@@ -204,6 +215,15 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
 
     public BetaManagedAgentsSessionThreadStatusIdleEventStopReason(
         BetaManagedAgentsSessionBudgetReached value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsSessionThreadStatusIdleEventStopReason(
+        BetaManagedAgentsSessionRefusal value,
         JsonElement? element = null
     )
     {
@@ -309,6 +329,29 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsSessionRefusal"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsSessionRefusal(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsSessionRefusal`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsSessionRefusal(
+        [NotNullWhen(true)] out BetaManagedAgentsSessionRefusal? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsSessionRefusal;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -325,7 +368,8 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
     ///     (BetaManagedAgentsSessionEndTurn value) =&gt; {...},
     ///     (BetaManagedAgentsSessionRequiresAction value) =&gt; {...},
     ///     (BetaManagedAgentsSessionRetriesExhausted value) =&gt; {...},
-    ///     (BetaManagedAgentsSessionBudgetReached value) =&gt; {...}
+    ///     (BetaManagedAgentsSessionBudgetReached value) =&gt; {...},
+    ///     (BetaManagedAgentsSessionRefusal value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -334,7 +378,8 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
         System::Action<BetaManagedAgentsSessionEndTurn> betaManagedAgentsSessionEndTurn,
         System::Action<BetaManagedAgentsSessionRequiresAction> betaManagedAgentsSessionRequiresAction,
         System::Action<BetaManagedAgentsSessionRetriesExhausted> betaManagedAgentsSessionRetriesExhausted,
-        System::Action<BetaManagedAgentsSessionBudgetReached> betaManagedAgentsSessionBudgetReached
+        System::Action<BetaManagedAgentsSessionBudgetReached> betaManagedAgentsSessionBudgetReached,
+        System::Action<BetaManagedAgentsSessionRefusal> betaManagedAgentsSessionRefusal
     )
     {
         switch (this.Value)
@@ -350,6 +395,9 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
                 break;
             case BetaManagedAgentsSessionBudgetReached value:
                 betaManagedAgentsSessionBudgetReached(value);
+                break;
+            case BetaManagedAgentsSessionRefusal value:
+                betaManagedAgentsSessionRefusal(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -376,7 +424,8 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
     ///     (BetaManagedAgentsSessionEndTurn value) =&gt; {...},
     ///     (BetaManagedAgentsSessionRequiresAction value) =&gt; {...},
     ///     (BetaManagedAgentsSessionRetriesExhausted value) =&gt; {...},
-    ///     (BetaManagedAgentsSessionBudgetReached value) =&gt; {...}
+    ///     (BetaManagedAgentsSessionBudgetReached value) =&gt; {...},
+    ///     (BetaManagedAgentsSessionRefusal value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -391,7 +440,11 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
             BetaManagedAgentsSessionRetriesExhausted,
             T
         > betaManagedAgentsSessionRetriesExhausted,
-        System::Func<BetaManagedAgentsSessionBudgetReached, T> betaManagedAgentsSessionBudgetReached
+        System::Func<
+            BetaManagedAgentsSessionBudgetReached,
+            T
+        > betaManagedAgentsSessionBudgetReached,
+        System::Func<BetaManagedAgentsSessionRefusal, T> betaManagedAgentsSessionRefusal
     )
     {
         return this.Value switch
@@ -405,6 +458,7 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
             BetaManagedAgentsSessionBudgetReached value => betaManagedAgentsSessionBudgetReached(
                 value
             ),
+            BetaManagedAgentsSessionRefusal value => betaManagedAgentsSessionRefusal(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsSessionThreadStatusIdleEventStopReason"
             ),
@@ -425,6 +479,10 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
 
     public static implicit operator BetaManagedAgentsSessionThreadStatusIdleEventStopReason(
         BetaManagedAgentsSessionBudgetReached value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsSessionThreadStatusIdleEventStopReason(
+        BetaManagedAgentsSessionRefusal value
     ) => new(value);
 
     /// <summary>
@@ -452,7 +510,8 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
             (betaManagedAgentsSessionRetriesExhausted) =>
                 betaManagedAgentsSessionRetriesExhausted.Validate(),
             (betaManagedAgentsSessionBudgetReached) =>
-                betaManagedAgentsSessionBudgetReached.Validate()
+                betaManagedAgentsSessionBudgetReached.Validate(),
+            (betaManagedAgentsSessionRefusal) => betaManagedAgentsSessionRefusal.Validate()
         );
     }
 
@@ -480,6 +539,7 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
             BetaManagedAgentsSessionRequiresAction _ => 1,
             BetaManagedAgentsSessionRetriesExhausted _ => 2,
             BetaManagedAgentsSessionBudgetReached _ => 3,
+            BetaManagedAgentsSessionRefusal _ => 4,
             _ => -1,
         };
     }
@@ -578,6 +638,26 @@ sealed class BetaManagedAgentsSessionThreadStatusIdleEventStopReasonConverter
                             element,
                             options
                         );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "refusal":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSessionRefusal>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);

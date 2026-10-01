@@ -18,7 +18,7 @@ namespace Anthropic.Models.Beta.Sessions.Events;
 public sealed record class BetaManagedAgentsImageBlock : JsonModel
 {
     /// <summary>
-    /// Union type for image source variants.
+    /// The source of the image data.
     /// </summary>
     public required BetaManagedAgentsImageBlockSource Source
     {
@@ -88,7 +88,7 @@ class BetaManagedAgentsImageBlockFromRaw : IFromRawJson<BetaManagedAgentsImageBl
 }
 
 /// <summary>
-/// Union type for image source variants.
+/// The source of the image data.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsImageBlockSourceConverter))]
 public record class BetaManagedAgentsImageBlockSource : ModelBase

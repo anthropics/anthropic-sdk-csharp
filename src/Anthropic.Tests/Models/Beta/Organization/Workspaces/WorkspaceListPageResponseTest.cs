@@ -24,8 +24,8 @@ public class WorkspaceListPageResponseTest : TestBase
                     DataResidency = new()
                     {
                         AllowedInferenceGeos = new Unrestricted(),
-                        DefaultInferenceGeo = "default_inference_geo",
-                        WorkspaceGeo = "workspace_geo",
+                        DefaultInferenceGeo = DefaultInferenceGeo.Global,
+                        WorkspaceGeo = WorkspaceGeo.Us,
                     },
                     DisplayColor = "#6C5BB9",
                     ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -53,8 +53,8 @@ public class WorkspaceListPageResponseTest : TestBase
                 DataResidency = new()
                 {
                     AllowedInferenceGeos = new Unrestricted(),
-                    DefaultInferenceGeo = "default_inference_geo",
-                    WorkspaceGeo = "workspace_geo",
+                    DefaultInferenceGeo = DefaultInferenceGeo.Global,
+                    WorkspaceGeo = WorkspaceGeo.Us,
                 },
                 DisplayColor = "#6C5BB9",
                 ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -96,8 +96,8 @@ public class WorkspaceListPageResponseTest : TestBase
                     DataResidency = new()
                     {
                         AllowedInferenceGeos = new Unrestricted(),
-                        DefaultInferenceGeo = "default_inference_geo",
-                        WorkspaceGeo = "workspace_geo",
+                        DefaultInferenceGeo = DefaultInferenceGeo.Global,
+                        WorkspaceGeo = WorkspaceGeo.Us,
                     },
                     DisplayColor = "#6C5BB9",
                     ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -139,8 +139,8 @@ public class WorkspaceListPageResponseTest : TestBase
                     DataResidency = new()
                     {
                         AllowedInferenceGeos = new Unrestricted(),
-                        DefaultInferenceGeo = "default_inference_geo",
-                        WorkspaceGeo = "workspace_geo",
+                        DefaultInferenceGeo = DefaultInferenceGeo.Global,
+                        WorkspaceGeo = WorkspaceGeo.Us,
                     },
                     DisplayColor = "#6C5BB9",
                     ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -175,8 +175,8 @@ public class WorkspaceListPageResponseTest : TestBase
                 DataResidency = new()
                 {
                     AllowedInferenceGeos = new Unrestricted(),
-                    DefaultInferenceGeo = "default_inference_geo",
-                    WorkspaceGeo = "workspace_geo",
+                    DefaultInferenceGeo = DefaultInferenceGeo.Global,
+                    WorkspaceGeo = WorkspaceGeo.Us,
                 },
                 DisplayColor = "#6C5BB9",
                 ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -218,8 +218,8 @@ public class WorkspaceListPageResponseTest : TestBase
                     DataResidency = new()
                     {
                         AllowedInferenceGeos = new Unrestricted(),
-                        DefaultInferenceGeo = "default_inference_geo",
-                        WorkspaceGeo = "workspace_geo",
+                        DefaultInferenceGeo = DefaultInferenceGeo.Global,
+                        WorkspaceGeo = WorkspaceGeo.Us,
                     },
                     DisplayColor = "#6C5BB9",
                     ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -255,8 +255,8 @@ public class WorkspaceListPageResponseTest : TestBase
                     DataResidency = new()
                     {
                         AllowedInferenceGeos = new Unrestricted(),
-                        DefaultInferenceGeo = "default_inference_geo",
-                        WorkspaceGeo = "workspace_geo",
+                        DefaultInferenceGeo = DefaultInferenceGeo.Global,
+                        WorkspaceGeo = WorkspaceGeo.Us,
                     },
                     DisplayColor = "#6C5BB9",
                     ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",

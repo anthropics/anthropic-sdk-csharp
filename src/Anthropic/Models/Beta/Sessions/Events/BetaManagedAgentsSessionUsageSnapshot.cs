@@ -42,7 +42,7 @@ public sealed record class BetaManagedAgentsSessionUsageSnapshot : JsonModel
     }
 
     /// <summary>
-    /// Prompt-cache creation token usage broken down by cache lifetime.
+    /// Tokens used to create prompt cache entries, broken down by cache TTL.
     /// </summary>
     public BetaManagedAgentsCacheCreationUsage? CacheCreation
     {
@@ -107,7 +107,7 @@ public sealed record class BetaManagedAgentsSessionUsageSnapshot : JsonModel
     }
 
     /// <summary>
-    /// A monetary amount in a specific currency.
+    /// Cumulative list cost of the session across all turns, priced at public list rates.
     /// </summary>
     public BetaMonetaryAmount? ListCost
     {
@@ -149,7 +149,7 @@ public sealed record class BetaManagedAgentsSessionUsageSnapshot : JsonModel
     }
 
     /// <summary>
-    /// Cumulative count of server-executed tool invocations, broken down by tool.
+    /// Cumulative server-executed tool usage across all turns.
     /// </summary>
     public BetaManagedAgentsServerToolUsage? ServerToolUse
     {

@@ -11,7 +11,14 @@ namespace Anthropic.Models.Beta.DeploymentRuns;
 [JsonConverter(typeof(BetaManagedAgentsTriggerTypeConverter))]
 public enum BetaManagedAgentsTriggerType
 {
+    /// <summary>
+    /// The run was fired by the deployment's cron schedule.
+    /// </summary>
     Schedule,
+
+    /// <summary>
+    /// The run was started manually by creating a session directly against the deployment.
+    /// </summary>
     Manual,
 }
 

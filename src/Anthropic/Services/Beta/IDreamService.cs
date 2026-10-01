@@ -27,7 +27,17 @@ public interface IDreamService
     IDreamService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Create a Dream
+    /// Start an asynchronous job that uses past sessions to produce a reorganized
+    /// version of a memory store and get back the dream to poll for the result.
+    ///
+    /// <para>By default the dream writes its result to a new memory store and doesn't
+    /// change the input memory store. The response has `status` set to `pending` and an
+    /// empty `outputs` array. Poll the dream until `status` is `completed`, `failed`,
+    /// or `canceled`.</para>
+    ///
+    /// <para>See the [Dreams
+    /// guide](https://platform.claude.com/docs/en/managed-agents/dreams#create-a-dream)
+    /// to learn more about creating dreams.</para>
     /// </summary>
     Task<BetaDream> Create(
         DreamCreateParams parameters,
@@ -35,7 +45,13 @@ public interface IDreamService
     );
 
     /// <summary>
-    /// Get a Dream
+    /// Get a dream by ID to check its status, output memory store, and token usage.
+    ///
+    /// <para>Archived dreams are returned too.</para>
+    ///
+    /// <para>See the [Dreams
+    /// guide](https://platform.claude.com/docs/en/managed-agents/dreams#track-progress)
+    /// for how to poll a dream and what each status means.</para>
     /// </summary>
     Task<BetaDream> Retrieve(
         DreamRetrieveParams parameters,
@@ -50,7 +66,13 @@ public interface IDreamService
     );
 
     /// <summary>
-    /// List Dreams
+    /// List the dreams in the workspace, newest first.
+    ///
+    /// <para>Archived dreams are left out unless `include_archived` is `true`.</para>
+    ///
+    /// <para>See the [Dreams
+    /// guide](https://platform.claude.com/docs/en/managed-agents/dreams#list-dreams)
+    /// for how to page through dreams.</para>
     /// </summary>
     Task<DreamListPage> List(
         DreamListParams? parameters = null,
@@ -58,7 +80,16 @@ public interface IDreamService
     );
 
     /// <summary>
-    /// Archive a Dream
+    /// Hide a `completed`, `failed`, or `canceled` dream from the default list of
+    /// dreams.
+    ///
+    /// <para>Archiving a `pending` or `running` dream returns a 400 error, so cancel it
+    /// first. Archiving an archived dream returns it unchanged. An archived dream can
+    /// still be fetched by ID. Archiving can't be undone.</para>
+    ///
+    /// <para>See the [Dreams
+    /// guide](https://platform.claude.com/docs/en/managed-agents/dreams#archive-a-dream)
+    /// to learn more about archiving dreams.</para>
     /// </summary>
     Task<BetaDream> Archive(
         DreamArchiveParams parameters,
@@ -73,7 +104,16 @@ public interface IDreamService
     );
 
     /// <summary>
-    /// Cancel a Dream
+    /// Stop a `pending` or `running` dream.
+    ///
+    /// <para>The response shows `status` as `canceled`, unless the dream reached
+    /// `completed` or `failed` first. `usage` can keep changing after the response.
+    /// Canceling a `canceled` dream returns it unchanged. Canceling a `completed` or
+    /// `failed` dream returns a 400 error.</para>
+    ///
+    /// <para>See the [Dreams
+    /// guide](https://platform.claude.com/docs/en/managed-agents/dreams#cancel-a-dream)
+    /// to learn more about canceling dreams.</para>
     /// </summary>
     Task<BetaDream> Cancel(
         DreamCancelParams parameters,

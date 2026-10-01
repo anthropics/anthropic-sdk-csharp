@@ -34,7 +34,7 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEvent : JsonMode
     }
 
     /// <summary>
-    /// UserToolConfirmationResult enum
+    /// The confirmation result: 'allow' or 'deny'.
     /// </summary>
     public required ApiEnum<string, Result> Result
     {
@@ -88,7 +88,7 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEvent : JsonMode
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the confirmation was processed.
     /// </summary>
     public System::DateTimeOffset? ProcessedAt
     {
@@ -101,9 +101,8 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEvent : JsonMode
     }
 
     /// <summary>
-    /// When set, the confirmation routes to this subagent's thread rather than the
-    /// primary. Echo this from the `session_thread_id` on the `agent.tool_use` or
-    /// `agent.mcp_tool_use` event that prompted the approval.
+    /// Set by the server to the subagent thread this confirmation was routed to.
+    /// Omitted when it was routed to the primary thread.
     /// </summary>
     public string? SessionThreadID
     {
@@ -171,7 +170,7 @@ class BetaManagedAgentsUserToolConfirmationEventFromRaw
 }
 
 /// <summary>
-/// UserToolConfirmationResult enum
+/// The confirmation result: 'allow' or 'deny'.
 /// </summary>
 [JsonConverter(typeof(ResultConverter))]
 public enum Result

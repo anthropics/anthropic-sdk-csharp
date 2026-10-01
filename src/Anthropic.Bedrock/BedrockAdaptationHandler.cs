@@ -74,7 +74,13 @@ internal sealed class BedrockAdaptationHandler : DelegatingHandler
             )!;
 
             var betaVersions = requestMessage.Headers.Contains(HeaderAnthropicBeta)
-                ? requestMessage.Headers.GetValues(HeaderAnthropicBeta).Distinct().ToArray()
+                ? requestMessage
+                    .Headers.GetValues(HeaderAnthropicBeta)
+                    .SelectMany(v => v.Split(','))
+                    .Select(v => v.Trim())
+                    .Where(v => v.Length > 0)
+                    .Distinct()
+                    .ToArray()
                 : [];
             if (betaVersions is not { Length: 0 })
             {

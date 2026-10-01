@@ -7,9 +7,6 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-/// <summary>
-/// Response model for a file uploaded to the container.
-/// </summary>
 [JsonConverter(typeof(ContentBlockConverter))]
 public record class ContentBlock : ModelBase
 {

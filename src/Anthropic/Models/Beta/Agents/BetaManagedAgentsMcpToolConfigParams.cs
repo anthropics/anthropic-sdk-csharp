@@ -47,7 +47,7 @@ public sealed record class BetaManagedAgentsMcpToolConfigParams : JsonModel
     }
 
     /// <summary>
-    /// Permission policy for tool execution.
+    /// Permission policy for this tool. Overrides the `default_config` setting.
     /// </summary>
     public BetaManagedAgentsMcpToolConfigParamsPermissionPolicy? PermissionPolicy
     {
@@ -118,7 +118,7 @@ class BetaManagedAgentsMcpToolConfigParamsFromRaw
 }
 
 /// <summary>
-/// Permission policy for tool execution.
+/// Permission policy for this tool. Overrides the `default_config` setting.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsMcpToolConfigParamsPermissionPolicyConverter))]
 public record class BetaManagedAgentsMcpToolConfigParamsPermissionPolicy : ModelBase

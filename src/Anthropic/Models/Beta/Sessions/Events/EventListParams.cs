@@ -111,9 +111,6 @@ public record class EventListParams : ParamsBase
         }
     }
 
-    /// <summary>
-    /// Query parameter for limit
-    /// </summary>
     public int? Limit
     {
         get
@@ -179,12 +176,14 @@ public record class EventListParams : ParamsBase
     /// Filter by event type. Values match the `type` field on returned events (for
     /// example, `user.message` or `agent.tool_use`). Omit to return all event types.
     /// </summary>
-    public IReadOnlyList<string>? Types
+    public IReadOnlyList<ApiEnum<string, BetaManagedAgentsSessionEventType>>? Types
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableStruct<ImmutableArray<string>>("types");
+            return this._rawQueryData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaManagedAgentsSessionEventType>>
+            >("types");
         }
         init
         {
@@ -193,10 +192,9 @@ public record class EventListParams : ParamsBase
                 return;
             }
 
-            this._rawQueryData.Set<ImmutableArray<string>?>(
-                "types",
-                value == null ? null : ImmutableArray.ToImmutableArray(value)
-            );
+            this._rawQueryData.Set<ImmutableArray<
+                ApiEnum<string, BetaManagedAgentsSessionEventType>
+            >?>("types", value == null ? null : ImmutableArray.ToImmutableArray(value));
         }
     }
 
@@ -226,6 +224,14 @@ public record class EventListParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get

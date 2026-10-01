@@ -10,15 +10,22 @@ using System = System;
 namespace Anthropic.Models.Beta.Dreams;
 
 /// <summary>
-/// An input memory store the dream reads from. The dream never mutates this store
-/// unless it is also the destination: with output_behavior {type: "update_existing"}
-/// the job consolidates this store in place.
+/// The memory store that a dream reads, given as an entry in `inputs`.
+///
+/// <para>With `output_behavior` set to `update_existing`, the dream writes its result
+/// into this memory store. Otherwise the dream doesn't change it.</para>
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaDreamMemoryStoreInput, BetaDreamMemoryStoreInputFromRaw>)
 )]
 public sealed record class BetaDreamMemoryStoreInput : JsonModel
 {
+    /// <summary>
+    /// The ID of the memory store for the dream to read (`memstore_...`).
+    ///
+    /// <para>The memory store must be in the same workspace as the dream and must
+    /// not be archived.</para>
+    /// </summary>
     public required string MemoryStoreID
     {
         get

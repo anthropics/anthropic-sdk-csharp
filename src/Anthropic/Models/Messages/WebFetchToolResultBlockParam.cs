@@ -57,9 +57,6 @@ public sealed record class WebFetchToolResultBlockParam : JsonModel
         init { this._rawData.Set("cache_control", value); }
     }
 
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public WebFetchToolResultBlockParamCaller? Caller
     {
         get
@@ -425,9 +422,6 @@ sealed class WebFetchToolResultBlockParamContentConverter
     }
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(WebFetchToolResultBlockParamCallerConverter))]
 public record class WebFetchToolResultBlockParamCaller : ModelBase
 {

@@ -34,7 +34,7 @@ public sealed record class BetaManagedAgentsAgentThreadContextCompactedEvent : J
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when compaction was processed.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {

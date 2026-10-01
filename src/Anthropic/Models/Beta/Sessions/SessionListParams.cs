@@ -326,6 +326,14 @@ public record class SessionListParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -479,15 +487,28 @@ sealed class OrderConverter : JsonConverter<Order>
     }
 }
 
-/// <summary>
-/// SessionStatus enum
-/// </summary>
 [JsonConverter(typeof(StatusConverter))]
 public enum Status
 {
+    /// <summary>
+    /// Transient error occurred, retrying automatically.
+    /// </summary>
     Rescheduling,
+
+    /// <summary>
+    /// Agent is actively executing.
+    /// </summary>
     Running,
+
+    /// <summary>
+    /// Agent is waiting for input, including user messages or tool confirmations.
+    /// Sessions start in idle.
+    /// </summary>
     Idle,
+
+    /// <summary>
+    /// Session has ended, either due to an error or completion.
+    /// </summary>
     Terminated,
 }
 

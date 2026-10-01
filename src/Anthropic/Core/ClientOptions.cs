@@ -163,6 +163,7 @@ public record struct ClientOptions
     /// Only the following error types are retried:
     /// <list type="bullet">
     ///   <item>Connection errors (for example, due to a network connectivity problem)</item>
+    ///   <item>Request timeouts (see <see cref="Timeout"/>)</item>
     ///   <item>408 Request Timeout</item>
     ///   <item>409 Conflict</item>
     ///   <item>429 Rate Limit</item>
@@ -171,6 +172,10 @@ public record struct ClientOptions
     /// </para>
     ///
     /// <para>The API may also explicitly instruct the SDK to retry or not retry a request.</para>
+    ///
+    /// <para>A request that uploads a file from a <c>Stream</c> is sent once and not retried, because the first
+    /// attempt consumes the stream; an upload whose files were given as byte arrays is retried like any other
+    /// request.</para>
     ///
     /// <para>Defaults to 2 when null. Set to 0 to
     /// disable retries, which also ignores API instructions to retry.</para>
@@ -182,6 +187,10 @@ public record struct ClientOptions
     ///
     /// <para>This includes resolving DNS, connecting, writing the request body, server processing, as
     /// well as reading the response body.</para>
+    ///
+    /// <para>An attempt that exceeds this timeout is retried like a connection error (see
+    /// <see cref="MaxRetries"/>); once retries are exhausted a
+    /// <see cref="TaskCanceledException"/> wrapping a <see cref="TimeoutException"/> is thrown.</para>
     ///
     /// <para>Defaults to <c>TimeSpan.FromMinutes(10)</c> when null.</para>
     /// </summary>

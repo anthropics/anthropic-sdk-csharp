@@ -44,9 +44,6 @@ public sealed record class BetaWebSearchToolResultBlock : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public BetaWebSearchToolResultBlockCaller? Caller
     {
         get
@@ -125,9 +122,6 @@ class BetaWebSearchToolResultBlockFromRaw : IFromRawJson<BetaWebSearchToolResult
     ) => BetaWebSearchToolResultBlock.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(BetaWebSearchToolResultBlockCallerConverter))]
 public record class BetaWebSearchToolResultBlockCaller : ModelBase
 {

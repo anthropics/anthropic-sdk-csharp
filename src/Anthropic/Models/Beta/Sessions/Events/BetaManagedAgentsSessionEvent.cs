@@ -313,6 +313,54 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
         }
     }
 
+    public ApiEnum<string, BetaManagedAgentsAgentEvaluatedPermission>? EvaluatedPermission
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEvent _ => null,
+                BetaManagedAgentsUserInterruptEvent _ => null,
+                BetaManagedAgentsUserToolConfirmationEvent _ => null,
+                BetaManagedAgentsUserCustomToolResultEvent _ => null,
+                BetaManagedAgentsAgentCustomToolUseEvent _ => null,
+                BetaManagedAgentsAgentMessageEvent _ => null,
+                BetaManagedAgentsAgentThinkingEvent _ => null,
+                BetaManagedAgentsAgentMcpToolUseEvent x => x.EvaluatedPermission,
+                BetaManagedAgentsAgentMcpToolResultEvent _ => null,
+                BetaManagedAgentsAgentToolUseEvent x => x.EvaluatedPermission,
+                BetaManagedAgentsAgentToolResultEvent _ => null,
+                BetaManagedAgentsAgentThreadMessageReceivedEvent _ => null,
+                BetaManagedAgentsAgentThreadMessageSentEvent _ => null,
+                BetaManagedAgentsAgentThreadContextCompactedEvent _ => null,
+                BetaManagedAgentsSessionErrorEvent _ => null,
+                BetaManagedAgentsSessionStatusRescheduledEvent _ => null,
+                BetaManagedAgentsSessionStatusRunningEvent _ => null,
+                BetaManagedAgentsSessionStatusIdleEvent _ => null,
+                BetaManagedAgentsSessionStatusTerminatedEvent _ => null,
+                BetaManagedAgentsSessionThreadCreatedEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationStartEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationEndEvent _ => null,
+                BetaManagedAgentsSpanModelRequestStartEvent _ => null,
+                BetaManagedAgentsSpanModelRequestEndEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent _ => null,
+                BetaManagedAgentsUserDefineOutcomeEvent _ => null,
+                BetaManagedAgentsSessionDeletedEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusRunningEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusIdleEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusTerminatedEvent _ => null,
+                BetaManagedAgentsUserToolResultEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusRescheduledEvent _ => null,
+                BetaManagedAgentsSessionUpdatedEvent _ => null,
+                BetaManagedAgentsSystemMessageEvent _ => null,
+                BetaManagedAgentsSessionUsageEvent _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<
+                    ApiEnum<string, BetaManagedAgentsAgentEvaluatedPermission>
+                >(this.Json, "evaluated_permission"),
+            };
+        }
+    }
+
     public BetaManagedAgentsAgentToolEvaluation? Evaluation
     {
         get
@@ -358,6 +406,56 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
                     WrappedJsonSerializer.GetNullableClassProperty<BetaManagedAgentsAgentToolEvaluation>(
                         this.Json,
                         "evaluation"
+                    ),
+            };
+        }
+    }
+
+    public BetaManagedAgentsSessionRefusalStopDetails? StopDetails
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEvent _ => null,
+                BetaManagedAgentsUserInterruptEvent _ => null,
+                BetaManagedAgentsUserToolConfirmationEvent _ => null,
+                BetaManagedAgentsUserCustomToolResultEvent _ => null,
+                BetaManagedAgentsAgentCustomToolUseEvent _ => null,
+                BetaManagedAgentsAgentMessageEvent _ => null,
+                BetaManagedAgentsAgentThinkingEvent _ => null,
+                BetaManagedAgentsAgentMcpToolUseEvent _ => null,
+                BetaManagedAgentsAgentMcpToolResultEvent _ => null,
+                BetaManagedAgentsAgentToolUseEvent _ => null,
+                BetaManagedAgentsAgentToolResultEvent _ => null,
+                BetaManagedAgentsAgentThreadMessageReceivedEvent _ => null,
+                BetaManagedAgentsAgentThreadMessageSentEvent _ => null,
+                BetaManagedAgentsAgentThreadContextCompactedEvent _ => null,
+                BetaManagedAgentsSessionErrorEvent _ => null,
+                BetaManagedAgentsSessionStatusRescheduledEvent _ => null,
+                BetaManagedAgentsSessionStatusRunningEvent _ => null,
+                BetaManagedAgentsSessionStatusIdleEvent x => x.StopDetails,
+                BetaManagedAgentsSessionStatusTerminatedEvent _ => null,
+                BetaManagedAgentsSessionThreadCreatedEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationStartEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationEndEvent _ => null,
+                BetaManagedAgentsSpanModelRequestStartEvent _ => null,
+                BetaManagedAgentsSpanModelRequestEndEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent _ => null,
+                BetaManagedAgentsUserDefineOutcomeEvent _ => null,
+                BetaManagedAgentsSessionDeletedEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusRunningEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusIdleEvent x => x.StopDetails,
+                BetaManagedAgentsSessionThreadStatusTerminatedEvent _ => null,
+                BetaManagedAgentsUserToolResultEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusRescheduledEvent _ => null,
+                BetaManagedAgentsSessionUpdatedEvent _ => null,
+                BetaManagedAgentsSystemMessageEvent _ => null,
+                BetaManagedAgentsSessionUsageEvent _ => null,
+                _ =>
+                    WrappedJsonSerializer.GetNullableClassProperty<BetaManagedAgentsSessionRefusalStopDetails>(
+                        this.Json,
+                        "stop_details"
                     ),
             };
         }

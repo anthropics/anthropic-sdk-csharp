@@ -50,7 +50,7 @@ public sealed class SessionListPage(
     {
         try
         {
-            return this.Items.Count > 0 && response.NextPage != null;
+            return response.NextPage != null;
         }
         catch (AnthropicInvalidDataException)
         {

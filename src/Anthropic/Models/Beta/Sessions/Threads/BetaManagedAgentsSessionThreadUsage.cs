@@ -42,7 +42,7 @@ public sealed record class BetaManagedAgentsSessionThreadUsage : JsonModel
     }
 
     /// <summary>
-    /// Prompt-cache creation token usage broken down by cache lifetime.
+    /// Tokens used to create prompt cache entries, broken down by cache TTL.
     /// </summary>
     public BetaManagedAgentsCacheCreationUsage? CacheCreation
     {
@@ -107,7 +107,12 @@ public sealed record class BetaManagedAgentsSessionThreadUsage : JsonModel
     }
 
     /// <summary>
-    /// A monetary amount in a specific currency.
+    /// Cumulative list cost of this thread across all turns, priced at public list
+    /// rates. Absent until cost tracking is available for the thread. Each figure
+    /// is rounded to the nearest cent independently and the session's aggregate
+    /// `usage.list_cost` additionally includes session runtime, so per-thread costs
+    /// do not sum exactly to the session figure; the session figure is authoritative
+    /// and is what a budget is enforced against.
     /// </summary>
     public BetaMonetaryAmount? ListCost
     {
@@ -141,7 +146,8 @@ public sealed record class BetaManagedAgentsSessionThreadUsage : JsonModel
     }
 
     /// <summary>
-    /// Cumulative count of server-executed tool invocations, broken down by tool.
+    /// Cumulative server-executed tool usage across all turns of this thread. Absent
+    /// until server-tool tracking is available for the thread.
     /// </summary>
     public BetaManagedAgentsServerToolUsage? ServerToolUse
     {

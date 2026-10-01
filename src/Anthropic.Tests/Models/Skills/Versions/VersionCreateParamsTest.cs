@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using Anthropic.Core;
@@ -99,6 +100,39 @@ public class VersionCreateParamsTest : TestBase
             ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
             requestMessage.Headers.GetValues("anthropic-workspace-id")
         );
+    }
+
+    [Fact]
+    public void IsBodyRepeatable_Works()
+    {
+        BinaryContent files = Encoding.UTF8.GetBytes("Example data");
+
+        var parameters = new VersionCreateParams
+        {
+            SkillID = "skill_id",
+            Files = [files],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
+
+        Assert.True(parameters.IsBodyRepeatable());
+    }
+
+    [Fact]
+    public void IsBodyRepeatableFromStream_Works()
+    {
+        BinaryContent files = new BinaryContent
+        {
+            Stream = new MemoryStream(Encoding.UTF8.GetBytes("Example data")),
+        };
+
+        var parameters = new VersionCreateParams
+        {
+            SkillID = "skill_id",
+            Files = [files],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
+
+        Assert.False(parameters.IsBodyRepeatable());
     }
 
     [Fact]

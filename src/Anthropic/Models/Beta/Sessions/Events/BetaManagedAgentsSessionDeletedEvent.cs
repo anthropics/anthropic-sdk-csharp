@@ -35,7 +35,7 @@ public sealed record class BetaManagedAgentsSessionDeletedEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the session was deleted.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {

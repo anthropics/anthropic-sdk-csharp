@@ -10,8 +10,8 @@ using System = System;
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
 /// <summary>
-/// Attribution for a write made by an agent during a session, through the mounted
-/// filesystem at `/mnt/memory/`.
+/// An agent acting during a session, for example through the session's mounted filesystem.
+/// It names the session itself, not the user or API key that started the session.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaManagedAgentsSessionActor, BetaManagedAgentsSessionActorFromRaw>)
@@ -19,8 +19,8 @@ namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 public sealed record class BetaManagedAgentsSessionActor : JsonModel
 {
     /// <summary>
-    /// ID of the session that performed the write (a `sesn_...` value). Look up the
-    /// session via [Retrieve a session](/en/api/beta/sessions/retrieve) for further provenance.
+    /// ID of the session (a `sesn_...` value). Look up the session via [Retrieve
+    /// a session](/en/api/beta/sessions/retrieve) for further provenance.
     /// </summary>
     public required string SessionID
     {

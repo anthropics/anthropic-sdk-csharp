@@ -72,7 +72,7 @@ public sealed record class BetaManagedAgentsMcpOAuthCreateParams : JsonModel
     }
 
     /// <summary>
-    /// OAuth refresh token parameters for creating a credential with refresh support.
+    /// Refresh token configuration, if the credential supports token refresh.
     /// </summary>
     public BetaManagedAgentsMcpOAuthRefreshParams? Refresh
     {

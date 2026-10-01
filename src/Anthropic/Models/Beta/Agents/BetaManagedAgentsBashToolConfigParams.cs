@@ -47,7 +47,8 @@ public sealed record class BetaManagedAgentsBashToolConfigParams : JsonModel
     }
 
     /// <summary>
-    /// Permission policy for tool execution.
+    /// Permission policy for this tool. Controls whether tool calls are auto-approved
+    /// or require confirmation.
     /// </summary>
     public BetaManagedAgentsBashToolConfigParamsPermissionPolicy? PermissionPolicy
     {
@@ -140,7 +141,8 @@ class BetaManagedAgentsBashToolConfigParamsFromRaw
 }
 
 /// <summary>
-/// Permission policy for tool execution.
+/// Permission policy for this tool. Controls whether tool calls are auto-approved
+/// or require confirmation.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsBashToolConfigParamsPermissionPolicyConverter))]
 public record class BetaManagedAgentsBashToolConfigParamsPermissionPolicy : ModelBase

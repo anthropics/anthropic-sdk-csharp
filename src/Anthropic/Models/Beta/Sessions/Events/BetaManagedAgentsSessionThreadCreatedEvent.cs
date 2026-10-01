@@ -48,7 +48,7 @@ public sealed record class BetaManagedAgentsSessionThreadCreatedEvent : JsonMode
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the thread was created.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {

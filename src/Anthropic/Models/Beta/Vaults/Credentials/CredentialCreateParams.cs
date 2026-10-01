@@ -31,7 +31,7 @@ public record class CredentialCreateParams : ParamsBase
     public string? VaultID { get; init; }
 
     /// <summary>
-    /// Authentication details for creating a credential.
+    /// Authentication configuration for the credential.
     /// </summary>
     public required Auth Auth
     {
@@ -107,6 +107,14 @@ public record class CredentialCreateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -252,7 +260,7 @@ public record class CredentialCreateParams : ParamsBase
 }
 
 /// <summary>
-/// Authentication details for creating a credential.
+/// Authentication configuration for the credential.
 /// </summary>
 [JsonConverter(typeof(AuthConverter))]
 public record class Auth : ModelBase

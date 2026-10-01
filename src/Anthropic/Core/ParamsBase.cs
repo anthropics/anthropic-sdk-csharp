@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -232,6 +233,12 @@ public abstract record class ParamsBase
         return null;
     }
 
+    /// <summary>
+    /// Whether <see cref="BodyContent"/> can produce the body again for a retry; when false the request is
+    /// sent once. A multipart body with a part that reads from a caller's stream can't: the first attempt consumes it.
+    /// </summary>
+    internal virtual bool IsBodyRepeatable() => true;
+
     internal static void AddDefaultHeaders(HttpRequestMessage request, ClientOptions options)
     {
         foreach (var header in defaultHeaders)
@@ -249,7 +256,9 @@ public abstract record class ParamsBase
         }
         request.Headers.Add(
             "X-Stainless-Timeout",
-            (options.Timeout ?? ClientOptions.DefaultTimeout).TotalSeconds.ToString()
+            (options.Timeout ?? ClientOptions.DefaultTimeout).TotalSeconds.ToString(
+                CultureInfo.InvariantCulture
+            )
         );
     }
 

@@ -254,13 +254,26 @@ public static class AnthropicClientExtensions
         "minItems",
     };
 
+    /// <summary>Gets the properties supported for schemas of the given JSON Schema type.</summary>
+    private static HashSet<string> GetSupportedSchemaProperties(string? type) =>
+        type switch
+        {
+            "object" => s_supportedObjectSchemaProperties,
+            "string" => s_supportedStringSchemaProperties,
+            "array" => s_supportedArraySchemaProperties,
+            _ => s_supportedBaseSchemaProperties,
+        };
+
     /// <summary>
     /// Gets a shared cache for JSON schema transformations for Anthropic's structured output features.
     /// </summary>
     /// <remarks>
     /// Transforms schemas using the same whitelist approach as the TypeScript and Python SDKs:
     /// unsupported constraints are removed and appended to the description so the model
-    /// might still follow them. See:
+    /// might still follow them. Union types diverge deliberately: those SDKs compare
+    /// <c>type</c> against a single string, so a type array matches no branch (TypeScript
+    /// strips its keywords, Python raises). Here a type array keeps the keywords of every
+    /// member it names. See:
     /// <list type="bullet">
     /// <item><see href="https://github.com/anthropics/anthropic-sdk-typescript/blob/main/src/lib/transform-json-schema.ts"/></item>
     /// <item><see href="https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/lib/_parse/_transform.py"/></item>
@@ -289,50 +302,90 @@ public static class AnthropicClientExtensions
                         schemaObj["anyOf"] = oneOfNode;
                     }
 
-                    // Determine the schema type for type-specific handling.
+                    // Determine the schema type(s) for type-specific handling. A union type
+                    // ("type": ["string","null"], the shape System.Text.Json emits for
+                    // Nullable<T> and for a nullable reference type) is a JSON array rather
+                    // than a string, and carries the keywords of every member it names.
+                    schemaObj.TryGetPropertyValue("type", out JsonNode? typeNode);
                     string? type =
-                        schemaObj.TryGetPropertyValue("type", out JsonNode? typeNode)
-                        && typeNode is JsonValue
-                            ? typeNode.GetValue<string>()
+                        typeNode is JsonValue typeValue
+                        && typeValue.TryGetValue(out string? typeName)
+                            ? typeName
                             : null;
+                    HashSet<string>? unionTypes = null;
+                    if (type is null && typeNode is JsonArray typeArray)
+                    {
+                        unionTypes = new(StringComparer.Ordinal);
+                        foreach (JsonNode? typeMember in typeArray)
+                        {
+                            if (
+                                typeMember is JsonValue memberValue
+                                && memberValue.TryGetValue(out string? memberName)
+                            )
+                            {
+                                unionTypes.Add(memberName);
+                            }
+                        }
+                    }
+
+                    bool HasType(string candidate) =>
+                        unionTypes is null ? type == candidate : unionTypes.Contains(candidate);
 
                     List<KeyValuePair<string, string>>? removed = null;
 
-                    // String format: only supported formats are kept.
+                    // String format: only supported formats are kept. A value that is not a
+                    // supported format string -- including a non-string one -- is removed too,
+                    // rather than being read as a string or reaching the wire unvalidated.
                     if (
-                        type == "string"
+                        HasType("string")
                         && schemaObj.TryGetPropertyValue("format", out JsonNode? formatNode)
-                        && formatNode?.GetValue<string>() is string format
-                        && !s_supportedStringFormats.Contains(format)
+                        && !(
+                            formatNode is JsonValue formatValue
+                            && formatValue.TryGetValue(out string? format)
+                            && s_supportedStringFormats.Contains(format)
+                        )
                     )
                     {
-                        string serialized = formatNode!.ToJsonString(s_relaxedJsonOptions);
+                        string serialized =
+                            formatNode?.ToJsonString(s_relaxedJsonOptions) ?? "null";
                         schemaObj.Remove("format");
                         (removed ??= []).Add(new("format", serialized));
                     }
 
-                    // Array minItems: only 0 and 1 are directly supported.
+                    // Array minItems: only 0 and 1 are directly supported. A value outside that
+                    // range -- or one that is not an integer at all -- is removed.
                     if (
-                        type == "array"
+                        HasType("array")
                         && schemaObj.TryGetPropertyValue("minItems", out JsonNode? minItemsNode)
-                        && minItemsNode is JsonValue minItemsJsonValue
-                        && minItemsJsonValue.TryGetValue(out int minItems)
-                        && minItems is not (0 or 1)
+                        && !(
+                            minItemsNode is JsonValue minItemsValue
+                            && minItemsValue.TryGetValue(out int minItems)
+                            && minItems is 0 or 1
+                        )
                     )
                     {
-                        string serialized = minItemsNode.ToJsonString(s_relaxedJsonOptions);
+                        string serialized =
+                            minItemsNode?.ToJsonString(s_relaxedJsonOptions) ?? "null";
                         schemaObj.Remove("minItems");
                         (removed ??= []).Add(new("minItems", serialized));
                     }
 
                     // Remove all properties not in the supported set for this schema type.
-                    HashSet<string> supported = type switch
+                    // A union type is supported by the union of its members' sets, so
+                    // ["string","null"] keeps "format" exactly as "string" does.
+                    HashSet<string> supported;
+                    if (unionTypes is null)
                     {
-                        "object" => s_supportedObjectSchemaProperties,
-                        "string" => s_supportedStringSchemaProperties,
-                        "array" => s_supportedArraySchemaProperties,
-                        _ => s_supportedBaseSchemaProperties,
-                    };
+                        supported = GetSupportedSchemaProperties(type);
+                    }
+                    else
+                    {
+                        supported = new(s_supportedBaseSchemaProperties, StringComparer.Ordinal);
+                        foreach (string memberType in unionTypes)
+                        {
+                            supported.UnionWith(GetSupportedSchemaProperties(memberType));
+                        }
+                    }
 
                     foreach (KeyValuePair<string, JsonNode?> prop in schemaObj.ToArray())
                     {
@@ -1659,6 +1712,14 @@ public static class AnthropicClientExtensions
                                 DisableParallelToolUse = !options.AllowMultipleToolCalls,
                             }
                         : toolMode is NoneChatToolMode ? new ToolChoiceNone()
+                        // RequiredChatToolMode covers both "any tool" and "this tool";
+                        // only RequiredFunctionName tells the two apart.
+                        : toolMode is RequiredChatToolMode { RequiredFunctionName: { } name }
+                            ? new ToolChoiceTool()
+                            {
+                                Name = name,
+                                DisableParallelToolUse = !options.AllowMultipleToolCalls,
+                            }
                         : toolMode is RequiredChatToolMode
                             ? new ToolChoiceAny()
                             {

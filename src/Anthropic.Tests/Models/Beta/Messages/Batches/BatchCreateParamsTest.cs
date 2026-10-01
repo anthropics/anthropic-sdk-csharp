@@ -41,6 +41,7 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         Model = ModelsMessages::Model.ClaudeOpus5,
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Compaction = new() { Instructions = "instructions" },
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -207,6 +208,7 @@ public class BatchCreateParamsTest : TestBase
                     ],
                     Model = ModelsMessages::Model.ClaudeOpus5,
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    Compaction = new() { Instructions = "instructions" },
                     Container = new Messages::BetaContainerParams()
                     {
                         ID = "id",
@@ -391,6 +393,7 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         Model = ModelsMessages::Model.ClaudeOpus5,
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Compaction = new() { Instructions = "instructions" },
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -567,6 +570,7 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         Model = ModelsMessages::Model.ClaudeOpus5,
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Compaction = new() { Instructions = "instructions" },
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -748,6 +752,7 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         Model = ModelsMessages::Model.ClaudeOpus5,
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Compaction = new() { Instructions = "instructions" },
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -927,6 +932,7 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         Model = ModelsMessages::Model.ClaudeOpus5,
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Compaction = new() { Instructions = "instructions" },
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -1114,6 +1120,7 @@ public class BatchCreateParamsTest : TestBase
                         ],
                         Model = ModelsMessages::Model.ClaudeOpus5,
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Compaction = new() { Instructions = "instructions" },
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -1289,6 +1296,7 @@ public class RequestTest : TestBase
                 ],
                 Model = ModelsMessages::Model.ClaudeOpus5,
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                Compaction = new() { Instructions = "instructions" },
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -1438,6 +1446,7 @@ public class RequestTest : TestBase
             ],
             Model = ModelsMessages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1595,6 +1604,7 @@ public class RequestTest : TestBase
                 ],
                 Model = ModelsMessages::Model.ClaudeOpus5,
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                Compaction = new() { Instructions = "instructions" },
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -1755,6 +1765,7 @@ public class RequestTest : TestBase
                 ],
                 Model = ModelsMessages::Model.ClaudeOpus5,
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                Compaction = new() { Instructions = "instructions" },
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -1911,6 +1922,7 @@ public class RequestTest : TestBase
             ],
             Model = ModelsMessages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2068,6 +2080,7 @@ public class RequestTest : TestBase
                 ],
                 Model = ModelsMessages::Model.ClaudeOpus5,
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                Compaction = new() { Instructions = "instructions" },
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -2225,6 +2238,7 @@ public class RequestTest : TestBase
                 ],
                 Model = ModelsMessages::Model.ClaudeOpus5,
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                Compaction = new() { Instructions = "instructions" },
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -2384,6 +2398,7 @@ public class ParamsTest : TestBase
             ],
             Model = ModelsMessages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2529,6 +2544,7 @@ public class ParamsTest : TestBase
         {
             Ttl = Messages::Ttl.Ttl5m,
         };
+        Messages::BetaCompactionConfig expectedCompaction = new() { Instructions = "instructions" };
         Container expectedContainer = new Messages::BetaContainerParams()
         {
             ID = "id",
@@ -2675,6 +2691,7 @@ public class ParamsTest : TestBase
         }
         Assert.Equal(expectedModel, model.Model);
         Assert.Equal(expectedCacheControl, model.CacheControl);
+        Assert.Equal(expectedCompaction, model.Compaction);
         Assert.Equal(expectedContainer, model.Container);
         Assert.Equal(expectedContextManagement, model.ContextManagement);
         Assert.Equal(expectedDiagnostics, model.Diagnostics);
@@ -2734,6 +2751,7 @@ public class ParamsTest : TestBase
             ],
             Model = ModelsMessages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2890,6 +2908,7 @@ public class ParamsTest : TestBase
             ],
             Model = ModelsMessages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -3039,6 +3058,7 @@ public class ParamsTest : TestBase
         {
             Ttl = Messages::Ttl.Ttl5m,
         };
+        Messages::BetaCompactionConfig expectedCompaction = new() { Instructions = "instructions" };
         Container expectedContainer = new Messages::BetaContainerParams()
         {
             ID = "id",
@@ -3185,6 +3205,7 @@ public class ParamsTest : TestBase
         }
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
+        Assert.Equal(expectedCompaction, deserialized.Compaction);
         Assert.Equal(expectedContainer, deserialized.Container);
         Assert.Equal(expectedContextManagement, deserialized.ContextManagement);
         Assert.Equal(expectedDiagnostics, deserialized.Diagnostics);
@@ -3244,6 +3265,7 @@ public class ParamsTest : TestBase
             ],
             Model = ModelsMessages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -3397,6 +3419,7 @@ public class ParamsTest : TestBase
             ],
             Model = ModelsMessages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -3487,6 +3510,7 @@ public class ParamsTest : TestBase
             ],
             Model = ModelsMessages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -3552,6 +3576,7 @@ public class ParamsTest : TestBase
             ],
             Model = ModelsMessages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -3657,6 +3682,7 @@ public class ParamsTest : TestBase
             ],
             Model = ModelsMessages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -3828,6 +3854,8 @@ public class ParamsTest : TestBase
 
         Assert.Null(model.CacheControl);
         Assert.False(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.Compaction);
+        Assert.False(model.RawData.ContainsKey("compaction"));
         Assert.Null(model.Container);
         Assert.False(model.RawData.ContainsKey("container"));
         Assert.Null(model.ContextManagement);
@@ -4069,6 +4097,7 @@ public class ParamsTest : TestBase
             TopP = 0.7,
 
             CacheControl = null,
+            Compaction = null,
             Container = null,
             ContextManagement = null,
             Diagnostics = null,
@@ -4081,6 +4110,8 @@ public class ParamsTest : TestBase
 
         Assert.Null(model.CacheControl);
         Assert.True(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.Compaction);
+        Assert.True(model.RawData.ContainsKey("compaction"));
         Assert.Null(model.Container);
         Assert.True(model.RawData.ContainsKey("container"));
         Assert.Null(model.ContextManagement);
@@ -4209,6 +4240,7 @@ public class ParamsTest : TestBase
             TopP = 0.7,
 
             CacheControl = null,
+            Compaction = null,
             Container = null,
             ContextManagement = null,
             Diagnostics = null,
@@ -4243,6 +4275,7 @@ public class ParamsTest : TestBase
             ],
             Model = ModelsMessages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",

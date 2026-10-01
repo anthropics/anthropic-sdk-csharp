@@ -23,7 +23,7 @@ public record class MemoryVersionListParams : ParamsBase
     public string? MemoryStoreID { get; init; }
 
     /// <summary>
-    /// Query parameter for api_key_id
+    /// Return only versions written with the API key that has this ID.
     /// </summary>
     public string? ApiKeyID
     {
@@ -86,7 +86,7 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for limit
+    /// The maximum number of versions to return per page. Defaults to 20.
     /// </summary>
     public int? Limit
     {
@@ -107,7 +107,10 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for memory_id
+    /// Return only versions of the memory with this ID (`mem_...`).
+    ///
+    /// <para>The filter still works after the memory is deleted. The results then
+    /// include the version whose `operation` is `deleted`.</para>
     /// </summary>
     public string? MemoryID
     {
@@ -128,7 +131,7 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for operation
+    /// Return only versions that record this kind of change.
     /// </summary>
     public ApiEnum<string, BetaManagedAgentsMemoryVersionOperation>? Operation
     {
@@ -151,7 +154,8 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for page
+    /// The `next_page` value from a previous response, to get the next page. Omit
+    /// it to get the first page.
     /// </summary>
     public string? Page
     {
@@ -172,7 +176,7 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for service_account_id
+    /// Return only versions written by the service account with this ID (`svac_...`).
     /// </summary>
     public string? ServiceAccountID
     {
@@ -193,7 +197,7 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for session_id
+    /// Return only versions written by the session with this ID.
     /// </summary>
     public string? SessionID
     {
@@ -214,7 +218,11 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for view
+    /// Selects which projection of a `memory` or `memory_version` the server returns.
+    /// `basic` returns the object with `content` set to `null`; `full` populates
+    /// `content`. When omitted, the default is endpoint-specific: retrieve operations
+    /// default to `full`; list, create, and update operations default to `basic`.
+    /// Listing with `view=full` caps `limit` at 20.
     /// </summary>
     public ApiEnum<string, BetaManagedAgentsMemoryView>? View
     {
@@ -262,6 +270,14 @@ public record class MemoryVersionListParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get

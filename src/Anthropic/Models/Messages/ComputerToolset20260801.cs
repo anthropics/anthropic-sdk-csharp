@@ -43,11 +43,8 @@ public sealed record class ComputerToolset20260801 : JsonModel
     }
 
     /// <summary>
-    /// Per-member configuration for ``computer_toolset_20260801``: one optional
-    /// field per member tool, keyed by the member name — the same name the member's
-    /// ``tool_use`` blocks carry. Every member is an accepted key, and a member's
-    /// defaults apply wherever its key is absent. Unknown keys are rejected: the
-    /// field set is this toolset version's complete member set.
+    /// Sparse per-member overrides, keyed by member name. Absent, null, and {} are
+    /// equivalent; a member's defaults apply wherever its key is absent.
     /// </summary>
     public ComputerToolsetConfigs? Configs
     {

@@ -61,6 +61,14 @@ public record class SkillCreateParams : ParamsBase
         init { this._rawBodyData.Set("display_name", value); }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -169,6 +177,9 @@ public record class SkillCreateParams : ParamsBase
     {
         return MultipartJsonSerializer.Serialize(RawBodyData);
     }
+
+    internal override bool IsBodyRepeatable() =>
+        MultipartJsonSerializer.IsRepeatable(this.RawBodyData);
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

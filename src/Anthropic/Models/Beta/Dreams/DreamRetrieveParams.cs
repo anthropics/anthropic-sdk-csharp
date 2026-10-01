@@ -11,7 +11,12 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.Dreams;
 
 /// <summary>
-/// Get a Dream
+/// Get a dream by ID to check its status, output memory store, and token usage.
+///
+/// <para>Archived dreams are returned too.</para>
+///
+/// <para>See the [Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#track-progress)
+/// for how to poll a dream and what each status means.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -47,6 +52,14 @@ public record class DreamRetrieveParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get

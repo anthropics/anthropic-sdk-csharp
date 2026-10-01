@@ -48,7 +48,7 @@ public sealed record class BetaManagedAgentsCredentialHostUnreachableError : Jso
     }
 
     /// <summary>
-    /// What the client should do next in response to this error.
+    /// What the client should do next.
     /// </summary>
     public required BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus RetryStatus
     {
@@ -141,7 +141,7 @@ class BetaManagedAgentsCredentialHostUnreachableErrorFromRaw
 }
 
 /// <summary>
-/// What the client should do next in response to this error.
+/// What the client should do next.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusConverter))]
 public record class BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus : ModelBase

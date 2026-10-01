@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -12,7 +11,7 @@ public class BetaDiagnosticsTest : TestBase
     {
         var model = new BetaDiagnostics { CacheMissReason = new BetaCacheMissModelChanged(0) };
 
-        CacheMissReason expectedCacheMissReason = new BetaCacheMissModelChanged(0);
+        BetaCacheMissReason expectedCacheMissReason = new BetaCacheMissModelChanged(0);
 
         Assert.Equal(expectedCacheMissReason, model.CacheMissReason);
     }
@@ -43,7 +42,7 @@ public class BetaDiagnosticsTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        CacheMissReason expectedCacheMissReason = new BetaCacheMissModelChanged(0);
+        BetaCacheMissReason expectedCacheMissReason = new BetaCacheMissModelChanged(0);
 
         Assert.Equal(expectedCacheMissReason, deserialized.CacheMissReason);
     }
@@ -64,169 +63,5 @@ public class BetaDiagnosticsTest : TestBase
         BetaDiagnostics copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class CacheMissReasonTest : TestBase
-{
-    [Fact]
-    public void BetaCacheMissModelChangedValidationWorks()
-    {
-        CacheMissReason value = new BetaCacheMissModelChanged(0);
-        value.Validate();
-    }
-
-    [Fact]
-    public void BetaCacheMissSystemChangedValidationWorks()
-    {
-        CacheMissReason value = new BetaCacheMissSystemChanged(0);
-        value.Validate();
-    }
-
-    [Fact]
-    public void BetaCacheMissToolsChangedValidationWorks()
-    {
-        CacheMissReason value = new BetaCacheMissToolsChanged(0);
-        value.Validate();
-    }
-
-    [Fact]
-    public void BetaCacheMissMessagesChangedValidationWorks()
-    {
-        CacheMissReason value = new BetaCacheMissMessagesChanged(0);
-        value.Validate();
-    }
-
-    [Fact]
-    public void BetaCacheMissPreviousMessageNotFoundValidationWorks()
-    {
-        CacheMissReason value = new BetaCacheMissPreviousMessageNotFound();
-        value.Validate();
-    }
-
-    [Fact]
-    public void BetaCacheMissUnavailableValidationWorks()
-    {
-        CacheMissReason value = new BetaCacheMissUnavailable();
-        value.Validate();
-    }
-
-    [Fact]
-    public void BetaCacheMissModelChangedSerializationRoundtripWorks()
-    {
-        CacheMissReason value = new BetaCacheMissModelChanged(0);
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<CacheMissReason>(
-            element,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void BetaCacheMissSystemChangedSerializationRoundtripWorks()
-    {
-        CacheMissReason value = new BetaCacheMissSystemChanged(0);
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<CacheMissReason>(
-            element,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void BetaCacheMissToolsChangedSerializationRoundtripWorks()
-    {
-        CacheMissReason value = new BetaCacheMissToolsChanged(0);
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<CacheMissReason>(
-            element,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void BetaCacheMissMessagesChangedSerializationRoundtripWorks()
-    {
-        CacheMissReason value = new BetaCacheMissMessagesChanged(0);
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<CacheMissReason>(
-            element,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void BetaCacheMissPreviousMessageNotFoundSerializationRoundtripWorks()
-    {
-        CacheMissReason value = new BetaCacheMissPreviousMessageNotFound();
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<CacheMissReason>(
-            element,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void BetaCacheMissUnavailableSerializationRoundtripWorks()
-    {
-        CacheMissReason value = new BetaCacheMissUnavailable();
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<CacheMissReason>(
-            element,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void UnknownVariantCommonProperties_Works()
-    {
-        CacheMissReason value = new(
-            JsonSerializer.Deserialize<JsonElement>(
-                """
-                {
-                  "cache_missed_input_tokens": 0,
-                  "type": "model_changed"
-                }
-                """
-            )
-        );
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-
-        long expectedCacheMissedInputTokens = 0;
-        JsonElement expectedType = JsonSerializer.SerializeToElement("model_changed");
-
-        Assert.Equal(expectedCacheMissedInputTokens, value.CacheMissedInputTokens);
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
-
-        CacheMissReason emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
-
-        Assert.Null(emptyValue.CacheMissedInputTokens);
-        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
-
-        CacheMissReason mismatchedValue = new(
-            JsonSerializer.Deserialize<JsonElement>(
-                """
-                {
-                  "cache_missed_input_tokens": [
-                    "invalid"
-                  ]
-                }
-                """
-            )
-        );
-
-        Assert.Null(mismatchedValue.CacheMissedInputTokens);
     }
 }

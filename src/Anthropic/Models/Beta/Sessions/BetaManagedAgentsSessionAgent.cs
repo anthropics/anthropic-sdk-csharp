@@ -72,7 +72,7 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
     }
 
     /// <summary>
-    /// Resolved coordinator topology with full agent definitions for each roster member.
+    /// Resolved multiagent orchestration configuration. Null when the agent is single-threaded.
     /// </summary>
     public required BetaManagedAgentsSessionMultiagentCoordinator? Multiagent
     {

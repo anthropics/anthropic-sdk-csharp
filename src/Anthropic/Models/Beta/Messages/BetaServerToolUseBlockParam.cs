@@ -75,9 +75,6 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
         init { this._rawData.Set("cache_control", value); }
     }
 
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public BetaServerToolUseBlockParamCaller? Caller
     {
         get
@@ -219,9 +216,6 @@ sealed class BetaServerToolUseBlockParamNameConverter
     }
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(BetaServerToolUseBlockParamCallerConverter))]
 public record class BetaServerToolUseBlockParamCaller : ModelBase
 {

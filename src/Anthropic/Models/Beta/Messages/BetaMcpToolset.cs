@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -95,6 +96,28 @@ public sealed record class BetaMcpToolset : JsonModel
         }
     }
 
+    /// <summary>
+    /// The server's tool listing, pinned: when present, the server is not asked
+    /// for its tools before sampling and exactly these entries, with `default_config`
+    /// and `configs` applied, are the toolset's tools. Copy it from the `mcp_tool_listing`
+    /// block of an earlier response.
+    /// </summary>
+    public IReadOnlyList<BetaMcpToolParam>? Tools
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<BetaMcpToolParam>>("tools");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaMcpToolParam>?>(
+                "tools",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -112,6 +135,10 @@ public sealed record class BetaMcpToolset : JsonModel
             }
         }
         this.DefaultConfig?.Validate();
+        foreach (var item in this.Tools ?? [])
+        {
+            item.Validate();
+        }
     }
 
     public BetaMcpToolset()

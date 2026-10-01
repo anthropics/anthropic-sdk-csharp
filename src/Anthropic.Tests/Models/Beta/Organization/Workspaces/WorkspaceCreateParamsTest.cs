@@ -19,8 +19,8 @@ public class WorkspaceCreateParamsTest : TestBase
             {
                 AllowedInferenceGeos =
                     new BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestricted(),
-                DefaultInferenceGeo = DefaultInferenceGeo.Global,
-                WorkspaceGeo = WorkspaceGeo.Us,
+                DefaultInferenceGeo = BetaDataResidencyCreateConfigDefaultInferenceGeo.Global,
+                WorkspaceGeo = BetaDataResidencyCreateConfigWorkspaceGeo.Us,
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -33,8 +33,8 @@ public class WorkspaceCreateParamsTest : TestBase
         {
             AllowedInferenceGeos =
                 new BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestricted(),
-            DefaultInferenceGeo = DefaultInferenceGeo.Global,
-            WorkspaceGeo = WorkspaceGeo.Us,
+            DefaultInferenceGeo = BetaDataResidencyCreateConfigDefaultInferenceGeo.Global,
+            WorkspaceGeo = BetaDataResidencyCreateConfigWorkspaceGeo.Us,
         };
         string expectedDisplayColor = "#6C5BB9";
         string expectedExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK";
@@ -78,8 +78,8 @@ public class WorkspaceCreateParamsTest : TestBase
             {
                 AllowedInferenceGeos =
                     new BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestricted(),
-                DefaultInferenceGeo = DefaultInferenceGeo.Global,
-                WorkspaceGeo = WorkspaceGeo.Us,
+                DefaultInferenceGeo = BetaDataResidencyCreateConfigDefaultInferenceGeo.Global,
+                WorkspaceGeo = BetaDataResidencyCreateConfigWorkspaceGeo.Us,
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -100,8 +100,8 @@ public class WorkspaceCreateParamsTest : TestBase
             {
                 AllowedInferenceGeos =
                     new BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestricted(),
-                DefaultInferenceGeo = DefaultInferenceGeo.Global,
-                WorkspaceGeo = WorkspaceGeo.Us,
+                DefaultInferenceGeo = BetaDataResidencyCreateConfigDefaultInferenceGeo.Global,
+                WorkspaceGeo = BetaDataResidencyCreateConfigWorkspaceGeo.Us,
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -201,8 +201,8 @@ public class WorkspaceCreateParamsTest : TestBase
             {
                 AllowedInferenceGeos =
                     new BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestricted(),
-                DefaultInferenceGeo = DefaultInferenceGeo.Global,
-                WorkspaceGeo = WorkspaceGeo.Us,
+                DefaultInferenceGeo = BetaDataResidencyCreateConfigDefaultInferenceGeo.Global,
+                WorkspaceGeo = BetaDataResidencyCreateConfigWorkspaceGeo.Us,
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",

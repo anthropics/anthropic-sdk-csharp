@@ -12,7 +12,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Sessions;
 
 /// <summary>
-/// Resolved coordinator topology with a concrete agent roster.
+/// Resolved multiagent orchestration configuration as returned in API responses.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaManagedAgentsMultiagent, BetaManagedAgentsMultiagentFromRaw>)

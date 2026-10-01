@@ -79,15 +79,15 @@ internal class SseEventContentWrapper : HttpContent
                 return toCopy;
             }
 
-            var (data, success) = await AwsEventStreamHelpers
+            var data = await AwsEventStreamHelpers
                 .ReadStreamMessage(_sourceStream, cancellationToken)
                 .ConfigureAwait(false);
-            if (!success)
+            if (data is null)
             {
                 return 0;
             }
 
-            var encodedData = Encoding.UTF8.GetBytes(data!);
+            var encodedData = Encoding.UTF8.GetBytes(data);
             var bytesToCopy = Math.Min(encodedData.Length, buffer.Length);
             encodedData.AsMemory(0, bytesToCopy).CopyTo(buffer);
             if (bytesToCopy < encodedData.Length)
@@ -113,15 +113,15 @@ internal class SseEventContentWrapper : HttpContent
                 return toCopy;
             }
 
-            var (data, success) = await AwsEventStreamHelpers
+            var data = await AwsEventStreamHelpers
                 .ReadStreamMessage(_sourceStream, cancellationToken)
                 .ConfigureAwait(false);
-            if (!success)
+            if (data is null)
             {
                 return 0;
             }
 
-            var encodedData = Encoding.UTF8.GetBytes(data!);
+            var encodedData = Encoding.UTF8.GetBytes(data);
             var bytesToCopy = Math.Min(encodedData.Length, count);
             Array.Copy(encodedData, 0, buffer, offset, bytesToCopy);
             if (bytesToCopy < encodedData.Length)

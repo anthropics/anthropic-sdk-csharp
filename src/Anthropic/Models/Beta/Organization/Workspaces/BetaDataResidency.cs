@@ -29,12 +29,14 @@ public sealed record class BetaDataResidency : JsonModel
     /// <summary>
     /// Default inference geo applied when requests omit the parameter.
     /// </summary>
-    public required string DefaultInferenceGeo
+    public required ApiEnum<string, DefaultInferenceGeo> DefaultInferenceGeo
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<string>("default_inference_geo");
+            return this._rawData.GetNotNullClass<ApiEnum<string, DefaultInferenceGeo>>(
+                "default_inference_geo"
+            );
         }
         init { this._rawData.Set("default_inference_geo", value); }
     }
@@ -42,12 +44,12 @@ public sealed record class BetaDataResidency : JsonModel
     /// <summary>
     /// Geographic region for workspace data storage. Immutable after creation.
     /// </summary>
-    public required string WorkspaceGeo
+    public required ApiEnum<string, WorkspaceGeo> WorkspaceGeo
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<string>("workspace_geo");
+            return this._rawData.GetNotNullClass<ApiEnum<string, WorkspaceGeo>>("workspace_geo");
         }
         init { this._rawData.Set("workspace_geo", value); }
     }
@@ -56,8 +58,8 @@ public sealed record class BetaDataResidency : JsonModel
     public override void Validate()
     {
         this.AllowedInferenceGeos.Validate();
-        _ = this.DefaultInferenceGeo;
-        _ = this.WorkspaceGeo;
+        this.DefaultInferenceGeo.Validate();
+        this.WorkspaceGeo.Validate();
     }
 
     public BetaDataResidency() { }
@@ -118,7 +120,10 @@ public record class AllowedInferenceGeos : ModelBase
         }
     }
 
-    public AllowedInferenceGeos(IReadOnlyList<string> value, JsonElement? element = null)
+    public AllowedInferenceGeos(
+        IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>> value,
+        JsonElement? element = null
+    )
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
         this._element = element;
@@ -137,22 +142,24 @@ public record class AllowedInferenceGeos : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="List{T}"/> where <c>T</c> is a <c>string</c>.
+    /// type <see cref="List{T}"/> where <c>T</c> is a <c>ApiEnum&lt;string, BetaAllowedInferenceGeo&gt;</c>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickGeos(out var value)) {
-    ///     // `value` is of type `IReadOnlyList&lt;string&gt;`
+    ///     // `value` is of type `IReadOnlyList&lt;ApiEnum&lt;string, BetaAllowedInferenceGeo&gt;&gt;`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickGeos([NotNullWhen(true)] out IReadOnlyList<string>? value)
+    public bool TryPickGeos(
+        [NotNullWhen(true)] out IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>>? value
+    )
     {
-        value = this.Value as IReadOnlyList<string>;
+        value = this.Value as IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>>;
         return value != null;
     }
 
@@ -191,17 +198,20 @@ public record class AllowedInferenceGeos : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (IReadOnlyList&lt;string&gt; value) =&gt; {...},
+    ///     (IReadOnlyList&lt;ApiEnum&lt;string, BetaAllowedInferenceGeo&gt;&gt; value) =&gt; {...},
     ///     (Unrestricted value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
-    public void Switch(Action<IReadOnlyList<string>> geos, Action<Unrestricted> unrestricted)
+    public void Switch(
+        Action<IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>>> geos,
+        Action<Unrestricted> unrestricted
+    )
     {
         switch (this.Value)
         {
-            case IReadOnlyList<string> value:
+            case IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>> value:
                 geos(value);
                 break;
             case Unrestricted value:
@@ -229,17 +239,20 @@ public record class AllowedInferenceGeos : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (IReadOnlyList&lt;string&gt; value) =&gt; {...},
+    ///     (IReadOnlyList&lt;ApiEnum&lt;string, BetaAllowedInferenceGeo&gt;&gt; value) =&gt; {...},
     ///     (Unrestricted value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
-    public T Match<T>(Func<IReadOnlyList<string>, T> geos, Func<Unrestricted, T> unrestricted)
+    public T Match<T>(
+        Func<IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>>, T> geos,
+        Func<Unrestricted, T> unrestricted
+    )
     {
         return this.Value switch
         {
-            IReadOnlyList<string> value => geos(value),
+            IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>> value => geos(value),
             Unrestricted value => unrestricted(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of AllowedInferenceGeos"
@@ -247,8 +260,9 @@ public record class AllowedInferenceGeos : ModelBase
         };
     }
 
-    public static implicit operator AllowedInferenceGeos(List<string> value) =>
-        new((IReadOnlyList<string>)value);
+    public static implicit operator AllowedInferenceGeos(
+        List<ApiEnum<string, BetaAllowedInferenceGeo>> value
+    ) => new((IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>>)value);
 
     public static implicit operator AllowedInferenceGeos(Unrestricted value) => new(value);
 
@@ -270,7 +284,16 @@ public record class AllowedInferenceGeos : ModelBase
                 "Data did not match any variant of AllowedInferenceGeos"
             );
         }
-        this.Switch((_) => { }, (unrestricted) => unrestricted.Validate());
+        this.Switch(
+            (geos) =>
+            {
+                foreach (var item in geos)
+                {
+                    item.Validate();
+                }
+            },
+            (unrestricted) => unrestricted.Validate()
+        );
     }
 
     public virtual bool Equals(AllowedInferenceGeos? other) =>
@@ -293,7 +316,7 @@ public record class AllowedInferenceGeos : ModelBase
     {
         return this.Value switch
         {
-            IReadOnlyList<string> _ => 0,
+            IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>> _ => 0,
             Unrestricted _ => 1,
             _ => -1,
         };
@@ -325,9 +348,15 @@ sealed class AllowedInferenceGeosConverter : JsonConverter<AllowedInferenceGeos>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<string>>(element, options);
+            var deserialized = JsonSerializer.Deserialize<
+                List<ApiEnum<string, BetaAllowedInferenceGeo>>
+            >(element, options);
             if (deserialized != null)
             {
+                foreach (var item in deserialized)
+                {
+                    item.Validate();
+                }
                 return new(deserialized, element);
             }
         }
@@ -415,5 +444,96 @@ class UnrestrictedConverter : JsonConverter<Unrestricted>
     )
     {
         JsonSerializer.Serialize(writer, value.Element, options);
+    }
+}
+
+/// <summary>
+/// Default inference geo applied when requests omit the parameter.
+/// </summary>
+[JsonConverter(typeof(DefaultInferenceGeoConverter))]
+public enum DefaultInferenceGeo
+{
+    Global,
+    Us,
+}
+
+sealed class DefaultInferenceGeoConverter : JsonConverter<DefaultInferenceGeo>
+{
+    public override DefaultInferenceGeo Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "global" => DefaultInferenceGeo.Global,
+            "us" => DefaultInferenceGeo.Us,
+            _ => (DefaultInferenceGeo)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        DefaultInferenceGeo value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                DefaultInferenceGeo.Global => "global",
+                DefaultInferenceGeo.Us => "us",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
+/// Geographic region for workspace data storage. Immutable after creation.
+/// </summary>
+[JsonConverter(typeof(WorkspaceGeoConverter))]
+public enum WorkspaceGeo
+{
+    Us,
+}
+
+sealed class WorkspaceGeoConverter : JsonConverter<WorkspaceGeo>
+{
+    public override WorkspaceGeo Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "us" => WorkspaceGeo.Us,
+            _ => (WorkspaceGeo)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        WorkspaceGeo value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                WorkspaceGeo.Us => "us",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

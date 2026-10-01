@@ -15,7 +15,17 @@ namespace Anthropic.Models.Beta.MemoryStores.Memories;
 [JsonConverter(typeof(BetaManagedAgentsMemoryViewConverter))]
 public enum BetaManagedAgentsMemoryView
 {
+    /// <summary>
+    /// Return the object with `content` set to `null`. The `content_size_bytes`
+    /// and `content_sha256` fields remain populated, so sync clients can diff without
+    /// fetching content.
+    /// </summary>
     Basic,
+
+    /// <summary>
+    /// Return the object with `content` populated. On list endpoints, `view=full`
+    /// caps `limit` at 20.
+    /// </summary>
     Full,
 }
 

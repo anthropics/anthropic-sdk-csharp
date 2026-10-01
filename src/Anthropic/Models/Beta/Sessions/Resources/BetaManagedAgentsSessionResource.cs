@@ -7,9 +7,6 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Resources;
 
-/// <summary>
-/// A memory store attached to an agent session.
-/// </summary>
 [JsonConverter(typeof(BetaManagedAgentsSessionResourceConverter))]
 public record class BetaManagedAgentsSessionResource : ModelBase
 {

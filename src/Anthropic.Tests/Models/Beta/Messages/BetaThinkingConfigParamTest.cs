@@ -30,6 +30,13 @@ public class BetaThinkingConfigParamTest : TestBase
     }
 
     [Fact]
+    public void BetweenToolsValidationWorks()
+    {
+        BetaThinkingConfigParam value = new BetaThinkingConfigBetweenTools();
+        value.Validate();
+    }
+
+    [Fact]
     public void AdaptiveValidationWorks()
     {
         BetaThinkingConfigParam value = new BetaThinkingConfigAdaptive()
@@ -68,6 +75,19 @@ public class BetaThinkingConfigParamTest : TestBase
     public void DisabledSerializationRoundtripWorks()
     {
         BetaThinkingConfigParam value = new BetaThinkingConfigDisabled();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetweenToolsSerializationRoundtripWorks()
+    {
+        BetaThinkingConfigParam value = new BetaThinkingConfigBetweenTools();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigParam>(
             element,

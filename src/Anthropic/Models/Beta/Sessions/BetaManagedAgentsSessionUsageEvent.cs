@@ -35,7 +35,7 @@ public sealed record class BetaManagedAgentsSessionUsageEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the snapshot was taken.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {
@@ -60,7 +60,7 @@ public sealed record class BetaManagedAgentsSessionUsageEvent : JsonModel
     }
 
     /// <summary>
-    /// Point-in-time snapshot of a session's cumulative usage.
+    /// The session's cumulative usage at the snapshot time.
     /// </summary>
     public required BetaManagedAgentsSessionUsageSnapshot Usage
     {
@@ -73,8 +73,8 @@ public sealed record class BetaManagedAgentsSessionUsageEvent : JsonModel
     }
 
     /// <summary>
-    /// A hard spend ceiling. The session stops issuing new model requests once the
-    /// tracked list cost reaches `max_list_cost`.
+    /// The session's configured budget at the snapshot time, or null when the session
+    /// has no budget.
     /// </summary>
     public BetaManagedAgentsBudgetLimit? Budget
     {

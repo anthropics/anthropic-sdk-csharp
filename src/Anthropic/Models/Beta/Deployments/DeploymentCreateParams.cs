@@ -93,8 +93,11 @@ public record class DeploymentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// A hard spend ceiling. The session stops issuing new model requests once the
-    /// tracked list cost reaches `max_list_cost`.
+    /// Enforced spend ceiling stamped onto each session created from this deployment,
+    /// copied at session-creation time. Omit to leave sessions uncapped. The deployment
+    /// agent's model must have a public list price, or the request is rejected; a
+    /// multiagent roster is re-validated in full when each fire copies the cap,
+    /// which fails closed the same way.
     /// </summary>
     public Sessions::BetaManagedAgentsBudgetLimit? Budget
     {
@@ -172,7 +175,8 @@ public record class DeploymentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// 5-field POSIX cron schedule. Literal wall-clock matching in the configured timezone.
+    /// Optional recurring cron schedule. When present, the deployment fires automatically.
+    /// Both expression and timezone are required when schedule is set.
     /// </summary>
     public BetaManagedAgentsScheduleParams? Schedule
     {
@@ -235,6 +239,14 @@ public record class DeploymentCreateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get

@@ -34,8 +34,9 @@ public sealed record class BetaManagedAgentsModelConfig : JsonModel
     }
 
     /// <summary>
-    /// How hard Claude works on each turn. Sets `output_config.effort` on every Messages
-    /// call the session makes.
+    /// How hard Claude works on each inference call. One of `low`, `medium`, `high`,
+    /// `xhigh`, `max`. Always present; resolved to the per-model default at save
+    /// time when not supplied.
     /// </summary>
     public Effort? Effort
     {
@@ -79,8 +80,8 @@ public sealed record class BetaManagedAgentsModelConfig : JsonModel
 
     /// <summary>
     /// Inference speed mode. `fast` provides significantly faster output token generation
-    /// at premium pricing. Not all models support `fast`; invalid combinations are
-    /// rejected at create time.
+    /// at premium pricing. Defaults to `standard`. Not all models support `fast`;
+    /// invalid combinations are rejected at create time.
     /// </summary>
     public ApiEnum<string, Speed>? Speed
     {
@@ -155,8 +156,9 @@ class BetaManagedAgentsModelConfigFromRaw : IFromRawJson<BetaManagedAgentsModelC
 }
 
 /// <summary>
-/// How hard Claude works on each turn. Sets `output_config.effort` on every Messages
-/// call the session makes.
+/// How hard Claude works on each inference call. One of `low`, `medium`, `high`,
+/// `xhigh`, `max`. Always present; resolved to the per-model default at save time
+/// when not supplied.
 /// </summary>
 [JsonConverter(typeof(EffortConverter))]
 public record class Effort : ModelBase
@@ -625,8 +627,8 @@ sealed class EffortConverter : JsonConverter<Effort>
 
 /// <summary>
 /// Inference speed mode. `fast` provides significantly faster output token generation
-/// at premium pricing. Not all models support `fast`; invalid combinations are rejected
-/// at create time.
+/// at premium pricing. Defaults to `standard`. Not all models support `fast`; invalid
+/// combinations are rejected at create time.
 /// </summary>
 [JsonConverter(typeof(SpeedConverter))]
 public enum Speed

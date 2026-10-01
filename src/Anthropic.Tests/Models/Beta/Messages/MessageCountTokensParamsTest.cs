@@ -29,6 +29,7 @@ public class MessageCountTokensParamsTest : TestBase
             ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             ContextManagement = new()
             {
                 Edits =
@@ -149,6 +150,7 @@ public class MessageCountTokensParamsTest : TestBase
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5;
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
+        BetaCompactionConfig expectedCompaction = new() { Instructions = "instructions" };
         BetaContextManagementConfig expectedContextManagement = new()
         {
             Edits =
@@ -270,6 +272,7 @@ public class MessageCountTokensParamsTest : TestBase
         }
         Assert.Equal(expectedModel, parameters.Model);
         Assert.Equal(expectedCacheControl, parameters.CacheControl);
+        Assert.Equal(expectedCompaction, parameters.Compaction);
         Assert.Equal(expectedContextManagement, parameters.ContextManagement);
         Assert.NotNull(parameters.McpServers);
         Assert.Equal(expectedMcpServers.Count, parameters.McpServers.Count);
@@ -316,6 +319,7 @@ public class MessageCountTokensParamsTest : TestBase
             ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             ContextManagement = new()
             {
                 Edits =
@@ -377,6 +381,7 @@ public class MessageCountTokensParamsTest : TestBase
             ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             ContextManagement = new()
             {
                 Edits =
@@ -536,6 +541,8 @@ public class MessageCountTokensParamsTest : TestBase
 
         Assert.Null(parameters.CacheControl);
         Assert.False(parameters.RawBodyData.ContainsKey("cache_control"));
+        Assert.Null(parameters.Compaction);
+        Assert.False(parameters.RawBodyData.ContainsKey("compaction"));
         Assert.Null(parameters.ContextManagement);
         Assert.False(parameters.RawBodyData.ContainsKey("context_management"));
         Assert.Null(parameters.OutputFormat);
@@ -646,6 +653,7 @@ public class MessageCountTokensParamsTest : TestBase
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             CacheControl = null,
+            Compaction = null,
             ContextManagement = null,
             OutputFormat = null,
             Speed = null,
@@ -653,6 +661,8 @@ public class MessageCountTokensParamsTest : TestBase
 
         Assert.Null(parameters.CacheControl);
         Assert.True(parameters.RawBodyData.ContainsKey("cache_control"));
+        Assert.Null(parameters.Compaction);
+        Assert.True(parameters.RawBodyData.ContainsKey("compaction"));
         Assert.Null(parameters.ContextManagement);
         Assert.True(parameters.RawBodyData.ContainsKey("context_management"));
         Assert.Null(parameters.OutputFormat);
@@ -744,6 +754,7 @@ public class MessageCountTokensParamsTest : TestBase
             ],
             Model = Messages::Model.ClaudeOpus5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
             ContextManagement = new()
             {
                 Edits =
@@ -1404,6 +1415,12 @@ public class ToolTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
         };
         value.Validate();
     }
@@ -1445,6 +1462,12 @@ public class ToolTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
         };
         value.Validate();
     }
@@ -1463,6 +1486,12 @@ public class ToolTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
             UseCache = true,
         };
         value.Validate();
@@ -1507,6 +1536,12 @@ public class ToolTest : TestBase
             MaxUses = 1,
             ResponseInclusion = ResponseInclusion.Full,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
             UseCache = true,
         };
         value.Validate();
@@ -1517,7 +1552,7 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeFable5_1,
+            Model = Messages::Model.ClaudeSonnet5_5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -1572,6 +1607,18 @@ public class ToolTest : TestBase
                 },
             },
             DefaultConfig = new() { DeferLoading = true, Enabled = true },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
         };
         value.Validate();
     }
@@ -2037,6 +2084,12 @@ public class ToolTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
@@ -2084,6 +2137,12 @@ public class ToolTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
@@ -2105,6 +2164,12 @@ public class ToolTest : TestBase
             MaxContentTokens = 1,
             MaxUses = 1,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
             UseCache = true,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -2155,6 +2220,12 @@ public class ToolTest : TestBase
             MaxUses = 1,
             ResponseInclusion = ResponseInclusion.Full,
             Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
             UseCache = true,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -2168,7 +2239,7 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeFable5_1,
+            Model = Messages::Model.ClaudeSonnet5_5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -2232,6 +2303,18 @@ public class ToolTest : TestBase
                 },
             },
             DefaultConfig = new() { DeferLoading = true, Enabled = true },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
@@ -2267,6 +2350,17 @@ public class ToolTest : TestBase
                     "enabled": true
                   },
                   "max_content_tokens": 1,
+                  "url_sources": {
+                    "client_tool_results": {
+                      "type": "all"
+                    },
+                    "server_tool_results": {
+                      "type": "all"
+                    },
+                    "user_input": {
+                      "type": "all"
+                    }
+                  },
                   "use_cache": true
                 }
                 """
@@ -2290,6 +2384,12 @@ public class ToolTest : TestBase
         };
         BetaCitationsConfigParam expectedCitations = new() { Enabled = true };
         long expectedMaxContentTokens = 1;
+        BetaWebFetchUrlSources expectedUrlSources = new()
+        {
+            ClientToolResults = new BetaWebFetchUrlSourceAll(),
+            ServerToolResults = new BetaWebFetchUrlSourceAll(),
+            UserInput = new BetaWebFetchUrlSourceAll(),
+        };
         bool expectedUseCache = true;
 
         Assert.Equal(expectedCacheControl, value.CacheControl);
@@ -2302,6 +2402,7 @@ public class ToolTest : TestBase
         Assert.Equal(expectedUserLocation, value.UserLocation);
         Assert.Equal(expectedCitations, value.Citations);
         Assert.Equal(expectedMaxContentTokens, value.MaxContentTokens);
+        Assert.Equal(expectedUrlSources, value.UrlSources);
         Assert.Equal(expectedUseCache, value.UseCache);
 
         Tool emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -2316,6 +2417,7 @@ public class ToolTest : TestBase
         Assert.Null(emptyValue.UserLocation);
         Assert.Null(emptyValue.Citations);
         Assert.Null(emptyValue.MaxContentTokens);
+        Assert.Null(emptyValue.UrlSources);
         Assert.Null(emptyValue.UseCache);
 
         Tool mismatchedValue = new(
@@ -2352,6 +2454,9 @@ public class ToolTest : TestBase
                   "max_content_tokens": [
                     "invalid"
                   ],
+                  "url_sources": [
+                    "invalid"
+                  ],
                   "use_cache": [
                     "invalid"
                   ]
@@ -2370,6 +2475,7 @@ public class ToolTest : TestBase
         Assert.Null(mismatchedValue.UserLocation);
         Assert.Null(mismatchedValue.Citations);
         Assert.Null(mismatchedValue.MaxContentTokens);
+        Assert.Null(mismatchedValue.UrlSources);
         Assert.Null(mismatchedValue.UseCache);
     }
 }

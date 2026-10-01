@@ -11,11 +11,12 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Organization.Workspaces.RateLimits;
 
 /// <summary>
-/// List rate-limit overrides configured for a workspace.
+/// List a workspace's rate limits.
 ///
-/// <para>Returns only the groups and limiter types that have a workspace-level override.
-/// Groups without overrides inherit the organization limits and are not listed; use
-/// `GET /v1/organizations/rate_limits` to see those.</para>
+/// <para>By default, returns only the groups and limiter types that have a workspace-level
+/// override. With `include_inherited=true`, returns every group with organization-level
+/// limits the workspace can see, listing for each the values it inherits from the
+/// organization as well as its own overrides. Each value's `source` says which it is.</para>
 ///
 /// <para>When `limit` is omitted, every matching entry is returned in a single page;
 /// when `limit` truncates the result, follow `next_page` to fetch the remaining entries.</para>
@@ -39,6 +40,28 @@ public record class RateLimitListParams : ParamsBase
             return this._rawQueryData.GetNullableClass<ApiEnum<string, GroupType>>("group_type");
         }
         init { this._rawQueryData.Set("group_type", value); }
+    }
+
+    /// <summary>
+    /// Also list the limiter values the workspace inherits from the organization,
+    /// including groups with no workspace-level override.
+    /// </summary>
+    public bool? IncludeInherited
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<bool>("include_inherited");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set("include_inherited", value);
+        }
     }
 
     /// <summary>

@@ -20,8 +20,8 @@ public class BetaWorkspaceTest : TestBase
             DataResidency = new()
             {
                 AllowedInferenceGeos = new Unrestricted(),
-                DefaultInferenceGeo = "default_inference_geo",
-                WorkspaceGeo = "workspace_geo",
+                DefaultInferenceGeo = DefaultInferenceGeo.Global,
+                WorkspaceGeo = WorkspaceGeo.Us,
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -36,8 +36,8 @@ public class BetaWorkspaceTest : TestBase
         BetaDataResidency expectedDataResidency = new()
         {
             AllowedInferenceGeos = new Unrestricted(),
-            DefaultInferenceGeo = "default_inference_geo",
-            WorkspaceGeo = "workspace_geo",
+            DefaultInferenceGeo = DefaultInferenceGeo.Global,
+            WorkspaceGeo = WorkspaceGeo.Us,
         };
         string expectedDisplayColor = "#6C5BB9";
         string expectedExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK";
@@ -79,8 +79,8 @@ public class BetaWorkspaceTest : TestBase
             DataResidency = new()
             {
                 AllowedInferenceGeos = new Unrestricted(),
-                DefaultInferenceGeo = "default_inference_geo",
-                WorkspaceGeo = "workspace_geo",
+                DefaultInferenceGeo = DefaultInferenceGeo.Global,
+                WorkspaceGeo = WorkspaceGeo.Us,
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -109,8 +109,8 @@ public class BetaWorkspaceTest : TestBase
             DataResidency = new()
             {
                 AllowedInferenceGeos = new Unrestricted(),
-                DefaultInferenceGeo = "default_inference_geo",
-                WorkspaceGeo = "workspace_geo",
+                DefaultInferenceGeo = DefaultInferenceGeo.Global,
+                WorkspaceGeo = WorkspaceGeo.Us,
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -132,8 +132,8 @@ public class BetaWorkspaceTest : TestBase
         BetaDataResidency expectedDataResidency = new()
         {
             AllowedInferenceGeos = new Unrestricted(),
-            DefaultInferenceGeo = "default_inference_geo",
-            WorkspaceGeo = "workspace_geo",
+            DefaultInferenceGeo = DefaultInferenceGeo.Global,
+            WorkspaceGeo = WorkspaceGeo.Us,
         };
         string expectedDisplayColor = "#6C5BB9";
         string expectedExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK";
@@ -175,8 +175,8 @@ public class BetaWorkspaceTest : TestBase
             DataResidency = new()
             {
                 AllowedInferenceGeos = new Unrestricted(),
-                DefaultInferenceGeo = "default_inference_geo",
-                WorkspaceGeo = "workspace_geo",
+                DefaultInferenceGeo = DefaultInferenceGeo.Global,
+                WorkspaceGeo = WorkspaceGeo.Us,
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -199,8 +199,8 @@ public class BetaWorkspaceTest : TestBase
             DataResidency = new()
             {
                 AllowedInferenceGeos = new Unrestricted(),
-                DefaultInferenceGeo = "default_inference_geo",
-                WorkspaceGeo = "workspace_geo",
+                DefaultInferenceGeo = DefaultInferenceGeo.Global,
+                WorkspaceGeo = WorkspaceGeo.Us,
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",

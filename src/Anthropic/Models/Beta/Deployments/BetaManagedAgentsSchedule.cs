@@ -11,7 +11,8 @@ using System = System;
 namespace Anthropic.Models.Beta.Deployments;
 
 /// <summary>
-/// 5-field POSIX cron schedule with computed runtime timestamps.
+/// A recurring schedule with computed runtime timestamps. Discriminated union —
+/// only cron is supported currently.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaManagedAgentsSchedule, BetaManagedAgentsScheduleFromRaw>)
@@ -60,7 +61,8 @@ public sealed record class BetaManagedAgentsSchedule : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Time the most recent scheduled run actually started. Null until one completes;
+    /// preserved after the deployment is archived. Manual runs do not update this.
     /// </summary>
     public System::DateTimeOffset? LastRunAt
     {

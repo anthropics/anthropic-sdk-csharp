@@ -46,9 +46,6 @@ public sealed record class BetaManagedAgentsMcpOAuthRefreshUpdateParams : JsonMo
         init { this._rawData.Set("scope", value); }
     }
 
-    /// <summary>
-    /// Updated HTTP Basic authentication parameters for the token endpoint.
-    /// </summary>
     public BetaManagedAgentsMcpOAuthRefreshUpdateParamsTokenEndpointAuth? TokenEndpointAuth
     {
         get
@@ -120,9 +117,6 @@ class BetaManagedAgentsMcpOAuthRefreshUpdateParamsFromRaw
     ) => BetaManagedAgentsMcpOAuthRefreshUpdateParams.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// Updated HTTP Basic authentication parameters for the token endpoint.
-/// </summary>
 [JsonConverter(typeof(BetaManagedAgentsMcpOAuthRefreshUpdateParamsTokenEndpointAuthConverter))]
 public record class BetaManagedAgentsMcpOAuthRefreshUpdateParamsTokenEndpointAuth : ModelBase
 {

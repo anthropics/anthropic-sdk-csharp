@@ -156,7 +156,7 @@ public class BetaManagedAgentsSessionEventTest : TestBase
                 Name = "name",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
-                EvaluatedPermission = Events::EvaluatedPermission.Allow,
+                EvaluatedPermission = Events::BetaManagedAgentsAgentEvaluatedPermission.Allow,
                 Evaluation = new Events::BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
                 SessionThreadID = "session_thread_id",
             };
@@ -200,8 +200,7 @@ public class BetaManagedAgentsSessionEventTest : TestBase
                 Name = "name",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
-                EvaluatedPermission =
-                    Events::BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+                EvaluatedPermission = Events::BetaManagedAgentsAgentEvaluatedPermission.Allow,
                 Evaluation = new Events::BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
                 SessionThreadID = "session_thread_id",
             };
@@ -300,13 +299,14 @@ public class BetaManagedAgentsSessionEventTest : TestBase
             new Events::BetaManagedAgentsSessionErrorEvent()
             {
                 ID = "id",
-                Error = new Events::BetaManagedAgentsUnknownError()
+                Error = new Events::BetaManagedAgentsRepositoryAuthenticationError()
                 {
-                    Message = "message",
+                    Message =
+                        "The repository host rejected the credentials for the repository, or required credentials and received none.",
+                    RepositoryUrl = "https://github.com/example-org/example-repo",
                     RetryStatus = new Events::BetaManagedAgentsRetryStatusRetrying(
                         Events::BetaManagedAgentsRetryStatusRetryingType.Retrying
                     ),
-                    Type = Events::BetaManagedAgentsUnknownErrorType.UnknownError,
                 },
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::BetaManagedAgentsSessionErrorEventType.SessionError,
@@ -349,6 +349,11 @@ public class BetaManagedAgentsSessionEventTest : TestBase
             {
                 ID = "id",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                StopDetails = new()
+                {
+                    Category = Events::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = new Events::BetaManagedAgentsSessionEndTurn(
                     Events::BetaManagedAgentsSessionEndTurnType.EndTurn
                 ),
@@ -542,6 +547,11 @@ public class BetaManagedAgentsSessionEventTest : TestBase
                 AgentName = "Researcher",
                 ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                StopDetails = new()
+                {
+                    Category = Events::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = new Events::BetaManagedAgentsSessionEndTurn(
                     Events::BetaManagedAgentsSessionEndTurnType.EndTurn
                 ),
@@ -993,7 +1003,7 @@ public class BetaManagedAgentsSessionEventTest : TestBase
                 Name = "name",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
-                EvaluatedPermission = Events::EvaluatedPermission.Allow,
+                EvaluatedPermission = Events::BetaManagedAgentsAgentEvaluatedPermission.Allow,
                 Evaluation = new Events::BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
                 SessionThreadID = "session_thread_id",
             };
@@ -1049,8 +1059,7 @@ public class BetaManagedAgentsSessionEventTest : TestBase
                 Name = "name",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
-                EvaluatedPermission =
-                    Events::BetaManagedAgentsAgentToolUseEventEvaluatedPermission.Allow,
+                EvaluatedPermission = Events::BetaManagedAgentsAgentEvaluatedPermission.Allow,
                 Evaluation = new Events::BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
                 SessionThreadID = "session_thread_id",
             };
@@ -1179,13 +1188,14 @@ public class BetaManagedAgentsSessionEventTest : TestBase
             new Events::BetaManagedAgentsSessionErrorEvent()
             {
                 ID = "id",
-                Error = new Events::BetaManagedAgentsUnknownError()
+                Error = new Events::BetaManagedAgentsRepositoryAuthenticationError()
                 {
-                    Message = "message",
+                    Message =
+                        "The repository host rejected the credentials for the repository, or required credentials and received none.",
+                    RepositoryUrl = "https://github.com/example-org/example-repo",
                     RetryStatus = new Events::BetaManagedAgentsRetryStatusRetrying(
                         Events::BetaManagedAgentsRetryStatusRetryingType.Retrying
                     ),
-                    Type = Events::BetaManagedAgentsUnknownErrorType.UnknownError,
                 },
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Type = Events::BetaManagedAgentsSessionErrorEventType.SessionError,
@@ -1246,6 +1256,11 @@ public class BetaManagedAgentsSessionEventTest : TestBase
             {
                 ID = "id",
                 ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                StopDetails = new()
+                {
+                    Category = Events::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = new Events::BetaManagedAgentsSessionEndTurn(
                     Events::BetaManagedAgentsSessionEndTurnType.EndTurn
                 ),
@@ -1505,6 +1520,11 @@ public class BetaManagedAgentsSessionEventTest : TestBase
                 AgentName = "Researcher",
                 ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                StopDetails = new()
+                {
+                    Category = Events::Category.Cyber,
+                    Explanation = "explanation",
+                },
                 StopReason = new Events::BetaManagedAgentsSessionEndTurn(
                     Events::BetaManagedAgentsSessionEndTurnType.EndTurn
                 ),
@@ -1825,8 +1845,14 @@ public class BetaManagedAgentsSessionEventTest : TestBase
                   "tool_use_id": "tool_use_id",
                   "is_error": true,
                   "name": "name",
+                  "evaluated_permission": "allow",
                   "evaluation": {
                     "type": "always_allow"
+                  },
+                  "stop_details": {
+                    "category": "cyber",
+                    "explanation": "explanation",
+                    "type": "refusal"
                   },
                   "agent_name": "Researcher",
                   "iteration": 0,
@@ -1850,8 +1876,17 @@ public class BetaManagedAgentsSessionEventTest : TestBase
         string expectedToolUseID = "tool_use_id";
         bool expectedIsError = true;
         string expectedName = "name";
+        ApiEnum<
+            string,
+            Events::BetaManagedAgentsAgentEvaluatedPermission
+        > expectedEvaluatedPermission = Events::BetaManagedAgentsAgentEvaluatedPermission.Allow;
         Events::BetaManagedAgentsAgentToolEvaluation expectedEvaluation =
             new Events::BetaManagedAgentsAgentToolEvaluationAlwaysAllow();
+        Events::BetaManagedAgentsSessionRefusalStopDetails expectedStopDetails = new()
+        {
+            Category = Events::Category.Cyber,
+            Explanation = "explanation",
+        };
         string expectedAgentName = "Researcher";
         int expectedIteration = 0;
         string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP";
@@ -1867,7 +1902,9 @@ public class BetaManagedAgentsSessionEventTest : TestBase
         Assert.Equal(expectedToolUseID, value.ToolUseID);
         Assert.Equal(expectedIsError, value.IsError);
         Assert.Equal(expectedName, value.Name);
+        Assert.Equal(expectedEvaluatedPermission, value.EvaluatedPermission);
         Assert.Equal(expectedEvaluation, value.Evaluation);
+        Assert.Equal(expectedStopDetails, value.StopDetails);
         Assert.Equal(expectedAgentName, value.AgentName);
         Assert.Equal(expectedIteration, value.Iteration);
         Assert.Equal(expectedOutcomeID, value.OutcomeID);
@@ -1883,7 +1920,9 @@ public class BetaManagedAgentsSessionEventTest : TestBase
         Assert.Null(emptyValue.ToolUseID);
         Assert.Null(emptyValue.IsError);
         Assert.Null(emptyValue.Name);
+        Assert.Null(emptyValue.EvaluatedPermission);
         Assert.Null(emptyValue.Evaluation);
+        Assert.Null(emptyValue.StopDetails);
         Assert.Null(emptyValue.AgentName);
         Assert.Null(emptyValue.Iteration);
         Assert.Null(emptyValue.OutcomeID);
@@ -1911,6 +1950,9 @@ public class BetaManagedAgentsSessionEventTest : TestBase
                   "name": [
                     "invalid"
                   ],
+                  "stop_details": [
+                    "invalid"
+                  ],
                   "agent_name": [
                     "invalid"
                   ],
@@ -1934,6 +1976,7 @@ public class BetaManagedAgentsSessionEventTest : TestBase
         Assert.Null(mismatchedValue.ToolUseID);
         Assert.Null(mismatchedValue.IsError);
         Assert.Null(mismatchedValue.Name);
+        Assert.Null(mismatchedValue.StopDetails);
         Assert.Null(mismatchedValue.AgentName);
         Assert.Null(mismatchedValue.Iteration);
         Assert.Null(mismatchedValue.OutcomeID);

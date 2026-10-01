@@ -46,9 +46,6 @@ public sealed record class BetaManagedAgentsMcpOAuthRefreshResponse : JsonModel
         init { this._rawData.Set("token_endpoint", value); }
     }
 
-    /// <summary>
-    /// Token endpoint requires no client authentication.
-    /// </summary>
     public required BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth TokenEndpointAuth
     {
         get
@@ -140,9 +137,6 @@ class BetaManagedAgentsMcpOAuthRefreshResponseFromRaw
     ) => BetaManagedAgentsMcpOAuthRefreshResponse.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// Token endpoint requires no client authentication.
-/// </summary>
 [JsonConverter(typeof(BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthConverter))]
 public record class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth : ModelBase
 {

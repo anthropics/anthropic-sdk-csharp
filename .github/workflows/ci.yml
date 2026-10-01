@@ -22,7 +22,7 @@ jobs:
   lint:
     timeout-minutes: 10
     name: lint
-    runs-on: 'ubuntu-latest'
+    runs-on: ${{ github.repository == 'anthropics/anthropic-sdk-csharp' && 'ubuntu-latest' || 'ubuntu-latest-16-core' }}
     if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
 
     steps:
@@ -41,7 +41,7 @@ jobs:
   build:
     timeout-minutes: 10
     name: build
-    runs-on: 'ubuntu-latest'
+    runs-on: ${{ github.repository == 'anthropics/anthropic-sdk-csharp' && 'ubuntu-latest' || 'ubuntu-latest-16-core' }}
     if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
 
     steps:
@@ -56,9 +56,9 @@ jobs:
         run: ./scripts/build
 
   test:
-    timeout-minutes: 10
+    timeout-minutes: 15
     name: test
-    runs-on: 'windows-latest'
+    runs-on: ${{ github.repository == 'anthropics/anthropic-sdk-csharp' && 'windows-latest' || 'windows-latest-x64-16-core' }}
     if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2

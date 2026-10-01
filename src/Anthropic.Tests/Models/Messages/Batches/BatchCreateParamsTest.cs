@@ -40,6 +40,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                         OutputConfig = new()
@@ -148,6 +149,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                     },
+                    Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                     InferenceGeo = "inference_geo",
                     Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                     OutputConfig = new()
@@ -266,6 +268,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                         OutputConfig = new()
@@ -383,6 +386,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                         OutputConfig = new()
@@ -504,6 +508,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                         OutputConfig = new()
@@ -623,6 +628,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                         OutputConfig = new()
@@ -748,6 +754,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                         OutputConfig = new()
@@ -865,6 +872,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 OutputConfig = new()
@@ -962,6 +970,7 @@ public class RequestTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -1067,6 +1076,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 OutputConfig = new()
@@ -1175,6 +1185,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 OutputConfig = new()
@@ -1279,6 +1290,7 @@ public class RequestTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -1384,6 +1396,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 OutputConfig = new()
@@ -1489,6 +1502,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 OutputConfig = new()
@@ -1596,6 +1610,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -1692,6 +1707,10 @@ public class ParamsTest : TestBase
                 },
             ],
         };
+        Messages::DiagnosticsParam expectedDiagnostics = new()
+        {
+            PreviousMessageID = "previous_message_id",
+        };
         string expectedInferenceGeo = "inference_geo";
         Messages::Metadata expectedMetadata = new()
         {
@@ -1782,6 +1801,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedModel, model.Model);
         Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedContainer, model.Container);
+        Assert.Equal(expectedDiagnostics, model.Diagnostics);
         Assert.Equal(expectedInferenceGeo, model.InferenceGeo);
         Assert.Equal(expectedMetadata, model.Metadata);
         Assert.Equal(expectedOutputConfig, model.OutputConfig);
@@ -1829,6 +1849,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -1933,6 +1954,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -2033,6 +2055,10 @@ public class ParamsTest : TestBase
                 },
             ],
         };
+        Messages::DiagnosticsParam expectedDiagnostics = new()
+        {
+            PreviousMessageID = "previous_message_id",
+        };
         string expectedInferenceGeo = "inference_geo";
         Messages::Metadata expectedMetadata = new()
         {
@@ -2123,6 +2149,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedContainer, deserialized.Container);
+        Assert.Equal(expectedDiagnostics, deserialized.Diagnostics);
         Assert.Equal(expectedInferenceGeo, deserialized.InferenceGeo);
         Assert.Equal(expectedMetadata, deserialized.Metadata);
         Assert.Equal(expectedOutputConfig, deserialized.OutputConfig);
@@ -2170,6 +2197,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -2271,6 +2299,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
         };
 
@@ -2322,6 +2351,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
         };
 
@@ -2350,6 +2380,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
 
             // Null should be interpreted as omitted for these properties
@@ -2415,6 +2446,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
 
             // Null should be interpreted as omitted for these properties
@@ -2522,6 +2554,8 @@ public class ParamsTest : TestBase
         Assert.False(model.RawData.ContainsKey("cache_control"));
         Assert.Null(model.Container);
         Assert.False(model.RawData.ContainsKey("container"));
+        Assert.Null(model.Diagnostics);
+        Assert.False(model.RawData.ContainsKey("diagnostics"));
         Assert.Null(model.InferenceGeo);
         Assert.False(model.RawData.ContainsKey("inference_geo"));
     }
@@ -2696,6 +2730,7 @@ public class ParamsTest : TestBase
 
             CacheControl = null,
             Container = null,
+            Diagnostics = null,
             InferenceGeo = null,
         };
 
@@ -2703,6 +2738,8 @@ public class ParamsTest : TestBase
         Assert.True(model.RawData.ContainsKey("cache_control"));
         Assert.Null(model.Container);
         Assert.True(model.RawData.ContainsKey("container"));
+        Assert.Null(model.Diagnostics);
+        Assert.True(model.RawData.ContainsKey("diagnostics"));
         Assert.Null(model.InferenceGeo);
         Assert.True(model.RawData.ContainsKey("inference_geo"));
     }
@@ -2791,6 +2828,7 @@ public class ParamsTest : TestBase
 
             CacheControl = null,
             Container = null,
+            Diagnostics = null,
             InferenceGeo = null,
         };
 
@@ -2819,6 +2857,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()

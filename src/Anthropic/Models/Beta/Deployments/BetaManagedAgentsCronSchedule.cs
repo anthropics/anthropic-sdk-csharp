@@ -60,7 +60,8 @@ public sealed record class BetaManagedAgentsCronSchedule : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Time the most recent scheduled run actually started. Null until one completes;
+    /// preserved after the deployment is archived. Manual runs do not update this.
     /// </summary>
     public System::DateTimeOffset? LastRunAt
     {

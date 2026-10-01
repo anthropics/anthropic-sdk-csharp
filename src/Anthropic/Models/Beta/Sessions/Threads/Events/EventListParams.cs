@@ -23,9 +23,6 @@ public record class EventListParams : ParamsBase
 
     public string? ThreadID { get; init; }
 
-    /// <summary>
-    /// Query parameter for limit
-    /// </summary>
     public int? Limit
     {
         get
@@ -44,9 +41,6 @@ public record class EventListParams : ParamsBase
         }
     }
 
-    /// <summary>
-    /// Query parameter for page
-    /// </summary>
     public string? Page
     {
         get
@@ -91,6 +85,14 @@ public record class EventListParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get

@@ -59,7 +59,7 @@ public sealed record class BetaManagedAgentsMcpOAuthUpdateParams : JsonModel
     }
 
     /// <summary>
-    /// Parameters for updating OAuth refresh token configuration.
+    /// Updated refresh token configuration.
     /// </summary>
     public BetaManagedAgentsMcpOAuthRefreshUpdateParams? Refresh
     {

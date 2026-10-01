@@ -62,9 +62,6 @@ public sealed record class BetaWebSearchToolResultBlockParam : JsonModel
         init { this._rawData.Set("cache_control", value); }
     }
 
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public BetaWebSearchToolResultBlockParamCaller? Caller
     {
         get
@@ -148,9 +145,6 @@ class BetaWebSearchToolResultBlockParamFromRaw : IFromRawJson<BetaWebSearchToolR
     ) => BetaWebSearchToolResultBlockParam.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(BetaWebSearchToolResultBlockParamCallerConverter))]
 public record class BetaWebSearchToolResultBlockParamCaller : ModelBase
 {

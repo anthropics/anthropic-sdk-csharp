@@ -12,9 +12,6 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(JsonModelConverter<WebFetchToolResultBlock, WebFetchToolResultBlockFromRaw>))]
 public sealed record class WebFetchToolResultBlock : JsonModel
 {
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public required WebFetchToolResultBlockCaller Caller
     {
         get
@@ -115,9 +112,6 @@ class WebFetchToolResultBlockFromRaw : IFromRawJson<WebFetchToolResultBlock>
     ) => WebFetchToolResultBlock.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(WebFetchToolResultBlockCallerConverter))]
 public record class WebFetchToolResultBlockCaller : ModelBase
 {

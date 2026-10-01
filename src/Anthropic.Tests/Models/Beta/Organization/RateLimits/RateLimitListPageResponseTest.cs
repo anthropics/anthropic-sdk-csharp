@@ -17,6 +17,11 @@ public class RateLimitListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    Group = new BetaOrganizationRateLimitModelGroup()
+                    {
+                        ID = "id",
+                        DisplayName = "display_name",
+                    },
                     GroupType = BetaOrganizationRateLimitGroupType.Batch,
                     Limits = [new() { Type = "type", Value = 0 }],
                     Models = ["string"],
@@ -30,6 +35,11 @@ public class RateLimitListPageResponseTest : TestBase
             new()
             {
                 ID = "id",
+                Group = new BetaOrganizationRateLimitModelGroup()
+                {
+                    ID = "id",
+                    DisplayName = "display_name",
+                },
                 GroupType = BetaOrganizationRateLimitGroupType.Batch,
                 Limits = [new() { Type = "type", Value = 0 }],
                 Models = ["string"],
@@ -55,6 +65,11 @@ public class RateLimitListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    Group = new BetaOrganizationRateLimitModelGroup()
+                    {
+                        ID = "id",
+                        DisplayName = "display_name",
+                    },
                     GroupType = BetaOrganizationRateLimitGroupType.Batch,
                     Limits = [new() { Type = "type", Value = 0 }],
                     Models = ["string"],
@@ -82,6 +97,11 @@ public class RateLimitListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    Group = new BetaOrganizationRateLimitModelGroup()
+                    {
+                        ID = "id",
+                        DisplayName = "display_name",
+                    },
                     GroupType = BetaOrganizationRateLimitGroupType.Batch,
                     Limits = [new() { Type = "type", Value = 0 }],
                     Models = ["string"],
@@ -102,6 +122,11 @@ public class RateLimitListPageResponseTest : TestBase
             new()
             {
                 ID = "id",
+                Group = new BetaOrganizationRateLimitModelGroup()
+                {
+                    ID = "id",
+                    DisplayName = "display_name",
+                },
                 GroupType = BetaOrganizationRateLimitGroupType.Batch,
                 Limits = [new() { Type = "type", Value = 0 }],
                 Models = ["string"],
@@ -127,6 +152,11 @@ public class RateLimitListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    Group = new BetaOrganizationRateLimitModelGroup()
+                    {
+                        ID = "id",
+                        DisplayName = "display_name",
+                    },
                     GroupType = BetaOrganizationRateLimitGroupType.Batch,
                     Limits = [new() { Type = "type", Value = 0 }],
                     Models = ["string"],
@@ -148,6 +178,11 @@ public class RateLimitListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
+                    Group = new BetaOrganizationRateLimitModelGroup()
+                    {
+                        ID = "id",
+                        DisplayName = "display_name",
+                    },
                     GroupType = BetaOrganizationRateLimitGroupType.Batch,
                     Limits = [new() { Type = "type", Value = 0 }],
                     Models = ["string"],

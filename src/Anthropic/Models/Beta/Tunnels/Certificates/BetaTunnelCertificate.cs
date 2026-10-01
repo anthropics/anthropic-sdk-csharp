@@ -29,7 +29,8 @@ public sealed record class BetaTunnelCertificate : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// RFC 3339 datetime string indicating when the certificate was archived. Null
+    /// if it is still in the trusted set.
     /// </summary>
     public required DateTimeOffset? ArchivedAt
     {
@@ -42,7 +43,7 @@ public sealed record class BetaTunnelCertificate : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// RFC 3339 datetime string indicating when the certificate was registered.
     /// </summary>
     public required DateTimeOffset CreatedAt
     {
@@ -55,7 +56,8 @@ public sealed record class BetaTunnelCertificate : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// RFC 3339 datetime string indicating when the certificate expires, or `null`
+    /// if it does not expire.
     /// </summary>
     public required DateTimeOffset? ExpiresAt
     {

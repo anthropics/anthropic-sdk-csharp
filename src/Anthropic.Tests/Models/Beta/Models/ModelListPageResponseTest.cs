@@ -24,6 +24,7 @@ public class ModelListPageResponseTest : TestBase
                         Batch = new(true),
                         Citations = new(true),
                         CodeExecution = new(true),
+                        Compaction = new() { Summarize = new(true), Supported = true },
                         ContextManagement = new()
                         {
                             ClearThinking20251015 = new(true),
@@ -71,6 +72,7 @@ public class ModelListPageResponseTest : TestBase
                     Batch = new(true),
                     Citations = new(true),
                     CodeExecution = new(true),
+                    Compaction = new() { Summarize = new(true), Supported = true },
                     ContextManagement = new()
                     {
                         ClearThinking20251015 = new(true),
@@ -132,6 +134,7 @@ public class ModelListPageResponseTest : TestBase
                         Batch = new(true),
                         Citations = new(true),
                         CodeExecution = new(true),
+                        Compaction = new() { Summarize = new(true), Supported = true },
                         ContextManagement = new()
                         {
                             ClearThinking20251015 = new(true),
@@ -193,6 +196,7 @@ public class ModelListPageResponseTest : TestBase
                         Batch = new(true),
                         Citations = new(true),
                         CodeExecution = new(true),
+                        Compaction = new() { Summarize = new(true), Supported = true },
                         ContextManagement = new()
                         {
                             ClearThinking20251015 = new(true),
@@ -247,6 +251,7 @@ public class ModelListPageResponseTest : TestBase
                     Batch = new(true),
                     Citations = new(true),
                     CodeExecution = new(true),
+                    Compaction = new() { Summarize = new(true), Supported = true },
                     ContextManagement = new()
                     {
                         ClearThinking20251015 = new(true),
@@ -308,6 +313,7 @@ public class ModelListPageResponseTest : TestBase
                         Batch = new(true),
                         Citations = new(true),
                         CodeExecution = new(true),
+                        Compaction = new() { Summarize = new(true), Supported = true },
                         ContextManagement = new()
                         {
                             ClearThinking20251015 = new(true),
@@ -363,6 +369,7 @@ public class ModelListPageResponseTest : TestBase
                         Batch = new(true),
                         Citations = new(true),
                         CodeExecution = new(true),
+                        Compaction = new() { Summarize = new(true), Supported = true },
                         ContextManagement = new()
                         {
                             ClearThinking20251015 = new(true),

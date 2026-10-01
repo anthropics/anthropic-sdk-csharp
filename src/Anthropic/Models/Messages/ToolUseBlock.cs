@@ -22,9 +22,6 @@ public sealed record class ToolUseBlock : JsonModel
         init { this._rawData.Set("id", value); }
     }
 
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public required ToolUseBlockCaller Caller
     {
         get
@@ -138,9 +135,6 @@ class ToolUseBlockFromRaw : IFromRawJson<ToolUseBlock>
         ToolUseBlock.FromRawUnchecked(rawData);
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(ToolUseBlockCallerConverter))]
 public record class ToolUseBlockCaller : ModelBase
 {

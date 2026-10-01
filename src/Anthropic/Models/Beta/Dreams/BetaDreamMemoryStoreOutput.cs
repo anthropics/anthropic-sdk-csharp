@@ -10,13 +10,19 @@ using System = System;
 namespace Anthropic.Models.Beta.Dreams;
 
 /// <summary>
-/// An output memory store the dream writes consolidated memories into.
+/// The memory store that holds a dream's result, as an entry in `outputs`.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaDreamMemoryStoreOutput, BetaDreamMemoryStoreOutputFromRaw>)
 )]
 public sealed record class BetaDreamMemoryStoreOutput : JsonModel
 {
+    /// <summary>
+    /// The ID of the memory store that the dream writes its result to (`memstore_...`).
+    ///
+    /// <para>With `output_behavior` set to `create_new`, this is a new memory store.
+    /// With `update_existing`, it is the input memory store.</para>
+    /// </summary>
     public required string MemoryStoreID
     {
         get

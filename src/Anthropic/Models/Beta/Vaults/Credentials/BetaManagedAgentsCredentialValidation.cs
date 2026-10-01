@@ -47,7 +47,7 @@ public sealed record class BetaManagedAgentsCredentialValidation : JsonModel
     }
 
     /// <summary>
-    /// The failing step of an MCP validation probe.
+    /// Details of the failing MCP probe step. Null when the probe succeeded.
     /// </summary>
     public required BetaManagedAgentsMcpProbe? McpProbe
     {
@@ -60,7 +60,8 @@ public sealed record class BetaManagedAgentsCredentialValidation : JsonModel
     }
 
     /// <summary>
-    /// Outcome of a refresh-token exchange attempted during credential validation.
+    /// Details of the refresh-token exchange attempted on a 401. Null when no refresh
+    /// was attempted.
     /// </summary>
     public required BetaManagedAgentsRefreshObject? Refresh
     {
@@ -73,7 +74,7 @@ public sealed record class BetaManagedAgentsCredentialValidation : JsonModel
     }
 
     /// <summary>
-    /// Overall verdict of a credential validation probe.
+    /// Overall verdict of the validation probe.
     /// </summary>
     public required ApiEnum<string, BetaManagedAgentsCredentialValidationStatus> Status
     {
@@ -100,7 +101,7 @@ public sealed record class BetaManagedAgentsCredentialValidation : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When the validation probe was performed.
     /// </summary>
     public required System::DateTimeOffset ValidatedAt
     {

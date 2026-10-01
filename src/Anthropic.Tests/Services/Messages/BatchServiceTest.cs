@@ -37,6 +37,7 @@ public class BatchServiceTest : TestBase
                                     },
                                 ],
                             },
+                            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                             InferenceGeo = "inference_geo",
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                             OutputConfig = new()

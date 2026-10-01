@@ -58,9 +58,6 @@ public sealed record class BetaServerToolUseBlock : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
-    /// <summary>
-    /// Tool invocation directly from the model.
-    /// </summary>
     public Caller? Caller
     {
         get
@@ -195,9 +192,6 @@ sealed class NameConverter : JsonConverter<Name>
     }
 }
 
-/// <summary>
-/// Tool invocation directly from the model.
-/// </summary>
 [JsonConverter(typeof(CallerConverter))]
 public record class Caller : ModelBase
 {

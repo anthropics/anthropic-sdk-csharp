@@ -245,6 +245,21 @@ public sealed class BetaMessageContentAggregator
                 };
         }
 
+        // Assigning null through the init accessor writes an explicit `null` into the wire JSON, so
+        // a field the server left out of the start block stays out unless a delta filled it in.
+        BetaCompactionBlock MergeCompactionBlock(BetaCompactionBlock start)
+        {
+            var content = MergeCompaction(start.Content, d => d.Content);
+            var encryptedContent = MergeCompaction(start.EncryptedContent, d => d.EncryptedContent);
+            var merged = content == null ? start : start with { Content = content };
+            return encryptedContent == null
+                ? merged
+                : merged with
+                {
+                    EncryptedContent = encryptedContent,
+                };
+        }
+
         // Only the variants below carry deltas. Every other block type — including ones this SDK
         // version doesn't model yet — arrives complete in its content_block_start event, so its
         // wire JSON passes through unchanged.
@@ -279,14 +294,7 @@ public sealed class BetaMessageContentAggregator
                 PartialJsons(),
                 BetaMcpToolUseBlock.FromRawUnchecked
             ),
-            BetaCompactionBlock compactionBlock => new BetaCompactionBlock()
-            {
-                Content = MergeCompaction(compactionBlock.Content, d => d.Content),
-                EncryptedContent = MergeCompaction(
-                    compactionBlock.EncryptedContent,
-                    d => d.EncryptedContent
-                ),
-            },
+            BetaCompactionBlock compactionBlock => MergeCompactionBlock(compactionBlock),
             _ => JsonSerializer.Deserialize<BetaContentBlock>(
                 contentBlock.Json,
                 ModelBase.SerializerOptions

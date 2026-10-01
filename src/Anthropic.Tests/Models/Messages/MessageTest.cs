@@ -47,6 +47,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
+            Diagnostics = new(new CacheMissReason(new CacheMissModelChanged(0))),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
@@ -104,6 +105,7 @@ public class MessageTest : TestBase
                 Text = "Hi! My name is Claude.",
             },
         ];
+        Diagnostics expectedDiagnostics = new(new CacheMissReason(new CacheMissModelChanged(0)));
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         RefusalStopDetails expectedStopDetails = new()
@@ -134,6 +136,7 @@ public class MessageTest : TestBase
         {
             Assert.Equal(expectedContent[i], model.Content[i]);
         }
+        Assert.Equal(expectedDiagnostics, model.Diagnostics);
         Assert.Equal(expectedModel, model.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, model.Role));
         Assert.Equal(expectedStopDetails, model.StopDetails);
@@ -182,6 +185,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
+            Diagnostics = new(new CacheMissReason(new CacheMissModelChanged(0))),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
@@ -250,6 +254,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
+            Diagnostics = new(new CacheMissReason(new CacheMissModelChanged(0))),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
@@ -314,6 +319,7 @@ public class MessageTest : TestBase
                 Text = "Hi! My name is Claude.",
             },
         ];
+        Diagnostics expectedDiagnostics = new(new CacheMissReason(new CacheMissModelChanged(0)));
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         RefusalStopDetails expectedStopDetails = new()
@@ -344,6 +350,7 @@ public class MessageTest : TestBase
         {
             Assert.Equal(expectedContent[i], deserialized.Content[i]);
         }
+        Assert.Equal(expectedDiagnostics, deserialized.Diagnostics);
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, deserialized.Role));
         Assert.Equal(expectedStopDetails, deserialized.StopDetails);
@@ -392,6 +399,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
+            Diagnostics = new(new CacheMissReason(new CacheMissModelChanged(0))),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
@@ -457,6 +465,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
+            Diagnostics = new(new CacheMissReason(new CacheMissModelChanged(0))),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
             {

@@ -8,13 +8,21 @@ using Anthropic.Core;
 namespace Anthropic.Models.Beta.Dreams;
 
 /// <summary>
-/// Cumulative token usage for the dream across every pipeline stage.
+/// The tokens that a dream has used so far.
+///
+/// <para>The counts are zero while the dream is `pending` and update while it is
+/// `running`. They can keep changing after a cancel.</para>
+///
+/// <para>See the [Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#billing)
+/// for how dreams are billed. See the [prompt caching guide](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#tracking-cache-performance)
+/// for how the input token counts add up.</para>
 /// </summary>
 [JsonConverter(typeof(JsonModelConverter<BetaDreamUsage, BetaDreamUsageFromRaw>))]
 public sealed record class BetaDreamUsage : JsonModel
 {
     /// <summary>
-    /// Total tokens used to create prompt-cache entries (sum of all TTL tiers).
+    /// The dream's input tokens that were written to the prompt cache, for both the
+    /// 5-minute and 1-hour cache durations.
     /// </summary>
     public required int CacheCreationInputTokens
     {
@@ -27,7 +35,7 @@ public sealed record class BetaDreamUsage : JsonModel
     }
 
     /// <summary>
-    /// Total tokens read from prompt cache.
+    /// The dream's input tokens that were read from the prompt cache.
     /// </summary>
     public required int CacheReadInputTokens
     {
@@ -40,7 +48,7 @@ public sealed record class BetaDreamUsage : JsonModel
     }
 
     /// <summary>
-    /// Total uncached input tokens consumed across every pipeline stage.
+    /// The dream's input tokens that weren't read from or written to the prompt cache.
     /// </summary>
     public required int InputTokens
     {
@@ -53,7 +61,7 @@ public sealed record class BetaDreamUsage : JsonModel
     }
 
     /// <summary>
-    /// Total output tokens generated across every pipeline stage.
+    /// The tokens that the model generated for the dream.
     /// </summary>
     public required int OutputTokens
     {

@@ -1,0 +1,174 @@
+using System;
+using System.Text.Json;
+using Anthropic.Core;
+using Anthropic.Exceptions;
+using Anthropic.Models.Organization.ServiceAccounts;
+
+namespace Anthropic.Tests.Models.Organization.ServiceAccounts;
+
+public class ServiceAccountCreateParamsTest : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var parameters = new ServiceAccountCreateParams
+        {
+            Name = "ci-deploy-bot",
+            Description = "description",
+            OrganizationRole = OrganizationRole.Admin,
+        };
+
+        string expectedName = "ci-deploy-bot";
+        string expectedDescription = "description";
+        ApiEnum<string, OrganizationRole> expectedOrganizationRole = OrganizationRole.Admin;
+
+        Assert.Equal(expectedName, parameters.Name);
+        Assert.Equal(expectedDescription, parameters.Description);
+        Assert.Equal(expectedOrganizationRole, parameters.OrganizationRole);
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsUnsetAreNotSet_Works()
+    {
+        var parameters = new ServiceAccountCreateParams
+        {
+            Name = "ci-deploy-bot",
+            Description = "description",
+        };
+
+        Assert.Null(parameters.OrganizationRole);
+        Assert.False(parameters.RawBodyData.ContainsKey("organization_role"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
+    {
+        var parameters = new ServiceAccountCreateParams
+        {
+            Name = "ci-deploy-bot",
+            Description = "description",
+
+            // Null should be interpreted as omitted for these properties
+            OrganizationRole = null,
+        };
+
+        Assert.Null(parameters.OrganizationRole);
+        Assert.False(parameters.RawBodyData.ContainsKey("organization_role"));
+    }
+
+    [Fact]
+    public void OptionalNullableParamsUnsetAreNotSet_Works()
+    {
+        var parameters = new ServiceAccountCreateParams
+        {
+            Name = "ci-deploy-bot",
+            OrganizationRole = OrganizationRole.Admin,
+        };
+
+        Assert.Null(parameters.Description);
+        Assert.False(parameters.RawBodyData.ContainsKey("description"));
+    }
+
+    [Fact]
+    public void OptionalNullableParamsSetToNullAreSetToNull_Works()
+    {
+        var parameters = new ServiceAccountCreateParams
+        {
+            Name = "ci-deploy-bot",
+            OrganizationRole = OrganizationRole.Admin,
+
+            Description = null,
+        };
+
+        Assert.Null(parameters.Description);
+        Assert.True(parameters.RawBodyData.ContainsKey("description"));
+    }
+
+    [Fact]
+    public void Url_Works()
+    {
+        ServiceAccountCreateParams parameters = new() { Name = "ci-deploy-bot" };
+
+        var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.True(
+            TestBase.UrisEqual(
+                new Uri("https://api.anthropic.com/v1/organizations/service_accounts"),
+                url
+            )
+        );
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new ServiceAccountCreateParams
+        {
+            Name = "ci-deploy-bot",
+            Description = "description",
+            OrganizationRole = OrganizationRole.Admin,
+        };
+
+        ServiceAccountCreateParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
+}
+
+public class OrganizationRoleTest : TestBase
+{
+    [Theory]
+    [InlineData(OrganizationRole.Admin)]
+    [InlineData(OrganizationRole.Developer)]
+    public void Validation_Works(OrganizationRole rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, OrganizationRole> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, OrganizationRole>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(OrganizationRole.Admin)]
+    [InlineData(OrganizationRole.Developer)]
+    public void SerializationRoundtrip_Works(OrganizationRole rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, OrganizationRole> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, OrganizationRole>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, OrganizationRole>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, OrganizationRole>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
