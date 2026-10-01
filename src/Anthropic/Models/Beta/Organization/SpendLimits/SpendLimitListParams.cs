@@ -191,6 +191,7 @@ public record class SpendLimitListParams : ParamsBase
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
+        request.Headers.Add("anthropic-beta", "spend-limit-reads-2026-09-26");
         foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
