@@ -79,7 +79,7 @@ public class CredentialServiceTest : TestBase
         betaManagedAgentsCredential.Validate();
     }
 
-    [Fact(Skip = "prism can't find endpoint with beta only tag")]
+    [Fact]
     public async Task McpOAuthValidate_Works()
     {
         var betaManagedAgentsCredentialValidation =
