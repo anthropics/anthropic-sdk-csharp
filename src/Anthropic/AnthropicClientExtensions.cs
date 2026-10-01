@@ -736,6 +736,7 @@ public static class AnthropicClientExtensions
             long? startCacheCreationInputTokens = null;
             long? startCacheReadInputTokens = null;
             ServerToolUsage? startServerToolUse = null;
+            long? startThinkingTokens = null;
             ChatFinishReason? finishReason = null;
             Dictionary<long, StreamingFunctionData>? streamingFunctions = null;
 
@@ -766,6 +767,7 @@ public static class AnthropicClientExtensions
                             startCacheCreationInputTokens = usage.CacheCreationInputTokens;
                             startCacheReadInputTokens = usage.CacheReadInputTokens;
                             startServerToolUse = usage.ServerToolUse;
+                            startThinkingTokens = usage.OutputTokensDetails?.ThinkingTokens;
                             UsageDetails current = ToUsageDetails(usage);
                             if (usageDetails is null)
                             {
@@ -793,7 +795,9 @@ public static class AnthropicClientExtensions
                                 deltaUsage.CacheCreationInputTokens
                                     ?? startCacheCreationInputTokens,
                                 deltaUsage.CacheReadInputTokens ?? startCacheReadInputTokens,
-                                deltaUsage.ServerToolUse ?? startServerToolUse
+                                deltaUsage.ServerToolUse ?? startServerToolUse,
+                                deltaUsage.OutputTokensDetails?.ThinkingTokens
+                                    ?? startThinkingTokens
                             );
                         }
                         break;
@@ -1873,7 +1877,8 @@ public static class AnthropicClientExtensions
                 usage.OutputTokens,
                 usage.CacheCreationInputTokens,
                 usage.CacheReadInputTokens,
-                usage.ServerToolUse
+                usage.ServerToolUse,
+                usage.OutputTokensDetails?.ThinkingTokens
             );
 
         private static UsageDetails ToUsageDetails(
@@ -1881,7 +1886,8 @@ public static class AnthropicClientExtensions
             long? outputTokens,
             long? cacheCreationInputTokens,
             long? cacheReadInputTokens,
-            ServerToolUsage? serverToolUsage
+            ServerToolUsage? serverToolUsage,
+            long? thinkingTokens
         )
         {
             UsageDetails usageDetails = new()
@@ -1897,6 +1903,10 @@ public static class AnthropicClientExtensions
                 CachedInputTokenCount = cacheReadInputTokens,
 
                 OutputTokenCount = outputTokens,
+
+                // thinking_tokens is a subset of output_tokens, which is what
+                // UsageDetails.ReasoningTokenCount is documented to count.
+                ReasoningTokenCount = thinkingTokens,
             };
 
             usageDetails.TotalTokenCount = NullableSum(
