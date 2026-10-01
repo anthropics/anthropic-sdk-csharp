@@ -45,6 +45,7 @@ public class ModelInfoTest : TestBase
             },
             CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
             DisplayName = "Claude Opus 5",
+            Line = ModelLine.Haiku,
             MaxInputTokens = 0,
             MaxTokens = 0,
         };
@@ -82,6 +83,7 @@ public class ModelInfoTest : TestBase
         };
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z");
         string expectedDisplayName = "Claude Opus 5";
+        ApiEnum<string, ModelLine> expectedLine = ModelLine.Haiku;
         long expectedMaxInputTokens = 0;
         long expectedMaxTokens = 0;
         JsonElement expectedType = JsonSerializer.SerializeToElement("model");
@@ -90,6 +92,7 @@ public class ModelInfoTest : TestBase
         Assert.Equal(expectedCapabilities, model.Capabilities);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
         Assert.Equal(expectedDisplayName, model.DisplayName);
+        Assert.Equal(expectedLine, model.Line);
         Assert.Equal(expectedMaxInputTokens, model.MaxInputTokens);
         Assert.Equal(expectedMaxTokens, model.MaxTokens);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -133,6 +136,7 @@ public class ModelInfoTest : TestBase
             },
             CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
             DisplayName = "Claude Opus 5",
+            Line = ModelLine.Haiku,
             MaxInputTokens = 0,
             MaxTokens = 0,
         };
@@ -181,6 +185,7 @@ public class ModelInfoTest : TestBase
             },
             CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
             DisplayName = "Claude Opus 5",
+            Line = ModelLine.Haiku,
             MaxInputTokens = 0,
             MaxTokens = 0,
         };
@@ -225,6 +230,7 @@ public class ModelInfoTest : TestBase
         };
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z");
         string expectedDisplayName = "Claude Opus 5";
+        ApiEnum<string, ModelLine> expectedLine = ModelLine.Haiku;
         long expectedMaxInputTokens = 0;
         long expectedMaxTokens = 0;
         JsonElement expectedType = JsonSerializer.SerializeToElement("model");
@@ -233,6 +239,7 @@ public class ModelInfoTest : TestBase
         Assert.Equal(expectedCapabilities, deserialized.Capabilities);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
         Assert.Equal(expectedDisplayName, deserialized.DisplayName);
+        Assert.Equal(expectedLine, deserialized.Line);
         Assert.Equal(expectedMaxInputTokens, deserialized.MaxInputTokens);
         Assert.Equal(expectedMaxTokens, deserialized.MaxTokens);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -276,6 +283,7 @@ public class ModelInfoTest : TestBase
             },
             CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
             DisplayName = "Claude Opus 5",
+            Line = ModelLine.Haiku,
             MaxInputTokens = 0,
             MaxTokens = 0,
         };
@@ -321,6 +329,7 @@ public class ModelInfoTest : TestBase
             },
             CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
             DisplayName = "Claude Opus 5",
+            Line = ModelLine.Haiku,
             MaxInputTokens = 0,
             MaxTokens = 0,
         };

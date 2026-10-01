@@ -3,6 +3,7 @@ using Anthropic.Exceptions;
 using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments.Work;
+using Anthropic.Models.Beta.Models;
 using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.Analytics;
 using Anthropic.Models.Beta.Organization.Analytics.Users;
@@ -13,6 +14,7 @@ using Anthropic.Models.Beta.Organization.SpendLimits;
 using Anthropic.Models.Beta.Organization.SpendLimits.Effective;
 using Anthropic.Models.Beta.Organization.SpendLimits.IncreaseRequests;
 using Anthropic.Models.Messages;
+using Anthropic.Models.Models;
 using Anthropic.Models.Organization;
 using Anthropic.Models.Organization.ExternalKeys;
 using Anthropic.Models.Organization.Workspaces;
@@ -135,6 +137,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, ServiceTier>(),
             new ApiEnumConverter<string, Batches::ProcessingStatus>(),
             new ApiEnumConverter<string, Batches::ServiceTier>(),
+            new ApiEnumConverter<string, ModelLine>(),
             new ApiEnumConverter<string, Files::Type>(),
             new ApiEnumConverter<string, Skills::Type>(),
             new ApiEnumConverter<string, OrganizationRole>(),
@@ -167,6 +170,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, RateLimits::GroupType>(),
             new ApiEnumConverter<string, AnthropicBeta>(),
             new ApiEnumConverter<string, BetaCurrency>(),
+            new ApiEnumConverter<string, BetaModelLine>(),
             new ApiEnumConverter<string, Messages::AllowedCaller>(),
             new ApiEnumConverter<string, Messages::ErrorCode>(),
             new ApiEnumConverter<string, Messages::BetaAdvisorToolResultErrorParamErrorCode>(),

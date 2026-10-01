@@ -91,6 +91,21 @@ public sealed record class BetaModelInfo : JsonModel
     }
 
     /// <summary>
+    /// The model line this model belongs to, such as `opus` for both Claude Opus
+    /// 4.5 and Claude Opus 4.6. More lines may be added. `null` when the model belongs
+    /// to no line, as a fine-tuned model does; do not infer a line from the `id`.
+    /// </summary>
+    public required ApiEnum<string, BetaModelLine>? Line
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, BetaModelLine>>("line");
+        }
+        init { this._rawData.Set("line", value); }
+    }
+
+    /// <summary>
     /// Maximum input context window size in tokens for this model.
     /// </summary>
     public required long? MaxInputTokens
@@ -139,6 +154,7 @@ public sealed record class BetaModelInfo : JsonModel
         this.Capabilities?.Validate();
         _ = this.CreatedAt;
         _ = this.DisplayName;
+        this.Line?.Validate();
         _ = this.MaxInputTokens;
         _ = this.MaxTokens;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("model")))
