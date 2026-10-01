@@ -83,6 +83,27 @@ public record class WorkspaceListParams : ParamsBase
     }
 
     /// <summary>
+    /// Whether to include the organization's default Workspace in the response
+    /// </summary>
+    public bool? IncludeDefault
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<bool>("include_default");
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawQueryData.Set("include_default", value);
+        }
+    }
+
+    /// <summary>
     /// Number of items to return per page.
     ///
     /// <para>Defaults to `20`. Ranges from `1` to `1000`.</para>

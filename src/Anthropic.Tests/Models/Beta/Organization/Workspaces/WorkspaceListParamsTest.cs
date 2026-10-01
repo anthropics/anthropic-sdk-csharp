@@ -13,17 +13,20 @@ public class WorkspaceListParamsTest : TestBase
             AfterID = "after_id",
             BeforeID = "before_id",
             IncludeArchived = true,
+            IncludeDefault = true,
             Limit = 1,
         };
 
         string expectedAfterID = "after_id";
         string expectedBeforeID = "before_id";
         bool expectedIncludeArchived = true;
+        bool expectedIncludeDefault = true;
         long expectedLimit = 1;
 
         Assert.Equal(expectedAfterID, parameters.AfterID);
         Assert.Equal(expectedBeforeID, parameters.BeforeID);
         Assert.Equal(expectedIncludeArchived, parameters.IncludeArchived);
+        Assert.Equal(expectedIncludeDefault, parameters.IncludeDefault);
         Assert.Equal(expectedLimit, parameters.Limit);
     }
 
@@ -38,6 +41,8 @@ public class WorkspaceListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("before_id"));
         Assert.Null(parameters.IncludeArchived);
         Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
+        Assert.Null(parameters.IncludeDefault);
+        Assert.False(parameters.RawQueryData.ContainsKey("include_default"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
     }
@@ -51,6 +56,7 @@ public class WorkspaceListParamsTest : TestBase
             AfterID = null,
             BeforeID = null,
             IncludeArchived = null,
+            IncludeDefault = null,
             Limit = null,
         };
 
@@ -60,6 +66,8 @@ public class WorkspaceListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("before_id"));
         Assert.Null(parameters.IncludeArchived);
         Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
+        Assert.Null(parameters.IncludeDefault);
+        Assert.False(parameters.RawQueryData.ContainsKey("include_default"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
     }
@@ -72,6 +80,7 @@ public class WorkspaceListParamsTest : TestBase
             AfterID = "after_id",
             BeforeID = "before_id",
             IncludeArchived = true,
+            IncludeDefault = true,
             Limit = 1,
         };
 
@@ -80,7 +89,7 @@ public class WorkspaceListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/workspaces?beta=true&after_id=after_id&before_id=before_id&include_archived=true&limit=1"
+                    "https://api.anthropic.com/v1/organizations/workspaces?beta=true&after_id=after_id&before_id=before_id&include_archived=true&include_default=true&limit=1"
                 ),
                 url
             )
@@ -95,6 +104,7 @@ public class WorkspaceListParamsTest : TestBase
             AfterID = "after_id",
             BeforeID = "before_id",
             IncludeArchived = true,
+            IncludeDefault = true,
             Limit = 1,
         };
 
