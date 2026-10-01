@@ -1337,6 +1337,73 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     }
 
     [Fact]
+    public async Task GetResponseAsync_WithRawRepresentationFactory_PreconfiguredMessagesNotMerged()
+    {
+        // Messages the caller built on the raw params are sent as-is; only the IChatClient
+        // messages are grouped into turns.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": "Earlier question"
+                    },
+                    {
+                        "role": "user",
+                        "content": [
+                            { "type": "text", "text": "New question" },
+                            { "type": "text", "text": "More detail" }
+                        ]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_same_role_raw_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 15,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 1024,
+                Model = "claude-haiku-4-5",
+                Messages = [new() { Role = Role.User, Content = "Earlier question" }],
+            },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [
+                new ChatMessage(ChatRole.User, "New question"),
+                new ChatMessage(ChatRole.User, "More detail"),
+            ],
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_WithRawRepresentationFactory_SystemMessagesListMerged()
     {
         VerbatimHttpHandler handler = new(
