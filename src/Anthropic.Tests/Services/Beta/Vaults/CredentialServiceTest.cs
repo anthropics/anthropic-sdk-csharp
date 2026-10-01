@@ -46,7 +46,7 @@ public class CredentialServiceTest : TestBase
         betaManagedAgentsCredential.Validate();
     }
 
-    [Fact(Skip = "buildURL drops path-level query params")]
+    [Fact]
     public async Task List_Works()
     {
         var page = await this.client.Beta.Vaults.Credentials.List(
