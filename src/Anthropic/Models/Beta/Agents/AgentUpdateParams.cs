@@ -187,7 +187,7 @@ public record class AgentUpdateParams : ParamsBase
 
     /// <summary>
     /// Tool configurations available to the agent. Full replacement. Omit to preserve;
-    /// send empty array or null to clear. Maximum of 128 tools across all toolsets allowed.
+    /// send empty array or null to clear. Maximum of 256 tools across all toolsets allowed.
     /// </summary>
     public IReadOnlyList<AgentUpdateParamsTool>? Tools
     {

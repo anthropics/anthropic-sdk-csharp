@@ -178,7 +178,7 @@ public record class AgentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Tool configurations available to the agent. Maximum of 128 tools across all
+    /// Tool configurations available to the agent. Maximum of 256 tools across all
     /// toolsets allowed.
     /// </summary>
     public IReadOnlyList<Tool>? Tools
