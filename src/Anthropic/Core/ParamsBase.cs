@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -152,17 +153,24 @@ public abstract record class ParamsBase
                 }
                 break;
             case JsonValueKind.Array:
-                foreach (var item in element.EnumerateArray())
+                if (element.GetArrayLength() > 0)
                 {
                     request.Headers.Add(
                         key,
-                        item.ValueKind switch
-                        {
-                            JsonValueKind.Null => "",
-                            JsonValueKind.True => "true",
-                            JsonValueKind.False => "false",
-                            _ => item.GetString(),
-                        }
+                        string.Join(
+                            ",",
+                            Enumerable.Select(
+                                element.EnumerateArray(),
+                                x =>
+                                    x.ValueKind switch
+                                    {
+                                        JsonValueKind.Null => "",
+                                        JsonValueKind.True => "true",
+                                        JsonValueKind.False => "false",
+                                        _ => x.GetString(),
+                                    }
+                            )
+                        )
                     );
                 }
                 break;
