@@ -94,7 +94,7 @@ public class MemoryStoreRetrieveParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["agent-memory-2026-07-22", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,agent-memory-2026-07-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(

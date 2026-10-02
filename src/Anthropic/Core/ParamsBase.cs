@@ -155,10 +155,9 @@ public abstract record class ParamsBase
             case JsonValueKind.Array:
                 if (element.GetArrayLength() > 0)
                 {
-                    request.Headers.Add(
-                        key,
-                        string.Join(
-                            ",",
+                    var value = string.Join(
+                        ",",
+                        Enumerable.Concat(
                             Enumerable.Select(
                                 element.EnumerateArray(),
                                 x =>
@@ -169,9 +168,12 @@ public abstract record class ParamsBase
                                         JsonValueKind.False => "false",
                                         _ => x.GetString(),
                                     }
-                            )
+                            ),
+                            request.Headers.TryGetValues(key, out var existing) ? existing : []
                         )
                     );
+                    request.Headers.Remove(key);
+                    request.Headers.Add(key, value);
                 }
                 break;
         }

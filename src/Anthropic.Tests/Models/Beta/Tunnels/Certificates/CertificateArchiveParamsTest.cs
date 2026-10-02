@@ -109,7 +109,7 @@ public class CertificateArchiveParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["mcp-tunnels-2026-06-22", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,mcp-tunnels-2026-06-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(

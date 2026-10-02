@@ -164,7 +164,7 @@ public class PluginMarketplaceListParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["ce-plugins-2026-09-01", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,ce-plugins-2026-09-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }

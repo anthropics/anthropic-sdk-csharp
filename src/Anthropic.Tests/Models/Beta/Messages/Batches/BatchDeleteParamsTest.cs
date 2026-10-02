@@ -94,7 +94,7 @@ public class BatchDeleteParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,message-batches-2024-09-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(

@@ -94,7 +94,7 @@ public class DreamArchiveParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["dreaming-2026-04-21", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,dreaming-2026-04-21"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
