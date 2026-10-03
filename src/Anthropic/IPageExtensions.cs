@@ -18,8 +18,10 @@ public static class IPageExtensions
     {
         while (true)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             foreach (var element in page.Items)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 yield return element;
             }
             cancellationToken.ThrowIfCancellationRequested();
