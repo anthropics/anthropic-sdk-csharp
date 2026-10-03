@@ -75,9 +75,18 @@ public sealed class BetaMessageContentAggregator
 
             foreach (var delta in deltas ?? [])
             {
-                stopReason = delta.Delta.StopReason;
-                stopSequence = delta.Delta.StopSequence;
-                stopDetails = delta.Delta.StopDetails;
+                if (delta.Delta.RawData.ContainsKey("stop_reason"))
+                {
+                    stopReason = delta.Delta.StopReason;
+                }
+                if (delta.Delta.RawData.ContainsKey("stop_sequence"))
+                {
+                    stopSequence = delta.Delta.StopSequence;
+                }
+                if (delta.Delta.RawData.ContainsKey("stop_details"))
+                {
+                    stopDetails = delta.Delta.StopDetails;
+                }
 
                 if (delta.Delta.Container != null)
                 {

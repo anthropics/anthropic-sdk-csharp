@@ -63,9 +63,18 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             var deltas = deltaEvents.Select(e => e.Value).OfType<RawMessageDeltaEvent>();
             foreach (var delta in deltas)
             {
-                stopReason = delta.Delta.StopReason;
-                stopSequence = delta.Delta.StopSequence;
-                stopDetails = delta.Delta.StopDetails;
+                if (delta.Delta.RawData.ContainsKey("stop_reason"))
+                {
+                    stopReason = delta.Delta.StopReason;
+                }
+                if (delta.Delta.RawData.ContainsKey("stop_sequence"))
+                {
+                    stopSequence = delta.Delta.StopSequence;
+                }
+                if (delta.Delta.RawData.ContainsKey("stop_details"))
+                {
+                    stopDetails = delta.Delta.StopDetails;
+                }
 
                 // The container only ever arrives on message_delta, and only when a
                 // container ran, so keep whatever we have when the key is absent.
