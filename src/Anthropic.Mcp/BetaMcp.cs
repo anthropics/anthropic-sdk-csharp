@@ -399,19 +399,23 @@ public static class BetaMcp
 
     private static BetaToolResultBlockParamContent ConvertCallToolResult(CallToolResult result)
     {
-        if (result.IsError == true)
-        {
-            throw new BetaToolError(ConvertContentToToolResult(result.Content));
-        }
-
-        // If content is empty but structuredContent is present, JSON-encode it. The MCP spec
-        // recommends servers also include a TextContent block, but doesn't require it.
+        // Structured-only results need the same content conversion on success and failure.
+        BetaToolResultBlockParamContent content;
         if (result.Content.Count == 0 && result.StructuredContent.HasValue)
         {
-            return JsonSerializer.Serialize(result.StructuredContent.Value);
+            content = JsonSerializer.Serialize(result.StructuredContent.Value);
+        }
+        else
+        {
+            content = ConvertContentToToolResult(result.Content);
         }
 
-        return ConvertContentToToolResult(result.Content);
+        if (result.IsError == true)
+        {
+            throw new BetaToolError(content);
+        }
+
+        return content;
     }
 
     private static BetaToolResultBlockParamContent ConvertContentToToolResult(
