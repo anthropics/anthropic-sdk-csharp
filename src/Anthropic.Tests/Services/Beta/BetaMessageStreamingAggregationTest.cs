@@ -1395,4 +1395,61 @@ public class BetaMessageStreamingAggregationTest
         Assert.Equal("char_location", citations[0].GetProperty("type").GetString());
         Assert.Equal("web_search_result_location", citations[1].GetProperty("type").GetString());
     }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task CreateStreamingAggregation_ThinkingPreservesWireFields(bool withDeltas)
+    {
+        var start = JsonSerializer.Deserialize<BetaRawMessageStreamEvent>(
+            """{"type":"content_block_start","index":0,"content_block":{"type":"thinking","thinking":"begin","signature":"","opaque_context":{"version":1,"parts":["x",{"key":"value"}]},"unknown_null":null,"unknown_flag":false}}"""
+        );
+        Assert.NotNull(start);
+        var source = Assert.IsType<BetaRawContentBlockStartEvent>(start.Value).ContentBlock;
+        var before = source.Json.GetRawText();
+
+        async IAsyncEnumerable<BetaRawMessageStreamEvent> Events()
+        {
+            yield return new(new BetaRawMessageStartEvent(GenerateStartMessage));
+            yield return start;
+            if (withDeltas)
+            {
+                yield return new(
+                    new BetaRawContentBlockDeltaEvent
+                    {
+                        Index = 0,
+                        Delta = new(
+                            new BetaThinkingDelta
+                            {
+                                Thinking = " continued",
+                                EstimatedTokens = null,
+                            }
+                        ),
+                    }
+                );
+                yield return new(
+                    new BetaRawContentBlockDeltaEvent
+                    {
+                        Index = 0,
+                        Delta = new(new BetaSignatureDelta("signature")),
+                    }
+                );
+            }
+            yield return new(new BetaRawContentBlockStopEvent { Index = 0 });
+            yield return new(new BetaRawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var message = await Events().Aggregate();
+        var block = Assert.Single(message.Content);
+        var thinking = Assert.IsType<BetaThinkingBlock>(block.Value);
+        Assert.Equal(withDeltas ? "begin continued" : "begin", thinking.Thinking);
+        Assert.Equal(withDeltas ? "signature" : "", thinking.Signature);
+        Assert.True(block.Json.TryGetProperty("opaque_context", out var context));
+        Assert.True(JsonElement.DeepEquals(source.Json.GetProperty("opaque_context"), context));
+        Assert.Equal(JsonValueKind.Null, block.Json.GetProperty("unknown_null").ValueKind);
+        Assert.False(block.Json.GetProperty("unknown_flag").GetBoolean());
+        Assert.Equal(before, source.Json.GetRawText());
+        message.Validate();
+    }
 }

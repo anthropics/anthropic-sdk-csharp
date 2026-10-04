@@ -912,4 +912,55 @@ public class MessageStreamingAggregationTest
             DeclaredPropertyNames(typeof(MessageDeltaUsage))
         );
     }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task CreateStreamingAggregation_ThinkingPreservesWireFields(bool withDeltas)
+    {
+        var start = JsonSerializer.Deserialize<RawMessageStreamEvent>(
+            """{"type":"content_block_start","index":0,"content_block":{"type":"thinking","thinking":"begin","signature":"","opaque_context":{"version":1,"parts":["x",{"key":"value"}]},"unknown_null":null,"unknown_flag":false}}"""
+        );
+        Assert.NotNull(start);
+        var source = Assert.IsType<RawContentBlockStartEvent>(start.Value).ContentBlock;
+        var before = source.Json.GetRawText();
+
+        async IAsyncEnumerable<RawMessageStreamEvent> Events()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return start;
+            if (withDeltas)
+            {
+                yield return new(
+                    new RawContentBlockDeltaEvent
+                    {
+                        Index = 0,
+                        Delta = new(new ThinkingDelta { Thinking = " continued" }),
+                    }
+                );
+                yield return new(
+                    new RawContentBlockDeltaEvent
+                    {
+                        Index = 0,
+                        Delta = new(new SignatureDelta("signature")),
+                    }
+                );
+            }
+            yield return new(new RawContentBlockStopEvent { Index = 0 });
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var message = await Events().Aggregate();
+        var block = Assert.Single(message.Content);
+        var thinking = Assert.IsType<ThinkingBlock>(block.Value);
+        Assert.Equal(withDeltas ? "begin continued" : "begin", thinking.Thinking);
+        Assert.Equal(withDeltas ? "signature" : "", thinking.Signature);
+        Assert.True(block.Json.TryGetProperty("opaque_context", out var context));
+        Assert.True(JsonElement.DeepEquals(source.Json.GetProperty("opaque_context"), context));
+        Assert.Equal(JsonValueKind.Null, block.Json.GetProperty("unknown_null").ValueKind);
+        Assert.False(block.Json.GetProperty("unknown_flag").GetBoolean());
+        Assert.Equal(before, source.Json.GetRawText());
+        message.Validate();
+    }
 }

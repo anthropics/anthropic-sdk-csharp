@@ -266,7 +266,7 @@ public sealed class BetaMessageContentAggregator
         return contentBlock.Value switch
         {
             BetaTextBlock textBlock => MergeText(textBlock),
-            BetaThinkingBlock thinkingBlock => new BetaThinkingBlock()
+            BetaThinkingBlock thinkingBlock => thinkingBlock with
             {
                 Signature = StringJoinHelper(
                     thinkingBlock.Signature,

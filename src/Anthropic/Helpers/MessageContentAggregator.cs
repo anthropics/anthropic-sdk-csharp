@@ -163,7 +163,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         return contentBlock.Value switch
         {
             TextBlock textBlock => MergeText(textBlock),
-            ThinkingBlock thinkingBlock => new ThinkingBlock()
+            ThinkingBlock thinkingBlock => thinkingBlock with
             {
                 Signature = StringJoinHelper(
                     thinkingBlock.Signature,
