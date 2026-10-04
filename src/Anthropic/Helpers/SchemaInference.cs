@@ -182,17 +182,17 @@ internal static class SchemaInference
         {
             var enumArr = new JsonArray();
             foreach (var val in attr.Enum)
-                enumArr.Add(JsonSerializer.SerializeToNode(val));
+                enumArr.Add(JsonSerializer.SerializeToNode(val, SchemaOptions));
             obj["enum"] = enumArr;
         }
 
         // Const (supported)
         if (attr.Const != null)
-            obj["const"] = JsonSerializer.SerializeToNode(attr.Const);
+            obj["const"] = JsonSerializer.SerializeToNode(attr.Const, SchemaOptions);
 
         // Default (supported — explicit attribute value only)
         if (attr.Default != null)
-            obj["default"] = JsonSerializer.SerializeToNode(attr.Default);
+            obj["default"] = JsonSerializer.SerializeToNode(attr.Default, SchemaOptions);
 
         // MinItems for arrays (0 and 1 supported, >1 unsupported)
         if (attr.HasMinItems)
