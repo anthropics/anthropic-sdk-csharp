@@ -438,6 +438,95 @@ public class BetaToolRunnerTest
         Assert.Equal("Sunny", result.GetProperty("content").GetString());
     }
 
+    [Theory]
+    [InlineData(false, 0)]
+    [InlineData(true, 0)]
+    [InlineData(false, 1)]
+    [InlineData(true, 1)]
+    [InlineData(false, 2)]
+    [InlineData(true, 2)]
+    [InlineData(false, 3)]
+    [InlineData(true, 3)]
+    [InlineData(false, 4)]
+    [InlineData(true, 4)]
+    [InlineData(false, 5)]
+    [InlineData(true, 5)]
+    public async Task CompactionToolChanges_RespectHistoryOrderAndRegistration(
+        bool streaming,
+        int scenario
+    )
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = streaming
+            ? new ScriptedTurns(MakeToolUseStream("get_weather"), MakeStream("Done", "end_turn"))
+            : new ScriptedTurns(MakeToolUseTurn("get_weather"), MakeFinalTurn());
+        var calls = new List<string>();
+        var tool = MakeRecordingTool("get_weather", WeatherToolDefinition, calls);
+        var messages = new List<BetaMessageParam>(BaseParams.Messages);
+        if (scenario == 1)
+        {
+            messages.Add(MakeSystemToolChangeMessage(MakeToolRemovalBlock("get_weather")));
+        }
+        BetaCompactionBlockParamToolChange change = scenario is 0 or 2
+            ? new BetaRequestToolRemovalBlock(new BetaToolChangeToolReference("get_weather"))
+            : new BetaRequestToolAdditionBlock(new BetaToolChangeToolReference("get_weather"));
+        messages.Add(
+            new()
+            {
+                Role = Role.Assistant,
+                Content = new List<BetaContentBlockParam>
+                {
+                    new BetaCompactionBlockParam
+                    {
+                        Content = "Conversation summary.",
+                        EncryptedContent = "opaque",
+                        Signature = "signature",
+                        ToolChanges = scenario == 4 ? [] : [change],
+                    },
+                },
+            }
+        );
+        if (scenario == 2)
+        {
+            messages.Add(MakeSystemToolChangeMessage(MakeToolAdditionBlock("get_weather")));
+        }
+        if (scenario == 3)
+        {
+            messages.Add(MakeSystemToolChangeMessage(MakeToolRemovalBlock("get_weather")));
+        }
+        var parameters = BaseParams with { Messages = messages };
+        var before = JsonSerializer.Serialize(parameters.Messages, s_jsonOptions);
+        var runner = turns.Service.ToolRunner(parameters, scenario == 5 ? [] : [tool]);
+        if (streaming)
+        {
+            await foreach (var stream in runner.Streaming(ct).WithCancellation(ct))
+            {
+                await foreach (var _ in stream.WithCancellation(ct)) { }
+            }
+        }
+        else
+        {
+            await runner.RunUntilDoneAsync(ct);
+        }
+        Assert.Equal(2, turns.Requests.Count);
+        var result = Assert.Single(
+            SentMessages(turns.Requests[1])[^1].GetProperty("content").EnumerateArray()
+        );
+        if (scenario is 1 or 2 or 4)
+        {
+            Assert.Equal(["get_weather"], calls);
+            Assert.Equal("get_weather", result.GetProperty("content").GetString());
+        }
+        else
+        {
+            Assert.Empty(calls);
+            AssertToolNotFound(result, "get_weather");
+        }
+        AssertJson(before, turns.Requests[0].RawBodyData["messages"]);
+        Assert.Equal(before, JsonSerializer.Serialize(parameters.Messages, s_jsonOptions));
+        AssertToolsNeverChange(turns);
+    }
+
     // --- AddTools / RemoveTools ---
 
     /// <summary>
