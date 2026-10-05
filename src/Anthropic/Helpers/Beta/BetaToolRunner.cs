@@ -733,14 +733,25 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         var available = new HashSet<string>(_toolsByName.Keys, StringComparer.Ordinal);
         foreach (var message in messages)
         {
-            if (message.Role.Raw() != "system")
-                continue;
             if (!message.Content.TryPickBetaContentBlockParams(out var blocks))
                 continue;
 
             foreach (var block in blocks)
             {
-                ApplyToolChange(block, available);
+                if (message.Role.Raw() == "system")
+                {
+                    ApplyToolChange(block.Value, available);
+                }
+                else if (
+                    message.Role.Raw() == "assistant"
+                    && block.Value is BetaCompactionBlockParam compaction
+                )
+                {
+                    foreach (var change in compaction.ToolChanges ?? [])
+                    {
+                        ApplyToolChange(change.Value, available);
+                    }
+                }
             }
         }
 
@@ -773,9 +784,9 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         }
     }
 
-    private static void ApplyToolChange(BetaContentBlockParam block, HashSet<string> available)
+    private static void ApplyToolChange(object? block, HashSet<string> available)
     {
-        switch (block.Value)
+        switch (block)
         {
             case BetaRequestToolRemovalBlock removal:
                 if (ReferencedToolName(removal.Tool.Value) is { } removedName)
