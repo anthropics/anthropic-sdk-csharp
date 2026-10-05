@@ -324,7 +324,7 @@ public static class BetaMcp
         BetaCacheControlEphemeral? cacheControl
     )
     {
-        var mimeType = contents.MimeType;
+        var mimeType = contents.MimeType is { } rawMimeType ? NormalizeMimeType(rawMimeType) : null;
 
         if (mimeType != null && SupportedImageMimeTypes.Contains(mimeType))
         {
@@ -374,7 +374,7 @@ public static class BetaMcp
         }
 
         throw new AnthropicInvalidDataException(
-            $"Unsupported MIME type \"{mimeType}\" for resource: {contents.Uri}"
+            $"Unsupported MIME type \"{contents.MimeType}\" for resource: {contents.Uri}"
         );
     }
 
@@ -384,14 +384,15 @@ public static class BetaMcp
         BetaCacheControlEphemeral? cacheControl
     )
     {
-        if (!SupportedImageMimeTypes.Contains(mimeType))
+        var normalizedMimeType = NormalizeMimeType(mimeType);
+        if (!SupportedImageMimeTypes.Contains(normalizedMimeType))
         {
             throw new AnthropicInvalidDataException($"Unsupported image MIME type: {mimeType}");
         }
         return new BetaImageBlockParam
         {
             Source = new BetaImageBlockParamSource(
-                new BetaBase64ImageSource { Data = base64Data, MediaType = mimeType }
+                new BetaBase64ImageSource { Data = base64Data, MediaType = normalizedMimeType }
             ),
             CacheControl = cacheControl,
         };
@@ -446,8 +447,18 @@ public static class BetaMcp
         );
     }
 
+    private static string NormalizeMimeType(string mimeType)
+    {
+        var separator = mimeType.IndexOf(';');
+        return (separator < 0 ? mimeType : mimeType.Substring(0, separator))
+            .Trim()
+            .ToLowerInvariant();
+    }
+
     private static bool IsSupportedResourceMimeType(string? mimeType)
     {
+        if (mimeType != null)
+            mimeType = NormalizeMimeType(mimeType);
         return mimeType == null
             || mimeType.StartsWith("text/", StringComparison.Ordinal)
             || mimeType == "application/pdf"
