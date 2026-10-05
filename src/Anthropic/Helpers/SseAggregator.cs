@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
@@ -22,11 +24,18 @@ public abstract class SseAggregator<TMessage, TResult>
     /// Collects and filters the provided <see cref="IAsyncEnumerable{TMessage}"/> for aggregation with the <see cref="SseAggregatorExtensions.Aggregate(IAsyncEnumerable{RawMessageStreamEvent})"/> method.
     /// </summary>
     /// <param name="messageStream">An <see cref="IAsyncEnumerable{TMessage}"/> containing the messages to aggregate.</param>
-    /// <returns>An <see cref="IAsyncEnumerable{TMessage}"/> of all content messages used to build the aggregation result.</returns>
+    /// <returns>An <see cref="IAsyncEnumerable{TMessage}"/> of all content messages used to build the aggregation result.
+    /// Enumeration cancellation is forwarded to the source stream.</returns>
     /// <exception cref="InvalidOperationException">Will be thrown if the aggregator is in an invalid state.</exception>
     /// <exception cref="AnthropicInvalidDataException">Will be thrown if the aggregator encounters an invalid state of the source message stream.</exception>
-    public virtual async IAsyncEnumerable<TMessage> CollectAsync(
-        IAsyncEnumerable<TMessage> messageStream
+    public virtual IAsyncEnumerable<TMessage> CollectAsync(IAsyncEnumerable<TMessage> messageStream)
+    {
+        return CollectCoreAsync(messageStream);
+    }
+
+    private async IAsyncEnumerable<TMessage> CollectCoreAsync(
+        IAsyncEnumerable<TMessage> messageStream,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
         if (_messages is not null)
@@ -45,7 +54,9 @@ public abstract class SseAggregator<TMessage, TResult>
 
         var startMessageReceived = false;
         FilterResult filterResult = FilterResult.Ignore;
-        await foreach (var message in messageStream)
+        await foreach (
+            var message in messageStream.WithCancellation(cancellationToken).ConfigureAwait(false)
+        )
         {
             if (!_streamEnded)
             {
