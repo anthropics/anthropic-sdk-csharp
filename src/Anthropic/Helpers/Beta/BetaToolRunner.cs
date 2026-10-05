@@ -789,7 +789,12 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
     }
 
     private static string? ReferencedToolName(object? refValue) =>
-        refValue is BetaToolChangeToolReference r ? r.Name : null;
+        refValue switch
+        {
+            BetaToolChangeToolReference reference => reference.Name,
+            BetaToolChangeToolDefinitionParam definition => DefinitionName(definition.Definition),
+            _ => null,
+        };
 
     private async Task<List<BetaContentBlockParam>> ExecuteToolsAsync(
         List<BetaToolUseBlock> toolUseBlocks,
