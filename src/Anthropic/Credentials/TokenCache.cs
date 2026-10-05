@@ -18,6 +18,8 @@ internal sealed class TokenCache : IAccessTokenProvider
     private readonly IAccessTokenProvider _inner;
     private readonly SemaphoreSlim _refreshLock = new(1, 1);
     private volatile AccessToken? _cached;
+    private readonly object _cacheLock = new();
+    private long _cacheGeneration;
     private Task? _backgroundRefresh;
     private long _lastAdvisoryFailureUnix;
     private volatile bool _disposed;
@@ -34,7 +36,7 @@ internal sealed class TokenCache : IAccessTokenProvider
     {
         if (forceRefresh)
         {
-            _cached = null;
+            Invalidate();
             return await RefreshAndCacheAsync(forceRefresh: true, cancellationToken)
                 .ConfigureAwait(false);
         }
@@ -89,7 +91,32 @@ internal sealed class TokenCache : IAccessTokenProvider
 
     internal void Invalidate()
     {
-        _cached = null;
+        lock (_cacheLock)
+        {
+            _cacheGeneration++;
+            _cached = null;
+        }
+    }
+
+    private long CacheGeneration()
+    {
+        lock (_cacheLock)
+        {
+            return _cacheGeneration;
+        }
+    }
+
+    private void CacheIfCurrent(AccessToken token, long generation)
+    {
+        lock (_cacheLock)
+        {
+            // A refresh started before invalidation may finish for its original caller,
+            // but must not restore that token for later callers.
+            if (_cacheGeneration == generation)
+            {
+                _cached = token;
+            }
+        }
     }
 
     private async Task<AccessToken> RefreshAndCacheAsync(
@@ -121,10 +148,11 @@ internal sealed class TokenCache : IAccessTokenProvider
                 }
             }
 
+            var generation = CacheGeneration();
             var newToken = await _inner
                 .GetTokenAsync(forceRefresh, cancellationToken)
                 .ConfigureAwait(false);
-            _cached = newToken;
+            CacheIfCurrent(newToken, generation);
             return newToken;
         }
         finally
@@ -150,6 +178,7 @@ internal sealed class TokenCache : IAccessTokenProvider
                 return;
             }
 
+            var generation = CacheGeneration();
             _backgroundRefresh = Task.Run(async () =>
             {
                 try
@@ -157,7 +186,7 @@ internal sealed class TokenCache : IAccessTokenProvider
                     var newToken = await _inner
                         .GetTokenAsync(forceRefresh: false, CancellationToken.None)
                         .ConfigureAwait(false);
-                    _cached = newToken;
+                    CacheIfCurrent(newToken, generation);
                     Interlocked.Exchange(ref _lastAdvisoryFailureUnix, 0);
                 }
                 catch (Exception ex) when (ex is not OperationCanceledException)
