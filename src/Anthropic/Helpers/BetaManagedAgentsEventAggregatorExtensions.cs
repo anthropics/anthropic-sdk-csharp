@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Helpers;
@@ -28,13 +31,25 @@ public static class BetaManagedAgentsEventAggregatorExtensions
     /// </summary>
     /// <param name="source">The session event stream to aggregate.</param>
     /// <param name="aggregator">The aggregator to feed with each event.</param>
-    /// <returns>An <see cref="IAsyncEnumerable{T}"/> that mirrors <paramref name="source"/>.</returns>
-    public static async IAsyncEnumerable<BetaManagedAgentsStreamSessionEvents> CollectAsync(
+    /// <returns>An <see cref="IAsyncEnumerable{T}"/> that mirrors <paramref name="source"/>
+    /// and forwards enumeration cancellation to it.</returns>
+    public static IAsyncEnumerable<BetaManagedAgentsStreamSessionEvents> CollectAsync(
         this IAsyncEnumerable<BetaManagedAgentsStreamSessionEvents> source,
         BetaManagedAgentsEventAggregator aggregator
     )
     {
-        await foreach (var events in source)
+        return CollectCoreAsync(source, aggregator);
+    }
+
+    private static async IAsyncEnumerable<BetaManagedAgentsStreamSessionEvents> CollectCoreAsync(
+        IAsyncEnumerable<BetaManagedAgentsStreamSessionEvents> source,
+        BetaManagedAgentsEventAggregator aggregator,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (
+            var events in source.WithCancellation(cancellationToken).ConfigureAwait(false)
+        )
         {
             aggregator.Aggregate(events);
             yield return events;
