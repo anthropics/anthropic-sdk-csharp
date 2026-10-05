@@ -13,6 +13,151 @@ namespace Anthropic.Tests.Helpers.Beta.Mcp;
 
 public class BetaMcpTest
 {
+    [Theory]
+    [InlineData("image/png", "image/png")]
+    [InlineData("IMAGE/PNG", "image/png")]
+    [InlineData("image/jpeg; charset=binary", "image/jpeg")]
+    [InlineData(" IMAGE/GIF ; profile=\"A;B\" ", "image/gif")]
+    [InlineData("Image/WebP; profile=srgb", "image/webp")]
+    public void Content_ImageMediaTypeVariantsPreserveBytes(string mimeType, string expected)
+    {
+        var image = ImageContentBlock.FromBytes(new byte[] { 1, 2, 3 }, mimeType);
+        var cache = new BetaCacheControlEphemeral();
+        var result = BetaMcp.Content(image, cache);
+        var wire = JsonSerializer.SerializeToElement(result);
+        Assert.Equal("image", wire.GetProperty("type").GetString());
+        Assert.Equal(expected, wire.GetProperty("source").GetProperty("media_type").GetString());
+        Assert.Equal("AQID", wire.GetProperty("source").GetProperty("data").GetString());
+        Assert.Equal(
+            "ephemeral",
+            wire.GetProperty("cache_control").GetProperty("type").GetString()
+        );
+        Assert.Equal(mimeType, image.MimeType);
+        Assert.Equal(new byte[] { 1, 2, 3 }, image.DecodedData.ToArray());
+        var message = BetaMcp.Message(new PromptMessage { Role = McpRole.User, Content = image });
+        var messageWire = JsonSerializer.SerializeToElement(message);
+        Assert.Equal(
+            expected,
+            messageWire
+                .GetProperty("content")[0]
+                .GetProperty("source")
+                .GetProperty("media_type")
+                .GetString()
+        );
+        result.Validate();
+    }
+
+    [Theory]
+    [InlineData(" IMAGE/PNG ; profile=\"A;B\" ", "image/png")]
+    [InlineData("Application/PDF; version=1.7", "application/pdf")]
+    [InlineData("TEXT/PLAIN; charset=utf-8", "text/plain")]
+    [InlineData(" Text/Markdown ; charset=utf-8 ", "text/plain")]
+    public void ResourceMediaTypesPreserveSelectionAndFileMetadata(string mimeType, string expected)
+    {
+        var bytes = Encoding.UTF8.GetBytes("exact bytes");
+        var resource = BlobResourceContents.FromBytes(bytes, "file:///item", mimeType);
+        var response = new ReadResourceResult
+        {
+            Contents =
+            {
+                BlobResourceContents.FromBytes(
+                    new byte[] { 0 },
+                    "file:///unknown",
+                    "application/octet-stream"
+                ),
+                resource,
+                new TextResourceContents
+                {
+                    Uri = "file:///fallback",
+                    MimeType = "text/plain",
+                    Text = "wrong item",
+                },
+            },
+        };
+        var block = BetaMcp.ResourceToContent(response, new BetaCacheControlEphemeral());
+        var wire = JsonSerializer.SerializeToElement(block);
+        var source = wire.GetProperty("source");
+        Assert.Equal(expected, source.GetProperty("media_type").GetString());
+        Assert.Equal(
+            expected == "text/plain" ? "exact bytes" : Convert.ToBase64String(bytes),
+            source.GetProperty("data").GetString()
+        );
+        Assert.Equal(
+            "ephemeral",
+            wire.GetProperty("cache_control").GetProperty("type").GetString()
+        );
+        var embedded = BetaMcp.Content(new EmbeddedResourceBlock { Resource = resource });
+        Assert.Equal(
+            source.GetRawText(),
+            JsonSerializer.SerializeToElement(embedded).GetProperty("source").GetRawText()
+        );
+        var file = BetaMcp.ResourceToFile(new ReadResourceResult { Contents = { resource } });
+        Assert.Equal(mimeType, file.MediaType);
+        Assert.Equal(bytes, file.Data);
+        Assert.Equal(mimeType, resource.MimeType);
+        Assert.Equal(bytes, resource.DecodedData.ToArray());
+        block.Validate();
+    }
+
+    [Theory]
+    [InlineData("IMAGE/BMP; version=1")]
+    [InlineData("application/octet-stream")]
+    [InlineData("")]
+    [InlineData("; charset=utf-8")]
+    public void NormalizedMediaTypesDoNotBroadenSupportedKinds(string mimeType)
+    {
+        var image = new ImageContentBlock
+        {
+            Data = Encoding.UTF8.GetBytes("AA=="),
+            MimeType = mimeType,
+        };
+        Assert.Throws<AnthropicInvalidDataException>(() => BetaMcp.Content(image));
+        var resource = new BlobResourceContents
+        {
+            Uri = "file:///x",
+            Blob = Encoding.UTF8.GetBytes("AA=="),
+            MimeType = mimeType,
+        };
+        Assert.Throws<AnthropicInvalidDataException>(() =>
+            BetaMcp.ResourceToContent(new ReadResourceResult { Contents = { resource } })
+        );
+    }
+
+    [Theory]
+    [InlineData("IMAGE/PNG; version=1")]
+    [InlineData("APPLICATION/PDF; version=1")]
+    public void NormalizedBinaryResourcesStillRequireBlobData(string mimeType)
+    {
+        var embedded = new EmbeddedResourceBlock
+        {
+            Resource = new TextResourceContents
+            {
+                Uri = "file:///x",
+                MimeType = mimeType,
+                Text = "not a blob",
+            },
+        };
+        var error = Assert.Throws<AnthropicInvalidDataException>(() => BetaMcp.Content(embedded));
+        Assert.Contains("must have blob data", error.Message);
+    }
+
+    [Fact]
+    public void MissingResourceMediaTypeKeepsTextDefault()
+    {
+        var result = BetaMcp.ResourceToContent(
+            new ReadResourceResult
+            {
+                Contents =
+                {
+                    new TextResourceContents { Uri = "file:///x", Text = "default" },
+                },
+            }
+        );
+        var source = JsonSerializer.SerializeToElement(result).GetProperty("source");
+        Assert.Equal("text/plain", source.GetProperty("media_type").GetString());
+        Assert.Equal("default", source.GetProperty("data").GetString());
+    }
+
     [Fact]
     public void Content_TextBlock_ConvertsToBetaText()
     {
