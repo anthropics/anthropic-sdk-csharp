@@ -438,6 +438,73 @@ public class BetaToolRunnerTest
         Assert.Equal("Sunny", result.GetProperty("content").GetString());
     }
 
+    [Theory]
+    [InlineData(false, false, true)]
+    [InlineData(true, false, true)]
+    [InlineData(false, true, true)]
+    [InlineData(true, true, true)]
+    [InlineData(false, false, false)]
+    [InlineData(true, false, false)]
+    public async Task InlineDefinition_ReadditionHonorsCallOrderAndRegistration(
+        bool streaming,
+        bool removeAfter,
+        bool registered
+    )
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = streaming
+            ? new ScriptedTurns(MakeToolUseStream("get_weather"), MakeStream("Done", "end_turn"))
+            : new ScriptedTurns(MakeToolUseTurn("get_weather"), MakeFinalTurn());
+        var calls = new List<string>();
+        var tool = MakeRecordingTool("get_weather", WeatherToolDefinition, calls);
+        BetaContentBlockParam addition = new BetaRequestToolAdditionBlock(
+            new BetaToolChangeToolDefinitionParam(WeatherToolDefinition)
+        );
+        var messages = new List<BetaMessageParam>(BaseParams.Messages)
+        {
+            MakeSystemToolChangeMessage(MakeToolRemovalBlock("get_weather")),
+            MakeSystemToolChangeMessage(addition),
+        };
+        if (removeAfter)
+        {
+            messages.Add(MakeSystemToolChangeMessage(MakeToolRemovalBlock("get_weather")));
+        }
+        var parameters = BaseParams with { Messages = messages };
+        var originalHistory = JsonSerializer.Serialize(parameters.Messages, s_jsonOptions);
+        var runner = turns.Service.ToolRunner(parameters, registered ? [tool] : []);
+        if (streaming)
+        {
+            await foreach (var stream in runner.Streaming(ct).WithCancellation(ct))
+            {
+                await foreach (var _ in stream.WithCancellation(ct)) { }
+            }
+        }
+        else
+        {
+            await runner.RunUntilDoneAsync(ct);
+        }
+        Assert.Equal(2, turns.Requests.Count);
+        AssertJson(
+            ToolChangesJson(ToolAdditionJson(WeatherToolDefinition)),
+            SentMessages(turns.Requests[0])[2]
+        );
+        var result = Assert.Single(
+            SentMessages(turns.Requests[1])[^1].GetProperty("content").EnumerateArray()
+        );
+        if (registered && !removeAfter)
+        {
+            Assert.Equal(["get_weather"], calls);
+            Assert.Equal("get_weather", result.GetProperty("content").GetString());
+        }
+        else
+        {
+            Assert.Empty(calls);
+            AssertToolNotFound(result, "get_weather");
+        }
+        Assert.Equal(originalHistory, JsonSerializer.Serialize(parameters.Messages, s_jsonOptions));
+        AssertToolsNeverChange(turns);
+    }
+
     // --- AddTools / RemoveTools ---
 
     /// <summary>
