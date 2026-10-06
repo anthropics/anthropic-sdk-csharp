@@ -149,6 +149,111 @@ public class ModelWithJsonRequired : StructuredOutputModel
 /// </summary>
 public class StructuredOutputTest
 {
+    [SchemaClass("An empty payload")]
+    public sealed class EmptyPayload : StructuredOutputModel { }
+
+    public sealed class IgnoredPayload : StructuredOutputModel
+    {
+        [JsonIgnore]
+        public string InternalValue { get; set; } = "ignored";
+    }
+
+    public sealed class NestedEmptyPayload : StructuredOutputModel
+    {
+        public EmptyPayload Child { get; set; } = new();
+        public List<IgnoredPayload> Items { get; set; } = [];
+    }
+
+    [JsonPolymorphic(TypeDiscriminatorPropertyName = "kind")]
+    [JsonDerivedType(typeof(EmptyChoice), "empty")]
+    [JsonDerivedType(typeof(NamedChoice), "named")]
+    public abstract class ChoicePayload { }
+
+    public sealed class EmptyChoice : ChoicePayload { }
+
+    public sealed class NamedChoice : ChoicePayload
+    {
+        public string Name { get; set; } = "";
+    }
+
+    [Fact]
+    public void EmptyObjectCorrectionDoesNotClosePolymorphicUnions()
+    {
+        var schema = StructuredOutput.ToJsonSchema<ChoicePayload>();
+        Assert.IsType<JsonArray>(schema["anyOf"]);
+        Assert.False(schema.ContainsKey("properties"));
+        Assert.False(schema.ContainsKey("additionalProperties"));
+    }
+
+    private static void AssertClosedEmptySchema(JsonNode? schema)
+    {
+        var obj = Assert.IsType<JsonObject>(schema);
+        Assert.Equal("object", obj["type"]?.GetValue<string>());
+        Assert.False(
+            Assert
+                .IsType<JsonValue>(obj["additionalProperties"], exactMatch: false)
+                .GetValue<bool>()
+        );
+        Assert.Empty(Assert.IsType<JsonObject>(obj["properties"]));
+        Assert.False(obj.ContainsKey("required"));
+    }
+
+    [Fact]
+    public void EmptyObjectSchemasAreClosedAndKeepDescriptions()
+    {
+        var first = StructuredOutput.ToJsonSchema<EmptyPayload>();
+        AssertClosedEmptySchema(first);
+        Assert.Equal("An empty payload", first["description"]?.GetValue<string>());
+        AssertClosedEmptySchema(StructuredOutput.ToJsonSchema<IgnoredPayload>());
+        first["properties"] = new JsonObject
+        {
+            ["callerEdit"] = new JsonObject { ["type"] = "string" },
+        };
+        AssertClosedEmptySchema(StructuredOutput.ToJsonSchema<EmptyPayload>());
+    }
+
+    [Fact]
+    public void NestedEmptySchemasAndArrayItemsAreClosed()
+    {
+        var root = StructuredOutput.ToJsonSchema<NestedEmptyPayload>();
+        var properties = Assert.IsType<JsonObject>(root["properties"]);
+        AssertClosedEmptySchema(properties["child"]);
+        AssertClosedEmptySchema(properties["items"]?["items"]);
+        var parsed = StructuredOutput.Parse<NestedEmptyPayload>("""{"child":{},"items":[{}]}""");
+        Assert.NotNull(parsed.Child);
+        Assert.Equal("ignored", Assert.Single(parsed.Items).InternalValue);
+    }
+
+    [Fact]
+    public void EmptyFormatFactoriesSerializeClosedObjectsOnBothSurfaces()
+    {
+        var regular = StructuredOutput.CreateJsonFormat<EmptyPayload>();
+        var beta = StructuredOutput.CreateBetaJsonFormat<EmptyPayload>();
+        foreach (
+            var wire in new[]
+            {
+                JsonSerializer.SerializeToElement(regular),
+                JsonSerializer.SerializeToElement(beta),
+            }
+        )
+        {
+            Assert.Equal("json_schema", wire.GetProperty("type").GetString());
+            var schema = wire.GetProperty("schema");
+            Assert.False(schema.GetProperty("additionalProperties").GetBoolean());
+            Assert.Empty(schema.GetProperty("properties").EnumerateObject());
+        }
+        Assert.IsType<EmptyPayload>(StructuredOutput.Parse<EmptyPayload>("{}"));
+    }
+
+    [Fact]
+    public void EmptyObjectCorrectionDoesNotCloseDictionaryValues()
+    {
+        var schema = StructuredOutput.ToJsonSchema<Dictionary<string, int>>();
+        Assert.Equal("integer", schema["additionalProperties"]?["type"]?.GetValue<string>());
+        Assert.False(schema.ContainsKey("properties"));
+        Assert.Equal("string", StructuredOutput.ToJsonSchema<string>()["type"]?.GetValue<string>());
+    }
+
     // =========================================================================
     // Schema Generation Tests
     // =========================================================================
