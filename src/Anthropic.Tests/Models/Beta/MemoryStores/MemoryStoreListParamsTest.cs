@@ -101,6 +101,46 @@ public class MemoryStoreListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new MemoryStoreListParams
+        {
+            CreatedAtGte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            CreatedAtLte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            IncludeArchived = true,
+            Limit = 0,
+            Page = "page",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            CreatedAtGte = null,
+            CreatedAtLte = null,
+            IncludeArchived = null,
+            Limit = null,
+            Page = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.CreatedAtGte);
+        Assert.False(parameters.RawQueryData.ContainsKey("created_at[gte]"));
+        Assert.Null(parameters.CreatedAtLte);
+        Assert.False(parameters.RawQueryData.ContainsKey("created_at[lte]"));
+        Assert.Null(parameters.IncludeArchived);
+        Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Page);
+        Assert.False(parameters.RawQueryData.ContainsKey("page"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         MemoryStoreListParams parameters = new()

@@ -248,6 +248,110 @@ public class MessageCountTokensParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new Messages::MessageCountTokensParams
+        {
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus5,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            System = new(
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "The grass is green. The sky is blue.",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
+            ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new Messages::Tool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = Messages::Type.Custom,
+                },
+            ],
+            UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            OutputConfig = null,
+            System = null,
+            Thinking = null,
+            ToolChoice = null,
+            Tools = null,
+            UserProfileID = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.OutputConfig);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_config"));
+        Assert.Null(parameters.System);
+        Assert.False(parameters.RawBodyData.ContainsKey("system"));
+        Assert.Null(parameters.Thinking);
+        Assert.False(parameters.RawBodyData.ContainsKey("thinking"));
+        Assert.Null(parameters.ToolChoice);
+        Assert.False(parameters.RawBodyData.ContainsKey("tool_choice"));
+        Assert.Null(parameters.Tools);
+        Assert.False(parameters.RawBodyData.ContainsKey("tools"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new Messages::MessageCountTokensParams

@@ -53,6 +53,7 @@ public sealed record class BetaManagedAgentsContentSha256Precondition : JsonMode
         {
             if (value == null)
             {
+                this._rawData.Remove("content_sha256");
                 return;
             }
 

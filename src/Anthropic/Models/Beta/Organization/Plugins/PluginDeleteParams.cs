@@ -56,6 +56,7 @@ public record class PluginDeleteParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 

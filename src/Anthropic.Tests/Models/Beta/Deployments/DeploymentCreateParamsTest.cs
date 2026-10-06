@@ -256,6 +256,76 @@ public class DeploymentCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new DeploymentCreateParams
+        {
+            Agent = "string",
+            EnvironmentID = "x",
+            InitialEvents =
+            [
+                new BetaManagedAgentsUserMessageEventParams()
+                {
+                    Content =
+                    [
+                        new BetaManagedAgentsTextBlock()
+                        {
+                            Text = "Where is my order #1234?",
+                            Type = BetaManagedAgentsTextBlockType.Text,
+                        },
+                    ],
+                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
+                },
+            ],
+            Name = "x",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
+            },
+            Description = "description",
+            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
+            Resources =
+            [
+                new Sessions::BetaManagedAgentsFileResourceParams()
+                {
+                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
+                    MountPath = "/uploads/receipt.pdf",
+                },
+            ],
+            Schedule = new()
+            {
+                Expression = "0 9 * * 1-5",
+                Timezone = "America/Los_Angeles",
+                Type = BetaManagedAgentsScheduleParamsType.Cron,
+            },
+            VaultIds = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Metadata = null,
+            Resources = null,
+            VaultIds = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Resources);
+        Assert.False(parameters.RawBodyData.ContainsKey("resources"));
+        Assert.Null(parameters.VaultIds);
+        Assert.False(parameters.RawBodyData.ContainsKey("vault_ids"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new DeploymentCreateParams

@@ -45,6 +45,7 @@ public record class WorkAckParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 

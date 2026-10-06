@@ -42,6 +42,7 @@ public record class BatchRetrieveParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

@@ -84,6 +84,32 @@ public class MemoryVersionRetrieveParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new MemoryVersionRetrieveParams
+        {
+            MemoryStoreID = "memory_store_id",
+            MemoryVersionID = "memory_version_id",
+            View = BetaManagedAgentsMemoryView.Basic,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            View = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.View);
+        Assert.False(parameters.RawQueryData.ContainsKey("view"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         MemoryVersionRetrieveParams parameters = new()

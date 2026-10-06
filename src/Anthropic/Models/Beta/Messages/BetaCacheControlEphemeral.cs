@@ -43,6 +43,7 @@ public sealed record class BetaCacheControlEphemeral : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("ttl");
                 return;
             }
 

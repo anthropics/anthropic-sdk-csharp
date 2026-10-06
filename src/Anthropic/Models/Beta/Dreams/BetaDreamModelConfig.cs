@@ -45,6 +45,7 @@ public sealed record class BetaDreamModelConfig : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("speed");
                 return;
             }
 

@@ -74,6 +74,31 @@ public class AgentRetrieveParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new AgentRetrieveParams
+        {
+            AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
+            Version = 0,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Version = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Version);
+        Assert.False(parameters.RawQueryData.ContainsKey("version"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         AgentRetrieveParams parameters = new()

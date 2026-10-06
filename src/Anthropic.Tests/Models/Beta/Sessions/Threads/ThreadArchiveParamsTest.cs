@@ -15,13 +15,13 @@ public class ThreadArchiveParamsTest : TestBase
         var parameters = new ThreadArchiveParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedSessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7";
-        string expectedThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
+        string expectedThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -45,7 +45,7 @@ public class ThreadArchiveParamsTest : TestBase
         var parameters = new ThreadArchiveParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
         };
 
         Assert.Null(parameters.Betas);
@@ -60,8 +60,30 @@ public class ThreadArchiveParamsTest : TestBase
         var parameters = new ThreadArchiveParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
 
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new ThreadArchiveParams
+        {
+            SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
             // Null should be interpreted as omitted for these properties
             Betas = null,
             WorkspaceID = null,
@@ -79,7 +101,7 @@ public class ThreadArchiveParamsTest : TestBase
         ThreadArchiveParams parameters = new()
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -87,7 +109,7 @@ public class ThreadArchiveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/threads/sthr_011CZkZVWa6oIjw0rgXZpnBt/archive?beta=true"
+                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/threads/sthr_011CZkZVWa6oJjw1rgXZpnBt/archive?beta=true"
                 ),
                 url
             )
@@ -101,7 +123,7 @@ public class ThreadArchiveParamsTest : TestBase
         ThreadArchiveParams parameters = new()
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -124,7 +146,7 @@ public class ThreadArchiveParamsTest : TestBase
         var parameters = new ThreadArchiveParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };

@@ -35,6 +35,7 @@ public record class RbacRoleListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 

@@ -54,6 +54,24 @@ public class WorkspaceListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new WorkspaceListParams
+        {
+            ServiceAccountID = "service_account_id",
+            Limit = 1,
+            Page = "page",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Limit = null,
+        };
+
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new WorkspaceListParams

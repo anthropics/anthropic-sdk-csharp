@@ -153,6 +153,7 @@ public sealed record class BetaEnvironment : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("scope");
                 return;
             }
 

@@ -197,6 +197,75 @@ public class SessionCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new SessionCreateParams
+        {
+            Agent = "agent_011CZkYpogX7uDKUyvBTophP",
+            EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
+            Budget = new()
+            {
+                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                Type = BetaManagedAgentsBudgetLimitType.Limit,
+            },
+            InitialEvents =
+            [
+                new BetaManagedAgentsUserMessageEventParams()
+                {
+                    Content =
+                    [
+                        new BetaManagedAgentsTextBlock()
+                        {
+                            Text = "Where is my order #1234?",
+                            Type = BetaManagedAgentsTextBlockType.Text,
+                        },
+                    ],
+                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
+                },
+            ],
+            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
+            Resources =
+            [
+                new BetaManagedAgentsFileResourceParams()
+                {
+                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    Type = BetaManagedAgentsFileResourceParamsType.File,
+                    MountPath = "/uploads/receipt.pdf",
+                },
+            ],
+            Title = "Order #1234 inquiry",
+            VaultIds = ["string"],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Budget = null,
+            InitialEvents = null,
+            Metadata = null,
+            Resources = null,
+            VaultIds = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Budget);
+        Assert.False(parameters.RawBodyData.ContainsKey("budget"));
+        Assert.Null(parameters.InitialEvents);
+        Assert.False(parameters.RawBodyData.ContainsKey("initial_events"));
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Resources);
+        Assert.False(parameters.RawBodyData.ContainsKey("resources"));
+        Assert.Null(parameters.VaultIds);
+        Assert.False(parameters.RawBodyData.ContainsKey("vault_ids"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new SessionCreateParams

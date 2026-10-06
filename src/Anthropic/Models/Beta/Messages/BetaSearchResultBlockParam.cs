@@ -84,6 +84,7 @@ public sealed record class BetaSearchResultBlockParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("citations");
                 return;
             }
 

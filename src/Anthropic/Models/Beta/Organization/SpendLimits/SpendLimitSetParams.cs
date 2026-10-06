@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
@@ -79,10 +80,38 @@ public record class SpendLimitSetParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("period");
                 return;
             }
 
             this._rawBodyData.Set("period", value);
+        }
+    }
+
+    /// <summary>
+    /// Optional header to specify the beta version(s) you want to use.
+    /// </summary>
+    public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, AnthropicBeta>>
+            >("anthropic-beta");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawHeaderData.Remove("anthropic-beta");
+                return;
+            }
+
+            this._rawHeaderData.Set<ImmutableArray<ApiEnum<string, AnthropicBeta>>?>(
+                "anthropic-beta",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 

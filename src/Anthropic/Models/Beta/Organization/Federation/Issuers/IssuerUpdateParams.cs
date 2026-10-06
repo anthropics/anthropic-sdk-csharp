@@ -143,6 +143,7 @@ public record class IssuerUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 

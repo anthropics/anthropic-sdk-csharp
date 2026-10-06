@@ -35,6 +35,7 @@ public sealed record class WebFetchUrlSources : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("client_tool_results");
                 return;
             }
 
@@ -58,6 +59,7 @@ public sealed record class WebFetchUrlSources : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("server_tool_results");
                 return;
             }
 
@@ -79,6 +81,7 @@ public sealed record class WebFetchUrlSources : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("user_input");
                 return;
             }
 

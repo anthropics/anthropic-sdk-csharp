@@ -55,6 +55,7 @@ public sealed record class BetaSkillParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("version");
                 return;
             }
 

@@ -75,6 +75,7 @@ public sealed record class BetaManagedAgentsBashToolConfigParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("type");
                 return;
             }
 

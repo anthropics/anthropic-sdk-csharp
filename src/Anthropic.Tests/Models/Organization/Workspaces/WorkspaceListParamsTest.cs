@@ -73,6 +73,38 @@ public class WorkspaceListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new WorkspaceListParams
+        {
+            AfterID = "after_id",
+            BeforeID = "before_id",
+            IncludeArchived = true,
+            IncludeDefault = true,
+            Limit = 1,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AfterID = null,
+            BeforeID = null,
+            IncludeArchived = null,
+            IncludeDefault = null,
+            Limit = null,
+        };
+
+        Assert.Null(parameters.AfterID);
+        Assert.False(parameters.RawQueryData.ContainsKey("after_id"));
+        Assert.Null(parameters.BeforeID);
+        Assert.False(parameters.RawQueryData.ContainsKey("before_id"));
+        Assert.Null(parameters.IncludeArchived);
+        Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
+        Assert.Null(parameters.IncludeDefault);
+        Assert.False(parameters.RawQueryData.ContainsKey("include_default"));
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         WorkspaceListParams parameters = new()

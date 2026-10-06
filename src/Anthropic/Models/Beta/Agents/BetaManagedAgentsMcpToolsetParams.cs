@@ -63,6 +63,7 @@ public sealed record class BetaManagedAgentsMcpToolsetParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("configs");
                 return;
             }
 

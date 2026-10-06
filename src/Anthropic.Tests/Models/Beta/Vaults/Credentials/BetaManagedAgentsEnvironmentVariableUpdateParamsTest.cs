@@ -169,6 +169,27 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
+        {
+            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
+            InjectionLocation = new() { Body = true, Header = true },
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
+                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
+            ),
+            SecretValue = "x",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            InjectionLocation = null,
+        };
+
+        Assert.Null(model.InjectionLocation);
+        Assert.False(model.RawData.ContainsKey("injection_location"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams

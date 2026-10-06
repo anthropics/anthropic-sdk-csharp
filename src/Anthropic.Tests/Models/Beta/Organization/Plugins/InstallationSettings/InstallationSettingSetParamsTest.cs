@@ -74,6 +74,25 @@ public class InstallationSettingSetParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new InstallationSettingSetParams
+        {
+            PluginID = "plugin_id",
+            Target = "target",
+            InstallationPreference = InstallationPreference.Required,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         InstallationSettingSetParams parameters = new()

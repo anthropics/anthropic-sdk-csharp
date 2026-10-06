@@ -39,6 +39,7 @@ public record class ServiceAccountListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("include_archived");
                 return;
             }
 
@@ -60,6 +61,7 @@ public record class ServiceAccountListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 

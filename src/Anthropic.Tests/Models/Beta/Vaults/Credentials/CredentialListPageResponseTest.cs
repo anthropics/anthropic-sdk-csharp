@@ -17,7 +17,7 @@ public class CredentialListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                    ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
                     Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
                     {
@@ -40,7 +40,7 @@ public class CredentialListPageResponseTest : TestBase
         [
             new()
             {
-                ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                 ArchivedAt = null,
                 Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
                 {
@@ -75,7 +75,7 @@ public class CredentialListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                    ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
                     Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
                     {
@@ -112,7 +112,7 @@ public class CredentialListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                    ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
                     Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
                     {
@@ -142,7 +142,7 @@ public class CredentialListPageResponseTest : TestBase
         [
             new()
             {
-                ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                 ArchivedAt = null,
                 Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
                 {
@@ -177,7 +177,7 @@ public class CredentialListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                    ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
                     Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
                     {
@@ -238,6 +238,42 @@ public class CredentialListPageResponseTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new Credentials::CredentialListPageResponse
+        {
+            Data =
+            [
+                new()
+                {
+                    ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
+                    ArchivedAt = null,
+                    Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
+                    {
+                        McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
+                        Type =
+                            Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
+                    },
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    Metadata = new Dictionary<string, string>() { { "environment", "production" } },
+                    Type = Credentials::Type.VaultCredential,
+                    UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
+                    DisplayName = "Example credential",
+                },
+            ],
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Data = null,
+        };
+
+        Assert.Null(model.Data);
+        Assert.False(model.RawData.ContainsKey("data"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new Credentials::CredentialListPageResponse
@@ -260,7 +296,7 @@ public class CredentialListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                    ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
                     Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
                     {
@@ -291,7 +327,7 @@ public class CredentialListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                    ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
                     Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
                     {
@@ -321,7 +357,7 @@ public class CredentialListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                    ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
                     Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
                     {
@@ -354,7 +390,7 @@ public class CredentialListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                    ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
                     Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
                     {
@@ -386,7 +422,7 @@ public class CredentialListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                    ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
                     Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
                     {

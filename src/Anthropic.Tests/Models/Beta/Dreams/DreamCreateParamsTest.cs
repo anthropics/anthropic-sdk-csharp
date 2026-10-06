@@ -124,6 +124,42 @@ public class DreamCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new DreamCreateParams
+        {
+            Inputs =
+            [
+                new BetaDreamMemoryStoreInput()
+                {
+                    MemoryStoreID = "x",
+                    Type = BetaDreamMemoryStoreInputType.MemoryStore,
+                },
+            ],
+            Model = "string",
+            Instructions = "x",
+            OutputBehavior = new BetaOutputBehaviorCreateNew(
+                BetaOutputBehaviorCreateNewType.CreateNew
+            ),
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            OutputBehavior = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.OutputBehavior);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_behavior"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new DreamCreateParams

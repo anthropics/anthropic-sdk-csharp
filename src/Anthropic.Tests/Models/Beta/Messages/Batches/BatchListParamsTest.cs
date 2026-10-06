@@ -85,6 +85,38 @@ public class BatchListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new BatchListParams
+        {
+            AfterID = "after_id",
+            BeforeID = "before_id",
+            Limit = 1,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AfterID = null,
+            BeforeID = null,
+            Limit = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.AfterID);
+        Assert.False(parameters.RawQueryData.ContainsKey("after_id"));
+        Assert.Null(parameters.BeforeID);
+        Assert.False(parameters.RawQueryData.ContainsKey("before_id"));
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         BatchListParams parameters = new()

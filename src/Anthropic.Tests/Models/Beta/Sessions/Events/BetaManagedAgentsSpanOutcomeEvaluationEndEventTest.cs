@@ -16,8 +16,8 @@ public class BetaManagedAgentsSpanOutcomeEvaluationEndEventTest : TestBase
             ID = "sevt_011CZkZUVz5nHiv9qfWYomas",
             Explanation = "All five sections present with inline citations.",
             Iteration = 0,
-            OutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnmzr",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:31Z"),
             Result = "satisfied",
             Type = BetaManagedAgentsSpanOutcomeEvaluationEndEventType.SpanOutcomeEvaluationEnd,
@@ -34,8 +34,8 @@ public class BetaManagedAgentsSpanOutcomeEvaluationEndEventTest : TestBase
         string expectedID = "sevt_011CZkZUVz5nHiv9qfWYomas";
         string expectedExplanation = "All five sections present with inline citations.";
         int expectedIteration = 0;
-        string expectedOutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnlzr";
-        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP";
+        string expectedOutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnmzr";
+        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:31Z");
         string expectedResult = "satisfied";
         ApiEnum<string, BetaManagedAgentsSpanOutcomeEvaluationEndEventType> expectedType =
@@ -68,8 +68,8 @@ public class BetaManagedAgentsSpanOutcomeEvaluationEndEventTest : TestBase
             ID = "sevt_011CZkZUVz5nHiv9qfWYomas",
             Explanation = "All five sections present with inline citations.",
             Iteration = 0,
-            OutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnmzr",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:31Z"),
             Result = "satisfied",
             Type = BetaManagedAgentsSpanOutcomeEvaluationEndEventType.SpanOutcomeEvaluationEnd,
@@ -101,8 +101,8 @@ public class BetaManagedAgentsSpanOutcomeEvaluationEndEventTest : TestBase
             ID = "sevt_011CZkZUVz5nHiv9qfWYomas",
             Explanation = "All five sections present with inline citations.",
             Iteration = 0,
-            OutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnmzr",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:31Z"),
             Result = "satisfied",
             Type = BetaManagedAgentsSpanOutcomeEvaluationEndEventType.SpanOutcomeEvaluationEnd,
@@ -127,8 +127,8 @@ public class BetaManagedAgentsSpanOutcomeEvaluationEndEventTest : TestBase
         string expectedID = "sevt_011CZkZUVz5nHiv9qfWYomas";
         string expectedExplanation = "All five sections present with inline citations.";
         int expectedIteration = 0;
-        string expectedOutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnlzr";
-        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP";
+        string expectedOutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnmzr";
+        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:31Z");
         string expectedResult = "satisfied";
         ApiEnum<string, BetaManagedAgentsSpanOutcomeEvaluationEndEventType> expectedType =
@@ -161,8 +161,8 @@ public class BetaManagedAgentsSpanOutcomeEvaluationEndEventTest : TestBase
             ID = "sevt_011CZkZUVz5nHiv9qfWYomas",
             Explanation = "All five sections present with inline citations.",
             Iteration = 0,
-            OutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnmzr",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:31Z"),
             Result = "satisfied",
             Type = BetaManagedAgentsSpanOutcomeEvaluationEndEventType.SpanOutcomeEvaluationEnd,
@@ -187,8 +187,8 @@ public class BetaManagedAgentsSpanOutcomeEvaluationEndEventTest : TestBase
             ID = "sevt_011CZkZUVz5nHiv9qfWYomas",
             Explanation = "All five sections present with inline citations.",
             Iteration = 0,
-            OutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeEvaluationStartID = "sevt_011CZkZTUy4mGhu8peVXnmzr",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:31Z"),
             Result = "satisfied",
             Type = BetaManagedAgentsSpanOutcomeEvaluationEndEventType.SpanOutcomeEvaluationEnd,

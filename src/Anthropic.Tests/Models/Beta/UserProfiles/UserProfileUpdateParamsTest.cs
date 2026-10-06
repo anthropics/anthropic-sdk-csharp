@@ -138,6 +138,51 @@ public class UserProfileUpdateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new UserProfileUpdateParams
+        {
+            UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            AccessType = UserProfileUpdateParamsAccessType.Application,
+            ExternalID = "user_12345",
+            ExternalUserDetails = new()
+            {
+                AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
+                Country = "country",
+                EmailHash = "x",
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                NameHash = "x",
+                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ReferenceID = "x",
+            },
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
+            Name = "x",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            ExternalUserDetails = null,
+            ExternalUserOnboardedAt = null,
+            Metadata = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.ExternalUserDetails);
+        Assert.False(parameters.RawBodyData.ContainsKey("external_user_details"));
+        Assert.Null(parameters.ExternalUserOnboardedAt);
+        Assert.False(parameters.RawBodyData.ContainsKey("external_user_onboarded_at"));
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new UserProfileUpdateParams

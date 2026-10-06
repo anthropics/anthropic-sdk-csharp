@@ -14,7 +14,7 @@ public class BetaManagedAgentsUserMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserMessageEvent
         {
-            ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+            ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -27,7 +27,7 @@ public class BetaManagedAgentsUserMessageEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
         };
 
-        string expectedID = "sevt_011CZkZGOp0iBcp4kaQSihUmy";
+        string expectedID = "sevt_011CZkZGPp1iBcp4kaQSihUm";
         List<BetaManagedAgentsUserMessageEventContent> expectedContent =
         [
             new BetaManagedAgentsTextBlock()
@@ -55,7 +55,7 @@ public class BetaManagedAgentsUserMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserMessageEvent
         {
-            ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+            ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -82,7 +82,7 @@ public class BetaManagedAgentsUserMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserMessageEvent
         {
-            ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+            ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -102,7 +102,7 @@ public class BetaManagedAgentsUserMessageEventTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "sevt_011CZkZGOp0iBcp4kaQSihUmy";
+        string expectedID = "sevt_011CZkZGPp1iBcp4kaQSihUm";
         List<BetaManagedAgentsUserMessageEventContent> expectedContent =
         [
             new BetaManagedAgentsTextBlock()
@@ -130,7 +130,7 @@ public class BetaManagedAgentsUserMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserMessageEvent
         {
-            ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+            ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -151,7 +151,7 @@ public class BetaManagedAgentsUserMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserMessageEvent
         {
-            ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+            ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -172,7 +172,7 @@ public class BetaManagedAgentsUserMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserMessageEvent
         {
-            ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+            ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -192,7 +192,7 @@ public class BetaManagedAgentsUserMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserMessageEvent
         {
-            ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+            ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -215,7 +215,7 @@ public class BetaManagedAgentsUserMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserMessageEvent
         {
-            ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+            ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -237,7 +237,7 @@ public class BetaManagedAgentsUserMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserMessageEvent
         {
-            ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+            ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
             Content =
             [
                 new BetaManagedAgentsTextBlock()

@@ -222,11 +222,7 @@ public class BetaContentBlockTest : TestBase
             Signature = "signature",
             ToolChanges =
             [
-                new BetaResponseToolAdditionBlock(
-                    new BetaResponseToolAdditionBlockTool(
-                        new BetaResponseToolChangeToolReference("name")
-                    )
-                ),
+                new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
             ],
         };
         value.Validate();
@@ -569,11 +565,7 @@ public class BetaContentBlockTest : TestBase
             Signature = "signature",
             ToolChanges =
             [
-                new BetaResponseToolAdditionBlock(
-                    new BetaResponseToolAdditionBlockTool(
-                        new BetaResponseToolChangeToolReference("name")
-                    )
-                ),
+                new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
             ],
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

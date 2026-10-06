@@ -55,6 +55,7 @@ public sealed record class BetaManagedAgentsMemoryPathConflictError : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("conflicting_memory_id");
                 return;
             }
 
@@ -77,6 +78,7 @@ public sealed record class BetaManagedAgentsMemoryPathConflictError : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("conflicting_path");
                 return;
             }
 
@@ -99,6 +101,7 @@ public sealed record class BetaManagedAgentsMemoryPathConflictError : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("message");
                 return;
             }
 

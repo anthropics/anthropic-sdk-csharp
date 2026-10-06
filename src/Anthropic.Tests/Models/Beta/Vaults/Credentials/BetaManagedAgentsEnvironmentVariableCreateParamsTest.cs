@@ -180,6 +180,28 @@ public class BetaManagedAgentsEnvironmentVariableCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsEnvironmentVariableCreateParams
+        {
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
+                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
+            ),
+            SecretName = "x",
+            SecretValue = "x",
+            Type = BetaManagedAgentsEnvironmentVariableCreateParamsType.EnvironmentVariable,
+            InjectionLocation = new() { Body = true, Header = true },
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            InjectionLocation = null,
+        };
+
+        Assert.Null(model.InjectionLocation);
+        Assert.False(model.RawData.ContainsKey("injection_location"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsEnvironmentVariableCreateParams

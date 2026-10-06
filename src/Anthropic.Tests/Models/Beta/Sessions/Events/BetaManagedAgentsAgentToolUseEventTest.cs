@@ -230,6 +230,35 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsAgentToolUseEvent
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "name",
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
+            EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
+            Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
+            SessionThreadID = "session_thread_id",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            EvaluatedPermission = null,
+            Evaluation = null,
+        };
+
+        Assert.Null(model.EvaluatedPermission);
+        Assert.False(model.RawData.ContainsKey("evaluated_permission"));
+        Assert.Null(model.Evaluation);
+        Assert.False(model.RawData.ContainsKey("evaluation"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsAgentToolUseEvent

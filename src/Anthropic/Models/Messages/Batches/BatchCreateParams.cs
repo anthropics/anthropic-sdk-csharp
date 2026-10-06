@@ -70,6 +70,7 @@ public record class BatchCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-user-profile-id");
                 return;
             }
 
@@ -96,6 +97,7 @@ public record class BatchCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -477,6 +479,7 @@ public sealed record class Params : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("metadata");
                 return;
             }
 
@@ -498,6 +501,7 @@ public sealed record class Params : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("output_config");
                 return;
             }
 
@@ -524,6 +528,7 @@ public sealed record class Params : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("service_tier");
                 return;
             }
 
@@ -554,6 +559,7 @@ public sealed record class Params : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("stop_sequences");
                 return;
             }
 
@@ -584,6 +590,7 @@ public sealed record class Params : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("stream");
                 return;
             }
 
@@ -608,6 +615,7 @@ public sealed record class Params : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("system");
                 return;
             }
 
@@ -639,6 +647,7 @@ public sealed record class Params : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("temperature");
                 return;
             }
 
@@ -667,6 +676,7 @@ public sealed record class Params : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("thinking");
                 return;
             }
 
@@ -689,6 +699,7 @@ public sealed record class Params : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("tool_choice");
                 return;
             }
 
@@ -755,6 +766,7 @@ public sealed record class Params : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("tools");
                 return;
             }
 
@@ -787,6 +799,7 @@ public sealed record class Params : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("top_k");
                 return;
             }
 
@@ -817,6 +830,7 @@ public sealed record class Params : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("top_p");
                 return;
             }
 

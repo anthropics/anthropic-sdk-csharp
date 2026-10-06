@@ -152,6 +152,26 @@ public class BetaManagedAgentsEditToolConfigParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsEditToolConfigParams
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+            Type = BetaManagedAgentsEditToolConfigParamsType.Edit,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Type = null,
+        };
+
+        Assert.Null(model.Type);
+        Assert.False(model.RawData.ContainsKey("type"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsEditToolConfigParams

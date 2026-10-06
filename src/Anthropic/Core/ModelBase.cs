@@ -300,6 +300,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Agents::BetaManagedAgentsSessionThreadAgentType>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsUrlMcpServerParamsType>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsWebFetchToolConfigParamsType>(),
+            new ApiEnumConverter<string, Agents::BetaManagedAgentsWebFetchUrlSourceShorthand>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsWebSearchToolConfigParamsType>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsWriteToolConfigParamsType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsMultiagentParamsType>(),

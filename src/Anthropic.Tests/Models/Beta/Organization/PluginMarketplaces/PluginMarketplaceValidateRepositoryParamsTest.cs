@@ -66,6 +66,24 @@ public class PluginMarketplaceValidateRepositoryParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new PluginMarketplaceValidateRepositoryParams
+        {
+            RepositoryUrl = "https://github.com/example-org/example-marketplace",
+            Ref = "main",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new PluginMarketplaceValidateRepositoryParams

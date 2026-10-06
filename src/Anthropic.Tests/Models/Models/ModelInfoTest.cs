@@ -36,11 +36,22 @@ public class ModelInfoTest : TestBase
                 },
                 ImageInput = new(true),
                 PdfInput = new(true),
+                ServerTools = new()
+                {
+                    CodeExecution = new(true),
+                    Supported = true,
+                    WebSearch = new(true),
+                },
                 StructuredOutputs = new(true),
                 Thinking = new()
                 {
                     Supported = true,
-                    Types = new() { Adaptive = new(true), Enabled = new(true) },
+                    Types = new()
+                    {
+                        Adaptive = new(true),
+                        Disabled = new(true),
+                        Enabled = new(true),
+                    },
                 },
             },
             CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
@@ -74,11 +85,22 @@ public class ModelInfoTest : TestBase
             },
             ImageInput = new(true),
             PdfInput = new(true),
+            ServerTools = new()
+            {
+                CodeExecution = new(true),
+                Supported = true,
+                WebSearch = new(true),
+            },
             StructuredOutputs = new(true),
             Thinking = new()
             {
                 Supported = true,
-                Types = new() { Adaptive = new(true), Enabled = new(true) },
+                Types = new()
+                {
+                    Adaptive = new(true),
+                    Disabled = new(true),
+                    Enabled = new(true),
+                },
             },
         };
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z");
@@ -127,11 +149,22 @@ public class ModelInfoTest : TestBase
                 },
                 ImageInput = new(true),
                 PdfInput = new(true),
+                ServerTools = new()
+                {
+                    CodeExecution = new(true),
+                    Supported = true,
+                    WebSearch = new(true),
+                },
                 StructuredOutputs = new(true),
                 Thinking = new()
                 {
                     Supported = true,
-                    Types = new() { Adaptive = new(true), Enabled = new(true) },
+                    Types = new()
+                    {
+                        Adaptive = new(true),
+                        Disabled = new(true),
+                        Enabled = new(true),
+                    },
                 },
             },
             CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
@@ -176,11 +209,22 @@ public class ModelInfoTest : TestBase
                 },
                 ImageInput = new(true),
                 PdfInput = new(true),
+                ServerTools = new()
+                {
+                    CodeExecution = new(true),
+                    Supported = true,
+                    WebSearch = new(true),
+                },
                 StructuredOutputs = new(true),
                 Thinking = new()
                 {
                     Supported = true,
-                    Types = new() { Adaptive = new(true), Enabled = new(true) },
+                    Types = new()
+                    {
+                        Adaptive = new(true),
+                        Disabled = new(true),
+                        Enabled = new(true),
+                    },
                 },
             },
             CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
@@ -221,11 +265,22 @@ public class ModelInfoTest : TestBase
             },
             ImageInput = new(true),
             PdfInput = new(true),
+            ServerTools = new()
+            {
+                CodeExecution = new(true),
+                Supported = true,
+                WebSearch = new(true),
+            },
             StructuredOutputs = new(true),
             Thinking = new()
             {
                 Supported = true,
-                Types = new() { Adaptive = new(true), Enabled = new(true) },
+                Types = new()
+                {
+                    Adaptive = new(true),
+                    Disabled = new(true),
+                    Enabled = new(true),
+                },
             },
         };
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z");
@@ -274,11 +329,22 @@ public class ModelInfoTest : TestBase
                 },
                 ImageInput = new(true),
                 PdfInput = new(true),
+                ServerTools = new()
+                {
+                    CodeExecution = new(true),
+                    Supported = true,
+                    WebSearch = new(true),
+                },
                 StructuredOutputs = new(true),
                 Thinking = new()
                 {
                     Supported = true,
-                    Types = new() { Adaptive = new(true), Enabled = new(true) },
+                    Types = new()
+                    {
+                        Adaptive = new(true),
+                        Disabled = new(true),
+                        Enabled = new(true),
+                    },
                 },
             },
             CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
@@ -320,11 +386,22 @@ public class ModelInfoTest : TestBase
                 },
                 ImageInput = new(true),
                 PdfInput = new(true),
+                ServerTools = new()
+                {
+                    CodeExecution = new(true),
+                    Supported = true,
+                    WebSearch = new(true),
+                },
                 StructuredOutputs = new(true),
                 Thinking = new()
                 {
                     Supported = true,
-                    Types = new() { Adaptive = new(true), Enabled = new(true) },
+                    Types = new()
+                    {
+                        Adaptive = new(true),
+                        Disabled = new(true),
+                        Enabled = new(true),
+                    },
                 },
             },
             CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),

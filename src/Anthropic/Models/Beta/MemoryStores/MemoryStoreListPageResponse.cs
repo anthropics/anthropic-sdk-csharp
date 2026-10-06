@@ -33,6 +33,7 @@ public sealed record class MemoryStoreListPageResponse : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("data");
                 return;
             }
 

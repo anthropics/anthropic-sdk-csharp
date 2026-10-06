@@ -108,6 +108,7 @@ public record class DreamCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("output_behavior");
                 return;
             }
 
@@ -131,6 +132,7 @@ public record class DreamCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -160,6 +162,7 @@ public record class DreamCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

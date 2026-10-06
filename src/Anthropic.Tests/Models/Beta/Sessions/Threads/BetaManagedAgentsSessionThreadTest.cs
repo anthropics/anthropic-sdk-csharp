@@ -15,7 +15,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
     {
         var model = new Threads::BetaManagedAgentsSessionThread
         {
-            ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Agent = new Agents::BetaManagedAgentsSessionThreadAgent()
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -103,7 +103,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
             },
         };
 
-        string expectedID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
+        string expectedID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
         Threads::Agent expectedAgent = new Agents::BetaManagedAgentsSessionThreadAgent()
         {
             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -206,7 +206,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
     {
         var model = new Threads::BetaManagedAgentsSessionThread
         {
-            ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Agent = new Agents::BetaManagedAgentsSessionThreadAgent()
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -308,7 +308,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
     {
         var model = new Threads::BetaManagedAgentsSessionThread
         {
-            ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Agent = new Agents::BetaManagedAgentsSessionThreadAgent()
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -403,7 +403,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
+        string expectedID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
         Threads::Agent expectedAgent = new Agents::BetaManagedAgentsSessionThreadAgent()
         {
             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -506,7 +506,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
     {
         var model = new Threads::BetaManagedAgentsSessionThread
         {
-            ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Agent = new Agents::BetaManagedAgentsSessionThreadAgent()
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -602,7 +602,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
     {
         var model = new Threads::BetaManagedAgentsSessionThread
         {
-            ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Agent = new Agents::BetaManagedAgentsSessionThreadAgent()
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",

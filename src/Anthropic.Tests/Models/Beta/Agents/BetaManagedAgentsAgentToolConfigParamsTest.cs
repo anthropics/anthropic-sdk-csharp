@@ -105,6 +105,12 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                 ),
                 Type = BetaManagedAgentsWebFetchToolConfigParamsType.WebFetch,
+                UrlSources = new()
+                {
+                    ClientToolResults = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                    ServerToolResults = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                    UserInput = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                },
             };
         value.Validate();
     }
@@ -267,6 +273,12 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                 ),
                 Type = BetaManagedAgentsWebFetchToolConfigParamsType.WebFetch,
+                UrlSources = new()
+                {
+                    ClientToolResults = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                    ServerToolResults = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                    UserInput = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                },
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolConfigParams>(

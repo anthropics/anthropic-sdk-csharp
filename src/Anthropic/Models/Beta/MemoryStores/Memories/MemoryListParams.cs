@@ -37,6 +37,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("depth");
                 return;
             }
 
@@ -60,6 +61,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -82,6 +84,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -104,6 +107,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("path_prefix");
                 return;
             }
 
@@ -129,6 +133,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("view");
                 return;
             }
 
@@ -152,6 +157,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -181,6 +187,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

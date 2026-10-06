@@ -138,6 +138,25 @@ public class BetaManagedAgentsAgentToolset20260401EditInputTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsAgentToolset20260401EditInput
+        {
+            FilePath = "file_path",
+            NewString = "new_string",
+            OldString = "old_string",
+            ReplaceAll = true,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            ReplaceAll = null,
+        };
+
+        Assert.Null(model.ReplaceAll);
+        Assert.False(model.RawData.ContainsKey("replace_all"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsAgentToolset20260401EditInput

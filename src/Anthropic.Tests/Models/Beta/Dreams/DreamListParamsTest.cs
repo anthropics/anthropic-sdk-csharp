@@ -114,6 +114,50 @@ public class DreamListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new DreamListParams
+        {
+            CreatedAtGt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            CreatedAtLt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            IncludeArchived = true,
+            Limit = 0,
+            Page = "page",
+            Statuses = [BetaDreamStatus.Pending],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            CreatedAtGt = null,
+            CreatedAtLt = null,
+            IncludeArchived = null,
+            Limit = null,
+            Page = null,
+            Statuses = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.CreatedAtGt);
+        Assert.False(parameters.RawQueryData.ContainsKey("created_at[gt]"));
+        Assert.Null(parameters.CreatedAtLt);
+        Assert.False(parameters.RawQueryData.ContainsKey("created_at[lt]"));
+        Assert.Null(parameters.IncludeArchived);
+        Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Page);
+        Assert.False(parameters.RawQueryData.ContainsKey("page"));
+        Assert.Null(parameters.Statuses);
+        Assert.False(parameters.RawQueryData.ContainsKey("statuses"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         DreamListParams parameters = new()

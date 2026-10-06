@@ -47,6 +47,7 @@ public record class RuleArchiveParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 

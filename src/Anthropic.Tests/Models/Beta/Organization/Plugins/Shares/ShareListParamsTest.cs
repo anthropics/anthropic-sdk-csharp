@@ -86,6 +86,30 @@ public class ShareListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new ShareListParams
+        {
+            PluginID = "plugin_id",
+            Limit = 1,
+            OrganizationID = "organization_id",
+            Page = "page",
+            TargetType = TargetType.Organization,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Limit = null,
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new ShareListParams

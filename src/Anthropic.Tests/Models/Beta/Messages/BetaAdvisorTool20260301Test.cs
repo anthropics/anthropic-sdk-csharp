@@ -205,6 +205,35 @@ public class BetaAdvisorTool20260301Test : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaAdvisorTool20260301
+        {
+            Model = Messages::Model.ClaudeSonnet5_5,
+            AllowedCallers = [AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caching = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxTokens = 1024,
+            MaxUses = 1,
+            Strict = true,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
+            Strict = null,
+        };
+
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
+        Assert.Null(model.Strict);
+        Assert.False(model.RawData.ContainsKey("strict"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaAdvisorTool20260301

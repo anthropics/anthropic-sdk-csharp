@@ -28,7 +28,7 @@ public class CredentialServiceTest : TestBase
     public async Task Retrieve_Works()
     {
         var betaManagedAgentsCredential = await this.client.Beta.Vaults.Credentials.Retrieve(
-            "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
             TestContext.Current.CancellationToken
         );
@@ -39,7 +39,7 @@ public class CredentialServiceTest : TestBase
     public async Task Update_Works()
     {
         var betaManagedAgentsCredential = await this.client.Beta.Vaults.Credentials.Update(
-            "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
             TestContext.Current.CancellationToken
         );
@@ -61,7 +61,7 @@ public class CredentialServiceTest : TestBase
     public async Task Delete_Works()
     {
         var betaManagedAgentsDeletedCredential = await this.client.Beta.Vaults.Credentials.Delete(
-            "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
             TestContext.Current.CancellationToken
         );
@@ -72,7 +72,7 @@ public class CredentialServiceTest : TestBase
     public async Task Archive_Works()
     {
         var betaManagedAgentsCredential = await this.client.Beta.Vaults.Credentials.Archive(
-            "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
             TestContext.Current.CancellationToken
         );
@@ -84,7 +84,7 @@ public class CredentialServiceTest : TestBase
     {
         var betaManagedAgentsCredentialValidation =
             await this.client.Beta.Vaults.Credentials.McpOAuthValidate(
-                "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                 new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
                 TestContext.Current.CancellationToken
             );

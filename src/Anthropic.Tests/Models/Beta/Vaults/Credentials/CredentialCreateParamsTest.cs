@@ -116,6 +116,38 @@ public class CredentialCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new CredentialCreateParams
+        {
+            VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
+            Auth = new BetaManagedAgentsStaticBearerCreateParams()
+            {
+                Token = "bearer_exampletoken",
+                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
+                Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
+            },
+            DisplayName = "Example credential",
+            Metadata = new Dictionary<string, string>() { { "environment", "production" } },
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Metadata = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new CredentialCreateParams

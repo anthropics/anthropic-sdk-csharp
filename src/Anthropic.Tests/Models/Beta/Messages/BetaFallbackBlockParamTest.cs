@@ -132,6 +132,24 @@ public class BetaFallbackBlockParamTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaFallbackBlockParam
+        {
+            From = new(Model.ClaudeSonnet5_5),
+            To = new(Model.ClaudeSonnet5_5),
+            Trigger = JsonSerializer.Deserialize<JsonElement>("{}"),
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Trigger = null,
+        };
+
+        Assert.Null(model.Trigger);
+        Assert.False(model.RawData.ContainsKey("trigger"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaFallbackBlockParam

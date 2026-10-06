@@ -204,6 +204,36 @@ public class MemoryStoreListPageResponseTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new MemoryStoreListPageResponse
+        {
+            Data =
+            [
+                new()
+                {
+                    ID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
+                    ArchivedAt = null,
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    Description = "Per-user preferences and project context.",
+                    Metadata = new Dictionary<string, string>(),
+                    Name = "User Preferences",
+                    Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
+                    UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                },
+            ],
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Data = null,
+        };
+
+        Assert.Null(model.Data);
+        Assert.False(model.RawData.ContainsKey("data"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new MemoryStoreListPageResponse

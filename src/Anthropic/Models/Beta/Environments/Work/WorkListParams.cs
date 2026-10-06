@@ -40,6 +40,7 @@ public record class WorkListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -76,6 +77,7 @@ public record class WorkListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 

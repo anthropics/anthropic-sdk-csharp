@@ -57,6 +57,7 @@ public sealed record class BetaManagedAgentsDeltaContent : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("index");
                 return;
             }
 

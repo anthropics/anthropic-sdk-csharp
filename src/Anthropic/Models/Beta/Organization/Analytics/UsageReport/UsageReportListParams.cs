@@ -54,6 +54,7 @@ public record class UsageReportListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("bucket_width");
                 return;
             }
 

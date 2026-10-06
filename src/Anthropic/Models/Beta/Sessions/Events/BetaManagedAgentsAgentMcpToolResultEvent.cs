@@ -86,6 +86,7 @@ public sealed record class BetaManagedAgentsAgentMcpToolResultEvent : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("content");
                 return;
             }
 

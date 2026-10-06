@@ -53,6 +53,7 @@ public sealed record class BetaMcpTool : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("description");
                 return;
             }
 

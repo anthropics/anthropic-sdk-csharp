@@ -107,6 +107,7 @@ public record class AgentUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("model");
                 return;
             }
 
@@ -144,6 +145,7 @@ public record class AgentUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("name");
                 return;
             }
 
@@ -224,6 +226,7 @@ public record class AgentUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("version");
                 return;
             }
 
@@ -247,6 +250,7 @@ public record class AgentUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -276,6 +280,7 @@ public record class AgentUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -457,7 +462,7 @@ public record class AgentUpdateParamsModel : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="ApiEnum{TRaw, TEnum}"/> with a <c>TRaw</c> of <c>string</c> and a <c>TEnum</c> of BetaManagedAgentsModel>.
+    /// type <see cref="ApiEnum{TRaw, TEnum}"/> with a <c>TRaw</c> of <c>string</c> and a <c>TEnum</c> of BetaManagedAgentsModel.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///

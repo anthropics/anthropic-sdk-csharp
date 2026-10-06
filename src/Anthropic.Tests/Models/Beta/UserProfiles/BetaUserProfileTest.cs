@@ -329,6 +329,47 @@ public class BetaUserProfileTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new UserProfiles::BetaUserProfile
+        {
+            ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+            Metadata = new Dictionary<string, string>(),
+            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            {
+                { "cyber", new(UserProfiles::Status.Active) },
+            },
+            Type = UserProfiles::Type.UserProfile,
+            UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+            AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+            ExternalID = "user_12345",
+            ExternalUserDetails = new()
+            {
+                AccountStatus = UserProfiles::AccountStatus.Active,
+                Country = "country",
+                EmailHash = "email_hash",
+                EntityType = UserProfiles::EntityType.Individual,
+                NameHash = "name_hash",
+                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ReferenceID = "reference_id",
+            },
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+            Name = "Example User",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AccessType = null,
+            ExternalUserDetails = null,
+        };
+
+        Assert.Null(model.AccessType);
+        Assert.False(model.RawData.ContainsKey("access_type"));
+        Assert.Null(model.ExternalUserDetails);
+        Assert.False(model.RawData.ContainsKey("external_user_details"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new UserProfiles::BetaUserProfile

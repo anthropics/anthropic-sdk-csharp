@@ -74,6 +74,25 @@ public class IncreaseRequestListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new IncreaseRequestListParams
+        {
+            ActorIds = ["string"],
+            Limit = 1,
+            Page = "page",
+            Status = [BetaSpendLimitIncreaseRequestStatus.Approved],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Limit = null,
+        };
+
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new IncreaseRequestListParams { Limit = 1 };

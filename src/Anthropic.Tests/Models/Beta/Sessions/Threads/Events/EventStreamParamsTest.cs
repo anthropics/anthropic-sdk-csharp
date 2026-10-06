@@ -16,14 +16,14 @@ public class EventStreamParamsTest : TestBase
         var parameters = new EventStreamParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             EventDeltas = [BetaManagedAgentsDeltaType.AgentMessage],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedSessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7";
-        string expectedThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
+        string expectedThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
         List<ApiEnum<string, BetaManagedAgentsDeltaType>> expectedEventDeltas =
         [
             BetaManagedAgentsDeltaType.AgentMessage,
@@ -57,7 +57,7 @@ public class EventStreamParamsTest : TestBase
         var parameters = new EventStreamParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
         };
 
         Assert.Null(parameters.EventDeltas);
@@ -74,8 +74,34 @@ public class EventStreamParamsTest : TestBase
         var parameters = new EventStreamParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
 
+            // Null should be interpreted as omitted for these properties
+            EventDeltas = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.EventDeltas);
+        Assert.False(parameters.RawQueryData.ContainsKey("event_deltas"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new EventStreamParams
+        {
+            SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
+            EventDeltas = [BetaManagedAgentsDeltaType.AgentMessage],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
             // Null should be interpreted as omitted for these properties
             EventDeltas = null,
             Betas = null,
@@ -96,7 +122,7 @@ public class EventStreamParamsTest : TestBase
         EventStreamParams parameters = new()
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             EventDeltas = [BetaManagedAgentsDeltaType.AgentMessage],
         };
 
@@ -105,7 +131,7 @@ public class EventStreamParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/threads/sthr_011CZkZVWa6oIjw0rgXZpnBt/stream?beta=true&event_deltas%5b%5d=agent.message"
+                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/threads/sthr_011CZkZVWa6oJjw1rgXZpnBt/stream?beta=true&event_deltas%5b%5d=agent.message"
                 ),
                 url
             )
@@ -119,7 +145,7 @@ public class EventStreamParamsTest : TestBase
         EventStreamParams parameters = new()
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -142,7 +168,7 @@ public class EventStreamParamsTest : TestBase
         var parameters = new EventStreamParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            ThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            ThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             EventDeltas = [BetaManagedAgentsDeltaType.AgentMessage],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",

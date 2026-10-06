@@ -173,6 +173,52 @@ public class EnvironmentCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new EnvironmentCreateParams
+        {
+            Name = "python-data-analysis",
+            Config = new BetaCloudConfigParams()
+            {
+                Networking = new BetaLimitedNetworkParams()
+                {
+                    AllowMcpServers = true,
+                    AllowPackageManagers = true,
+                    AllowedHosts = ["api.example.com"],
+                },
+                Packages = new()
+                {
+                    Apt = ["string"],
+                    Cargo = ["string"],
+                    Gem = ["string"],
+                    Go = ["string"],
+                    Npm = ["string"],
+                    Pip = ["pandas", "numpy"],
+                    Type = BetaPackagesParamsType.Packages,
+                },
+            },
+            Description = "Python environment with data-analysis packages.",
+            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
+            Scope = Scope.Organization,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Metadata = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new EnvironmentCreateParams

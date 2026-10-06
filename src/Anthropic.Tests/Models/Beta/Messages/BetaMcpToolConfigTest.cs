@@ -95,6 +95,22 @@ public class BetaMcpToolConfigTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaMcpToolConfig { DeferLoading = true, Enabled = true } with
+        {
+            // Null should be interpreted as omitted for these properties
+            DeferLoading = null,
+            Enabled = null,
+        };
+
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
+        Assert.Null(model.Enabled);
+        Assert.False(model.RawData.ContainsKey("enabled"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaMcpToolConfig

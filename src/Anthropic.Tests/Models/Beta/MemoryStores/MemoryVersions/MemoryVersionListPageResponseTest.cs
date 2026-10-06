@@ -286,6 +286,50 @@ public class MemoryVersionListPageResponseTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new MemoryVersionListPageResponse
+        {
+            Data =
+            [
+                new()
+                {
+                    ID = "memver_011CZkZBJq5dWxk9fVLNcPht",
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
+                    MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
+                    Operation = BetaManagedAgentsMemoryVersionOperation.Created,
+                    Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
+                    Content = null,
+                    ContentSha256 =
+                        "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
+                    ContentSizeBytes = 28,
+                    CreatedBy = new BetaManagedAgentsSessionActor()
+                    {
+                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+                        Type = BetaManagedAgentsSessionActorType.SessionActor,
+                    },
+                    Path = "/preferences/formatting.md",
+                    RedactedAt = null,
+                    RedactedBy = new BetaManagedAgentsSessionActor()
+                    {
+                        SessionID = "x",
+                        Type = BetaManagedAgentsSessionActorType.SessionActor,
+                    },
+                },
+            ],
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Data = null,
+        };
+
+        Assert.Null(model.Data);
+        Assert.False(model.RawData.ContainsKey("data"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new MemoryVersionListPageResponse

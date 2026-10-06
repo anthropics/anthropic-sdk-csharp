@@ -79,6 +79,7 @@ public record class InviteCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("rbac_group_ids");
                 return;
             }
 

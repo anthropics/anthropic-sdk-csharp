@@ -60,9 +60,7 @@ public class BetaMessageBatchResultTest : TestBase
                         },
                     ]
                 ),
-                Diagnostics = new(
-                    new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
-                ),
+                Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
                 Model = Model.ClaudeOpus5,
                 StopDetails = new()
                 {
@@ -84,9 +82,7 @@ public class BetaMessageBatchResultTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
-                    FallbackCredit = new(
-                        new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
-                    ),
+                    FallbackCredit = new(new Messages::BetaFallbackCreditRedeemed()),
                     InferenceGeo = "global",
                     InputTokens = 2095,
                     Iterations =
@@ -201,9 +197,7 @@ public class BetaMessageBatchResultTest : TestBase
                         },
                     ]
                 ),
-                Diagnostics = new(
-                    new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
-                ),
+                Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
                 Model = Model.ClaudeOpus5,
                 StopDetails = new()
                 {
@@ -225,9 +219,7 @@ public class BetaMessageBatchResultTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
-                    FallbackCredit = new(
-                        new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
-                    ),
+                    FallbackCredit = new(new Messages::BetaFallbackCreditRedeemed()),
                     InferenceGeo = "global",
                     InputTokens = 2095,
                     Iterations =

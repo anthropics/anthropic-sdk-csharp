@@ -135,6 +135,31 @@ public class BetaManagedAgentsModelConfigTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsModelConfig
+        {
+            ID = BetaManagedAgentsModel.ClaudeOpus5,
+            Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+            InferenceGeo = "inference_geo",
+            Speed = Speed.Standard,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Effort = null,
+            InferenceGeo = null,
+            Speed = null,
+        };
+
+        Assert.Null(model.Effort);
+        Assert.False(model.RawData.ContainsKey("effort"));
+        Assert.Null(model.InferenceGeo);
+        Assert.False(model.RawData.ContainsKey("inference_geo"));
+        Assert.Null(model.Speed);
+        Assert.False(model.RawData.ContainsKey("speed"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsModelConfig

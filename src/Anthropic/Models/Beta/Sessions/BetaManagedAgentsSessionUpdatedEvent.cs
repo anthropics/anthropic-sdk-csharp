@@ -105,6 +105,7 @@ public sealed record class BetaManagedAgentsSessionUpdatedEvent : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("metadata");
                 return;
             }
 

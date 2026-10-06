@@ -185,6 +185,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("mcp_servers");
                 return;
             }
 
@@ -209,6 +210,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("output_config");
                 return;
             }
 
@@ -265,6 +267,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("system");
                 return;
             }
 
@@ -293,6 +296,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("thinking");
                 return;
             }
 
@@ -315,6 +319,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("tool_choice");
                 return;
             }
 
@@ -381,6 +386,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("tools");
                 return;
             }
 
@@ -407,6 +413,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -432,6 +439,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-user-profile-id");
                 return;
             }
 
@@ -458,6 +466,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

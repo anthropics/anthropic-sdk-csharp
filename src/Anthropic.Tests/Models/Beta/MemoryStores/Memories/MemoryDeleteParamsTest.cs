@@ -82,6 +82,32 @@ public class MemoryDeleteParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new MemoryDeleteParams
+        {
+            MemoryStoreID = "memory_store_id",
+            MemoryID = "memory_id",
+            ExpectedContentSha256 = "expected_content_sha256",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            ExpectedContentSha256 = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.ExpectedContentSha256);
+        Assert.False(parameters.RawQueryData.ContainsKey("expected_content_sha256"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         MemoryDeleteParams parameters = new()

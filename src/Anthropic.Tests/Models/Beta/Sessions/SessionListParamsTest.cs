@@ -172,6 +172,78 @@ public class SessionListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new SessionListParams
+        {
+            AgentID = "agent_id",
+            AgentVersion = 0,
+            CreatedAtGt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            CreatedAtGte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            CreatedAtLt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            CreatedAtLte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DeploymentID = "deployment_id",
+            IncludeArchived = true,
+            Limit = 0,
+            MemoryStoreID = "memory_store_id",
+            Order = Order.Asc,
+            Page = "page",
+            Statuses = [Status.Rescheduling],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AgentID = null,
+            AgentVersion = null,
+            CreatedAtGt = null,
+            CreatedAtGte = null,
+            CreatedAtLt = null,
+            CreatedAtLte = null,
+            DeploymentID = null,
+            IncludeArchived = null,
+            Limit = null,
+            MemoryStoreID = null,
+            Order = null,
+            Page = null,
+            Statuses = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.AgentID);
+        Assert.False(parameters.RawQueryData.ContainsKey("agent_id"));
+        Assert.Null(parameters.AgentVersion);
+        Assert.False(parameters.RawQueryData.ContainsKey("agent_version"));
+        Assert.Null(parameters.CreatedAtGt);
+        Assert.False(parameters.RawQueryData.ContainsKey("created_at[gt]"));
+        Assert.Null(parameters.CreatedAtGte);
+        Assert.False(parameters.RawQueryData.ContainsKey("created_at[gte]"));
+        Assert.Null(parameters.CreatedAtLt);
+        Assert.False(parameters.RawQueryData.ContainsKey("created_at[lt]"));
+        Assert.Null(parameters.CreatedAtLte);
+        Assert.False(parameters.RawQueryData.ContainsKey("created_at[lte]"));
+        Assert.Null(parameters.DeploymentID);
+        Assert.False(parameters.RawQueryData.ContainsKey("deployment_id"));
+        Assert.Null(parameters.IncludeArchived);
+        Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.MemoryStoreID);
+        Assert.False(parameters.RawQueryData.ContainsKey("memory_store_id"));
+        Assert.Null(parameters.Order);
+        Assert.False(parameters.RawQueryData.ContainsKey("order"));
+        Assert.Null(parameters.Page);
+        Assert.False(parameters.RawQueryData.ContainsKey("page"));
+        Assert.Null(parameters.Statuses);
+        Assert.False(parameters.RawQueryData.ContainsKey("statuses"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         SessionListParams parameters = new()

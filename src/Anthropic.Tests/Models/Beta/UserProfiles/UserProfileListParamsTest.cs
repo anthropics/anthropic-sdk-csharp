@@ -95,6 +95,42 @@ public class UserProfileListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new UserProfileListParams
+        {
+            Limit = 0,
+            Order = Order.Asc,
+            OrderBy = OrderBy.CreatedAt,
+            Page = "page",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Limit = null,
+            Order = null,
+            OrderBy = null,
+            Page = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Order);
+        Assert.False(parameters.RawQueryData.ContainsKey("order"));
+        Assert.Null(parameters.OrderBy);
+        Assert.False(parameters.RawQueryData.ContainsKey("order_by"));
+        Assert.Null(parameters.Page);
+        Assert.False(parameters.RawQueryData.ContainsKey("page"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         UserProfileListParams parameters = new()

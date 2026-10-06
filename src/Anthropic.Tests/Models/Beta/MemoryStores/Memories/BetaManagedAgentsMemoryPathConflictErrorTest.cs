@@ -143,6 +143,31 @@ public class BetaManagedAgentsMemoryPathConflictErrorTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsMemoryPathConflictError
+        {
+            Type = BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError,
+            ConflictingMemoryID = "conflicting_memory_id",
+            ConflictingPath = "conflicting_path",
+            Message = "message",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            ConflictingMemoryID = null,
+            ConflictingPath = null,
+            Message = null,
+        };
+
+        Assert.Null(model.ConflictingMemoryID);
+        Assert.False(model.RawData.ContainsKey("conflicting_memory_id"));
+        Assert.Null(model.ConflictingPath);
+        Assert.False(model.RawData.ContainsKey("conflicting_path"));
+        Assert.Null(model.Message);
+        Assert.False(model.RawData.ContainsKey("message"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsMemoryPathConflictError

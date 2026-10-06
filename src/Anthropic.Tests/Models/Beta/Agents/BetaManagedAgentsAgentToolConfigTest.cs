@@ -94,6 +94,12 @@ public class BetaManagedAgentsAgentToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             MaxContentTokens = 0,
@@ -246,6 +252,12 @@ public class BetaManagedAgentsAgentToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             MaxContentTokens = 0,

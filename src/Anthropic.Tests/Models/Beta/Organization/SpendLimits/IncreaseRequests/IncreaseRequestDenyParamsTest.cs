@@ -49,6 +49,23 @@ public class IncreaseRequestDenyParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new IncreaseRequestDenyParams
+        {
+            SpendLimitIncreaseRequestID = "spend_limit_increase_request_id",
+            SuppressNotification = true,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            SuppressNotification = null,
+        };
+
+        Assert.Null(parameters.SuppressNotification);
+        Assert.False(parameters.RawBodyData.ContainsKey("suppress_notification"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         IncreaseRequestDenyParams parameters = new()

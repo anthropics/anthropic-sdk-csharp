@@ -8,7 +8,7 @@ public class ThreadServiceTest : TestBase
     public async Task Retrieve_Works()
     {
         var betaManagedAgentsSessionThread = await this.client.Beta.Sessions.Threads.Retrieve(
-            "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
             TestContext.Current.CancellationToken
         );
@@ -30,7 +30,7 @@ public class ThreadServiceTest : TestBase
     public async Task Archive_Works()
     {
         var betaManagedAgentsSessionThread = await this.client.Beta.Sessions.Threads.Archive(
-            "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
             TestContext.Current.CancellationToken
         );

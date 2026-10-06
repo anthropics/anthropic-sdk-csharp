@@ -125,6 +125,30 @@ public class WebFetchUrlSourcesTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new WebFetchUrlSources
+        {
+            ClientToolResults = new WebFetchUrlSourceAll(),
+            ServerToolResults = new WebFetchUrlSourceAll(),
+            UserInput = new WebFetchUrlSourceAll(),
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            ClientToolResults = null,
+            ServerToolResults = null,
+            UserInput = null,
+        };
+
+        Assert.Null(model.ClientToolResults);
+        Assert.False(model.RawData.ContainsKey("client_tool_results"));
+        Assert.Null(model.ServerToolResults);
+        Assert.False(model.RawData.ContainsKey("server_tool_results"));
+        Assert.Null(model.UserInput);
+        Assert.False(model.RawData.ContainsKey("user_input"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new WebFetchUrlSources

@@ -32,6 +32,7 @@ public record class WorkspaceListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("after_id");
                 return;
             }
 
@@ -54,6 +55,7 @@ public record class WorkspaceListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("before_id");
                 return;
             }
 
@@ -75,6 +77,7 @@ public record class WorkspaceListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("include_archived");
                 return;
             }
 
@@ -96,6 +99,7 @@ public record class WorkspaceListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("include_default");
                 return;
             }
 
@@ -119,6 +123,7 @@ public record class WorkspaceListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 

@@ -25,17 +25,15 @@ public class RawContentBlockDeltaTest : TestBase
     public void CitationsValidationWorks()
     {
         RawContentBlockDelta value = new CitationsDelta(
-            new Citation(
-                new CitationCharLocation()
-                {
-                    CitedText = "The grass is green. The sky is blue.",
-                    DocumentIndex = 0,
-                    DocumentTitle = "My Document",
-                    EndCharIndex = 0,
-                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    StartCharIndex = 0,
-                }
-            )
+            new CitationCharLocation()
+            {
+                CitedText = "The grass is green. The sky is blue.",
+                DocumentIndex = 0,
+                DocumentTitle = "My Document",
+                EndCharIndex = 0,
+                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                StartCharIndex = 0,
+            }
         );
         value.Validate();
     }
@@ -84,17 +82,15 @@ public class RawContentBlockDeltaTest : TestBase
     public void CitationsSerializationRoundtripWorks()
     {
         RawContentBlockDelta value = new CitationsDelta(
-            new Citation(
-                new CitationCharLocation()
-                {
-                    CitedText = "The grass is green. The sky is blue.",
-                    DocumentIndex = 0,
-                    DocumentTitle = "My Document",
-                    EndCharIndex = 0,
-                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    StartCharIndex = 0,
-                }
-            )
+            new CitationCharLocation()
+            {
+                CitedText = "The grass is green. The sky is blue.",
+                DocumentIndex = 0,
+                DocumentTitle = "My Document",
+                EndCharIndex = 0,
+                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                StartCharIndex = 0,
+            }
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(

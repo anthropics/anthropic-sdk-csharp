@@ -1,6 +1,3 @@
-// xUnit1024: same-name overloads are intentional — base method is parameterless with no test attribute.
-#pragma warning disable xUnit1024
-
 using System.Threading.Tasks;
 using Anthropic.Models.Messages;
 
@@ -27,7 +24,7 @@ public class MessageServiceMultiClientTest : MessageServiceTest
     [AnthropicTestData(TestSupportTypes.Vertex, "claude-3-7-sonnet@20250219")]
     [AnthropicTestData(TestSupportTypes.Aws, "ClaudeSonnet4_5")]
     [AnthropicTestData(TestSupportTypes.BedrockMantle, "ClaudeSonnet4_5")]
-    public async Task Create_Works(IAnthropicClient c, string modelName)
+    public async Task Create_WorksForClient(IAnthropicClient c, string modelName)
     {
         client = c;
         var message = await client.Messages.Create(
@@ -49,7 +46,7 @@ public class MessageServiceMultiClientTest : MessageServiceTest
     [AnthropicTestData(TestSupportTypes.Bedrock, "global.anthropic.claude-haiku-4-5-20251001-v1:0")]
     [AnthropicTestData(TestSupportTypes.Aws, "ClaudeSonnet4_5")]
     [AnthropicTestData(TestSupportTypes.BedrockMantle, "ClaudeSonnet4_5")]
-    public async Task CreateStreaming_Works(IAnthropicClient c, string modelName)
+    public async Task CreateStreaming_WorksForClient(IAnthropicClient c, string modelName)
     {
         client = c;
         var stream = client.Messages.CreateStreaming(
@@ -74,7 +71,7 @@ public class MessageServiceMultiClientTest : MessageServiceTest
     [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
     [AnthropicTestData(TestSupportTypes.Aws, "ClaudeSonnet4_5")]
     [AnthropicTestData(TestSupportTypes.BedrockMantle, "ClaudeSonnet4_5")]
-    public async Task CountTokens_Works(IAnthropicClient c, string modelName)
+    public async Task CountTokens_WorksForClient(IAnthropicClient c, string modelName)
     {
         client = c;
         var messageTokensCount = await client.Messages.CountTokens(

@@ -192,6 +192,35 @@ public class VaultListPageResponseTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new VaultListPageResponse
+        {
+            Data =
+            [
+                new()
+                {
+                    ID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
+                    ArchivedAt = null,
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    DisplayName = "Example vault",
+                    Metadata = new Dictionary<string, string>() { { "environment", "production" } },
+                    Type = BetaManagedAgentsVaultType.Vault,
+                    UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                },
+            ],
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Data = null,
+        };
+
+        Assert.Null(model.Data);
+        Assert.False(model.RawData.ContainsKey("data"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new VaultListPageResponse

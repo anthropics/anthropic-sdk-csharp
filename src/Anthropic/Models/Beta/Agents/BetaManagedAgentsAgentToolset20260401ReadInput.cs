@@ -48,6 +48,7 @@ public sealed record class BetaManagedAgentsAgentToolset20260401ReadInput : Json
         {
             if (value == null)
             {
+                this._rawData.Remove("view_range");
                 return;
             }
 

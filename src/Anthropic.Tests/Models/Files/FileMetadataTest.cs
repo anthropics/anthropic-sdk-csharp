@@ -174,6 +174,28 @@ public class FileMetadataTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new FileMetadata
+        {
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            CreatedAt = DateTimeOffset.Parse("2025-04-15T18:37:24.100435Z"),
+            Filename = "document.pdf",
+            MimeType = "application/pdf",
+            SizeBytes = 102400,
+            Downloadable = false,
+            ExpiresAt = DateTimeOffset.Parse("2025-05-15T18:37:24.100435Z"),
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Downloadable = null,
+        };
+
+        Assert.Null(model.Downloadable);
+        Assert.False(model.RawData.ContainsKey("downloadable"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new FileMetadata

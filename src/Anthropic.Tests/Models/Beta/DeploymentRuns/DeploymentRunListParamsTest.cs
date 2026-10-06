@@ -134,6 +134,62 @@ public class DeploymentRunListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new DeploymentRunListParams
+        {
+            CreatedAtGt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            CreatedAtGte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            CreatedAtLt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            CreatedAtLte = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DeploymentID = "deployment_id",
+            HasError = true,
+            Limit = 0,
+            Page = "page",
+            TriggerType = BetaManagedAgentsTriggerType.Schedule,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            CreatedAtGt = null,
+            CreatedAtGte = null,
+            CreatedAtLt = null,
+            CreatedAtLte = null,
+            DeploymentID = null,
+            HasError = null,
+            Limit = null,
+            Page = null,
+            TriggerType = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.CreatedAtGt);
+        Assert.False(parameters.RawQueryData.ContainsKey("created_at[gt]"));
+        Assert.Null(parameters.CreatedAtGte);
+        Assert.False(parameters.RawQueryData.ContainsKey("created_at[gte]"));
+        Assert.Null(parameters.CreatedAtLt);
+        Assert.False(parameters.RawQueryData.ContainsKey("created_at[lt]"));
+        Assert.Null(parameters.CreatedAtLte);
+        Assert.False(parameters.RawQueryData.ContainsKey("created_at[lte]"));
+        Assert.Null(parameters.DeploymentID);
+        Assert.False(parameters.RawQueryData.ContainsKey("deployment_id"));
+        Assert.Null(parameters.HasError);
+        Assert.False(parameters.RawQueryData.ContainsKey("has_error"));
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Page);
+        Assert.False(parameters.RawQueryData.ContainsKey("page"));
+        Assert.Null(parameters.TriggerType);
+        Assert.False(parameters.RawQueryData.ContainsKey("trigger_type"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         DeploymentRunListParams parameters = new()

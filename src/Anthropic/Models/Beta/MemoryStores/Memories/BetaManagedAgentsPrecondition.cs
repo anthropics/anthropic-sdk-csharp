@@ -49,6 +49,7 @@ public sealed record class BetaManagedAgentsPrecondition : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("content_sha256");
                 return;
             }
 

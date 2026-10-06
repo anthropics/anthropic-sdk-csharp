@@ -13,10 +13,10 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserDefineOutcomeEvent
         {
-            ID = "sevt_011CZkZSTx3lFgt7odUWmkyq",
+            ID = "sevt_011CZkZSTx3mFgt7odUWmkyq",
             Description = "Produce a 2-page summary as summary.md",
             MaxIterations = 3,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
             Rubric = new BetaManagedAgentsTextRubric()
             {
@@ -26,10 +26,10 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
             Type = BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
         };
 
-        string expectedID = "sevt_011CZkZSTx3lFgt7odUWmkyq";
+        string expectedID = "sevt_011CZkZSTx3mFgt7odUWmkyq";
         string expectedDescription = "Produce a 2-page summary as summary.md";
         int expectedMaxIterations = 3;
-        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP";
+        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z");
         Rubric expectedRubric = new BetaManagedAgentsTextRubric()
         {
@@ -53,10 +53,10 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserDefineOutcomeEvent
         {
-            ID = "sevt_011CZkZSTx3lFgt7odUWmkyq",
+            ID = "sevt_011CZkZSTx3mFgt7odUWmkyq",
             Description = "Produce a 2-page summary as summary.md",
             MaxIterations = 3,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
             Rubric = new BetaManagedAgentsTextRubric()
             {
@@ -80,10 +80,10 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserDefineOutcomeEvent
         {
-            ID = "sevt_011CZkZSTx3lFgt7odUWmkyq",
+            ID = "sevt_011CZkZSTx3mFgt7odUWmkyq",
             Description = "Produce a 2-page summary as summary.md",
             MaxIterations = 3,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
             Rubric = new BetaManagedAgentsTextRubric()
             {
@@ -100,10 +100,10 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "sevt_011CZkZSTx3lFgt7odUWmkyq";
+        string expectedID = "sevt_011CZkZSTx3mFgt7odUWmkyq";
         string expectedDescription = "Produce a 2-page summary as summary.md";
         int expectedMaxIterations = 3;
-        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP";
+        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z");
         Rubric expectedRubric = new BetaManagedAgentsTextRubric()
         {
@@ -127,10 +127,10 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserDefineOutcomeEvent
         {
-            ID = "sevt_011CZkZSTx3lFgt7odUWmkyq",
+            ID = "sevt_011CZkZSTx3mFgt7odUWmkyq",
             Description = "Produce a 2-page summary as summary.md",
             MaxIterations = 3,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
             Rubric = new BetaManagedAgentsTextRubric()
             {
@@ -148,10 +148,10 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
     {
         var model = new BetaManagedAgentsUserDefineOutcomeEvent
         {
-            ID = "sevt_011CZkZSTx3lFgt7odUWmkyq",
+            ID = "sevt_011CZkZSTx3mFgt7odUWmkyq",
             Description = "Produce a 2-page summary as summary.md",
             MaxIterations = 3,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
             Rubric = new BetaManagedAgentsTextRubric()
             {

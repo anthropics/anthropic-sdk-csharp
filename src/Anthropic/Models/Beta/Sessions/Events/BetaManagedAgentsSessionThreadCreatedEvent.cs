@@ -10,8 +10,8 @@ using System = System;
 namespace Anthropic.Models.Beta.Sessions.Events;
 
 /// <summary>
-/// Emitted when a subagent is spawned as a new thread. Written to the parent thread's
-/// output stream so clients observing the session see child creation.
+/// Emitted when a child thread is created. Written to the parent thread's output
+/// stream so clients observing the session see child creation.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<

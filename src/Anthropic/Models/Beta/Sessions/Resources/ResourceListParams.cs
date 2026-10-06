@@ -36,6 +36,7 @@ public record class ResourceListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -57,6 +58,7 @@ public record class ResourceListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -80,6 +82,7 @@ public record class ResourceListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -109,6 +112,7 @@ public record class ResourceListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

@@ -119,6 +119,7 @@ public sealed record class BetaManagedAgentsAgentMcpToolUseEvent : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("evaluated_permission");
                 return;
             }
 
@@ -147,6 +148,7 @@ public sealed record class BetaManagedAgentsAgentMcpToolUseEvent : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("evaluation");
                 return;
             }
 

@@ -112,6 +112,7 @@ public abstract record class ParamsBase
                             JsonValueKind.Null => "",
                             JsonValueKind.True => "true",
                             JsonValueKind.False => "false",
+                            JsonValueKind.Number => item.ToString(),
                             _ => item.GetString(),
                         }
                     );
@@ -166,6 +167,7 @@ public abstract record class ParamsBase
                                         JsonValueKind.Null => "",
                                         JsonValueKind.True => "true",
                                         JsonValueKind.False => "false",
+                                        JsonValueKind.Number => x.ToString(),
                                         _ => x.GetString(),
                                     }
                             ),

@@ -213,9 +213,7 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     [Fact]
     public void BetaContentBlockValidationWorks()
     {
-        BetaRequestDocumentBlockSource value = new BetaContentBlockSource(
-            new BetaContentBlockSourceContent("string")
-        );
+        BetaRequestDocumentBlockSource value = new BetaContentBlockSource("string");
         value.Validate();
     }
 
@@ -262,9 +260,7 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     [Fact]
     public void BetaContentBlockSerializationRoundtripWorks()
     {
-        BetaRequestDocumentBlockSource value = new BetaContentBlockSource(
-            new BetaContentBlockSourceContent("string")
-        );
+        BetaRequestDocumentBlockSource value = new BetaContentBlockSource("string");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(
             element,

@@ -29,6 +29,7 @@ public sealed record class BetaContextManagementConfig : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("edits");
                 return;
             }
 

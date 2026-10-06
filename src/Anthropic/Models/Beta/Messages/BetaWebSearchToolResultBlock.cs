@@ -55,6 +55,7 @@ public sealed record class BetaWebSearchToolResultBlock : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("caller");
                 return;
             }
 

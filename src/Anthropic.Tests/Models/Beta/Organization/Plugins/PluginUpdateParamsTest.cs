@@ -66,6 +66,24 @@ public class PluginUpdateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new PluginUpdateParams
+        {
+            PluginID = "plugin_id",
+            ServedVersionID = "pluginver_01KaZmQpRsTuVwXyZ2b4c6d8",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         PluginUpdateParams parameters = new()

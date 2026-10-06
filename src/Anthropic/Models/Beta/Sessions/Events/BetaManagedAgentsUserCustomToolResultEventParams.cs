@@ -64,6 +64,7 @@ public sealed record class BetaManagedAgentsUserCustomToolResultEventParams : Js
         {
             if (value == null)
             {
+                this._rawData.Remove("content");
                 return;
             }
 

@@ -15,13 +15,13 @@ public class CredentialDeleteParamsTest : TestBase
         var parameters = new CredentialDeleteParams
         {
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
-            CredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedVaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv";
-        string expectedCredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw";
+        string expectedCredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -45,7 +45,7 @@ public class CredentialDeleteParamsTest : TestBase
         var parameters = new CredentialDeleteParams
         {
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
-            CredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
         };
 
         Assert.Null(parameters.Betas);
@@ -60,8 +60,30 @@ public class CredentialDeleteParamsTest : TestBase
         var parameters = new CredentialDeleteParams
         {
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
-            CredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
 
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new CredentialDeleteParams
+        {
+            VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
+            CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
             // Null should be interpreted as omitted for these properties
             Betas = null,
             WorkspaceID = null,
@@ -79,7 +101,7 @@ public class CredentialDeleteParamsTest : TestBase
         CredentialDeleteParams parameters = new()
         {
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
-            CredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -87,7 +109,7 @@ public class CredentialDeleteParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/vaults/vlt_011CZkZDLs7fYzm1hXNPeRjv/credentials/vcrd_011CZkZEMt8gZan2iYOQfSkw?beta=true"
+                    "https://api.anthropic.com/v1/vaults/vlt_011CZkZDLs7fYzm1hXNPeRjv/credentials/vcrd_011CZkZEMt8gZan2iYPQfSkw?beta=true"
                 ),
                 url
             )
@@ -101,7 +123,7 @@ public class CredentialDeleteParamsTest : TestBase
         CredentialDeleteParams parameters = new()
         {
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
-            CredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -124,7 +146,7 @@ public class CredentialDeleteParamsTest : TestBase
         var parameters = new CredentialDeleteParams
         {
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
-            CredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };

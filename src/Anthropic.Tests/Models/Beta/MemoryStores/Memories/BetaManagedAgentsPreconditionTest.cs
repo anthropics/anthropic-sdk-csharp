@@ -117,6 +117,23 @@ public class BetaManagedAgentsPreconditionTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsPrecondition
+        {
+            Type = BetaManagedAgentsPreconditionType.ContentSha256,
+            ContentSha256 = "content_sha256",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            ContentSha256 = null,
+        };
+
+        Assert.Null(model.ContentSha256);
+        Assert.False(model.RawData.ContainsKey("content_sha256"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsPrecondition

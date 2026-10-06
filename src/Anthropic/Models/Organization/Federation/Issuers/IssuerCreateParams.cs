@@ -95,6 +95,7 @@ public record class IssuerCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("jwks");
                 return;
             }
 

@@ -79,6 +79,29 @@ public class ResourceUpdateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new ResourceUpdateParams
+        {
+            SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+            ResourceID = "sesrsc_011CZkZBJq5dWxk9fVLNcPht",
+            AuthorizationToken = "ghp_exampletoken",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         ResourceUpdateParams parameters = new()

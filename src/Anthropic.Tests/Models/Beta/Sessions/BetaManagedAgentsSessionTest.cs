@@ -119,7 +119,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     },
                     new BetaManagedAgentsCustomSkill()
                     {
-                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                         Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
@@ -170,7 +170,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Description = "Produce a 2-page summary as summary.md",
                     Explanation = "All five sections present with inline citations.",
                     Iteration = 0,
-                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
                     Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
@@ -188,7 +188,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
                 {
-                    ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+                    ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
                     Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -321,7 +321,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 },
                 new BetaManagedAgentsCustomSkill()
                 {
-                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                     Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
@@ -371,7 +371,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Description = "Produce a 2-page summary as summary.md",
                 Explanation = "All five sections present with inline citations.",
                 Iteration = 0,
-                OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                 Result = "satisfied",
                 Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
             },
@@ -389,7 +389,7 @@ public class BetaManagedAgentsSessionTest : TestBase
             },
             new BetaManagedAgentsGitHubRepositoryResource()
             {
-                ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+                ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 MountPath = "/workspace/example-repo",
                 Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -570,7 +570,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     },
                     new BetaManagedAgentsCustomSkill()
                     {
-                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                         Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
@@ -621,7 +621,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Description = "Produce a 2-page summary as summary.md",
                     Explanation = "All five sections present with inline citations.",
                     Iteration = 0,
-                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
                     Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
@@ -639,7 +639,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
                 {
-                    ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+                    ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
                     Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -787,7 +787,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     },
                     new BetaManagedAgentsCustomSkill()
                     {
-                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                         Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
@@ -838,7 +838,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Description = "Produce a 2-page summary as summary.md",
                     Explanation = "All five sections present with inline citations.",
                     Iteration = 0,
-                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
                     Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
@@ -856,7 +856,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
                 {
-                    ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+                    ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
                     Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -996,7 +996,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 },
                 new BetaManagedAgentsCustomSkill()
                 {
-                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                     Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
@@ -1046,7 +1046,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Description = "Produce a 2-page summary as summary.md",
                 Explanation = "All five sections present with inline citations.",
                 Iteration = 0,
-                OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                 Result = "satisfied",
                 Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
             },
@@ -1064,7 +1064,7 @@ public class BetaManagedAgentsSessionTest : TestBase
             },
             new BetaManagedAgentsGitHubRepositoryResource()
             {
-                ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+                ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 MountPath = "/workspace/example-repo",
                 Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -1245,7 +1245,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     },
                     new BetaManagedAgentsCustomSkill()
                     {
-                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                         Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
@@ -1296,7 +1296,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Description = "Produce a 2-page summary as summary.md",
                     Explanation = "All five sections present with inline citations.",
                     Iteration = 0,
-                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
                     Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
@@ -1314,7 +1314,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
                 {
-                    ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+                    ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
                     Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -1456,7 +1456,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     },
                     new BetaManagedAgentsCustomSkill()
                     {
-                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                         Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
@@ -1507,7 +1507,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Description = "Produce a 2-page summary as summary.md",
                     Explanation = "All five sections present with inline citations.",
                     Iteration = 0,
-                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
                     Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
@@ -1525,7 +1525,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
                 {
-                    ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+                    ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
                     Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -1667,7 +1667,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     },
                     new BetaManagedAgentsCustomSkill()
                     {
-                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                         Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
@@ -1718,7 +1718,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Description = "Produce a 2-page summary as summary.md",
                     Explanation = "All five sections present with inline citations.",
                     Iteration = 0,
-                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
                     Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
@@ -1736,7 +1736,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
                 {
-                    ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+                    ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
                     Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -1877,7 +1877,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     },
                     new BetaManagedAgentsCustomSkill()
                     {
-                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                         Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
@@ -1928,7 +1928,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Description = "Produce a 2-page summary as summary.md",
                     Explanation = "All five sections present with inline citations.",
                     Iteration = 0,
-                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
                     Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
@@ -1946,7 +1946,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
                 {
-                    ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+                    ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
                     Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -2090,7 +2090,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     },
                     new BetaManagedAgentsCustomSkill()
                     {
-                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                         Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
@@ -2141,7 +2141,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Description = "Produce a 2-page summary as summary.md",
                     Explanation = "All five sections present with inline citations.",
                     Iteration = 0,
-                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
                     Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
@@ -2159,7 +2159,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
                 {
-                    ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+                    ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
                     Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -2302,7 +2302,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     },
                     new BetaManagedAgentsCustomSkill()
                     {
-                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                        SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                         Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
@@ -2353,7 +2353,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Description = "Produce a 2-page summary as summary.md",
                     Explanation = "All five sections present with inline citations.",
                     Iteration = 0,
-                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+                    OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
                     Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
@@ -2371,7 +2371,7 @@ public class BetaManagedAgentsSessionTest : TestBase
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
                 {
-                    ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+                    ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
                     Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,

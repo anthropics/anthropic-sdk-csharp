@@ -47,6 +47,7 @@ public sealed record class BetaManagedAgentsAgentToolset20260401GlobInput : Json
         {
             if (value == null)
             {
+                this._rawData.Remove("path");
                 return;
             }
 
