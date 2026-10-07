@@ -61,6 +61,18 @@ internal static class SchemaInference
                 ApplySchemaPropertyAttribute(obj, attr);
         }
 
+        // Empty object contracts have no properties node in the exported schema.
+        if (
+            context.TypeInfo.Kind == JsonTypeInfoKind.Object
+            && obj.ContainsKey("type")
+            && !obj.ContainsKey("properties")
+            && !obj.ContainsKey("$ref")
+            && !obj.ContainsKey("anyOf")
+        )
+        {
+            obj["properties"] = new JsonObject();
+        }
+
         // --- Object-level: fix required array, strip null unions, add additionalProperties ---
         if (
             obj.TryGetPropertyValue("properties", out var propsNode)
