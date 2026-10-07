@@ -299,6 +299,45 @@ public class WebSearchTool20260318Test : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new WebSearchTool20260318
+        {
+            AllowedCallers = [WebSearchTool20260318AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxUses = 1,
+            ResponseInclusion = WebSearchTool20260318ResponseInclusion.Full,
+            Strict = true,
+            UserLocation = new()
+            {
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
+            ResponseInclusion = null,
+            Strict = null,
+        };
+
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
+        Assert.Null(model.ResponseInclusion);
+        Assert.False(model.RawData.ContainsKey("response_inclusion"));
+        Assert.Null(model.Strict);
+        Assert.False(model.RawData.ContainsKey("strict"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new WebSearchTool20260318

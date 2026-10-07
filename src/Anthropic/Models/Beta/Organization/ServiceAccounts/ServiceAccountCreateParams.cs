@@ -81,6 +81,7 @@ public record class ServiceAccountCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("organization_role");
                 return;
             }
 
@@ -104,6 +105,7 @@ public record class ServiceAccountCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 

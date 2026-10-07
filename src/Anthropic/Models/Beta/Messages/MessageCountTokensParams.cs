@@ -185,6 +185,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("mcp_servers");
                 return;
             }
 
@@ -209,6 +210,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("output_config");
                 return;
             }
 
@@ -265,6 +267,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("system");
                 return;
             }
 
@@ -293,6 +296,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("thinking");
                 return;
             }
 
@@ -315,6 +319,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("tool_choice");
                 return;
             }
 
@@ -381,6 +386,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("tools");
                 return;
             }
 
@@ -407,6 +413,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -432,6 +439,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-user-profile-id");
                 return;
             }
 
@@ -458,6 +466,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -1169,6 +1178,90 @@ public record class Tool : ModelBase
                 _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
                     this.Json,
                     "display_number"
+                ),
+            };
+        }
+    }
+
+    public IReadOnlyList<string>? AllowedDomains
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 x => x.AllowedDomains,
+                BetaWebFetchTool20250910 x => x.AllowedDomains,
+                BetaWebSearchTool20260209 x => x.AllowedDomains,
+                BetaWebFetchTool20260209 x => x.AllowedDomains,
+                BetaWebFetchTool20260309 x => x.AllowedDomains,
+                BetaWebSearchTool20260318 x => x.AllowedDomains,
+                BetaWebFetchTool20260318 x => x.AllowedDomains,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<IReadOnlyList<string>>(
+                    this.Json,
+                    "allowed_domains"
+                ),
+            };
+        }
+    }
+
+    public IReadOnlyList<string>? BlockedDomains
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 x => x.BlockedDomains,
+                BetaWebFetchTool20250910 x => x.BlockedDomains,
+                BetaWebSearchTool20260209 x => x.BlockedDomains,
+                BetaWebFetchTool20260209 x => x.BlockedDomains,
+                BetaWebFetchTool20260309 x => x.BlockedDomains,
+                BetaWebSearchTool20260318 x => x.BlockedDomains,
+                BetaWebFetchTool20260318 x => x.BlockedDomains,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<IReadOnlyList<string>>(
+                    this.Json,
+                    "blocked_domains"
                 ),
             };
         }

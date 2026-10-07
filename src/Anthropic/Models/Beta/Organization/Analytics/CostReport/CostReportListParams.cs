@@ -55,6 +55,7 @@ public record class CostReportListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("bucket_width");
                 return;
             }
 

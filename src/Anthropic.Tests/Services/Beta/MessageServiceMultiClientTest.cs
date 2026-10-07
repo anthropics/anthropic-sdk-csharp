@@ -1,6 +1,3 @@
-// xUnit1024: same-name overloads are intentional — base method is parameterless with no test attribute.
-#pragma warning disable xUnit1024
-
 using System.Threading.Tasks;
 
 namespace Anthropic.Tests.Services.Beta;
@@ -15,31 +12,25 @@ namespace Anthropic.Tests.Services.Beta;
 /// </summary>
 public class MessageServiceMultiClientTest : MessageServiceTest
 {
-    [Theory(
-        Skip = "UriBuilder.Query overwrites ?beta=true — beta batch create hits non-beta endpoint; needs codegen fix"
-    )]
+    [Theory]
     [AnthropicTestClients]
-    public async Task Create_Works(IAnthropicClient c)
+    public async Task Create_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.Create_Works();
     }
 
-    [Theory(
-        Skip = "UriBuilder.Query overwrites ?beta=true — beta batch create hits non-beta endpoint; needs codegen fix"
-    )]
+    [Theory]
     [AnthropicTestClients]
-    public async Task CreateStreaming_Works(IAnthropicClient c)
+    public async Task CreateStreaming_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.CreateStreaming_Works();
     }
 
-    [Theory(
-        Skip = "UriBuilder.Query overwrites ?beta=true — beta batch create hits non-beta endpoint; needs codegen fix"
-    )]
+    [Theory]
     [AnthropicTestClients]
-    public async Task CountTokens_Works(IAnthropicClient c)
+    public async Task CountTokens_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.CountTokens_Works();

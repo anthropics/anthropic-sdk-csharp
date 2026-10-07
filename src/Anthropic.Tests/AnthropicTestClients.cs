@@ -19,6 +19,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
         Environment.GetEnvironmentVariable("TEST_API_BASE_URL") ?? "http://localhost:4010";
     public static string ApiKey { get; } = "YourApiKeyHere";
     public static string Resource { get; } = "YourRegionOrResourceHere";
+    public static string WorkspaceId { get; } = "YourWorkspaceIdHere";
 
     public AnthropicTestClientsAttribute(TestSupportTypes testSupportTypes = TestSupportTypes.All)
     {
@@ -101,7 +102,14 @@ public class AnthropicTestClientsAttribute : DataAttribute
             rows.Add(
                 new TheoryDataRow(
                     [
-                        new AnthropicAwsClient(new() { ApiKey = ApiKey, BaseUrl = DataServiceUrl }),
+                        new AnthropicAwsClient(
+                            new()
+                            {
+                                ApiKey = ApiKey,
+                                BaseUrl = DataServiceUrl,
+                                WorkspaceId = WorkspaceId,
+                            }
+                        ),
                         .. testData
                             .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Aws))
                             .SelectMany(f => f.TestData)

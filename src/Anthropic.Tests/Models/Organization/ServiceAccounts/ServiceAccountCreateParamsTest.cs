@@ -57,6 +57,24 @@ public class ServiceAccountCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new ServiceAccountCreateParams
+        {
+            Name = "ci-deploy-bot",
+            Description = "description",
+            OrganizationRole = OrganizationRole.Admin,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            OrganizationRole = null,
+        };
+
+        Assert.Null(parameters.OrganizationRole);
+        Assert.False(parameters.RawBodyData.ContainsKey("organization_role"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new ServiceAccountCreateParams

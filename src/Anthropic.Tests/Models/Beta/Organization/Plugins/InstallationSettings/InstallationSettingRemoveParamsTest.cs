@@ -66,6 +66,24 @@ public class InstallationSettingRemoveParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new InstallationSettingRemoveParams
+        {
+            PluginID = "plugin_id",
+            Target = "target",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         InstallationSettingRemoveParams parameters = new()
@@ -100,7 +118,7 @@ public class InstallationSettingRemoveParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["ce-plugins-2026-09-01", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,ce-plugins-2026-09-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }

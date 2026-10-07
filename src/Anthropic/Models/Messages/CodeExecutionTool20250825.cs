@@ -53,6 +53,7 @@ public sealed record class CodeExecutionTool20250825 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("allowed_callers");
                 return;
             }
 
@@ -90,6 +91,7 @@ public sealed record class CodeExecutionTool20250825 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("defer_loading");
                 return;
             }
 
@@ -111,6 +113,7 @@ public sealed record class CodeExecutionTool20250825 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("strict");
                 return;
             }
 

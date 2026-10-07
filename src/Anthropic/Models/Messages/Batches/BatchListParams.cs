@@ -35,6 +35,7 @@ public record class BatchListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("after_id");
                 return;
             }
 
@@ -57,6 +58,7 @@ public record class BatchListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("before_id");
                 return;
             }
 
@@ -80,6 +82,7 @@ public record class BatchListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -106,6 +109,7 @@ public record class BatchListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

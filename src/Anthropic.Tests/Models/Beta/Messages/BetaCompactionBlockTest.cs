@@ -18,11 +18,7 @@ public class BetaCompactionBlockTest : TestBase
             Signature = "signature",
             ToolChanges =
             [
-                new BetaResponseToolAdditionBlock(
-                    new BetaResponseToolAdditionBlockTool(
-                        new BetaResponseToolChangeToolReference("name")
-                    )
-                ),
+                new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
             ],
         };
 
@@ -32,11 +28,7 @@ public class BetaCompactionBlockTest : TestBase
         string expectedSignature = "signature";
         List<ToolChange> expectedToolChanges =
         [
-            new BetaResponseToolAdditionBlock(
-                new BetaResponseToolAdditionBlockTool(
-                    new BetaResponseToolChangeToolReference("name")
-                )
-            ),
+            new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
         ];
 
         Assert.Equal(expectedContent, model.Content);
@@ -61,11 +53,7 @@ public class BetaCompactionBlockTest : TestBase
             Signature = "signature",
             ToolChanges =
             [
-                new BetaResponseToolAdditionBlock(
-                    new BetaResponseToolAdditionBlockTool(
-                        new BetaResponseToolChangeToolReference("name")
-                    )
-                ),
+                new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
             ],
         };
 
@@ -88,11 +76,7 @@ public class BetaCompactionBlockTest : TestBase
             Signature = "signature",
             ToolChanges =
             [
-                new BetaResponseToolAdditionBlock(
-                    new BetaResponseToolAdditionBlockTool(
-                        new BetaResponseToolChangeToolReference("name")
-                    )
-                ),
+                new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
             ],
         };
 
@@ -109,11 +93,7 @@ public class BetaCompactionBlockTest : TestBase
         string expectedSignature = "signature";
         List<ToolChange> expectedToolChanges =
         [
-            new BetaResponseToolAdditionBlock(
-                new BetaResponseToolAdditionBlockTool(
-                    new BetaResponseToolChangeToolReference("name")
-                )
-            ),
+            new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
         ];
 
         Assert.Equal(expectedContent, deserialized.Content);
@@ -138,11 +118,7 @@ public class BetaCompactionBlockTest : TestBase
             Signature = "signature",
             ToolChanges =
             [
-                new BetaResponseToolAdditionBlock(
-                    new BetaResponseToolAdditionBlockTool(
-                        new BetaResponseToolChangeToolReference("name")
-                    )
-                ),
+                new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
             ],
         };
 
@@ -219,11 +195,7 @@ public class BetaCompactionBlockTest : TestBase
             Signature = "signature",
             ToolChanges =
             [
-                new BetaResponseToolAdditionBlock(
-                    new BetaResponseToolAdditionBlockTool(
-                        new BetaResponseToolChangeToolReference("name")
-                    )
-                ),
+                new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
             ],
         };
 
@@ -239,7 +211,7 @@ public class ToolChangeTest : TestBase
     public void BetaResponseToolAdditionBlockValidationWorks()
     {
         ToolChange value = new BetaResponseToolAdditionBlock(
-            new BetaResponseToolAdditionBlockTool(new BetaResponseToolChangeToolReference("name"))
+            new BetaResponseToolChangeToolReference("name")
         );
         value.Validate();
     }
@@ -248,7 +220,7 @@ public class ToolChangeTest : TestBase
     public void BetaResponseToolRemovalBlockValidationWorks()
     {
         ToolChange value = new BetaResponseToolRemovalBlock(
-            new BetaResponseToolRemovalBlockTool(new BetaResponseToolChangeToolReference("name"))
+            new BetaResponseToolChangeToolReference("name")
         );
         value.Validate();
     }
@@ -257,7 +229,7 @@ public class ToolChangeTest : TestBase
     public void BetaResponseToolAdditionBlockSerializationRoundtripWorks()
     {
         ToolChange value = new BetaResponseToolAdditionBlock(
-            new BetaResponseToolAdditionBlockTool(new BetaResponseToolChangeToolReference("name"))
+            new BetaResponseToolChangeToolReference("name")
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ToolChange>(
@@ -272,7 +244,7 @@ public class ToolChangeTest : TestBase
     public void BetaResponseToolRemovalBlockSerializationRoundtripWorks()
     {
         ToolChange value = new BetaResponseToolRemovalBlock(
-            new BetaResponseToolRemovalBlockTool(new BetaResponseToolChangeToolReference("name"))
+            new BetaResponseToolChangeToolReference("name")
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ToolChange>(

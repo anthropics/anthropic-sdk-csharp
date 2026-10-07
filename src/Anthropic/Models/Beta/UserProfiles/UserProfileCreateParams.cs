@@ -44,6 +44,7 @@ public record class UserProfileCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("access_type");
                 return;
             }
 
@@ -84,6 +85,7 @@ public record class UserProfileCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("external_user_details");
                 return;
             }
 
@@ -112,6 +114,7 @@ public record class UserProfileCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("external_user_onboarded_at");
                 return;
             }
 
@@ -135,6 +138,7 @@ public record class UserProfileCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("metadata");
                 return;
             }
 
@@ -177,6 +181,7 @@ public record class UserProfileCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -206,6 +211,7 @@ public record class UserProfileCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

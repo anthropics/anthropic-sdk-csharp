@@ -110,6 +110,23 @@ public class BetaManagedAgentsAgentToolset20260401GlobInputTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsAgentToolset20260401GlobInput
+        {
+            Pattern = "pattern",
+            Path = "path",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Path = null,
+        };
+
+        Assert.Null(model.Path);
+        Assert.False(model.RawData.ContainsKey("path"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsAgentToolset20260401GlobInput

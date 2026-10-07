@@ -119,6 +119,23 @@ public class BetaManagedAgentsMemoryPreconditionFailedErrorTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsMemoryPreconditionFailedError
+        {
+            Type = BetaManagedAgentsMemoryPreconditionFailedErrorType.MemoryPreconditionFailedError,
+            Message = "message",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Message = null,
+        };
+
+        Assert.Null(model.Message);
+        Assert.False(model.RawData.ContainsKey("message"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsMemoryPreconditionFailedError

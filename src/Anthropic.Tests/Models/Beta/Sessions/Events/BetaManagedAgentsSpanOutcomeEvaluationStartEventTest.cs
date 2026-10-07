@@ -13,16 +13,16 @@ public class BetaManagedAgentsSpanOutcomeEvaluationStartEventTest : TestBase
     {
         var model = new BetaManagedAgentsSpanOutcomeEvaluationStartEvent
         {
-            ID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
+            ID = "sevt_011CZkZTUy4mGhu8peVXnmzr",
             Iteration = 0,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
             Type = BetaManagedAgentsSpanOutcomeEvaluationStartEventType.SpanOutcomeEvaluationStart,
         };
 
-        string expectedID = "sevt_011CZkZTUy4mGhu8peVXnlzr";
+        string expectedID = "sevt_011CZkZTUy4mGhu8peVXnmzr";
         int expectedIteration = 0;
-        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP";
+        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z");
         ApiEnum<string, BetaManagedAgentsSpanOutcomeEvaluationStartEventType> expectedType =
             BetaManagedAgentsSpanOutcomeEvaluationStartEventType.SpanOutcomeEvaluationStart;
@@ -39,9 +39,9 @@ public class BetaManagedAgentsSpanOutcomeEvaluationStartEventTest : TestBase
     {
         var model = new BetaManagedAgentsSpanOutcomeEvaluationStartEvent
         {
-            ID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
+            ID = "sevt_011CZkZTUy4mGhu8peVXnmzr",
             Iteration = 0,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
             Type = BetaManagedAgentsSpanOutcomeEvaluationStartEventType.SpanOutcomeEvaluationStart,
         };
@@ -61,9 +61,9 @@ public class BetaManagedAgentsSpanOutcomeEvaluationStartEventTest : TestBase
     {
         var model = new BetaManagedAgentsSpanOutcomeEvaluationStartEvent
         {
-            ID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
+            ID = "sevt_011CZkZTUy4mGhu8peVXnmzr",
             Iteration = 0,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
             Type = BetaManagedAgentsSpanOutcomeEvaluationStartEventType.SpanOutcomeEvaluationStart,
         };
@@ -76,9 +76,9 @@ public class BetaManagedAgentsSpanOutcomeEvaluationStartEventTest : TestBase
             );
         Assert.NotNull(deserialized);
 
-        string expectedID = "sevt_011CZkZTUy4mGhu8peVXnlzr";
+        string expectedID = "sevt_011CZkZTUy4mGhu8peVXnmzr";
         int expectedIteration = 0;
-        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP";
+        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z");
         ApiEnum<string, BetaManagedAgentsSpanOutcomeEvaluationStartEventType> expectedType =
             BetaManagedAgentsSpanOutcomeEvaluationStartEventType.SpanOutcomeEvaluationStart;
@@ -95,9 +95,9 @@ public class BetaManagedAgentsSpanOutcomeEvaluationStartEventTest : TestBase
     {
         var model = new BetaManagedAgentsSpanOutcomeEvaluationStartEvent
         {
-            ID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
+            ID = "sevt_011CZkZTUy4mGhu8peVXnmzr",
             Iteration = 0,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
             Type = BetaManagedAgentsSpanOutcomeEvaluationStartEventType.SpanOutcomeEvaluationStart,
         };
@@ -110,9 +110,9 @@ public class BetaManagedAgentsSpanOutcomeEvaluationStartEventTest : TestBase
     {
         var model = new BetaManagedAgentsSpanOutcomeEvaluationStartEvent
         {
-            ID = "sevt_011CZkZTUy4mGhu8peVXnlzr",
+            ID = "sevt_011CZkZTUy4mGhu8peVXnmzr",
             Iteration = 0,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
             Type = BetaManagedAgentsSpanOutcomeEvaluationStartEventType.SpanOutcomeEvaluationStart,
         };

@@ -14,7 +14,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -24,7 +24,7 @@ public class BetaAdvisorTool20260301Test : TestBase
             Strict = true,
         };
 
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeSonnet5_5;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeHaiku5_5;
         JsonElement expectedName = JsonSerializer.SerializeToElement("advisor");
         JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_20260301");
         List<ApiEnum<string, AllowedCaller>> expectedAllowedCallers = [AllowedCaller.Direct];
@@ -57,7 +57,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -81,7 +81,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -98,7 +98,7 @@ public class BetaAdvisorTool20260301Test : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeSonnet5_5;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeHaiku5_5;
         JsonElement expectedName = JsonSerializer.SerializeToElement("advisor");
         JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_20260301");
         List<ApiEnum<string, AllowedCaller>> expectedAllowedCallers = [AllowedCaller.Direct];
@@ -131,7 +131,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -149,7 +149,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             MaxTokens = 1024,
@@ -169,7 +169,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             MaxTokens = 1024,
@@ -184,7 +184,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             MaxTokens = 1024,
@@ -205,11 +205,40 @@ public class BetaAdvisorTool20260301Test : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaAdvisorTool20260301
+        {
+            Model = Messages::Model.ClaudeHaiku5_5,
+            AllowedCallers = [AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caching = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxTokens = 1024,
+            MaxUses = 1,
+            Strict = true,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
+            Strict = null,
+        };
+
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
+        Assert.Null(model.Strict);
+        Assert.False(model.RawData.ContainsKey("strict"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
             MaxTokens = 1024,
@@ -229,7 +258,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
@@ -250,7 +279,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
@@ -264,7 +293,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
@@ -290,7 +319,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
@@ -309,7 +338,7 @@ public class BetaAdvisorTool20260301Test : TestBase
     {
         var model = new BetaAdvisorTool20260301
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },

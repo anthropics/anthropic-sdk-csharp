@@ -124,6 +124,30 @@ public class BetaManagedAgentsSessionThreadStatsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsSessionThreadStats
+        {
+            ActiveSeconds = 0,
+            DurationSeconds = 0,
+            StartupSeconds = 0,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            ActiveSeconds = null,
+            DurationSeconds = null,
+            StartupSeconds = null,
+        };
+
+        Assert.Null(model.ActiveSeconds);
+        Assert.False(model.RawData.ContainsKey("active_seconds"));
+        Assert.Null(model.DurationSeconds);
+        Assert.False(model.RawData.ContainsKey("duration_seconds"));
+        Assert.Null(model.StartupSeconds);
+        Assert.False(model.RawData.ContainsKey("startup_seconds"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsSessionThreadStats

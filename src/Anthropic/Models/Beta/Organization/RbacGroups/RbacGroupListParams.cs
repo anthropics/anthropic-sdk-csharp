@@ -35,6 +35,7 @@ public record class RbacGroupListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 

@@ -109,6 +109,23 @@ public class BetaManagedAgentsConflictErrorTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsConflictError
+        {
+            Type = Type.ConflictError,
+            Message = "message",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Message = null,
+        };
+
+        Assert.Null(model.Message);
+        Assert.False(model.RawData.ContainsKey("message"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsConflictError

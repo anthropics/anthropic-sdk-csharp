@@ -49,6 +49,7 @@ public sealed record class BetaManagedAgentsModelConfig : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("effort");
                 return;
             }
 
@@ -71,6 +72,7 @@ public sealed record class BetaManagedAgentsModelConfig : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("inference_geo");
                 return;
             }
 
@@ -94,6 +96,7 @@ public sealed record class BetaManagedAgentsModelConfig : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("speed");
                 return;
             }
 

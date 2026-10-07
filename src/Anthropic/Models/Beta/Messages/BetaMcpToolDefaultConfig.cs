@@ -26,6 +26,7 @@ public sealed record class BetaMcpToolDefaultConfig : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("defer_loading");
                 return;
             }
 
@@ -44,6 +45,7 @@ public sealed record class BetaMcpToolDefaultConfig : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("enabled");
                 return;
             }
 

@@ -30,6 +30,7 @@ public sealed record class ThreadListPageResponse : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("data");
                 return;
             }
 

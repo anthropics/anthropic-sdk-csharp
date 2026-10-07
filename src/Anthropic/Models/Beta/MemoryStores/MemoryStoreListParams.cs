@@ -34,6 +34,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[gte]");
                 return;
             }
 
@@ -56,6 +57,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[lte]");
                 return;
             }
 
@@ -78,6 +80,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("include_archived");
                 return;
             }
 
@@ -100,6 +103,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -122,6 +126,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -145,6 +150,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -174,6 +180,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

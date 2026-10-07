@@ -87,6 +87,22 @@ public class BetaImageTransformationsParamTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaImageTransformationsParam
+        {
+            OversizedImage = OversizedImage.Downsize,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            OversizedImage = null,
+        };
+
+        Assert.Null(model.OversizedImage);
+        Assert.False(model.RawData.ContainsKey("oversized_image"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaImageTransformationsParam

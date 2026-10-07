@@ -202,6 +202,46 @@ public class BetaManagedAgentsSessionUsageSnapshotTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsSessionUsageSnapshot
+        {
+            ActiveSeconds = 0,
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+            OutputTokens = 0,
+            ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            ActiveSeconds = null,
+            CacheCreation = null,
+            CacheReadInputTokens = null,
+            InputTokens = null,
+            ListCost = null,
+            OutputTokens = null,
+            ServerToolUse = null,
+        };
+
+        Assert.Null(model.ActiveSeconds);
+        Assert.False(model.RawData.ContainsKey("active_seconds"));
+        Assert.Null(model.CacheCreation);
+        Assert.False(model.RawData.ContainsKey("cache_creation"));
+        Assert.Null(model.CacheReadInputTokens);
+        Assert.False(model.RawData.ContainsKey("cache_read_input_tokens"));
+        Assert.Null(model.InputTokens);
+        Assert.False(model.RawData.ContainsKey("input_tokens"));
+        Assert.Null(model.ListCost);
+        Assert.False(model.RawData.ContainsKey("list_cost"));
+        Assert.Null(model.OutputTokens);
+        Assert.False(model.RawData.ContainsKey("output_tokens"));
+        Assert.Null(model.ServerToolUse);
+        Assert.False(model.RawData.ContainsKey("server_tool_use"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsSessionUsageSnapshot

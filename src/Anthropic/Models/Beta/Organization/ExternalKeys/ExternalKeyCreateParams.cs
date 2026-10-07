@@ -66,6 +66,7 @@ public record class ExternalKeyCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("geo");
                 return;
             }
 

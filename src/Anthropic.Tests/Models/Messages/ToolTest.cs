@@ -352,6 +352,57 @@ public class ToolTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new Tool
+        {
+            InputSchema = new()
+            {
+                Properties = new Dictionary<string, JsonElement>()
+                {
+                    { "location", JsonSerializer.SerializeToElement("bar") },
+                    { "unit", JsonSerializer.SerializeToElement("bar") },
+                },
+                Required = ["location"],
+            },
+            Name = "name",
+            AllowedCallers = [ToolAllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Description = "Get the current weather in a given location",
+            EagerInputStreaming = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+            Type = Type.Custom,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
+            Description = null,
+            InputExamples = null,
+            Strict = null,
+        };
+
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
+        Assert.Null(model.Description);
+        Assert.False(model.RawData.ContainsKey("description"));
+        Assert.Null(model.InputExamples);
+        Assert.False(model.RawData.ContainsKey("input_examples"));
+        Assert.Null(model.Strict);
+        Assert.False(model.RawData.ContainsKey("strict"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new Tool

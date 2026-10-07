@@ -35,6 +35,7 @@ public sealed record class WebFetchUrlSources : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("client_tool_results");
                 return;
             }
 
@@ -58,6 +59,7 @@ public sealed record class WebFetchUrlSources : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("server_tool_results");
                 return;
             }
 
@@ -79,6 +81,7 @@ public sealed record class WebFetchUrlSources : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("user_input");
                 return;
             }
 
@@ -164,6 +167,23 @@ public record class ClientToolResults : ModelBase
                 WebFetchUrlSourceOnly x => x.Type,
                 WebFetchUrlSourceExcept x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
+    }
+
+    public IReadOnlyList<WebFetchUrlSourceToolReference>? Tools
+    {
+        get
+        {
+            return this.Value switch
+            {
+                WebFetchUrlSourceAll _ => null,
+                WebFetchUrlSourceNone _ => null,
+                WebFetchUrlSourceOnly x => x.Tools,
+                WebFetchUrlSourceExcept x => x.Tools,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<
+                    IReadOnlyList<WebFetchUrlSourceToolReference>
+                >(this.Json, "tools"),
             };
         }
     }
@@ -590,6 +610,23 @@ public record class ServerToolResults : ModelBase
                 WebFetchUrlSourceOnly x => x.Type,
                 WebFetchUrlSourceExcept x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
+    }
+
+    public IReadOnlyList<WebFetchUrlSourceToolReference>? Tools
+    {
+        get
+        {
+            return this.Value switch
+            {
+                WebFetchUrlSourceAll _ => null,
+                WebFetchUrlSourceNone _ => null,
+                WebFetchUrlSourceOnly x => x.Tools,
+                WebFetchUrlSourceExcept x => x.Tools,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<
+                    IReadOnlyList<WebFetchUrlSourceToolReference>
+                >(this.Json, "tools"),
             };
         }
     }

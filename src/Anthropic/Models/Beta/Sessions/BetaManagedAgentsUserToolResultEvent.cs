@@ -78,6 +78,7 @@ public sealed record class BetaManagedAgentsUserToolResultEvent : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("content");
                 return;
             }
 

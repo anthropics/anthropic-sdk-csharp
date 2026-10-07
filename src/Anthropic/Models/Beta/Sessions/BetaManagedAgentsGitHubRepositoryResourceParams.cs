@@ -60,6 +60,7 @@ public sealed record class BetaManagedAgentsGitHubRepositoryResourceParams : Jso
         {
             if (value == null)
             {
+                this._rawData.Remove("authorization_token");
                 return;
             }
 

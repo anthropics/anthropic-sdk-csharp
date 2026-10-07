@@ -92,6 +92,7 @@ public record class VersionCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("release_notes");
                 return;
             }
 
@@ -115,6 +116,7 @@ public record class VersionCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 

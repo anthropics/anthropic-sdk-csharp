@@ -19,7 +19,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
             [
                 new BetaManagedAgentsUserMessageEvent()
                 {
-                    ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+                    ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
                     Content =
                     [
                         new BetaManagedAgentsTextBlock()
@@ -38,7 +38,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
         [
             new BetaManagedAgentsUserMessageEvent()
             {
-                ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+                ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
                 Content =
                 [
                     new BetaManagedAgentsTextBlock()
@@ -69,7 +69,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
             [
                 new BetaManagedAgentsUserMessageEvent()
                 {
-                    ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+                    ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
                     Content =
                     [
                         new BetaManagedAgentsTextBlock()
@@ -102,7 +102,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
             [
                 new BetaManagedAgentsUserMessageEvent()
                 {
-                    ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+                    ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
                     Content =
                     [
                         new BetaManagedAgentsTextBlock()
@@ -128,7 +128,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
         [
             new BetaManagedAgentsUserMessageEvent()
             {
-                ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+                ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
                 Content =
                 [
                     new BetaManagedAgentsTextBlock()
@@ -159,7 +159,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
             [
                 new BetaManagedAgentsUserMessageEvent()
                 {
-                    ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+                    ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
                     Content =
                     [
                         new BetaManagedAgentsTextBlock()
@@ -208,6 +208,38 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsSendSessionEvents
+        {
+            Data =
+            [
+                new BetaManagedAgentsUserMessageEvent()
+                {
+                    ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
+                    Content =
+                    [
+                        new BetaManagedAgentsTextBlock()
+                        {
+                            Text = "Where is my order #1234?",
+                            Type = BetaManagedAgentsTextBlockType.Text,
+                        },
+                    ],
+                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                },
+            ],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Data = null,
+        };
+
+        Assert.Null(model.Data);
+        Assert.False(model.RawData.ContainsKey("data"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsSendSessionEvents
@@ -228,7 +260,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
             [
                 new BetaManagedAgentsUserMessageEvent()
                 {
-                    ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+                    ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
                     Content =
                     [
                         new BetaManagedAgentsTextBlock()
@@ -256,7 +288,7 @@ public class DataTest : TestBase
     {
         Data value = new BetaManagedAgentsUserMessageEvent()
         {
-            ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+            ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -328,10 +360,10 @@ public class DataTest : TestBase
     {
         Data value = new BetaManagedAgentsUserDefineOutcomeEvent()
         {
-            ID = "sevt_011CZkZSTx3lFgt7odUWmkyq",
+            ID = "sevt_011CZkZSTx3mFgt7odUWmkyq",
             Description = "Produce a 2-page summary as summary.md",
             MaxIterations = 3,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
             Rubric = new BetaManagedAgentsTextRubric()
             {
@@ -391,7 +423,7 @@ public class DataTest : TestBase
     {
         Data value = new BetaManagedAgentsUserMessageEvent()
         {
-            ID = "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+            ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -475,10 +507,10 @@ public class DataTest : TestBase
     {
         Data value = new BetaManagedAgentsUserDefineOutcomeEvent()
         {
-            ID = "sevt_011CZkZSTx3lFgt7odUWmkyq",
+            ID = "sevt_011CZkZSTx3mFgt7odUWmkyq",
             Description = "Produce a 2-page summary as summary.md",
             MaxIterations = 3,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
             Rubric = new BetaManagedAgentsTextRubric()
             {
@@ -549,7 +581,7 @@ public class DataTest : TestBase
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "id": "sevt_011CZkZGOp0iBcp4kaQSihUmy",
+                  "id": "sevt_011CZkZGPp1iBcp4kaQSihUm",
                   "processed_at": "2026-03-15T10:00:00Z",
                   "session_thread_id": "session_thread_id",
                   "tool_use_id": "tool_use_id",
@@ -560,7 +592,7 @@ public class DataTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        string expectedID = "sevt_011CZkZGOp0iBcp4kaQSihUmy";
+        string expectedID = "sevt_011CZkZGPp1iBcp4kaQSihUm";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedSessionThreadID = "session_thread_id";
         string expectedToolUseID = "tool_use_id";

@@ -54,6 +54,7 @@ public record class VaultCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("metadata");
                 return;
             }
 
@@ -80,6 +81,7 @@ public record class VaultCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -109,6 +111,7 @@ public record class VaultCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

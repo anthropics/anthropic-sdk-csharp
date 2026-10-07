@@ -126,6 +126,30 @@ public class BetaManagedAgentsAgentToolset20260401BashInputTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsAgentToolset20260401BashInput
+        {
+            Command = "command",
+            Restart = true,
+            TimeoutMs = 0,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Command = null,
+            Restart = null,
+            TimeoutMs = null,
+        };
+
+        Assert.Null(model.Command);
+        Assert.False(model.RawData.ContainsKey("command"));
+        Assert.Null(model.Restart);
+        Assert.False(model.RawData.ContainsKey("restart"));
+        Assert.Null(model.TimeoutMs);
+        Assert.False(model.RawData.ContainsKey("timeout_ms"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsAgentToolset20260401BashInput

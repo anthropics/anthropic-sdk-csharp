@@ -44,6 +44,7 @@ public record class SessionUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("agent");
                 return;
             }
 
@@ -121,6 +122,7 @@ public record class SessionUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("vault_ids");
                 return;
             }
 
@@ -147,6 +149,7 @@ public record class SessionUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -176,6 +179,7 @@ public record class SessionUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

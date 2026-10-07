@@ -172,6 +172,28 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsMemoryStoreResource
+        {
+            MemoryStoreID = "memory_store_id",
+            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
+            Access = Access.ReadWrite,
+            Description = "description",
+            Instructions = "instructions",
+            MountPath = "mount_path",
+            Name = "name",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Description = null,
+        };
+
+        Assert.Null(model.Description);
+        Assert.False(model.RawData.ContainsKey("description"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsMemoryStoreResource

@@ -12,11 +12,21 @@ public class BetaThinkingCapabilityTest : TestBase
         var model = new BetaThinkingCapability
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         bool expectedSupported = true;
-        BetaThinkingTypes expectedTypes = new() { Adaptive = new(true), Enabled = new(true) };
+        BetaThinkingTypes expectedTypes = new()
+        {
+            Adaptive = new(true),
+            Disabled = new(true),
+            Enabled = new(true),
+        };
 
         Assert.Equal(expectedSupported, model.Supported);
         Assert.Equal(expectedTypes, model.Types);
@@ -28,7 +38,12 @@ public class BetaThinkingCapabilityTest : TestBase
         var model = new BetaThinkingCapability
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -46,7 +61,12 @@ public class BetaThinkingCapabilityTest : TestBase
         var model = new BetaThinkingCapability
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -57,7 +77,12 @@ public class BetaThinkingCapabilityTest : TestBase
         Assert.NotNull(deserialized);
 
         bool expectedSupported = true;
-        BetaThinkingTypes expectedTypes = new() { Adaptive = new(true), Enabled = new(true) };
+        BetaThinkingTypes expectedTypes = new()
+        {
+            Adaptive = new(true),
+            Disabled = new(true),
+            Enabled = new(true),
+        };
 
         Assert.Equal(expectedSupported, deserialized.Supported);
         Assert.Equal(expectedTypes, deserialized.Types);
@@ -69,7 +94,12 @@ public class BetaThinkingCapabilityTest : TestBase
         var model = new BetaThinkingCapability
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         model.Validate();
@@ -81,7 +111,12 @@ public class BetaThinkingCapabilityTest : TestBase
         var model = new BetaThinkingCapability
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         BetaThinkingCapability copied = new(model);

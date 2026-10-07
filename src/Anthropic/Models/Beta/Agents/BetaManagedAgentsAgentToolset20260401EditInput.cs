@@ -73,6 +73,7 @@ public sealed record class BetaManagedAgentsAgentToolset20260401EditInput : Json
         {
             if (value == null)
             {
+                this._rawData.Remove("replace_all");
                 return;
             }
 

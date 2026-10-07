@@ -75,6 +75,7 @@ public sealed record class BetaManagedAgentsMemoryStoreResource : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("description");
                 return;
             }
 

@@ -51,6 +51,7 @@ public record class IncreaseRequestListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 

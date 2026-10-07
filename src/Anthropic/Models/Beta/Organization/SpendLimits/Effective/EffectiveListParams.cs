@@ -39,6 +39,7 @@ public record class EffectiveListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 

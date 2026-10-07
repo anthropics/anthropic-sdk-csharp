@@ -51,6 +51,7 @@ public sealed record class BetaManagedAgentsWebSearchToolConfigParams : JsonMode
         {
             if (value == null)
             {
+                this._rawData.Remove("allowed_domains");
                 return;
             }
 
@@ -78,6 +79,7 @@ public sealed record class BetaManagedAgentsWebSearchToolConfigParams : JsonMode
         {
             if (value == null)
             {
+                this._rawData.Remove("blocked_domains");
                 return;
             }
 
@@ -130,6 +132,7 @@ public sealed record class BetaManagedAgentsWebSearchToolConfigParams : JsonMode
         {
             if (value == null)
             {
+                this._rawData.Remove("type");
                 return;
             }
 

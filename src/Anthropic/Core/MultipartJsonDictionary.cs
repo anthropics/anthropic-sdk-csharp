@@ -21,6 +21,10 @@ sealed class MultipartJsonDictionary
 {
     IReadOnlyDictionary<string, MultipartJsonElement> _rawData;
 
+    /// <summary>
+    /// Made with one write lock, not the default of one per processor: reads never
+    /// lock, and a key is only written when it's set or first read.
+    /// </summary>
     readonly ConcurrentDictionary<string, object?> _deserializedData;
 
     Dictionary<string, MultipartJsonElement> MutableRawData
@@ -38,25 +42,31 @@ sealed class MultipartJsonDictionary
     public MultipartJsonDictionary()
     {
         _rawData = new Dictionary<string, MultipartJsonElement>();
-        _deserializedData = new();
+        // How many properties will be set is unknown, so this keeps the default capacity.
+        _deserializedData = new(concurrencyLevel: 1, capacity: 31);
     }
 
     public MultipartJsonDictionary(IReadOnlyDictionary<string, MultipartJsonElement> dictionary)
     {
         _rawData = Enumerable.ToDictionary(dictionary, (e) => e.Key, (e) => e.Value);
-        _deserializedData = new();
+        _deserializedData = new(concurrencyLevel: 1, capacity: _rawData.Count);
     }
 
     public MultipartJsonDictionary(FrozenDictionary<string, MultipartJsonElement> dictionary)
     {
         _rawData = dictionary;
-        _deserializedData = new();
+        _deserializedData = new(concurrencyLevel: 1, capacity: _rawData.Count);
     }
 
     public MultipartJsonDictionary(MultipartJsonDictionary dictionary)
     {
         _rawData = Enumerable.ToDictionary(dictionary._rawData, (e) => e.Key, (e) => e.Value);
-        _deserializedData = new(dictionary._deserializedData);
+        // The comparer is the default one, spelled out because .NET Framework rejects null.
+        _deserializedData = new(
+            concurrencyLevel: 1,
+            dictionary._deserializedData,
+            EqualityComparer<string>.Default
+        );
     }
 
     /// <summary>
@@ -84,6 +94,12 @@ sealed class MultipartJsonDictionary
             ModelBase.SerializerOptions
         );
         _deserializedData[key] = value;
+    }
+
+    public void Remove(string key)
+    {
+        MutableRawData.Remove(key);
+        _deserializedData.TryRemove(key, out _);
     }
 
     public T GetNotNullClass<T>(string key)

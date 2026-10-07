@@ -24,7 +24,7 @@ public class BetaManagedAgentsSkillParamsTest : TestBase
     {
         BetaManagedAgentsSkillParams value = new BetaManagedAgentsCustomSkillParams()
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillParamsType.Custom,
             Version = "2",
         };
@@ -54,7 +54,7 @@ public class BetaManagedAgentsSkillParamsTest : TestBase
     {
         BetaManagedAgentsSkillParams value = new BetaManagedAgentsCustomSkillParams()
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillParamsType.Custom,
             Version = "2",
         };

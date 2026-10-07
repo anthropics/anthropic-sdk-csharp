@@ -47,6 +47,7 @@ public record class DeploymentUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("agent");
                 return;
             }
 
@@ -98,6 +99,7 @@ public record class DeploymentUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("environment_id");
                 return;
             }
 
@@ -122,6 +124,7 @@ public record class DeploymentUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("initial_events");
                 return;
             }
 
@@ -169,6 +172,7 @@ public record class DeploymentUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("name");
                 return;
             }
 
@@ -248,6 +252,7 @@ public record class DeploymentUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -277,6 +282,7 @@ public record class DeploymentUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

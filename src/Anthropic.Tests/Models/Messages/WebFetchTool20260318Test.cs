@@ -323,6 +323,50 @@ public class WebFetchTool20260318Test : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new WebFetchTool20260318
+        {
+            AllowedCallers = [WebFetchTool20260318AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            DeferLoading = true,
+            MaxContentTokens = 1,
+            MaxUses = 1,
+            ResponseInclusion = ResponseInclusion.Full,
+            Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new WebFetchUrlSourceAll(),
+                ServerToolResults = new WebFetchUrlSourceAll(),
+                UserInput = new WebFetchUrlSourceAll(),
+            },
+            UseCache = true,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
+            ResponseInclusion = null,
+            Strict = null,
+            UseCache = null,
+        };
+
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
+        Assert.Null(model.ResponseInclusion);
+        Assert.False(model.RawData.ContainsKey("response_inclusion"));
+        Assert.Null(model.Strict);
+        Assert.False(model.RawData.ContainsKey("strict"));
+        Assert.Null(model.UseCache);
+        Assert.False(model.RawData.ContainsKey("use_cache"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new WebFetchTool20260318

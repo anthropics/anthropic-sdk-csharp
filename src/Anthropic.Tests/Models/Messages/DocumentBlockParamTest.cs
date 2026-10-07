@@ -203,9 +203,7 @@ public class DocumentBlockParamSourceTest : TestBase
     [Fact]
     public void ContentBlockValidationWorks()
     {
-        DocumentBlockParamSource value = new ContentBlockSource(
-            new ContentBlockSourceContent("string")
-        );
+        DocumentBlockParamSource value = new ContentBlockSource("string");
         value.Validate();
     }
 
@@ -252,9 +250,7 @@ public class DocumentBlockParamSourceTest : TestBase
     [Fact]
     public void ContentBlockSerializationRoundtripWorks()
     {
-        DocumentBlockParamSource value = new ContentBlockSource(
-            new ContentBlockSourceContent("string")
-        );
+        DocumentBlockParamSource value = new ContentBlockSource("string");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<DocumentBlockParamSource>(
             element,

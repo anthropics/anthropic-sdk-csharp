@@ -124,6 +124,42 @@ public class DreamCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new DreamCreateParams
+        {
+            Inputs =
+            [
+                new BetaDreamMemoryStoreInput()
+                {
+                    MemoryStoreID = "x",
+                    Type = BetaDreamMemoryStoreInputType.MemoryStore,
+                },
+            ],
+            Model = "string",
+            Instructions = "x",
+            OutputBehavior = new BetaOutputBehaviorCreateNew(
+                BetaOutputBehaviorCreateNewType.CreateNew
+            ),
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            OutputBehavior = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.OutputBehavior);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_behavior"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new DreamCreateParams
@@ -220,7 +256,7 @@ public class DreamCreateParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["dreaming-2026-04-21", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,dreaming-2026-04-21"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(

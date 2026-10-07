@@ -5,7 +5,9 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 
 namespace Anthropic.Models.Models;
@@ -37,6 +39,7 @@ public record class ModelListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("after_id");
                 return;
             }
 
@@ -59,10 +62,41 @@ public record class ModelListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("before_id");
                 return;
             }
 
             this._rawQueryData.Set("before_id", value);
+        }
+    }
+
+    /// <summary>
+    /// Filter the list to models in any of the given lifecycle stages (`active`,
+    /// `deprecated`, or `retired`). Up to 3 values. When omitted, the list contains
+    /// the `active` and `deprecated` models; `retired` models appear only when `retired`
+    /// is requested explicitly.
+    /// </summary>
+    public IReadOnlyList<ApiEnum<string, Lifecycle>>? Lifecycle
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<ImmutableArray<ApiEnum<string, Lifecycle>>>(
+                "lifecycle"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawQueryData.Remove("lifecycle");
+                return;
+            }
+
+            this._rawQueryData.Set<ImmutableArray<ApiEnum<string, Lifecycle>>?>(
+                "lifecycle",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -82,6 +116,7 @@ public record class ModelListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -108,6 +143,7 @@ public record class ModelListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -137,6 +173,7 @@ public record class ModelListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -231,5 +268,52 @@ public record class ModelListParams : ParamsBase
     public override int GetHashCode()
     {
         return 0;
+    }
+}
+
+[JsonConverter(typeof(LifecycleConverter))]
+public enum Lifecycle
+{
+    Active,
+    Deprecated,
+    Retired,
+}
+
+sealed class LifecycleConverter : JsonConverter<Lifecycle>
+{
+    public override Lifecycle Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "active" => Lifecycle.Active,
+            "deprecated" => Lifecycle.Deprecated,
+            "retired" => Lifecycle.Retired,
+            _ => (Lifecycle)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        Lifecycle value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                Lifecycle.Active => "active",
+                Lifecycle.Deprecated => "deprecated",
+                Lifecycle.Retired => "retired",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

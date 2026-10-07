@@ -58,6 +58,28 @@ public class RuleListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new RuleListParams
+        {
+            IncludeArchived = true,
+            IssuerID = "issuer_id",
+            Limit = 1,
+            Page = "page",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            IncludeArchived = null,
+            Limit = null,
+        };
+
+        Assert.Null(parameters.IncludeArchived);
+        Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new RuleListParams { IncludeArchived = true, Limit = 1 };

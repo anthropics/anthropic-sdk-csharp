@@ -44,6 +44,7 @@ public record class MemoryVersionRetrieveParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("view");
                 return;
             }
 
@@ -67,6 +68,7 @@ public record class MemoryVersionRetrieveParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -96,6 +98,7 @@ public record class MemoryVersionRetrieveParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

@@ -54,6 +54,7 @@ public record class FileUploadParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("expires_in_seconds");
                 return;
             }
 
@@ -77,6 +78,7 @@ public record class FileUploadParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -106,6 +108,7 @@ public record class FileUploadParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

@@ -14,7 +14,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             MaxTokens = 0,
             OutputConfig = new()
             {
@@ -40,7 +40,7 @@ public class BetaFallbackParamTest : TestBase
             },
         };
 
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeSonnet5_5;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeHaiku5_5;
         long expectedMaxTokens = 0;
         BetaOutputConfig expectedOutputConfig = new()
         {
@@ -77,7 +77,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             MaxTokens = 0,
             OutputConfig = new()
             {
@@ -117,7 +117,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             MaxTokens = 0,
             OutputConfig = new()
             {
@@ -150,7 +150,7 @@ public class BetaFallbackParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeSonnet5_5;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeHaiku5_5;
         long expectedMaxTokens = 0;
         BetaOutputConfig expectedOutputConfig = new()
         {
@@ -187,7 +187,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             MaxTokens = 0,
             OutputConfig = new()
             {
@@ -219,7 +219,7 @@ public class BetaFallbackParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaFallbackParam { Model = Messages::Model.ClaudeSonnet5_5 };
+        var model = new BetaFallbackParam { Model = Messages::Model.ClaudeHaiku5_5 };
 
         Assert.Null(model.MaxTokens);
         Assert.False(model.RawData.ContainsKey("max_tokens"));
@@ -234,7 +234,7 @@ public class BetaFallbackParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaFallbackParam { Model = Messages::Model.ClaudeSonnet5_5 };
+        var model = new BetaFallbackParam { Model = Messages::Model.ClaudeHaiku5_5 };
 
         model.Validate();
     }
@@ -244,7 +244,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
 
             MaxTokens = null,
             OutputConfig = null,
@@ -267,7 +267,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
 
             MaxTokens = null,
             OutputConfig = null,
@@ -283,7 +283,7 @@ public class BetaFallbackParamTest : TestBase
     {
         var model = new BetaFallbackParam
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             MaxTokens = 0,
             OutputConfig = new()
             {

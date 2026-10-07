@@ -188,6 +188,30 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsGitHubRepositoryResourceParams
+        {
+            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
+            Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
+            Checkout = new BetaManagedAgentsBranchCheckout()
+            {
+                Name = "main",
+                Type = BetaManagedAgentsBranchCheckoutType.Branch,
+            },
+            MountPath = "x",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AuthorizationToken = null,
+        };
+
+        Assert.Null(model.AuthorizationToken);
+        Assert.False(model.RawData.ContainsKey("authorization_token"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams

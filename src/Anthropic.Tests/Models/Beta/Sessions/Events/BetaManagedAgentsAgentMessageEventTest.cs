@@ -14,7 +14,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsAgentMessageEvent
         {
-            ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
+            ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -27,7 +27,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
             Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
         };
 
-        string expectedID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz";
+        string expectedID = "sevt_011CZkZHPq1jCdq5mbRTjiVn";
         List<BetaManagedAgentsAgentMessageEventContent> expectedContent =
         [
             new BetaManagedAgentsTextBlock()
@@ -55,7 +55,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsAgentMessageEvent
         {
-            ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
+            ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -82,7 +82,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsAgentMessageEvent
         {
-            ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
+            ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -102,7 +102,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz";
+        string expectedID = "sevt_011CZkZHPq1jCdq5mbRTjiVn";
         List<BetaManagedAgentsAgentMessageEventContent> expectedContent =
         [
             new BetaManagedAgentsTextBlock()
@@ -130,7 +130,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsAgentMessageEvent
         {
-            ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
+            ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
             Content =
             [
                 new BetaManagedAgentsTextBlock()
@@ -151,7 +151,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
     {
         var model = new BetaManagedAgentsAgentMessageEvent
         {
-            ID = "sevt_011CZkZHPq1jCdq5lbRTjiVnz",
+            ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
             Content =
             [
                 new BetaManagedAgentsTextBlock()

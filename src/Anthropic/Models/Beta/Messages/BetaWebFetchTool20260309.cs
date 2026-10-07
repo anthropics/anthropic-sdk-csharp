@@ -56,6 +56,7 @@ public sealed record class BetaWebFetchTool20260309 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("allowed_callers");
                 return;
             }
 
@@ -144,6 +145,7 @@ public sealed record class BetaWebFetchTool20260309 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("defer_loading");
                 return;
             }
 
@@ -192,6 +194,7 @@ public sealed record class BetaWebFetchTool20260309 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("strict");
                 return;
             }
 
@@ -229,6 +232,7 @@ public sealed record class BetaWebFetchTool20260309 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("use_cache");
                 return;
             }
 

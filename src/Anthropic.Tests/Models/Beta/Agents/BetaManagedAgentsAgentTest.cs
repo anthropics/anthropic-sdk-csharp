@@ -60,7 +60,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 },
                 new BetaManagedAgentsCustomSkill()
                 {
-                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                     Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
@@ -140,7 +140,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             },
             new BetaManagedAgentsCustomSkill()
             {
-                SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                 Type = BetaManagedAgentsCustomSkillType.Custom,
                 Version = "2",
             },
@@ -260,7 +260,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 },
                 new BetaManagedAgentsCustomSkill()
                 {
-                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                     Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
@@ -355,7 +355,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 },
                 new BetaManagedAgentsCustomSkill()
                 {
-                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                     Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
@@ -442,7 +442,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             },
             new BetaManagedAgentsCustomSkill()
             {
-                SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                 Type = BetaManagedAgentsCustomSkillType.Custom,
                 Version = "2",
             },
@@ -562,7 +562,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 },
                 new BetaManagedAgentsCustomSkill()
                 {
-                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                     Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
@@ -651,7 +651,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 },
                 new BetaManagedAgentsCustomSkill()
                 {
-                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                     Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
@@ -712,7 +712,7 @@ public class SkillTest : TestBase
     {
         Skill value = new BetaManagedAgentsCustomSkill()
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };
@@ -739,7 +739,7 @@ public class SkillTest : TestBase
     {
         Skill value = new BetaManagedAgentsCustomSkill()
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };

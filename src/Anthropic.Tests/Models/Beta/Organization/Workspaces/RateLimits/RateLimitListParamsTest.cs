@@ -67,6 +67,26 @@ public class RateLimitListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new RateLimitListParams
+        {
+            WorkspaceID = "workspace_id",
+            GroupType = GroupType.Batch,
+            IncludeInherited = true,
+            Limit = 1,
+            Page = "page",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            IncludeInherited = null,
+        };
+
+        Assert.Null(parameters.IncludeInherited);
+        Assert.False(parameters.RawQueryData.ContainsKey("include_inherited"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new RateLimitListParams

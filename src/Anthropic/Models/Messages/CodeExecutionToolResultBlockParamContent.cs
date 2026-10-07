@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -35,6 +36,22 @@ public record class CodeExecutionToolResultBlockParamContent : ModelBase
                 CodeExecutionResultBlockParam x => x.Type,
                 EncryptedCodeExecutionResultBlockParam x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
+    }
+
+    public IReadOnlyList<CodeExecutionOutputBlockParam>? Content
+    {
+        get
+        {
+            return this.Value switch
+            {
+                CodeExecutionToolResultErrorParam _ => null,
+                CodeExecutionResultBlockParam x => x.Content,
+                EncryptedCodeExecutionResultBlockParam x => x.Content,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<
+                    IReadOnlyList<CodeExecutionOutputBlockParam>
+                >(this.Json, "content"),
             };
         }
     }

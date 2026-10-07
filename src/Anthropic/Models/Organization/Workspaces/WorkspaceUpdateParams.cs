@@ -53,6 +53,7 @@ public record class WorkspaceUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("display_color");
                 return;
             }
 
@@ -84,6 +85,7 @@ public record class WorkspaceUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("external_key_id");
                 return;
             }
 
@@ -105,6 +107,7 @@ public record class WorkspaceUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("name");
                 return;
             }
 

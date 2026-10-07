@@ -12,12 +12,12 @@ public class BetaManagedAgentsCustomSkillParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkillParams
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillParamsType.Custom,
             Version = "2",
         };
 
-        string expectedSkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx";
+        string expectedSkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx";
         ApiEnum<string, BetaManagedAgentsCustomSkillParamsType> expectedType =
             BetaManagedAgentsCustomSkillParamsType.Custom;
         string expectedVersion = "2";
@@ -32,7 +32,7 @@ public class BetaManagedAgentsCustomSkillParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkillParams
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillParamsType.Custom,
             Version = "2",
         };
@@ -51,7 +51,7 @@ public class BetaManagedAgentsCustomSkillParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkillParams
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillParamsType.Custom,
             Version = "2",
         };
@@ -63,7 +63,7 @@ public class BetaManagedAgentsCustomSkillParamsTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedSkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx";
+        string expectedSkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx";
         ApiEnum<string, BetaManagedAgentsCustomSkillParamsType> expectedType =
             BetaManagedAgentsCustomSkillParamsType.Custom;
         string expectedVersion = "2";
@@ -78,7 +78,7 @@ public class BetaManagedAgentsCustomSkillParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkillParams
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillParamsType.Custom,
             Version = "2",
         };
@@ -91,7 +91,7 @@ public class BetaManagedAgentsCustomSkillParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkillParams
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillParamsType.Custom,
         };
 
@@ -104,7 +104,7 @@ public class BetaManagedAgentsCustomSkillParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkillParams
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillParamsType.Custom,
         };
 
@@ -116,7 +116,7 @@ public class BetaManagedAgentsCustomSkillParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkillParams
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillParamsType.Custom,
 
             Version = null,
@@ -131,7 +131,7 @@ public class BetaManagedAgentsCustomSkillParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkillParams
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillParamsType.Custom,
 
             Version = null,
@@ -145,7 +145,7 @@ public class BetaManagedAgentsCustomSkillParamsTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkillParams
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillParamsType.Custom,
             Version = "2",
         };

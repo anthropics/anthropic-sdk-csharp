@@ -47,7 +47,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Diagnostics = new(new CacheMissReason(new CacheMissModelChanged(0))),
+            Diagnostics = new(new CacheMissModelChanged(0)),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
@@ -105,7 +105,7 @@ public class MessageTest : TestBase
                 Text = "Hi! My name is Claude.",
             },
         ];
-        Diagnostics expectedDiagnostics = new(new CacheMissReason(new CacheMissModelChanged(0)));
+        Diagnostics expectedDiagnostics = new(new CacheMissModelChanged(0));
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         RefusalStopDetails expectedStopDetails = new()
@@ -185,7 +185,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Diagnostics = new(new CacheMissReason(new CacheMissModelChanged(0))),
+            Diagnostics = new(new CacheMissModelChanged(0)),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
@@ -254,7 +254,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Diagnostics = new(new CacheMissReason(new CacheMissModelChanged(0))),
+            Diagnostics = new(new CacheMissModelChanged(0)),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
@@ -319,7 +319,7 @@ public class MessageTest : TestBase
                 Text = "Hi! My name is Claude.",
             },
         ];
-        Diagnostics expectedDiagnostics = new(new CacheMissReason(new CacheMissModelChanged(0)));
+        Diagnostics expectedDiagnostics = new(new CacheMissModelChanged(0));
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         RefusalStopDetails expectedStopDetails = new()
@@ -399,7 +399,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Diagnostics = new(new CacheMissReason(new CacheMissModelChanged(0))),
+            Diagnostics = new(new CacheMissModelChanged(0)),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
             {
@@ -465,7 +465,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Diagnostics = new(new CacheMissReason(new CacheMissModelChanged(0))),
+            Diagnostics = new(new CacheMissModelChanged(0)),
             Model = Model.ClaudeOpus5,
             StopDetails = new()
             {

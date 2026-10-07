@@ -12,7 +12,7 @@ namespace Anthropic.Models.Beta.Sessions.Threads;
 
 /// <summary>
 /// An execution thread within a `session`. Each session has one primary thread plus
-/// zero or more child threads spawned by the coordinator.
+/// zero or more child threads.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<

@@ -50,6 +50,7 @@ public sealed record class BetaTargetStoreHeldError : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("message");
                 return;
             }
 

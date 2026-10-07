@@ -171,6 +171,7 @@ public sealed record class BetaManagedAgentsMemoryVersion : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("created_by");
                 return;
             }
 
@@ -223,6 +224,7 @@ public sealed record class BetaManagedAgentsMemoryVersion : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("redacted_by");
                 return;
             }
 

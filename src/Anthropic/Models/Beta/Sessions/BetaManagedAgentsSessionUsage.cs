@@ -32,6 +32,7 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("active_seconds");
                 return;
             }
 
@@ -55,6 +56,7 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("cache_creation");
                 return;
             }
 
@@ -76,6 +78,7 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("cache_read_input_tokens");
                 return;
             }
 
@@ -97,6 +100,7 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("input_tokens");
                 return;
             }
 
@@ -132,6 +136,7 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("output_tokens");
                 return;
             }
 

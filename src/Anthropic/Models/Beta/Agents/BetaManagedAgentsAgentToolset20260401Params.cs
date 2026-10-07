@@ -50,6 +50,7 @@ public sealed record class BetaManagedAgentsAgentToolset20260401Params : JsonMod
         {
             if (value == null)
             {
+                this._rawData.Remove("configs");
                 return;
             }
 

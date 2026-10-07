@@ -1,6 +1,3 @@
-// xUnit1024: same-name overloads are intentional — base method is parameterless with no test attribute.
-#pragma warning disable xUnit1024
-
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,7 +17,7 @@ public class FileServiceMultiClientTest : FileServiceTest
     [AnthropicTestClients(
         TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
     )]
-    public async Task List_Works(IAnthropicClient c)
+    public async Task List_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.List_Works();
@@ -30,15 +27,15 @@ public class FileServiceMultiClientTest : FileServiceTest
     [AnthropicTestClients(
         TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
     )]
-    public async Task Delete_Works(IAnthropicClient c)
+    public async Task Delete_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.Delete_Works();
     }
 
-    [Theory(Skip = "Mock server doesn't support application/binary responses")]
+    [Theory]
     [AnthropicTestClients]
-    public async Task Download_Works(IAnthropicClient c)
+    public async Task Download_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.Download_Works();
@@ -48,7 +45,7 @@ public class FileServiceMultiClientTest : FileServiceTest
     [AnthropicTestClients(
         TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
     )]
-    public async Task RetrieveMetadata_Works(IAnthropicClient c)
+    public async Task RetrieveMetadata_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.RetrieveMetadata_Works();
@@ -58,7 +55,7 @@ public class FileServiceMultiClientTest : FileServiceTest
     [AnthropicTestClients(
         TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
     )]
-    public async Task Upload_Works(IAnthropicClient c)
+    public async Task Upload_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.Upload_Works();

@@ -91,6 +91,30 @@ public class MemoryStoreUpdateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new MemoryStoreUpdateParams
+        {
+            MemoryStoreID = "memory_store_id",
+            Description = "description",
+            Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
+            Name = "x",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new MemoryStoreUpdateParams
@@ -159,7 +183,7 @@ public class MemoryStoreUpdateParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["agent-memory-2026-07-22", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,agent-memory-2026-07-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(

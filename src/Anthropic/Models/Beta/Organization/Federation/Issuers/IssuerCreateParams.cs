@@ -96,6 +96,7 @@ public record class IssuerCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("jwks");
                 return;
             }
 
@@ -134,6 +135,7 @@ public record class IssuerCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 

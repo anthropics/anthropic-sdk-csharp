@@ -110,6 +110,7 @@ public sealed record class BetaUserProfileExternalUserDetailsParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("onboarded_at");
                 return;
             }
 

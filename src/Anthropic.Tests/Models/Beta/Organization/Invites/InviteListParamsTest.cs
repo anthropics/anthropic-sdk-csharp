@@ -95,6 +95,42 @@ public class InviteListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new InviteListParams
+        {
+            AfterID = "after_id",
+            BeforeID = "before_id",
+            Email = "dev@stainless.com",
+            Limit = 1,
+            Roles = ["string"],
+            Statuses = [Status.Accepted],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AfterID = null,
+            BeforeID = null,
+            Email = null,
+            Limit = null,
+            Roles = null,
+            Statuses = null,
+        };
+
+        Assert.Null(parameters.AfterID);
+        Assert.False(parameters.RawQueryData.ContainsKey("after_id"));
+        Assert.Null(parameters.BeforeID);
+        Assert.False(parameters.RawQueryData.ContainsKey("before_id"));
+        Assert.Null(parameters.Email);
+        Assert.False(parameters.RawQueryData.ContainsKey("email"));
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Roles);
+        Assert.False(parameters.RawQueryData.ContainsKey("roles"));
+        Assert.Null(parameters.Statuses);
+        Assert.False(parameters.RawQueryData.ContainsKey("statuses"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         InviteListParams parameters = new()

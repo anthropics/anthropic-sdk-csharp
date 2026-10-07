@@ -32,6 +32,7 @@ public record class WorkspaceListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("after_id");
                 return;
             }
 
@@ -54,6 +55,7 @@ public record class WorkspaceListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("before_id");
                 return;
             }
 
@@ -75,10 +77,33 @@ public record class WorkspaceListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("include_archived");
                 return;
             }
 
             this._rawQueryData.Set("include_archived", value);
+        }
+    }
+
+    /// <summary>
+    /// Whether to include the organization's default Workspace in the response
+    /// </summary>
+    public bool? IncludeDefault
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<bool>("include_default");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawQueryData.Remove("include_default");
+                return;
+            }
+
+            this._rawQueryData.Set("include_default", value);
         }
     }
 
@@ -98,6 +123,7 @@ public record class WorkspaceListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 

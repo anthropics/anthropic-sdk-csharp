@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -111,6 +112,7 @@ public abstract record class ParamsBase
                             JsonValueKind.Null => "",
                             JsonValueKind.True => "true",
                             JsonValueKind.False => "false",
+                            JsonValueKind.Number => item.ToString(),
                             _ => item.GetString(),
                         }
                     );
@@ -152,18 +154,28 @@ public abstract record class ParamsBase
                 }
                 break;
             case JsonValueKind.Array:
-                foreach (var item in element.EnumerateArray())
+                if (element.GetArrayLength() > 0)
                 {
-                    request.Headers.Add(
-                        key,
-                        item.ValueKind switch
-                        {
-                            JsonValueKind.Null => "",
-                            JsonValueKind.True => "true",
-                            JsonValueKind.False => "false",
-                            _ => item.GetString(),
-                        }
+                    var value = string.Join(
+                        ",",
+                        Enumerable.Concat(
+                            Enumerable.Select(
+                                element.EnumerateArray(),
+                                x =>
+                                    x.ValueKind switch
+                                    {
+                                        JsonValueKind.Null => "",
+                                        JsonValueKind.True => "true",
+                                        JsonValueKind.False => "false",
+                                        JsonValueKind.Number => x.ToString(),
+                                        _ => x.GetString(),
+                                    }
+                            ),
+                            request.Headers.TryGetValues(key, out var existing) ? existing : []
+                        )
                     );
+                    request.Headers.Remove(key);
+                    request.Headers.Add(key, value);
                 }
                 break;
         }

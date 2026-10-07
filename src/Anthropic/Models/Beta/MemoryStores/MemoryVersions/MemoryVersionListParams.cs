@@ -36,6 +36,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("api_key_id");
                 return;
             }
 
@@ -57,6 +58,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[gte]");
                 return;
             }
 
@@ -78,6 +80,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[lte]");
                 return;
             }
 
@@ -99,6 +102,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -123,6 +127,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("memory_id");
                 return;
             }
 
@@ -146,6 +151,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("operation");
                 return;
             }
 
@@ -168,6 +174,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -189,6 +196,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("service_account_id");
                 return;
             }
 
@@ -210,6 +218,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("session_id");
                 return;
             }
 
@@ -237,6 +246,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("view");
                 return;
             }
 
@@ -260,6 +270,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -289,6 +300,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

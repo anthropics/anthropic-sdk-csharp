@@ -76,6 +76,30 @@ public class IssuerCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new IssuerCreateParams
+        {
+            IssuerUrl = "x",
+            Name = "x",
+            CheckJti = true,
+            Jwks = new JwksDiscovery()
+            {
+                CACertPem = "ca_cert_pem",
+                DiscoveryBase = "discovery_base",
+            },
+            MaxJwtLifetimeSeconds = 1,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Jwks = null,
+        };
+
+        Assert.Null(parameters.Jwks);
+        Assert.False(parameters.RawBodyData.ContainsKey("jwks"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new IssuerCreateParams

@@ -35,6 +35,7 @@ public sealed record class BetaWebFetchUrlSources : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("client_tool_results");
                 return;
             }
 
@@ -58,6 +59,7 @@ public sealed record class BetaWebFetchUrlSources : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("server_tool_results");
                 return;
             }
 
@@ -79,6 +81,7 @@ public sealed record class BetaWebFetchUrlSources : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("user_input");
                 return;
             }
 
@@ -165,6 +168,23 @@ public record class ClientToolResults : ModelBase
                 BetaWebFetchUrlSourceOnly x => x.Type,
                 BetaWebFetchUrlSourceExcept x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
+    }
+
+    public IReadOnlyList<BetaWebFetchUrlSourceToolReference>? Tools
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaWebFetchUrlSourceAll _ => null,
+                BetaWebFetchUrlSourceNone _ => null,
+                BetaWebFetchUrlSourceOnly x => x.Tools,
+                BetaWebFetchUrlSourceExcept x => x.Tools,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<
+                    IReadOnlyList<BetaWebFetchUrlSourceToolReference>
+                >(this.Json, "tools"),
             };
         }
     }
@@ -600,6 +620,23 @@ public record class ServerToolResults : ModelBase
                 BetaWebFetchUrlSourceOnly x => x.Type,
                 BetaWebFetchUrlSourceExcept x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
+    }
+
+    public IReadOnlyList<BetaWebFetchUrlSourceToolReference>? Tools
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaWebFetchUrlSourceAll _ => null,
+                BetaWebFetchUrlSourceNone _ => null,
+                BetaWebFetchUrlSourceOnly x => x.Tools,
+                BetaWebFetchUrlSourceExcept x => x.Tools,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<
+                    IReadOnlyList<BetaWebFetchUrlSourceToolReference>
+                >(this.Json, "tools"),
             };
         }
     }

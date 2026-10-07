@@ -59,6 +59,7 @@ public sealed record class BetaManagedAgentsMcpOAuthRefreshUpdateParams : JsonMo
         {
             if (value == null)
             {
+                this._rawData.Remove("token_endpoint_auth");
                 return;
             }
 

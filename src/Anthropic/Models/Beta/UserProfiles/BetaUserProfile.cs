@@ -133,6 +133,7 @@ public sealed record class BetaUserProfile : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("access_type");
                 return;
             }
 
@@ -175,6 +176,7 @@ public sealed record class BetaUserProfile : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("external_user_details");
                 return;
             }
 

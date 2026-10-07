@@ -163,6 +163,7 @@ public record class UserUsageReportListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("exclude_deleted_users");
                 return;
             }
 
@@ -232,6 +233,7 @@ public record class UserUsageReportListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -273,6 +275,7 @@ public record class UserUsageReportListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("order");
                 return;
             }
 
@@ -294,6 +297,7 @@ public record class UserUsageReportListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("order_by");
                 return;
             }
 

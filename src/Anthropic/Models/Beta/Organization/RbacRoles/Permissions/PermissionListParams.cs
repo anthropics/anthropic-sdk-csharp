@@ -37,6 +37,7 @@ public record class PermissionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
