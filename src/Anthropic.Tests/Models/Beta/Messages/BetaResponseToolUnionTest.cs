@@ -552,7 +552,7 @@ public class BetaResponseToolUnionTest : TestBase
     {
         BetaResponseToolUnion value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -1310,7 +1310,7 @@ public class BetaResponseToolUnionTest : TestBase
     {
         BetaResponseToolUnion value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },

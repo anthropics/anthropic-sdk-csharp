@@ -32,7 +32,7 @@ public class BetaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeSonnet5_5,
+                    Model = Model.ClaudeHaiku5_5,
                     OutputTokens = 0,
                 },
             ],
@@ -61,7 +61,7 @@ public class BetaUsageTest : TestBase
                 CacheCreationInputTokens = 0,
                 CacheReadInputTokens = 0,
                 InputTokens = 0,
-                Model = Model.ClaudeSonnet5_5,
+                Model = Model.ClaudeHaiku5_5,
                 OutputTokens = 0,
             },
         ];
@@ -117,7 +117,7 @@ public class BetaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeSonnet5_5,
+                    Model = Model.ClaudeHaiku5_5,
                     OutputTokens = 0,
                 },
             ],
@@ -157,7 +157,7 @@ public class BetaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeSonnet5_5,
+                    Model = Model.ClaudeHaiku5_5,
                     OutputTokens = 0,
                 },
             ],
@@ -193,7 +193,7 @@ public class BetaUsageTest : TestBase
                 CacheCreationInputTokens = 0,
                 CacheReadInputTokens = 0,
                 InputTokens = 0,
-                Model = Model.ClaudeSonnet5_5,
+                Model = Model.ClaudeHaiku5_5,
                 OutputTokens = 0,
             },
         ];
@@ -249,7 +249,7 @@ public class BetaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeSonnet5_5,
+                    Model = Model.ClaudeHaiku5_5,
                     OutputTokens = 0,
                 },
             ],
@@ -286,7 +286,7 @@ public class BetaUsageTest : TestBase
                     CacheCreationInputTokens = 0,
                     CacheReadInputTokens = 0,
                     InputTokens = 0,
-                    Model = Model.ClaudeSonnet5_5,
+                    Model = Model.ClaudeHaiku5_5,
                     OutputTokens = 0,
                 },
             ],
@@ -314,7 +314,7 @@ public class BetaUsageIterationTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeSonnet5_5,
+            Model = Model.ClaudeHaiku5_5,
             OutputTokens = 0,
         };
         value.Validate();
@@ -343,7 +343,7 @@ public class BetaUsageIterationTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeSonnet5_5,
+            Model = Model.ClaudeHaiku5_5,
             OutputTokens = 0,
         };
         value.Validate();
@@ -358,7 +358,7 @@ public class BetaUsageIterationTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeSonnet5_5,
+            Model = Model.ClaudeHaiku5_5,
             OutputTokens = 0,
         };
         value.Validate();
@@ -373,7 +373,7 @@ public class BetaUsageIterationTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeSonnet5_5,
+            Model = Model.ClaudeHaiku5_5,
             OutputTokens = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -414,7 +414,7 @@ public class BetaUsageIterationTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeSonnet5_5,
+            Model = Model.ClaudeHaiku5_5,
             OutputTokens = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -435,7 +435,7 @@ public class BetaUsageIterationTest : TestBase
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
             InputTokens = 0,
-            Model = Model.ClaudeSonnet5_5,
+            Model = Model.ClaudeHaiku5_5,
             OutputTokens = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -461,7 +461,7 @@ public class BetaUsageIterationTest : TestBase
                   "cache_creation_input_tokens": 0,
                   "cache_read_input_tokens": 0,
                   "input_tokens": 0,
-                  "model": "claude-sonnet-5-5",
+                  "model": "claude-haiku-5-5",
                   "output_tokens": 0,
                   "type": "message"
                 }
@@ -478,7 +478,7 @@ public class BetaUsageIterationTest : TestBase
         long expectedCacheCreationInputTokens = 0;
         long expectedCacheReadInputTokens = 0;
         long expectedInputTokens = 0;
-        ApiEnum<string, Model> expectedModel = Model.ClaudeSonnet5_5;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeHaiku5_5;
         long expectedOutputTokens = 0;
         JsonElement expectedType = JsonSerializer.SerializeToElement("message");
 
