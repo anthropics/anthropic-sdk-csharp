@@ -85,6 +85,14 @@ public class HttpResponse : IDisposable
 
     public async Task<T> Deserialize<T>(Threading::CancellationToken cancellationToken = default)
     {
+        return await this.DeserializeNullable<T>(cancellationToken).ConfigureAwait(false)
+            ?? throw new AnthropicInvalidDataException("Response cannot be null");
+    }
+
+    internal async Task<T?> DeserializeNullable<T>(
+        Threading::CancellationToken cancellationToken = default
+    )
+    {
         using var cts = Threading::CancellationTokenSource.CreateLinkedTokenSource(
             this.CancellationToken,
             cancellationToken
@@ -92,13 +100,12 @@ public class HttpResponse : IDisposable
         try
         {
             return await JsonSerializer
-                    .DeserializeAsync<T>(
-                        await this.ReadAsStream(cts.Token).ConfigureAwait(false),
-                        ModelBase.SerializerOptions,
-                        cts.Token
-                    )
-                    .ConfigureAwait(false)
-                ?? throw new AnthropicInvalidDataException("Response cannot be null");
+                .DeserializeAsync<T>(
+                    await this.ReadAsStream(cts.Token).ConfigureAwait(false),
+                    ModelBase.SerializerOptions,
+                    cts.Token
+                )
+                .ConfigureAwait(false);
         }
         catch (HttpRequestException e)
         {
