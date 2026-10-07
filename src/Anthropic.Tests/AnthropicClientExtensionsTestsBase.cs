@@ -8150,6 +8150,8 @@ public abstract class AnthropicClientExtensionsTestsBase
     [Fact]
     public async Task GetResponseAsync_WithResponseFormatForTypeWithoutRequiredMembers_SendsOutputFormat()
     {
+        // ForJsonSchema<T>() emits a "$schema" keyword, which the schema transform moves into the
+        // description like any other keyword the API doesn't support.
         VerbatimHttpHandler handler = new(
             expectedRequest: """
             {
