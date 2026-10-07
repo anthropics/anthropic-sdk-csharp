@@ -171,6 +171,23 @@ public record class ClientToolResults : ModelBase
         }
     }
 
+    public IReadOnlyList<WebFetchUrlSourceToolReference>? Tools
+    {
+        get
+        {
+            return this.Value switch
+            {
+                WebFetchUrlSourceAll _ => null,
+                WebFetchUrlSourceNone _ => null,
+                WebFetchUrlSourceOnly x => x.Tools,
+                WebFetchUrlSourceExcept x => x.Tools,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<
+                    IReadOnlyList<WebFetchUrlSourceToolReference>
+                >(this.Json, "tools"),
+            };
+        }
+    }
+
     public ClientToolResults(WebFetchUrlSourceAll value, JsonElement? element = null)
     {
         this.Value = value;
@@ -593,6 +610,23 @@ public record class ServerToolResults : ModelBase
                 WebFetchUrlSourceOnly x => x.Type,
                 WebFetchUrlSourceExcept x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
+    }
+
+    public IReadOnlyList<WebFetchUrlSourceToolReference>? Tools
+    {
+        get
+        {
+            return this.Value switch
+            {
+                WebFetchUrlSourceAll _ => null,
+                WebFetchUrlSourceNone _ => null,
+                WebFetchUrlSourceOnly x => x.Tools,
+                WebFetchUrlSourceExcept x => x.Tools,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<
+                    IReadOnlyList<WebFetchUrlSourceToolReference>
+                >(this.Json, "tools"),
             };
         }
     }

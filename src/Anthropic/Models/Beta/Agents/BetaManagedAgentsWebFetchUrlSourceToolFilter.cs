@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -39,6 +40,23 @@ public record class BetaManagedAgentsWebFetchUrlSourceToolFilter : ModelBase
                 BetaManagedAgentsWebFetchUrlSourceOnly x => x.Type,
                 BetaManagedAgentsWebFetchUrlSourceExcept x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
+    }
+
+    public IReadOnlyList<BetaManagedAgentsWebFetchUrlSourceToolReference>? Tools
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsWebFetchUrlSourceAll _ => null,
+                BetaManagedAgentsWebFetchUrlSourceNone _ => null,
+                BetaManagedAgentsWebFetchUrlSourceOnly x => x.Tools,
+                BetaManagedAgentsWebFetchUrlSourceExcept x => x.Tools,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<
+                    IReadOnlyList<BetaManagedAgentsWebFetchUrlSourceToolReference>
+                >(this.Json, "tools"),
             };
         }
     }

@@ -172,6 +172,23 @@ public record class ClientToolResults : ModelBase
         }
     }
 
+    public IReadOnlyList<BetaWebFetchUrlSourceToolReference>? Tools
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaWebFetchUrlSourceAll _ => null,
+                BetaWebFetchUrlSourceNone _ => null,
+                BetaWebFetchUrlSourceOnly x => x.Tools,
+                BetaWebFetchUrlSourceExcept x => x.Tools,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<
+                    IReadOnlyList<BetaWebFetchUrlSourceToolReference>
+                >(this.Json, "tools"),
+            };
+        }
+    }
+
     public ClientToolResults(BetaWebFetchUrlSourceAll value, JsonElement? element = null)
     {
         this.Value = value;
@@ -603,6 +620,23 @@ public record class ServerToolResults : ModelBase
                 BetaWebFetchUrlSourceOnly x => x.Type,
                 BetaWebFetchUrlSourceExcept x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
+    }
+
+    public IReadOnlyList<BetaWebFetchUrlSourceToolReference>? Tools
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaWebFetchUrlSourceAll _ => null,
+                BetaWebFetchUrlSourceNone _ => null,
+                BetaWebFetchUrlSourceOnly x => x.Tools,
+                BetaWebFetchUrlSourceExcept x => x.Tools,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<
+                    IReadOnlyList<BetaWebFetchUrlSourceToolReference>
+                >(this.Json, "tools"),
             };
         }
     }

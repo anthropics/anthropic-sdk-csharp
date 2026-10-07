@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
@@ -102,7 +103,13 @@ public class BetaManagedAgentsWebFetchUrlSourceToolFilterTest : TestBase
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "type": "all"
+                  "type": "all",
+                  "tools": [
+                    {
+                      "name": "x",
+                      "type": "tool_reference"
+                    }
+                  ]
                 }
                 """
             )
@@ -110,13 +117,21 @@ public class BetaManagedAgentsWebFetchUrlSourceToolFilterTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("all");
+        List<BetaManagedAgentsWebFetchUrlSourceToolReference> expectedTools = [new("x")];
 
         Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.NotNull(value.Tools);
+        Assert.Equal(expectedTools.Count, value.Tools.Count);
+        for (int i = 0; i < expectedTools.Count; i++)
+        {
+            Assert.Equal(expectedTools[i], value.Tools[i]);
+        }
 
         BetaManagedAgentsWebFetchUrlSourceToolFilter emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.Tools);
     }
 }

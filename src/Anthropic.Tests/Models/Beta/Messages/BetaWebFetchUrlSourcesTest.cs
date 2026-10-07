@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
@@ -267,7 +268,13 @@ public class ClientToolResultsTest : TestBase
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "type": "all"
+                  "type": "all",
+                  "tools": [
+                    {
+                      "name": "name",
+                      "type": "tool_reference"
+                    }
+                  ]
                 }
                 """
             )
@@ -275,12 +282,20 @@ public class ClientToolResultsTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("all");
+        List<BetaWebFetchUrlSourceToolReference> expectedTools = [new("name")];
 
         Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.NotNull(value.Tools);
+        Assert.Equal(expectedTools.Count, value.Tools.Count);
+        for (int i = 0; i < expectedTools.Count; i++)
+        {
+            Assert.Equal(expectedTools[i], value.Tools[i]);
+        }
 
         ClientToolResults emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.Tools);
     }
 }
 
@@ -373,7 +388,13 @@ public class ServerToolResultsTest : TestBase
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "type": "all"
+                  "type": "all",
+                  "tools": [
+                    {
+                      "name": "name",
+                      "type": "tool_reference"
+                    }
+                  ]
                 }
                 """
             )
@@ -381,12 +402,20 @@ public class ServerToolResultsTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("all");
+        List<BetaWebFetchUrlSourceToolReference> expectedTools = [new("name")];
 
         Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.NotNull(value.Tools);
+        Assert.Equal(expectedTools.Count, value.Tools.Count);
+        for (int i = 0; i < expectedTools.Count; i++)
+        {
+            Assert.Equal(expectedTools[i], value.Tools[i]);
+        }
 
         ServerToolResults emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.Tools);
     }
 }
 
