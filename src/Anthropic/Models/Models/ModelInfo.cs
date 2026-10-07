@@ -54,6 +54,21 @@ public sealed record class ModelInfo : JsonModel
     }
 
     /// <summary>
+    /// RFC 3339 datetime string representing the time of the model's most recent
+    /// deprecation. Populated for `deprecated` and `retired` models; `null` while
+    /// the model is `active`.
+    /// </summary>
+    public required DateTimeOffset? DeprecatedAt
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<DateTimeOffset>("deprecated_at");
+        }
+        init { this._rawData.Set("deprecated_at", value); }
+    }
+
+    /// <summary>
     /// A human-readable name for the model.
     /// </summary>
     public required string DisplayName
@@ -64,6 +79,26 @@ public sealed record class ModelInfo : JsonModel
             return this._rawData.GetNotNullClass<string>("display_name");
         }
         init { this._rawData.Set("display_name", value); }
+    }
+
+    /// <summary>
+    /// The model's current lifecycle stage.
+    ///
+    /// <para>- `active`: The model is available for use, open to new adopters, and
+    /// not scheduled for retirement. - `deprecated`: The model remains callable for
+    /// organizations with existing access, but is headed for retirement and closed
+    /// to new adopters. - `retired`: The model is no longer available for use; inference
+    /// requests naming it fail. It remains in the catalogue as the historical record
+    /// of its retirement.</para>
+    /// </summary>
+    public required ApiEnum<string, ModelInfoLifecycle> Lifecycle
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, ModelInfoLifecycle>>("lifecycle");
+        }
+        init { this._rawData.Set("lifecycle", value); }
     }
 
     /// <summary>
@@ -108,6 +143,23 @@ public sealed record class ModelInfo : JsonModel
     }
 
     /// <summary>
+    /// RFC 3339 datetime string representing the model's currently scheduled retirement
+    /// date. The schedule can be revised until retirement occurs; `null` while the
+    /// model is `active` or while no retirement is scheduled. A past date on a `deprecated`
+    /// model means retirement is overdue, not that it has occurred: `lifecycle`
+    /// is the retirement signal.
+    /// </summary>
+    public required DateTimeOffset? RetiresAt
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<DateTimeOffset>("retires_at");
+        }
+        init { this._rawData.Set("retires_at", value); }
+    }
+
+    /// <summary>
     /// Object type.
     ///
     /// <para>For Models, this is always `"model"`.</para>
@@ -128,10 +180,13 @@ public sealed record class ModelInfo : JsonModel
         _ = this.ID;
         this.Capabilities?.Validate();
         _ = this.CreatedAt;
+        _ = this.DeprecatedAt;
         _ = this.DisplayName;
+        this.Lifecycle.Validate();
         this.Line?.Validate();
         _ = this.MaxInputTokens;
         _ = this.MaxTokens;
+        _ = this.RetiresAt;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("model")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -176,4 +231,60 @@ class ModelInfoFromRaw : IFromRawJson<ModelInfo>
     /// <inheritdoc/>
     public ModelInfo FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ModelInfo.FromRawUnchecked(rawData);
+}
+
+/// <summary>
+/// The model's current lifecycle stage.
+///
+/// <para>- `active`: The model is available for use, open to new adopters, and not
+/// scheduled for retirement. - `deprecated`: The model remains callable for organizations
+/// with existing access, but is headed for retirement and closed to new adopters.
+/// - `retired`: The model is no longer available for use; inference requests naming
+/// it fail. It remains in the catalogue as the historical record of its retirement.</para>
+/// </summary>
+[JsonConverter(typeof(ModelInfoLifecycleConverter))]
+public enum ModelInfoLifecycle
+{
+    Active,
+    Deprecated,
+    Retired,
+}
+
+sealed class ModelInfoLifecycleConverter : JsonConverter<ModelInfoLifecycle>
+{
+    public override ModelInfoLifecycle Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "active" => ModelInfoLifecycle.Active,
+            "deprecated" => ModelInfoLifecycle.Deprecated,
+            "retired" => ModelInfoLifecycle.Retired,
+            _ => (ModelInfoLifecycle)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ModelInfoLifecycle value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ModelInfoLifecycle.Active => "active",
+                ModelInfoLifecycle.Deprecated => "deprecated",
+                ModelInfoLifecycle.Retired => "retired",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
 }

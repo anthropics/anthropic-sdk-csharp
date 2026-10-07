@@ -3,7 +3,6 @@ using Anthropic.Exceptions;
 using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments.Work;
-using Anthropic.Models.Beta.Models;
 using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.Analytics;
 using Anthropic.Models.Beta.Organization.Analytics.Users;
@@ -42,6 +41,7 @@ using MemoryStores = Anthropic.Models.Beta.MemoryStores;
 using MemoryVersions = Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 using Messages = Anthropic.Models.Beta.Messages;
 using MessagesBatches = Anthropic.Models.Beta.Messages.Batches;
+using Models = Anthropic.Models.Beta.Models;
 using OrganizationApiKeys = Anthropic.Models.Beta.Organization.ApiKeys;
 using OrganizationInvites = Anthropic.Models.Beta.Organization.Invites;
 using OrganizationPlugins = Anthropic.Models.Beta.Organization.Plugins;
@@ -140,7 +140,9 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, ServiceTier>(),
             new ApiEnumConverter<string, Batches::ProcessingStatus>(),
             new ApiEnumConverter<string, Batches::ServiceTier>(),
+            new ApiEnumConverter<string, ModelInfoLifecycle>(),
             new ApiEnumConverter<string, ModelLine>(),
+            new ApiEnumConverter<string, Lifecycle>(),
             new ApiEnumConverter<string, Files::Type>(),
             new ApiEnumConverter<string, Skills::Type>(),
             new ApiEnumConverter<string, OrganizationRole>(),
@@ -173,7 +175,9 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, RateLimits::GroupType>(),
             new ApiEnumConverter<string, AnthropicBeta>(),
             new ApiEnumConverter<string, BetaCurrency>(),
-            new ApiEnumConverter<string, BetaModelLine>(),
+            new ApiEnumConverter<string, Models::BetaModelInfoLifecycle>(),
+            new ApiEnumConverter<string, Models::BetaModelLine>(),
+            new ApiEnumConverter<string, Models::Lifecycle>(),
             new ApiEnumConverter<string, Messages::AllowedCaller>(),
             new ApiEnumConverter<string, Messages::ErrorCode>(),
             new ApiEnumConverter<string, Messages::BetaAdvisorToolResultErrorParamErrorCode>(),
