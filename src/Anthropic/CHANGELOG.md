@@ -1,5 +1,11 @@
 # Changelog
 
+## [12.55.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.54.1...Anthropic-v12.55.0) (2026-10-08)
+
+### Features
+
+* **api:** add types for the Chat and Cowork unified analytics metrics
+
 ## [12.54.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.54.0...Anthropic-v12.54.1) (2026-10-08)
 
 ### Bug Fixes
