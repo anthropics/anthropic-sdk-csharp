@@ -396,12 +396,14 @@ public sealed record class ChatCoworkUnifiedMetrics : JsonModel
     /// A connector's use in chat conversations recorded while members had Chat and
     /// Cowork unified turned on.
     /// </summary>
-    public required Chat Chat
+    public required BetaAnalyticsConnectorChatCoworkUnifiedChatMetrics Chat
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<Chat>("chat");
+            return this._rawData.GetNotNullClass<BetaAnalyticsConnectorChatCoworkUnifiedChatMetrics>(
+                "chat"
+            );
         }
         init { this._rawData.Set("chat", value); }
     }
@@ -410,12 +412,14 @@ public sealed record class ChatCoworkUnifiedMetrics : JsonModel
     /// A connector's use in Cowork sessions recorded while members had Chat and
     /// Cowork unified turned on.
     /// </summary>
-    public required ChatCoworkUnifiedMetricsSessions Sessions
+    public required BetaAnalyticsConnectorChatCoworkUnifiedSessionsMetrics Sessions
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ChatCoworkUnifiedMetricsSessions>("sessions");
+            return this._rawData.GetNotNullClass<BetaAnalyticsConnectorChatCoworkUnifiedSessionsMetrics>(
+                "sessions"
+            );
         }
         init { this._rawData.Set("sessions", value); }
     }
@@ -463,158 +467,4 @@ class ChatCoworkUnifiedMetricsFromRaw : IFromRawJson<ChatCoworkUnifiedMetrics>
     public ChatCoworkUnifiedMetrics FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => ChatCoworkUnifiedMetrics.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// A connector's use in chat conversations recorded while members had Chat and Cowork
-/// unified turned on.
-/// </summary>
-[JsonConverter(typeof(JsonModelConverter<Chat, ChatFromRaw>))]
-public sealed record class Chat : JsonModel
-{
-    /// <summary>
-    /// Same measure as `chat_metrics.distinct_conversation_connector_used_count`,
-    /// for activity recorded while members had Chat and Cowork unified turned on.
-    /// Approximate (HLL, typical error &lt;2%) in date-range mode. Null on aggregated
-    /// rows where a distinct count cannot be computed.
-    /// </summary>
-    public required long? DistinctConversationConnectorUsedCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>(
-                "distinct_conversation_connector_used_count"
-            );
-        }
-        init { this._rawData.Set("distinct_conversation_connector_used_count", value); }
-    }
-
-    /// <inheritdoc/>
-    public override void Validate()
-    {
-        _ = this.DistinctConversationConnectorUsedCount;
-    }
-
-    public Chat() { }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public Chat(Chat chat)
-        : base(chat) { }
-#pragma warning restore CS8618
-
-    public Chat(IReadOnlyDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    Chat(FrozenDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-#pragma warning restore CS8618
-
-    /// <inheritdoc cref="ChatFromRaw.FromRawUnchecked"/>
-    public static Chat FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
-    {
-        return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-
-    [SetsRequiredMembers]
-    public Chat(long? distinctConversationConnectorUsedCount)
-        : this()
-    {
-        this.DistinctConversationConnectorUsedCount = distinctConversationConnectorUsedCount;
-    }
-}
-
-class ChatFromRaw : IFromRawJson<Chat>
-{
-    /// <inheritdoc/>
-    public Chat FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
-        Chat.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// A connector's use in Cowork sessions recorded while members had Chat and Cowork
-/// unified turned on.
-/// </summary>
-[JsonConverter(
-    typeof(JsonModelConverter<
-        ChatCoworkUnifiedMetricsSessions,
-        ChatCoworkUnifiedMetricsSessionsFromRaw
-    >)
-)]
-public sealed record class ChatCoworkUnifiedMetricsSessions : JsonModel
-{
-    /// <summary>
-    /// Same measure as `cowork_metrics.distinct_session_connector_used_count`, for
-    /// activity recorded while members had Chat and Cowork unified turned on. Approximate
-    /// (HLL, typical error &lt;2%) in date-range mode. Null on aggregated rows where
-    /// a distinct count cannot be computed.
-    /// </summary>
-    public required long? DistinctSessionConnectorUsedCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("distinct_session_connector_used_count");
-        }
-        init { this._rawData.Set("distinct_session_connector_used_count", value); }
-    }
-
-    /// <inheritdoc/>
-    public override void Validate()
-    {
-        _ = this.DistinctSessionConnectorUsedCount;
-    }
-
-    public ChatCoworkUnifiedMetricsSessions() { }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public ChatCoworkUnifiedMetricsSessions(
-        ChatCoworkUnifiedMetricsSessions chatCoworkUnifiedMetricsSessions
-    )
-        : base(chatCoworkUnifiedMetricsSessions) { }
-#pragma warning restore CS8618
-
-    public ChatCoworkUnifiedMetricsSessions(IReadOnlyDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    ChatCoworkUnifiedMetricsSessions(FrozenDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-#pragma warning restore CS8618
-
-    /// <inheritdoc cref="ChatCoworkUnifiedMetricsSessionsFromRaw.FromRawUnchecked"/>
-    public static ChatCoworkUnifiedMetricsSessions FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-
-    [SetsRequiredMembers]
-    public ChatCoworkUnifiedMetricsSessions(long? distinctSessionConnectorUsedCount)
-        : this()
-    {
-        this.DistinctSessionConnectorUsedCount = distinctSessionConnectorUsedCount;
-    }
-}
-
-class ChatCoworkUnifiedMetricsSessionsFromRaw : IFromRawJson<ChatCoworkUnifiedMetricsSessions>
-{
-    /// <inheritdoc/>
-    public ChatCoworkUnifiedMetricsSessions FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    ) => ChatCoworkUnifiedMetricsSessions.FromRawUnchecked(rawData);
 }

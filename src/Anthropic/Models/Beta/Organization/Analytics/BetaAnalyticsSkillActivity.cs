@@ -432,12 +432,12 @@ public sealed record class BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics : 
     /// A skill's use in chat conversations recorded while members had Chat and Cowork
     /// unified turned on.
     /// </summary>
-    public required BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat Chat
+    public required BetaAnalyticsSkillChatCoworkUnifiedChatMetrics Chat
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat>(
+            return this._rawData.GetNotNullClass<BetaAnalyticsSkillChatCoworkUnifiedChatMetrics>(
                 "chat"
             );
         }
@@ -448,12 +448,12 @@ public sealed record class BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics : 
     /// A skill's use in Cowork sessions recorded while members had Chat and Cowork
     /// unified turned on.
     /// </summary>
-    public required BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions Sessions
+    public required BetaAnalyticsSkillChatCoworkUnifiedSessionsMetrics Sessions
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions>(
+            return this._rawData.GetNotNullClass<BetaAnalyticsSkillChatCoworkUnifiedSessionsMetrics>(
                 "sessions"
             );
         }
@@ -510,182 +510,6 @@ class BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsFromRaw
     public BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// A skill's use in chat conversations recorded while members had Chat and Cowork
-/// unified turned on.
-/// </summary>
-[JsonConverter(
-    typeof(JsonModelConverter<
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat,
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChatFromRaw
-    >)
-)]
-public sealed record class BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat : JsonModel
-{
-    /// <summary>
-    /// Same measure as `chat_metrics.distinct_conversation_skill_used_count`, for
-    /// activity recorded while members had Chat and Cowork unified turned on. Approximate
-    /// (HLL, typical error &lt;2%) in date-range mode. Null on aggregated rows where
-    /// a distinct count cannot be computed.
-    /// </summary>
-    public required long? DistinctConversationSkillUsedCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("distinct_conversation_skill_used_count");
-        }
-        init { this._rawData.Set("distinct_conversation_skill_used_count", value); }
-    }
-
-    /// <inheritdoc/>
-    public override void Validate()
-    {
-        _ = this.DistinctConversationSkillUsedCount;
-    }
-
-    public BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat() { }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat(
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat betaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat
-    )
-        : base(betaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat) { }
-#pragma warning restore CS8618
-
-    public BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        this._rawData = new(rawData);
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat(
-        FrozenDictionary<string, JsonElement> rawData
-    )
-    {
-        this._rawData = new(rawData);
-    }
-#pragma warning restore CS8618
-
-    /// <inheritdoc cref="BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChatFromRaw.FromRawUnchecked"/>
-    public static BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-
-    [SetsRequiredMembers]
-    public BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat(
-        long? distinctConversationSkillUsedCount
-    )
-        : this()
-    {
-        this.DistinctConversationSkillUsedCount = distinctConversationSkillUsedCount;
-    }
-}
-
-class BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChatFromRaw
-    : IFromRawJson<BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat>
-{
-    /// <inheritdoc/>
-    public BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    ) => BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// A skill's use in Cowork sessions recorded while members had Chat and Cowork unified
-/// turned on.
-/// </summary>
-[JsonConverter(
-    typeof(JsonModelConverter<
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions,
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessionsFromRaw
-    >)
-)]
-public sealed record class BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions : JsonModel
-{
-    /// <summary>
-    /// Same measure as `cowork_metrics.distinct_session_skill_used_count`, for activity
-    /// recorded while members had Chat and Cowork unified turned on. Approximate
-    /// (HLL, typical error &lt;2%) in date-range mode. Null on aggregated rows where
-    /// a distinct count cannot be computed.
-    /// </summary>
-    public required long? DistinctSessionSkillUsedCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("distinct_session_skill_used_count");
-        }
-        init { this._rawData.Set("distinct_session_skill_used_count", value); }
-    }
-
-    /// <inheritdoc/>
-    public override void Validate()
-    {
-        _ = this.DistinctSessionSkillUsedCount;
-    }
-
-    public BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions() { }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions(
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions betaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions
-    )
-        : base(betaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions) { }
-#pragma warning restore CS8618
-
-    public BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        this._rawData = new(rawData);
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions(
-        FrozenDictionary<string, JsonElement> rawData
-    )
-    {
-        this._rawData = new(rawData);
-    }
-#pragma warning restore CS8618
-
-    /// <inheritdoc cref="BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessionsFromRaw.FromRawUnchecked"/>
-    public static BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-
-    [SetsRequiredMembers]
-    public BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions(
-        long? distinctSessionSkillUsedCount
-    )
-        : this()
-    {
-        this.DistinctSessionSkillUsedCount = distinctSessionSkillUsedCount;
-    }
-}
-
-class BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessionsFromRaw
-    : IFromRawJson<BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions>
-{
-    /// <inheritdoc/>
-    public BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    ) => BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions.FromRawUnchecked(rawData);
 }
 
 /// <summary>

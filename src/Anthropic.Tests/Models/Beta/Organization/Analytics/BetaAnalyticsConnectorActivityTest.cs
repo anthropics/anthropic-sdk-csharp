@@ -445,8 +445,8 @@ public class ChatCoworkUnifiedMetricsTest : TestBase
     {
         var model = new ChatCoworkUnifiedMetrics { Chat = new(0), Sessions = new(0) };
 
-        Chat expectedChat = new(0);
-        ChatCoworkUnifiedMetricsSessions expectedSessions = new(0);
+        BetaAnalyticsConnectorChatCoworkUnifiedChatMetrics expectedChat = new(0);
+        BetaAnalyticsConnectorChatCoworkUnifiedSessionsMetrics expectedSessions = new(0);
 
         Assert.Equal(expectedChat, model.Chat);
         Assert.Equal(expectedSessions, model.Sessions);
@@ -478,8 +478,8 @@ public class ChatCoworkUnifiedMetricsTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        Chat expectedChat = new(0);
-        ChatCoworkUnifiedMetricsSessions expectedSessions = new(0);
+        BetaAnalyticsConnectorChatCoworkUnifiedChatMetrics expectedChat = new(0);
+        BetaAnalyticsConnectorChatCoworkUnifiedSessionsMetrics expectedSessions = new(0);
 
         Assert.Equal(expectedChat, deserialized.Chat);
         Assert.Equal(expectedSessions, deserialized.Sessions);
@@ -499,136 +499,6 @@ public class ChatCoworkUnifiedMetricsTest : TestBase
         var model = new ChatCoworkUnifiedMetrics { Chat = new(0), Sessions = new(0) };
 
         ChatCoworkUnifiedMetrics copied = new(model);
-
-        Assert.Equal(model, copied);
-    }
-}
-
-public class ChatTest : TestBase
-{
-    [Fact]
-    public void FieldRoundtrip_Works()
-    {
-        var model = new Chat { DistinctConversationConnectorUsedCount = 0 };
-
-        long expectedDistinctConversationConnectorUsedCount = 0;
-
-        Assert.Equal(
-            expectedDistinctConversationConnectorUsedCount,
-            model.DistinctConversationConnectorUsedCount
-        );
-    }
-
-    [Fact]
-    public void SerializationRoundtrip_Works()
-    {
-        var model = new Chat { DistinctConversationConnectorUsedCount = 0 };
-
-        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Chat>(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(model, deserialized);
-    }
-
-    [Fact]
-    public void FieldRoundtripThroughSerialization_Works()
-    {
-        var model = new Chat { DistinctConversationConnectorUsedCount = 0 };
-
-        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Chat>(element, ModelBase.SerializerOptions);
-        Assert.NotNull(deserialized);
-
-        long expectedDistinctConversationConnectorUsedCount = 0;
-
-        Assert.Equal(
-            expectedDistinctConversationConnectorUsedCount,
-            deserialized.DistinctConversationConnectorUsedCount
-        );
-    }
-
-    [Fact]
-    public void Validation_Works()
-    {
-        var model = new Chat { DistinctConversationConnectorUsedCount = 0 };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void CopyConstructor_Works()
-    {
-        var model = new Chat { DistinctConversationConnectorUsedCount = 0 };
-
-        Chat copied = new(model);
-
-        Assert.Equal(model, copied);
-    }
-}
-
-public class ChatCoworkUnifiedMetricsSessionsTest : TestBase
-{
-    [Fact]
-    public void FieldRoundtrip_Works()
-    {
-        var model = new ChatCoworkUnifiedMetricsSessions { DistinctSessionConnectorUsedCount = 0 };
-
-        long expectedDistinctSessionConnectorUsedCount = 0;
-
-        Assert.Equal(
-            expectedDistinctSessionConnectorUsedCount,
-            model.DistinctSessionConnectorUsedCount
-        );
-    }
-
-    [Fact]
-    public void SerializationRoundtrip_Works()
-    {
-        var model = new ChatCoworkUnifiedMetricsSessions { DistinctSessionConnectorUsedCount = 0 };
-
-        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ChatCoworkUnifiedMetricsSessions>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(model, deserialized);
-    }
-
-    [Fact]
-    public void FieldRoundtripThroughSerialization_Works()
-    {
-        var model = new ChatCoworkUnifiedMetricsSessions { DistinctSessionConnectorUsedCount = 0 };
-
-        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ChatCoworkUnifiedMetricsSessions>(
-            element,
-            ModelBase.SerializerOptions
-        );
-        Assert.NotNull(deserialized);
-
-        long expectedDistinctSessionConnectorUsedCount = 0;
-
-        Assert.Equal(
-            expectedDistinctSessionConnectorUsedCount,
-            deserialized.DistinctSessionConnectorUsedCount
-        );
-    }
-
-    [Fact]
-    public void Validation_Works()
-    {
-        var model = new ChatCoworkUnifiedMetricsSessions { DistinctSessionConnectorUsedCount = 0 };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void CopyConstructor_Works()
-    {
-        var model = new ChatCoworkUnifiedMetricsSessions { DistinctSessionConnectorUsedCount = 0 };
-
-        ChatCoworkUnifiedMetricsSessions copied = new(model);
 
         Assert.Equal(model, copied);
     }

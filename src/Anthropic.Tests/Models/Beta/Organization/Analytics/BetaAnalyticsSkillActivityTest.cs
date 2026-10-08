@@ -456,8 +456,8 @@ public class BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsTest : TestBase
             Sessions = new(0),
         };
 
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat expectedChat = new(0);
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions expectedSessions = new(0);
+        BetaAnalyticsSkillChatCoworkUnifiedChatMetrics expectedChat = new(0);
+        BetaAnalyticsSkillChatCoworkUnifiedSessionsMetrics expectedSessions = new(0);
 
         Assert.Equal(expectedChat, model.Chat);
         Assert.Equal(expectedSessions, model.Sessions);
@@ -499,8 +499,8 @@ public class BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsTest : TestBase
             );
         Assert.NotNull(deserialized);
 
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat expectedChat = new(0);
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions expectedSessions = new(0);
+        BetaAnalyticsSkillChatCoworkUnifiedChatMetrics expectedChat = new(0);
+        BetaAnalyticsSkillChatCoworkUnifiedSessionsMetrics expectedSessions = new(0);
 
         Assert.Equal(expectedChat, deserialized.Chat);
         Assert.Equal(expectedSessions, deserialized.Sessions);
@@ -528,173 +528,6 @@ public class BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsTest : TestBase
         };
 
         BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics copied = new(model);
-
-        Assert.Equal(model, copied);
-    }
-}
-
-public class BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChatTest : TestBase
-{
-    [Fact]
-    public void FieldRoundtrip_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat
-        {
-            DistinctConversationSkillUsedCount = 0,
-        };
-
-        long expectedDistinctConversationSkillUsedCount = 0;
-
-        Assert.Equal(
-            expectedDistinctConversationSkillUsedCount,
-            model.DistinctConversationSkillUsedCount
-        );
-    }
-
-    [Fact]
-    public void SerializationRoundtrip_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat
-        {
-            DistinctConversationSkillUsedCount = 0,
-        };
-
-        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat>(
-                json,
-                ModelBase.SerializerOptions
-            );
-
-        Assert.Equal(model, deserialized);
-    }
-
-    [Fact]
-    public void FieldRoundtripThroughSerialization_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat
-        {
-            DistinctConversationSkillUsedCount = 0,
-        };
-
-        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        Assert.NotNull(deserialized);
-
-        long expectedDistinctConversationSkillUsedCount = 0;
-
-        Assert.Equal(
-            expectedDistinctConversationSkillUsedCount,
-            deserialized.DistinctConversationSkillUsedCount
-        );
-    }
-
-    [Fact]
-    public void Validation_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat
-        {
-            DistinctConversationSkillUsedCount = 0,
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void CopyConstructor_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat
-        {
-            DistinctConversationSkillUsedCount = 0,
-        };
-
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsChat copied = new(model);
-
-        Assert.Equal(model, copied);
-    }
-}
-
-public class BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessionsTest : TestBase
-{
-    [Fact]
-    public void FieldRoundtrip_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions
-        {
-            DistinctSessionSkillUsedCount = 0,
-        };
-
-        long expectedDistinctSessionSkillUsedCount = 0;
-
-        Assert.Equal(expectedDistinctSessionSkillUsedCount, model.DistinctSessionSkillUsedCount);
-    }
-
-    [Fact]
-    public void SerializationRoundtrip_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions
-        {
-            DistinctSessionSkillUsedCount = 0,
-        };
-
-        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions>(
-                json,
-                ModelBase.SerializerOptions
-            );
-
-        Assert.Equal(model, deserialized);
-    }
-
-    [Fact]
-    public void FieldRoundtripThroughSerialization_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions
-        {
-            DistinctSessionSkillUsedCount = 0,
-        };
-
-        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        Assert.NotNull(deserialized);
-
-        long expectedDistinctSessionSkillUsedCount = 0;
-
-        Assert.Equal(
-            expectedDistinctSessionSkillUsedCount,
-            deserialized.DistinctSessionSkillUsedCount
-        );
-    }
-
-    [Fact]
-    public void Validation_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions
-        {
-            DistinctSessionSkillUsedCount = 0,
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void CopyConstructor_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions
-        {
-            DistinctSessionSkillUsedCount = 0,
-        };
-
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsSessions copied = new(model);
 
         Assert.Equal(model, copied);
     }
