@@ -209,9 +209,11 @@ public abstract record class ParamsBase
 
     internal static string EncodePathSegment(string? value, string paramName)
     {
-        if (value == null)
+        if (value == null || value == "")
         {
-            return "";
+            throw new AnthropicInvalidDataException(
+                $"Expected a non-empty value for `{paramName}`"
+            );
         }
         // "." is unreserved, so escaping leaves it as is and the segment would still resolve as a dot-segment.
         if (value == "." || value == "..")
