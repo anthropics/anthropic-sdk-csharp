@@ -1,5 +1,16 @@
 # Changelog
 
+## [12.54.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.54.0...Anthropic-v12.54.1) (2026-10-08)
+
+### Bug Fixes
+
+* **client:** throw before sending a request with an empty path parameter
+
+
+### Chores
+
+* **docs:** note that listing Claude Console spend limits is in early access
+
 ## 12.54.0 (2026-10-07)
 
 Full Changelog: [Anthropic-v12.53.0...Anthropic-v12.54.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.53.0...Anthropic-v12.54.0)
