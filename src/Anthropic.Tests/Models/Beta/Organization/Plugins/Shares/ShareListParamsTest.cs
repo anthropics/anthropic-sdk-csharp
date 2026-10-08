@@ -86,6 +86,30 @@ public class ShareListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new ShareListParams
+        {
+            PluginID = "plugin_id",
+            Limit = 1,
+            OrganizationID = "organization_id",
+            Page = "page",
+            TargetType = TargetType.Organization,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Limit = null,
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new ShareListParams
@@ -162,7 +186,7 @@ public class ShareListParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["ce-plugins-2026-09-01", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,ce-plugins-2026-09-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }

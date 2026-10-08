@@ -438,6 +438,164 @@ public class MessageCountTokensParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new MessageCountTokensParams
+        {
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
+            Model = Messages::Model.ClaudeOpus5,
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
+            ContextManagement = new()
+            {
+                Edits =
+                [
+                    new BetaClearToolUses20250919Edit()
+                    {
+                        ClearAtLeast = new(0),
+                        ClearToolInputs = true,
+                        ExcludeTools = ["string"],
+                        Keep = new(0),
+                        Trigger = new BetaInputTokensTrigger(1),
+                    },
+                ],
+            },
+            McpServers =
+            [
+                new()
+                {
+                    Name = "name",
+                    Url = "url",
+                    AuthorizationToken = "authorization_token",
+                    ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
+                },
+            ],
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+                TaskBudget = new() { Total = 1024, Remaining = 0 },
+            },
+            OutputFormat = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+            Speed = MessageCountTokensParamsSpeed.Standard,
+            System = new(
+                [
+                    new BetaTextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "The grass is green. The sky is blue.",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Thinking = new BetaThinkingConfigAdaptive()
+            {
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
+                Display = Display.Summarized,
+            },
+            ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new BetaTool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = BetaToolType.Custom,
+                },
+            ],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            McpServers = null,
+            OutputConfig = null,
+            System = null,
+            Thinking = null,
+            ToolChoice = null,
+            Tools = null,
+            Betas = null,
+            UserProfileID = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.McpServers);
+        Assert.False(parameters.RawBodyData.ContainsKey("mcp_servers"));
+        Assert.Null(parameters.OutputConfig);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_config"));
+        Assert.Null(parameters.System);
+        Assert.False(parameters.RawBodyData.ContainsKey("system"));
+        Assert.Null(parameters.Thinking);
+        Assert.False(parameters.RawBodyData.ContainsKey("thinking"));
+        Assert.Null(parameters.ToolChoice);
+        Assert.False(parameters.RawBodyData.ContainsKey("tool_choice"));
+        Assert.Null(parameters.Tools);
+        Assert.False(parameters.RawBodyData.ContainsKey("tools"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new MessageCountTokensParams
@@ -1552,7 +1710,7 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -2239,7 +2397,7 @@ public class ToolTest : TestBase
     {
         Tool value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeSonnet5_5,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -2338,6 +2496,12 @@ public class ToolTest : TestBase
                   "display_height_px": 1,
                   "display_width_px": 1,
                   "display_number": 0,
+                  "allowed_domains": [
+                    "string"
+                  ],
+                  "blocked_domains": [
+                    "string"
+                  ],
                   "max_uses": 1,
                   "user_location": {
                     "type": "approximate",
@@ -2374,6 +2538,8 @@ public class ToolTest : TestBase
         long expectedDisplayHeightPx = 1;
         long expectedDisplayWidthPx = 1;
         long expectedDisplayNumber = 0;
+        List<string> expectedAllowedDomains = ["string"];
+        List<string> expectedBlockedDomains = ["string"];
         long expectedMaxUses = 1;
         BetaUserLocation expectedUserLocation = new()
         {
@@ -2398,6 +2564,18 @@ public class ToolTest : TestBase
         Assert.Equal(expectedDisplayHeightPx, value.DisplayHeightPx);
         Assert.Equal(expectedDisplayWidthPx, value.DisplayWidthPx);
         Assert.Equal(expectedDisplayNumber, value.DisplayNumber);
+        Assert.NotNull(value.AllowedDomains);
+        Assert.Equal(expectedAllowedDomains.Count, value.AllowedDomains.Count);
+        for (int i = 0; i < expectedAllowedDomains.Count; i++)
+        {
+            Assert.Equal(expectedAllowedDomains[i], value.AllowedDomains[i]);
+        }
+        Assert.NotNull(value.BlockedDomains);
+        Assert.Equal(expectedBlockedDomains.Count, value.BlockedDomains.Count);
+        for (int i = 0; i < expectedBlockedDomains.Count; i++)
+        {
+            Assert.Equal(expectedBlockedDomains[i], value.BlockedDomains[i]);
+        }
         Assert.Equal(expectedMaxUses, value.MaxUses);
         Assert.Equal(expectedUserLocation, value.UserLocation);
         Assert.Equal(expectedCitations, value.Citations);
@@ -2413,6 +2591,8 @@ public class ToolTest : TestBase
         Assert.Null(emptyValue.DisplayHeightPx);
         Assert.Null(emptyValue.DisplayWidthPx);
         Assert.Null(emptyValue.DisplayNumber);
+        Assert.Null(emptyValue.AllowedDomains);
+        Assert.Null(emptyValue.BlockedDomains);
         Assert.Null(emptyValue.MaxUses);
         Assert.Null(emptyValue.UserLocation);
         Assert.Null(emptyValue.Citations);

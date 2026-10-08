@@ -58,6 +58,7 @@ public record class MemoryStoreCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("description");
                 return;
             }
 
@@ -81,6 +82,7 @@ public record class MemoryStoreCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("metadata");
                 return;
             }
 
@@ -107,6 +109,7 @@ public record class MemoryStoreCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -136,6 +139,7 @@ public record class MemoryStoreCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

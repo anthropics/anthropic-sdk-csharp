@@ -125,6 +125,7 @@ public record class RuleCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("applies_to_all_workspaces");
                 return;
             }
 
@@ -183,6 +184,7 @@ public record class RuleCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("token_lifetime_seconds");
                 return;
             }
 
@@ -220,6 +222,7 @@ public record class RuleCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 

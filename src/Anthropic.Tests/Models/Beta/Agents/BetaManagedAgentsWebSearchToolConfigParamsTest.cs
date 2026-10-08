@@ -264,6 +264,41 @@ public class BetaManagedAgentsWebSearchToolConfigParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsWebSearchToolConfigParams
+        {
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+            Type = BetaManagedAgentsWebSearchToolConfigParamsType.WebSearch,
+            UserLocation = new()
+            {
+                City = "x",
+                Country = "country",
+                Region = "x",
+                Timezone = "x",
+            },
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AllowedDomains = null,
+            BlockedDomains = null,
+            Type = null,
+        };
+
+        Assert.Null(model.AllowedDomains);
+        Assert.False(model.RawData.ContainsKey("allowed_domains"));
+        Assert.Null(model.BlockedDomains);
+        Assert.False(model.RawData.ContainsKey("blocked_domains"));
+        Assert.Null(model.Type);
+        Assert.False(model.RawData.ContainsKey("type"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsWebSearchToolConfigParams

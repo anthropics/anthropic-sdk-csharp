@@ -91,6 +91,19 @@ public class CacheControlEphemeralTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new CacheControlEphemeral { Ttl = Ttl.Ttl5m } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Ttl = null,
+        };
+
+        Assert.Null(model.Ttl);
+        Assert.False(model.RawData.ContainsKey("ttl"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new CacheControlEphemeral

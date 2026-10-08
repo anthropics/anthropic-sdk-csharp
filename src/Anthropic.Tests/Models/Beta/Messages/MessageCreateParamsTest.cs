@@ -571,6 +571,206 @@ public class MessageCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new MessageCreateParams
+        {
+            MaxTokens = 1024,
+            Messages =
+            [
+                new()
+                {
+                    Content = "Hello, world",
+                    Role = Role.User,
+                    ClearAt = ClearAt.NextUserMessage,
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
+            Model = Messages::Model.ClaudeOpus5,
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Compaction = new() { Instructions = "instructions" },
+            Container = new BetaContainerParams()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = BetaSkillParamsType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
+            },
+            ContextManagement = new()
+            {
+                Edits =
+                [
+                    new BetaClearToolUses20250919Edit()
+                    {
+                        ClearAtLeast = new(0),
+                        ClearToolInputs = true,
+                        ExcludeTools = ["string"],
+                        Keep = new(0),
+                        Trigger = new BetaInputTokensTrigger(1),
+                    },
+                ],
+            },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            FallbackCreditToken = "x",
+            Fallbacks = new Default(),
+            InferenceGeo = "inference_geo",
+            McpServers =
+            [
+                new()
+                {
+                    Name = "name",
+                    Url = "url",
+                    AuthorizationToken = "authorization_token",
+                    ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
+                },
+            ],
+            Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+                TaskBudget = new() { Total = 1024, Remaining = 0 },
+            },
+            OutputFormat = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+            ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
+            StopSequences = ["string"],
+            System = new(
+                [
+                    new BetaTextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "The grass is green. The sky is blue.",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Temperature = 1,
+            Thinking = new BetaThinkingConfigAdaptive()
+            {
+                BlockBinding = new()
+                {
+                    PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+                },
+                Display = Display.Summarized,
+            },
+            ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new BetaTool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = BetaToolType.Custom,
+                },
+            ],
+            TopK = 5,
+            TopP = 0.7,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            McpServers = null,
+            Metadata = null,
+            OutputConfig = null,
+            ServiceTier = null,
+            StopSequences = null,
+            System = null,
+            Temperature = null,
+            Thinking = null,
+            ToolChoice = null,
+            Tools = null,
+            TopK = null,
+            TopP = null,
+            Betas = null,
+            UserProfileID = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.McpServers);
+        Assert.False(parameters.RawBodyData.ContainsKey("mcp_servers"));
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.OutputConfig);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_config"));
+        Assert.Null(parameters.ServiceTier);
+        Assert.False(parameters.RawBodyData.ContainsKey("service_tier"));
+        Assert.Null(parameters.StopSequences);
+        Assert.False(parameters.RawBodyData.ContainsKey("stop_sequences"));
+        Assert.Null(parameters.System);
+        Assert.False(parameters.RawBodyData.ContainsKey("system"));
+        Assert.Null(parameters.Temperature);
+        Assert.False(parameters.RawBodyData.ContainsKey("temperature"));
+        Assert.Null(parameters.Thinking);
+        Assert.False(parameters.RawBodyData.ContainsKey("thinking"));
+        Assert.Null(parameters.ToolChoice);
+        Assert.False(parameters.RawBodyData.ContainsKey("tool_choice"));
+        Assert.Null(parameters.Tools);
+        Assert.False(parameters.RawBodyData.ContainsKey("tools"));
+        Assert.Null(parameters.TopK);
+        Assert.False(parameters.RawBodyData.ContainsKey("top_k"));
+        Assert.Null(parameters.TopP);
+        Assert.False(parameters.RawBodyData.ContainsKey("top_p"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new MessageCreateParams

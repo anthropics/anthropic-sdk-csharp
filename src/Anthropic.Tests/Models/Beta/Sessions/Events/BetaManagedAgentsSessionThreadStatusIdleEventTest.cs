@@ -13,10 +13,10 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
     {
         var model = new BetaManagedAgentsSessionThreadStatusIdleEvent
         {
-            ID = "sevt_011CZkZXYc8qKly2tiZbrpDv",
+            ID = "sevt_011CZkZXYc8qKmy2tiZbrpDv",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
@@ -24,10 +24,10 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
             Type = BetaManagedAgentsSessionThreadStatusIdleEventType.SessionThreadStatusIdle,
         };
 
-        string expectedID = "sevt_011CZkZXYc8qKly2tiZbrpDv";
+        string expectedID = "sevt_011CZkZXYc8qKmy2tiZbrpDv";
         string expectedAgentName = "Researcher";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        string expectedSessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
+        string expectedSessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
         BetaManagedAgentsSessionRefusalStopDetails expectedStopDetails = new()
         {
             Category = Category.Cyber,
@@ -52,10 +52,10 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
     {
         var model = new BetaManagedAgentsSessionThreadStatusIdleEvent
         {
-            ID = "sevt_011CZkZXYc8qKly2tiZbrpDv",
+            ID = "sevt_011CZkZXYc8qKmy2tiZbrpDv",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
@@ -78,10 +78,10 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
     {
         var model = new BetaManagedAgentsSessionThreadStatusIdleEvent
         {
-            ID = "sevt_011CZkZXYc8qKly2tiZbrpDv",
+            ID = "sevt_011CZkZXYc8qKmy2tiZbrpDv",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
@@ -97,10 +97,10 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
             );
         Assert.NotNull(deserialized);
 
-        string expectedID = "sevt_011CZkZXYc8qKly2tiZbrpDv";
+        string expectedID = "sevt_011CZkZXYc8qKmy2tiZbrpDv";
         string expectedAgentName = "Researcher";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        string expectedSessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
+        string expectedSessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
         BetaManagedAgentsSessionRefusalStopDetails expectedStopDetails = new()
         {
             Category = Category.Cyber,
@@ -125,10 +125,10 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
     {
         var model = new BetaManagedAgentsSessionThreadStatusIdleEvent
         {
-            ID = "sevt_011CZkZXYc8qKly2tiZbrpDv",
+            ID = "sevt_011CZkZXYc8qKmy2tiZbrpDv",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
@@ -144,10 +144,10 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
     {
         var model = new BetaManagedAgentsSessionThreadStatusIdleEvent
         {
-            ID = "sevt_011CZkZXYc8qKly2tiZbrpDv",
+            ID = "sevt_011CZkZXYc8qKmy2tiZbrpDv",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn

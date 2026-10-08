@@ -106,6 +106,7 @@ public sealed record class BetaManagedAgentsAgentToolUseEvent : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("evaluated_permission");
                 return;
             }
 
@@ -134,6 +135,7 @@ public sealed record class BetaManagedAgentsAgentToolUseEvent : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("evaluation");
                 return;
             }
 

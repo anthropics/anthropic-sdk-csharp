@@ -477,7 +477,7 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
             async (token) =>
             {
                 var betaSelfHostedWork = await response
-                    .Deserialize<BetaSelfHostedWork?>(token)
+                    .DeserializeNullable<BetaSelfHostedWork?>(token)
                     .ConfigureAwait(false);
                 if (this._client.ResponseValidation)
                 {

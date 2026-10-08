@@ -17,7 +17,7 @@ public class BetaManagedAgentsOutcomeEvaluationResourceTest : TestBase
             Description = "Produce a 2-page summary as summary.md",
             Explanation = "All five sections present with inline citations.",
             Iteration = 0,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             Result = "satisfied",
             Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
         };
@@ -26,7 +26,7 @@ public class BetaManagedAgentsOutcomeEvaluationResourceTest : TestBase
         string expectedDescription = "Produce a 2-page summary as summary.md";
         string expectedExplanation = "All five sections present with inline citations.";
         int expectedIteration = 0;
-        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP";
+        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP";
         string expectedResult = "satisfied";
         ApiEnum<string, BetaManagedAgentsOutcomeEvaluationResourceType> expectedType =
             BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation;
@@ -49,7 +49,7 @@ public class BetaManagedAgentsOutcomeEvaluationResourceTest : TestBase
             Description = "Produce a 2-page summary as summary.md",
             Explanation = "All five sections present with inline citations.",
             Iteration = 0,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             Result = "satisfied",
             Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
         };
@@ -72,7 +72,7 @@ public class BetaManagedAgentsOutcomeEvaluationResourceTest : TestBase
             Description = "Produce a 2-page summary as summary.md",
             Explanation = "All five sections present with inline citations.",
             Iteration = 0,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             Result = "satisfied",
             Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
         };
@@ -88,7 +88,7 @@ public class BetaManagedAgentsOutcomeEvaluationResourceTest : TestBase
         string expectedDescription = "Produce a 2-page summary as summary.md";
         string expectedExplanation = "All five sections present with inline citations.";
         int expectedIteration = 0;
-        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP";
+        string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP";
         string expectedResult = "satisfied";
         ApiEnum<string, BetaManagedAgentsOutcomeEvaluationResourceType> expectedType =
             BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation;
@@ -111,7 +111,7 @@ public class BetaManagedAgentsOutcomeEvaluationResourceTest : TestBase
             Description = "Produce a 2-page summary as summary.md",
             Explanation = "All five sections present with inline citations.",
             Iteration = 0,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             Result = "satisfied",
             Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
         };
@@ -128,7 +128,7 @@ public class BetaManagedAgentsOutcomeEvaluationResourceTest : TestBase
             Description = "Produce a 2-page summary as summary.md",
             Explanation = "All five sections present with inline citations.",
             Iteration = 0,
-            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVljxP",
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             Result = "satisfied",
             Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
         };

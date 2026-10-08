@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
@@ -105,6 +106,12 @@ public class CodeExecutionToolResultBlockParamContentTest : TestBase
                 """
                 {
                   "type": "code_execution_tool_result_error",
+                  "content": [
+                    {
+                      "file_id": "file_id",
+                      "type": "code_execution_output"
+                    }
+                  ],
                   "return_code": 0,
                   "stderr": "stderr"
                 }
@@ -116,10 +123,17 @@ public class CodeExecutionToolResultBlockParamContentTest : TestBase
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "code_execution_tool_result_error"
         );
+        List<CodeExecutionOutputBlockParam> expectedContent = [new("file_id")];
         long expectedReturnCode = 0;
         string expectedStderr = "stderr";
 
         Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.NotNull(value.Content);
+        Assert.Equal(expectedContent.Count, value.Content.Count);
+        for (int i = 0; i < expectedContent.Count; i++)
+        {
+            Assert.Equal(expectedContent[i], value.Content[i]);
+        }
         Assert.Equal(expectedReturnCode, value.ReturnCode);
         Assert.Equal(expectedStderr, value.Stderr);
 
@@ -128,6 +142,7 @@ public class CodeExecutionToolResultBlockParamContentTest : TestBase
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.Content);
         Assert.Null(emptyValue.ReturnCode);
         Assert.Null(emptyValue.Stderr);
 

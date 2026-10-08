@@ -111,6 +111,26 @@ public class BetaManagedAgentsServerToolUsageTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsServerToolUsage
+        {
+            WebFetchRequests = 0,
+            WebSearchRequests = 3,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            WebFetchRequests = null,
+            WebSearchRequests = null,
+        };
+
+        Assert.Null(model.WebFetchRequests);
+        Assert.False(model.RawData.ContainsKey("web_fetch_requests"));
+        Assert.Null(model.WebSearchRequests);
+        Assert.False(model.RawData.ContainsKey("web_search_requests"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsServerToolUsage

@@ -33,6 +33,7 @@ public record class DeploymentRunListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[gt]");
                 return;
             }
 
@@ -54,6 +55,7 @@ public record class DeploymentRunListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[gte]");
                 return;
             }
 
@@ -75,6 +77,7 @@ public record class DeploymentRunListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[lt]");
                 return;
             }
 
@@ -96,6 +99,7 @@ public record class DeploymentRunListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[lte]");
                 return;
             }
 
@@ -118,6 +122,7 @@ public record class DeploymentRunListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("deployment_id");
                 return;
             }
 
@@ -140,6 +145,7 @@ public record class DeploymentRunListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("has_error");
                 return;
             }
 
@@ -161,6 +167,7 @@ public record class DeploymentRunListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -183,6 +190,7 @@ public record class DeploymentRunListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -206,6 +214,7 @@ public record class DeploymentRunListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("trigger_type");
                 return;
             }
 
@@ -229,6 +238,7 @@ public record class DeploymentRunListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -258,6 +268,7 @@ public record class DeploymentRunListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

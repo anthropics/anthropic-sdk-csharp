@@ -57,6 +57,7 @@ public record class RateLimitListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("include_inherited");
                 return;
             }
 

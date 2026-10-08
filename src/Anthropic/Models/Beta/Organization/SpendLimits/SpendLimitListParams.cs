@@ -17,7 +17,9 @@ namespace Anthropic.Models.Beta.Organization.SpendLimits;
 /// <para>A Claude Console organization's limits come in an order that is stable
 /// across pages. A Claude Enterprise organization's are grouped by scope type, in
 /// the order `organization`, `seat_tier`, `rbac_group`, `organization_service`,
-/// `user`; within a type they come in a fixed order that is not creation order.</para>
+/// `user`; within a type they come in a fixed order that is not creation order. Listing
+/// Claude Console limits is in an early access preview. To request access, contact
+/// your Anthropic account team.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -39,6 +41,7 @@ public record class SpendLimitListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -100,6 +103,7 @@ public record class SpendLimitListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -191,6 +195,7 @@ public record class SpendLimitListParams : ParamsBase
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
+        request.Headers.Add("anthropic-beta", "spend-limit-reads-2026-09-26");
         foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);

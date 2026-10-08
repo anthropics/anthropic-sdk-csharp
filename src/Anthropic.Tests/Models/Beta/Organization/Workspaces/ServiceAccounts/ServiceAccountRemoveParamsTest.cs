@@ -66,6 +66,24 @@ public class ServiceAccountRemoveParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new ServiceAccountRemoveParams
+        {
+            WorkspaceID = "workspace_id",
+            ServiceAccountID = "service_account_id",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         ServiceAccountRemoveParams parameters = new()

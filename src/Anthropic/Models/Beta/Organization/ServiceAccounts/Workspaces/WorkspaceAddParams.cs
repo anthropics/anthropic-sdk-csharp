@@ -82,6 +82,7 @@ public record class WorkspaceAddParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 

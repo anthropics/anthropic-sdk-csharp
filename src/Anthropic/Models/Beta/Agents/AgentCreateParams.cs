@@ -87,6 +87,7 @@ public record class AgentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("mcp_servers");
                 return;
             }
 
@@ -112,6 +113,7 @@ public record class AgentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("metadata");
                 return;
             }
 
@@ -123,8 +125,7 @@ public record class AgentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Multiagent orchestration configuration. Currently supports the `coordinator`
-    /// topology with a roster of 1-20 agents.
+    /// Multiagent orchestration configuration.
     /// </summary>
     public Sessions::BetaManagedAgentsMultiagentParams? Multiagent
     {
@@ -154,6 +155,7 @@ public record class AgentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("skills");
                 return;
             }
 
@@ -178,7 +180,7 @@ public record class AgentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Tool configurations available to the agent. Maximum of 128 tools across all
+    /// Tool configurations available to the agent. Maximum of 256 tools across all
     /// toolsets allowed.
     /// </summary>
     public IReadOnlyList<Tool>? Tools
@@ -192,6 +194,7 @@ public record class AgentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("tools");
                 return;
             }
 
@@ -218,6 +221,7 @@ public record class AgentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -247,6 +251,7 @@ public record class AgentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -407,7 +412,7 @@ public record class Model : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="ApiEnum{TRaw, TEnum}"/> with a <c>TRaw</c> of <c>string</c> and a <c>TEnum</c> of BetaManagedAgentsModel>.
+    /// type <see cref="ApiEnum{TRaw, TEnum}"/> with a <c>TRaw</c> of <c>string</c> and a <c>TEnum</c> of BetaManagedAgentsModel.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///

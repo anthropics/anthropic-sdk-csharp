@@ -93,6 +93,7 @@ public sealed record class BetaManagedAgentsCronSchedule : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("upcoming_runs_at");
                 return;
             }
 

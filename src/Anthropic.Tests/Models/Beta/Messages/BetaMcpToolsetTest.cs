@@ -337,6 +337,43 @@ public class BetaMcpToolsetTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaMcpToolset
+        {
+            McpServerName = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Configs = new Dictionary<string, BetaMcpToolConfig>()
+            {
+                {
+                    "foo",
+                    new() { DeferLoading = true, Enabled = true }
+                },
+            },
+            DefaultConfig = new() { DeferLoading = true, Enabled = true },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            DefaultConfig = null,
+        };
+
+        Assert.Null(model.DefaultConfig);
+        Assert.False(model.RawData.ContainsKey("default_config"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaMcpToolset

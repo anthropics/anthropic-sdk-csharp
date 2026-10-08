@@ -54,6 +54,24 @@ public class PermissionListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new PermissionListParams
+        {
+            RbacRoleID = "rbac_role_id",
+            Limit = 1,
+            Page = "eyJjdXJzb3IiOiAicmJhY19yb2xlXzAxIn0",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Limit = null,
+        };
+
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new PermissionListParams { RbacRoleID = "rbac_role_id", Limit = 1 };

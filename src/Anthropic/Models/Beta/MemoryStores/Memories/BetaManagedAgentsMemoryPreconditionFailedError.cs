@@ -54,6 +54,7 @@ public sealed record class BetaManagedAgentsMemoryPreconditionFailedError : Json
         {
             if (value == null)
             {
+                this._rawData.Remove("message");
                 return;
             }
 

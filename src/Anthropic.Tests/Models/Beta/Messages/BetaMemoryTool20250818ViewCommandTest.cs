@@ -123,6 +123,23 @@ public class BetaMemoryTool20250818ViewCommandTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaMemoryTool20250818ViewCommand
+        {
+            Path = "/memories",
+            ViewRange = [1, 10],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            ViewRange = null,
+        };
+
+        Assert.Null(model.ViewRange);
+        Assert.False(model.RawData.ContainsKey("view_range"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaMemoryTool20250818ViewCommand

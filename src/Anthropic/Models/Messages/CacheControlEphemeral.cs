@@ -41,6 +41,7 @@ public sealed record class CacheControlEphemeral : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("ttl");
                 return;
             }
 

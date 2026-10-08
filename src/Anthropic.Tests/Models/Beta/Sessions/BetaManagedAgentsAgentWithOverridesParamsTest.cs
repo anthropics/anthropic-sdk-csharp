@@ -503,6 +503,88 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsAgentWithOverridesParams
+        {
+            ID = "x",
+            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
+            McpServers =
+            [
+                new()
+                {
+                    Name = "example-mcp",
+                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
+                    Url = "https://example-server.modelcontextprotocol.io/sse",
+                },
+            ],
+            Model = new Agents::BetaManagedAgentsModelConfigParams()
+            {
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                Effort = Agents::BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
+                Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
+            },
+            Skills =
+            [
+                new Agents::BetaManagedAgentsAnthropicSkillParams()
+                {
+                    SkillID = "xlsx",
+                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
+                    Version = "1",
+                },
+            ],
+            System = "system",
+            Tools =
+            [
+                new Agents::BetaManagedAgentsAgentToolset20260401Params()
+                {
+                    Type =
+                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                    Configs =
+                    [
+                        new Agents::BetaManagedAgentsBashToolConfigParams()
+                        {
+                            Enabled = true,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                        },
+                    ],
+                    DefaultConfig = new()
+                    {
+                        Enabled = true,
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        ),
+                    },
+                },
+            ],
+            Version = 0,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            McpServers = null,
+            Model = null,
+            Skills = null,
+            Tools = null,
+            Version = null,
+        };
+
+        Assert.Null(model.McpServers);
+        Assert.False(model.RawData.ContainsKey("mcp_servers"));
+        Assert.Null(model.Model);
+        Assert.False(model.RawData.ContainsKey("model"));
+        Assert.Null(model.Skills);
+        Assert.False(model.RawData.ContainsKey("skills"));
+        Assert.Null(model.Tools);
+        Assert.False(model.RawData.ContainsKey("tools"));
+        Assert.Null(model.Version);
+        Assert.False(model.RawData.ContainsKey("version"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsAgentWithOverridesParams
@@ -909,7 +991,7 @@ public class ModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsValidationWorks()
     {
-        Model value = Agents::BetaManagedAgentsModel.ClaudeSonnet5_5;
+        Model value = Agents::BetaManagedAgentsModel.ClaudeHaiku5_5;
         value.Validate();
     }
 
@@ -929,7 +1011,7 @@ public class ModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsSerializationRoundtripWorks()
     {
-        Model value = Agents::BetaManagedAgentsModel.ClaudeSonnet5_5;
+        Model value = Agents::BetaManagedAgentsModel.ClaudeHaiku5_5;
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Model>(element, ModelBase.SerializerOptions);
 

@@ -1,4 +1,5 @@
 <Project>
+  <Import Project="Versions.props" />
   <PropertyGroup>
     <Authors>Anthropic</Authors>
     <Company>Anthropic</Company>

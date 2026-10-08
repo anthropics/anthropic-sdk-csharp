@@ -72,6 +72,7 @@ public sealed record class BrowserStateTabEntry : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("active");
                 return;
             }
 

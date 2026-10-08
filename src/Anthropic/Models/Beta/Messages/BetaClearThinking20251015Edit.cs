@@ -39,6 +39,7 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("keep");
                 return;
             }
 

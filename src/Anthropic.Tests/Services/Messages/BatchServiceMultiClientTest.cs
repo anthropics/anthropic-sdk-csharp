@@ -1,6 +1,3 @@
-// xUnit1024: same-name overloads are intentional — base method is parameterless with no test attribute.
-#pragma warning disable xUnit1024
-
 using System.Threading.Tasks;
 
 namespace Anthropic.Tests.Services.Messages;
@@ -19,7 +16,7 @@ public class BatchServiceMultiClientTest : BatchServiceTest
     [AnthropicTestClients(
         TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
     )]
-    public async Task Create_Works(IAnthropicClient c)
+    public async Task Create_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.Create_Works();
@@ -29,7 +26,7 @@ public class BatchServiceMultiClientTest : BatchServiceTest
     [AnthropicTestClients(
         TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
     )]
-    public async Task Retrieve_Works(IAnthropicClient c)
+    public async Task Retrieve_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.Retrieve_Works();
@@ -39,7 +36,7 @@ public class BatchServiceMultiClientTest : BatchServiceTest
     [AnthropicTestClients(
         TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
     )]
-    public async Task List_Works(IAnthropicClient c)
+    public async Task List_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.List_Works();
@@ -49,7 +46,7 @@ public class BatchServiceMultiClientTest : BatchServiceTest
     [AnthropicTestClients(
         TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
     )]
-    public async Task Delete_Works(IAnthropicClient c)
+    public async Task Delete_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.Delete_Works();
@@ -59,17 +56,17 @@ public class BatchServiceMultiClientTest : BatchServiceTest
     [AnthropicTestClients(
         TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
     )]
-    public async Task Cancel_Works(IAnthropicClient c)
+    public async Task Cancel_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.Cancel_Works();
     }
 
-    [Theory(Skip = "Prism doesn't support application/x-jsonl responses")]
+    [Theory]
     [AnthropicTestClients(
         TestSupportTypes.All & ~TestSupportTypes.Bedrock & ~TestSupportTypes.BedrockMantle
     )]
-    public async Task ResultsStreaming_Works(IAnthropicClient c)
+    public async Task ResultsStreaming_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.ResultsStreaming_Works();

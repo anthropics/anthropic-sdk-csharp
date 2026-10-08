@@ -214,6 +214,49 @@ public class UserUsageReportListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new UserUsageReportListParams
+        {
+            StartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            BucketWidth = BucketWidth.Day,
+            ClaudeTagCategories = [Analytics::BetaAnalyticsClaudeTagCategory.Engaged],
+            ClaudeTagUserIds = ["U0123ABCDEF"],
+            ContextWindows = [Analytics::BetaAnalyticsContextWindow.From0To200k],
+            EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ExcludeDeletedUsers = true,
+            GroupBy = [GroupBy.ClaudeTagCategory],
+            InferenceGeos = [Analytics::BetaAnalyticsInferenceGeoFilter.Global],
+            Limit = 1,
+            Models = ["string"],
+            Order = Order.Asc,
+            OrderBy = OrderBy.OutputTokens,
+            Page = "page",
+            Products = [Analytics::BetaAnalyticsProductFilter.Chat],
+            RbacGroupIds = ["rbac_group_012rppKaSVsmTo6NqRDXQXNF"],
+            SlackChannelIds = ["C0123ABCDEF"],
+            Speeds = [Speed.Fast],
+            UserIds = ["user_01AbCdEfGhIjKlMnOpQrSt"],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            ExcludeDeletedUsers = null,
+            Limit = null,
+            Order = null,
+            OrderBy = null,
+        };
+
+        Assert.Null(parameters.ExcludeDeletedUsers);
+        Assert.False(parameters.RawQueryData.ContainsKey("exclude_deleted_users"));
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Order);
+        Assert.False(parameters.RawQueryData.ContainsKey("order"));
+        Assert.Null(parameters.OrderBy);
+        Assert.False(parameters.RawQueryData.ContainsKey("order_by"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new UserUsageReportListParams

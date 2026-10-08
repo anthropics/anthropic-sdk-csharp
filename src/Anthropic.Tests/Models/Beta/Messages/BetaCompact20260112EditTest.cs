@@ -121,6 +121,24 @@ public class BetaCompact20260112EditTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaCompact20260112Edit
+        {
+            Instructions = "instructions",
+            PauseAfterCompaction = true,
+            Trigger = new(1),
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            PauseAfterCompaction = null,
+        };
+
+        Assert.Null(model.PauseAfterCompaction);
+        Assert.False(model.RawData.ContainsKey("pause_after_compaction"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaCompact20260112Edit

@@ -28,7 +28,7 @@ public class CredentialServiceTest : TestBase
     public async Task Retrieve_Works()
     {
         var betaManagedAgentsCredential = await this.client.Beta.Vaults.Credentials.Retrieve(
-            "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
             TestContext.Current.CancellationToken
         );
@@ -39,14 +39,14 @@ public class CredentialServiceTest : TestBase
     public async Task Update_Works()
     {
         var betaManagedAgentsCredential = await this.client.Beta.Vaults.Credentials.Update(
-            "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
             TestContext.Current.CancellationToken
         );
         betaManagedAgentsCredential.Validate();
     }
 
-    [Fact(Skip = "buildURL drops path-level query params")]
+    [Fact]
     public async Task List_Works()
     {
         var page = await this.client.Beta.Vaults.Credentials.List(
@@ -61,7 +61,7 @@ public class CredentialServiceTest : TestBase
     public async Task Delete_Works()
     {
         var betaManagedAgentsDeletedCredential = await this.client.Beta.Vaults.Credentials.Delete(
-            "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
             TestContext.Current.CancellationToken
         );
@@ -72,19 +72,19 @@ public class CredentialServiceTest : TestBase
     public async Task Archive_Works()
     {
         var betaManagedAgentsCredential = await this.client.Beta.Vaults.Credentials.Archive(
-            "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
             TestContext.Current.CancellationToken
         );
         betaManagedAgentsCredential.Validate();
     }
 
-    [Fact(Skip = "prism can't find endpoint with beta only tag")]
+    [Fact]
     public async Task McpOAuthValidate_Works()
     {
         var betaManagedAgentsCredentialValidation =
             await this.client.Beta.Vaults.Credentials.McpOAuthValidate(
-                "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+                "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                 new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
                 TestContext.Current.CancellationToken
             );

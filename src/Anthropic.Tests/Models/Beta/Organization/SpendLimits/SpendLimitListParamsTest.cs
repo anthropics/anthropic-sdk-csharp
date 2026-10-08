@@ -81,6 +81,28 @@ public class SpendLimitListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new SpendLimitListParams
+        {
+            Limit = 1,
+            Page = "page",
+            ScopeType = [ScopeType.Organization],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Limit = null,
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new SpendLimitListParams
@@ -147,7 +169,7 @@ public class SpendLimitListParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,spend-limit-reads-2026-09-26"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }

@@ -48,6 +48,7 @@ public sealed record class BetaManagedAgentsEnvironmentVariableUpdateParams : Js
         {
             if (value == null)
             {
+                this._rawData.Remove("injection_location");
                 return;
             }
 

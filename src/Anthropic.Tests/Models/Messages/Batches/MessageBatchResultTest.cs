@@ -50,7 +50,7 @@ public class MessageBatchResultTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Diagnostics = new(new CacheMissReason(new CacheMissModelChanged(0))),
+                Diagnostics = new(new CacheMissModelChanged(0)),
                 Model = Model.ClaudeOpus5,
                 StopDetails = new()
                 {
@@ -148,7 +148,7 @@ public class MessageBatchResultTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Diagnostics = new(new CacheMissReason(new CacheMissModelChanged(0))),
+                Diagnostics = new(new CacheMissModelChanged(0)),
                 Model = Model.ClaudeOpus5,
                 StopDetails = new()
                 {

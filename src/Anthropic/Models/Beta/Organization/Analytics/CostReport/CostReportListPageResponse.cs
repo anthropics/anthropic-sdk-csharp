@@ -42,8 +42,10 @@ public sealed record class CostReportListPageResponse : JsonModel
     /// no export yet covers any part of the requested range, in which case every
     /// bucket's `results` list is empty. Buckets beyond this watermark are incomplete;
     /// for stable results, set `ending_at` to this value or earlier. Data is typically
-    /// refreshed every 4 hours but not final until about 30 days after the usage
-    /// date (late-arriving events, reconciliation adjustments).
+    /// refreshed every 4 hours. Values can be revised as late events arrive and
+    /// reconciliation runs, until about 7 days after the end of the calendar month
+    /// the usage falls in; for example, values for October 1 can change until about
+    /// November 7.
     /// </summary>
     public required DateTimeOffset? DataRefreshedAt
     {

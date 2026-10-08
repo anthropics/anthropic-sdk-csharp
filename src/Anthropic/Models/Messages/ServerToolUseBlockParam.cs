@@ -84,6 +84,7 @@ public sealed record class ServerToolUseBlockParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("caller");
                 return;
             }
 

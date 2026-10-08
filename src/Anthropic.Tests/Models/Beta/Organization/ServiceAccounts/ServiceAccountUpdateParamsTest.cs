@@ -74,6 +74,25 @@ public class ServiceAccountUpdateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new ServiceAccountUpdateParams
+        {
+            ServiceAccountID = "service_account_id",
+            Description = "description",
+            OrganizationRole = ServiceAccountUpdateParamsOrganizationRole.Admin,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new ServiceAccountUpdateParams

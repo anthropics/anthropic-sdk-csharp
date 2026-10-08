@@ -58,9 +58,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                         },
                     ]
                 ),
-                Diagnostics = new(
-                    new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
-                ),
+                Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
                 Model = Model.ClaudeOpus5,
                 StopDetails = new()
                 {
@@ -82,9 +80,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
-                    FallbackCredit = new(
-                        new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
-                    ),
+                    FallbackCredit = new(new Messages::BetaFallbackCreditRedeemed()),
                     InferenceGeo = "global",
                     InputTokens = 2095,
                     Iterations =
@@ -99,7 +95,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                             CacheCreationInputTokens = 0,
                             CacheReadInputTokens = 0,
                             InputTokens = 0,
-                            Model = Model.ClaudeSonnet5_5,
+                            Model = Model.ClaudeHaiku5_5,
                             OutputTokens = 0,
                         },
                     ],
@@ -169,9 +165,7 @@ public class BetaRawMessageStreamEventTest : TestBase
             {
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
-                FallbackCredit = new(
-                    new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
-                ),
+                FallbackCredit = new(new Messages::BetaFallbackCreditRedeemed()),
                 InputTokens = 2095,
                 Iterations =
                 [
@@ -185,7 +179,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeSonnet5_5,
+                        Model = Model.ClaudeHaiku5_5,
                         OutputTokens = 0,
                     },
                 ],
@@ -306,9 +300,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                         },
                     ]
                 ),
-                Diagnostics = new(
-                    new Messages::BetaCacheMissReason(new Messages::BetaCacheMissModelChanged(0))
-                ),
+                Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
                 Model = Model.ClaudeOpus5,
                 StopDetails = new()
                 {
@@ -330,9 +322,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                     },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
-                    FallbackCredit = new(
-                        new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
-                    ),
+                    FallbackCredit = new(new Messages::BetaFallbackCreditRedeemed()),
                     InferenceGeo = "global",
                     InputTokens = 2095,
                     Iterations =
@@ -347,7 +337,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                             CacheCreationInputTokens = 0,
                             CacheReadInputTokens = 0,
                             InputTokens = 0,
-                            Model = Model.ClaudeSonnet5_5,
+                            Model = Model.ClaudeHaiku5_5,
                             OutputTokens = 0,
                         },
                     ],
@@ -423,9 +413,7 @@ public class BetaRawMessageStreamEventTest : TestBase
             {
                 CacheCreationInputTokens = 2051,
                 CacheReadInputTokens = 2051,
-                FallbackCredit = new(
-                    new Messages::Status(new Messages::BetaFallbackCreditRedeemed())
-                ),
+                FallbackCredit = new(new Messages::BetaFallbackCreditRedeemed()),
                 InputTokens = 2095,
                 Iterations =
                 [
@@ -439,7 +427,7 @@ public class BetaRawMessageStreamEventTest : TestBase
                         CacheCreationInputTokens = 0,
                         CacheReadInputTokens = 0,
                         InputTokens = 0,
-                        Model = Model.ClaudeSonnet5_5,
+                        Model = Model.ClaudeHaiku5_5,
                         OutputTokens = 0,
                     },
                 ],

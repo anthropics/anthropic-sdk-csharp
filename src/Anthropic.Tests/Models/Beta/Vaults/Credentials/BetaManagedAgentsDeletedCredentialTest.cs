@@ -12,11 +12,11 @@ public class BetaManagedAgentsDeletedCredentialTest : TestBase
     {
         var model = new BetaManagedAgentsDeletedCredential
         {
-            ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Type = BetaManagedAgentsDeletedCredentialType.VaultCredentialDeleted,
         };
 
-        string expectedID = "vcrd_011CZkZEMt8gZan2iYOQfSkw";
+        string expectedID = "vcrd_011CZkZEMt8gZan2iYPQfSkw";
         ApiEnum<string, BetaManagedAgentsDeletedCredentialType> expectedType =
             BetaManagedAgentsDeletedCredentialType.VaultCredentialDeleted;
 
@@ -29,7 +29,7 @@ public class BetaManagedAgentsDeletedCredentialTest : TestBase
     {
         var model = new BetaManagedAgentsDeletedCredential
         {
-            ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Type = BetaManagedAgentsDeletedCredentialType.VaultCredentialDeleted,
         };
 
@@ -47,7 +47,7 @@ public class BetaManagedAgentsDeletedCredentialTest : TestBase
     {
         var model = new BetaManagedAgentsDeletedCredential
         {
-            ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Type = BetaManagedAgentsDeletedCredentialType.VaultCredentialDeleted,
         };
 
@@ -58,7 +58,7 @@ public class BetaManagedAgentsDeletedCredentialTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "vcrd_011CZkZEMt8gZan2iYOQfSkw";
+        string expectedID = "vcrd_011CZkZEMt8gZan2iYPQfSkw";
         ApiEnum<string, BetaManagedAgentsDeletedCredentialType> expectedType =
             BetaManagedAgentsDeletedCredentialType.VaultCredentialDeleted;
 
@@ -71,7 +71,7 @@ public class BetaManagedAgentsDeletedCredentialTest : TestBase
     {
         var model = new BetaManagedAgentsDeletedCredential
         {
-            ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Type = BetaManagedAgentsDeletedCredentialType.VaultCredentialDeleted,
         };
 
@@ -83,7 +83,7 @@ public class BetaManagedAgentsDeletedCredentialTest : TestBase
     {
         var model = new BetaManagedAgentsDeletedCredential
         {
-            ID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Type = BetaManagedAgentsDeletedCredentialType.VaultCredentialDeleted,
         };
 

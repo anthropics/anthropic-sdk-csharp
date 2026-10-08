@@ -35,6 +35,7 @@ public record class UserProfileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -57,6 +58,7 @@ public record class UserProfileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("order");
                 return;
             }
 
@@ -79,6 +81,7 @@ public record class UserProfileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("order_by");
                 return;
             }
 
@@ -102,6 +105,7 @@ public record class UserProfileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -125,6 +129,7 @@ public record class UserProfileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -154,6 +159,7 @@ public record class UserProfileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

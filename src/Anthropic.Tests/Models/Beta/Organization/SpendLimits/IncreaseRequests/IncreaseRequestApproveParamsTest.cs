@@ -61,6 +61,25 @@ public class IncreaseRequestApproveParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new IncreaseRequestApproveParams
+        {
+            SpendLimitIncreaseRequestID = "spend_limit_increase_request_id",
+            Amount = "50000",
+            Period = BetaSpendLimitPeriod.Monthly,
+            SuppressNotification = true,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            SuppressNotification = null,
+        };
+
+        Assert.Null(parameters.SuppressNotification);
+        Assert.False(parameters.RawBodyData.ContainsKey("suppress_notification"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new IncreaseRequestApproveParams

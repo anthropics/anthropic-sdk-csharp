@@ -417,11 +417,7 @@ public class ContentBlockTest : TestBase
             Signature = "signature",
             ToolChanges =
             [
-                new BetaResponseToolAdditionBlock(
-                    new BetaResponseToolAdditionBlockTool(
-                        new BetaResponseToolChangeToolReference("name")
-                    )
-                ),
+                new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
             ],
         };
         value.Validate();
@@ -432,8 +428,8 @@ public class ContentBlockTest : TestBase
     {
         ContentBlock value = new BetaFallbackBlock()
         {
-            From = new(Messages::Model.ClaudeSonnet5_5),
-            To = new(Messages::Model.ClaudeSonnet5_5),
+            From = new(Messages::Model.ClaudeHaiku5_5),
+            To = new(Messages::Model.ClaudeHaiku5_5),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
         value.Validate();
@@ -764,11 +760,7 @@ public class ContentBlockTest : TestBase
             Signature = "signature",
             ToolChanges =
             [
-                new BetaResponseToolAdditionBlock(
-                    new BetaResponseToolAdditionBlockTool(
-                        new BetaResponseToolChangeToolReference("name")
-                    )
-                ),
+                new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
             ],
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -785,8 +777,8 @@ public class ContentBlockTest : TestBase
     {
         ContentBlock value = new BetaFallbackBlock()
         {
-            From = new(Messages::Model.ClaudeSonnet5_5),
-            To = new(Messages::Model.ClaudeSonnet5_5),
+            From = new(Messages::Model.ClaudeHaiku5_5),
+            To = new(Messages::Model.ClaudeHaiku5_5),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

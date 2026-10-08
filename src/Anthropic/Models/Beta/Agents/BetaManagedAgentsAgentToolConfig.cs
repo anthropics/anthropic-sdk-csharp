@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -81,6 +82,50 @@ public record class BetaManagedAgentsAgentToolConfig : ModelBase
                 BetaManagedAgentsWebFetchToolConfig x => x.Type,
                 BetaManagedAgentsWebSearchToolConfig x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
+    }
+
+    public IReadOnlyList<string>? AllowedDomains
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsBashToolConfig _ => null,
+                BetaManagedAgentsEditToolConfig _ => null,
+                BetaManagedAgentsReadToolConfig _ => null,
+                BetaManagedAgentsWriteToolConfig _ => null,
+                BetaManagedAgentsGlobToolConfig _ => null,
+                BetaManagedAgentsGrepToolConfig _ => null,
+                BetaManagedAgentsWebFetchToolConfig x => x.AllowedDomains,
+                BetaManagedAgentsWebSearchToolConfig x => x.AllowedDomains,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<IReadOnlyList<string>>(
+                    this.Json,
+                    "allowed_domains"
+                ),
+            };
+        }
+    }
+
+    public IReadOnlyList<string>? BlockedDomains
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsBashToolConfig _ => null,
+                BetaManagedAgentsEditToolConfig _ => null,
+                BetaManagedAgentsReadToolConfig _ => null,
+                BetaManagedAgentsWriteToolConfig _ => null,
+                BetaManagedAgentsGlobToolConfig _ => null,
+                BetaManagedAgentsGrepToolConfig _ => null,
+                BetaManagedAgentsWebFetchToolConfig x => x.BlockedDomains,
+                BetaManagedAgentsWebSearchToolConfig x => x.BlockedDomains,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<IReadOnlyList<string>>(
+                    this.Json,
+                    "blocked_domains"
+                ),
             };
         }
     }

@@ -70,6 +70,7 @@ public record class WorkPollParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -95,6 +96,7 @@ public record class WorkPollParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("Anthropic-Worker-ID");
                 return;
             }
 

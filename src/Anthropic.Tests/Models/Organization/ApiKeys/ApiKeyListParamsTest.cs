@@ -78,6 +78,33 @@ public class ApiKeyListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new ApiKeyListParams
+        {
+            AfterID = "after_id",
+            BeforeID = "before_id",
+            CreatedByUserID = "created_by_user_id",
+            Limit = 1,
+            Status = ApiKeyListParamsStatus.Active,
+            WorkspaceID = "workspace_id",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AfterID = null,
+            BeforeID = null,
+            Limit = null,
+        };
+
+        Assert.Null(parameters.AfterID);
+        Assert.False(parameters.RawQueryData.ContainsKey("after_id"));
+        Assert.Null(parameters.BeforeID);
+        Assert.False(parameters.RawQueryData.ContainsKey("before_id"));
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new ApiKeyListParams

@@ -32,6 +32,7 @@ public sealed record class BetaManagedAgentsServerToolUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("web_fetch_requests");
                 return;
             }
 
@@ -53,6 +54,7 @@ public sealed record class BetaManagedAgentsServerToolUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("web_search_requests");
                 return;
             }
 

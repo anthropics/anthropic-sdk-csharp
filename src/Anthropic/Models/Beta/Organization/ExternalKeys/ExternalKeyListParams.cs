@@ -34,6 +34,7 @@ public record class ExternalKeyListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 

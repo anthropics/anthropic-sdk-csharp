@@ -109,6 +109,33 @@ public class IssuerUpdateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new IssuerUpdateParams
+        {
+            FederationIssuerID = "federation_issuer_id",
+            CheckJti = true,
+            IssuerUrl = "x",
+            Jwks = new BetaJwksDiscovery()
+            {
+                CACertPem = "ca_cert_pem",
+                DiscoveryBase = "discovery_base",
+            },
+            JwksPollingDisabled = true,
+            MaxJwtLifetimeSeconds = 1,
+            Name = "x",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new IssuerUpdateParams

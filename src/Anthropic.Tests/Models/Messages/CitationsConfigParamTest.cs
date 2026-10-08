@@ -86,6 +86,19 @@ public class CitationsConfigParamTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new CitationsConfigParam { Enabled = true } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Enabled = null,
+        };
+
+        Assert.Null(model.Enabled);
+        Assert.False(model.RawData.ContainsKey("enabled"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new CitationsConfigParam

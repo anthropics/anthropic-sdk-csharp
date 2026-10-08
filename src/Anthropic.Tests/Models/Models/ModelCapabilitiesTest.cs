@@ -32,11 +32,22 @@ public class ModelCapabilitiesTest : TestBase
             },
             ImageInput = new(true),
             PdfInput = new(true),
+            ServerTools = new()
+            {
+                CodeExecution = new(true),
+                Supported = true,
+                WebSearch = new(true),
+            },
             StructuredOutputs = new(true),
             Thinking = new()
             {
                 Supported = true,
-                Types = new() { Adaptive = new(true), Enabled = new(true) },
+                Types = new()
+                {
+                    Adaptive = new(true),
+                    Disabled = new(true),
+                    Enabled = new(true),
+                },
             },
         };
 
@@ -61,11 +72,22 @@ public class ModelCapabilitiesTest : TestBase
         };
         CapabilitySupport expectedImageInput = new(true);
         CapabilitySupport expectedPdfInput = new(true);
+        ServerToolsCapability expectedServerTools = new()
+        {
+            CodeExecution = new(true),
+            Supported = true,
+            WebSearch = new(true),
+        };
         CapabilitySupport expectedStructuredOutputs = new(true);
         ThinkingCapability expectedThinking = new()
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         Assert.Equal(expectedBatch, model.Batch);
@@ -75,6 +97,7 @@ public class ModelCapabilitiesTest : TestBase
         Assert.Equal(expectedEffort, model.Effort);
         Assert.Equal(expectedImageInput, model.ImageInput);
         Assert.Equal(expectedPdfInput, model.PdfInput);
+        Assert.Equal(expectedServerTools, model.ServerTools);
         Assert.Equal(expectedStructuredOutputs, model.StructuredOutputs);
         Assert.Equal(expectedThinking, model.Thinking);
     }
@@ -105,11 +128,22 @@ public class ModelCapabilitiesTest : TestBase
             },
             ImageInput = new(true),
             PdfInput = new(true),
+            ServerTools = new()
+            {
+                CodeExecution = new(true),
+                Supported = true,
+                WebSearch = new(true),
+            },
             StructuredOutputs = new(true),
             Thinking = new()
             {
                 Supported = true,
-                Types = new() { Adaptive = new(true), Enabled = new(true) },
+                Types = new()
+                {
+                    Adaptive = new(true),
+                    Disabled = new(true),
+                    Enabled = new(true),
+                },
             },
         };
 
@@ -148,11 +182,22 @@ public class ModelCapabilitiesTest : TestBase
             },
             ImageInput = new(true),
             PdfInput = new(true),
+            ServerTools = new()
+            {
+                CodeExecution = new(true),
+                Supported = true,
+                WebSearch = new(true),
+            },
             StructuredOutputs = new(true),
             Thinking = new()
             {
                 Supported = true,
-                Types = new() { Adaptive = new(true), Enabled = new(true) },
+                Types = new()
+                {
+                    Adaptive = new(true),
+                    Disabled = new(true),
+                    Enabled = new(true),
+                },
             },
         };
 
@@ -184,11 +229,22 @@ public class ModelCapabilitiesTest : TestBase
         };
         CapabilitySupport expectedImageInput = new(true);
         CapabilitySupport expectedPdfInput = new(true);
+        ServerToolsCapability expectedServerTools = new()
+        {
+            CodeExecution = new(true),
+            Supported = true,
+            WebSearch = new(true),
+        };
         CapabilitySupport expectedStructuredOutputs = new(true);
         ThinkingCapability expectedThinking = new()
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         Assert.Equal(expectedBatch, deserialized.Batch);
@@ -198,6 +254,7 @@ public class ModelCapabilitiesTest : TestBase
         Assert.Equal(expectedEffort, deserialized.Effort);
         Assert.Equal(expectedImageInput, deserialized.ImageInput);
         Assert.Equal(expectedPdfInput, deserialized.PdfInput);
+        Assert.Equal(expectedServerTools, deserialized.ServerTools);
         Assert.Equal(expectedStructuredOutputs, deserialized.StructuredOutputs);
         Assert.Equal(expectedThinking, deserialized.Thinking);
     }
@@ -228,11 +285,22 @@ public class ModelCapabilitiesTest : TestBase
             },
             ImageInput = new(true),
             PdfInput = new(true),
+            ServerTools = new()
+            {
+                CodeExecution = new(true),
+                Supported = true,
+                WebSearch = new(true),
+            },
             StructuredOutputs = new(true),
             Thinking = new()
             {
                 Supported = true,
-                Types = new() { Adaptive = new(true), Enabled = new(true) },
+                Types = new()
+                {
+                    Adaptive = new(true),
+                    Disabled = new(true),
+                    Enabled = new(true),
+                },
             },
         };
 
@@ -265,11 +333,22 @@ public class ModelCapabilitiesTest : TestBase
             },
             ImageInput = new(true),
             PdfInput = new(true),
+            ServerTools = new()
+            {
+                CodeExecution = new(true),
+                Supported = true,
+                WebSearch = new(true),
+            },
             StructuredOutputs = new(true),
             Thinking = new()
             {
                 Supported = true,
-                Types = new() { Adaptive = new(true), Enabled = new(true) },
+                Types = new()
+                {
+                    Adaptive = new(true),
+                    Disabled = new(true),
+                    Enabled = new(true),
+                },
             },
         };
 

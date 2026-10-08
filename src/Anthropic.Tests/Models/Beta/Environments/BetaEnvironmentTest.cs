@@ -369,6 +369,48 @@ public class BetaEnvironmentTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaEnvironment
+        {
+            ID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
+            ArchivedAt = null,
+            Config = new BetaCloudConfig()
+            {
+                Networking = new BetaLimitedNetwork()
+                {
+                    AllowMcpServers = false,
+                    AllowPackageManagers = true,
+                    AllowedHosts = ["api.example.com"],
+                },
+                Packages = new()
+                {
+                    Apt = ["string"],
+                    Cargo = ["string"],
+                    Gem = ["string"],
+                    Go = ["string"],
+                    Npm = ["string"],
+                    Pip = ["pandas", "numpy"],
+                    Type = BetaPackagesType.Packages,
+                },
+            },
+            CreatedAt = "2026-03-15T10:00:00Z",
+            Description = "Python environment with data-analysis packages.",
+            Metadata = new Dictionary<string, string>(),
+            Name = "python-data-analysis",
+            UpdatedAt = "2026-03-15T10:00:00Z",
+            Scope = BetaEnvironmentScope.Organization,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Scope = null,
+        };
+
+        Assert.Null(model.Scope);
+        Assert.False(model.RawData.ContainsKey("scope"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaEnvironment

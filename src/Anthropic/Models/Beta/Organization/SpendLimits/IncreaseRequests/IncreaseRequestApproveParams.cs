@@ -66,6 +66,7 @@ public record class IncreaseRequestApproveParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("suppress_notification");
                 return;
             }
 

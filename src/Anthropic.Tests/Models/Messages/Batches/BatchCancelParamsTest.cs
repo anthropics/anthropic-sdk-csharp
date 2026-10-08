@@ -47,6 +47,23 @@ public class BatchCancelParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new BatchCancelParams
+        {
+            MessageBatchID = "message_batch_id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         BatchCancelParams parameters = new() { MessageBatchID = "message_batch_id" };

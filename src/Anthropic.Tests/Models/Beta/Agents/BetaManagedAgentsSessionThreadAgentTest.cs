@@ -531,7 +531,7 @@ public class BetaManagedAgentsSessionThreadAgentSkillTest : TestBase
     {
         BetaManagedAgentsSessionThreadAgentSkill value = new BetaManagedAgentsCustomSkill()
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };
@@ -561,7 +561,7 @@ public class BetaManagedAgentsSessionThreadAgentSkillTest : TestBase
     {
         BetaManagedAgentsSessionThreadAgentSkill value = new BetaManagedAgentsCustomSkill()
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };

@@ -75,6 +75,7 @@ public sealed record class BetaManagedAgentsReadToolConfigParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("type");
                 return;
             }
 

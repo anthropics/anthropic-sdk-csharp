@@ -16,14 +16,14 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ID = "sevt_011CZkZWXb7pJkx1shYaqoCu",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
         };
 
         string expectedID = "sevt_011CZkZWXb7pJkx1shYaqoCu";
         string expectedAgentName = "Researcher";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        string expectedSessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
+        string expectedSessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
         ApiEnum<string, BetaManagedAgentsSessionThreadCreatedEventType> expectedType =
             BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated;
 
@@ -42,7 +42,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ID = "sevt_011CZkZWXb7pJkx1shYaqoCu",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
         };
 
@@ -63,7 +63,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ID = "sevt_011CZkZWXb7pJkx1shYaqoCu",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
         };
 
@@ -77,7 +77,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
         string expectedID = "sevt_011CZkZWXb7pJkx1shYaqoCu";
         string expectedAgentName = "Researcher";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        string expectedSessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
+        string expectedSessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
         ApiEnum<string, BetaManagedAgentsSessionThreadCreatedEventType> expectedType =
             BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated;
 
@@ -96,7 +96,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ID = "sevt_011CZkZWXb7pJkx1shYaqoCu",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
         };
 
@@ -111,7 +111,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ID = "sevt_011CZkZWXb7pJkx1shYaqoCu",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
         };
 

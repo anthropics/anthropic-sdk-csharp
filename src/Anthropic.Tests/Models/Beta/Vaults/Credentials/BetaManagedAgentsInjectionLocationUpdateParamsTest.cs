@@ -113,6 +113,26 @@ public class BetaManagedAgentsInjectionLocationUpdateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsInjectionLocationUpdateParams
+        {
+            Body = true,
+            Header = true,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Body = null,
+            Header = null,
+        };
+
+        Assert.Null(model.Body);
+        Assert.False(model.RawData.ContainsKey("body"));
+        Assert.Null(model.Header);
+        Assert.False(model.RawData.ContainsKey("header"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsInjectionLocationUpdateParams

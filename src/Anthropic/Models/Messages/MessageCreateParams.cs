@@ -208,6 +208,7 @@ public record class MessageCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("metadata");
                 return;
             }
 
@@ -229,6 +230,7 @@ public record class MessageCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("output_config");
                 return;
             }
 
@@ -255,6 +257,7 @@ public record class MessageCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("service_tier");
                 return;
             }
 
@@ -285,6 +288,7 @@ public record class MessageCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("stop_sequences");
                 return;
             }
 
@@ -312,6 +316,7 @@ public record class MessageCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("system");
                 return;
             }
 
@@ -343,6 +348,7 @@ public record class MessageCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("temperature");
                 return;
             }
 
@@ -371,6 +377,7 @@ public record class MessageCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("thinking");
                 return;
             }
 
@@ -393,6 +400,7 @@ public record class MessageCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("tool_choice");
                 return;
             }
 
@@ -459,6 +467,7 @@ public record class MessageCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("tools");
                 return;
             }
 
@@ -491,6 +500,7 @@ public record class MessageCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("top_k");
                 return;
             }
 
@@ -521,6 +531,7 @@ public record class MessageCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("top_p");
                 return;
             }
 
@@ -543,6 +554,7 @@ public record class MessageCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-user-profile-id");
                 return;
             }
 
@@ -569,6 +581,7 @@ public record class MessageCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

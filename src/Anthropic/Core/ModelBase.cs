@@ -13,6 +13,7 @@ using Anthropic.Models.Beta.Organization.SpendLimits;
 using Anthropic.Models.Beta.Organization.SpendLimits.Effective;
 using Anthropic.Models.Beta.Organization.SpendLimits.IncreaseRequests;
 using Anthropic.Models.Messages;
+using Anthropic.Models.Models;
 using Anthropic.Models.Organization;
 using Anthropic.Models.Organization.ExternalKeys;
 using Anthropic.Models.Organization.Workspaces;
@@ -40,6 +41,7 @@ using MemoryStores = Anthropic.Models.Beta.MemoryStores;
 using MemoryVersions = Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 using Messages = Anthropic.Models.Beta.Messages;
 using MessagesBatches = Anthropic.Models.Beta.Messages.Batches;
+using Models = Anthropic.Models.Beta.Models;
 using OrganizationApiKeys = Anthropic.Models.Beta.Organization.ApiKeys;
 using OrganizationInvites = Anthropic.Models.Beta.Organization.Invites;
 using OrganizationPlugins = Anthropic.Models.Beta.Organization.Plugins;
@@ -87,12 +89,15 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, ErrorType>(),
             new ApiEnumConverter<string, MediaType>(),
             new ApiEnumConverter<string, BashCodeExecutionToolResultErrorCode>(),
+            new ApiEnumConverter<string, BrowserReadPageFilter>(),
+            new ApiEnumConverter<string, BrowserScrollDirection>(),
             new ApiEnumConverter<string, Ttl>(),
             new ApiEnumConverter<string, AllowedCaller>(),
             new ApiEnumConverter<string, CodeExecutionTool20250825AllowedCaller>(),
             new ApiEnumConverter<string, CodeExecutionTool20260120AllowedCaller>(),
             new ApiEnumConverter<string, CodeExecutionTool20260521AllowedCaller>(),
             new ApiEnumConverter<string, CodeExecutionToolResultErrorCode>(),
+            new ApiEnumConverter<string, ComputerScrollDirection>(),
             new ApiEnumConverter<string, ContainerSkillType>(),
             new ApiEnumConverter<string, OversizedImage>(),
             new ApiEnumConverter<string, MemoryTool20250818AllowedCaller>(),
@@ -135,6 +140,9 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, ServiceTier>(),
             new ApiEnumConverter<string, Batches::ProcessingStatus>(),
             new ApiEnumConverter<string, Batches::ServiceTier>(),
+            new ApiEnumConverter<string, ModelInfoLifecycle>(),
+            new ApiEnumConverter<string, ModelLine>(),
+            new ApiEnumConverter<string, Lifecycle>(),
             new ApiEnumConverter<string, Files::Type>(),
             new ApiEnumConverter<string, Skills::Type>(),
             new ApiEnumConverter<string, OrganizationRole>(),
@@ -167,6 +175,9 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, RateLimits::GroupType>(),
             new ApiEnumConverter<string, AnthropicBeta>(),
             new ApiEnumConverter<string, BetaCurrency>(),
+            new ApiEnumConverter<string, Models::BetaModelInfoLifecycle>(),
+            new ApiEnumConverter<string, Models::BetaModelLine>(),
+            new ApiEnumConverter<string, Models::Lifecycle>(),
             new ApiEnumConverter<string, Messages::AllowedCaller>(),
             new ApiEnumConverter<string, Messages::ErrorCode>(),
             new ApiEnumConverter<string, Messages::BetaAdvisorToolResultErrorParamErrorCode>(),
@@ -176,12 +187,15 @@ public abstract record class ModelBase
                 string,
                 Messages::BetaBashCodeExecutionToolResultErrorParamErrorCode
             >(),
+            new ApiEnumConverter<string, Messages::BetaBrowserReadPageFilter>(),
+            new ApiEnumConverter<string, Messages::BetaBrowserScrollDirection>(),
             new ApiEnumConverter<string, Messages::Ttl>(),
             new ApiEnumConverter<string, Messages::BetaCodeExecutionTool20250522AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaCodeExecutionTool20250825AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaCodeExecutionTool20260120AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaCodeExecutionTool20260521AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaCodeExecutionToolResultErrorCode>(),
+            new ApiEnumConverter<string, Messages::BetaComputerScrollDirection>(),
             new ApiEnumConverter<string, Messages::Type>(),
             new ApiEnumConverter<string, Messages::Reason>(),
             new ApiEnumConverter<string, Messages::Mode>(),
@@ -296,6 +310,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Agents::BetaManagedAgentsSessionThreadAgentType>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsUrlMcpServerParamsType>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsWebFetchToolConfigParamsType>(),
+            new ApiEnumConverter<string, Agents::BetaManagedAgentsWebFetchUrlSourceShorthand>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsWebSearchToolConfigParamsType>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsWriteToolConfigParamsType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsMultiagentParamsType>(),

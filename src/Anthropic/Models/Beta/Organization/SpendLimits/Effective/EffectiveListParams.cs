@@ -16,7 +16,9 @@ namespace Anthropic.Models.Beta.Organization.SpendLimits.Effective;
 ///
 /// <para>Returns one row per (member, period) the member resolves a spend limit
 /// for, with the `source` scope the spend limit was inherited from. Paginates by
-/// member, so a member's periods never split across pages.</para>
+/// member, so a member's periods never split across pages. Listing Claude Console
+/// limits is in an early access preview. To request access, contact your Anthropic
+/// account team.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -39,6 +41,7 @@ public record class EffectiveListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 

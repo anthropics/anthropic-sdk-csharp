@@ -9,19 +9,31 @@ public class ThinkingTypesTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new ThinkingTypes { Adaptive = new(true), Enabled = new(true) };
+        var model = new ThinkingTypes
+        {
+            Adaptive = new(true),
+            Disabled = new(true),
+            Enabled = new(true),
+        };
 
         CapabilitySupport expectedAdaptive = new(true);
+        CapabilitySupport expectedDisabled = new(true);
         CapabilitySupport expectedEnabled = new(true);
 
         Assert.Equal(expectedAdaptive, model.Adaptive);
+        Assert.Equal(expectedDisabled, model.Disabled);
         Assert.Equal(expectedEnabled, model.Enabled);
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new ThinkingTypes { Adaptive = new(true), Enabled = new(true) };
+        var model = new ThinkingTypes
+        {
+            Adaptive = new(true),
+            Disabled = new(true),
+            Enabled = new(true),
+        };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ThinkingTypes>(
@@ -35,7 +47,12 @@ public class ThinkingTypesTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new ThinkingTypes { Adaptive = new(true), Enabled = new(true) };
+        var model = new ThinkingTypes
+        {
+            Adaptive = new(true),
+            Disabled = new(true),
+            Enabled = new(true),
+        };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ThinkingTypes>(
@@ -45,16 +62,23 @@ public class ThinkingTypesTest : TestBase
         Assert.NotNull(deserialized);
 
         CapabilitySupport expectedAdaptive = new(true);
+        CapabilitySupport expectedDisabled = new(true);
         CapabilitySupport expectedEnabled = new(true);
 
         Assert.Equal(expectedAdaptive, deserialized.Adaptive);
+        Assert.Equal(expectedDisabled, deserialized.Disabled);
         Assert.Equal(expectedEnabled, deserialized.Enabled);
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new ThinkingTypes { Adaptive = new(true), Enabled = new(true) };
+        var model = new ThinkingTypes
+        {
+            Adaptive = new(true),
+            Disabled = new(true),
+            Enabled = new(true),
+        };
 
         model.Validate();
     }
@@ -62,7 +86,12 @@ public class ThinkingTypesTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new ThinkingTypes { Adaptive = new(true), Enabled = new(true) };
+        var model = new ThinkingTypes
+        {
+            Adaptive = new(true),
+            Disabled = new(true),
+            Enabled = new(true),
+        };
 
         ThinkingTypes copied = new(model);
 

@@ -128,6 +128,24 @@ public class BetaManagedAgentsAgentParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsAgentParams
+        {
+            ID = "x",
+            Type = BetaManagedAgentsAgentParamsType.Agent,
+            Version = 0,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Version = null,
+        };
+
+        Assert.Null(model.Version);
+        Assert.False(model.RawData.ContainsKey("version"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsAgentParams

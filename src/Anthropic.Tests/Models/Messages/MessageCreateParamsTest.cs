@@ -376,6 +376,150 @@ public class MessageCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new Messages::MessageCreateParams
+        {
+            MaxTokens = 1024,
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus5,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Container = new Messages::ContainerParams()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = Messages::SkillParamsType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
+            },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            InferenceGeo = "inference_geo",
+            Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            ServiceTier = Messages::ServiceTier.Auto,
+            StopSequences = ["string"],
+            System = new(
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "The grass is green. The sky is blue.",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Temperature = 1,
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
+            ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new Messages::Tool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = Messages::Type.Custom,
+                },
+            ],
+            TopK = 5,
+            TopP = 0.7,
+            UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Metadata = null,
+            OutputConfig = null,
+            ServiceTier = null,
+            StopSequences = null,
+            System = null,
+            Temperature = null,
+            Thinking = null,
+            ToolChoice = null,
+            Tools = null,
+            TopK = null,
+            TopP = null,
+            UserProfileID = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.OutputConfig);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_config"));
+        Assert.Null(parameters.ServiceTier);
+        Assert.False(parameters.RawBodyData.ContainsKey("service_tier"));
+        Assert.Null(parameters.StopSequences);
+        Assert.False(parameters.RawBodyData.ContainsKey("stop_sequences"));
+        Assert.Null(parameters.System);
+        Assert.False(parameters.RawBodyData.ContainsKey("system"));
+        Assert.Null(parameters.Temperature);
+        Assert.False(parameters.RawBodyData.ContainsKey("temperature"));
+        Assert.Null(parameters.Thinking);
+        Assert.False(parameters.RawBodyData.ContainsKey("thinking"));
+        Assert.Null(parameters.ToolChoice);
+        Assert.False(parameters.RawBodyData.ContainsKey("tool_choice"));
+        Assert.Null(parameters.Tools);
+        Assert.False(parameters.RawBodyData.ContainsKey("tools"));
+        Assert.Null(parameters.TopK);
+        Assert.False(parameters.RawBodyData.ContainsKey("top_k"));
+        Assert.Null(parameters.TopP);
+        Assert.False(parameters.RawBodyData.ContainsKey("top_p"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new Messages::MessageCreateParams

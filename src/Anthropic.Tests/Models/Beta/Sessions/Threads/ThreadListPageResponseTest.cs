@@ -19,7 +19,7 @@ public class ThreadListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                    ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
                     Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -118,7 +118,7 @@ public class ThreadListPageResponseTest : TestBase
         [
             new()
             {
-                ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
                 Agent = new BetaManagedAgentsSessionThreadAgent()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -227,7 +227,7 @@ public class ThreadListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                    ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
                     Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -340,7 +340,7 @@ public class ThreadListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                    ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
                     Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -446,7 +446,7 @@ public class ThreadListPageResponseTest : TestBase
         [
             new()
             {
-                ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
                 Agent = new BetaManagedAgentsSessionThreadAgent()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -555,7 +555,7 @@ public class ThreadListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                    ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
                     Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -692,6 +692,118 @@ public class ThreadListPageResponseTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new Threads::ThreadListPageResponse
+        {
+            Data =
+            [
+                new()
+                {
+                    ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
+                    Agent = new BetaManagedAgentsSessionThreadAgent()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Description = "A focused research subagent.",
+                        McpServers =
+                        [
+                            new()
+                            {
+                                Name = "example-mcp",
+                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                                Url = "https://example-server.modelcontextprotocol.io/sse",
+                            },
+                        ],
+                        Model = new()
+                        {
+                            ID = BetaManagedAgentsModel.ClaudeOpus5,
+                            Effort = new BetaManagedAgentsEffortLow(
+                                BetaManagedAgentsEffortLowType.Low
+                            ),
+                            InferenceGeo = "inference_geo",
+                            Speed = Speed.Standard,
+                        },
+                        Name = "Researcher",
+                        Skills =
+                        [
+                            new BetaManagedAgentsAnthropicSkill()
+                            {
+                                SkillID = "xlsx",
+                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
+                                Version = "1",
+                            },
+                        ],
+                        System =
+                            "You are a research subagent that gathers and summarises sources for the coordinating agent.",
+                        Tools =
+                        [
+                            new BetaManagedAgentsAgentToolset20260401()
+                            {
+                                Configs =
+                                [
+                                    new BetaManagedAgentsBashToolConfig()
+                                    {
+                                        Enabled = true,
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                                        ),
+                                    },
+                                ],
+                                DefaultConfig = new()
+                                {
+                                    Enabled = true,
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
+                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
+                                    ),
+                                },
+                                Type =
+                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                            },
+                        ],
+                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
+                        Version = 1,
+                    },
+                    ArchivedAt = null,
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    ParentThreadID = null,
+                    SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+                    Stats = new()
+                    {
+                        ActiveSeconds = 0,
+                        DurationSeconds = 0,
+                        StartupSeconds = 0,
+                    },
+                    Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
+                    Type = Threads::Type.SessionThread,
+                    UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    Usage = new()
+                    {
+                        ActiveSeconds = 0,
+                        CacheCreation = new()
+                        {
+                            Ephemeral1hInputTokens = 0,
+                            Ephemeral5mInputTokens = 0,
+                        },
+                        CacheReadInputTokens = 0,
+                        InputTokens = 0,
+                        ListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
+                        OutputTokens = 0,
+                        ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
+                    },
+                },
+            ],
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Data = null,
+        };
+
+        Assert.Null(model.Data);
+        Assert.False(model.RawData.ContainsKey("data"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new Threads::ThreadListPageResponse
@@ -714,7 +826,7 @@ public class ThreadListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                    ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
                     Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -821,7 +933,7 @@ public class ThreadListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                    ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
                     Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -927,7 +1039,7 @@ public class ThreadListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                    ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
                     Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -1036,7 +1148,7 @@ public class ThreadListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                    ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
                     Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
@@ -1144,7 +1256,7 @@ public class ThreadListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+                    ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
                     Agent = new BetaManagedAgentsSessionThreadAgent()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",

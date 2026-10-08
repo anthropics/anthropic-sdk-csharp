@@ -41,6 +41,7 @@ public sealed record class BetaManagedAgentsSessionAgentUpdate : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("mcp_servers");
                 return;
             }
 
@@ -68,6 +69,7 @@ public sealed record class BetaManagedAgentsSessionAgentUpdate : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("tools");
                 return;
             }
 

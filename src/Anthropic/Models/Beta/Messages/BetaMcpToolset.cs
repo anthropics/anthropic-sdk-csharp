@@ -89,6 +89,7 @@ public sealed record class BetaMcpToolset : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("default_config");
                 return;
             }
 

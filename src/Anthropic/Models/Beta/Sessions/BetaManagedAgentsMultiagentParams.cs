@@ -11,7 +11,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Sessions;
 
 /// <summary>
-/// Multiagent orchestration configuration. Currently supports the `coordinator` topology.
+/// Multiagent orchestration configuration.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<

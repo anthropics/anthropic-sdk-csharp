@@ -124,34 +124,32 @@ public class BetaResponseToolAdditionBlockToolTest : TestBase
     public void BetaToolChangeToolDefinitionValidationWorks()
     {
         BetaResponseToolAdditionBlockTool value = new BetaToolChangeToolDefinition(
-            new BetaResponseToolUnion(
-                new BetaResponseTool()
+            new BetaResponseTool()
+            {
+                InputSchema = new()
                 {
-                    InputSchema = new()
+                    Properties = new Dictionary<string, JsonElement>()
                     {
-                        Properties = new Dictionary<string, JsonElement>()
-                        {
-                            { "location", JsonSerializer.SerializeToElement("bar") },
-                            { "unit", JsonSerializer.SerializeToElement("bar") },
-                        },
-                        Required = ["location"],
+                        { "location", JsonSerializer.SerializeToElement("bar") },
+                        { "unit", JsonSerializer.SerializeToElement("bar") },
                     },
-                    Name = "name",
-                    AllowedCallers = [BetaResponseToolAllowedCaller.Direct],
-                    DeferLoading = true,
-                    Description = "Get the current weather in a given location",
-                    EagerInputStreaming = true,
-                    InputExamples =
-                    [
-                        new Dictionary<string, JsonElement>()
-                        {
-                            { "foo", JsonSerializer.SerializeToElement("bar") },
-                        },
-                    ],
-                    Strict = true,
-                    Type = BetaResponseToolType.Custom,
-                }
-            )
+                    Required = ["location"],
+                },
+                Name = "name",
+                AllowedCallers = [BetaResponseToolAllowedCaller.Direct],
+                DeferLoading = true,
+                Description = "Get the current weather in a given location",
+                EagerInputStreaming = true,
+                InputExamples =
+                [
+                    new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                ],
+                Strict = true,
+                Type = BetaResponseToolType.Custom,
+            }
         );
         value.Validate();
     }
@@ -205,34 +203,32 @@ public class BetaResponseToolAdditionBlockToolTest : TestBase
     public void BetaToolChangeToolDefinitionSerializationRoundtripWorks()
     {
         BetaResponseToolAdditionBlockTool value = new BetaToolChangeToolDefinition(
-            new BetaResponseToolUnion(
-                new BetaResponseTool()
+            new BetaResponseTool()
+            {
+                InputSchema = new()
                 {
-                    InputSchema = new()
+                    Properties = new Dictionary<string, JsonElement>()
                     {
-                        Properties = new Dictionary<string, JsonElement>()
-                        {
-                            { "location", JsonSerializer.SerializeToElement("bar") },
-                            { "unit", JsonSerializer.SerializeToElement("bar") },
-                        },
-                        Required = ["location"],
+                        { "location", JsonSerializer.SerializeToElement("bar") },
+                        { "unit", JsonSerializer.SerializeToElement("bar") },
                     },
-                    Name = "name",
-                    AllowedCallers = [BetaResponseToolAllowedCaller.Direct],
-                    DeferLoading = true,
-                    Description = "Get the current weather in a given location",
-                    EagerInputStreaming = true,
-                    InputExamples =
-                    [
-                        new Dictionary<string, JsonElement>()
-                        {
-                            { "foo", JsonSerializer.SerializeToElement("bar") },
-                        },
-                    ],
-                    Strict = true,
-                    Type = BetaResponseToolType.Custom,
-                }
-            )
+                    Required = ["location"],
+                },
+                Name = "name",
+                AllowedCallers = [BetaResponseToolAllowedCaller.Direct],
+                DeferLoading = true,
+                Description = "Get the current weather in a given location",
+                EagerInputStreaming = true,
+                InputExamples =
+                [
+                    new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                ],
+                Strict = true,
+                Type = BetaResponseToolType.Custom,
+            }
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaResponseToolAdditionBlockTool>(

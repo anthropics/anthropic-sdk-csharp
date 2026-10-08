@@ -190,6 +190,37 @@ public class CostReportListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new CostReportListParams
+        {
+            StartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            BucketWidth = BucketWidth.Day,
+            ClaudeTagCategories = [Analytics::BetaAnalyticsClaudeTagCategory.Engaged],
+            ClaudeTagUserIds = ["U0123ABCDEF"],
+            ContextWindows = [Analytics::BetaAnalyticsContextWindow.From0To200k],
+            EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            GroupBy = [GroupBy.ClaudeTagCategory],
+            InferenceGeos = [Analytics::BetaAnalyticsInferenceGeoFilter.Global],
+            Limit = 1,
+            Models = ["string"],
+            Page = "page",
+            Products = [Analytics::BetaAnalyticsProductFilter.Chat],
+            RbacGroupIds = ["rbac_group_012rppKaSVsmTo6NqRDXQXNF"],
+            SlackChannelIds = ["C0123ABCDEF"],
+            Speeds = [Speed.Fast],
+            UserIds = ["string"],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            BucketWidth = null,
+        };
+
+        Assert.Null(parameters.BucketWidth);
+        Assert.False(parameters.RawQueryData.ContainsKey("bucket_width"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new CostReportListParams

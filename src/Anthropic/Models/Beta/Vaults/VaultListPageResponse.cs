@@ -28,6 +28,7 @@ public sealed record class VaultListPageResponse : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("data");
                 return;
             }
 

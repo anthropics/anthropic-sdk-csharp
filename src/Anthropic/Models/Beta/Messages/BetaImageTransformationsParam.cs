@@ -41,6 +41,7 @@ public sealed record class BetaImageTransformationsParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("oversized_image");
                 return;
             }
 

@@ -98,6 +98,7 @@ public record class PluginCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("marketplace_id");
                 return;
             }
 
@@ -120,6 +121,7 @@ public record class PluginCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("release_notes");
                 return;
             }
 
@@ -143,6 +145,7 @@ public record class PluginCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 

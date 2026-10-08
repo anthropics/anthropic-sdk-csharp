@@ -40,6 +40,7 @@ public record class IncreaseRequestDenyParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("suppress_notification");
                 return;
             }
 

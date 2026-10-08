@@ -269,6 +269,98 @@ public class AgentCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new AgentCreateParams
+        {
+            Model = BetaManagedAgentsModel.ClaudeOpus5,
+            Name = "My First Agent",
+            Description = "A general-purpose starter agent.",
+            McpServers =
+            [
+                new()
+                {
+                    Name = "example-mcp",
+                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
+                    Url = "https://example-server.modelcontextprotocol.io/sse",
+                },
+            ],
+            Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
+            Multiagent = new()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+            },
+            Skills =
+            [
+                new BetaManagedAgentsAnthropicSkillParams()
+                {
+                    SkillID = "xlsx",
+                    Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
+                    Version = "1",
+                },
+            ],
+            System =
+                "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
+            Tools =
+            [
+                new BetaManagedAgentsAgentToolset20260401Params()
+                {
+                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                    Configs =
+                    [
+                        new BetaManagedAgentsBashToolConfigParams()
+                        {
+                            Enabled = true,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                        },
+                    ],
+                    DefaultConfig = new()
+                    {
+                        Enabled = true,
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        ),
+                    },
+                },
+            ],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            McpServers = null,
+            Metadata = null,
+            Skills = null,
+            Tools = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.McpServers);
+        Assert.False(parameters.RawBodyData.ContainsKey("mcp_servers"));
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Skills);
+        Assert.False(parameters.RawBodyData.ContainsKey("skills"));
+        Assert.Null(parameters.Tools);
+        Assert.False(parameters.RawBodyData.ContainsKey("tools"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new AgentCreateParams
@@ -429,7 +521,7 @@ public class AgentCreateParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,managed-agents-2026-04-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -518,7 +610,7 @@ public class ModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsValidationWorks()
     {
-        Model value = BetaManagedAgentsModel.ClaudeSonnet5_5;
+        Model value = BetaManagedAgentsModel.ClaudeHaiku5_5;
         value.Validate();
     }
 
@@ -538,7 +630,7 @@ public class ModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsSerializationRoundtripWorks()
     {
-        Model value = BetaManagedAgentsModel.ClaudeSonnet5_5;
+        Model value = BetaManagedAgentsModel.ClaudeHaiku5_5;
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Model>(element, ModelBase.SerializerOptions);
 

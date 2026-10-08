@@ -59,6 +59,7 @@ public sealed record class BetaToolResultBlockParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("content");
                 return;
             }
 
@@ -77,6 +78,7 @@ public sealed record class BetaToolResultBlockParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("is_error");
                 return;
             }
 

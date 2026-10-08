@@ -116,6 +116,33 @@ public class WorkspaceCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new WorkspaceCreateParams
+        {
+            Name = "x",
+            DataResidency = new()
+            {
+                AllowedInferenceGeos =
+                    new BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestricted(),
+                DefaultInferenceGeo = BetaDataResidencyCreateConfigDefaultInferenceGeo.Global,
+                WorkspaceGeo = BetaDataResidencyCreateConfigWorkspaceGeo.Us,
+            },
+            DisplayColor = "#6C5BB9",
+            ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
+            Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new WorkspaceCreateParams

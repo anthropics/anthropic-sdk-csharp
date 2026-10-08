@@ -128,6 +128,43 @@ public class RuleCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new RuleCreateParams
+        {
+            IssuerID = "issuer_id",
+            Match = new()
+            {
+                Audience = "audience",
+                Claims = new Dictionary<string, string>() { { "foo", "string" } },
+                Condition = "condition",
+                SubjectPrefix = "subject_prefix",
+            },
+            Name = "x",
+            OAuthScope = "x",
+            Target = new()
+            {
+                ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
+                ServiceAccountName = "service_account_name",
+            },
+            AppliesToAllWorkspaces = true,
+            Description = "description",
+            TokenLifetimeSeconds = 60,
+            WorkspaceID = "workspace_id",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AppliesToAllWorkspaces = null,
+            TokenLifetimeSeconds = null,
+        };
+
+        Assert.Null(parameters.AppliesToAllWorkspaces);
+        Assert.False(parameters.RawBodyData.ContainsKey("applies_to_all_workspaces"));
+        Assert.Null(parameters.TokenLifetimeSeconds);
+        Assert.False(parameters.RawBodyData.ContainsKey("token_lifetime_seconds"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new RuleCreateParams

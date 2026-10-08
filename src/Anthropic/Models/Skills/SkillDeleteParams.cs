@@ -38,6 +38,7 @@ public record class SkillDeleteParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

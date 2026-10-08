@@ -79,6 +79,38 @@ public class UserListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new UserListParams
+        {
+            AfterID = "after_id",
+            BeforeID = "before_id",
+            Email = "dev@stainless.com",
+            Limit = 1,
+            Roles = ["string"],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AfterID = null,
+            BeforeID = null,
+            Email = null,
+            Limit = null,
+            Roles = null,
+        };
+
+        Assert.Null(parameters.AfterID);
+        Assert.False(parameters.RawQueryData.ContainsKey("after_id"));
+        Assert.Null(parameters.BeforeID);
+        Assert.False(parameters.RawQueryData.ContainsKey("before_id"));
+        Assert.Null(parameters.Email);
+        Assert.False(parameters.RawQueryData.ContainsKey("email"));
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Roles);
+        Assert.False(parameters.RawQueryData.ContainsKey("roles"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         UserListParams parameters = new()

@@ -19,6 +19,7 @@ public class RbacRoleListPageResponseTest : TestBase
                 {
                     ID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s",
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    DisplayName = "Project Editor",
                     Name = "Project Editor",
                     UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 },
@@ -33,6 +34,7 @@ public class RbacRoleListPageResponseTest : TestBase
             {
                 ID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s",
                 CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                DisplayName = "Project Editor",
                 Name = "Project Editor",
                 UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             },
@@ -60,6 +62,7 @@ public class RbacRoleListPageResponseTest : TestBase
                 {
                     ID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s",
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    DisplayName = "Project Editor",
                     Name = "Project Editor",
                     UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 },
@@ -88,6 +91,7 @@ public class RbacRoleListPageResponseTest : TestBase
                 {
                     ID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s",
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    DisplayName = "Project Editor",
                     Name = "Project Editor",
                     UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 },
@@ -109,6 +113,7 @@ public class RbacRoleListPageResponseTest : TestBase
             {
                 ID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s",
                 CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                DisplayName = "Project Editor",
                 Name = "Project Editor",
                 UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             },
@@ -136,6 +141,7 @@ public class RbacRoleListPageResponseTest : TestBase
                 {
                     ID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s",
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    DisplayName = "Project Editor",
                     Name = "Project Editor",
                     UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 },
@@ -158,6 +164,7 @@ public class RbacRoleListPageResponseTest : TestBase
                 {
                     ID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s",
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    DisplayName = "Project Editor",
                     Name = "Project Editor",
                     UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 },

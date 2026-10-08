@@ -39,8 +39,25 @@ public sealed record class BetaRbacRole : JsonModel
     }
 
     /// <summary>
-    /// Name of the RBAC Role.
+    /// Name of the RBAC Role. For a role created by Anthropic, this name can differ
+    /// from the label claude.ai shows, and Anthropic may change the name. To keep
+    /// a lasting reference to a role, store its `id`.
     /// </summary>
+    public required string DisplayName
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("display_name");
+        }
+        init { this._rawData.Set("display_name", value); }
+    }
+
+    /// <summary>
+    /// Deprecated: use `display_name` instead. Name of the RBAC Role; always the
+    /// same value as `display_name`.
+    /// </summary>
+    [Obsolete("Use `display_name` instead; `name` always has the same value.")]
     public required string Name
     {
         get
@@ -84,6 +101,7 @@ public sealed record class BetaRbacRole : JsonModel
     {
         _ = this.ID;
         _ = this.CreatedAt;
+        _ = this.DisplayName;
         _ = this.Name;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("rbac_role")))
         {
@@ -92,6 +110,7 @@ public sealed record class BetaRbacRole : JsonModel
         _ = this.UpdatedAt;
     }
 
+    [Obsolete("Required properties are deprecated: name")]
     public BetaRbacRole()
     {
         this.Type = JsonSerializer.SerializeToElement("rbac_role");
@@ -99,10 +118,12 @@ public sealed record class BetaRbacRole : JsonModel
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
+    [Obsolete("Required properties are deprecated: name")]
     public BetaRbacRole(BetaRbacRole betaRbacRole)
         : base(betaRbacRole) { }
 #pragma warning restore CS8618
 
+    [Obsolete("Required properties are deprecated: name")]
     public BetaRbacRole(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
@@ -111,6 +132,7 @@ public sealed record class BetaRbacRole : JsonModel
     }
 
 #pragma warning disable CS8618
+    [Obsolete("Required properties are deprecated: name")]
     [SetsRequiredMembers]
     BetaRbacRole(FrozenDictionary<string, JsonElement> rawData)
     {

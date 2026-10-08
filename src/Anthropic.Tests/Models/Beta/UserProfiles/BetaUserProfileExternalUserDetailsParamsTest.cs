@@ -179,6 +179,28 @@ public class BetaUserProfileExternalUserDetailsParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaUserProfileExternalUserDetailsParams
+        {
+            AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
+            Country = "country",
+            EmailHash = "x",
+            EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+            NameHash = "x",
+            OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            ReferenceID = "x",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            OnboardedAt = null,
+        };
+
+        Assert.Null(model.OnboardedAt);
+        Assert.False(model.RawData.ContainsKey("onboarded_at"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaUserProfileExternalUserDetailsParams

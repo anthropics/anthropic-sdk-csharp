@@ -131,6 +131,53 @@ public class UserProfileCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new UserProfileCreateParams
+        {
+            AccessType = AccessType.Application,
+            ExternalID = "user_12345",
+            ExternalUserDetails = new()
+            {
+                AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
+                Country = "country",
+                EmailHash = "x",
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                NameHash = "x",
+                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                ReferenceID = "x",
+            },
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+            Metadata = new Dictionary<string, string>(),
+            Name = "x",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AccessType = null,
+            ExternalUserDetails = null,
+            ExternalUserOnboardedAt = null,
+            Metadata = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.AccessType);
+        Assert.False(parameters.RawBodyData.ContainsKey("access_type"));
+        Assert.Null(parameters.ExternalUserDetails);
+        Assert.False(parameters.RawBodyData.ContainsKey("external_user_details"));
+        Assert.Null(parameters.ExternalUserOnboardedAt);
+        Assert.False(parameters.RawBodyData.ContainsKey("external_user_onboarded_at"));
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new UserProfileCreateParams
@@ -214,7 +261,7 @@ public class UserProfileCreateParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["user-profiles-2026-08-18", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,user-profiles-2026-08-18"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(

@@ -56,6 +56,7 @@ public record class FileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -91,6 +92,7 @@ public record class FileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("scope_id");
                 return;
             }
 
@@ -114,6 +116,7 @@ public record class FileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -143,6 +146,7 @@ public record class FileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 

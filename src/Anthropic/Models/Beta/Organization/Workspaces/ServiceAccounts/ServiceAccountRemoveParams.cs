@@ -47,6 +47,7 @@ public record class ServiceAccountRemoveParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
