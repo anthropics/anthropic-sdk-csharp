@@ -7,7 +7,6 @@ namespace Anthropic.Tests.Core;
 public class ParamsBaseTest : TestBase
 {
     [Theory]
-    [InlineData("", "")]
     [InlineData("abc-123_x.y~z", "abc-123_x.y~z")]
     [InlineData("card:1@x+y,z;w=v", "card%3A1%40x%2By%2Cz%3Bw%3Dv")]
     [InlineData("..;", "..%3B")]
@@ -31,7 +30,6 @@ public class ParamsBaseTest : TestBase
     [InlineData("\"a/b\"", "a%2Fb")]
     [InlineData("12.5", "12.5")]
     [InlineData("true", "true")]
-    [InlineData("null", "")]
     [InlineData("{\"a\":[1]}", "%7B%22a%22%3A%5B1%5D%7D")]
     public void EncodePathSegment_JsonElementWorks(string json, string expected)
     {
@@ -50,5 +48,27 @@ public class ParamsBaseTest : TestBase
             ParamsBase.EncodePathSegment(value, "id")
         );
         Assert.Contains("'id'", exception.Message);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public void EncodePathSegment_RejectsEmpty(string? value)
+    {
+        var exception = Assert.Throws<AnthropicInvalidDataException>(() =>
+            ParamsBase.EncodePathSegment(value, "id")
+        );
+        Assert.Contains("`id`", exception.Message);
+    }
+
+    [Theory]
+    [InlineData("\"\"")]
+    [InlineData("null")]
+    public void EncodePathSegment_JsonElementRejectsEmpty(string json)
+    {
+        var exception = Assert.Throws<AnthropicInvalidDataException>(() =>
+            ParamsBase.EncodePathSegment(JsonSerializer.Deserialize<JsonElement>(json), "id")
+        );
+        Assert.Contains("`id`", exception.Message);
     }
 }
