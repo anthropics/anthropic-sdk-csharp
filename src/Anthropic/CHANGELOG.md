@@ -1,10 +1,11 @@
 # Changelog
 
-## [12.55.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.54.1...Anthropic-v12.55.0) (2026-10-08)
+## [12.55.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.54.1...Anthropic-v12.55.0) (2026-10-09)
 
 ### Features
 
 * **api:** add types for the Chat and Cowork unified analytics metrics
+* **api:** add workflows, multiagent configuration and thread status filtering to Managed Agents
 
 ## [12.54.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.54.0...Anthropic-v12.54.1) (2026-10-08)
 

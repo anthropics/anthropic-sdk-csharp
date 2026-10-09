@@ -45,6 +45,13 @@ public enum BetaManagedAgentsSessionEventType
     SessionUpdated,
     SystemMessage,
     SessionUsage,
+    WorkflowRunCreated,
+    WorkflowRunStatusRunning,
+    WorkflowRunStatusIdle,
+    WorkflowRunStatusEnded,
+    WorkflowRunError,
+    WorkflowRunPhaseStarted,
+    WorkflowRunPhaseEnded,
 }
 
 sealed class BetaManagedAgentsSessionEventTypeConverter
@@ -103,6 +110,15 @@ sealed class BetaManagedAgentsSessionEventTypeConverter
             "session.updated" => BetaManagedAgentsSessionEventType.SessionUpdated,
             "system.message" => BetaManagedAgentsSessionEventType.SystemMessage,
             "session.usage" => BetaManagedAgentsSessionEventType.SessionUsage,
+            "workflow_run.created" => BetaManagedAgentsSessionEventType.WorkflowRunCreated,
+            "workflow_run.status_running" =>
+                BetaManagedAgentsSessionEventType.WorkflowRunStatusRunning,
+            "workflow_run.status_idle" => BetaManagedAgentsSessionEventType.WorkflowRunStatusIdle,
+            "workflow_run.status_ended" => BetaManagedAgentsSessionEventType.WorkflowRunStatusEnded,
+            "workflow_run.error" => BetaManagedAgentsSessionEventType.WorkflowRunError,
+            "workflow_run.phase_started" =>
+                BetaManagedAgentsSessionEventType.WorkflowRunPhaseStarted,
+            "workflow_run.phase_ended" => BetaManagedAgentsSessionEventType.WorkflowRunPhaseEnded,
             _ => (BetaManagedAgentsSessionEventType)(-1),
         };
     }
@@ -164,6 +180,18 @@ sealed class BetaManagedAgentsSessionEventTypeConverter
                 BetaManagedAgentsSessionEventType.SessionUpdated => "session.updated",
                 BetaManagedAgentsSessionEventType.SystemMessage => "system.message",
                 BetaManagedAgentsSessionEventType.SessionUsage => "session.usage",
+                BetaManagedAgentsSessionEventType.WorkflowRunCreated => "workflow_run.created",
+                BetaManagedAgentsSessionEventType.WorkflowRunStatusRunning =>
+                    "workflow_run.status_running",
+                BetaManagedAgentsSessionEventType.WorkflowRunStatusIdle =>
+                    "workflow_run.status_idle",
+                BetaManagedAgentsSessionEventType.WorkflowRunStatusEnded =>
+                    "workflow_run.status_ended",
+                BetaManagedAgentsSessionEventType.WorkflowRunError => "workflow_run.error",
+                BetaManagedAgentsSessionEventType.WorkflowRunPhaseStarted =>
+                    "workflow_run.phase_started",
+                BetaManagedAgentsSessionEventType.WorkflowRunPhaseEnded =>
+                    "workflow_run.phase_ended",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

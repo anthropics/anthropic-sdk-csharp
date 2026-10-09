@@ -313,7 +313,6 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Agents::BetaManagedAgentsWebFetchUrlSourceShorthand>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsWebSearchToolConfigParamsType>(),
             new ApiEnumConverter<string, Agents::BetaManagedAgentsWriteToolConfigParamsType>(),
-            new ApiEnumConverter<string, Sessions::BetaManagedAgentsMultiagentParamsType>(),
             new ApiEnumConverter<string, Environments::BetaEnvironmentScope>(),
             new ApiEnumConverter<string, Environments::Type>(),
             new ApiEnumConverter<string, Environments::BetaPackagesType>(),
@@ -341,7 +340,6 @@ public abstract record class ModelBase
             >(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsMemoryStoreResourceParamType>(),
             new ApiEnumConverter<string, Sessions::Access>(),
-            new ApiEnumConverter<string, Sessions::BetaManagedAgentsMultiagentType>(),
             new ApiEnumConverter<
                 string,
                 Sessions::BetaManagedAgentsOutcomeEvaluationResourceType

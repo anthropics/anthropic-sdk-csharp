@@ -74,6 +74,13 @@ static class Sse
                 case "event_start":
                 case "event_delta":
                 case "system.message":
+                case "workflow_run.created":
+                case "workflow_run.status_running":
+                case "workflow_run.status_idle":
+                case "workflow_run.status_ended":
+                case "workflow_run.error":
+                case "workflow_run.phase_started":
+                case "workflow_run.phase_ended":
                     T? message;
                     try
                     {

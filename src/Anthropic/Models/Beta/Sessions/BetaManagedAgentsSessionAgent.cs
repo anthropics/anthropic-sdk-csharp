@@ -74,14 +74,12 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
     /// <summary>
     /// Resolved multiagent orchestration configuration. Null when the agent is single-threaded.
     /// </summary>
-    public required BetaManagedAgentsSessionMultiagentCoordinator? Multiagent
+    public required BetaManagedAgentsSessionMultiagent? Multiagent
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<BetaManagedAgentsSessionMultiagentCoordinator>(
-                "multiagent"
-            );
+            return this._rawData.GetNullableClass<BetaManagedAgentsSessionMultiagent>("multiagent");
         }
         init { this._rawData.Set("multiagent", value); }
     }
