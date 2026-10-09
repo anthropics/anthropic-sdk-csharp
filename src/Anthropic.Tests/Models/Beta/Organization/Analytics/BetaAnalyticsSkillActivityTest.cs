@@ -25,6 +25,7 @@ public class BetaAnalyticsSkillActivityTest : TestBase
             },
             SkillName = "skill_name",
             AttributedListPrice = "attributed_list_price",
+            ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
             Currency = "currency",
             EnableCount = 0,
             EstimatedOverageSpend = "estimated_overage_spend",
@@ -50,6 +51,11 @@ public class BetaAnalyticsSkillActivityTest : TestBase
         };
         string expectedSkillName = "skill_name";
         string expectedAttributedListPrice = "attributed_list_price";
+        BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new()
+        {
+            Chat = new(0),
+            Sessions = new(0),
+        };
         string expectedCurrency = "currency";
         long expectedEnableCount = 0;
         string expectedEstimatedOverageSpend = "estimated_overage_spend";
@@ -68,6 +74,7 @@ public class BetaAnalyticsSkillActivityTest : TestBase
         Assert.Equal(expectedOfficeMetrics, model.OfficeMetrics);
         Assert.Equal(expectedSkillName, model.SkillName);
         Assert.Equal(expectedAttributedListPrice, model.AttributedListPrice);
+        Assert.Equal(expectedChatCoworkUnifiedMetrics, model.ChatCoworkUnifiedMetrics);
         Assert.Equal(expectedCurrency, model.Currency);
         Assert.Equal(expectedEnableCount, model.EnableCount);
         Assert.Equal(expectedEstimatedOverageSpend, model.EstimatedOverageSpend);
@@ -98,6 +105,7 @@ public class BetaAnalyticsSkillActivityTest : TestBase
             },
             SkillName = "skill_name",
             AttributedListPrice = "attributed_list_price",
+            ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
             Currency = "currency",
             EnableCount = 0,
             EstimatedOverageSpend = "estimated_overage_spend",
@@ -137,6 +145,7 @@ public class BetaAnalyticsSkillActivityTest : TestBase
             },
             SkillName = "skill_name",
             AttributedListPrice = "attributed_list_price",
+            ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
             Currency = "currency",
             EnableCount = 0,
             EstimatedOverageSpend = "estimated_overage_spend",
@@ -169,6 +178,11 @@ public class BetaAnalyticsSkillActivityTest : TestBase
         };
         string expectedSkillName = "skill_name";
         string expectedAttributedListPrice = "attributed_list_price";
+        BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new()
+        {
+            Chat = new(0),
+            Sessions = new(0),
+        };
         string expectedCurrency = "currency";
         long expectedEnableCount = 0;
         string expectedEstimatedOverageSpend = "estimated_overage_spend";
@@ -187,6 +201,7 @@ public class BetaAnalyticsSkillActivityTest : TestBase
         Assert.Equal(expectedOfficeMetrics, deserialized.OfficeMetrics);
         Assert.Equal(expectedSkillName, deserialized.SkillName);
         Assert.Equal(expectedAttributedListPrice, deserialized.AttributedListPrice);
+        Assert.Equal(expectedChatCoworkUnifiedMetrics, deserialized.ChatCoworkUnifiedMetrics);
         Assert.Equal(expectedCurrency, deserialized.Currency);
         Assert.Equal(expectedEnableCount, deserialized.EnableCount);
         Assert.Equal(expectedEstimatedOverageSpend, deserialized.EstimatedOverageSpend);
@@ -217,6 +232,7 @@ public class BetaAnalyticsSkillActivityTest : TestBase
             },
             SkillName = "skill_name",
             AttributedListPrice = "attributed_list_price",
+            ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
             Currency = "currency",
             EnableCount = 0,
             EstimatedOverageSpend = "estimated_overage_spend",
@@ -253,6 +269,8 @@ public class BetaAnalyticsSkillActivityTest : TestBase
 
         Assert.Null(model.AttributedListPrice);
         Assert.False(model.RawData.ContainsKey("attributed_list_price"));
+        Assert.Null(model.ChatCoworkUnifiedMetrics);
+        Assert.False(model.RawData.ContainsKey("chat_cowork_unified_metrics"));
         Assert.Null(model.Currency);
         Assert.False(model.RawData.ContainsKey("currency"));
         Assert.Null(model.EnableCount);
@@ -316,6 +334,7 @@ public class BetaAnalyticsSkillActivityTest : TestBase
             SkillName = "skill_name",
 
             AttributedListPrice = null,
+            ChatCoworkUnifiedMetrics = null,
             Currency = null,
             EnableCount = null,
             EstimatedOverageSpend = null,
@@ -330,6 +349,8 @@ public class BetaAnalyticsSkillActivityTest : TestBase
 
         Assert.Null(model.AttributedListPrice);
         Assert.True(model.RawData.ContainsKey("attributed_list_price"));
+        Assert.Null(model.ChatCoworkUnifiedMetrics);
+        Assert.True(model.RawData.ContainsKey("chat_cowork_unified_metrics"));
         Assert.Null(model.Currency);
         Assert.True(model.RawData.ContainsKey("currency"));
         Assert.Null(model.EnableCount);
@@ -371,6 +392,7 @@ public class BetaAnalyticsSkillActivityTest : TestBase
             SkillName = "skill_name",
 
             AttributedListPrice = null,
+            ChatCoworkUnifiedMetrics = null,
             Currency = null,
             EnableCount = null,
             EstimatedOverageSpend = null,
@@ -404,6 +426,7 @@ public class BetaAnalyticsSkillActivityTest : TestBase
             },
             SkillName = "skill_name",
             AttributedListPrice = "attributed_list_price",
+            ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
             Currency = "currency",
             EnableCount = 0,
             EstimatedOverageSpend = "estimated_overage_spend",
@@ -417,6 +440,94 @@ public class BetaAnalyticsSkillActivityTest : TestBase
         };
 
         BetaAnalyticsSkillActivity copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
+}
+
+public class BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsTest : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics
+        {
+            Chat = new(0),
+            Sessions = new(0),
+        };
+
+        BetaAnalyticsSkillChatCoworkUnifiedChatMetrics expectedChat = new(0);
+        BetaAnalyticsSkillChatCoworkUnifiedSessionsMetrics expectedSessions = new(0);
+
+        Assert.Equal(expectedChat, model.Chat);
+        Assert.Equal(expectedSessions, model.Sessions);
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics
+        {
+            Chat = new(0),
+            Sessions = new(0),
+        };
+
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics>(
+                json,
+                ModelBase.SerializerOptions
+            );
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics
+        {
+            Chat = new(0),
+            Sessions = new(0),
+        };
+
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        Assert.NotNull(deserialized);
+
+        BetaAnalyticsSkillChatCoworkUnifiedChatMetrics expectedChat = new(0);
+        BetaAnalyticsSkillChatCoworkUnifiedSessionsMetrics expectedSessions = new(0);
+
+        Assert.Equal(expectedChat, deserialized.Chat);
+        Assert.Equal(expectedSessions, deserialized.Sessions);
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics
+        {
+            Chat = new(0),
+            Sessions = new(0),
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics
+        {
+            Chat = new(0),
+            Sessions = new(0),
+        };
+
+        BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics copied = new(model);
 
         Assert.Equal(model, copied);
     }

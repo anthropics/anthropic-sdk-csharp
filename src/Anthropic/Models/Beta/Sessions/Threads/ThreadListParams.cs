@@ -66,6 +66,35 @@ public record class ThreadListParams : ParamsBase
     }
 
     /// <summary>
+    /// Return only threads that have one of these statuses.
+    ///
+    /// <para>Repeat the parameter to give more than one status. Leave it out to return
+    /// threads of every status.</para>
+    /// </summary>
+    public IReadOnlyList<ApiEnum<string, BetaManagedAgentsSessionThreadStatus>>? Statuses
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaManagedAgentsSessionThreadStatus>>
+            >("statuses");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawQueryData.Remove("statuses");
+                return;
+            }
+
+            this._rawQueryData.Set<ImmutableArray<
+                ApiEnum<string, BetaManagedAgentsSessionThreadStatus>
+            >?>("statuses", value == null ? null : ImmutableArray.ToImmutableArray(value));
+        }
+    }
+
+    /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas

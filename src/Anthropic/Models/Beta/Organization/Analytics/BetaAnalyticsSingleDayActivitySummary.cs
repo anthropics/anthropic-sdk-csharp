@@ -196,6 +196,57 @@ public sealed record class BetaAnalyticsSingleDayActivitySummary : JsonModel
     }
 
     /// <summary>
+    /// Number of users with activity in Chat and Cowork unified on the requested
+    /// day. Omitted from the response on deployments that do not offer Chat and
+    /// Cowork unified.
+    /// </summary>
+    public long? ChatCoworkUnifiedDailyActiveUserCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>(
+                "chat_cowork_unified_daily_active_user_count"
+            );
+        }
+        init { this._rawData.Set("chat_cowork_unified_daily_active_user_count", value); }
+    }
+
+    /// <summary>
+    /// Number of users with activity in Chat and Cowork unified in the 28-day rolling
+    /// window (30 days when the request filters by `rbac_group_id`). Omitted from
+    /// the response on deployments that do not offer Chat and Cowork unified.
+    /// </summary>
+    public long? ChatCoworkUnifiedMonthlyActiveUserCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>(
+                "chat_cowork_unified_monthly_active_user_count"
+            );
+        }
+        init { this._rawData.Set("chat_cowork_unified_monthly_active_user_count", value); }
+    }
+
+    /// <summary>
+    /// Number of users with activity in Chat and Cowork unified in the 7-day rolling
+    /// window. Omitted from the response on deployments that do not offer Chat and
+    /// Cowork unified.
+    /// </summary>
+    public long? ChatCoworkUnifiedWeeklyActiveUserCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>(
+                "chat_cowork_unified_weekly_active_user_count"
+            );
+        }
+        init { this._rawData.Set("chat_cowork_unified_weekly_active_user_count", value); }
+    }
+
+    /// <summary>
     /// Number of users with claude.ai (chat) activity on the requested day. Omitted
     /// from the response while the per-product breakdown is not enabled for this organization.
     /// </summary>
@@ -446,6 +497,9 @@ public sealed record class BetaAnalyticsSingleDayActivitySummary : JsonModel
         _ = this.StartingAt;
         _ = this.WeeklyActiveUserCount;
         _ = this.WeeklyAdoptionRate;
+        _ = this.ChatCoworkUnifiedDailyActiveUserCount;
+        _ = this.ChatCoworkUnifiedMonthlyActiveUserCount;
+        _ = this.ChatCoworkUnifiedWeeklyActiveUserCount;
         _ = this.ChatDailyActiveUserCount;
         _ = this.ChatMonthlyActiveUserCount;
         _ = this.ChatWeeklyActiveUserCount;

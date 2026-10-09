@@ -9,6 +9,7 @@ public class BetaAnalyticsProductFilterTest : TestBase
 {
     [Theory]
     [InlineData(BetaAnalyticsProductFilter.Chat)]
+    [InlineData(BetaAnalyticsProductFilter.ChatCoworkUnified)]
     [InlineData(BetaAnalyticsProductFilter.ClaudeTag)]
     [InlineData(BetaAnalyticsProductFilter.ClaudeCode)]
     [InlineData(BetaAnalyticsProductFilter.ClaudeDesign)]
@@ -36,6 +37,7 @@ public class BetaAnalyticsProductFilterTest : TestBase
 
     [Theory]
     [InlineData(BetaAnalyticsProductFilter.Chat)]
+    [InlineData(BetaAnalyticsProductFilter.ChatCoworkUnified)]
     [InlineData(BetaAnalyticsProductFilter.ClaudeTag)]
     [InlineData(BetaAnalyticsProductFilter.ClaudeCode)]
     [InlineData(BetaAnalyticsProductFilter.ClaudeDesign)]

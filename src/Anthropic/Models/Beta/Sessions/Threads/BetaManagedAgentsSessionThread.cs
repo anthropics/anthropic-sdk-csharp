@@ -167,6 +167,20 @@ public sealed record class BetaManagedAgentsSessionThread : JsonModel
         init { this._rawData.Set("usage", value); }
     }
 
+    /// <summary>
+    /// Identifier of the workflow run that created the thread, or `null` for any
+    /// other thread.
+    /// </summary>
+    public required string? WorkflowRunID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("workflow_run_id");
+        }
+        init { this._rawData.Set("workflow_run_id", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -181,6 +195,7 @@ public sealed record class BetaManagedAgentsSessionThread : JsonModel
         this.Type.Validate();
         _ = this.UpdatedAt;
         this.Usage?.Validate();
+        _ = this.WorkflowRunID;
     }
 
     public BetaManagedAgentsSessionThread() { }
@@ -244,6 +259,67 @@ public record class Agent : ModelBase
         }
     }
 
+    public string? Description
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Agents::BetaManagedAgentsSessionThreadAgent x => x.Description,
+                Agents::BetaManagedAgentsAdvisor _ => null,
+                BetaManagedAgentsInlineAgent x => x.Description,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "description"
+                ),
+            };
+        }
+    }
+
+    public IReadOnlyList<Agents::BetaManagedAgentsMcpServerUrlDefinition>? McpServers
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Agents::BetaManagedAgentsSessionThreadAgent x => x.McpServers,
+                Agents::BetaManagedAgentsAdvisor _ => null,
+                BetaManagedAgentsInlineAgent x => x.McpServers,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<
+                    IReadOnlyList<Agents::BetaManagedAgentsMcpServerUrlDefinition>
+                >(this.Json, "mcp_servers"),
+            };
+        }
+    }
+
+    public string? Name
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Agents::BetaManagedAgentsSessionThreadAgent x => x.Name,
+                Agents::BetaManagedAgentsAdvisor _ => null,
+                BetaManagedAgentsInlineAgent x => x.Name,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "name"),
+            };
+        }
+    }
+
+    public string? System
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Agents::BetaManagedAgentsSessionThreadAgent x => x.System,
+                Agents::BetaManagedAgentsAdvisor _ => null,
+                BetaManagedAgentsInlineAgent x => x.System,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "system"),
+            };
+        }
+    }
+
     public Agent(Agents::BetaManagedAgentsSessionThreadAgent value, JsonElement? element = null)
     {
         this.Value = value;
@@ -251,6 +327,12 @@ public record class Agent : ModelBase
     }
 
     public Agent(Agents::BetaManagedAgentsAdvisor value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Agent(BetaManagedAgentsInlineAgent value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -308,6 +390,29 @@ public record class Agent : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsInlineAgent"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsInline(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsInlineAgent`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsInline(
+        [NotNullWhen(true)] out BetaManagedAgentsInlineAgent? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsInlineAgent;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -322,14 +427,16 @@ public record class Agent : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (Agents::BetaManagedAgentsSessionThreadAgent value) =&gt; {...},
-    ///     (Agents::BetaManagedAgentsAdvisor value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsAdvisor value) =&gt; {...},
+    ///     (BetaManagedAgentsInlineAgent value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
         System::Action<Agents::BetaManagedAgentsSessionThreadAgent> betaManagedAgentsSessionThread,
-        System::Action<Agents::BetaManagedAgentsAdvisor> betaManagedAgentsAdvisor
+        System::Action<Agents::BetaManagedAgentsAdvisor> betaManagedAgentsAdvisor,
+        System::Action<BetaManagedAgentsInlineAgent> betaManagedAgentsInline
     )
     {
         switch (this.Value)
@@ -339,6 +446,9 @@ public record class Agent : ModelBase
                 break;
             case Agents::BetaManagedAgentsAdvisor value:
                 betaManagedAgentsAdvisor(value);
+                break;
+            case BetaManagedAgentsInlineAgent value:
+                betaManagedAgentsInline(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Agent");
@@ -361,14 +471,16 @@ public record class Agent : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (Agents::BetaManagedAgentsSessionThreadAgent value) =&gt; {...},
-    ///     (Agents::BetaManagedAgentsAdvisor value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsAdvisor value) =&gt; {...},
+    ///     (BetaManagedAgentsInlineAgent value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
         System::Func<Agents::BetaManagedAgentsSessionThreadAgent, T> betaManagedAgentsSessionThread,
-        System::Func<Agents::BetaManagedAgentsAdvisor, T> betaManagedAgentsAdvisor
+        System::Func<Agents::BetaManagedAgentsAdvisor, T> betaManagedAgentsAdvisor,
+        System::Func<BetaManagedAgentsInlineAgent, T> betaManagedAgentsInline
     )
     {
         return this.Value switch
@@ -377,6 +489,7 @@ public record class Agent : ModelBase
                 value
             ),
             Agents::BetaManagedAgentsAdvisor value => betaManagedAgentsAdvisor(value),
+            BetaManagedAgentsInlineAgent value => betaManagedAgentsInline(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Agent"),
         };
     }
@@ -385,6 +498,8 @@ public record class Agent : ModelBase
         new(value);
 
     public static implicit operator Agent(Agents::BetaManagedAgentsAdvisor value) => new(value);
+
+    public static implicit operator Agent(BetaManagedAgentsInlineAgent value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -404,7 +519,8 @@ public record class Agent : ModelBase
         }
         this.Switch(
             (betaManagedAgentsSessionThread) => betaManagedAgentsSessionThread.Validate(),
-            (betaManagedAgentsAdvisor) => betaManagedAgentsAdvisor.Validate()
+            (betaManagedAgentsAdvisor) => betaManagedAgentsAdvisor.Validate(),
+            (betaManagedAgentsInline) => betaManagedAgentsInline.Validate()
         );
     }
 
@@ -430,6 +546,7 @@ public record class Agent : ModelBase
         {
             Agents::BetaManagedAgentsSessionThreadAgent _ => 0,
             Agents::BetaManagedAgentsAdvisor _ => 1,
+            BetaManagedAgentsInlineAgent _ => 2,
             _ => -1,
         };
     }
@@ -482,6 +599,26 @@ sealed class AgentConverter : JsonConverter<Agent>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<Agents::BetaManagedAgentsAdvisor>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "inline":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsInlineAgent>(
                         element,
                         options
                     );

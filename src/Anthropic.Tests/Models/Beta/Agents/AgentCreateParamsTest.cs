@@ -29,7 +29,7 @@ public class AgentCreateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -38,7 +38,7 @@ public class AgentCreateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Skills =
             [
@@ -93,17 +93,18 @@ public class AgentCreateParamsTest : TestBase
             },
         ];
         Dictionary<string, string> expectedMetadata = new() { { "foo", "bar" } };
-        Sessions::BetaManagedAgentsMultiagentParams expectedMultiagent = new()
-        {
-            Agents =
-            [
-                "agent_011CZkYqphY8vELVzwCUpqiQ",
-                new BetaManagedAgentsMultiagentSelfParams(
-                    BetaManagedAgentsMultiagentSelfParamsType.Self
-                ),
-            ],
-            Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
-        };
+        Sessions::BetaManagedAgentsMultiagentParams expectedMultiagent =
+            new BetaManagedAgentsMultiagentCoordinatorParams()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
+            };
         List<BetaManagedAgentsSkillParams> expectedSkills =
         [
             new BetaManagedAgentsAnthropicSkillParams()
@@ -194,7 +195,7 @@ public class AgentCreateParamsTest : TestBase
             Model = BetaManagedAgentsModel.ClaudeOpus5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -203,7 +204,7 @@ public class AgentCreateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             System =
                 "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
@@ -231,7 +232,7 @@ public class AgentCreateParamsTest : TestBase
             Model = BetaManagedAgentsModel.ClaudeOpus5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -240,7 +241,7 @@ public class AgentCreateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             System =
                 "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
@@ -286,7 +287,7 @@ public class AgentCreateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -295,7 +296,7 @@ public class AgentCreateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Skills =
             [
@@ -548,7 +549,7 @@ public class AgentCreateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -557,7 +558,7 @@ public class AgentCreateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Skills =
             [
