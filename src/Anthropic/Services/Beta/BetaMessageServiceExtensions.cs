@@ -21,7 +21,7 @@ public static class BetaMessageServiceExtensions
     /// </summary>
     /// <typeparam name="T">The type to parse the response into. Must have a parameterless constructor.</typeparam>
     /// <param name="service">The beta message service.</param>
-    /// <param name="parameters">The message creation parameters. OutputConfig will be set automatically.</param>
+    /// <param name="parameters">The message creation parameters. OutputConfig.Format will be set automatically.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A <see cref="BetaStructuredMessage{T}"/> wrapping the response.</returns>
     public static async Task<BetaStructuredMessage<T>> Create<T>(
@@ -42,7 +42,10 @@ public static class BetaMessageServiceExtensions
         BetaJsonOutputFormat format
     )
     {
-        var outputConfig = new BetaOutputConfig { Format = format };
+        var outputConfig = (parameters.OutputConfig ?? new BetaOutputConfig()) with
+        {
+            Format = format,
+        };
 
         var rawBodyData = parameters.RawBodyData.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         rawBodyData["output_config"] = JsonSerializer.SerializeToElement(
