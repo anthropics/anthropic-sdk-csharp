@@ -21,7 +21,7 @@ public static class MessageServiceExtensions
     /// </summary>
     /// <typeparam name="T">The type to parse the response into. Must have a parameterless constructor.</typeparam>
     /// <param name="service">The message service.</param>
-    /// <param name="parameters">The message creation parameters. OutputConfig will be set automatically.</param>
+    /// <param name="parameters">The message creation parameters. OutputConfig.Format will be set automatically.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A <see cref="StructuredMessage{T}"/> wrapping the response.</returns>
     public static async Task<StructuredMessage<T>> Create<T>(
@@ -42,7 +42,7 @@ public static class MessageServiceExtensions
         JsonOutputFormat format
     )
     {
-        var outputConfig = new OutputConfig { Format = format };
+        var outputConfig = (parameters.OutputConfig ?? new OutputConfig()) with { Format = format };
 
         var rawBodyData = parameters.RawBodyData.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         rawBodyData["output_config"] = JsonSerializer.SerializeToElement(
