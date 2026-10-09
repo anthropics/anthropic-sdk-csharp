@@ -2807,4 +2807,150 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.NotNull(capturedBetaHeaders);
         Assert.Contains("context-management-2025-06-27", capturedBetaHeaders);
     }
+
+    [Theory]
+    [InlineData(false, "string", true)]
+    [InlineData(true, "string", true)]
+    [InlineData(false, "object", true)]
+    [InlineData(true, "object", true)]
+    [InlineData(false, "raw", true)]
+    [InlineData(true, "raw", true)]
+    [InlineData(false, "no-id", true)]
+    [InlineData(true, "no-id", true)]
+    [InlineData(false, "absent", true)]
+    [InlineData(true, "absent", true)]
+    [InlineData(false, "object", false)]
+    [InlineData(true, "object", false)]
+    public async Task SkillsPreserveExistingContainer(bool streaming, string shape, bool addSkill)
+    {
+        var oldSkill = new BetaSkillParams
+        {
+            Type = BetaSkillParamsType.Custom,
+            SkillID = "old-skill",
+            Version = "1",
+        };
+        var newSkill = new BetaSkillParams
+        {
+            Type = BetaSkillParamsType.Custom,
+            SkillID = "new-skill",
+            Version = "2",
+        };
+        var existing = new BetaContainerParams { ID = "container-saved", Skills = [oldSkill] };
+        if (shape == "raw")
+        {
+            existing = new BetaContainerParams(
+                new Dictionary<string, JsonElement>
+                {
+                    ["id"] = JsonSerializer.SerializeToElement("container-saved"),
+                    ["skills"] = JsonSerializer.SerializeToElement(new[] { oldSkill }),
+                    ["future_field"] = JsonSerializer.SerializeToElement(new { mode = "preserve" }),
+                }
+            );
+        }
+        else if (shape == "no-id")
+        {
+            existing = new BetaContainerParams { Skills = [oldSkill] };
+        }
+        var template = new MessageCreateParams
+        {
+            Model = "claude-haiku-4-5",
+            MaxTokens = 1024,
+            Messages = [],
+        };
+        if (shape == "string")
+            template = template with { Container = "container-saved" };
+        else if (shape != "absent")
+            template = template with { Container = existing };
+        string original = JsonSerializer.Serialize(template.RawBodyData);
+
+        var expectedContainer = new Dictionary<string, object?>();
+        if (shape is "string" or "object" or "raw")
+            expectedContainer["id"] = "container-saved";
+        if (shape == "raw")
+            expectedContainer["future_field"] = new { mode = "preserve" };
+        var expectedSkills = shape is "object" or "raw" or "no-id"
+            ? new List<BetaSkillParams> { oldSkill }
+            : [];
+        if (addSkill)
+            expectedSkills.Add(newSkill);
+        expectedContainer["skills"] = expectedSkills;
+        var expectedRequest = new Dictionary<string, object?>
+        {
+            ["max_tokens"] = 1024,
+            ["model"] = "claude-haiku-4-5",
+            ["messages"] = new[]
+            {
+                new { role = "user", content = new[] { new { type = "text", text = "Test" } } },
+            },
+            ["container"] = expectedContainer,
+        };
+        if (addSkill)
+            expectedRequest["tools"] = new[] { new BetaCodeExecutionTool20250825() };
+        if (streaming)
+            expectedRequest["stream"] = true;
+        var response = """
+            {"id":"msg_container","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[{"type":"text","text":"Response"}],"stop_reason":"end_turn","usage":{"input_tokens":10,"output_tokens":5}}
+            """;
+        if (streaming)
+        {
+            response = """
+                event: message_start
+                data: {"type":"message_start","message":{"id":"msg_container","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+                event: content_block_start
+                data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+                event: content_block_delta
+                data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Response"}}
+
+                event: content_block_stop
+                data: {"type":"content_block_stop","index":0}
+
+                event: message_delta
+                data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":5}}
+
+                event: message_stop
+                data: {"type":"message_stop"}
+
+                """;
+        }
+        using var handler = new VerbatimHttpHandler(
+            JsonSerializer.Serialize(expectedRequest),
+            response
+        );
+        using var client = CreateChatClient(handler, "claude-haiku-4-5");
+        var options = new ChatOptions
+        {
+            RawRepresentationFactory = _ => template,
+            Tools = addSkill ? [newSkill.AsAITool()] : [],
+        };
+        for (var attempt = 0; attempt < 2; attempt++)
+        {
+            if (streaming)
+            {
+                List<ChatResponseUpdate> updates = [];
+                await foreach (
+                    var update in client.GetStreamingResponseAsync(
+                        "Test",
+                        options,
+                        TestContext.Current.CancellationToken
+                    )
+                )
+                    updates.Add(update);
+                Assert.Equal("Response", updates.ToChatResponse().Text);
+            }
+            else
+            {
+                var result = await client.GetResponseAsync(
+                    "Test",
+                    options,
+                    TestContext.Current.CancellationToken
+                );
+                Assert.Equal("Response", result.Text);
+            }
+            Assert.Equal(original, JsonSerializer.Serialize(template.RawBodyData));
+            Assert.Equal("old-skill", Assert.Single(existing.Skills ?? []).SkillID);
+            Assert.Equal("new-skill", newSkill.SkillID);
+        }
+    }
 }

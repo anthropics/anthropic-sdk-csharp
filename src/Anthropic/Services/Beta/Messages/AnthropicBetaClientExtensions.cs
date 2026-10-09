@@ -1476,21 +1476,20 @@ public static class AnthropicBetaClientExtensions
 
                     if (skills?.Count > 0)
                     {
-                        // Merge with any existing skills in the container
-                        if (
-                            createParams.Container is { } existingContainer
-                            && existingContainer.TryPickBetaContainerParams(
-                                out var existingContainerParams
-                            )
-                            && existingContainerParams.Skills is { Count: > 0 } existingSkills
-                        )
+                        var container = createParams.Container?.Value switch
+                        {
+                            BetaContainerParams parameters => parameters,
+                            string id => new BetaContainerParams { ID = id },
+                            _ => new BetaContainerParams(),
+                        };
+                        if (container.Skills is { Count: > 0 } existingSkills)
                         {
                             skills.InsertRange(0, existingSkills);
                         }
 
                         createParams = createParams with
                         {
-                            Container = new BetaContainerParams() { Skills = skills },
+                            Container = container with { Skills = skills },
                         };
 
                         // Ensure code execution tool is present
