@@ -460,6 +460,83 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.IsType<BetaMcpToolUseBlock>(mcpToolCall.RawRepresentation);
     }
 
+    /// <summary>
+    /// An <c>mcp_tool_use</c> block arrives with <c>input: {}</c> and streams the real arguments as
+    /// <c>input_json_delta</c> fragments, so the streaming adapter has to fold them back before it
+    /// hands the call to the caller. Splitting the JSON across two deltas here pins the folding
+    /// rather than a single-delta pass-through.
+    /// </summary>
+    [Fact]
+    public async Task GetStreamingResponseAsync_McpToolUseBlock_FoldsInputJsonDeltas()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Use MCP tool streaming"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_mcp_stream_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"mcp_tool_use","id":"mcp_call_123","name":"search","server_name":"my-mcp-server","input":{}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"query\": \"test"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":" query\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null},"usage":{"output_tokens":15}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Use MCP tool streaming",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        McpServerToolCallContent mcpToolCall = Assert.Single(
+            updates.SelectMany(u => u.Contents).OfType<McpServerToolCallContent>()
+        );
+        Assert.Equal("mcp_call_123", mcpToolCall.CallId);
+        Assert.Equal("search", mcpToolCall.Name);
+        Assert.Equal("my-mcp-server", mcpToolCall.ServerName);
+        Assert.NotNull(mcpToolCall.Arguments);
+        Assert.True(mcpToolCall.Arguments.TryGetValue("query", out object? queryValue));
+        JsonElement queryElement = Assert.IsType<JsonElement>(queryValue);
+        Assert.Equal("test query", queryElement.GetString());
+        Assert.NotNull(mcpToolCall.RawRepresentation);
+        Assert.IsType<BetaMcpToolUseBlock>(mcpToolCall.RawRepresentation);
+    }
+
     [Fact]
     public async Task GetResponseAsync_McpToolResultBlock_WithTextContent()
     {
