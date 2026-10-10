@@ -1477,6 +1477,160 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     }
 
     [Fact]
+    public async Task GetResponseAsync_MidConversationSystemMessage_WithRawToolChanges()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Summarize the report." }]
+                    },
+                    {
+                        "role": "system",
+                        "content": [
+                            { "type": "text", "text": "The user sent a message." },
+                            {
+                                "type": "tool_addition",
+                                "tool": {
+                                    "type": "tool_definition",
+                                    "definition": {
+                                        "name": "reply_to_user",
+                                        "input_schema": {
+                                            "type": "object",
+                                            "properties": { "text": { "type": "string" } }
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "type": "tool_removal",
+                                "tool": { "type": "tool_reference", "name": "get_weather" }
+                            }
+                        ]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_sys_tool_changes_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{ "type": "text", "text": "Response" }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 15, "output_tokens": 5 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        BetaTool replyTool = new()
+        {
+            Name = "reply_to_user",
+            InputSchema = new()
+            {
+                Properties = new Dictionary<string, JsonElement>
+                {
+                    ["text"] = JsonSerializer.SerializeToElement(new { type = "string" }),
+                },
+            },
+        };
+        BetaContentBlockParam addition = new BetaRequestToolAdditionBlock(
+            new BetaToolChangeToolDefinitionParam(replyTool)
+        );
+        BetaContentBlockParam removal = new BetaRequestToolRemovalBlock(
+            new BetaToolChangeToolReference("get_weather")
+        );
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [
+                new ChatMessage(ChatRole.User, "Summarize the report."),
+                new ChatMessage(
+                    ChatRole.System,
+                    [
+                        new TextContent("The user sent a message."),
+                        new AIContent { RawRepresentation = addition },
+                        new AIContent { RawRepresentation = removal },
+                    ]
+                ),
+            ],
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_LeadingSystemMessage_WithRawNonTextBlock_IsSentInPlace()
+    {
+        // Only text can go to the top-level `system` property, so a leading system message that
+        // carries other blocks is sent as-is for the API to accept or reject, not dropped.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": [
+                            { "type": "text", "text": "You are helpful." },
+                            {
+                                "type": "tool_removal",
+                                "tool": { "type": "tool_reference", "name": "get_weather" }
+                            }
+                        ]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{ "type": "text", "text": "Test" }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_sys_tool_changes_02",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{ "type": "text", "text": "Response" }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 15, "output_tokens": 5 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        BetaContentBlockParam removal = new BetaRequestToolRemovalBlock(
+            new BetaToolChangeToolReference("get_weather")
+        );
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [
+                new ChatMessage(
+                    ChatRole.System,
+                    [
+                        new TextContent("You are helpful."),
+                        new AIContent { RawRepresentation = removal },
+                    ]
+                ),
+                new ChatMessage(ChatRole.User, "Test"),
+            ],
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_McpToolResultWithTextList()
     {
         VerbatimHttpHandler handler = new(
