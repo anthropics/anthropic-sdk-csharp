@@ -110,9 +110,34 @@ public static class AWSSigner
         );
         foreach (var header in sortedHeaders)
         {
-            canonicalHeaders.Append($"{header.Key.ToLowerInvariant()}:{header.Value.Trim()}\n");
+            canonicalHeaders.Append(
+                $"{header.Key.ToLowerInvariant()}:{CollapseWhitespace(header.Value.Trim())}\n"
+            );
         }
         return canonicalHeaders.ToString();
+    }
+
+    static string CollapseWhitespace(string value)
+    {
+        var sb = new StringBuilder(value.Length);
+        var prevWasSpace = false;
+        foreach (var c in value)
+        {
+            if (char.IsWhiteSpace(c))
+            {
+                if (!prevWasSpace)
+                {
+                    sb.Append(' ');
+                    prevWasSpace = true;
+                }
+            }
+            else
+            {
+                sb.Append(c);
+                prevWasSpace = false;
+            }
+        }
+        return sb.ToString();
     }
 
     static byte[] GetSignatureKey(
