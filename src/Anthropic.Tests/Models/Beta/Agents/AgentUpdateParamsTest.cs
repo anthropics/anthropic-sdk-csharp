@@ -35,7 +35,7 @@ public class AgentUpdateParamsTest : TestBase
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -44,7 +44,7 @@ public class AgentUpdateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Name = "name",
             Skills =
@@ -107,17 +107,18 @@ public class AgentUpdateParamsTest : TestBase
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
-        BetaManagedAgentsMultiagentParams expectedMultiagent = new()
-        {
-            Agents =
-            [
-                "agent_011CZkYqphY8vELVzwCUpqiQ",
-                new BetaManagedAgentsMultiagentSelfParams(
-                    BetaManagedAgentsMultiagentSelfParamsType.Self
-                ),
-            ],
-            Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
-        };
+        BetaManagedAgentsMultiagentParams expectedMultiagent =
+            new BetaManagedAgentsMultiagentCoordinatorParams()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
+            };
         string expectedName = "name";
         List<BetaManagedAgentsSkillParams> expectedSkills =
         [
@@ -221,7 +222,7 @@ public class AgentUpdateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -230,7 +231,7 @@ public class AgentUpdateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Skills =
             [
@@ -299,7 +300,7 @@ public class AgentUpdateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -308,7 +309,7 @@ public class AgentUpdateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Skills =
             [
@@ -391,7 +392,7 @@ public class AgentUpdateParamsTest : TestBase
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -400,7 +401,7 @@ public class AgentUpdateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Name = "name",
             Skills =
@@ -606,7 +607,7 @@ public class AgentUpdateParamsTest : TestBase
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -615,7 +616,7 @@ public class AgentUpdateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Name = "name",
             Skills =

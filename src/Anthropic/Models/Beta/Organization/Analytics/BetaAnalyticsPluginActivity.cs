@@ -10,10 +10,10 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 /// <summary>
 /// Per-plugin install + invocation activity for a given day.
 ///
-/// <para>With `group_by[]=user_id` / `rbac_group_id` / `product` (`cowork` / `claude_code`
-/// only on this endpoint) each row is one (plugin, user), (plugin, group), or (plugin,
-/// product) cut: the flat `user_id` / `rbac_group_id` / `product` keys carry the
-/// cut and the counts are scoped to it.</para>
+/// <para>With `group_by[]=user_id` / `rbac_group_id` / `product` (`cowork`, `claude_code`
+/// and `chat_cowork_unified` only on this endpoint) each row is one (plugin, user),
+/// (plugin, group), or (plugin, product) cut: the flat `user_id` / `rbac_group_id`
+/// / `product` keys carry the cut and the counts are scoped to it.</para>
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaAnalyticsPluginActivity, BetaAnalyticsPluginActivityFromRaw>)
@@ -108,6 +108,24 @@ public sealed record class BetaAnalyticsPluginActivity : JsonModel
     }
 
     /// <summary>
+    /// Plugin use recorded while members had Chat and Cowork unified (Cowork's features
+    /// inside claude.ai chat) turned on. A count is null in date-range mode where
+    /// it cannot be computed. Omitted from the response on deployments that do not
+    /// offer Chat and Cowork unified.
+    /// </summary>
+    public BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics? ChatCoworkUnifiedMetrics
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics>(
+                "chat_cowork_unified_metrics"
+            );
+        }
+        init { this._rawData.Set("chat_cowork_unified_metrics", value); }
+    }
+
+    /// <summary>
     /// Stable plugin identifier when available (e.g. `serena@claude-plugins-official`).
     /// Null for third-party Claude Code plugins (redacted at the source) and Cowork
     /// slash commands that carry only a hashed id.
@@ -124,13 +142,14 @@ public sealed record class BetaAnalyticsPluginActivity : JsonModel
 
     /// <summary>
     /// Product that produced this row's activity: one of `chat`, `claude_code`,
-    /// `cowork`, or `office_agent` (the canonical Cost &amp; Usage product naming;
-    /// an `office_agent` row's per-surface breakdown is in its `office_metrics`).
-    /// On `/plugins` only `cowork` and `claude_code` occur (the only surfaces with
-    /// plugin attribution); on `/artifacts` only `chat`, `claude_code`, and `cowork`
-    /// occur (the surfaces that create artifacts); `/apps/chat/projects` does not
-    /// support the product dimension (a `product` entry in `group_by[]` or `filter[]`
-    /// there is rejected). Present only when the request grouped by `product`.
+    /// `cowork`, `office_agent`, or `chat_cowork_unified` (Chat and Cowork unified).
+    /// These are the canonical Cost &amp; Usage product names; an `office_agent`
+    /// row's per-surface breakdown is in its `office_metrics`. On `/plugins` only
+    /// `cowork`, `claude_code` and `chat_cowork_unified` occur (the only surfaces
+    /// with plugin attribution); on `/artifacts` only `chat`, `claude_code`, `cowork`
+    /// and `chat_cowork_unified` occur (the surfaces that create artifacts); `/apps/chat/projects`
+    /// does not support the product dimension (a `product` entry in `group_by[]`
+    /// or `filter[]` there is rejected). Present only when the request grouped by `product`.
     /// </summary>
     public string? Product
     {
@@ -194,6 +213,7 @@ public sealed record class BetaAnalyticsPluginActivity : JsonModel
         _ = this.InstallCount;
         _ = this.InvocationCount;
         _ = this.PluginName;
+        this.ChatCoworkUnifiedMetrics?.Validate();
         _ = this.PluginID;
         _ = this.Product;
         _ = this.RbacGroupID;
@@ -237,4 +257,91 @@ class BetaAnalyticsPluginActivityFromRaw : IFromRawJson<BetaAnalyticsPluginActiv
     public BetaAnalyticsPluginActivity FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaAnalyticsPluginActivity.FromRawUnchecked(rawData);
+}
+
+/// <summary>
+/// Plugin use recorded while members had Chat and Cowork unified (Cowork's features
+/// inside claude.ai chat) turned on. A count is null in date-range mode where it
+/// cannot be computed. Omitted from the response on deployments that do not offer
+/// Chat and Cowork unified.
+/// </summary>
+[JsonConverter(
+    typeof(JsonModelConverter<
+        BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics,
+        BetaAnalyticsPluginActivityChatCoworkUnifiedMetricsFromRaw
+    >)
+)]
+public sealed record class BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics : JsonModel
+{
+    /// <summary>
+    /// Same measure as `cowork_metrics.distinct_session_plugin_used_count`, for activity
+    /// recorded while members had Chat and Cowork unified turned on. Null on aggregated
+    /// rows where a distinct count cannot be computed.
+    /// </summary>
+    public required long? DistinctSessionPluginUsedCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("distinct_session_plugin_used_count");
+        }
+        init { this._rawData.Set("distinct_session_plugin_used_count", value); }
+    }
+
+    /// <inheritdoc/>
+    public override void Validate()
+    {
+        _ = this.DistinctSessionPluginUsedCount;
+    }
+
+    public BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics() { }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    public BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics(
+        BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics betaAnalyticsPluginActivityChatCoworkUnifiedMetrics
+    )
+        : base(betaAnalyticsPluginActivityChatCoworkUnifiedMetrics) { }
+#pragma warning restore CS8618
+
+    public BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
+    {
+        this._rawData = new(rawData);
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics(
+        FrozenDictionary<string, JsonElement> rawData
+    )
+    {
+        this._rawData = new(rawData);
+    }
+#pragma warning restore CS8618
+
+    /// <inheritdoc cref="BetaAnalyticsPluginActivityChatCoworkUnifiedMetricsFromRaw.FromRawUnchecked"/>
+    public static BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
+    {
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+
+    [SetsRequiredMembers]
+    public BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics(long? distinctSessionPluginUsedCount)
+        : this()
+    {
+        this.DistinctSessionPluginUsedCount = distinctSessionPluginUsedCount;
+    }
+}
+
+class BetaAnalyticsPluginActivityChatCoworkUnifiedMetricsFromRaw
+    : IFromRawJson<BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics>
+{
+    /// <inheritdoc/>
+    public BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics.FromRawUnchecked(rawData);
 }

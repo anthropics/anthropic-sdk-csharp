@@ -71,6 +71,13 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 BetaManagedAgentsDeltaEvent _ => null,
                 BetaManagedAgentsSystemMessageEvent x => x.ID,
                 BetaManagedAgentsSessionUsageEvent x => x.ID,
+                BetaManagedAgentsWorkflowRunCreatedEvent x => x.ID,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent x => x.ID,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent x => x.ID,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent x => x.ID,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent x => x.ID,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent x => x.ID,
+                BetaManagedAgentsWorkflowRunErrorEvent x => x.ID,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "id"),
             };
         }
@@ -119,6 +126,13 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 BetaManagedAgentsDeltaEvent _ => null,
                 BetaManagedAgentsSystemMessageEvent x => x.ProcessedAt,
                 BetaManagedAgentsSessionUsageEvent x => x.ProcessedAt,
+                BetaManagedAgentsWorkflowRunCreatedEvent x => x.ProcessedAt,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent x => x.ProcessedAt,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent x => x.ProcessedAt,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent x => x.ProcessedAt,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent x => x.ProcessedAt,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent x => x.ProcessedAt,
+                BetaManagedAgentsWorkflowRunErrorEvent x => x.ProcessedAt,
                 _ => WrappedJsonSerializer.GetNullableStructProperty<System::DateTimeOffset>(
                     this.Json,
                     "processed_at"
@@ -170,6 +184,13 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 BetaManagedAgentsDeltaEvent _ => null,
                 BetaManagedAgentsSystemMessageEvent _ => null,
                 BetaManagedAgentsSessionUsageEvent _ => null,
+                BetaManagedAgentsWorkflowRunCreatedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ => null,
+                BetaManagedAgentsWorkflowRunErrorEvent _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "session_thread_id"
@@ -221,6 +242,13 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 BetaManagedAgentsDeltaEvent _ => null,
                 BetaManagedAgentsSystemMessageEvent _ => null,
                 BetaManagedAgentsSessionUsageEvent _ => null,
+                BetaManagedAgentsWorkflowRunCreatedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ => null,
+                BetaManagedAgentsWorkflowRunErrorEvent _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "tool_use_id"
@@ -272,6 +300,13 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 BetaManagedAgentsDeltaEvent _ => null,
                 BetaManagedAgentsSystemMessageEvent _ => null,
                 BetaManagedAgentsSessionUsageEvent _ => null,
+                BetaManagedAgentsWorkflowRunCreatedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ => null,
+                BetaManagedAgentsWorkflowRunErrorEvent _ => null,
                 _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(this.Json, "is_error"),
             };
         }
@@ -320,6 +355,13 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 BetaManagedAgentsDeltaEvent _ => null,
                 BetaManagedAgentsSystemMessageEvent _ => null,
                 BetaManagedAgentsSessionUsageEvent _ => null,
+                BetaManagedAgentsWorkflowRunCreatedEvent x => x.Name,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ => null,
+                BetaManagedAgentsWorkflowRunErrorEvent _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "name"),
             };
         }
@@ -368,6 +410,13 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 BetaManagedAgentsDeltaEvent _ => null,
                 BetaManagedAgentsSystemMessageEvent _ => null,
                 BetaManagedAgentsSessionUsageEvent _ => null,
+                BetaManagedAgentsWorkflowRunCreatedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ => null,
+                BetaManagedAgentsWorkflowRunErrorEvent _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<
                     ApiEnum<string, BetaManagedAgentsAgentEvaluatedPermission>
                 >(this.Json, "evaluated_permission"),
@@ -418,6 +467,13 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 BetaManagedAgentsDeltaEvent _ => null,
                 BetaManagedAgentsSystemMessageEvent _ => null,
                 BetaManagedAgentsSessionUsageEvent _ => null,
+                BetaManagedAgentsWorkflowRunCreatedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ => null,
+                BetaManagedAgentsWorkflowRunErrorEvent _ => null,
                 _ =>
                     WrappedJsonSerializer.GetNullableClassProperty<BetaManagedAgentsAgentToolEvaluation>(
                         this.Json,
@@ -470,6 +526,13 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 BetaManagedAgentsDeltaEvent _ => null,
                 BetaManagedAgentsSystemMessageEvent _ => null,
                 BetaManagedAgentsSessionUsageEvent _ => null,
+                BetaManagedAgentsWorkflowRunCreatedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ => null,
+                BetaManagedAgentsWorkflowRunErrorEvent _ => null,
                 _ =>
                     WrappedJsonSerializer.GetNullableClassProperty<BetaManagedAgentsSessionRefusalStopDetails>(
                         this.Json,
@@ -522,9 +585,74 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 BetaManagedAgentsDeltaEvent _ => null,
                 BetaManagedAgentsSystemMessageEvent _ => null,
                 BetaManagedAgentsSessionUsageEvent _ => null,
+                BetaManagedAgentsWorkflowRunCreatedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ => null,
+                BetaManagedAgentsWorkflowRunErrorEvent _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "agent_name"
+                ),
+            };
+        }
+    }
+
+    public string? WorkflowRunID
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEvent _ => null,
+                BetaManagedAgentsUserInterruptEvent _ => null,
+                BetaManagedAgentsUserToolConfirmationEvent _ => null,
+                BetaManagedAgentsUserCustomToolResultEvent _ => null,
+                BetaManagedAgentsAgentCustomToolUseEvent _ => null,
+                BetaManagedAgentsAgentMessageEvent _ => null,
+                BetaManagedAgentsAgentThinkingEvent _ => null,
+                BetaManagedAgentsAgentMcpToolUseEvent _ => null,
+                BetaManagedAgentsAgentMcpToolResultEvent _ => null,
+                BetaManagedAgentsAgentToolUseEvent _ => null,
+                BetaManagedAgentsAgentToolResultEvent _ => null,
+                BetaManagedAgentsAgentThreadMessageReceivedEvent _ => null,
+                BetaManagedAgentsAgentThreadMessageSentEvent _ => null,
+                BetaManagedAgentsAgentThreadContextCompactedEvent _ => null,
+                BetaManagedAgentsSessionErrorEvent _ => null,
+                BetaManagedAgentsSessionStatusRescheduledEvent _ => null,
+                BetaManagedAgentsSessionStatusRunningEvent _ => null,
+                BetaManagedAgentsSessionStatusIdleEvent _ => null,
+                BetaManagedAgentsSessionStatusTerminatedEvent _ => null,
+                BetaManagedAgentsSessionThreadCreatedEvent x => x.WorkflowRunID,
+                BetaManagedAgentsSpanOutcomeEvaluationStartEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationEndEvent _ => null,
+                BetaManagedAgentsSpanModelRequestStartEvent _ => null,
+                BetaManagedAgentsSpanModelRequestEndEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent _ => null,
+                BetaManagedAgentsUserDefineOutcomeEvent _ => null,
+                BetaManagedAgentsSessionDeletedEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusRunningEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusIdleEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusTerminatedEvent _ => null,
+                BetaManagedAgentsUserToolResultEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusRescheduledEvent _ => null,
+                BetaManagedAgentsSessionUpdatedEvent _ => null,
+                BetaManagedAgentsStartEvent _ => null,
+                BetaManagedAgentsDeltaEvent _ => null,
+                BetaManagedAgentsSystemMessageEvent _ => null,
+                BetaManagedAgentsSessionUsageEvent _ => null,
+                BetaManagedAgentsWorkflowRunCreatedEvent x => x.WorkflowRunID,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent x => x.WorkflowRunID,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent x => x.WorkflowRunID,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent x => x.WorkflowRunID,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent x => x.WorkflowRunID,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent x => x.WorkflowRunID,
+                BetaManagedAgentsWorkflowRunErrorEvent x => x.WorkflowRunID,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "workflow_run_id"
                 ),
             };
         }
@@ -573,6 +701,13 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 BetaManagedAgentsDeltaEvent _ => null,
                 BetaManagedAgentsSystemMessageEvent _ => null,
                 BetaManagedAgentsSessionUsageEvent _ => null,
+                BetaManagedAgentsWorkflowRunCreatedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ => null,
+                BetaManagedAgentsWorkflowRunErrorEvent _ => null,
                 _ => WrappedJsonSerializer.GetNullableStructProperty<int>(this.Json, "iteration"),
             };
         }
@@ -621,9 +756,74 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 BetaManagedAgentsDeltaEvent _ => null,
                 BetaManagedAgentsSystemMessageEvent _ => null,
                 BetaManagedAgentsSessionUsageEvent _ => null,
+                BetaManagedAgentsWorkflowRunCreatedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ => null,
+                BetaManagedAgentsWorkflowRunErrorEvent _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "outcome_id"
+                ),
+            };
+        }
+    }
+
+    public string? Description
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEvent _ => null,
+                BetaManagedAgentsUserInterruptEvent _ => null,
+                BetaManagedAgentsUserToolConfirmationEvent _ => null,
+                BetaManagedAgentsUserCustomToolResultEvent _ => null,
+                BetaManagedAgentsAgentCustomToolUseEvent _ => null,
+                BetaManagedAgentsAgentMessageEvent _ => null,
+                BetaManagedAgentsAgentThinkingEvent _ => null,
+                BetaManagedAgentsAgentMcpToolUseEvent _ => null,
+                BetaManagedAgentsAgentMcpToolResultEvent _ => null,
+                BetaManagedAgentsAgentToolUseEvent _ => null,
+                BetaManagedAgentsAgentToolResultEvent _ => null,
+                BetaManagedAgentsAgentThreadMessageReceivedEvent _ => null,
+                BetaManagedAgentsAgentThreadMessageSentEvent _ => null,
+                BetaManagedAgentsAgentThreadContextCompactedEvent _ => null,
+                BetaManagedAgentsSessionErrorEvent _ => null,
+                BetaManagedAgentsSessionStatusRescheduledEvent _ => null,
+                BetaManagedAgentsSessionStatusRunningEvent _ => null,
+                BetaManagedAgentsSessionStatusIdleEvent _ => null,
+                BetaManagedAgentsSessionStatusTerminatedEvent _ => null,
+                BetaManagedAgentsSessionThreadCreatedEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationStartEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationEndEvent _ => null,
+                BetaManagedAgentsSpanModelRequestStartEvent _ => null,
+                BetaManagedAgentsSpanModelRequestEndEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent _ => null,
+                BetaManagedAgentsUserDefineOutcomeEvent x => x.Description,
+                BetaManagedAgentsSessionDeletedEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusRunningEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusIdleEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusTerminatedEvent _ => null,
+                BetaManagedAgentsUserToolResultEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusRescheduledEvent _ => null,
+                BetaManagedAgentsSessionUpdatedEvent _ => null,
+                BetaManagedAgentsStartEvent _ => null,
+                BetaManagedAgentsDeltaEvent _ => null,
+                BetaManagedAgentsSystemMessageEvent _ => null,
+                BetaManagedAgentsSessionUsageEvent _ => null,
+                BetaManagedAgentsWorkflowRunCreatedEvent x => x.Description,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ => null,
+                BetaManagedAgentsWorkflowRunErrorEvent _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "description"
                 ),
             };
         }
@@ -672,9 +872,74 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
                 BetaManagedAgentsDeltaEvent _ => null,
                 BetaManagedAgentsSystemMessageEvent _ => null,
                 BetaManagedAgentsSessionUsageEvent x => x.Budget,
+                BetaManagedAgentsWorkflowRunCreatedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ => null,
+                BetaManagedAgentsWorkflowRunErrorEvent _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<BetaManagedAgentsBudgetLimit>(
                     this.Json,
                     "budget"
+                ),
+            };
+        }
+    }
+
+    public string? WorkflowRunPhaseID
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEvent _ => null,
+                BetaManagedAgentsUserInterruptEvent _ => null,
+                BetaManagedAgentsUserToolConfirmationEvent _ => null,
+                BetaManagedAgentsUserCustomToolResultEvent _ => null,
+                BetaManagedAgentsAgentCustomToolUseEvent _ => null,
+                BetaManagedAgentsAgentMessageEvent _ => null,
+                BetaManagedAgentsAgentThinkingEvent _ => null,
+                BetaManagedAgentsAgentMcpToolUseEvent _ => null,
+                BetaManagedAgentsAgentMcpToolResultEvent _ => null,
+                BetaManagedAgentsAgentToolUseEvent _ => null,
+                BetaManagedAgentsAgentToolResultEvent _ => null,
+                BetaManagedAgentsAgentThreadMessageReceivedEvent _ => null,
+                BetaManagedAgentsAgentThreadMessageSentEvent _ => null,
+                BetaManagedAgentsAgentThreadContextCompactedEvent _ => null,
+                BetaManagedAgentsSessionErrorEvent _ => null,
+                BetaManagedAgentsSessionStatusRescheduledEvent _ => null,
+                BetaManagedAgentsSessionStatusRunningEvent _ => null,
+                BetaManagedAgentsSessionStatusIdleEvent _ => null,
+                BetaManagedAgentsSessionStatusTerminatedEvent _ => null,
+                BetaManagedAgentsSessionThreadCreatedEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationStartEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationEndEvent _ => null,
+                BetaManagedAgentsSpanModelRequestStartEvent _ => null,
+                BetaManagedAgentsSpanModelRequestEndEvent _ => null,
+                BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent _ => null,
+                BetaManagedAgentsUserDefineOutcomeEvent _ => null,
+                BetaManagedAgentsSessionDeletedEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusRunningEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusIdleEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusTerminatedEvent _ => null,
+                BetaManagedAgentsUserToolResultEvent _ => null,
+                BetaManagedAgentsSessionThreadStatusRescheduledEvent _ => null,
+                BetaManagedAgentsSessionUpdatedEvent _ => null,
+                BetaManagedAgentsStartEvent _ => null,
+                BetaManagedAgentsDeltaEvent _ => null,
+                BetaManagedAgentsSystemMessageEvent _ => null,
+                BetaManagedAgentsSessionUsageEvent _ => null,
+                BetaManagedAgentsWorkflowRunCreatedEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ => null,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent x => x.WorkflowRunPhaseID,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent x => x.WorkflowRunPhaseID,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ => null,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ => null,
+                BetaManagedAgentsWorkflowRunErrorEvent _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
+                    this.Json,
+                    "workflow_run_phase_id"
                 ),
             };
         }
@@ -1006,6 +1271,69 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
 
     public BetaManagedAgentsStreamSessionEvents(
         BetaManagedAgentsSessionUsageEvent value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunCreatedEvent value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunStatusEndedEvent value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunPhaseStartedEvent value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunPhaseEndedEvent value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunStatusRunningEvent value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunStatusIdleEvent value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunErrorEvent value,
         JsonElement? element = null
     )
     {
@@ -1866,6 +2194,167 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsWorkflowRunCreatedEvent"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWorkflowRunCreatedEvent(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsWorkflowRunCreatedEvent`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWorkflowRunCreatedEvent(
+        [NotNullWhen(true)] out BetaManagedAgentsWorkflowRunCreatedEvent? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsWorkflowRunCreatedEvent;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsWorkflowRunStatusEndedEvent"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWorkflowRunStatusEndedEvent(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsWorkflowRunStatusEndedEvent`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWorkflowRunStatusEndedEvent(
+        [NotNullWhen(true)] out BetaManagedAgentsWorkflowRunStatusEndedEvent? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsWorkflowRunStatusEndedEvent;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsWorkflowRunPhaseStartedEvent"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWorkflowRunPhaseStartedEvent(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsWorkflowRunPhaseStartedEvent`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWorkflowRunPhaseStartedEvent(
+        [NotNullWhen(true)] out BetaManagedAgentsWorkflowRunPhaseStartedEvent? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsWorkflowRunPhaseStartedEvent;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsWorkflowRunPhaseEndedEvent"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWorkflowRunPhaseEndedEvent(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsWorkflowRunPhaseEndedEvent`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWorkflowRunPhaseEndedEvent(
+        [NotNullWhen(true)] out BetaManagedAgentsWorkflowRunPhaseEndedEvent? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsWorkflowRunPhaseEndedEvent;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsWorkflowRunStatusRunningEvent"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWorkflowRunStatusRunningEvent(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsWorkflowRunStatusRunningEvent`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWorkflowRunStatusRunningEvent(
+        [NotNullWhen(true)] out BetaManagedAgentsWorkflowRunStatusRunningEvent? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsWorkflowRunStatusRunningEvent;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsWorkflowRunStatusIdleEvent"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWorkflowRunStatusIdleEvent(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsWorkflowRunStatusIdleEvent`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWorkflowRunStatusIdleEvent(
+        [NotNullWhen(true)] out BetaManagedAgentsWorkflowRunStatusIdleEvent? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsWorkflowRunStatusIdleEvent;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsWorkflowRunErrorEvent"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWorkflowRunErrorEvent(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsWorkflowRunErrorEvent`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWorkflowRunErrorEvent(
+        [NotNullWhen(true)] out BetaManagedAgentsWorkflowRunErrorEvent? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsWorkflowRunErrorEvent;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -1915,7 +2404,14 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
     ///     (BetaManagedAgentsStartEvent value) =&gt; {...},
     ///     (BetaManagedAgentsDeltaEvent value) =&gt; {...},
     ///     (BetaManagedAgentsSystemMessageEvent value) =&gt; {...},
-    ///     (BetaManagedAgentsSessionUsageEvent value) =&gt; {...}
+    ///     (BetaManagedAgentsSessionUsageEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunCreatedEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunStatusEndedEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunPhaseStartedEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunPhaseEndedEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunStatusRunningEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunStatusIdleEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunErrorEvent value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -1957,7 +2453,14 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
         System::Action<BetaManagedAgentsStartEvent> startEvent,
         System::Action<BetaManagedAgentsDeltaEvent> deltaEvent,
         System::Action<BetaManagedAgentsSystemMessageEvent> systemMessageEvent,
-        System::Action<BetaManagedAgentsSessionUsageEvent> sessionUsageEvent
+        System::Action<BetaManagedAgentsSessionUsageEvent> sessionUsageEvent,
+        System::Action<BetaManagedAgentsWorkflowRunCreatedEvent> workflowRunCreatedEvent,
+        System::Action<BetaManagedAgentsWorkflowRunStatusEndedEvent> workflowRunStatusEndedEvent,
+        System::Action<BetaManagedAgentsWorkflowRunPhaseStartedEvent> workflowRunPhaseStartedEvent,
+        System::Action<BetaManagedAgentsWorkflowRunPhaseEndedEvent> workflowRunPhaseEndedEvent,
+        System::Action<BetaManagedAgentsWorkflowRunStatusRunningEvent> workflowRunStatusRunningEvent,
+        System::Action<BetaManagedAgentsWorkflowRunStatusIdleEvent> workflowRunStatusIdleEvent,
+        System::Action<BetaManagedAgentsWorkflowRunErrorEvent> workflowRunErrorEvent
     )
     {
         switch (this.Value)
@@ -2073,6 +2576,27 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
             case BetaManagedAgentsSessionUsageEvent value:
                 sessionUsageEvent(value);
                 break;
+            case BetaManagedAgentsWorkflowRunCreatedEvent value:
+                workflowRunCreatedEvent(value);
+                break;
+            case BetaManagedAgentsWorkflowRunStatusEndedEvent value:
+                workflowRunStatusEndedEvent(value);
+                break;
+            case BetaManagedAgentsWorkflowRunPhaseStartedEvent value:
+                workflowRunPhaseStartedEvent(value);
+                break;
+            case BetaManagedAgentsWorkflowRunPhaseEndedEvent value:
+                workflowRunPhaseEndedEvent(value);
+                break;
+            case BetaManagedAgentsWorkflowRunStatusRunningEvent value:
+                workflowRunStatusRunningEvent(value);
+                break;
+            case BetaManagedAgentsWorkflowRunStatusIdleEvent value:
+                workflowRunStatusIdleEvent(value);
+                break;
+            case BetaManagedAgentsWorkflowRunErrorEvent value:
+                workflowRunErrorEvent(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of BetaManagedAgentsStreamSessionEvents"
@@ -2131,7 +2655,14 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
     ///     (BetaManagedAgentsStartEvent value) =&gt; {...},
     ///     (BetaManagedAgentsDeltaEvent value) =&gt; {...},
     ///     (BetaManagedAgentsSystemMessageEvent value) =&gt; {...},
-    ///     (BetaManagedAgentsSessionUsageEvent value) =&gt; {...}
+    ///     (BetaManagedAgentsSessionUsageEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunCreatedEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunStatusEndedEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunPhaseStartedEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunPhaseEndedEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunStatusRunningEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunStatusIdleEvent value) =&gt; {...},
+    ///     (BetaManagedAgentsWorkflowRunErrorEvent value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -2200,7 +2731,17 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
         System::Func<BetaManagedAgentsStartEvent, T> startEvent,
         System::Func<BetaManagedAgentsDeltaEvent, T> deltaEvent,
         System::Func<BetaManagedAgentsSystemMessageEvent, T> systemMessageEvent,
-        System::Func<BetaManagedAgentsSessionUsageEvent, T> sessionUsageEvent
+        System::Func<BetaManagedAgentsSessionUsageEvent, T> sessionUsageEvent,
+        System::Func<BetaManagedAgentsWorkflowRunCreatedEvent, T> workflowRunCreatedEvent,
+        System::Func<BetaManagedAgentsWorkflowRunStatusEndedEvent, T> workflowRunStatusEndedEvent,
+        System::Func<BetaManagedAgentsWorkflowRunPhaseStartedEvent, T> workflowRunPhaseStartedEvent,
+        System::Func<BetaManagedAgentsWorkflowRunPhaseEndedEvent, T> workflowRunPhaseEndedEvent,
+        System::Func<
+            BetaManagedAgentsWorkflowRunStatusRunningEvent,
+            T
+        > workflowRunStatusRunningEvent,
+        System::Func<BetaManagedAgentsWorkflowRunStatusIdleEvent, T> workflowRunStatusIdleEvent,
+        System::Func<BetaManagedAgentsWorkflowRunErrorEvent, T> workflowRunErrorEvent
     )
     {
         return this.Value switch
@@ -2259,6 +2800,19 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
             BetaManagedAgentsDeltaEvent value => deltaEvent(value),
             BetaManagedAgentsSystemMessageEvent value => systemMessageEvent(value),
             BetaManagedAgentsSessionUsageEvent value => sessionUsageEvent(value),
+            BetaManagedAgentsWorkflowRunCreatedEvent value => workflowRunCreatedEvent(value),
+            BetaManagedAgentsWorkflowRunStatusEndedEvent value => workflowRunStatusEndedEvent(
+                value
+            ),
+            BetaManagedAgentsWorkflowRunPhaseStartedEvent value => workflowRunPhaseStartedEvent(
+                value
+            ),
+            BetaManagedAgentsWorkflowRunPhaseEndedEvent value => workflowRunPhaseEndedEvent(value),
+            BetaManagedAgentsWorkflowRunStatusRunningEvent value => workflowRunStatusRunningEvent(
+                value
+            ),
+            BetaManagedAgentsWorkflowRunStatusIdleEvent value => workflowRunStatusIdleEvent(value),
+            BetaManagedAgentsWorkflowRunErrorEvent value => workflowRunErrorEvent(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsStreamSessionEvents"
             ),
@@ -2413,6 +2967,34 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
         BetaManagedAgentsSessionUsageEvent value
     ) => new(value);
 
+    public static implicit operator BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunCreatedEvent value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunStatusEndedEvent value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunPhaseStartedEvent value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunPhaseEndedEvent value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunStatusRunningEvent value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunStatusIdleEvent value
+    ) => new(value);
+
+    public static implicit operator BetaManagedAgentsStreamSessionEvents(
+        BetaManagedAgentsWorkflowRunErrorEvent value
+    ) => new(value);
+
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -2468,7 +3050,14 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
             (startEvent) => startEvent.Validate(),
             (deltaEvent) => deltaEvent.Validate(),
             (systemMessageEvent) => systemMessageEvent.Validate(),
-            (sessionUsageEvent) => sessionUsageEvent.Validate()
+            (sessionUsageEvent) => sessionUsageEvent.Validate(),
+            (workflowRunCreatedEvent) => workflowRunCreatedEvent.Validate(),
+            (workflowRunStatusEndedEvent) => workflowRunStatusEndedEvent.Validate(),
+            (workflowRunPhaseStartedEvent) => workflowRunPhaseStartedEvent.Validate(),
+            (workflowRunPhaseEndedEvent) => workflowRunPhaseEndedEvent.Validate(),
+            (workflowRunStatusRunningEvent) => workflowRunStatusRunningEvent.Validate(),
+            (workflowRunStatusIdleEvent) => workflowRunStatusIdleEvent.Validate(),
+            (workflowRunErrorEvent) => workflowRunErrorEvent.Validate()
         );
     }
 
@@ -2529,6 +3118,13 @@ public record class BetaManagedAgentsStreamSessionEvents : ModelBase
             BetaManagedAgentsDeltaEvent _ => 34,
             BetaManagedAgentsSystemMessageEvent _ => 35,
             BetaManagedAgentsSessionUsageEvent _ => 36,
+            BetaManagedAgentsWorkflowRunCreatedEvent _ => 37,
+            BetaManagedAgentsWorkflowRunStatusEndedEvent _ => 38,
+            BetaManagedAgentsWorkflowRunPhaseStartedEvent _ => 39,
+            BetaManagedAgentsWorkflowRunPhaseEndedEvent _ => 40,
+            BetaManagedAgentsWorkflowRunStatusRunningEvent _ => 41,
+            BetaManagedAgentsWorkflowRunStatusIdleEvent _ => 42,
+            BetaManagedAgentsWorkflowRunErrorEvent _ => 43,
             _ => -1,
         };
     }
@@ -3316,6 +3912,153 @@ sealed class BetaManagedAgentsStreamSessionEventsConverter
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaManagedAgentsSessionUsageEvent>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "workflow_run.created":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsWorkflowRunCreatedEvent>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "workflow_run.status_ended":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsWorkflowRunStatusEndedEvent>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "workflow_run.phase_started":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsWorkflowRunPhaseStartedEvent>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "workflow_run.phase_ended":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsWorkflowRunPhaseEndedEvent>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "workflow_run.status_running":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsWorkflowRunStatusRunningEvent>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "workflow_run.status_idle":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsWorkflowRunStatusIdleEvent>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "workflow_run.error":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsWorkflowRunErrorEvent>(
                             element,
                             options
                         );

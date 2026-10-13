@@ -18,6 +18,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
+            WorkflowRunID = null,
         };
 
         string expectedID = "sevt_011CZkZWXb7pJkx1shYaqoCu";
@@ -32,6 +33,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
         Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
         Assert.Equal(expectedType, model.Type);
+        Assert.Null(model.WorkflowRunID);
     }
 
     [Fact]
@@ -44,6 +46,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
+            WorkflowRunID = null,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -65,6 +68,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
+            WorkflowRunID = null,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -86,6 +90,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
         Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
         Assert.Equal(expectedType, deserialized.Type);
+        Assert.Null(deserialized.WorkflowRunID);
     }
 
     [Fact]
@@ -98,6 +103,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
+            WorkflowRunID = null,
         };
 
         model.Validate();
@@ -113,6 +119,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
+            WorkflowRunID = null,
         };
 
         BetaManagedAgentsSessionThreadCreatedEvent copied = new(model);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
@@ -101,6 +102,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 OutputTokens = 0,
                 ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
             },
+            WorkflowRunID = null,
         };
 
         string expectedID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
@@ -199,6 +201,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
         Assert.Equal(expectedType, model.Type);
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
         Assert.Equal(expectedUsage, model.Usage);
+        Assert.Null(model.WorkflowRunID);
     }
 
     [Fact]
@@ -292,6 +295,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 OutputTokens = 0,
                 ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
             },
+            WorkflowRunID = null,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -394,6 +398,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 OutputTokens = 0,
                 ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
             },
+            WorkflowRunID = null,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -499,6 +504,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
         Assert.Equal(expectedType, deserialized.Type);
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
         Assert.Equal(expectedUsage, deserialized.Usage);
+        Assert.Null(deserialized.WorkflowRunID);
     }
 
     [Fact]
@@ -592,6 +598,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 OutputTokens = 0,
                 ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
             },
+            WorkflowRunID = null,
         };
 
         model.Validate();
@@ -688,6 +695,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 OutputTokens = 0,
                 ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
             },
+            WorkflowRunID = null,
         };
 
         Threads::BetaManagedAgentsSessionThread copied = new(model);
@@ -772,6 +780,69 @@ public class AgentTest : TestBase
         {
             Model = "model",
             Type = Agents::Type.Advisor,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsInlineValidationWorks()
+    {
+        Threads::Agent value = new Threads::BetaManagedAgentsInlineAgent()
+        {
+            Description = null,
+            McpServers =
+            [
+                new()
+                {
+                    Name = "example-mcp",
+                    Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                    Url = "https://example-server.modelcontextprotocol.io/sse",
+                },
+            ],
+            Model = new()
+            {
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                Effort = new Agents::BetaManagedAgentsEffortLow(
+                    Agents::BetaManagedAgentsEffortLowType.Low
+                ),
+                InferenceGeo = "inference_geo",
+                Speed = Agents::Speed.Standard,
+            },
+            Name = "pdf-reader-3",
+            Skills =
+            [
+                new Agents::BetaManagedAgentsAnthropicSkill()
+                {
+                    SkillID = "xlsx",
+                    Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                    Version = "1",
+                },
+            ],
+            System = "You extract tables precisely. Output CSV only.",
+            Tools =
+            [
+                new Agents::BetaManagedAgentsAgentToolset20260401()
+                {
+                    Configs =
+                    [
+                        new Agents::BetaManagedAgentsBashToolConfig()
+                        {
+                            Enabled = true,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                        },
+                    ],
+                    DefaultConfig = new()
+                    {
+                        Enabled = true,
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        ),
+                    },
+                    Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                },
+            ],
         };
         value.Validate();
     }
@@ -864,6 +935,152 @@ public class AgentTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsInlineSerializationRoundtripWorks()
+    {
+        Threads::Agent value = new Threads::BetaManagedAgentsInlineAgent()
+        {
+            Description = null,
+            McpServers =
+            [
+                new()
+                {
+                    Name = "example-mcp",
+                    Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                    Url = "https://example-server.modelcontextprotocol.io/sse",
+                },
+            ],
+            Model = new()
+            {
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                Effort = new Agents::BetaManagedAgentsEffortLow(
+                    Agents::BetaManagedAgentsEffortLowType.Low
+                ),
+                InferenceGeo = "inference_geo",
+                Speed = Agents::Speed.Standard,
+            },
+            Name = "pdf-reader-3",
+            Skills =
+            [
+                new Agents::BetaManagedAgentsAnthropicSkill()
+                {
+                    SkillID = "xlsx",
+                    Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
+                    Version = "1",
+                },
+            ],
+            System = "You extract tables precisely. Output CSV only.",
+            Tools =
+            [
+                new Agents::BetaManagedAgentsAgentToolset20260401()
+                {
+                    Configs =
+                    [
+                        new Agents::BetaManagedAgentsBashToolConfig()
+                        {
+                            Enabled = true,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                        },
+                    ],
+                    DefaultConfig = new()
+                    {
+                        Enabled = true,
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
+                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        ),
+                    },
+                    Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
+                },
+            ],
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Threads::Agent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Threads::Agent value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "description": "A focused research subagent.",
+                  "mcp_servers": [
+                    {
+                      "name": "example-mcp",
+                      "type": "url",
+                      "url": "https://example-server.modelcontextprotocol.io/sse"
+                    }
+                  ],
+                  "name": "Researcher",
+                  "system": "You are a research subagent that gathers and summarises sources for the coordinating agent."
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        string expectedDescription = "A focused research subagent.";
+        List<Agents::BetaManagedAgentsMcpServerUrlDefinition> expectedMcpServers =
+        [
+            new()
+            {
+                Name = "example-mcp",
+                Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
+                Url = "https://example-server.modelcontextprotocol.io/sse",
+            },
+        ];
+        string expectedName = "Researcher";
+        string expectedSystem =
+            "You are a research subagent that gathers and summarises sources for the coordinating agent.";
+
+        Assert.Equal(expectedDescription, value.Description);
+        Assert.NotNull(value.McpServers);
+        Assert.Equal(expectedMcpServers.Count, value.McpServers.Count);
+        for (int i = 0; i < expectedMcpServers.Count; i++)
+        {
+            Assert.Equal(expectedMcpServers[i], value.McpServers[i]);
+        }
+        Assert.Equal(expectedName, value.Name);
+        Assert.Equal(expectedSystem, value.System);
+
+        Threads::Agent emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Null(emptyValue.Description);
+        Assert.Null(emptyValue.McpServers);
+        Assert.Null(emptyValue.Name);
+        Assert.Null(emptyValue.System);
+
+        Threads::Agent mismatchedValue = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "description": [
+                    "invalid"
+                  ],
+                  "name": [
+                    "invalid"
+                  ],
+                  "system": [
+                    "invalid"
+                  ]
+                }
+                """
+            )
+        );
+
+        Assert.Null(mismatchedValue.Description);
+        Assert.Null(mismatchedValue.Name);
+        Assert.Null(mismatchedValue.System);
     }
 }
 

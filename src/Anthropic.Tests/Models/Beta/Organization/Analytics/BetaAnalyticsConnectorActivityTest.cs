@@ -23,6 +23,7 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
                 Powerpoint = new(0),
                 Word = new(0),
             },
+            ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
             ConnectorDisplayName = "connector_display_name",
             IndividualAuthDistinctUserCount = 0,
             ManagedAuthDistinctUserCount = 0,
@@ -47,6 +48,11 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
             Powerpoint = new(0),
             Word = new(0),
         };
+        ChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new()
+        {
+            Chat = new(0),
+            Sessions = new(0),
+        };
         string expectedConnectorDisplayName = "connector_display_name";
         long expectedIndividualAuthDistinctUserCount = 0;
         long expectedManagedAuthDistinctUserCount = 0;
@@ -64,6 +70,7 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
         Assert.Equal(expectedCoworkMetrics, model.CoworkMetrics);
         Assert.Equal(expectedDistinctUserCount, model.DistinctUserCount);
         Assert.Equal(expectedOfficeMetrics, model.OfficeMetrics);
+        Assert.Equal(expectedChatCoworkUnifiedMetrics, model.ChatCoworkUnifiedMetrics);
         Assert.Equal(expectedConnectorDisplayName, model.ConnectorDisplayName);
         Assert.Equal(
             expectedIndividualAuthDistinctUserCount,
@@ -96,6 +103,7 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
                 Powerpoint = new(0),
                 Word = new(0),
             },
+            ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
             ConnectorDisplayName = "connector_display_name",
             IndividualAuthDistinctUserCount = 0,
             ManagedAuthDistinctUserCount = 0,
@@ -134,6 +142,7 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
                 Powerpoint = new(0),
                 Word = new(0),
             },
+            ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
             ConnectorDisplayName = "connector_display_name",
             IndividualAuthDistinctUserCount = 0,
             ManagedAuthDistinctUserCount = 0,
@@ -165,6 +174,11 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
             Powerpoint = new(0),
             Word = new(0),
         };
+        ChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new()
+        {
+            Chat = new(0),
+            Sessions = new(0),
+        };
         string expectedConnectorDisplayName = "connector_display_name";
         long expectedIndividualAuthDistinctUserCount = 0;
         long expectedManagedAuthDistinctUserCount = 0;
@@ -182,6 +196,7 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
         Assert.Equal(expectedCoworkMetrics, deserialized.CoworkMetrics);
         Assert.Equal(expectedDistinctUserCount, deserialized.DistinctUserCount);
         Assert.Equal(expectedOfficeMetrics, deserialized.OfficeMetrics);
+        Assert.Equal(expectedChatCoworkUnifiedMetrics, deserialized.ChatCoworkUnifiedMetrics);
         Assert.Equal(expectedConnectorDisplayName, deserialized.ConnectorDisplayName);
         Assert.Equal(
             expectedIndividualAuthDistinctUserCount,
@@ -217,6 +232,7 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
                 Powerpoint = new(0),
                 Word = new(0),
             },
+            ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
             ConnectorDisplayName = "connector_display_name",
             IndividualAuthDistinctUserCount = 0,
             ManagedAuthDistinctUserCount = 0,
@@ -251,6 +267,8 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
             },
         };
 
+        Assert.Null(model.ChatCoworkUnifiedMetrics);
+        Assert.False(model.RawData.ContainsKey("chat_cowork_unified_metrics"));
         Assert.Null(model.ConnectorDisplayName);
         Assert.False(model.RawData.ContainsKey("connector_display_name"));
         Assert.Null(model.IndividualAuthDistinctUserCount);
@@ -313,6 +331,7 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
                 Word = new(0),
             },
 
+            ChatCoworkUnifiedMetrics = null,
             ConnectorDisplayName = null,
             IndividualAuthDistinctUserCount = null,
             ManagedAuthDistinctUserCount = null,
@@ -325,6 +344,8 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
             WriteCallCount = null,
         };
 
+        Assert.Null(model.ChatCoworkUnifiedMetrics);
+        Assert.True(model.RawData.ContainsKey("chat_cowork_unified_metrics"));
         Assert.Null(model.ConnectorDisplayName);
         Assert.True(model.RawData.ContainsKey("connector_display_name"));
         Assert.Null(model.IndividualAuthDistinctUserCount);
@@ -365,6 +386,7 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
                 Word = new(0),
             },
 
+            ChatCoworkUnifiedMetrics = null,
             ConnectorDisplayName = null,
             IndividualAuthDistinctUserCount = null,
             ManagedAuthDistinctUserCount = null,
@@ -397,6 +419,7 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
                 Powerpoint = new(0),
                 Word = new(0),
             },
+            ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
             ConnectorDisplayName = "connector_display_name",
             IndividualAuthDistinctUserCount = 0,
             ManagedAuthDistinctUserCount = 0,
@@ -410,6 +433,72 @@ public class BetaAnalyticsConnectorActivityTest : TestBase
         };
 
         BetaAnalyticsConnectorActivity copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
+}
+
+public class ChatCoworkUnifiedMetricsTest : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var model = new ChatCoworkUnifiedMetrics { Chat = new(0), Sessions = new(0) };
+
+        BetaAnalyticsConnectorChatCoworkUnifiedChatMetrics expectedChat = new(0);
+        BetaAnalyticsConnectorChatCoworkUnifiedSessionsMetrics expectedSessions = new(0);
+
+        Assert.Equal(expectedChat, model.Chat);
+        Assert.Equal(expectedSessions, model.Sessions);
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new ChatCoworkUnifiedMetrics { Chat = new(0), Sessions = new(0) };
+
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ChatCoworkUnifiedMetrics>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new ChatCoworkUnifiedMetrics { Chat = new(0), Sessions = new(0) };
+
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ChatCoworkUnifiedMetrics>(
+            element,
+            ModelBase.SerializerOptions
+        );
+        Assert.NotNull(deserialized);
+
+        BetaAnalyticsConnectorChatCoworkUnifiedChatMetrics expectedChat = new(0);
+        BetaAnalyticsConnectorChatCoworkUnifiedSessionsMetrics expectedSessions = new(0);
+
+        Assert.Equal(expectedChat, deserialized.Chat);
+        Assert.Equal(expectedSessions, deserialized.Sessions);
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new ChatCoworkUnifiedMetrics { Chat = new(0), Sessions = new(0) };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ChatCoworkUnifiedMetrics { Chat = new(0), Sessions = new(0) };
+
+        ChatCoworkUnifiedMetrics copied = new(model);
 
         Assert.Equal(model, copied);
     }

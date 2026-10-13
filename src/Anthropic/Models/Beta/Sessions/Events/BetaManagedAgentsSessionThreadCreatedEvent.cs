@@ -85,6 +85,20 @@ public sealed record class BetaManagedAgentsSessionThreadCreatedEvent : JsonMode
         init { this._rawData.Set("type", value); }
     }
 
+    /// <summary>
+    /// Identifier of the workflow run that created the thread, or `null` for any
+    /// other thread.
+    /// </summary>
+    public required string? WorkflowRunID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("workflow_run_id");
+        }
+        init { this._rawData.Set("workflow_run_id", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -93,6 +107,7 @@ public sealed record class BetaManagedAgentsSessionThreadCreatedEvent : JsonMode
         _ = this.ProcessedAt;
         _ = this.SessionThreadID;
         this.Type.Validate();
+        _ = this.WorkflowRunID;
     }
 
     public BetaManagedAgentsSessionThreadCreatedEvent() { }

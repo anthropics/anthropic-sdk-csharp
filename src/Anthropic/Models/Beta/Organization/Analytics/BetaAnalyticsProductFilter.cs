@@ -7,12 +7,16 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 
 /// <summary>
 /// Publicly documented product surfaces. `claude-tag` is Claude Tag, the Claude
-/// product in Slack.
+/// product in Slack. `chat_cowork_unified` is Chat and Cowork unified, Cowork's
+/// features inside claude.ai chat: chat and Cowork usage by a member who has it
+/// turned on is reported under this value instead of `chat` or `cowork`. It is accepted
+/// as a filter only on deployments that offer Chat and Cowork unified.
 /// </summary>
 [JsonConverter(typeof(BetaAnalyticsProductFilterConverter))]
 public enum BetaAnalyticsProductFilter
 {
     Chat,
+    ChatCoworkUnified,
     ClaudeTag,
     ClaudeCode,
     ClaudeDesign,
@@ -32,6 +36,7 @@ sealed class BetaAnalyticsProductFilterConverter : JsonConverter<BetaAnalyticsPr
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
             "chat" => BetaAnalyticsProductFilter.Chat,
+            "chat_cowork_unified" => BetaAnalyticsProductFilter.ChatCoworkUnified,
             "claude-tag" => BetaAnalyticsProductFilter.ClaudeTag,
             "claude_code" => BetaAnalyticsProductFilter.ClaudeCode,
             "claude_design" => BetaAnalyticsProductFilter.ClaudeDesign,
@@ -53,6 +58,7 @@ sealed class BetaAnalyticsProductFilterConverter : JsonConverter<BetaAnalyticsPr
             value switch
             {
                 BetaAnalyticsProductFilter.Chat => "chat",
+                BetaAnalyticsProductFilter.ChatCoworkUnified => "chat_cowork_unified",
                 BetaAnalyticsProductFilter.ClaudeTag => "claude-tag",
                 BetaAnalyticsProductFilter.ClaudeCode => "claude_code",
                 BetaAnalyticsProductFilter.ClaudeDesign => "claude_design",

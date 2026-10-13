@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Agents;
-using Anthropic.Models.Beta.Sessions;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
 
@@ -39,18 +38,35 @@ public class AgentListPageResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
-                    Multiagent = new()
+                    Multiagent = new BetaManagedAgentsMultiagent20261001()
                     {
-                        Agents =
-                        [
-                            new BetaManagedAgentsAgentReference()
-                            {
-                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                                Version = 1,
-                            },
-                        ],
-                        Type = BetaManagedAgentsMultiagentType.Coordinator,
+                        Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                        Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
+                        Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
                     },
                     Name = "My First Agent",
                     Skills =
@@ -127,18 +143,35 @@ public class AgentListPageResponseTest : TestBase
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
-                Multiagent = new()
+                Multiagent = new BetaManagedAgentsMultiagent20261001()
                 {
-                    Agents =
-                    [
-                        new BetaManagedAgentsAgentReference()
-                        {
-                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                            Type = BetaManagedAgentsAgentReferenceType.Agent,
-                            Version = 1,
-                        },
-                    ],
-                    Type = BetaManagedAgentsMultiagentType.Coordinator,
+                    Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                    Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                    {
+                        InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                        PredefinedAgents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                    },
+                    Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                    {
+                        InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                        PredefinedAgents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                    },
                 },
                 Name = "My First Agent",
                 Skills =
@@ -227,18 +260,35 @@ public class AgentListPageResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
-                    Multiagent = new()
+                    Multiagent = new BetaManagedAgentsMultiagent20261001()
                     {
-                        Agents =
-                        [
-                            new BetaManagedAgentsAgentReference()
-                            {
-                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                                Version = 1,
-                            },
-                        ],
-                        Type = BetaManagedAgentsMultiagentType.Coordinator,
+                        Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                        Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
+                        Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
                     },
                     Name = "My First Agent",
                     Skills =
@@ -329,18 +379,35 @@ public class AgentListPageResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
-                    Multiagent = new()
+                    Multiagent = new BetaManagedAgentsMultiagent20261001()
                     {
-                        Agents =
-                        [
-                            new BetaManagedAgentsAgentReference()
-                            {
-                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                                Version = 1,
-                            },
-                        ],
-                        Type = BetaManagedAgentsMultiagentType.Coordinator,
+                        Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                        Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
+                        Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
                     },
                     Name = "My First Agent",
                     Skills =
@@ -424,18 +491,35 @@ public class AgentListPageResponseTest : TestBase
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
-                Multiagent = new()
+                Multiagent = new BetaManagedAgentsMultiagent20261001()
                 {
-                    Agents =
-                    [
-                        new BetaManagedAgentsAgentReference()
-                        {
-                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                            Type = BetaManagedAgentsAgentReferenceType.Agent,
-                            Version = 1,
-                        },
-                    ],
-                    Type = BetaManagedAgentsMultiagentType.Coordinator,
+                    Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                    Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                    {
+                        InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                        PredefinedAgents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                    },
+                    Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                    {
+                        InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                        PredefinedAgents =
+                        [
+                            new()
+                            {
+                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                Version = 1,
+                            },
+                        ],
+                    },
                 },
                 Name = "My First Agent",
                 Skills =
@@ -524,18 +608,35 @@ public class AgentListPageResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
-                    Multiagent = new()
+                    Multiagent = new BetaManagedAgentsMultiagent20261001()
                     {
-                        Agents =
-                        [
-                            new BetaManagedAgentsAgentReference()
-                            {
-                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                                Version = 1,
-                            },
-                        ],
-                        Type = BetaManagedAgentsMultiagentType.Coordinator,
+                        Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                        Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
+                        Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
                     },
                     Name = "My First Agent",
                     Skills =
@@ -620,18 +721,35 @@ public class AgentListPageResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
-                    Multiagent = new()
+                    Multiagent = new BetaManagedAgentsMultiagent20261001()
                     {
-                        Agents =
-                        [
-                            new BetaManagedAgentsAgentReference()
-                            {
-                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                                Version = 1,
-                            },
-                        ],
-                        Type = BetaManagedAgentsMultiagentType.Coordinator,
+                        Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                        Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
+                        Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
                     },
                     Name = "My First Agent",
                     Skills =
@@ -716,18 +834,35 @@ public class AgentListPageResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
-                    Multiagent = new()
+                    Multiagent = new BetaManagedAgentsMultiagent20261001()
                     {
-                        Agents =
-                        [
-                            new BetaManagedAgentsAgentReference()
-                            {
-                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                                Version = 1,
-                            },
-                        ],
-                        Type = BetaManagedAgentsMultiagentType.Coordinator,
+                        Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                        Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
+                        Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
                     },
                     Name = "My First Agent",
                     Skills =
@@ -811,18 +946,35 @@ public class AgentListPageResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
-                    Multiagent = new()
+                    Multiagent = new BetaManagedAgentsMultiagent20261001()
                     {
-                        Agents =
-                        [
-                            new BetaManagedAgentsAgentReference()
-                            {
-                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                                Version = 1,
-                            },
-                        ],
-                        Type = BetaManagedAgentsMultiagentType.Coordinator,
+                        Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                        Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
+                        Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
                     },
                     Name = "My First Agent",
                     Skills =
@@ -909,18 +1061,35 @@ public class AgentListPageResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
-                    Multiagent = new()
+                    Multiagent = new BetaManagedAgentsMultiagent20261001()
                     {
-                        Agents =
-                        [
-                            new BetaManagedAgentsAgentReference()
-                            {
-                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                                Version = 1,
-                            },
-                        ],
-                        Type = BetaManagedAgentsMultiagentType.Coordinator,
+                        Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                        Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
+                        Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
                     },
                     Name = "My First Agent",
                     Skills =
@@ -1006,18 +1175,35 @@ public class AgentListPageResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
-                    Multiagent = new()
+                    Multiagent = new BetaManagedAgentsMultiagent20261001()
                     {
-                        Agents =
-                        [
-                            new BetaManagedAgentsAgentReference()
-                            {
-                                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                                Version = 1,
-                            },
-                        ],
-                        Type = BetaManagedAgentsMultiagentType.Coordinator,
+                        Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                        Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
+                        Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                        {
+                            InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                            PredefinedAgents =
+                            [
+                                new()
+                                {
+                                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                                    Type = BetaManagedAgentsAgentReferenceType.Agent,
+                                    Version = 1,
+                                },
+                            ],
+                        },
                     },
                     Name = "My First Agent",
                     Skills =

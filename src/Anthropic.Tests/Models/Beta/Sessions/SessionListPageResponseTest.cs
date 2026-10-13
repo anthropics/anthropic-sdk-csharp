@@ -43,7 +43,7 @@ public class SessionListPageResponseTest : TestBase
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
-                        Multiagent = new()
+                        Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
                         {
                             Agents =
                             [
@@ -261,7 +261,7 @@ public class SessionListPageResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
-                    Multiagent = new()
+                    Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
                     {
                         Agents =
                         [
@@ -492,7 +492,7 @@ public class SessionListPageResponseTest : TestBase
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
-                        Multiagent = new()
+                        Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
                         {
                             Agents =
                             [
@@ -726,7 +726,7 @@ public class SessionListPageResponseTest : TestBase
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
-                        Multiagent = new()
+                        Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
                         {
                             Agents =
                             [
@@ -951,7 +951,7 @@ public class SessionListPageResponseTest : TestBase
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
-                    Multiagent = new()
+                    Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
                     {
                         Agents =
                         [
@@ -1182,7 +1182,7 @@ public class SessionListPageResponseTest : TestBase
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
-                        Multiagent = new()
+                        Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
                         {
                             Agents =
                             [
@@ -1451,7 +1451,7 @@ public class SessionListPageResponseTest : TestBase
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
-                        Multiagent = new()
+                        Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
                         {
                             Agents =
                             [
@@ -1699,7 +1699,7 @@ public class SessionListPageResponseTest : TestBase
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
-                        Multiagent = new()
+                        Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
                         {
                             Agents =
                             [
@@ -1928,7 +1928,7 @@ public class SessionListPageResponseTest : TestBase
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
-                        Multiagent = new()
+                        Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
                         {
                             Agents =
                             [
@@ -2154,7 +2154,7 @@ public class SessionListPageResponseTest : TestBase
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
-                        Multiagent = new()
+                        Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
                         {
                             Agents =
                             [
@@ -2386,7 +2386,7 @@ public class SessionListPageResponseTest : TestBase
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
-                        Multiagent = new()
+                        Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
                         {
                             Agents =
                             [
@@ -2615,7 +2615,7 @@ public class SessionListPageResponseTest : TestBase
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
-                        Multiagent = new()
+                        Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
                         {
                             Agents =
                             [

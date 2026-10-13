@@ -110,6 +110,24 @@ public sealed record class BetaAnalyticsUserActivity : JsonModel
     }
 
     /// <summary>
+    /// Activity recorded while the member had Chat and Cowork unified (Cowork's features
+    /// inside claude.ai chat) turned on, split into `chat` (chat activity) and `sessions`
+    /// (Cowork activity). Omitted from the response on deployments that do not offer
+    /// Chat and Cowork unified.
+    /// </summary>
+    public BetaAnalyticsUserActivityChatCoworkUnifiedMetrics? ChatCoworkUnifiedMetrics
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaAnalyticsUserActivityChatCoworkUnifiedMetrics>(
+                "chat_cowork_unified_metrics"
+            );
+        }
+        init { this._rawData.Set("chat_cowork_unified_metrics", value); }
+    }
+
+    /// <summary>
     /// Number of distinct active users represented by this row. Only set for grouped
     /// rollups (`group_by[]`); null for per-user rows. In date-range mode, recomputed
     /// as an exact distinct count of the group's active members over the requested
@@ -199,6 +217,7 @@ public sealed record class BetaAnalyticsUserActivity : JsonModel
         this.OfficeMetrics.Validate();
         this.ScienceMetrics.Validate();
         _ = this.WebSearchCount;
+        this.ChatCoworkUnifiedMetrics?.Validate();
         _ = this.DistinctUserCount;
         _ = this.LastActivityDate;
         _ = this.RbacGroupID;
@@ -242,4 +261,97 @@ class BetaAnalyticsUserActivityFromRaw : IFromRawJson<BetaAnalyticsUserActivity>
     public BetaAnalyticsUserActivity FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaAnalyticsUserActivity.FromRawUnchecked(rawData);
+}
+
+/// <summary>
+/// Activity recorded while the member had Chat and Cowork unified (Cowork's features
+/// inside claude.ai chat) turned on, split into `chat` (chat activity) and `sessions`
+/// (Cowork activity). Omitted from the response on deployments that do not offer
+/// Chat and Cowork unified.
+/// </summary>
+[JsonConverter(
+    typeof(JsonModelConverter<
+        BetaAnalyticsUserActivityChatCoworkUnifiedMetrics,
+        BetaAnalyticsUserActivityChatCoworkUnifiedMetricsFromRaw
+    >)
+)]
+public sealed record class BetaAnalyticsUserActivityChatCoworkUnifiedMetrics : JsonModel
+{
+    /// <summary>
+    /// Chat activity recorded while members had Chat and Cowork unified turned on.
+    /// </summary>
+    public required BetaAnalyticsChatCoworkUnifiedChatMetrics Chat
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaAnalyticsChatCoworkUnifiedChatMetrics>("chat");
+        }
+        init { this._rawData.Set("chat", value); }
+    }
+
+    /// <summary>
+    /// Cowork session activity recorded while members had Chat and Cowork unified
+    /// turned on.
+    /// </summary>
+    public required BetaAnalyticsChatCoworkUnifiedSessionsMetrics Sessions
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaAnalyticsChatCoworkUnifiedSessionsMetrics>(
+                "sessions"
+            );
+        }
+        init { this._rawData.Set("sessions", value); }
+    }
+
+    /// <inheritdoc/>
+    public override void Validate()
+    {
+        this.Chat.Validate();
+        this.Sessions.Validate();
+    }
+
+    public BetaAnalyticsUserActivityChatCoworkUnifiedMetrics() { }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    public BetaAnalyticsUserActivityChatCoworkUnifiedMetrics(
+        BetaAnalyticsUserActivityChatCoworkUnifiedMetrics betaAnalyticsUserActivityChatCoworkUnifiedMetrics
+    )
+        : base(betaAnalyticsUserActivityChatCoworkUnifiedMetrics) { }
+#pragma warning restore CS8618
+
+    public BetaAnalyticsUserActivityChatCoworkUnifiedMetrics(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
+    {
+        this._rawData = new(rawData);
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    BetaAnalyticsUserActivityChatCoworkUnifiedMetrics(FrozenDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = new(rawData);
+    }
+#pragma warning restore CS8618
+
+    /// <inheritdoc cref="BetaAnalyticsUserActivityChatCoworkUnifiedMetricsFromRaw.FromRawUnchecked"/>
+    public static BetaAnalyticsUserActivityChatCoworkUnifiedMetrics FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
+    {
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+}
+
+class BetaAnalyticsUserActivityChatCoworkUnifiedMetricsFromRaw
+    : IFromRawJson<BetaAnalyticsUserActivityChatCoworkUnifiedMetrics>
+{
+    /// <inheritdoc/>
+    public BetaAnalyticsUserActivityChatCoworkUnifiedMetrics FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaAnalyticsUserActivityChatCoworkUnifiedMetrics.FromRawUnchecked(rawData);
 }

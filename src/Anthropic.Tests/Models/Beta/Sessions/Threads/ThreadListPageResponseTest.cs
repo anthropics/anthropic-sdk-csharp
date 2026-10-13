@@ -109,6 +109,7 @@ public class ThreadListPageResponseTest : TestBase
                         OutputTokens = 0,
                         ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
+                    WorkflowRunID = null,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -205,6 +206,7 @@ public class ThreadListPageResponseTest : TestBase
                     OutputTokens = 0,
                     ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                 },
+                WorkflowRunID = null,
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -317,6 +319,7 @@ public class ThreadListPageResponseTest : TestBase
                         OutputTokens = 0,
                         ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
+                    WorkflowRunID = null,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -430,6 +433,7 @@ public class ThreadListPageResponseTest : TestBase
                         OutputTokens = 0,
                         ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
+                    WorkflowRunID = null,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -533,6 +537,7 @@ public class ThreadListPageResponseTest : TestBase
                     OutputTokens = 0,
                     ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                 },
+                WorkflowRunID = null,
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -645,6 +650,7 @@ public class ThreadListPageResponseTest : TestBase
                         OutputTokens = 0,
                         ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
+                    WorkflowRunID = null,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -790,6 +796,7 @@ public class ThreadListPageResponseTest : TestBase
                         OutputTokens = 0,
                         ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
+                    WorkflowRunID = null,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -916,6 +923,7 @@ public class ThreadListPageResponseTest : TestBase
                         OutputTokens = 0,
                         ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
+                    WorkflowRunID = null,
                 },
             ],
         };
@@ -1023,6 +1031,7 @@ public class ThreadListPageResponseTest : TestBase
                         OutputTokens = 0,
                         ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
+                    WorkflowRunID = null,
                 },
             ],
         };
@@ -1129,6 +1138,7 @@ public class ThreadListPageResponseTest : TestBase
                         OutputTokens = 0,
                         ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
+                    WorkflowRunID = null,
                 },
             ],
 
@@ -1238,6 +1248,7 @@ public class ThreadListPageResponseTest : TestBase
                         OutputTokens = 0,
                         ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
+                    WorkflowRunID = null,
                 },
             ],
 
@@ -1346,6 +1357,7 @@ public class ThreadListPageResponseTest : TestBase
                         OutputTokens = 0,
                         ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
                     },
+                    WorkflowRunID = null,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",

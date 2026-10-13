@@ -42,6 +42,13 @@ public class BetaManagedAgentsSessionEventTypeTest : TestBase
     [InlineData(BetaManagedAgentsSessionEventType.SessionUpdated)]
     [InlineData(BetaManagedAgentsSessionEventType.SystemMessage)]
     [InlineData(BetaManagedAgentsSessionEventType.SessionUsage)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunCreated)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunStatusRunning)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunStatusIdle)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunStatusEnded)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunError)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunPhaseStarted)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunPhaseEnded)]
     public void Validation_Works(BetaManagedAgentsSessionEventType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -96,6 +103,13 @@ public class BetaManagedAgentsSessionEventTypeTest : TestBase
     [InlineData(BetaManagedAgentsSessionEventType.SessionUpdated)]
     [InlineData(BetaManagedAgentsSessionEventType.SystemMessage)]
     [InlineData(BetaManagedAgentsSessionEventType.SessionUsage)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunCreated)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunStatusRunning)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunStatusIdle)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunStatusEnded)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunError)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunPhaseStarted)]
+    [InlineData(BetaManagedAgentsSessionEventType.WorkflowRunPhaseEnded)]
     public void SerializationRoundtrip_Works(BetaManagedAgentsSessionEventType rawValue)
     {
         // force implicit conversion because Theory can't do that for us

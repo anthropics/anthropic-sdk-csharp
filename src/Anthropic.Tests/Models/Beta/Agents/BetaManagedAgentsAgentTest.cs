@@ -36,18 +36,35 @@ public class BetaManagedAgentsAgentTest : TestBase
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagent20261001()
             {
-                Agents =
-                [
-                    new BetaManagedAgentsAgentReference()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
-                Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
             },
             Name = "My First Agent",
             Skills =
@@ -116,19 +133,37 @@ public class BetaManagedAgentsAgentTest : TestBase
             InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
-        Sessions::BetaManagedAgentsMultiagent expectedMultiagent = new()
-        {
-            Agents =
-            [
-                new BetaManagedAgentsAgentReference()
+        Sessions::BetaManagedAgentsMultiagent expectedMultiagent =
+            new BetaManagedAgentsMultiagent20261001()
+            {
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
                 {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
                 },
-            ],
-            Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
-        };
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+            };
         string expectedName = "My First Agent";
         List<Skill> expectedSkills =
         [
@@ -236,18 +271,35 @@ public class BetaManagedAgentsAgentTest : TestBase
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagent20261001()
             {
-                Agents =
-                [
-                    new BetaManagedAgentsAgentReference()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
-                Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
             },
             Name = "My First Agent",
             Skills =
@@ -331,18 +383,35 @@ public class BetaManagedAgentsAgentTest : TestBase
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagent20261001()
             {
-                Agents =
-                [
-                    new BetaManagedAgentsAgentReference()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
-                Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
             },
             Name = "My First Agent",
             Skills =
@@ -418,19 +487,37 @@ public class BetaManagedAgentsAgentTest : TestBase
             InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
-        Sessions::BetaManagedAgentsMultiagent expectedMultiagent = new()
-        {
-            Agents =
-            [
-                new BetaManagedAgentsAgentReference()
+        Sessions::BetaManagedAgentsMultiagent expectedMultiagent =
+            new BetaManagedAgentsMultiagent20261001()
+            {
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
                 {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
                 },
-            ],
-            Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
-        };
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+            };
         string expectedName = "My First Agent";
         List<Skill> expectedSkills =
         [
@@ -538,18 +625,35 @@ public class BetaManagedAgentsAgentTest : TestBase
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagent20261001()
             {
-                Agents =
-                [
-                    new BetaManagedAgentsAgentReference()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
-                Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
             },
             Name = "My First Agent",
             Skills =
@@ -627,18 +731,35 @@ public class BetaManagedAgentsAgentTest : TestBase
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagent20261001()
             {
-                Agents =
-                [
-                    new BetaManagedAgentsAgentReference()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
-                Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
             },
             Name = "My First Agent",
             Skills =

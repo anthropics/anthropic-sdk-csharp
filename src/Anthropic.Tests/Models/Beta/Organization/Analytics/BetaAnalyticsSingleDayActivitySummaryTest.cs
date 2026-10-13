@@ -25,6 +25,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             StartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             WeeklyActiveUserCount = 0,
             WeeklyAdoptionRate = 0,
+            ChatCoworkUnifiedDailyActiveUserCount = 0,
+            ChatCoworkUnifiedMonthlyActiveUserCount = 0,
+            ChatCoworkUnifiedWeeklyActiveUserCount = 0,
             ChatDailyActiveUserCount = 0,
             ChatMonthlyActiveUserCount = 0,
             ChatWeeklyActiveUserCount = 0,
@@ -56,6 +59,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
         DateTimeOffset expectedStartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         long expectedWeeklyActiveUserCount = 0;
         double expectedWeeklyAdoptionRate = 0;
+        long expectedChatCoworkUnifiedDailyActiveUserCount = 0;
+        long expectedChatCoworkUnifiedMonthlyActiveUserCount = 0;
+        long expectedChatCoworkUnifiedWeeklyActiveUserCount = 0;
         long expectedChatDailyActiveUserCount = 0;
         long expectedChatMonthlyActiveUserCount = 0;
         long expectedChatWeeklyActiveUserCount = 0;
@@ -86,6 +92,18 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
         Assert.Equal(expectedStartingAt, model.StartingAt);
         Assert.Equal(expectedWeeklyActiveUserCount, model.WeeklyActiveUserCount);
         Assert.Equal(expectedWeeklyAdoptionRate, model.WeeklyAdoptionRate);
+        Assert.Equal(
+            expectedChatCoworkUnifiedDailyActiveUserCount,
+            model.ChatCoworkUnifiedDailyActiveUserCount
+        );
+        Assert.Equal(
+            expectedChatCoworkUnifiedMonthlyActiveUserCount,
+            model.ChatCoworkUnifiedMonthlyActiveUserCount
+        );
+        Assert.Equal(
+            expectedChatCoworkUnifiedWeeklyActiveUserCount,
+            model.ChatCoworkUnifiedWeeklyActiveUserCount
+        );
         Assert.Equal(expectedChatDailyActiveUserCount, model.ChatDailyActiveUserCount);
         Assert.Equal(expectedChatMonthlyActiveUserCount, model.ChatMonthlyActiveUserCount);
         Assert.Equal(expectedChatWeeklyActiveUserCount, model.ChatWeeklyActiveUserCount);
@@ -146,6 +164,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             StartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             WeeklyActiveUserCount = 0,
             WeeklyAdoptionRate = 0,
+            ChatCoworkUnifiedDailyActiveUserCount = 0,
+            ChatCoworkUnifiedMonthlyActiveUserCount = 0,
+            ChatCoworkUnifiedWeeklyActiveUserCount = 0,
             ChatDailyActiveUserCount = 0,
             ChatMonthlyActiveUserCount = 0,
             ChatWeeklyActiveUserCount = 0,
@@ -191,6 +212,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             StartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             WeeklyActiveUserCount = 0,
             WeeklyAdoptionRate = 0,
+            ChatCoworkUnifiedDailyActiveUserCount = 0,
+            ChatCoworkUnifiedMonthlyActiveUserCount = 0,
+            ChatCoworkUnifiedWeeklyActiveUserCount = 0,
             ChatDailyActiveUserCount = 0,
             ChatMonthlyActiveUserCount = 0,
             ChatWeeklyActiveUserCount = 0,
@@ -229,6 +253,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
         DateTimeOffset expectedStartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         long expectedWeeklyActiveUserCount = 0;
         double expectedWeeklyAdoptionRate = 0;
+        long expectedChatCoworkUnifiedDailyActiveUserCount = 0;
+        long expectedChatCoworkUnifiedMonthlyActiveUserCount = 0;
+        long expectedChatCoworkUnifiedWeeklyActiveUserCount = 0;
         long expectedChatDailyActiveUserCount = 0;
         long expectedChatMonthlyActiveUserCount = 0;
         long expectedChatWeeklyActiveUserCount = 0;
@@ -262,6 +289,18 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
         Assert.Equal(expectedStartingAt, deserialized.StartingAt);
         Assert.Equal(expectedWeeklyActiveUserCount, deserialized.WeeklyActiveUserCount);
         Assert.Equal(expectedWeeklyAdoptionRate, deserialized.WeeklyAdoptionRate);
+        Assert.Equal(
+            expectedChatCoworkUnifiedDailyActiveUserCount,
+            deserialized.ChatCoworkUnifiedDailyActiveUserCount
+        );
+        Assert.Equal(
+            expectedChatCoworkUnifiedMonthlyActiveUserCount,
+            deserialized.ChatCoworkUnifiedMonthlyActiveUserCount
+        );
+        Assert.Equal(
+            expectedChatCoworkUnifiedWeeklyActiveUserCount,
+            deserialized.ChatCoworkUnifiedWeeklyActiveUserCount
+        );
         Assert.Equal(expectedChatDailyActiveUserCount, deserialized.ChatDailyActiveUserCount);
         Assert.Equal(expectedChatMonthlyActiveUserCount, deserialized.ChatMonthlyActiveUserCount);
         Assert.Equal(expectedChatWeeklyActiveUserCount, deserialized.ChatWeeklyActiveUserCount);
@@ -331,6 +370,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             StartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             WeeklyActiveUserCount = 0,
             WeeklyAdoptionRate = 0,
+            ChatCoworkUnifiedDailyActiveUserCount = 0,
+            ChatCoworkUnifiedMonthlyActiveUserCount = 0,
+            ChatCoworkUnifiedWeeklyActiveUserCount = 0,
             ChatDailyActiveUserCount = 0,
             ChatMonthlyActiveUserCount = 0,
             ChatWeeklyActiveUserCount = 0,
@@ -372,6 +414,12 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             WeeklyAdoptionRate = 0,
         };
 
+        Assert.Null(model.ChatCoworkUnifiedDailyActiveUserCount);
+        Assert.False(model.RawData.ContainsKey("chat_cowork_unified_daily_active_user_count"));
+        Assert.Null(model.ChatCoworkUnifiedMonthlyActiveUserCount);
+        Assert.False(model.RawData.ContainsKey("chat_cowork_unified_monthly_active_user_count"));
+        Assert.Null(model.ChatCoworkUnifiedWeeklyActiveUserCount);
+        Assert.False(model.RawData.ContainsKey("chat_cowork_unified_weekly_active_user_count"));
         Assert.Null(model.ChatDailyActiveUserCount);
         Assert.False(model.RawData.ContainsKey("chat_daily_active_user_count"));
         Assert.Null(model.ChatMonthlyActiveUserCount);
@@ -448,6 +496,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             WeeklyActiveUserCount = 0,
             WeeklyAdoptionRate = 0,
 
+            ChatCoworkUnifiedDailyActiveUserCount = null,
+            ChatCoworkUnifiedMonthlyActiveUserCount = null,
+            ChatCoworkUnifiedWeeklyActiveUserCount = null,
             ChatDailyActiveUserCount = null,
             ChatMonthlyActiveUserCount = null,
             ChatWeeklyActiveUserCount = null,
@@ -466,6 +517,12 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             ScienceWeeklyActiveUserCount = null,
         };
 
+        Assert.Null(model.ChatCoworkUnifiedDailyActiveUserCount);
+        Assert.True(model.RawData.ContainsKey("chat_cowork_unified_daily_active_user_count"));
+        Assert.Null(model.ChatCoworkUnifiedMonthlyActiveUserCount);
+        Assert.True(model.RawData.ContainsKey("chat_cowork_unified_monthly_active_user_count"));
+        Assert.Null(model.ChatCoworkUnifiedWeeklyActiveUserCount);
+        Assert.True(model.RawData.ContainsKey("chat_cowork_unified_weekly_active_user_count"));
         Assert.Null(model.ChatDailyActiveUserCount);
         Assert.True(model.RawData.ContainsKey("chat_daily_active_user_count"));
         Assert.Null(model.ChatMonthlyActiveUserCount);
@@ -519,6 +576,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             WeeklyActiveUserCount = 0,
             WeeklyAdoptionRate = 0,
 
+            ChatCoworkUnifiedDailyActiveUserCount = null,
+            ChatCoworkUnifiedMonthlyActiveUserCount = null,
+            ChatCoworkUnifiedWeeklyActiveUserCount = null,
             ChatDailyActiveUserCount = null,
             ChatMonthlyActiveUserCount = null,
             ChatWeeklyActiveUserCount = null,
@@ -558,6 +618,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             StartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             WeeklyActiveUserCount = 0,
             WeeklyAdoptionRate = 0,
+            ChatCoworkUnifiedDailyActiveUserCount = 0,
+            ChatCoworkUnifiedMonthlyActiveUserCount = 0,
+            ChatCoworkUnifiedWeeklyActiveUserCount = 0,
             ChatDailyActiveUserCount = 0,
             ChatMonthlyActiveUserCount = 0,
             ChatWeeklyActiveUserCount = 0,

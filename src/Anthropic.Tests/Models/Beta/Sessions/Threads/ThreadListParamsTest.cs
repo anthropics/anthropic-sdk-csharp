@@ -17,6 +17,7 @@ public class ThreadListParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             Limit = 0,
             Page = "page",
+            Statuses = [BetaManagedAgentsSessionThreadStatus.Running],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -24,6 +25,10 @@ public class ThreadListParamsTest : TestBase
         string expectedSessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7";
         int expectedLimit = 0;
         string expectedPage = "page";
+        List<ApiEnum<string, BetaManagedAgentsSessionThreadStatus>> expectedStatuses =
+        [
+            BetaManagedAgentsSessionThreadStatus.Running,
+        ];
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -33,6 +38,12 @@ public class ThreadListParamsTest : TestBase
         Assert.Equal(expectedSessionID, parameters.SessionID);
         Assert.Equal(expectedLimit, parameters.Limit);
         Assert.Equal(expectedPage, parameters.Page);
+        Assert.NotNull(parameters.Statuses);
+        Assert.Equal(expectedStatuses.Count, parameters.Statuses.Count);
+        for (int i = 0; i < expectedStatuses.Count; i++)
+        {
+            Assert.Equal(expectedStatuses[i], parameters.Statuses[i]);
+        }
         Assert.NotNull(parameters.Betas);
         Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
         for (int i = 0; i < expectedBetas.Count; i++)
@@ -51,6 +62,8 @@ public class ThreadListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
         Assert.Null(parameters.Page);
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
+        Assert.Null(parameters.Statuses);
+        Assert.False(parameters.RawQueryData.ContainsKey("statuses"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
         Assert.Null(parameters.WorkspaceID);
@@ -67,6 +80,7 @@ public class ThreadListParamsTest : TestBase
             // Null should be interpreted as omitted for these properties
             Limit = null,
             Page = null,
+            Statuses = null,
             Betas = null,
             WorkspaceID = null,
         };
@@ -75,6 +89,8 @@ public class ThreadListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
         Assert.Null(parameters.Page);
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
+        Assert.Null(parameters.Statuses);
+        Assert.False(parameters.RawQueryData.ContainsKey("statuses"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
         Assert.Null(parameters.WorkspaceID);
@@ -89,6 +105,7 @@ public class ThreadListParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             Limit = 0,
             Page = "page",
+            Statuses = [BetaManagedAgentsSessionThreadStatus.Running],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
@@ -96,6 +113,7 @@ public class ThreadListParamsTest : TestBase
             // Null should be interpreted as omitted for these properties
             Limit = null,
             Page = null,
+            Statuses = null,
             Betas = null,
             WorkspaceID = null,
         };
@@ -104,6 +122,8 @@ public class ThreadListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
         Assert.Null(parameters.Page);
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
+        Assert.Null(parameters.Statuses);
+        Assert.False(parameters.RawQueryData.ContainsKey("statuses"));
         Assert.Null(parameters.Betas);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
         Assert.Null(parameters.WorkspaceID);
@@ -118,6 +138,7 @@ public class ThreadListParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             Limit = 0,
             Page = "page",
+            Statuses = [BetaManagedAgentsSessionThreadStatus.Running],
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -125,7 +146,7 @@ public class ThreadListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/threads?beta=true&limit=0&page=page"
+                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/threads?beta=true&limit=0&page=page&statuses%5b%5d=running"
                 ),
                 url
             )
@@ -163,6 +184,7 @@ public class ThreadListParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             Limit = 0,
             Page = "page",
+            Statuses = [BetaManagedAgentsSessionThreadStatus.Running],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
