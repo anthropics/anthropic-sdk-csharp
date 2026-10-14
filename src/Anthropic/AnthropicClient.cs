@@ -461,9 +461,10 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         while (true)
         {
             HttpResponse? response = null;
+            string? sentToken = null;
             try
             {
-                response = await ExecuteOnce(request, retries, span, cancellationToken)
+                (response, sentToken) = await ExecuteOnce(request, retries, span, cancellationToken)
                     .ConfigureAwait(false);
             }
             catch (Exception e)
@@ -474,7 +475,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
                 }
             }
 
-            // 401 with token credentials: force-refresh the token and retry once.
+            // 401 with token credentials: get a new token (refreshing if needed) and retry once.
             // Gated on retries == 0 so an auth retry never stacks on top of a transport
             // retry, and on IsBodyRepeatable because a multipart body reads from the caller's
             // streams, which the first attempt has already consumed.
@@ -486,7 +487,20 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
                 if (!authRetryConsumed && retries == 0 && request.Params.IsBodyRepeatable())
                 {
                     authRetryConsumed = true;
-                    var failedToken = tokenCache.Cached?.Token;
+                    // The 401 is for the token this request sent; if the cache already holds a
+                    // different one (a concurrent request refreshed it), retry with that without
+                    // refreshing. A request with no bearer token compares against the cache.
+                    var cachedToken = tokenCache.Cached?.Token;
+                    var rejectedToken = sentToken ?? cachedToken;
+                    if (
+                        cachedToken != null
+                        && !string.Equals(cachedToken, rejectedToken, StringComparison.Ordinal)
+                    )
+                    {
+                        response.Dispose();
+                        retries++;
+                        continue;
+                    }
                     // Prime the cache so the retry's BeforeSend picks up the fresh token.
                     AccessToken fresh;
                     try
@@ -504,7 +518,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
                     // Only retry if the refresh actually produced a different token —
                     // StaticTokenCredentials / ANTHROPIC_AUTH_TOKEN can't change, so
                     // skipping avoids one wasted round-trip.
-                    if (!string.Equals(fresh.Token, failedToken, StringComparison.Ordinal))
+                    if (!string.Equals(fresh.Token, rejectedToken, StringComparison.Ordinal))
                     {
                         response.Dispose();
                         retries++;
@@ -700,7 +714,8 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         return response;
     }
 
-    async Task<HttpResponse> ExecuteOnce<T>(
+    // Also returns the bearer token the request was sent with, which the 401-retry path needs.
+    async Task<(HttpResponse Response, string? SentToken)> ExecuteOnce<T>(
         HttpRequest<T> request,
         int retryCount,
         Activity? span,
@@ -736,9 +751,11 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
             cancellationToken
         );
         HttpResponseMessage responseMessage;
+        string? sentToken;
         try
         {
             await BeforeSend(request, requestMessage, cts.Token).ConfigureAwait(false);
+            sentToken = requestMessage.Headers.Authorization?.Parameter;
             if (span != null)
             {
                 Tracing.InjectTraceHeaders(span, requestMessage.Headers);
@@ -774,7 +791,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         // token, and linking against a disposed source throws on .NET Framework in <=4.5.2
         // compatibility mode (and is inert everywhere else). Body reads are governed by the
         // tokens handed to them instead.
-        return new() { RawMessage = responseMessage };
+        return (new HttpResponse { RawMessage = responseMessage }, sentToken);
     }
 
     static TimeSpan ComputeRetryBackoff(int retries, HttpResponse? response)
