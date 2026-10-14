@@ -27,6 +27,10 @@ public class AnthropicClient : IAnthropicClient
     protected readonly ClientOptions _options;
     private readonly bool _ownsCredentials;
 
+    // Set on a client derived through WithOptions: the HTTP resources it shares with
+    // the client it was derived from are that client's to dispose.
+    private readonly ClientOptions? _parentOptions;
+
     /// <inheritdoc/>
     public HttpClient HttpClient
     {
@@ -141,7 +145,7 @@ public class AnthropicClient : IAnthropicClient
     /// <inheritdoc/>
     public virtual IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicClient(modifier(this._options));
+        return new AnthropicClient(modifier(this._options), this._options);
     }
 
     readonly Lazy<IMessageService> _messages;
@@ -186,7 +190,7 @@ public class AnthropicClient : IAnthropicClient
         {
             _options.Credentials?.Dispose();
         }
-        this._options.DisposeHttpResources();
+        this._options.DisposeHttpResources(_parentOptions);
         GC.SuppressFinalize(this);
     }
 
@@ -282,13 +286,21 @@ public class AnthropicClient : IAnthropicClient
         _ = options.ResolvedOpenTelemetry;
         _options = options;
 
-        _withRawResponse = new(() => new AnthropicClientWithRawResponse(this._options));
+        _withRawResponse = new(() =>
+            new AnthropicClientWithRawResponse(this._options, this._options)
+        );
         _messages = new(() => new MessageService(this));
         _models = new(() => new ModelService(this));
         _files = new(() => new FileService(this));
         _skills = new(() => new SkillService(this));
         _organization = new(() => new OrganizationService(this));
         _beta = new(() => new BetaService(this));
+    }
+
+    internal AnthropicClient(ClientOptions options, ClientOptions parentOptions)
+        : this(options)
+    {
+        _parentOptions = parentOptions;
     }
 }
 
@@ -314,6 +326,10 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
     protected readonly ClientOptions _options;
     private readonly TokenCache? _tokenCache;
     private readonly bool _ownsCredentials;
+
+    // Set on a client derived through WithOptions or AnthropicClient.WithRawResponse: the
+    // HTTP resources it shares with the client it was derived from are that client's to dispose.
+    private readonly ClientOptions? _parentOptions;
 
     /// <inheritdoc/>
     public HttpClient HttpClient
@@ -405,7 +421,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         }
         // The spans of such a client keep the scope of its package too.
         options.OpenTelemetrySource ??= this._options.OpenTelemetrySource;
-        return new AnthropicClientWithRawResponse(options);
+        return new AnthropicClientWithRawResponse(options, this._options);
     }
 
     readonly Lazy<IMessageServiceWithRawResponse> _messages;
@@ -930,7 +946,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         {
             _options.Credentials?.Dispose();
         }
-        this._options.DisposeHttpResources();
+        this._options.DisposeHttpResources(_parentOptions);
         GC.SuppressFinalize(this);
     }
 
@@ -964,5 +980,11 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         _ = options.ResolvedOpenTelemetry;
         _options = options;
         _tokenCache = _options.Credentials as TokenCache;
+    }
+
+    internal AnthropicClientWithRawResponse(ClientOptions options, ClientOptions parentOptions)
+        : this(options)
+    {
+        _parentOptions = parentOptions;
     }
 }
