@@ -655,11 +655,16 @@ public static class AnthropicBetaClientExtensions
             {
                 if (message.Role == ChatRole.System)
                 {
-                    List<BetaTextBlockParam> systemBlocks = [];
+                    List<BetaContentBlockParam> systemBlocks = [];
                     foreach (AIContent content in message.Contents)
                     {
                         switch (content)
                         {
+                            case AIContent ac
+                                when ac.RawRepresentation is BetaContentBlockParam rawContent:
+                                systemBlocks.Add(rawContent);
+                                break;
+
                             case AIContent ac when ac.RawRepresentation is BetaTextBlockParam raw:
                                 systemBlocks.Add(raw);
                                 break;
@@ -673,27 +678,27 @@ public static class AnthropicBetaClientExtensions
 
                     if (systemBlocks.Count > 0)
                     {
-                        if (messageParams.Count == 0)
+                        List<BetaTextBlockParam> textBlocks =
+                        [
+                            .. systemBlocks
+                                .Select(static b => b.Value)
+                                .OfType<BetaTextBlockParam>(),
+                        ];
+                        if (messageParams.Count == 0 && textBlocks.Count == systemBlocks.Count)
                         {
                             // A system message cannot be the first entry in `messages`; leading
-                            // system instructions go to the top-level `system` property.
-                            (systemMessages ??= []).AddRange(systemBlocks);
+                            // system instructions go to the top-level `system` property, which
+                            // only takes text.
+                            (systemMessages ??= []).AddRange(textBlocks);
                         }
                         else
                         {
-                            // A system message that appears mid-conversation is emitted as a
+                            // A system message that appears mid-conversation, or one carrying
+                            // blocks other than text (such as `tool_addition`), is emitted as a
                             // `{ "role": "system" }` message at its position, as-is. The API
                             // rejects the request if the model or the placement does not support
-                            // mid-conversation system messages.
-                            messageParams.Add(
-                                new()
-                                {
-                                    Role = Role.System,
-                                    Content = systemBlocks
-                                        .Select(static b => (BetaContentBlockParam)b)
-                                        .ToList(),
-                                }
-                            );
+                            // it.
+                            messageParams.Add(new() { Role = Role.System, Content = systemBlocks });
                         }
                     }
 
