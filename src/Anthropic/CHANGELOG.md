@@ -1,5 +1,11 @@
 # Changelog
 
+## [12.59.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.58.0...Anthropic-v12.59.0) (2026-10-15)
+
+### Features
+
+* **client:** yield server-sent events with unrecognized event names
+
 ## [12.58.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.57.0...Anthropic-v12.58.0) (2026-10-15)
 
 ### Features

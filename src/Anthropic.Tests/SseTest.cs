@@ -15,36 +15,46 @@ public class SseTest : TestBase
     static readonly TheoryData<string, string[]> _data = new()
     {
         // event and data
-        { "event: completion\n" + "data: {\"foo\":true}\n\n", new[] { "{\"foo\": true}" } },
+        { "event: event\n" + "data: {\"foo\":true}\n\n", new[] { "{\"foo\": true}" } },
         // event missing data
-        { "event: completion\n" + "\n", [] },
+        { "event: event\n" + "\n", [] },
+        // event and empty data
+        {
+            "event: event\n" + "data:\n\n" + "event: event\n" + "data: {\"foo\":true}\n\n",
+            new[] { "{\"foo\": true}" }
+        },
         // multiple events and data
         {
-            "event: completion\n"
+            "event: event\n"
                 + "data: {\"foo\":true}\n\n"
-                + "event: message_start\n"
+                + "event: event\n"
                 + "data: {\"bar\": false}\n\n",
             new[] { "{\"foo\": true}", "{\"bar\": false}" }
         },
         // multiple events missing data
-        { "event: completion\n" + "\n" + "event: message_start\n" + "\n", [] },
+        { "event: event\n" + "\n" + "event: event\n" + "\n", [] },
+        // missing event type and the default event type
+        {
+            "data: {\"foo\":true}\n\n" + "event: message\n" + "data: {\"bar\": false}\n\n",
+            ["{\"bar\": false}"]
+        },
         // json-escaped double newline
         {
-            "event: completion\n" + "data: {\ndata: \"foo\":\ndata: true }\n\n\n",
+            "event: event\n" + "data: {\ndata: \"foo\":\ndata: true }\n\n\n",
             new[] { "{ \"foo\":\ntrue }" }
         },
         // multiple data lines
         {
-            "event: completion\n" + "data: { \ndata: \"foo\":\ndata: true }\n\n\n",
+            "event: event\n" + "data: { \ndata: \"foo\":\ndata: true }\n\n\n",
             new[] { "{ \"foo\":\ntrue }" }
         },
         // special newline character
         {
-            "event: completion\n"
+            "event: event\n"
                 + "data: {\"content\": \" culpa\"}\n\n"
-                + "event: message_start\n"
+                + "event: event\n"
                 + "data: {\"content\": \" \u2028\"}\n\n"
-                + "event: completion\n"
+                + "event: event\n"
                 + "data: {\"content\": \"foo\"}\n\n",
             new[]
             {
@@ -55,7 +65,7 @@ public class SseTest : TestBase
         },
         // multi-byte character
         {
-            "event: completion\n"
+            "event: event\n"
                 + "data: {\"content\": "
                 + "\"\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u0438\"}\n\n}",
             new[] { "{\"content\":\"известни\"}" }
