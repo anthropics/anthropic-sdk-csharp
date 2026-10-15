@@ -170,8 +170,12 @@ public sealed class AnthropicAwsClient : AnthropicClient
         OpenTelemetrySource = PackageActivitySource;
     }
 
-    private AnthropicAwsClient(AwsClientOptions awsConfig, ClientOptions options)
-        : base(options)
+    private AnthropicAwsClient(
+        AwsClientOptions awsConfig,
+        ClientOptions options,
+        ClientOptions parentOptions
+    )
+        : base(options, parentOptions)
     {
         _awsConfig = awsConfig;
         // The options normally carry the backend adaptation handler and workspace-ID
@@ -184,6 +188,6 @@ public sealed class AnthropicAwsClient : AnthropicClient
     /// <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicAwsClient(_awsConfig, modifier(_options));
+        return new AnthropicAwsClient(_awsConfig, modifier(_options), _options);
     }
 }

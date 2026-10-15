@@ -43,9 +43,10 @@ public class AnthropicVertexClient : AnthropicClient
 
     private AnthropicVertexClient(
         IAnthropicVertexCredentials vertexCredentials,
-        ClientOptions clientOptions
+        ClientOptions clientOptions,
+        ClientOptions parentOptions
     )
-        : base(clientOptions)
+        : base(clientOptions, parentOptions)
     {
         _vertexCredentials = vertexCredentials;
         BaseUrl = ComputeBaseUrl(vertexCredentials);
@@ -68,6 +69,10 @@ public class AnthropicVertexClient : AnthropicClient
     /// <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicVertexClient(_vertexCredentials, modifier(this._options));
+        return new AnthropicVertexClient(
+            _vertexCredentials,
+            modifier(this._options),
+            this._options
+        );
     }
 }
