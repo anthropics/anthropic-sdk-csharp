@@ -7976,6 +7976,252 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetResponseAsync_WithResponseFormatSchemaWithoutRequired_SendsOutputFormat()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "The country with the Eiffel Tower"
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "country": { "type": "string" },
+                                "capitalCity": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_format_04",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "{\"country\":\"France\",\"capitalCity\":\"Paris\"}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 12
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema(
+                JsonElement.Parse(
+                    """
+                    {
+                        "type": "object",
+                        "properties": {
+                            "country": { "type": "string" },
+                            "capitalCity": { "type": "string" }
+                        }
+                    }
+                    """
+                ),
+                "location"
+            ),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "The country with the Eiffel Tower",
+            options,
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal("""{"country":"France","capitalCity":"Paris"}""", response.Text);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithResponseFormatSchemaWithoutRequired_SendsOutputFormat()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "The country with the Eiffel Tower"
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "country": { "type": "string" },
+                                "capitalCity": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    }
+                },
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_format_05","type":"message","role":"assistant","model":"claude-sonnet-4-5-20250929","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":20,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"{\"country\":\"France\","}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"\"capitalCity\":\"Paris\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":12}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema(
+                JsonElement.Parse(
+                    """
+                    {
+                        "type": "object",
+                        "properties": {
+                            "country": { "type": "string" },
+                            "capitalCity": { "type": "string" }
+                        }
+                    }
+                    """
+                ),
+                "location"
+            ),
+        };
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "The country with the Eiffel Tower",
+                options,
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        Assert.Equal(
+            """{"country":"France","capitalCity":"Paris"}""",
+            updates.ToChatResponse().Text
+        );
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithResponseFormatForTypeWithoutRequiredMembers_SendsOutputFormat()
+    {
+        // ForJsonSchema<T>() emits a "$schema" keyword, which the schema transform moves into the
+        // description like any other keyword the API doesn't support.
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "The country with the Eiffel Tower"
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "country": { "type": "string" },
+                                "capitalCity": { "type": "string" }
+                            },
+                            "additionalProperties": false,
+                            "description": "{$schema: \"https://json-schema.org/draft/2020-12/schema\"}"
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_format_06",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "{\"country\":\"France\",\"capitalCity\":\"Paris\"}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 12
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema<LocationWithoutRequiredMembers>(),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "The country with the Eiffel Tower",
+            options,
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal("""{"country":"France","capitalCity":"Paris"}""", response.Text);
+    }
+
+    private sealed class LocationWithoutRequiredMembers
+    {
+        public string Country { get; set; } = "";
+        public string CapitalCity { get; set; } = "";
+    }
+
+    [Fact]
     public async Task GetResponseAsync_WithHostedCodeInterpreterTool()
     {
         VerbatimHttpHandler handler = new(

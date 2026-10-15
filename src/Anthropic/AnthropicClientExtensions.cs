@@ -1561,8 +1561,6 @@ public static class AnthropicClientExtensions
                                 schema.ValueKind is JsonValueKind.Object
                                 && schema.TryGetProperty("properties", out JsonElement properties)
                                 && properties.ValueKind is JsonValueKind.Object
-                                && schema.TryGetProperty("required", out JsonElement required)
-                                && required.ValueKind is JsonValueKind.Array
                             )
                             {
                                 // Preserve all top-level schema keywords (e.g. $defs,
