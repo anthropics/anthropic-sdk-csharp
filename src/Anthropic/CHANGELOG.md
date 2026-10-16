@@ -6,6 +6,11 @@
 
 * **client:** yield server-sent events with unrecognized event names
 
+
+### Chores
+
+* **docs:** correct plugin manifest_version and reach descriptions
+
 ## [12.58.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.57.0...Anthropic-v12.58.0) (2026-10-15)
 
 ### Features
