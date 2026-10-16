@@ -59,7 +59,9 @@ public sealed record class BetaManagedAgentsMcpOAuthCreateParams : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When `access_token` expires, in RFC 3339.
+    ///
+    /// <para>Must be in the future.</para>
     /// </summary>
     public System::DateTimeOffset? ExpiresAt
     {
