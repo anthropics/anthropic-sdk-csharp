@@ -21,7 +21,7 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class BetaManagedAgentsDeletedCredential : JsonModel
 {
     /// <summary>
-    /// Unique identifier of the deleted credential.
+    /// The unique ID of the deleted credential (`vcrd_...`).
     /// </summary>
     public required string ID
     {

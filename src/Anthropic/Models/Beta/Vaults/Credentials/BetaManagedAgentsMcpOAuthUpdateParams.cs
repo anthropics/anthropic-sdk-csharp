@@ -33,7 +33,7 @@ public sealed record class BetaManagedAgentsMcpOAuthUpdateParams : JsonModel
     }
 
     /// <summary>
-    /// Updated OAuth access token.
+    /// The new OAuth access token to replace the stored one.
     /// </summary>
     public string? AccessToken
     {

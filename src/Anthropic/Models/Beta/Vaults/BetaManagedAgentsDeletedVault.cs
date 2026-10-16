@@ -18,7 +18,7 @@ namespace Anthropic.Models.Beta.Vaults;
 public sealed record class BetaManagedAgentsDeletedVault : JsonModel
 {
     /// <summary>
-    /// Unique identifier of the deleted vault.
+    /// The unique ID of the deleted vault (`vlt_...`).
     /// </summary>
     public required string ID
     {

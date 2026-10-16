@@ -11,6 +11,7 @@
 
 * **docs:** add credential expiry descriptions to the Managed Agents API reference
 * **docs:** correct plugin manifest_version and reach descriptions
+* **docs:** improve Managed Agents vault and credential descriptions
 
 ## [12.58.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.57.0...Anthropic-v12.58.0) (2026-10-15)
 

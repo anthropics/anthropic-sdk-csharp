@@ -21,7 +21,7 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class BetaManagedAgentsMcpOAuthCreateParams : JsonModel
 {
     /// <summary>
-    /// OAuth access token.
+    /// The OAuth access token to send to the MCP server.
     /// </summary>
     public required string AccessToken
     {

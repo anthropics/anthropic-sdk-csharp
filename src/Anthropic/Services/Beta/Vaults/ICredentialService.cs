@@ -27,7 +27,7 @@ public interface ICredentialService
     ICredentialService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Create Credential
+    /// Create a Credential
     /// </summary>
     Task<BetaManagedAgentsCredential> Create(
         CredentialCreateParams parameters,
@@ -42,7 +42,7 @@ public interface ICredentialService
     );
 
     /// <summary>
-    /// Get Credential
+    /// Retrieve a Credential
     /// </summary>
     Task<BetaManagedAgentsCredential> Retrieve(
         CredentialRetrieveParams parameters,
@@ -57,7 +57,7 @@ public interface ICredentialService
     );
 
     /// <summary>
-    /// Update Credential
+    /// Update a Credential
     /// </summary>
     Task<BetaManagedAgentsCredential> Update(
         CredentialUpdateParams parameters,
@@ -87,7 +87,7 @@ public interface ICredentialService
     );
 
     /// <summary>
-    /// Delete Credential
+    /// Delete a Credential
     /// </summary>
     Task<BetaManagedAgentsDeletedCredential> Delete(
         CredentialDeleteParams parameters,
@@ -102,7 +102,7 @@ public interface ICredentialService
     );
 
     /// <summary>
-    /// Archive Credential
+    /// Archive a Credential
     /// </summary>
     Task<BetaManagedAgentsCredential> Archive(
         CredentialArchiveParams parameters,
@@ -117,7 +117,7 @@ public interface ICredentialService
     );
 
     /// <summary>
-    /// Validate Credential
+    /// Validate an MCP OAuth Credential
     /// </summary>
     Task<BetaManagedAgentsCredentialValidation> McpOAuthValidate(
         CredentialMcpOAuthValidateParams parameters,

@@ -21,7 +21,7 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class BetaManagedAgentsTokenEndpointAuthBasicParam : JsonModel
 {
     /// <summary>
-    /// OAuth client secret.
+    /// The OAuth client secret, sent to `token_endpoint` with HTTP Basic authentication.
     /// </summary>
     public required string ClientSecret
     {
