@@ -158,6 +158,9 @@ public sealed class TracingTest : IDisposable
 
     static async Task Send(IAnthropicClient client)
     {
+        // A span takes its parent's ID format. .NET Framework's default one has no traceparent.
+        using var root = new Activity("test").SetIdFormat(ActivityIdFormat.W3C).Start();
+
         // Disposing of the response ends the span.
         using var response = await client.WithRawResponse.Execute(
             new HttpRequest<BlankParams>
