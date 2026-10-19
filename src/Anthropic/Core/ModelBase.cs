@@ -15,9 +15,9 @@ using Anthropic.Models.Beta.Organization.TelemetryDestinations;
 using Anthropic.Models.Messages;
 using Anthropic.Models.Models;
 using Anthropic.Models.Organization;
-using Anthropic.Models.Organization.ExternalKeys;
 using Anthropic.Models.Organization.Workspaces;
 using Anthropic.Models.Organization.Workspaces.RateLimits;
+using Anthropic.Models.UserProfiles;
 using Agents = Anthropic.Models.Beta.Agents;
 using Analytics = Anthropic.Models.Beta.Organization.Analytics;
 using AnalyticsSkills = Anthropic.Models.Beta.Organization.Analytics.Skills;
@@ -34,7 +34,7 @@ using Deployments = Anthropic.Models.Beta.Deployments;
 using Dreams = Anthropic.Models.Beta.Dreams;
 using Environments = Anthropic.Models.Beta.Environments;
 using Events = Anthropic.Models.Beta.Sessions.Events;
-using ExternalKeys = Anthropic.Models.Beta.Organization.ExternalKeys;
+using ExternalKeys = Anthropic.Models.Organization.ExternalKeys;
 using Files = Anthropic.Models.Files;
 using Invites = Anthropic.Models.Organization.Invites;
 using Memories = Anthropic.Models.Beta.MemoryStores.Memories;
@@ -44,6 +44,7 @@ using Messages = Anthropic.Models.Beta.Messages;
 using MessagesBatches = Anthropic.Models.Beta.Messages.Batches;
 using Models = Anthropic.Models.Beta.Models;
 using OrganizationApiKeys = Anthropic.Models.Beta.Organization.ApiKeys;
+using OrganizationExternalKeys = Anthropic.Models.Beta.Organization.ExternalKeys;
 using OrganizationInvites = Anthropic.Models.Beta.Organization.Invites;
 using OrganizationPlugins = Anthropic.Models.Beta.Organization.Plugins;
 using OrganizationRateLimits = Anthropic.Models.Beta.Organization.RateLimits;
@@ -150,14 +151,22 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Lifecycle>(),
             new ApiEnumConverter<string, Files::Type>(),
             new ApiEnumConverter<string, Skills::Type>(),
+            new ApiEnumConverter<string, UserProfileAccessType>(),
+            new ApiEnumConverter<string, Status>(),
+            new ApiEnumConverter<string, UserProfileEfsFeatureStatus>(),
+            new ApiEnumConverter<string, UserProfileExternalUserAccountStatus>(),
+            new ApiEnumConverter<string, UserProfileExternalUserEntityType>(),
+            new ApiEnumConverter<string, UserProfileListOrder>(),
+            new ApiEnumConverter<string, UserProfileListOrderBy>(),
+            new ApiEnumConverter<string, UserProfileProgramStatus>(),
             new ApiEnumConverter<string, OrganizationRole>(),
             new ApiEnumConverter<string, ApiKeys::ApiKeyStatus>(),
             new ApiEnumConverter<string, ApiKeys::Type>(),
             new ApiEnumConverter<string, ApiKeys::Status>(),
             new ApiEnumConverter<string, ApiKeys::ApiKeyListParamsStatus>(),
-            new ApiEnumConverter<string, Status>(),
-            new ApiEnumConverter<string, Geo>(),
-            new ApiEnumConverter<string, ExternalKeyUpdateParamsGeo>(),
+            new ApiEnumConverter<string, ExternalKeys::Status>(),
+            new ApiEnumConverter<string, ExternalKeys::Geo>(),
+            new ApiEnumConverter<string, ExternalKeys::ExternalKeyUpdateParamsGeo>(),
             new ApiEnumConverter<string, Invites::OrganizationInviteStatus>(),
             new ApiEnumConverter<string, Invites::Role>(),
             new ApiEnumConverter<string, Invites::Status>(),
@@ -806,9 +815,9 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, OrganizationApiKeys::Type>(),
             new ApiEnumConverter<string, OrganizationApiKeys::Status>(),
             new ApiEnumConverter<string, OrganizationApiKeys::ApiKeyListParamsStatus>(),
-            new ApiEnumConverter<string, ExternalKeys::Status>(),
-            new ApiEnumConverter<string, ExternalKeys::Geo>(),
-            new ApiEnumConverter<string, ExternalKeys::ExternalKeyUpdateParamsGeo>(),
+            new ApiEnumConverter<string, OrganizationExternalKeys::Status>(),
+            new ApiEnumConverter<string, OrganizationExternalKeys::Geo>(),
+            new ApiEnumConverter<string, OrganizationExternalKeys::ExternalKeyUpdateParamsGeo>(),
             new ApiEnumConverter<string, OrganizationInvites::BetaOrganizationInviteStatus>(),
             new ApiEnumConverter<string, OrganizationInvites::Role>(),
             new ApiEnumConverter<string, OrganizationInvites::Status>(),

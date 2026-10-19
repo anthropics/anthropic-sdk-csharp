@@ -54,8 +54,8 @@ public record class UserProfileCreateParams : ParamsBase
 
     /// <summary>
     /// Platform's own identifier for this user. Not enforced unique. Maximum 255
-    /// characters. Accepted under the `user-profiles-2026-03-24` and `user-profiles-2026-08-18`
-    /// beta headers; under `user-profiles-2026-09-04` send `external_user_details.reference_id` instead.
+    /// characters. Legacy field, accepted only under the `user-profiles-2026-03-24`
+    /// and `user-profiles-2026-08-18` beta headers; without one of them, send `external_user_details.reference_id`.
     /// </summary>
     public string? ExternalID
     {
@@ -69,8 +69,9 @@ public record class UserProfileCreateParams : ParamsBase
 
     /// <summary>
     /// Details about the entity this profile represents, as the platform states them.
-    /// Every field is optional. Accepted under the `user-profiles-2026-09-04` beta
-    /// header only.
+    /// Every field is optional. Not accepted under the legacy `user-profiles-2026-03-24`
+    /// and `user-profiles-2026-08-18` beta headers, which take the top-level `external_id`
+    /// (and, under `user-profiles-2026-08-18`, `external_user_onboarded_at`) instead.
     /// </summary>
     public BetaUserProfileExternalUserDetailsParams? ExternalUserDetails
     {
@@ -98,8 +99,8 @@ public record class UserProfileCreateParams : ParamsBase
     /// in RFC 3339 format: for an `application` profile, when the end-user signed
     /// up; for a `passthrough` profile, when the company became the platform's customer.
     /// Must be a complete timestamp no more than 1 minute in the future. Optional.
-    /// Accepted under the `user-profiles-2026-08-18` beta header; under `user-profiles-2026-09-04`
-    /// send `external_user_details.onboarded_at` instead.
+    /// Legacy field, accepted only under the `user-profiles-2026-08-18` beta header;
+    /// without a legacy header, send `external_user_details.onboarded_at`.
     /// </summary>
     public System::DateTimeOffset? ExternalUserOnboardedAt
     {
@@ -166,8 +167,7 @@ public record class UserProfileCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// This endpoint is in beta: requests must send `user-profiles-2026-03-24`, `user-profiles-2026-08-18`,
-    /// or `user-profiles-2026-09-04` in this header.
+    /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {

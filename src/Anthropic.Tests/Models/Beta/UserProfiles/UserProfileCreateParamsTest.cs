@@ -17,41 +17,41 @@ public class UserProfileCreateParamsTest : TestBase
         var parameters = new UserProfileCreateParams
         {
             AccessType = AccessType.Application,
-            ExternalID = "user_12345",
+            ExternalID = "x",
             ExternalUserDetails = new()
             {
                 AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-                Country = "country",
+                Country = "US",
                 EmailHash = "x",
-                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Business,
                 NameHash = "x",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "x",
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
-            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Metadata = new Dictionary<string, string>(),
-            Name = "x",
+            Name = "Example User",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         ApiEnum<string, AccessType> expectedAccessType = AccessType.Application;
-        string expectedExternalID = "user_12345";
+        string expectedExternalID = "x";
         BetaUserProfileExternalUserDetailsParams expectedExternalUserDetails = new()
         {
             AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-            Country = "country",
+            Country = "US",
             EmailHash = "x",
-            EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+            EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Business,
             NameHash = "x",
-            OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            ReferenceID = "x",
+            OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+            ReferenceID = "user_12345",
         };
         DateTimeOffset expectedExternalUserOnboardedAt = DateTimeOffset.Parse(
-            "2024-11-02T08:15:00Z"
+            "2019-12-27T18:11:19.117Z"
         );
         Dictionary<string, string> expectedMetadata = new();
-        string expectedName = "x";
+        string expectedName = "Example User";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -83,7 +83,7 @@ public class UserProfileCreateParamsTest : TestBase
     [Fact]
     public void OptionalNonNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new UserProfileCreateParams { ExternalID = "user_12345", Name = "x" };
+        var parameters = new UserProfileCreateParams { ExternalID = "x", Name = "Example User" };
 
         Assert.Null(parameters.AccessType);
         Assert.False(parameters.RawBodyData.ContainsKey("access_type"));
@@ -104,8 +104,8 @@ public class UserProfileCreateParamsTest : TestBase
     {
         var parameters = new UserProfileCreateParams
         {
-            ExternalID = "user_12345",
-            Name = "x",
+            ExternalID = "x",
+            Name = "Example User",
 
             // Null should be interpreted as omitted for these properties
             AccessType = null,
@@ -136,20 +136,20 @@ public class UserProfileCreateParamsTest : TestBase
         var parameters = new UserProfileCreateParams
         {
             AccessType = AccessType.Application,
-            ExternalID = "user_12345",
+            ExternalID = "x",
             ExternalUserDetails = new()
             {
                 AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-                Country = "country",
+                Country = "US",
                 EmailHash = "x",
-                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Business,
                 NameHash = "x",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "x",
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
-            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Metadata = new Dictionary<string, string>(),
-            Name = "x",
+            Name = "Example User",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
@@ -186,14 +186,14 @@ public class UserProfileCreateParamsTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-                Country = "country",
+                Country = "US",
                 EmailHash = "x",
-                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Business,
                 NameHash = "x",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "x",
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
-            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Metadata = new Dictionary<string, string>(),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -214,14 +214,14 @@ public class UserProfileCreateParamsTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-                Country = "country",
+                Country = "US",
                 EmailHash = "x",
-                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Business,
                 NameHash = "x",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "x",
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
-            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Metadata = new Dictionary<string, string>(),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -276,20 +276,20 @@ public class UserProfileCreateParamsTest : TestBase
         var parameters = new UserProfileCreateParams
         {
             AccessType = AccessType.Application,
-            ExternalID = "user_12345",
+            ExternalID = "x",
             ExternalUserDetails = new()
             {
                 AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-                Country = "country",
+                Country = "US",
                 EmailHash = "x",
-                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
+                EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Business,
                 NameHash = "x",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "x",
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
-            ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+            ExternalUserOnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Metadata = new Dictionary<string, string>(),
-            Name = "x",
+            Name = "Example User",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };

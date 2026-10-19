@@ -724,7 +724,7 @@ public record class MessageCreateParams : ParamsBase
 
     /// <summary>
     /// The user profile ID to attribute this request to. Use when acting on behalf
-    /// of a party other than your organization. Requires the `user-profiles` beta header.
+    /// of a party other than your organization.
     /// </summary>
     public string? UserProfileID
     {
