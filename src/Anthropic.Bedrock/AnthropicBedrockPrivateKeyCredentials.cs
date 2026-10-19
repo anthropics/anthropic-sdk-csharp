@@ -29,6 +29,11 @@ public sealed class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCre
     /// </summary>
     public required string ApiAccessKey { get; init; }
 
+    /// <summary>
+    /// Gets the session token of temporary credentials, or <c>null</c> for long-term ones.
+    /// </summary>
+    internal string? SessionToken { get; init; }
+
     /// <inheritdoc />
     public async Task Apply(HttpRequestMessage requestMessage)
     {
@@ -38,6 +43,10 @@ public sealed class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCre
         var content = await requestMessage.Content!.ReadAsStringAsync().ConfigureAwait(false);
         var payloadHash = AWSSigner.CalculateHash(content);
         requestMessage.Headers.TryAddWithoutValidation("x-amz-content-sha256", payloadHash);
+        if (SessionToken != null)
+        {
+            requestMessage.Headers.TryAddWithoutValidation("x-amz-security-token", SessionToken);
+        }
 
         var authorizationHeader = AWSSigner.GetAuthorizationHeader(
             "bedrock",
