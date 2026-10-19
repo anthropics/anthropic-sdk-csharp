@@ -13,9 +13,11 @@ using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 using Moq;
 using Moq.Protected;
+using BetaMessages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Bedrock;
 
+[Collection("EnvVarMutating")]
 public class AnthropicBedrockMantleClientTests : IDisposable
 {
     private readonly string? _origMantleApiKey;
@@ -572,6 +574,316 @@ public class AnthropicBedrockMantleClientTests : IDisposable
 
     #endregion
 
+    #region User Profile ID
+
+    const string UserProfileIDHeader = "anthropic-user-profile-id";
+
+    sealed class ApiKeyGateway : HttpMessageHandler
+    {
+        protected override Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken
+        ) =>
+            Task.FromResult(
+                new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(MessageJson, Encoding.UTF8, "application/json"),
+                }
+            );
+    }
+
+    /// <summary>
+    /// In SigV4 mode the gateway answers 403 unless the signature covers the request as sent.
+    /// </summary>
+    static (AnthropicBedrockMantleClient Client, WireRecordingHandler Wire) CreateRecordedClient(
+        bool sigV4 = true
+    )
+    {
+        var wire = new WireRecordingHandler(
+            sigV4 ? new SigV4VerifyingHandler(SigV4SecretKey, MessageJson) : new ApiKeyGateway()
+        );
+        var client = sigV4
+            ? CreateSigV4ClientAgainst(wire)
+            : new AnthropicBedrockMantleClient(
+                new()
+                {
+                    ApiKey = "sk-test-key",
+                    BaseUrl = "http://localhost",
+                    ClientOptions = new() { HttpClient = new HttpClient(wire) },
+                }
+            );
+        return (client, wire);
+    }
+
+    static Dictionary<string, JsonElement> RawBody(string? userProfileID) =>
+        userProfileID == null
+            ? []
+            : new() { ["user_profile_id"] = JsonSerializer.SerializeToElement(userProfileID) };
+
+    static MessageCreateParams CreateParams(
+        string? userProfileID,
+        string? bodyUserProfileID = null
+    ) =>
+        new(
+            rawHeaderData: new Dictionary<string, JsonElement>(),
+            rawQueryData: new Dictionary<string, JsonElement>(),
+            rawBodyData: RawBody(bodyUserProfileID)
+        )
+        {
+            MaxTokens = 16,
+            Messages = [new() { Content = "hello", Role = Role.User }],
+            Model = "anthropic.claude-3",
+            UserProfileID = userProfileID,
+        };
+
+    static BetaMessages::MessageCreateParams BetaCreateParams(
+        string? userProfileID,
+        string? bodyUserProfileID = null
+    ) =>
+        new(
+            rawHeaderData: new Dictionary<string, JsonElement>(),
+            rawQueryData: new Dictionary<string, JsonElement>(),
+            rawBodyData: RawBody(bodyUserProfileID)
+        )
+        {
+            MaxTokens = 16,
+            Messages = [new() { Content = "hello", Role = BetaMessages::Role.User }],
+            Model = "anthropic.claude-3",
+            UserProfileID = userProfileID,
+        };
+
+    static async Task<WireRequest> CreateMessage(
+        bool beta,
+        string? userProfileID,
+        string? bodyUserProfileID = null,
+        bool sigV4 = true
+    )
+    {
+        var (client, wire) = CreateRecordedClient(sigV4);
+        if (beta)
+        {
+            await client.Beta.Messages.Create(
+                BetaCreateParams(userProfileID, bodyUserProfileID),
+                TestContext.Current.CancellationToken
+            );
+        }
+        else
+        {
+            await client.Messages.Create(
+                CreateParams(userProfileID, bodyUserProfileID),
+                TestContext.Current.CancellationToken
+            );
+        }
+
+        var request = wire.Requests.Single();
+        Assert.EndsWith("/v1/messages", request.Uri.AbsolutePath);
+        Assert.Equal(beta ? "?beta=true" : "", request.Uri.Query);
+        return request;
+    }
+
+    [Theory]
+    [InlineData(false, true)]
+    [InlineData(true, true)]
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    public async Task UserProfileID_MessagesCreate_SentInBodyInsteadOfHeader(bool beta, bool sigV4)
+    {
+        var withoutID = await CreateMessage(beta, userProfileID: null, sigV4: sigV4);
+        var request = await CreateMessage(beta, "uprof_test", sigV4: sigV4);
+
+        Assert.False(request.Headers.ContainsKey(UserProfileIDHeader));
+        var expectedBody = withoutID.JsonBody;
+        expectedBody["user_profile_id"] = "uprof_test";
+        Assert.Equal(expectedBody.ToJsonString(), request.Body);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task UserProfileID_MessagesCreateStreaming_SentInBodyInsteadOfHeader(bool beta)
+    {
+        var (client, wire) = CreateRecordedClient();
+        if (beta)
+        {
+            using var response = await client.WithRawResponse.Beta.Messages.CreateStreaming(
+                BetaCreateParams("uprof_test"),
+                TestContext.Current.CancellationToken
+            );
+        }
+        else
+        {
+            using var response = await client.WithRawResponse.Messages.CreateStreaming(
+                CreateParams("uprof_test"),
+                TestContext.Current.CancellationToken
+            );
+        }
+
+        var request = wire.Requests.Single();
+        Assert.False(request.Headers.ContainsKey(UserProfileIDHeader));
+        Assert.True(request.JsonBody["stream"]!.GetValue<bool>());
+        Assert.Equal("uprof_test", request.JsonBody["user_profile_id"]!.GetValue<string>());
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task UserProfileID_NotSet_AbsentFromBody(bool beta)
+    {
+        var request = await CreateMessage(beta, userProfileID: null);
+
+        Assert.False(request.Headers.ContainsKey(UserProfileIDHeader));
+        Assert.False(request.JsonBody.ContainsKey("user_profile_id"));
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task UserProfileID_AlsoInBody_BodyValueWins(bool beta)
+    {
+        var request = await CreateMessage(beta, "uprof_header", bodyUserProfileID: "uprof_body");
+
+        Assert.False(request.Headers.ContainsKey(UserProfileIDHeader));
+        Assert.Equal("uprof_body", request.JsonBody["user_profile_id"]!.GetValue<string>());
+    }
+
+    [Fact]
+    public async Task UserProfileID_ClientExtraHeader_SentInBodyInsteadOfHeader()
+    {
+        var (client, wire) = CreateRecordedClient();
+        await client
+            .WithOptions(options =>
+            {
+                options.ExtraHeaders = new Dictionary<string, string>
+                {
+                    [UserProfileIDHeader] = "uprof_test",
+                };
+                return options;
+            })
+            .Messages.Create(
+                CreateParams(userProfileID: null),
+                TestContext.Current.CancellationToken
+            );
+
+        var request = wire.Requests.Single();
+        Assert.False(request.Headers.ContainsKey(UserProfileIDHeader));
+        Assert.Equal("uprof_test", request.JsonBody["user_profile_id"]!.GetValue<string>());
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task UserProfileID_CountTokens_SentInBodyInsteadOfHeader(bool beta)
+    {
+        var (client, wire) = CreateRecordedClient();
+        if (beta)
+        {
+            await client.WithRawResponse.Beta.Messages.CountTokens(
+                new()
+                {
+                    Messages = [new() { Content = "hello", Role = BetaMessages::Role.User }],
+                    Model = "anthropic.claude-3",
+                    UserProfileID = "uprof_test",
+                },
+                TestContext.Current.CancellationToken
+            );
+        }
+        else
+        {
+            await client.WithRawResponse.Messages.CountTokens(
+                new()
+                {
+                    Messages = [new() { Content = "hello", Role = Role.User }],
+                    Model = "anthropic.claude-3",
+                    UserProfileID = "uprof_test",
+                },
+                TestContext.Current.CancellationToken
+            );
+        }
+
+        var request = wire.Requests.Single();
+        Assert.EndsWith("/v1/messages/count_tokens", request.Uri.AbsolutePath);
+        Assert.Equal(beta ? "?beta=true" : "", request.Uri.Query);
+        Assert.False(request.Headers.ContainsKey(UserProfileIDHeader));
+        Assert.Equal("uprof_test", request.JsonBody["user_profile_id"]!.GetValue<string>());
+    }
+
+    [Fact]
+    public async Task UserProfileID_Batches_KeepsHeader()
+    {
+        var (client, wire) = CreateRecordedClient();
+        await client.WithRawResponse.Messages.Batches.Create(
+            new()
+            {
+                Requests =
+                [
+                    new()
+                    {
+                        CustomID = "my-custom-id-1",
+                        Params = new()
+                        {
+                            MaxTokens = 16,
+                            Messages = [new() { Content = "hello", Role = Role.User }],
+                            Model = "anthropic.claude-3",
+                        },
+                    },
+                ],
+                UserProfileID = "uprof_test",
+            },
+            TestContext.Current.CancellationToken
+        );
+
+        var request = wire.Requests.Single();
+        Assert.EndsWith("/v1/messages/batches", request.Uri.AbsolutePath);
+        Assert.Equal("uprof_test", request.Headers[UserProfileIDHeader]);
+        Assert.False(request.JsonBody.ContainsKey("user_profile_id"));
+    }
+
+    record class UneditableBodyParams : ParamsBase
+    {
+        public string Body { get; set; } = "";
+
+        internal override void AddHeadersToRequest(
+            HttpRequestMessage request,
+            ClientOptions options
+        )
+        {
+            AddDefaultHeaders(request, options);
+            request.Headers.Add(UserProfileIDHeader, "uprof_test");
+        }
+
+        public override Uri Url(ClientOptions options)
+        {
+            return new Uri($"{options.BaseUrl}/v1/messages");
+        }
+
+        internal override HttpContent? BodyContent()
+        {
+            return new StringContent(Body, Encoding.UTF8, "application/json");
+        }
+    }
+
+    [Theory]
+    [InlineData("[1]")]
+    [InlineData("not json")]
+    public async Task UserProfileID_BodyIsNotAJsonObject_RequestUnchanged(string body)
+    {
+        var (client, wire) = CreateRecordedClient();
+        await client.WithRawResponse.Execute(
+            new HttpRequest<UneditableBodyParams>
+            {
+                Method = HttpMethod.Post,
+                Params = new() { Body = body },
+            },
+            TestContext.Current.CancellationToken
+        );
+
+        var request = wire.Requests.Single();
+        Assert.Equal("uprof_test", request.Headers[UserProfileIDHeader]);
+        Assert.Equal(body, request.Body);
+    }
+
+    #endregion
+
     #region Endpoint Restrictions
 
     [Fact]
@@ -617,6 +929,15 @@ public class AnthropicBedrockMantleClientTests : IDisposable
             new() { ApiKey = "test-key", BaseUrl = "http://localhost" }
         );
         Assert.Throws<NotSupportedException>(() => client.Skills);
+    }
+
+    [Fact]
+    public void UserProfiles_ThrowsNotSupportedException()
+    {
+        var client = new AnthropicBedrockMantleClient(
+            new() { ApiKey = "test-key", BaseUrl = "http://localhost" }
+        );
+        Assert.Throws<NotSupportedException>(() => client.UserProfiles);
     }
 
     [Fact]

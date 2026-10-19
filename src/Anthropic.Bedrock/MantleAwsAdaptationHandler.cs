@@ -2,6 +2,7 @@ using System.Text;
 using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
 using Amazon.Runtime.Credentials;
+using Anthropic.Core;
 using Anthropic.Core.Telemetry;
 using Anthropic.Exceptions;
 
@@ -20,6 +21,8 @@ namespace Anthropic.Bedrock;
 /// </remarks>
 internal sealed class MantleAwsAdaptationHandler : DelegatingHandler
 {
+    private const string HeaderUserProfileID = "anthropic-user-profile-id";
+
     private readonly MantleAwsClientOptions _awsOptions;
 
     public MantleAwsAdaptationHandler(MantleAwsClientOptions awsOptions)
@@ -41,6 +44,17 @@ internal sealed class MantleAwsAdaptationHandler : DelegatingHandler
         CancellationToken cancellationToken
     )
     {
+        var path = requestMessage.RequestUri?.AbsolutePath ?? "";
+        if (path.Contains("/v1/user_profiles"))
+        {
+            throw new NotSupportedException(
+                "The UserProfiles resource is not supported on Bedrock Mantle. "
+                    + "Only Messages and Beta.Messages are available."
+            );
+        }
+
+        await MoveUserProfileIDToBody(requestMessage, cancellationToken).ConfigureAwait(false);
+
         if (requestMessage.Content != null)
         {
             requestMessage.Content.Headers.ContentType =
@@ -159,6 +173,51 @@ internal sealed class MantleAwsAdaptationHandler : DelegatingHandler
         );
 
         requestMessage.Headers.TryAddWithoutValidation("Authorization", authHeader);
+    }
+
+    // Mantle doesn't pass custom request headers through, so the user profile ID goes in the
+    // body of a Messages or count tokens request.
+    private static async Task MoveUserProfileIDToBody(
+        HttpRequestMessage requestMessage,
+        CancellationToken cancellationToken
+    )
+    {
+        var path = requestMessage.RequestUri?.AbsolutePath ?? "";
+        if (
+            requestMessage.Method != HttpMethod.Post
+            || requestMessage.Content is null
+            || !(
+                path.EndsWith("/v1/messages", StringComparison.Ordinal)
+                || path.EndsWith("/v1/messages/count_tokens", StringComparison.Ordinal)
+            )
+            || !requestMessage.Headers.TryGetValues(HeaderUserProfileID, out var headerValues)
+        )
+        {
+            return;
+        }
+
+        var body = JsonNodes.ParseObject(
+            await requestMessage.Content.ReadAsStringAsync(
+#if NET
+                cancellationToken
+#endif
+            ).ConfigureAwait(false)
+        );
+        if (body is null)
+        {
+            return;
+        }
+
+        if (!body.ContainsKey("user_profile_id"))
+        {
+            body["user_profile_id"] = string.Join(",", headerValues);
+            requestMessage.Content = new StringContent(
+                body.ToJsonString(),
+                Encoding.UTF8,
+                "application/json"
+            );
+        }
+        requestMessage.Headers.Remove(HeaderUserProfileID);
     }
 
     private async Task<(

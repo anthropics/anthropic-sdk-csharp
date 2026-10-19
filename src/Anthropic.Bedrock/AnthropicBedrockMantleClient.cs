@@ -179,6 +179,16 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
         );
 
     /// <summary>
+    /// Not supported on Bedrock Mantle. Only Messages (and Beta.Messages) are available.
+    /// </summary>
+    /// <exception cref="NotSupportedException">Always thrown.</exception>
+    public new IUserProfileService UserProfiles =>
+        throw new NotSupportedException(
+            "The UserProfiles resource is not supported on Bedrock Mantle. "
+                + "Only Messages and Beta.Messages are available."
+        );
+
+    /// <summary>
     /// Beta resources. Only <c>Messages</c> is available; accessing <c>Models</c>,
     /// <c>Files</c>, or <c>Skills</c> will throw <see cref="NotSupportedException"/>.
     /// </summary>

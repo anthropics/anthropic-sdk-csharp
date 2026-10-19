@@ -174,6 +174,16 @@ internal sealed class BedrockAdaptationHandler : DelegatingHandler
                 $"The requested endpoint '{requestMessage.RequestUri.Segments[3].Trim('/')}' is not yet supported."
             );
         }
+
+        if (
+            requestMessage.RequestUri.Segments.Length >= 3
+            && requestMessage.RequestUri.Segments[2].Trim('/') is "user_profiles"
+        )
+        {
+            throw new NotSupportedException(
+                "The UserProfiles resource is not supported on Bedrock."
+            );
+        }
     }
 
     private static async Task TranslateResponse(
