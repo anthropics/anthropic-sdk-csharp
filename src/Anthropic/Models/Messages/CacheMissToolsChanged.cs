@@ -8,6 +8,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
+/// <summary>
+/// A `cache_miss_reason` for a request whose `tools` differ from the previous request's,
+/// for example because tools were added, removed, or reordered.
+///
+/// <para>See the [cache diagnostics guide](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics#cache-miss-reason-types)
+/// to learn what to change for each reason.</para>
+/// </summary>
 [JsonConverter(typeof(JsonModelConverter<CacheMissToolsChanged, CacheMissToolsChangedFromRaw>))]
 public sealed record class CacheMissToolsChanged : JsonModel
 {

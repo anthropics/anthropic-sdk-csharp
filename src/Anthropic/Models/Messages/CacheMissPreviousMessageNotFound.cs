@@ -8,6 +8,15 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
+/// <summary>
+/// A `cache_miss_reason` for when the API doesn't have a stored record of the request
+/// that `diagnostics.previous_message_id` references.
+///
+/// <para>This doesn't mean that this request changed.</para>
+///
+/// <para>See the [cache diagnostics guide](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics#cache-miss-reason-types)
+/// to learn what to change for each reason.</para>
+/// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<
         CacheMissPreviousMessageNotFound,
