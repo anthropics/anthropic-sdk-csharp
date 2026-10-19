@@ -12,7 +12,7 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.MemoryStores;
 
 /// <summary>
-/// Update a memory store
+/// Update a Memory Store
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -29,7 +29,7 @@ public record class MemoryStoreUpdateParams : ParamsBase
     public string? MemoryStoreID { get; init; }
 
     /// <summary>
-    /// New description for the store, up to 1024 characters. Pass an empty string
+    /// New description for the store, up to 1,024 characters. Pass an empty string
     /// to clear it.
     /// </summary>
     public string? Description
@@ -43,9 +43,11 @@ public record class MemoryStoreUpdateParams : ParamsBase
     }
 
     /// <summary>
-    /// Metadata patch. Set a key to a string to upsert it, or to null to delete
-    /// it. Omit the field to preserve. The stored bag is limited to 16 keys (up to
-    /// 64 chars each) with values up to 512 chars.
+    /// Changes to apply to the memory store's metadata. Keys you leave out keep their values.
+    ///
+    /// <para>Set a key to a string to add or replace it, or to `null` to remove
+    /// it. After the change, the metadata can hold at most 16 key-value pairs. Keys
+    /// are 1 to 64 characters long and values at most 512 characters.</para>
     /// </summary>
     public IReadOnlyDictionary<string, string?>? Metadata
     {
@@ -66,9 +68,10 @@ public record class MemoryStoreUpdateParams : ParamsBase
     }
 
     /// <summary>
-    /// New human-readable name for the store. 1–255 characters; no control characters.
-    /// Renaming changes the slug used for the store's `mount_path` in sessions created
-    /// after the update.
+    /// The new name of the memory store, 1 to 255 characters long, without control characters.
+    ///
+    /// <para>Sessions created after the change use the new name for the store's
+    /// directory under `/mnt/memory/`.</para>
     /// </summary>
     public string? Name
     {

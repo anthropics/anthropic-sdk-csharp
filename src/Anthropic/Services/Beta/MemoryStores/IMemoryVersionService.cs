@@ -27,7 +27,7 @@ public interface IMemoryVersionService
     IMemoryVersionService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Retrieve a memory version
+    /// Retrieve a Memory Version
     /// </summary>
     Task<BetaManagedAgentsMemoryVersion> Retrieve(
         MemoryVersionRetrieveParams parameters,
@@ -42,7 +42,7 @@ public interface IMemoryVersionService
     );
 
     /// <summary>
-    /// List memory versions
+    /// List Memory Versions
     /// </summary>
     Task<MemoryVersionListPage> List(
         MemoryVersionListParams parameters,
@@ -57,7 +57,7 @@ public interface IMemoryVersionService
     );
 
     /// <summary>
-    /// Redact a memory version
+    /// Redact a Memory Version
     /// </summary>
     Task<BetaManagedAgentsMemoryVersion> Redact(
         MemoryVersionRedactParams parameters,

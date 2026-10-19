@@ -9,7 +9,7 @@ using Anthropic.Core;
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
 /// <summary>
-/// Response payload for [List memory versions](/en/api/beta/memory_stores/memory_versions/list).
+/// A page of results from [List Memory Versions](https://platform.claude.com/docs/en/api/beta/memory_stores/memory_versions/list).
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<MemoryVersionListPageResponse, MemoryVersionListPageResponseFromRaw>)
@@ -45,8 +45,8 @@ public sealed record class MemoryVersionListPageResponse : JsonModel
     }
 
     /// <summary>
-    /// Opaque cursor for the next page (a `page_...` value), or `null` if there are
-    /// no more results. Pass as `page` on the next request.
+    /// The value to pass as `page` to get the next page, or `null` if there are
+    /// no more results.
     /// </summary>
     public string? NextPage
     {

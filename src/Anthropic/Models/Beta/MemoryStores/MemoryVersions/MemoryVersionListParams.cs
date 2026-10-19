@@ -12,7 +12,7 @@ using Anthropic.Services.Beta.MemoryStores;
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
 /// <summary>
-/// List memory versions
+/// List Memory Versions
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -89,7 +89,10 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// The maximum number of versions to return per page. Defaults to 20.
+    /// The maximum number of versions to return per page, from 1 to 100. Defaults
+    /// to 20.
+    ///
+    /// <para>With `view=full`, a page holds at most 20 versions.</para>
     /// </summary>
     public int? Limit
     {
@@ -113,8 +116,9 @@ public record class MemoryVersionListParams : ParamsBase
     /// <summary>
     /// Return only versions of the memory with this ID (`mem_...`).
     ///
-    /// <para>The filter still works after the memory is deleted. The results then
-    /// include the version whose `operation` is `deleted`.</para>
+    /// <para>The filter still works after the memory is deleted. While that memory's
+    /// versions are retained, the results include the version whose `operation`
+    /// is `deleted`.</para>
     /// </summary>
     public string? MemoryID
     {
@@ -227,11 +231,11 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Selects which projection of a `memory` or `memory_version` the server returns.
-    /// `basic` returns the object with `content` set to `null`; `full` populates
-    /// `content`. When omitted, the default is endpoint-specific: retrieve operations
-    /// default to `full`; list, create, and update operations default to `basic`.
-    /// Listing with `view=full` caps `limit` at 20.
+    /// Whether a `memory` or `memory_version` in the response includes its `content`.
+    /// Defaults to `full` on retrieve operations and to `basic` on list, create,
+    /// and update operations.
+    ///
+    /// <para>With `full`, list operations return at most 20 items per page.</para>
     /// </summary>
     public ApiEnum<string, BetaManagedAgentsMemoryView>? View
     {

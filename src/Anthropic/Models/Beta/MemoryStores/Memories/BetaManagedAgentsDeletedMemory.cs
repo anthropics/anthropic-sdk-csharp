@@ -10,11 +10,14 @@ using System = System;
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
 /// <summary>
-/// Tombstone returned by [Delete a memory](/en/api/beta/memory_stores/memories/delete).
-/// Deleting a memory does not erase its version history: its versions remain listable
-/// via [List memory versions](/en/api/beta/memory_stores/memory_versions/list) while
-/// they are retained (each version is kept for at least the version retention period
-/// after it was written, unless the store itself is deleted).
+/// The confirmation that [Delete a Memory](https://platform.claude.com/docs/en/api/beta/memory_stores/memories/delete) returns.
+///
+/// <para>Deleting a memory doesn't delete its versions. [List Memory Versions](https://platform.claude.com/docs/en/api/beta/memory_stores/memory_versions/list)
+/// returns them while they are retained: each version is kept for at least the version
+/// retention period after it was written, unless the store itself is deleted.</para>
+///
+/// <para>See the [memory guide](https://platform.claude.com/docs/en/managed-agents/memory#audit-memory-changes)
+/// to learn more about how long versions are kept.</para>
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<

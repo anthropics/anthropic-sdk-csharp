@@ -32,7 +32,7 @@ public interface IMemoryStoreService
     IMemoryVersionService MemoryVersions { get; }
 
     /// <summary>
-    /// Create a memory store
+    /// Create a Memory Store
     /// </summary>
     Task<BetaManagedAgentsMemoryStore> Create(
         MemoryStoreCreateParams parameters,
@@ -40,7 +40,7 @@ public interface IMemoryStoreService
     );
 
     /// <summary>
-    /// Retrieve a memory store
+    /// Retrieve a Memory Store
     /// </summary>
     Task<BetaManagedAgentsMemoryStore> Retrieve(
         MemoryStoreRetrieveParams parameters,
@@ -55,7 +55,7 @@ public interface IMemoryStoreService
     );
 
     /// <summary>
-    /// Update a memory store
+    /// Update a Memory Store
     /// </summary>
     Task<BetaManagedAgentsMemoryStore> Update(
         MemoryStoreUpdateParams parameters,
@@ -70,7 +70,7 @@ public interface IMemoryStoreService
     );
 
     /// <summary>
-    /// List memory stores
+    /// List Memory Stores
     /// </summary>
     Task<MemoryStoreListPage> List(
         MemoryStoreListParams? parameters = null,
@@ -78,7 +78,7 @@ public interface IMemoryStoreService
     );
 
     /// <summary>
-    /// Delete a memory store
+    /// Delete a Memory Store
     /// </summary>
     Task<BetaManagedAgentsDeletedMemoryStore> Delete(
         MemoryStoreDeleteParams parameters,
@@ -93,7 +93,7 @@ public interface IMemoryStoreService
     );
 
     /// <summary>
-    /// Archive a memory store
+    /// Archive a Memory Store
     /// </summary>
     Task<BetaManagedAgentsMemoryStore> Archive(
         MemoryStoreArchiveParams parameters,
