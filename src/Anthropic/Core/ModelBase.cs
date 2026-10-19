@@ -185,6 +185,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, DataResidencyCreateConfigWorkspaceGeo>(),
             new ApiEnumConverter<string, DataResidencyUpdateConfigDefaultInferenceGeo>(),
             new ApiEnumConverter<string, WorkspaceRole>(),
+            new ApiEnumConverter<string, WorkspaceRateLimitType>(),
             new ApiEnumConverter<string, GroupType>(),
             new ApiEnumConverter<string, RateLimits::GroupType>(),
             new ApiEnumConverter<string, AnthropicBeta>(),
@@ -846,6 +847,7 @@ public abstract record class ModelBase
             >(),
             new ApiEnumConverter<string, Workspaces::BetaWorkspaceRole>(),
             new ApiEnumConverter<string, WorkspacesRateLimits::BetaWorkspaceRateLimitGroupType>(),
+            new ApiEnumConverter<string, WorkspacesRateLimits::BetaWorkspaceRateLimitType>(),
             new ApiEnumConverter<string, WorkspacesRateLimits::GroupType>(),
             new ApiEnumConverter<
                 string,

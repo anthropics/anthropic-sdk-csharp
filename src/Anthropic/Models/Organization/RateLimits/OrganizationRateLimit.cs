@@ -16,6 +16,7 @@ public sealed record class OrganizationRateLimit : JsonModel
     /// <summary>
     /// Identifier of this rate-limit entry. It is stable within the organization
     /// and differs between organizations; the group's own identifier is `group.id`.
+    /// Pass it as `rate_limit_id` to set a workspace's overrides for this group.
     /// </summary>
     public required string ID
     {
