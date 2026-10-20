@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.7.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Vertex-v0.6.0...Vertex-v0.7.0) (2026-10-20)
+
+### Features
+
+* **vertex:** throw `NotSupportedException` for `UserProfiles` requests on `AnthropicVertexClient`, which doesn't support them
+
 ## [0.6.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Vertex-v0.5.3...Vertex-v0.6.0) (2026-10-14)
 
 ### Features

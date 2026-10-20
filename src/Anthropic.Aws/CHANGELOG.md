@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.7.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v0.6.0...Aws-v0.7.0) (2026-10-20)
+
+### Features
+
+* **aws:** throw `NotSupportedException` for `UserProfiles.ActionUrls` requests on `AnthropicAwsClient`, which the AWS gateway doesn't support
+
 ## [0.6.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v0.5.3...Aws-v0.6.0) (2026-10-14)
 
 ### Features
