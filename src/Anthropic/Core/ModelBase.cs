@@ -66,6 +66,7 @@ using UserProfiles = Anthropic.Models.Beta.UserProfiles;
 using Users = Anthropic.Models.Organization.Users;
 using UserUsageReport = Anthropic.Models.Beta.Organization.Analytics.UserUsageReport;
 using Vaults = Anthropic.Models.Beta.Vaults;
+using Webhooks = Anthropic.Models.Beta.Organization.Webhooks;
 using Workspaces = Anthropic.Models.Beta.Organization.Workspaces;
 using WorkspacesRateLimits = Anthropic.Models.Beta.Organization.Workspaces.RateLimits;
 
@@ -922,6 +923,16 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, PluginMarketplaces::OwnerType>(),
             new ApiEnumConverter<string, PluginMarketplaces::Source>(),
             new ApiEnumConverter<string, BetaTelemetryDestinationContentMode>(),
+            new ApiEnumConverter<
+                string,
+                Webhooks::BetaNewOrganizationWebhookEndpointEnabledEvent
+            >(),
+            new ApiEnumConverter<string, Webhooks::BetaOrganizationWebhookEndpointEnabledEvent>(),
+            new ApiEnumConverter<string, Webhooks::BetaOrganizationWebhookEndpointState>(),
+            new ApiEnumConverter<string, Webhooks::EnabledEvent>(),
+            new ApiEnumConverter<string, Webhooks::WebhookUpdateParamsEnabledEvent>(),
+            new ApiEnumConverter<string, Webhooks::State>(),
+            new ApiEnumConverter<string, Webhooks::Order>(),
         },
     };
 

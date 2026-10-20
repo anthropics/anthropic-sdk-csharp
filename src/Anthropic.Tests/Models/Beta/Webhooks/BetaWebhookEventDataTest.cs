@@ -543,6 +543,30 @@ public class BetaWebhookEventDataTest : TestBase
     }
 
     [Fact]
+    public void UserProfileEnforcementActionOpenedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookUserProfileEnforcementActionOpenedEventData()
+        {
+            ID = "id",
+            EnforcementActionID = "enforcement_action_id",
+            OrganizationID = "organization_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void UserProfileEnforcementActionResolvedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookUserProfileEnforcementActionResolvedEventData()
+        {
+            ID = "id",
+            EnforcementActionID = "enforcement_action_id",
+            OrganizationID = "organization_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void SessionCreatedSerializationRoundtripWorks()
     {
         BetaWebhookEventData value = new BetaWebhookSessionCreatedEventData()
@@ -1342,6 +1366,42 @@ public class BetaWebhookEventDataTest : TestBase
     }
 
     [Fact]
+    public void UserProfileEnforcementActionOpenedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookUserProfileEnforcementActionOpenedEventData()
+        {
+            ID = "id",
+            EnforcementActionID = "enforcement_action_id",
+            OrganizationID = "organization_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UserProfileEnforcementActionResolvedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookUserProfileEnforcementActionResolvedEventData()
+        {
+            ID = "id",
+            EnforcementActionID = "enforcement_action_id",
+            OrganizationID = "organization_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaWebhookEventData value = new(
@@ -1353,7 +1413,8 @@ public class BetaWebhookEventDataTest : TestBase
                   "type": "session.created",
                   "workspace_id": "workspace_id",
                   "session_thread_id": "session_thread_id",
-                  "vault_id": "vault_id"
+                  "vault_id": "vault_id",
+                  "enforcement_action_id": "enforcement_action_id"
                 }
                 """
             )
@@ -1366,6 +1427,7 @@ public class BetaWebhookEventDataTest : TestBase
         string expectedWorkspaceID = "workspace_id";
         string expectedSessionThreadID = "session_thread_id";
         string expectedVaultID = "vault_id";
+        string expectedEnforcementActionID = "enforcement_action_id";
 
         Assert.Equal(expectedID, value.ID);
         Assert.Equal(expectedOrganizationID, value.OrganizationID);
@@ -1373,15 +1435,17 @@ public class BetaWebhookEventDataTest : TestBase
         Assert.Equal(expectedWorkspaceID, value.WorkspaceID);
         Assert.Equal(expectedSessionThreadID, value.SessionThreadID);
         Assert.Equal(expectedVaultID, value.VaultID);
+        Assert.Equal(expectedEnforcementActionID, value.EnforcementActionID);
 
         BetaWebhookEventData emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.ID);
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.OrganizationID);
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
-        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.WorkspaceID);
+        Assert.Null(emptyValue.WorkspaceID);
         Assert.Null(emptyValue.SessionThreadID);
         Assert.Null(emptyValue.VaultID);
+        Assert.Null(emptyValue.EnforcementActionID);
 
         BetaWebhookEventData mismatchedValue = new(
             JsonSerializer.Deserialize<JsonElement>(
@@ -1401,6 +1465,9 @@ public class BetaWebhookEventDataTest : TestBase
                   ],
                   "vault_id": [
                     "invalid"
+                  ],
+                  "enforcement_action_id": [
+                    "invalid"
                   ]
                 }
                 """
@@ -1409,8 +1476,9 @@ public class BetaWebhookEventDataTest : TestBase
 
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.ID);
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.OrganizationID);
-        Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.WorkspaceID);
+        Assert.Null(mismatchedValue.WorkspaceID);
         Assert.Null(mismatchedValue.SessionThreadID);
         Assert.Null(mismatchedValue.VaultID);
+        Assert.Null(mismatchedValue.EnforcementActionID);
     }
 }
