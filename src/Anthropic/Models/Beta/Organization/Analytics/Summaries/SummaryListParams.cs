@@ -194,6 +194,11 @@ public record class SummaryListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/analytics/summaries";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["ending_date", "filter", "limit", "page", "starting_date"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

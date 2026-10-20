@@ -487,7 +487,7 @@ public class AgentTest : TestBase
             ],
             Model = new Agents::BetaManagedAgentsModelConfigParams()
             {
-                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = Agents::BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -576,7 +576,7 @@ public class AgentTest : TestBase
             ],
             Model = new Agents::BetaManagedAgentsModelConfigParams()
             {
-                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = Agents::BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,

@@ -172,6 +172,14 @@ public sealed class IncreaseRequestServiceWithRawResponse : IIncreaseRequestServ
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.spend_limits.increase_requests.retrieve",
+            SpanResourceIds =
+            [
+                new(
+                    "anthropic.organization.spend_limit_increase_request.id",
+                    parameters.SpendLimitIncreaseRequestID
+                ),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -220,6 +228,7 @@ public sealed class IncreaseRequestServiceWithRawResponse : IIncreaseRequestServ
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.spend_limits.increase_requests.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -255,6 +264,14 @@ public sealed class IncreaseRequestServiceWithRawResponse : IIncreaseRequestServ
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.spend_limits.increase_requests.approve",
+            SpanResourceIds =
+            [
+                new(
+                    "anthropic.organization.spend_limit_increase_request.id",
+                    parameters.SpendLimitIncreaseRequestID
+                ),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -306,6 +323,14 @@ public sealed class IncreaseRequestServiceWithRawResponse : IIncreaseRequestServ
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.spend_limits.increase_requests.deny",
+            SpanResourceIds =
+            [
+                new(
+                    "anthropic.organization.spend_limit_increase_request.id",
+                    parameters.SpendLimitIncreaseRequestID
+                ),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

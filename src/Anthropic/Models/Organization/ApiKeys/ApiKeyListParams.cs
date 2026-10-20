@@ -207,6 +207,11 @@ public record class ApiKeyListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/api_keys";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["after_id", "before_id", "created_by_user_id", "limit", "status", "workspace_id"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

@@ -317,6 +317,8 @@ public record class RuleUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/federation_rules/{federation_rule_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

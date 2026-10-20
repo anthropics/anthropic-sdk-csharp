@@ -168,6 +168,8 @@ public record class ModelRetrieveParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/models/{model_id}";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

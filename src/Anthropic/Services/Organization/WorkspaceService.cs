@@ -201,6 +201,7 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -212,6 +213,12 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
                 {
                     workspace.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.workspace.id",
+                    workspace,
+                    static created => created.ID
+                );
                 return workspace;
             }
         );
@@ -232,6 +239,8 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.retrieve",
+            SpanResourceIds = [new("anthropic.organization.workspace.id", parameters.WorkspaceID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -275,6 +284,8 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.update",
+            SpanResourceIds = [new("anthropic.organization.workspace.id", parameters.WorkspaceID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -315,6 +326,7 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -348,6 +360,8 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.archive",
+            SpanResourceIds = [new("anthropic.organization.workspace.id", parameters.WorkspaceID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

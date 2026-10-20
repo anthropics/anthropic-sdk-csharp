@@ -174,6 +174,8 @@ public record class SkillCreateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/skills";
+
     internal override HttpContent? BodyContent()
     {
         return MultipartJsonSerializer.Serialize(RawBodyData);

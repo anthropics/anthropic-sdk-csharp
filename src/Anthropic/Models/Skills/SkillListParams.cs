@@ -176,6 +176,10 @@ public record class SkillListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/skills";
+
+    internal override IReadOnlyList<string> QueryParams => ["limit", "page", "source"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

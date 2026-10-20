@@ -24,7 +24,8 @@ public record class CredentialMcpOAuthValidateParams : ParamsBase
     public string? CredentialID { get; init; }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `managed-agents-2026-04-01` in
+    /// this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -177,6 +178,9 @@ public record class CredentialMcpOAuthValidateParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route =>
+        "/v1/vaults/{vault_id}/credentials/{credential_id}/mcp_oauth_validate";
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

@@ -158,6 +158,8 @@ public record class PluginDeleteParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/plugins/{plugin_id}";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

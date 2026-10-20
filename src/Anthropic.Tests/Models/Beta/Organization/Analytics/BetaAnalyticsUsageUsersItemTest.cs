@@ -28,7 +28,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
             EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             InferenceGeo = BetaAnalyticsUsageUsersItemInferenceGeo.Global,
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             OutputTokens = 891000,
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
@@ -62,7 +62,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
         DateTimeOffset expectedEndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         ApiEnum<string, BetaAnalyticsUsageUsersItemInferenceGeo> expectedInferenceGeo =
             BetaAnalyticsUsageUsersItemInferenceGeo.Global;
-        string expectedModel = "claude-opus-5";
+        string expectedModel = "claude-opus-5-5";
         long expectedOutputTokens = 891000;
         string expectedProduct = "chat";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
@@ -115,7 +115,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
             EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             InferenceGeo = BetaAnalyticsUsageUsersItemInferenceGeo.Global,
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             OutputTokens = 891000,
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
@@ -156,7 +156,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
             EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             InferenceGeo = BetaAnalyticsUsageUsersItemInferenceGeo.Global,
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             OutputTokens = 891000,
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
@@ -197,7 +197,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
         DateTimeOffset expectedEndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         ApiEnum<string, BetaAnalyticsUsageUsersItemInferenceGeo> expectedInferenceGeo =
             BetaAnalyticsUsageUsersItemInferenceGeo.Global;
-        string expectedModel = "claude-opus-5";
+        string expectedModel = "claude-opus-5-5";
         long expectedOutputTokens = 891000;
         string expectedProduct = "chat";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
@@ -250,7 +250,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
             EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             InferenceGeo = BetaAnalyticsUsageUsersItemInferenceGeo.Global,
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             OutputTokens = 891000,
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
@@ -285,7 +285,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
             EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             InferenceGeo = BetaAnalyticsUsageUsersItemInferenceGeo.Global,
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             OutputTokens = 891000,
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",

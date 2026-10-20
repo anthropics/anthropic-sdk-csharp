@@ -205,6 +205,8 @@ public record class ServiceAccountCreateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/service_accounts";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

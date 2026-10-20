@@ -167,7 +167,7 @@ public record class DreamListParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `dreaming-2026-04-21` in this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -295,6 +295,11 @@ public record class DreamListParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/dreams";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["created_at[gt]", "created_at[lt]", "include_archived", "limit", "page", "statuses"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

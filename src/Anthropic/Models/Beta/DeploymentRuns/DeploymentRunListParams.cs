@@ -223,7 +223,8 @@ public record class DeploymentRunListParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `managed-agents-2026-04-01` in
+    /// this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -351,6 +352,21 @@ public record class DeploymentRunListParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/deployment_runs";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        [
+            "created_at[gt]",
+            "created_at[gte]",
+            "created_at[lt]",
+            "created_at[lte]",
+            "deployment_id",
+            "has_error",
+            "limit",
+            "page",
+            "trigger_type",
+        ];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

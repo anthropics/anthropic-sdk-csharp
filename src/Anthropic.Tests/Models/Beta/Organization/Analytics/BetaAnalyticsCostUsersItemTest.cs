@@ -29,7 +29,7 @@ public class BetaAnalyticsCostUsersItemTest : TestBase
             EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             InferenceGeo = BetaAnalyticsCostUsersItemInferenceGeo.Global,
             ListAmount = "51600.000000",
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             Requests = 128,
@@ -59,7 +59,7 @@ public class BetaAnalyticsCostUsersItemTest : TestBase
         ApiEnum<string, BetaAnalyticsCostUsersItemInferenceGeo> expectedInferenceGeo =
             BetaAnalyticsCostUsersItemInferenceGeo.Global;
         string expectedListAmount = "51600.000000";
-        string expectedModel = "claude-opus-5";
+        string expectedModel = "claude-opus-5-5";
         string expectedProduct = "chat";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
         long expectedRequests = 128;
@@ -111,7 +111,7 @@ public class BetaAnalyticsCostUsersItemTest : TestBase
             EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             InferenceGeo = BetaAnalyticsCostUsersItemInferenceGeo.Global,
             ListAmount = "51600.000000",
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             Requests = 128,
@@ -151,7 +151,7 @@ public class BetaAnalyticsCostUsersItemTest : TestBase
             EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             InferenceGeo = BetaAnalyticsCostUsersItemInferenceGeo.Global,
             ListAmount = "51600.000000",
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             Requests = 128,
@@ -188,7 +188,7 @@ public class BetaAnalyticsCostUsersItemTest : TestBase
         ApiEnum<string, BetaAnalyticsCostUsersItemInferenceGeo> expectedInferenceGeo =
             BetaAnalyticsCostUsersItemInferenceGeo.Global;
         string expectedListAmount = "51600.000000";
-        string expectedModel = "claude-opus-5";
+        string expectedModel = "claude-opus-5-5";
         string expectedProduct = "chat";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
         long expectedRequests = 128;
@@ -240,7 +240,7 @@ public class BetaAnalyticsCostUsersItemTest : TestBase
             EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             InferenceGeo = BetaAnalyticsCostUsersItemInferenceGeo.Global,
             ListAmount = "51600.000000",
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             Requests = 128,
@@ -274,7 +274,7 @@ public class BetaAnalyticsCostUsersItemTest : TestBase
             EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             InferenceGeo = BetaAnalyticsCostUsersItemInferenceGeo.Global,
             ListAmount = "51600.000000",
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             Requests = 128,

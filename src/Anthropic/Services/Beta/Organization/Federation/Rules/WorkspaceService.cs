@@ -141,6 +141,11 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.federation.rules.workspaces.list",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.federation_rule.id", parameters.FederationRuleID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -192,6 +197,11 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.federation.rules.workspaces.add",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.federation_rule.id", parameters.FederationRuleID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -205,6 +215,12 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
                 {
                     betaFederationRuleWorkspace.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.federation_rule.workspace.id",
+                    betaFederationRuleWorkspace,
+                    static created => created.WorkspaceID
+                );
                 return betaFederationRuleWorkspace;
             }
         );
@@ -235,6 +251,12 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.organization.federation.rules.workspaces.remove",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.federation_rule.id", parameters.FederationRuleID),
+                new("anthropic.organization.federation_rule.workspace.id", parameters.WorkspaceID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

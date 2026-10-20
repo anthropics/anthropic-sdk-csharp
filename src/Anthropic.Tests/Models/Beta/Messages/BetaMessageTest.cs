@@ -58,7 +58,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
@@ -157,7 +157,7 @@ public class BetaMessageTest : TestBase
         Messages::BetaDiagnostics expectedDiagnostics = new(
             new Messages::BetaCacheMissModelChanged(0)
         );
-        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5_5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         Messages::BetaRefusalStopDetails expectedStopDetails = new()
         {
@@ -284,7 +284,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
@@ -395,7 +395,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
@@ -501,7 +501,7 @@ public class BetaMessageTest : TestBase
         Messages::BetaDiagnostics expectedDiagnostics = new(
             new Messages::BetaCacheMissModelChanged(0)
         );
-        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5_5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         Messages::BetaRefusalStopDetails expectedStopDetails = new()
         {
@@ -628,7 +628,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
@@ -733,7 +733,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
@@ -830,7 +830,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
@@ -926,7 +926,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
@@ -1025,7 +1025,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
@@ -1123,7 +1123,7 @@ public class BetaMessageTest : TestBase
                 ]
             ),
             Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,

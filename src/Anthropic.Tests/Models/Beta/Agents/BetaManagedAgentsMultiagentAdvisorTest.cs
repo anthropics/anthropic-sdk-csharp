@@ -11,7 +11,7 @@ public class BetaManagedAgentsMultiagentAdvisorTest : TestBase
     public void EnabledValidationWorks()
     {
         BetaManagedAgentsMultiagentAdvisor value = new BetaManagedAgentsMultiagentAdvisorEnabled(
-            "claude-fable-5"
+            "claude-opus-5-5"
         );
         value.Validate();
     }
@@ -27,7 +27,7 @@ public class BetaManagedAgentsMultiagentAdvisorTest : TestBase
     public void EnabledSerializationRoundtripWorks()
     {
         BetaManagedAgentsMultiagentAdvisor value = new BetaManagedAgentsMultiagentAdvisorEnabled(
-            "claude-fable-5"
+            "claude-opus-5-5"
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagentAdvisor>(

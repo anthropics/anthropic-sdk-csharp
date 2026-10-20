@@ -203,6 +203,8 @@ public record class VersionCreateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/skills/{skill_id}/versions";
+
     internal override HttpContent? BodyContent()
     {
         return MultipartJsonSerializer.Serialize(RawBodyData);

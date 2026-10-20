@@ -201,6 +201,13 @@ public class BetaSpendLimitScopeTest : TestBase
     }
 
     [Fact]
+    public void BetaSpendLimitUsageTierValidationWorks()
+    {
+        BetaSpendLimitScope value = new BetaSpendLimitUsageTierScope();
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaSpendLimitUserSerializationRoundtripWorks()
     {
         BetaSpendLimitScope value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
@@ -271,6 +278,19 @@ public class BetaSpendLimitScopeTest : TestBase
         BetaSpendLimitScope value = new BetaSpendLimitWorkspaceScope(
             "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
         );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaSpendLimitScope>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaSpendLimitUsageTierSerializationRoundtripWorks()
+    {
+        BetaSpendLimitScope value = new BetaSpendLimitUsageTierScope();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaSpendLimitScope>(
             element,

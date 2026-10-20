@@ -181,6 +181,8 @@ public record class WorkRetrieveParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/environments/{environment_id}/work/{work_id}";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

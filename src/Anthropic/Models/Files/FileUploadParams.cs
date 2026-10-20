@@ -174,6 +174,8 @@ public record class FileUploadParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/files";
+
     internal override HttpContent? BodyContent()
     {
         return MultipartJsonSerializer.Serialize(RawBodyData);

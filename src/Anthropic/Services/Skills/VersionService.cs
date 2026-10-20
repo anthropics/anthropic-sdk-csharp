@@ -156,6 +156,8 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.skills.versions.create",
+            SpanResourceIds = [new("anthropic.skill.id", parameters.SkillID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -169,6 +171,12 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
                 {
                     skillVersion.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.skill.version.id",
+                    skillVersion,
+                    static created => created.ID
+                );
                 return skillVersion;
             }
         );
@@ -199,6 +207,12 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.skills.versions.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.skill.id", parameters.SkillID),
+                new("anthropic.skill.version.id", parameters.Version),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -242,6 +256,8 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.skills.versions.list",
+            SpanResourceIds = [new("anthropic.skill.id", parameters.SkillID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -287,6 +303,12 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.skills.versions.delete",
+            SpanResourceIds =
+            [
+                new("anthropic.skill.id", parameters.SkillID),
+                new("anthropic.skill.version.id", parameters.Version),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

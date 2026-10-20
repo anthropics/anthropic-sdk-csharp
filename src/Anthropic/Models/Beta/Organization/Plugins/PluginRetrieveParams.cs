@@ -167,6 +167,10 @@ public record class PluginRetrieveParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/plugins/{plugin_id}";
+
+    internal override IReadOnlyList<string> QueryParams => ["organization_id"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

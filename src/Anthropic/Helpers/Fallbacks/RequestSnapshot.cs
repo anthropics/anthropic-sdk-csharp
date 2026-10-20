@@ -4,8 +4,11 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Threading;
+using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
+using static Anthropic.Core.JsonNodes;
 
 namespace Anthropic.Helpers.Fallbacks;
 
@@ -31,6 +34,9 @@ internal sealed class RequestSnapshot
 #else
     readonly IReadOnlyList<KeyValuePair<string, object>> _properties;
 #endif
+
+    /// <summary>The entry whose request was resent without <c>speed</c>, if any.</summary>
+    int? _indexResentWithoutSpeed;
 
     /// <param name="uri">The request URI, already null-checked by the caller's gate.</param>
     /// <param name="request">Read here and released, since the caller disposes it once
@@ -64,14 +70,19 @@ internal sealed class RequestSnapshot
     public required bool IsStreaming { get; init; }
 
     /// <summary>
-    /// Returns a request with the entry at the given index applied (-1 = the original request),
+    /// Sends a request with the entry at the given index applied (-1 = the original request),
     /// plus the previous refusal's <c>fallback_credit_token</c>, if any.
     /// </summary>
-    public HttpRequestMessage Request(int index, string? fallbackCreditToken = null)
+    public Task<HttpResponseMessage> Send(
+        Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> send,
+        int index,
+        string? fallbackCreditToken,
+        CancellationToken cancellationToken
+    )
     {
         if (index == -1)
         {
-            return Build(BodyBytes);
+            return send(Build(BodyBytes), cancellationToken);
         }
 
         var body = EffectiveBody(index);
@@ -79,7 +90,7 @@ internal sealed class RequestSnapshot
         {
             body["fallback_credit_token"] = CreditTokenNode(fallbackCreditToken);
         }
-        return Build(Encoding.UTF8.GetBytes(body.ToJsonString()));
+        return SendEntry(send, index, body, static () => false, cancellationToken);
     }
 
     /// <summary>
@@ -181,27 +192,34 @@ internal sealed class RequestSnapshot
     }
 
     /// <summary>
-    /// Returns the hop request for a spliced stream: the initial request's body with the model
-    /// and credit token swapped in and the continuation appended as a trailing assistant turn.
+    /// Sends the hop request for a spliced stream: the initial request's body with the model
+    /// and speed of the entry at the given index and the credit token swapped in, and the
+    /// continuation appended as a trailing assistant turn.
     /// </summary>
-    public HttpRequestMessage HopRequest(
-        string model,
+    public Task<HttpResponseMessage> SendHop(
+        Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> send,
+        int index,
         string fallbackCreditToken,
-        IReadOnlyList<JsonObject> continuation
+        IReadOnlyList<JsonObject> continuation,
+        Func<bool> abandoned,
+        CancellationToken cancellationToken
     )
     {
-        // Rebuilt on every attempt so each request starts from the body the token was minted
-        // against, the initial request's; a pinned entry's overrides are included, since the
-        // initial request carried them and the token binds to them.
+        // Each attempt is rebuilt from the initial request's body, including a pinned entry's
+        // overrides, since that request carried them.
         var body = EffectiveBody(InitialIndex);
 
-        body["model"] = model;
+        // Only model and speed come from the entry. Its other overrides are not applied, because
+        // the credit token is tied to the refused request's body.
+        var entry = Entries[index];
+        body["model"] = entry.Model.Raw();
+        if (entry.RawData.TryGetValue("speed", out var speed))
+        {
+            Patch(body, "speed", speed);
+        }
         body["fallback_credit_token"] = CreditTokenNode(fallbackCreditToken);
         DegradeBetweenToolsThinking(body);
 
-        // The token is only redeemable against the same body, so model, fallback_credit_token,
-        // and the one appended assistant turn are the only permitted deltas; anything else,
-        // per-entry BetaFallbackParam overrides included, is a 400.
         if (continuation.Count > 0)
         {
             if (body["messages"] is not JsonArray messages)
@@ -217,7 +235,43 @@ internal sealed class RequestSnapshot
             messages.Add(new JsonObject { ["role"] = "assistant", ["content"] = content });
         }
 
-        return Build(Encoding.UTF8.GetBytes(body.ToJsonString()));
+        return SendEntry(send, index, body, abandoned, cancellationToken);
+    }
+
+    /// <summary>
+    /// Sends the body built for the entry at the given index. A 429 or 529 on a <c>fast</c>
+    /// speed the entry didn't set itself is resent once without <c>speed</c>, and that response
+    /// stands as the entry's. The entry's later requests then omit <c>speed</c> too.
+    /// </summary>
+    async Task<HttpResponseMessage> SendEntry(
+        Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> send,
+        int index,
+        JsonObject body,
+        Func<bool> abandoned,
+        CancellationToken cancellationToken
+    )
+    {
+        if (index == _indexResentWithoutSpeed)
+        {
+            body.Remove("speed");
+        }
+        var response = await SendBody().ConfigureAwait(false);
+        if (
+            (int)response.StatusCode is not (429 or 529)
+            || Entries[index].RawData.ContainsKey("speed")
+            || GetString(body["speed"]) != "fast"
+            || abandoned()
+        )
+        {
+            return response;
+        }
+        response.Dispose();
+        _indexResentWithoutSpeed = index;
+        body.Remove("speed");
+        return await SendBody().ConfigureAwait(false);
+
+        Task<HttpResponseMessage> SendBody() =>
+            send(Build(Encoding.UTF8.GetBytes(body.ToJsonString())), cancellationToken);
     }
 
     /// <summary>

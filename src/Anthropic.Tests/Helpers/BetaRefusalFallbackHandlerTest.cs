@@ -880,6 +880,230 @@ public class BetaRefusalFallbackHandlerTest
         Assert.Equal(-1, fallbackState.Index);
     }
 
+    [Theory]
+    [InlineData(429)]
+    [InlineData(529)]
+    public async Task RetriesARateLimitedFastFallbackOnceWithoutSpeed(int status)
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(status, FallbackTestSupport.ErrorBody(status))
+            .EnqueueJson(200, Message("fallback-model", "answer"));
+        using var invoker = Intercepted(transport, "fallback-model");
+
+        var fallbackState = BetaFallbackState.Create();
+        using var _ = fallbackState.Use();
+        var response = await invoker.SendAsync(
+            MessagesRequest(FastBody()),
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal(3, transport.RequestCount);
+        var rejected = transport.JsonBodies[1];
+        var resent = transport.JsonBodies[2];
+        Assert.Equal("fallback-model", rejected["model"]?.GetValue<string>());
+        Assert.Equal("fast", rejected["speed"]?.GetValue<string>());
+        Assert.Equal(
+            "credit-token",
+            rejected["fallback_credit_token"]?["token"]?.GetValue<string>()
+        );
+        // The missing `speed` key is the only difference, so the model and token are resent.
+        Assert.False(resent.ContainsKey("speed"));
+        rejected.Remove("speed");
+        Assert.True(JsonNode.DeepEquals(rejected, resent));
+        Assert.True(transport.Issued[1].Disposed);
+
+        var message = await ReadMessage(response);
+        Assert.Equal("fallback-model", message.Model.Raw());
+        Assert.True(message.Content[1].TryPickText(out var text));
+        Assert.Equal("answer", text.Text);
+        Assert.Equal(0, fallbackState.Index);
+    }
+
+    [Theory]
+    // The entry asks for `fast` itself.
+    [InlineData("fast", """{"model": "fallback-model", "speed": "fast"}""", 429)]
+    // The fallback request isn't `fast`.
+    [InlineData("fast", """{"model": "fallback-model", "speed": "standard"}""", 429)]
+    [InlineData("fast", """{"model": "fallback-model", "speed": null}""", 429)]
+    [InlineData("standard", """{"model": "fallback-model"}""", 429)]
+    [InlineData(null, """{"model": "fallback-model"}""", 529)]
+    // The status is neither 429 nor 529.
+    [InlineData("fast", """{"model": "fallback-model"}""", 400)]
+    [InlineData("fast", """{"model": "fallback-model"}""", 500)]
+    public async Task DoesNotRetryAnyOtherFailedFallbackWithoutSpeed(
+        string? requestSpeed,
+        string entry,
+        int status
+    )
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(status, FallbackTestSupport.ErrorBody(status));
+        var handler = new BetaRefusalFallbackHandler
+        {
+            Fallbacks = [JsonSerializer.Deserialize<BetaFallbackParam>(entry)!],
+            InnerHandler = transport,
+        };
+        using HttpMessageInvoker invoker = new(handler);
+        var body = MessagesBody();
+        if (requestSpeed != null)
+        {
+            body["speed"] = requestSpeed;
+        }
+
+        using var _ = BetaFallbackState.Create().Use();
+        var response = await invoker.SendAsync(
+            MessagesRequest(body),
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal((HttpStatusCode)status, response.StatusCode);
+        Assert.Equal(2, transport.RequestCount);
+    }
+
+    [Fact]
+    public async Task AFastFallbackRejectedAgainWithoutSpeedIsSkippedLikeAnyFailedHop()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(429, FallbackTestSupport.ErrorBody(429))
+            .EnqueueJson(429, FallbackTestSupport.ErrorBody(429))
+            .EnqueueJson(200, Message("second-model"));
+        using var invoker = Intercepted(transport, "fallback-model", "second-model");
+
+        var fallbackState = BetaFallbackState.Create();
+        using var _ = fallbackState.Use();
+        HttpResponseMessage? response = null;
+        var stderr = await FallbackTestSupport.CaptureStderr(async () =>
+        {
+            response = await invoker.SendAsync(
+                MessagesRequest(FastBody()),
+                TestContext.Current.CancellationToken
+            );
+        });
+
+        Assert.Contains("fallback request to fallback-model failed: HTTP 429", stderr);
+        Assert.Equal(
+            ["primary-model", "fallback-model", "fallback-model", "second-model"],
+            transport.Models
+        );
+        // The next entry starts out `fast` again.
+        Assert.Equal(["fast", "fast", null, "fast"], transport.Speeds);
+        Assert.Equal(
+            "credit-token",
+            transport.JsonBodies[3]["fallback_credit_token"]?["token"]?.GetValue<string>()
+        );
+        Assert.Equal("second-model", (await ReadMessage(response!)).Model.Raw());
+        Assert.Equal(1, fallbackState.Index);
+    }
+
+    [Theory]
+    [InlineData(429, 400, null, true)]
+    [InlineData(400, 429, "fast", false)]
+    public async Task AnEntryRetriedWithoutSpeedAndWithoutTheTokenDropsEachOnce(
+        int firstStatus,
+        int secondStatus,
+        string? secondSpeed,
+        bool secondHasToken
+    )
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(firstStatus, FallbackTestSupport.ErrorBody(firstStatus))
+            .EnqueueJson(secondStatus, FallbackTestSupport.ErrorBody(secondStatus))
+            .EnqueueJson(200, Message("fallback-model"));
+        // The override is what lets a 400 drop the token.
+        var handler = new BetaRefusalFallbackHandler
+        {
+            Fallbacks = [new BetaFallbackParam("fallback-model") { MaxTokens = 99 }],
+            InnerHandler = transport,
+        };
+        using HttpMessageInvoker invoker = new(handler);
+
+        using var _ = BetaFallbackState.Create().Use();
+        HttpResponseMessage? response = null;
+        await FallbackTestSupport.CaptureStderr(async () =>
+        {
+            response = await invoker.SendAsync(
+                MessagesRequest(FastBody()),
+                TestContext.Current.CancellationToken
+            );
+        });
+
+        Assert.Equal(
+            ["primary-model", "fallback-model", "fallback-model", "fallback-model"],
+            transport.Models
+        );
+        Assert.Equal(["fast", "fast", secondSpeed, null], transport.Speeds);
+        Assert.Equal(
+            [false, true, secondHasToken, false],
+            transport.JsonBodies.Select(body => body.ContainsKey("fallback_credit_token"))
+        );
+        Assert.False(transport.JsonBodies[3].ContainsKey("speed"));
+        Assert.Equal("fallback-model", (await ReadMessage(response!)).Model.Raw());
+    }
+
+    [Fact]
+    public async Task ReturnsTheErrorOfTheRetryWithoutSpeedWhenNoEntriesRemain()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(429, FallbackTestSupport.ErrorBody(429))
+            .EnqueueJson(529, FallbackTestSupport.ErrorBody(529));
+        using var invoker = Intercepted(transport, "fallback-model");
+
+        var fallbackState = BetaFallbackState.Create();
+        using var _ = fallbackState.Use();
+        var response = await invoker.SendAsync(
+            MessagesRequest(FastBody()),
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal((HttpStatusCode)529, response.StatusCode);
+        Assert.Equal(3, transport.RequestCount);
+        Assert.Equal(-1, fallbackState.Index);
+    }
+
+    [Fact]
+    public async Task RetriesARateLimitedFastPinnedRequestOnceWithoutSpeed()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(429, FallbackTestSupport.ErrorBody(429))
+            .EnqueueJson(200, Message("fallback-model"));
+        using var invoker = Intercepted(transport, "fallback-model");
+
+        var fallbackState = BetaFallbackState.Create();
+        fallbackState.Index = 0;
+        using var _ = fallbackState.Use();
+        var response = await invoker.SendAsync(
+            MessagesRequest(FastBody()),
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal(["fallback-model", "fallback-model"], transport.Models);
+        Assert.Equal("fast", transport.JsonBodies[0]["speed"]?.GetValue<string>());
+        Assert.False(transport.JsonBodies[1].ContainsKey("speed"));
+        Assert.Equal("fallback-model", (await ReadMessage(response)).Model.Raw());
+        Assert.Equal(0, fallbackState.Index);
+    }
+
+    [Fact]
+    public async Task DoesNotRetryARateLimitedFastOriginalRequest()
+    {
+        var transport = new FakeTransport().EnqueueJson(429, FallbackTestSupport.ErrorBody(429));
+        using var invoker = Intercepted(transport, "fallback-model");
+
+        using var _ = BetaFallbackState.Create().Use();
+        var response = await invoker.SendAsync(
+            MessagesRequest(FastBody()),
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal((HttpStatusCode)429, response.StatusCode);
+        Assert.Equal(1, transport.RequestCount);
+    }
+
     [Fact]
     public async Task DoesNotPinARefusedLastFallback()
     {
@@ -1173,6 +1397,13 @@ public class BetaRefusalFallbackHandlerTest
             ["max_tokens"] = 1024,
             ["messages"] = new JsonArray(new JsonObject { ["role"] = "user", ["content"] = "hi" }),
         };
+
+    static JsonObject FastBody()
+    {
+        var body = MessagesBody();
+        body["speed"] = "fast";
+        return body;
+    }
 
     static HttpRequestMessage MessagesRequest(JsonObject? body = null) =>
         new(HttpMethod.Post, "https://api.example.com/v1/messages?beta=true")

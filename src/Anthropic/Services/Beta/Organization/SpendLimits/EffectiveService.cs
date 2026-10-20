@@ -74,6 +74,7 @@ public sealed class EffectiveServiceWithRawResponse : IEffectiveServiceWithRawRe
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.spend_limits.effective.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

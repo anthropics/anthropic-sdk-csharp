@@ -74,6 +74,7 @@ public sealed class RateLimitServiceWithRawResponse : IRateLimitServiceWithRawRe
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.rate_limits.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

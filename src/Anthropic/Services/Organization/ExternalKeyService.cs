@@ -183,6 +183,7 @@ public sealed class ExternalKeyServiceWithRawResponse : IExternalKeyServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.external_keys.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -196,6 +197,12 @@ public sealed class ExternalKeyServiceWithRawResponse : IExternalKeyServiceWithR
                 {
                     externalKey.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.external_key.id",
+                    externalKey,
+                    static created => created.ID
+                );
                 return externalKey;
             }
         );
@@ -216,6 +223,11 @@ public sealed class ExternalKeyServiceWithRawResponse : IExternalKeyServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.external_keys.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.external_key.id", parameters.ExternalKeyID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -261,6 +273,11 @@ public sealed class ExternalKeyServiceWithRawResponse : IExternalKeyServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.external_keys.update",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.external_key.id", parameters.ExternalKeyID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -303,6 +320,7 @@ public sealed class ExternalKeyServiceWithRawResponse : IExternalKeyServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.external_keys.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -336,6 +354,11 @@ public sealed class ExternalKeyServiceWithRawResponse : IExternalKeyServiceWithR
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.organization.external_keys.delete",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.external_key.id", parameters.ExternalKeyID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -381,6 +404,11 @@ public sealed class ExternalKeyServiceWithRawResponse : IExternalKeyServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.external_keys.validate",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.external_key.id", parameters.ExternalKeyID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

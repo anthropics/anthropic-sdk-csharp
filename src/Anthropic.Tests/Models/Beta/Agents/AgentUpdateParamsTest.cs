@@ -18,6 +18,7 @@ public class AgentUpdateParamsTest : TestBase
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
             McpServers =
             [
                 new()
@@ -30,7 +31,7 @@ public class AgentUpdateParamsTest : TestBase
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -90,6 +91,8 @@ public class AgentUpdateParamsTest : TestBase
 
         string expectedAgentID = "agent_011CZkYpogX7uDKUyvBTophP";
         string expectedDescription = "updated";
+        BetaManagedAgentsExecutionIdentityParams expectedExecutionIdentity =
+            new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn");
         List<BetaManagedAgentsUrlMcpServerParams> expectedMcpServers =
         [
             new()
@@ -102,7 +105,7 @@ public class AgentUpdateParamsTest : TestBase
         Dictionary<string, string?> expectedMetadata = new() { { "foo", "string" } };
         AgentUpdateParamsModel expectedModel = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus5,
+            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -165,6 +168,7 @@ public class AgentUpdateParamsTest : TestBase
 
         Assert.Equal(expectedAgentID, parameters.AgentID);
         Assert.Equal(expectedDescription, parameters.Description);
+        Assert.Equal(expectedExecutionIdentity, parameters.ExecutionIdentity);
         Assert.NotNull(parameters.McpServers);
         Assert.Equal(expectedMcpServers.Count, parameters.McpServers.Count);
         for (int i = 0; i < expectedMcpServers.Count; i++)
@@ -212,6 +216,7 @@ public class AgentUpdateParamsTest : TestBase
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
             McpServers =
             [
                 new()
@@ -290,6 +295,7 @@ public class AgentUpdateParamsTest : TestBase
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
             McpServers =
             [
                 new()
@@ -375,6 +381,7 @@ public class AgentUpdateParamsTest : TestBase
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
             McpServers =
             [
                 new()
@@ -387,7 +394,7 @@ public class AgentUpdateParamsTest : TestBase
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -473,7 +480,7 @@ public class AgentUpdateParamsTest : TestBase
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -486,6 +493,8 @@ public class AgentUpdateParamsTest : TestBase
 
         Assert.Null(parameters.Description);
         Assert.False(parameters.RawBodyData.ContainsKey("description"));
+        Assert.Null(parameters.ExecutionIdentity);
+        Assert.False(parameters.RawBodyData.ContainsKey("execution_identity"));
         Assert.Null(parameters.McpServers);
         Assert.False(parameters.RawBodyData.ContainsKey("mcp_servers"));
         Assert.Null(parameters.Metadata);
@@ -508,7 +517,7 @@ public class AgentUpdateParamsTest : TestBase
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -519,6 +528,7 @@ public class AgentUpdateParamsTest : TestBase
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Description = null,
+            ExecutionIdentity = null,
             McpServers = null,
             Metadata = null,
             Multiagent = null,
@@ -529,6 +539,8 @@ public class AgentUpdateParamsTest : TestBase
 
         Assert.Null(parameters.Description);
         Assert.True(parameters.RawBodyData.ContainsKey("description"));
+        Assert.Null(parameters.ExecutionIdentity);
+        Assert.True(parameters.RawBodyData.ContainsKey("execution_identity"));
         Assert.Null(parameters.McpServers);
         Assert.True(parameters.RawBodyData.ContainsKey("mcp_servers"));
         Assert.Null(parameters.Metadata);
@@ -590,6 +602,7 @@ public class AgentUpdateParamsTest : TestBase
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
             McpServers =
             [
                 new()
@@ -602,7 +615,7 @@ public class AgentUpdateParamsTest : TestBase
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -680,7 +693,7 @@ public class AgentUpdateParamsModelTest : TestBase
     {
         AgentUpdateParamsModel value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus5,
+            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -706,7 +719,7 @@ public class AgentUpdateParamsModelTest : TestBase
     {
         AgentUpdateParamsModel value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus5,
+            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,

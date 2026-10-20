@@ -159,6 +159,9 @@ public record class WorkspaceRemoveParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route =>
+        "/v1/organizations/federation_rules/{federation_rule_id}/workspaces/{workspace_id}";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

@@ -158,6 +158,8 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.plugins.versions.create",
+            SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -171,6 +173,12 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
                 {
                     betaPluginVersion.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.plugin.version.id",
+                    betaPluginVersion,
+                    static created => created.ID
+                );
                 return betaPluginVersion;
             }
         );
@@ -201,6 +209,12 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.plugins.versions.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.plugin.id", parameters.PluginID),
+                new("anthropic.organization.plugin.version.id", parameters.Version),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -244,6 +258,8 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.plugins.versions.list",
+            SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -289,6 +305,12 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.plugins.versions.download",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.plugin.id", parameters.PluginID),
+                new("anthropic.organization.plugin.version.id", parameters.Version),
+            ],
         };
         return this._client.Execute(request, cancellationToken);
     }

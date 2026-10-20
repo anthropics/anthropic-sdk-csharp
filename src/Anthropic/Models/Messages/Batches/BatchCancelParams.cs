@@ -144,6 +144,8 @@ public record class BatchCancelParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/messages/batches/{message_batch_id}/cancel";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

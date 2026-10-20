@@ -2,6 +2,7 @@ using System.Text;
 using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
 using Amazon.Runtime.Credentials;
+using Anthropic.Core.Telemetry;
 using Anthropic.Exceptions;
 
 namespace Anthropic.Bedrock;
@@ -142,11 +143,15 @@ internal sealed class MantleAwsAdaptationHandler : DelegatingHandler
                 HttpMethod = requestMessage.Method.ToString(),
                 Uri = requestMessage.RequestUri!,
                 Now = now,
-                Headers = requestMessage.Headers.ToDictionary(
-                    e => e.Key,
-                    e => string.Join(",", e.Value),
-                    StringComparer.InvariantCultureIgnoreCase
-                ),
+                // The trace-context headers stay unsigned: an HTTP instrumentation may
+                // replace them after signing.
+                Headers = TraceContextHeaders
+                    .Signed(requestMessage.Headers)
+                    .ToDictionary(
+                        e => e.Key,
+                        e => string.Join(",", e.Value),
+                        StringComparer.InvariantCultureIgnoreCase
+                    ),
                 PayloadHash = payloadHash,
                 AwsAccessKey = accessKey,
                 AwsSecretKey = secretKey,

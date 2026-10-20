@@ -166,6 +166,8 @@ public record class EnvironmentDeleteParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/environments/{environment_id}";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

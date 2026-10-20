@@ -166,6 +166,8 @@ public record class WorkStatsParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/environments/{environment_id}/work/stats";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

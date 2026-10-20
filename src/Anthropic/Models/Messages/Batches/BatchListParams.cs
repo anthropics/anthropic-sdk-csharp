@@ -192,6 +192,10 @@ public record class BatchListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/messages/batches";
+
+    internal override IReadOnlyList<string> QueryParams => ["after_id", "before_id", "limit"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

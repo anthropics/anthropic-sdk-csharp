@@ -16,6 +16,8 @@ public abstract class SseAggregator<TMessage, TResult>
 {
     private Dictionary<FilterResult, IList<TMessage>>? _messages;
     private bool _streamEnded;
+    private bool _startMessageReceived;
+    private FilterResult _lastFilterResult = FilterResult.Ignore;
     private TResult? _message;
 
     /// <summary>
@@ -36,46 +38,68 @@ public abstract class SseAggregator<TMessage, TResult>
             );
         }
 
-        _messages = [];
+        _messages = NewMessages();
 
-        foreach (FilterResult item in Enum.GetValues(typeof(FilterResult)))
-        {
-            _messages[item] = [];
-        }
-
-        var startMessageReceived = false;
-        FilterResult filterResult = FilterResult.Ignore;
         await foreach (var message in messageStream)
         {
-            if (!_streamEnded)
+            if (_streamEnded)
             {
-                if (!startMessageReceived && Filter(message) != FilterResult.StartMessage)
-                {
-                    _messages[FilterResult.StartMessage].Add(message);
-                    continue;
-                }
+                // Nothing follows the End message. The source is still read to its end: leaving
+                // it there would abandon a stream that its sender has not ended.
+                continue;
+            }
 
-                startMessageReceived = true;
-                filterResult = Filter(message);
-                _messages[filterResult].Add(message);
-                if (filterResult == FilterResult.EndMessage)
-                {
-                    yield return message;
-                    break;
-                }
+            Add(message);
+            if (!_startMessageReceived)
+            {
+                continue;
             }
 
             yield return message;
         }
 
-        if (filterResult != FilterResult.EndMessage)
+        if (!_streamEnded)
         {
             throw new AnthropicInvalidDataException(
-                $"Expected last message to be the End message but found: {filterResult}"
+                $"Expected last message to be the End message but found: {_lastFilterResult}"
             );
         }
+    }
 
-        _streamEnded = true;
+    /// <summary>
+    /// Adds one message of a stream to the aggregation, as <see cref="CollectAsync"/> does for each
+    /// message that it reads. For a caller that reads the stream itself and cannot hand it over.
+    /// </summary>
+    /// <param name="message">The next message of the stream.</param>
+    internal void Add(TMessage message)
+    {
+        _messages ??= NewMessages();
+        if (_streamEnded)
+        {
+            return;
+        }
+
+        if (!_startMessageReceived && Filter(message) != FilterResult.StartMessage)
+        {
+            _messages[FilterResult.StartMessage].Add(message);
+            return;
+        }
+
+        _startMessageReceived = true;
+        _lastFilterResult = Filter(message);
+        _messages[_lastFilterResult].Add(message);
+        _streamEnded = _lastFilterResult == FilterResult.EndMessage;
+    }
+
+    private static Dictionary<FilterResult, IList<TMessage>> NewMessages()
+    {
+        Dictionary<FilterResult, IList<TMessage>> messages = [];
+        foreach (FilterResult item in Enum.GetValues(typeof(FilterResult)))
+        {
+            messages[item] = [];
+        }
+
+        return messages;
     }
 
     /// <summary>

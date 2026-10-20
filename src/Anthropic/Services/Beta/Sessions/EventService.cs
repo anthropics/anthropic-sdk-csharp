@@ -159,6 +159,8 @@ public sealed class EventServiceWithRawResponse : IEventServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.sessions.events.list",
+            SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -204,6 +206,8 @@ public sealed class EventServiceWithRawResponse : IEventServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.sessions.events.send",
+            SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -247,6 +251,8 @@ public sealed class EventServiceWithRawResponse : IEventServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.sessions.events.stream",
+            SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
 

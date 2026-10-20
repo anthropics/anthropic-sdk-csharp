@@ -166,7 +166,8 @@ public record class UserProfileCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `user-profiles-2026-03-24`, `user-profiles-2026-08-18`,
+    /// or `user-profiles-2026-09-04` in this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -305,6 +306,8 @@ public record class UserProfileCreateParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/user_profiles";
 
     internal override HttpContent? BodyContent()
     {

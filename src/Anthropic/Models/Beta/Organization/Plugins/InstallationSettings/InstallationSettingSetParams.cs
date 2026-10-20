@@ -204,6 +204,9 @@ public record class InstallationSettingSetParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route =>
+        "/v1/organizations/plugins/{plugin_id}/installation_settings/{target}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

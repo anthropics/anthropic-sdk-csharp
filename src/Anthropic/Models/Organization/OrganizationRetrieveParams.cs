@@ -93,6 +93,8 @@ public record class OrganizationRetrieveParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/me";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

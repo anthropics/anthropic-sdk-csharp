@@ -12,11 +12,11 @@ public class BetaManagedAgentsAdvisorParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAdvisorParams
         {
-            Model = "claude-fable-5",
+            Model = "claude-opus-5-5",
             Type = Type.Advisor,
         };
 
-        string expectedModel = "claude-fable-5";
+        string expectedModel = "claude-opus-5-5";
         ApiEnum<string, Type> expectedType = Type.Advisor;
 
         Assert.Equal(expectedModel, model.Model);
@@ -28,7 +28,7 @@ public class BetaManagedAgentsAdvisorParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAdvisorParams
         {
-            Model = "claude-fable-5",
+            Model = "claude-opus-5-5",
             Type = Type.Advisor,
         };
 
@@ -46,7 +46,7 @@ public class BetaManagedAgentsAdvisorParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAdvisorParams
         {
-            Model = "claude-fable-5",
+            Model = "claude-opus-5-5",
             Type = Type.Advisor,
         };
 
@@ -57,7 +57,7 @@ public class BetaManagedAgentsAdvisorParamsTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedModel = "claude-fable-5";
+        string expectedModel = "claude-opus-5-5";
         ApiEnum<string, Type> expectedType = Type.Advisor;
 
         Assert.Equal(expectedModel, deserialized.Model);
@@ -69,7 +69,7 @@ public class BetaManagedAgentsAdvisorParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAdvisorParams
         {
-            Model = "claude-fable-5",
+            Model = "claude-opus-5-5",
             Type = Type.Advisor,
         };
 
@@ -81,7 +81,7 @@ public class BetaManagedAgentsAdvisorParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAdvisorParams
         {
-            Model = "claude-fable-5",
+            Model = "claude-opus-5-5",
             Type = Type.Advisor,
         };
 

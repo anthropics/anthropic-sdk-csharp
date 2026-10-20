@@ -217,6 +217,11 @@ public record class UserListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/users";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["after_id", "before_id", "email", "limit", "roles"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

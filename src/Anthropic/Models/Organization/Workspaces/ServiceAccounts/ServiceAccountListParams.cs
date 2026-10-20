@@ -154,6 +154,11 @@ public record class ServiceAccountListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route =>
+        "/v1/organizations/workspaces/{workspace_id}/service_accounts";
+
+    internal override IReadOnlyList<string> QueryParams => ["limit", "page"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

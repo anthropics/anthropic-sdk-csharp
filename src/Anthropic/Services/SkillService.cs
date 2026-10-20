@@ -149,6 +149,7 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.skills.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -160,6 +161,12 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
                 {
                     skill.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.skill.id",
+                    skill,
+                    static created => created.ID
+                );
                 return skill;
             }
         );
@@ -180,6 +187,8 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.skills.retrieve",
+            SpanResourceIds = [new("anthropic.skill.id", parameters.SkillID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -220,6 +229,7 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.skills.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -253,6 +263,8 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.skills.delete",
+            SpanResourceIds = [new("anthropic.skill.id", parameters.SkillID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

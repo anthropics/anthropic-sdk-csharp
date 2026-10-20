@@ -152,6 +152,9 @@ public record class MemberUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route =>
+        "/v1/organizations/workspaces/{workspace_id}/members/{user_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

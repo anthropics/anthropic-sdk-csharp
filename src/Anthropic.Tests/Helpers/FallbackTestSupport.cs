@@ -24,6 +24,8 @@ sealed class FakeTransport : HttpMessageHandler
 {
     readonly Queue<Func<Task<HttpResponseMessage>>> _responses = new();
 
+    public List<HttpRequestMessage> Requests { get; } = [];
+
     public List<Uri?> Uris { get; } = [];
 
     public List<List<KeyValuePair<string, string[]>>> RequestHeaders { get; } = [];
@@ -40,6 +42,9 @@ sealed class FakeTransport : HttpMessageHandler
 
     public IEnumerable<string?> Models =>
         JsonBodies.Select(body => body["model"]?.GetValue<string>());
+
+    public IEnumerable<string?> Speeds =>
+        JsonBodies.Select(body => body["speed"]?.GetValue<string>());
 
     public string[] BetaHeaderValues(int index) =>
         [
@@ -101,6 +106,7 @@ sealed class FakeTransport : HttpMessageHandler
         CancellationToken cancellationToken
     )
     {
+        Requests.Add(request);
         Uris.Add(request.RequestUri);
         RequestHeaders.Add(
             [
@@ -236,6 +242,19 @@ static class FallbackTestSupport
     public static JsonNode Block(BetaContentBlockParam block) =>
         JsonSerializer.SerializeToNode(block, ModelBase.SerializerOptions)!;
 
+    /// <summary>The API's error body for the given status.</summary>
+    public static string ErrorBody(int status)
+    {
+        var type = status switch
+        {
+            400 => "invalid_request_error",
+            429 => "rate_limit_error",
+            529 => "overloaded_error",
+            _ => "api_error",
+        };
+        return $$"""{"type": "error", "error": {"type": "{{type}}", "message": "rejected"} }""";
+    }
+
     /// <summary>Loads an embedded SSE fixture from <c>Helpers/FableFallback/</c>.</summary>
     public static string Fixture(string name)
     {
@@ -268,11 +287,12 @@ static class FallbackTestSupport
         return writer.ToString();
     }
 
-    /// <summary>Splits an SSE body into its events' parsed JSON data payloads.</summary>
+    /// <summary>Splits an SSE body into its events' parsed JSON data payloads. A fixture passed
+    /// through unwrapped has CRLF line endings on a Windows checkout.</summary>
     public static List<JsonObject> ParseEvents(string sseBody) =>
         [
             .. sseBody
-                .Split(["\n\n"], StringSplitOptions.RemoveEmptyEntries)
+                .Split(["\n\n", "\r\n\r\n"], StringSplitOptions.RemoveEmptyEntries)
                 .Select(chunk =>
                     string.Join(
                         "\n",

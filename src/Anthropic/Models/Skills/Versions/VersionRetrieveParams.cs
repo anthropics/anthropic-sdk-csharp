@@ -146,6 +146,8 @@ public record class VersionRetrieveParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/skills/{skill_id}/versions/{version}";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

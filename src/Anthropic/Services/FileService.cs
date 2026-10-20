@@ -156,6 +156,7 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.files.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -189,6 +190,8 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.files.delete",
+            SpanResourceIds = [new("anthropic.file.id", parameters.FileID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -234,6 +237,8 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.files.download",
+            SpanResourceIds = [new("anthropic.file.id", parameters.FileID)],
         };
         return this._client.Execute(request, cancellationToken);
     }
@@ -265,6 +270,8 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.files.retrieve_metadata",
+            SpanResourceIds = [new("anthropic.file.id", parameters.FileID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -305,6 +312,7 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.files.upload",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -318,6 +326,12 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
                 {
                     fileMetadata.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.file.id",
+                    fileMetadata,
+                    static created => created.ID
+                );
                 return fileMetadata;
             }
         );

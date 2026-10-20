@@ -76,6 +76,7 @@ public sealed class UserCostReportServiceWithRawResponse : IUserCostReportServic
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.analytics.user_cost_report.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

@@ -172,6 +172,7 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.user_profiles.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -185,6 +186,12 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
                 {
                     betaUserProfile.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.user_profile.id",
+                    betaUserProfile,
+                    static created => created.ID
+                );
                 return betaUserProfile;
             }
         );
@@ -205,6 +212,8 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.user_profiles.retrieve",
+            SpanResourceIds = [new("anthropic.user_profile.id", parameters.UserProfileID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -250,6 +259,8 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.user_profiles.update",
+            SpanResourceIds = [new("anthropic.user_profile.id", parameters.UserProfileID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -292,6 +303,7 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.user_profiles.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -325,6 +337,8 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.user_profiles.create_enrollment_url",
+            SpanResourceIds = [new("anthropic.user_profile.id", parameters.UserProfileID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

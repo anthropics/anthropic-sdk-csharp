@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Anthropic.Core.Telemetry;
 
 namespace Anthropic.Bedrock;
 
@@ -44,11 +45,15 @@ public sealed class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCre
             requestMessage.Method.ToString(),
             requestMessage.RequestUri!,
             now,
-            requestMessage.Headers.ToDictionary(
-                e => e.Key,
-                e => string.Join(" ", e.Value),
-                StringComparer.InvariantCultureIgnoreCase
-            ),
+            // The trace-context headers stay unsigned: an HTTP instrumentation may replace
+            // them after signing.
+            TraceContextHeaders
+                .Signed(requestMessage.Headers)
+                .ToDictionary(
+                    e => e.Key,
+                    e => string.Join(" ", e.Value),
+                    StringComparer.InvariantCultureIgnoreCase
+                ),
             payloadHash,
             ApiAccessKey,
             ApiSecret

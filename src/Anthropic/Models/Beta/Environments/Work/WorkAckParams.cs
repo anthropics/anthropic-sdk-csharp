@@ -155,6 +155,8 @@ public record class WorkAckParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/environments/{environment_id}/work/{work_id}/ack";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

@@ -92,6 +92,8 @@ public sealed class PermissionServiceWithRawResponse : IPermissionServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.rbac_roles.permissions.list",
+            SpanResourceIds = [new("anthropic.organization.rbac_role.id", parameters.RbacRoleID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

@@ -20,7 +20,7 @@ public class BetaAnalyticsCostBucketedResultTest : TestBase
             Currency = "USD",
             InferenceGeo = InferenceGeo.Global,
             ListAmount = "list_amount",
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             Requests = 0,
@@ -40,7 +40,7 @@ public class BetaAnalyticsCostBucketedResultTest : TestBase
         string expectedCurrency = "USD";
         ApiEnum<string, InferenceGeo> expectedInferenceGeo = InferenceGeo.Global;
         string expectedListAmount = "list_amount";
-        string expectedModel = "claude-opus-5";
+        string expectedModel = "claude-opus-5-5";
         string expectedProduct = "chat";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
         long expectedRequests = 0;
@@ -79,7 +79,7 @@ public class BetaAnalyticsCostBucketedResultTest : TestBase
             Currency = "USD",
             InferenceGeo = InferenceGeo.Global,
             ListAmount = "list_amount",
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             Requests = 0,
@@ -110,7 +110,7 @@ public class BetaAnalyticsCostBucketedResultTest : TestBase
             Currency = "USD",
             InferenceGeo = InferenceGeo.Global,
             ListAmount = "list_amount",
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             Requests = 0,
@@ -137,7 +137,7 @@ public class BetaAnalyticsCostBucketedResultTest : TestBase
         string expectedCurrency = "USD";
         ApiEnum<string, InferenceGeo> expectedInferenceGeo = InferenceGeo.Global;
         string expectedListAmount = "list_amount";
-        string expectedModel = "claude-opus-5";
+        string expectedModel = "claude-opus-5-5";
         string expectedProduct = "chat";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
         long expectedRequests = 0;
@@ -176,7 +176,7 @@ public class BetaAnalyticsCostBucketedResultTest : TestBase
             Currency = "USD",
             InferenceGeo = InferenceGeo.Global,
             ListAmount = "list_amount",
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             Requests = 0,
@@ -201,7 +201,7 @@ public class BetaAnalyticsCostBucketedResultTest : TestBase
             Currency = "USD",
             InferenceGeo = InferenceGeo.Global,
             ListAmount = "list_amount",
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             Requests = 0,

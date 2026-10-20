@@ -66,7 +66,8 @@ public record class VaultCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `managed-agents-2026-04-01` in
+    /// this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -205,6 +206,8 @@ public record class VaultCreateParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/vaults";
 
     internal override HttpContent? BodyContent()
     {

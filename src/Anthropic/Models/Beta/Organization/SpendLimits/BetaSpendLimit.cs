@@ -71,8 +71,8 @@ public sealed record class BetaSpendLimit : JsonModel
 
     /// <summary>
     /// Read-only. `false` when extra usage is switched off for this organization
-    /// (`organization` limit) or for this member (`user` limit); `amount` is kept
-    /// and applies again when it's switched back on. Always `true` for other limits.
+    /// (`organization` limit); `amount` is kept and applies again when it's switched
+    /// back on. Always `true` for other limits.
     /// </summary>
     public required bool IsEnabled
     {
@@ -228,6 +228,7 @@ public record class BetaSpendLimitScope : ModelBase
                 BetaSpendLimitOrganizationServiceScope x => x.Type,
                 BetaSpendLimitOrganizationScope x => x.Type,
                 BetaSpendLimitWorkspaceScope x => x.Type,
+                BetaSpendLimitUsageTierScope x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
             };
         }
@@ -267,6 +268,12 @@ public record class BetaSpendLimitScope : ModelBase
     }
 
     public BetaSpendLimitScope(BetaSpendLimitWorkspaceScope value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaSpendLimitScope(BetaSpendLimitUsageTierScope value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -414,6 +421,29 @@ public record class BetaSpendLimitScope : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaSpendLimitUsageTierScope"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaSpendLimitUsageTier(out var value)) {
+    ///     // `value` is of type `BetaSpendLimitUsageTierScope`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaSpendLimitUsageTier(
+        [NotNullWhen(true)] out BetaSpendLimitUsageTierScope? value
+    )
+    {
+        value = this.Value as BetaSpendLimitUsageTierScope;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -432,7 +462,8 @@ public record class BetaSpendLimitScope : ModelBase
     ///     (BetaSpendLimitRbacGroupScope value) =&gt; {...},
     ///     (BetaSpendLimitOrganizationServiceScope value) =&gt; {...},
     ///     (BetaSpendLimitOrganizationScope value) =&gt; {...},
-    ///     (BetaSpendLimitWorkspaceScope value) =&gt; {...}
+    ///     (BetaSpendLimitWorkspaceScope value) =&gt; {...},
+    ///     (BetaSpendLimitUsageTierScope value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -443,7 +474,8 @@ public record class BetaSpendLimitScope : ModelBase
         Action<BetaSpendLimitRbacGroupScope> betaSpendLimitRbacGroup,
         Action<BetaSpendLimitOrganizationServiceScope> betaSpendLimitOrganizationService,
         Action<BetaSpendLimitOrganizationScope> betaSpendLimitOrganization,
-        Action<BetaSpendLimitWorkspaceScope> betaSpendLimitWorkspace
+        Action<BetaSpendLimitWorkspaceScope> betaSpendLimitWorkspace,
+        Action<BetaSpendLimitUsageTierScope> betaSpendLimitUsageTier
     )
     {
         switch (this.Value)
@@ -465,6 +497,9 @@ public record class BetaSpendLimitScope : ModelBase
                 break;
             case BetaSpendLimitWorkspaceScope value:
                 betaSpendLimitWorkspace(value);
+                break;
+            case BetaSpendLimitUsageTierScope value:
+                betaSpendLimitUsageTier(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -493,7 +528,8 @@ public record class BetaSpendLimitScope : ModelBase
     ///     (BetaSpendLimitRbacGroupScope value) =&gt; {...},
     ///     (BetaSpendLimitOrganizationServiceScope value) =&gt; {...},
     ///     (BetaSpendLimitOrganizationScope value) =&gt; {...},
-    ///     (BetaSpendLimitWorkspaceScope value) =&gt; {...}
+    ///     (BetaSpendLimitWorkspaceScope value) =&gt; {...},
+    ///     (BetaSpendLimitUsageTierScope value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -504,7 +540,8 @@ public record class BetaSpendLimitScope : ModelBase
         Func<BetaSpendLimitRbacGroupScope, T> betaSpendLimitRbacGroup,
         Func<BetaSpendLimitOrganizationServiceScope, T> betaSpendLimitOrganizationService,
         Func<BetaSpendLimitOrganizationScope, T> betaSpendLimitOrganization,
-        Func<BetaSpendLimitWorkspaceScope, T> betaSpendLimitWorkspace
+        Func<BetaSpendLimitWorkspaceScope, T> betaSpendLimitWorkspace,
+        Func<BetaSpendLimitUsageTierScope, T> betaSpendLimitUsageTier
     )
     {
         return this.Value switch
@@ -517,6 +554,7 @@ public record class BetaSpendLimitScope : ModelBase
             ),
             BetaSpendLimitOrganizationScope value => betaSpendLimitOrganization(value),
             BetaSpendLimitWorkspaceScope value => betaSpendLimitWorkspace(value),
+            BetaSpendLimitUsageTierScope value => betaSpendLimitUsageTier(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaSpendLimitScope"
             ),
@@ -540,6 +578,9 @@ public record class BetaSpendLimitScope : ModelBase
         new(value);
 
     public static implicit operator BetaSpendLimitScope(BetaSpendLimitWorkspaceScope value) =>
+        new(value);
+
+    public static implicit operator BetaSpendLimitScope(BetaSpendLimitUsageTierScope value) =>
         new(value);
 
     /// <summary>
@@ -566,7 +607,8 @@ public record class BetaSpendLimitScope : ModelBase
             (betaSpendLimitRbacGroup) => betaSpendLimitRbacGroup.Validate(),
             (betaSpendLimitOrganizationService) => betaSpendLimitOrganizationService.Validate(),
             (betaSpendLimitOrganization) => betaSpendLimitOrganization.Validate(),
-            (betaSpendLimitWorkspace) => betaSpendLimitWorkspace.Validate()
+            (betaSpendLimitWorkspace) => betaSpendLimitWorkspace.Validate(),
+            (betaSpendLimitUsageTier) => betaSpendLimitUsageTier.Validate()
         );
     }
 
@@ -596,6 +638,7 @@ public record class BetaSpendLimitScope : ModelBase
             BetaSpendLimitOrganizationServiceScope _ => 3,
             BetaSpendLimitOrganizationScope _ => 4,
             BetaSpendLimitWorkspaceScope _ => 5,
+            BetaSpendLimitUsageTierScope _ => 6,
             _ => -1,
         };
     }
@@ -728,6 +771,26 @@ sealed class BetaSpendLimitScopeConverter : JsonConverter<BetaSpendLimitScope>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaSpendLimitWorkspaceScope>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "usage_tier":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaSpendLimitUsageTierScope>(
                         element,
                         options
                     );

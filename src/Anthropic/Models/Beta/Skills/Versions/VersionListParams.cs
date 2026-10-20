@@ -193,6 +193,10 @@ public record class VersionListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/skills/{skill_id}/versions";
+
+    internal override IReadOnlyList<string> QueryParams => ["limit", "page"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

@@ -276,6 +276,24 @@ public record class Agent : ModelBase
         }
     }
 
+    public Agents::BetaManagedAgentsExecutionIdentity? ExecutionIdentity
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Agents::BetaManagedAgentsSessionThreadAgent x => x.ExecutionIdentity,
+                Agents::BetaManagedAgentsAdvisor _ => null,
+                BetaManagedAgentsInlineAgent x => x.ExecutionIdentity,
+                _ =>
+                    WrappedJsonSerializer.GetNullableClassProperty<Agents::BetaManagedAgentsExecutionIdentity>(
+                        this.Json,
+                        "execution_identity"
+                    ),
+            };
+        }
+    }
+
     public IReadOnlyList<Agents::BetaManagedAgentsMcpServerUrlDefinition>? McpServers
     {
         get

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -24,6 +25,14 @@ namespace Anthropic.Aws;
 /// </remarks>
 public sealed class AnthropicAwsClient : AnthropicClient
 {
+    /// <summary>
+    /// The source of the spans of this package's clients.
+    /// </summary>
+    internal static readonly ActivitySource PackageActivitySource = Tracing.PlatformSource(
+        "aws",
+        typeof(AnthropicAwsClient).Assembly
+    );
+
     /// <inheritdoc/>
     protected override bool ShouldAutoResolveCredentials => false;
 
@@ -158,6 +167,7 @@ public sealed class AnthropicAwsClient : AnthropicClient
         }
 
         BackendAdaptationHandler = () => new AwsAdaptationHandler(awsConfig);
+        OpenTelemetrySource = PackageActivitySource;
     }
 
     private AnthropicAwsClient(AwsClientOptions awsConfig, ClientOptions options)
@@ -168,6 +178,7 @@ public sealed class AnthropicAwsClient : AnthropicClient
         // extra header from the original construction; restore the handler if a
         // WithOptions modifier returned fresh options.
         BackendAdaptationHandler ??= () => new AwsAdaptationHandler(awsConfig);
+        OpenTelemetrySource = PackageActivitySource;
     }
 
     /// <inheritdoc />

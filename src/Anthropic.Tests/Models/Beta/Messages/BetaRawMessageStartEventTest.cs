@@ -59,7 +59,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     ]
                 ),
                 Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-                Model = Model.ClaudeOpus5,
+                Model = Model.ClaudeOpus5_5,
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
@@ -163,7 +163,7 @@ public class BetaRawMessageStartEventTest : TestBase
                 ]
             ),
             Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
@@ -272,7 +272,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     ]
                 ),
                 Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-                Model = Model.ClaudeOpus5,
+                Model = Model.ClaudeOpus5_5,
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
@@ -390,7 +390,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     ]
                 ),
                 Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-                Model = Model.ClaudeOpus5,
+                Model = Model.ClaudeOpus5_5,
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
@@ -501,7 +501,7 @@ public class BetaRawMessageStartEventTest : TestBase
                 ]
             ),
             Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Messages::Category.Cyber,
@@ -610,7 +610,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     ]
                 ),
                 Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-                Model = Model.ClaudeOpus5,
+                Model = Model.ClaudeOpus5_5,
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,
@@ -722,7 +722,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     ]
                 ),
                 Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
-                Model = Model.ClaudeOpus5,
+                Model = Model.ClaudeOpus5_5,
                 StopDetails = new()
                 {
                     Category = Messages::Category.Cyber,

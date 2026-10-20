@@ -115,6 +115,8 @@ public record class ExternalKeyValidateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/external_keys/{external_key_id}/validate";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

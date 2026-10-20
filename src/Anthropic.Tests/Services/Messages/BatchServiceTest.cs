@@ -22,7 +22,7 @@ public class BatchServiceTest : TestBase
                         {
                             MaxTokens = 1024,
                             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                            Model = Model.ClaudeOpus5,
+                            Model = Model.ClaudeOpus5_5,
                             CacheControl = new() { Ttl = Ttl.Ttl5m },
                             Container = new ContainerParams()
                             {
@@ -52,6 +52,7 @@ public class BatchServiceTest : TestBase
                                 },
                             },
                             ServiceTier = Batches::ServiceTier.Auto,
+                            Speed = Batches::Speed.Standard,
                             StopSequences = ["string"],
                             Stream = false,
                             System = new(

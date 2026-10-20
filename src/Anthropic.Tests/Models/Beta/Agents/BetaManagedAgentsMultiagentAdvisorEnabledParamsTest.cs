@@ -11,10 +11,10 @@ public class BetaManagedAgentsMultiagentAdvisorEnabledParamsTest : TestBase
     {
         var model = new BetaManagedAgentsMultiagentAdvisorEnabledParams
         {
-            Model = "claude-fable-5",
+            Model = "claude-opus-5-5",
         };
 
-        string expectedModel = "claude-fable-5";
+        string expectedModel = "claude-opus-5-5";
         JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
 
         Assert.Equal(expectedModel, model.Model);
@@ -26,7 +26,7 @@ public class BetaManagedAgentsMultiagentAdvisorEnabledParamsTest : TestBase
     {
         var model = new BetaManagedAgentsMultiagentAdvisorEnabledParams
         {
-            Model = "claude-fable-5",
+            Model = "claude-opus-5-5",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -44,7 +44,7 @@ public class BetaManagedAgentsMultiagentAdvisorEnabledParamsTest : TestBase
     {
         var model = new BetaManagedAgentsMultiagentAdvisorEnabledParams
         {
-            Model = "claude-fable-5",
+            Model = "claude-opus-5-5",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -55,7 +55,7 @@ public class BetaManagedAgentsMultiagentAdvisorEnabledParamsTest : TestBase
             );
         Assert.NotNull(deserialized);
 
-        string expectedModel = "claude-fable-5";
+        string expectedModel = "claude-opus-5-5";
         JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
 
         Assert.Equal(expectedModel, deserialized.Model);
@@ -67,7 +67,7 @@ public class BetaManagedAgentsMultiagentAdvisorEnabledParamsTest : TestBase
     {
         var model = new BetaManagedAgentsMultiagentAdvisorEnabledParams
         {
-            Model = "claude-fable-5",
+            Model = "claude-opus-5-5",
         };
 
         model.Validate();
@@ -78,7 +78,7 @@ public class BetaManagedAgentsMultiagentAdvisorEnabledParamsTest : TestBase
     {
         var model = new BetaManagedAgentsMultiagentAdvisorEnabledParams
         {
-            Model = "claude-fable-5",
+            Model = "claude-opus-5-5",
         };
 
         BetaManagedAgentsMultiagentAdvisorEnabledParams copied = new(model);

@@ -183,6 +183,11 @@ public record class WorkHeartbeatParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/environments/{environment_id}/work/{work_id}/heartbeat";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["desired_ttl_seconds", "expected_last_heartbeat"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

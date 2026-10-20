@@ -154,6 +154,8 @@ public record class ApiKeyUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/api_keys/{api_key_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

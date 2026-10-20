@@ -76,6 +76,7 @@ public sealed class UserUsageReportServiceWithRawResponse : IUserUsageReportServ
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.analytics.user_usage_report.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

@@ -134,6 +134,8 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.rbac_groups.members.list",
+            SpanResourceIds = [new("anthropic.organization.rbac_group.id", parameters.RbacGroupID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -179,6 +181,8 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.rbac_groups.members.add",
+            SpanResourceIds = [new("anthropic.organization.rbac_group.id", parameters.RbacGroupID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -192,6 +196,12 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
                 {
                     betaRbacGroupMember.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.rbac_group.member.id",
+                    betaRbacGroupMember,
+                    static created => created.UserID
+                );
                 return betaRbacGroupMember;
             }
         );
@@ -222,6 +232,12 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.organization.rbac_groups.members.remove",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.rbac_group.id", parameters.RbacGroupID),
+                new("anthropic.organization.rbac_group.member.id", parameters.UserID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

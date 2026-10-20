@@ -107,6 +107,7 @@ static class Sse
                     )
                     {
                         ErrorType = AnthropicExceptionFactory.ExtractErrorType(item.Data),
+                        EventData = item.Data,
                     };
             }
         }

@@ -14,8 +14,9 @@ namespace Anthropic.Models.Beta.Organization.SpendLimits;
 /// <para>For a Claude Enterprise organization, this deletes a per-user override,
 /// and the member falls back to any inherited spend limit at that period. Its seat-tier,
 /// group, and organization-level rows cannot be deleted via this endpoint. A Claude
-/// Console organization deletes its organization and workspace limits. Deleting
-/// them through the API is in an early access preview.</para>
+/// Console organization deletes its organization and workspace limits, but not its
+/// `usage_tier` limit. Deleting organization and workspace limits through the API
+/// is in an early access preview.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -115,6 +116,8 @@ public record class SpendLimitDeleteParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/organizations/spend_limits/{spend_limit_id}";
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

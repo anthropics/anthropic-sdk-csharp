@@ -272,6 +272,21 @@ public record class ProjectListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/analytics/apps/chat/projects";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        [
+            "date",
+            "ending_date",
+            "filter",
+            "group_by",
+            "limit",
+            "order",
+            "order_by",
+            "page",
+            "starting_date",
+        ];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

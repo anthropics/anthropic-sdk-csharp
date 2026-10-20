@@ -154,6 +154,8 @@ public record class MemberAddParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/workspaces/{workspace_id}/members";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

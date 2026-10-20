@@ -102,10 +102,9 @@ public sealed record class BetaUsage : JsonModel
     /// <para>Each entry represents one sampling iteration, with its own input/output
     /// token counts and cache statistics, discriminated by `type`. For `message`
     /// entries (model sampling iterations, such as the turns of a server-side tool
-    /// use loop), this allows you to: - Determine which iterations exceeded long
-    /// context thresholds (&gt;=200k tokens) - Calculate the context window size
-    /// from the last `message` entry - Understand token accumulation across server-side
-    /// tool use loops</para>
+    /// use loop), this allows you to: - Calculate the context window size from the
+    /// last `message` entry - Understand token accumulation across server-side tool
+    /// use loops</para>
     ///
     /// <para>A `compaction` entry reports the token usage of the compaction operation
     /// itself — the server-side request that summarizes the context being closed

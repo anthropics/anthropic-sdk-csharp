@@ -34,10 +34,11 @@ namespace Anthropic.Helpers;
 /// still-open stream, so the client sees one continuous message in the server-side
 /// <c>fallbacks</c> wire shape: a <c>fallback</c> content block at each model boundary, monotonic
 /// block indices, and per-hop <c>usage.iterations</c> on the final <c>message_delta</c>. Only
-/// <c>model</c> is honored from each entry on this path: the credit token is redeemable only
-/// against the refused request's body, so the other per-entry overrides (<c>max_tokens</c>,
-/// <c>thinking</c>, ...) would be rejected. A carried <c>between_tools</c> thinking config is
-/// still sent as <c>disabled</c>, since the fallback model may not accept it.</para>
+/// <c>model</c> and <c>speed</c> are honored from each entry on this path. The other per-entry
+/// overrides are ignored, because the credit token is tied to the refused request's body. A
+/// <c>speed</c> value replaces the request's, and a <c>null</c> <c>speed</c> omits it. A carried
+/// <c>between_tools</c> thinking config is still sent as <c>disabled</c>, since the fallback
+/// model may not accept it.</para>
 ///
 /// <para>The handler sends the fallback-credit beta by default on every request it handles,
 /// including the original, since a refusal carries a <c>fallback_credit_token</c> only when the
@@ -52,6 +53,11 @@ namespace Anthropic.Helpers;
 /// non-streaming one is still retried, without the credit. A refusal that exhausts the chain is
 /// passed through silently, since its terminal <c>message_delta</c> already reports every
 /// hop.</para>
+///
+/// <para>A <c>fast</c> request that falls back to an entry with no <c>speed</c> stays
+/// <c>fast</c>. If that fallback request is rejected with HTTP 429 or 529, it is retried once on
+/// the same entry without <c>speed</c>, and that entry's other retries then omit it too. Set the
+/// entry's <c>speed</c> to <c>fast</c> to keep it fast-only.</para>
 ///
 /// <para>To keep later requests on the model that accepted, wrap them in a
 /// <see cref="BetaFallbackState.Use"/> scope; requests sharing that state start directly at the
@@ -139,10 +145,8 @@ public sealed class BetaRefusalFallbackHandler : DelegatingHandler
                 .ConfigureAwait(false);
         }
 
-        var response = await base.SendAsync(
-                snapshot.Request(snapshot.InitialIndex),
-                cancellationToken
-            )
+        var response = await snapshot
+            .Send(SendInner, snapshot.InitialIndex, fallbackCreditToken: null, cancellationToken)
             .ConfigureAwait(false);
         // Splicing needs at least one entry left to hop to; otherwise the stream passes through
         // untouched. Only a successful response can end in a refusal; errors get normal handling.

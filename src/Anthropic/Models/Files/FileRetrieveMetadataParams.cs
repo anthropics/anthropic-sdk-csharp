@@ -136,6 +136,8 @@ public record class FileRetrieveMetadataParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/files/{file_id}";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

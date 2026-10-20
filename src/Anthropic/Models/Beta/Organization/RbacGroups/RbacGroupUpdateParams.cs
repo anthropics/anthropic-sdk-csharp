@@ -144,6 +144,8 @@ public record class RbacGroupUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/rbac_groups/{rbac_group_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

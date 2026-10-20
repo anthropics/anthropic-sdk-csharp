@@ -278,6 +278,23 @@ public record class ConnectorListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/analytics/connectors";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        [
+            "date",
+            "ending_date",
+            "filter",
+            "group_by",
+            "limit",
+            "order",
+            "order_by",
+            "page",
+            "starting_date",
+        ];
+
+    internal override IReadOnlyList<string> ContentQueryParams => ["filter"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

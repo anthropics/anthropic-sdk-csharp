@@ -256,6 +256,11 @@ public record class ModelListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/models";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["after_id", "before_id", "lifecycle", "limit"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

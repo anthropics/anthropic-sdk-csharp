@@ -12,15 +12,18 @@ public class ThinkingTypesTest : TestBase
         var model = new ThinkingTypes
         {
             Adaptive = new(true),
+            BetweenTools = new(true),
             Disabled = new(true),
             Enabled = new(true),
         };
 
         CapabilitySupport expectedAdaptive = new(true);
+        CapabilitySupport expectedBetweenTools = new(true);
         CapabilitySupport expectedDisabled = new(true);
         CapabilitySupport expectedEnabled = new(true);
 
         Assert.Equal(expectedAdaptive, model.Adaptive);
+        Assert.Equal(expectedBetweenTools, model.BetweenTools);
         Assert.Equal(expectedDisabled, model.Disabled);
         Assert.Equal(expectedEnabled, model.Enabled);
     }
@@ -31,6 +34,7 @@ public class ThinkingTypesTest : TestBase
         var model = new ThinkingTypes
         {
             Adaptive = new(true),
+            BetweenTools = new(true),
             Disabled = new(true),
             Enabled = new(true),
         };
@@ -50,6 +54,7 @@ public class ThinkingTypesTest : TestBase
         var model = new ThinkingTypes
         {
             Adaptive = new(true),
+            BetweenTools = new(true),
             Disabled = new(true),
             Enabled = new(true),
         };
@@ -62,10 +67,12 @@ public class ThinkingTypesTest : TestBase
         Assert.NotNull(deserialized);
 
         CapabilitySupport expectedAdaptive = new(true);
+        CapabilitySupport expectedBetweenTools = new(true);
         CapabilitySupport expectedDisabled = new(true);
         CapabilitySupport expectedEnabled = new(true);
 
         Assert.Equal(expectedAdaptive, deserialized.Adaptive);
+        Assert.Equal(expectedBetweenTools, deserialized.BetweenTools);
         Assert.Equal(expectedDisabled, deserialized.Disabled);
         Assert.Equal(expectedEnabled, deserialized.Enabled);
     }
@@ -76,6 +83,7 @@ public class ThinkingTypesTest : TestBase
         var model = new ThinkingTypes
         {
             Adaptive = new(true),
+            BetweenTools = new(true),
             Disabled = new(true),
             Enabled = new(true),
         };
@@ -89,6 +97,7 @@ public class ThinkingTypesTest : TestBase
         var model = new ThinkingTypes
         {
             Adaptive = new(true),
+            BetweenTools = new(true),
             Disabled = new(true),
             Enabled = new(true),
         };

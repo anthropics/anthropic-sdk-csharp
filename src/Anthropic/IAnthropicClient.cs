@@ -40,6 +40,9 @@ public interface IAnthropicClient : IDisposable
     /// <inheritdoc cref="ClientOptions.Timeout" />
     TimeSpan? Timeout { get; init; }
 
+    /// <inheritdoc cref="ClientOptions.OpenTelemetry" />
+    OpenTelemetryOptions? OpenTelemetry { get; init; }
+
     string? ApiKey { get; init; }
 
     string? AuthToken { get; init; }
@@ -94,6 +97,9 @@ public interface IAnthropicClientWithRawResponse : IDisposable
 
     /// <inheritdoc cref="ClientOptions.Timeout" />
     TimeSpan? Timeout { get; init; }
+
+    /// <inheritdoc cref="ClientOptions.OpenTelemetry" />
+    OpenTelemetryOptions? OpenTelemetry { get; init; }
 
     string? ApiKey { get; init; }
 

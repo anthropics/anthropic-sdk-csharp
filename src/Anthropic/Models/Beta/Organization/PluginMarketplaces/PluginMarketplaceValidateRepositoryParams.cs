@@ -204,6 +204,8 @@ public record class PluginMarketplaceValidateRepositoryParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/plugin_marketplaces/validate_repository";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

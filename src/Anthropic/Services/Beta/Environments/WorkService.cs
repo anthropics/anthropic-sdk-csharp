@@ -253,6 +253,12 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.environments.work.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.environment.id", parameters.EnvironmentID),
+                new("anthropic.environment.work.id", parameters.WorkID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -296,6 +302,12 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.environments.work.update",
+            SpanResourceIds =
+            [
+                new("anthropic.environment.id", parameters.EnvironmentID),
+                new("anthropic.environment.work.id", parameters.WorkID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -339,6 +351,8 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.environments.work.list",
+            SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -384,6 +398,12 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.environments.work.ack",
+            SpanResourceIds =
+            [
+                new("anthropic.environment.id", parameters.EnvironmentID),
+                new("anthropic.environment.work.id", parameters.WorkID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -427,6 +447,12 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.environments.work.heartbeat",
+            SpanResourceIds =
+            [
+                new("anthropic.environment.id", parameters.EnvironmentID),
+                new("anthropic.environment.work.id", parameters.WorkID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -470,6 +496,8 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.environments.work.poll",
+            SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -515,6 +543,8 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.environments.work.stats",
+            SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -560,6 +590,12 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.environments.work.stop",
+            SpanResourceIds =
+            [
+                new("anthropic.environment.id", parameters.EnvironmentID),
+                new("anthropic.environment.work.id", parameters.WorkID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

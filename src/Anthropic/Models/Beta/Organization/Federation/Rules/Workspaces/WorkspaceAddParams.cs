@@ -186,6 +186,9 @@ public record class WorkspaceAddParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route =>
+        "/v1/organizations/federation_rules/{federation_rule_id}/workspaces";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

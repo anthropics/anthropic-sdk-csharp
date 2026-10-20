@@ -314,7 +314,8 @@ public record class SessionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `managed-agents-2026-04-01` in
+    /// this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -442,6 +443,25 @@ public record class SessionListParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/sessions";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        [
+            "agent_id",
+            "agent_version",
+            "created_at[gt]",
+            "created_at[gte]",
+            "created_at[lt]",
+            "created_at[lte]",
+            "deployment_id",
+            "include_archived",
+            "limit",
+            "memory_store_id",
+            "order",
+            "page",
+            "statuses",
+        ];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

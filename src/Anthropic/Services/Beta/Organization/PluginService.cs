@@ -204,6 +204,7 @@ public sealed class PluginServiceWithRawResponse : IPluginServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.plugins.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -217,6 +218,12 @@ public sealed class PluginServiceWithRawResponse : IPluginServiceWithRawResponse
                 {
                     betaPlugin.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.plugin.id",
+                    betaPlugin,
+                    static created => created.ID
+                );
                 return betaPlugin;
             }
         );
@@ -237,6 +244,8 @@ public sealed class PluginServiceWithRawResponse : IPluginServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.plugins.retrieve",
+            SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -282,6 +291,8 @@ public sealed class PluginServiceWithRawResponse : IPluginServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.plugins.update",
+            SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -322,6 +333,7 @@ public sealed class PluginServiceWithRawResponse : IPluginServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.plugins.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -355,6 +367,8 @@ public sealed class PluginServiceWithRawResponse : IPluginServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.organization.plugins.delete",
+            SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

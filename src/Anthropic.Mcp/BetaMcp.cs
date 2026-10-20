@@ -130,6 +130,7 @@ public static class BetaMcp
 
         return new BetaRunnableTool
         {
+            IsMcpTool = true,
             Name = protocolTool.Name,
             Definition = new BetaToolUnion(betaTool),
             Run = async (toolUseBlock, cancellationToken) =>

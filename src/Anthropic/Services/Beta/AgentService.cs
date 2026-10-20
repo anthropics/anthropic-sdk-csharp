@@ -178,6 +178,7 @@ public sealed class AgentServiceWithRawResponse : IAgentServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.agents.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -191,6 +192,12 @@ public sealed class AgentServiceWithRawResponse : IAgentServiceWithRawResponse
                 {
                     betaManagedAgentsAgent.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "gen_ai.agent.id",
+                    betaManagedAgentsAgent,
+                    static created => created.ID
+                );
                 return betaManagedAgentsAgent;
             }
         );
@@ -211,6 +218,8 @@ public sealed class AgentServiceWithRawResponse : IAgentServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.agents.retrieve",
+            SpanResourceIds = [new("gen_ai.agent.id", parameters.AgentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -256,6 +265,8 @@ public sealed class AgentServiceWithRawResponse : IAgentServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.agents.update",
+            SpanResourceIds = [new("gen_ai.agent.id", parameters.AgentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -298,6 +309,7 @@ public sealed class AgentServiceWithRawResponse : IAgentServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.agents.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -331,6 +343,8 @@ public sealed class AgentServiceWithRawResponse : IAgentServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.agents.archive",
+            SpanResourceIds = [new("gen_ai.agent.id", parameters.AgentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

@@ -171,6 +171,11 @@ public record class RuleListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/federation_rules";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["include_archived", "issuer_id", "limit", "page"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

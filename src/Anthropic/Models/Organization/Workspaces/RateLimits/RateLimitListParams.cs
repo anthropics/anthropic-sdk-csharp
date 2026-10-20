@@ -184,6 +184,11 @@ public record class RateLimitListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/workspaces/{workspace_id}/rate_limits";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["group_type", "include_inherited", "limit", "page"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

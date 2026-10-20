@@ -194,6 +194,8 @@ public record class WorkspaceCreateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/workspaces";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

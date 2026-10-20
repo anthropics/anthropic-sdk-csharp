@@ -190,6 +190,8 @@ public record class PluginMarketplaceUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/plugin_marketplaces/{marketplace_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

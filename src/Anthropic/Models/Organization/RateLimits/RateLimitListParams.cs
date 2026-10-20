@@ -160,6 +160,10 @@ public record class RateLimitListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/rate_limits";
+
+    internal override IReadOnlyList<string> QueryParams => ["group_type", "limit", "model", "page"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

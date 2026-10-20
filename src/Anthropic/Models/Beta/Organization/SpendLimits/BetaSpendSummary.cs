@@ -485,6 +485,7 @@ public record class BetaSpendSummaryScope : ModelBase
                 BetaSpendLimitOrganizationServiceScope x => x.Type,
                 BetaSpendLimitOrganizationScope x => x.Type,
                 BetaSpendLimitWorkspaceScope x => x.Type,
+                BetaSpendLimitUsageTierScope x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
             };
         }
@@ -524,6 +525,12 @@ public record class BetaSpendSummaryScope : ModelBase
     }
 
     public BetaSpendSummaryScope(BetaSpendLimitWorkspaceScope value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaSpendSummaryScope(BetaSpendLimitUsageTierScope value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -671,6 +678,29 @@ public record class BetaSpendSummaryScope : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaSpendLimitUsageTierScope"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaSpendLimitUsageTier(out var value)) {
+    ///     // `value` is of type `BetaSpendLimitUsageTierScope`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaSpendLimitUsageTier(
+        [NotNullWhen(true)] out BetaSpendLimitUsageTierScope? value
+    )
+    {
+        value = this.Value as BetaSpendLimitUsageTierScope;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -689,7 +719,8 @@ public record class BetaSpendSummaryScope : ModelBase
     ///     (BetaSpendLimitRbacGroupScope value) =&gt; {...},
     ///     (BetaSpendLimitOrganizationServiceScope value) =&gt; {...},
     ///     (BetaSpendLimitOrganizationScope value) =&gt; {...},
-    ///     (BetaSpendLimitWorkspaceScope value) =&gt; {...}
+    ///     (BetaSpendLimitWorkspaceScope value) =&gt; {...},
+    ///     (BetaSpendLimitUsageTierScope value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -700,7 +731,8 @@ public record class BetaSpendSummaryScope : ModelBase
         Action<BetaSpendLimitRbacGroupScope> betaSpendLimitRbacGroup,
         Action<BetaSpendLimitOrganizationServiceScope> betaSpendLimitOrganizationService,
         Action<BetaSpendLimitOrganizationScope> betaSpendLimitOrganization,
-        Action<BetaSpendLimitWorkspaceScope> betaSpendLimitWorkspace
+        Action<BetaSpendLimitWorkspaceScope> betaSpendLimitWorkspace,
+        Action<BetaSpendLimitUsageTierScope> betaSpendLimitUsageTier
     )
     {
         switch (this.Value)
@@ -722,6 +754,9 @@ public record class BetaSpendSummaryScope : ModelBase
                 break;
             case BetaSpendLimitWorkspaceScope value:
                 betaSpendLimitWorkspace(value);
+                break;
+            case BetaSpendLimitUsageTierScope value:
+                betaSpendLimitUsageTier(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -750,7 +785,8 @@ public record class BetaSpendSummaryScope : ModelBase
     ///     (BetaSpendLimitRbacGroupScope value) =&gt; {...},
     ///     (BetaSpendLimitOrganizationServiceScope value) =&gt; {...},
     ///     (BetaSpendLimitOrganizationScope value) =&gt; {...},
-    ///     (BetaSpendLimitWorkspaceScope value) =&gt; {...}
+    ///     (BetaSpendLimitWorkspaceScope value) =&gt; {...},
+    ///     (BetaSpendLimitUsageTierScope value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -761,7 +797,8 @@ public record class BetaSpendSummaryScope : ModelBase
         Func<BetaSpendLimitRbacGroupScope, T> betaSpendLimitRbacGroup,
         Func<BetaSpendLimitOrganizationServiceScope, T> betaSpendLimitOrganizationService,
         Func<BetaSpendLimitOrganizationScope, T> betaSpendLimitOrganization,
-        Func<BetaSpendLimitWorkspaceScope, T> betaSpendLimitWorkspace
+        Func<BetaSpendLimitWorkspaceScope, T> betaSpendLimitWorkspace,
+        Func<BetaSpendLimitUsageTierScope, T> betaSpendLimitUsageTier
     )
     {
         return this.Value switch
@@ -774,6 +811,7 @@ public record class BetaSpendSummaryScope : ModelBase
             ),
             BetaSpendLimitOrganizationScope value => betaSpendLimitOrganization(value),
             BetaSpendLimitWorkspaceScope value => betaSpendLimitWorkspace(value),
+            BetaSpendLimitUsageTierScope value => betaSpendLimitUsageTier(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaSpendSummaryScope"
             ),
@@ -797,6 +835,9 @@ public record class BetaSpendSummaryScope : ModelBase
         new(value);
 
     public static implicit operator BetaSpendSummaryScope(BetaSpendLimitWorkspaceScope value) =>
+        new(value);
+
+    public static implicit operator BetaSpendSummaryScope(BetaSpendLimitUsageTierScope value) =>
         new(value);
 
     /// <summary>
@@ -823,7 +864,8 @@ public record class BetaSpendSummaryScope : ModelBase
             (betaSpendLimitRbacGroup) => betaSpendLimitRbacGroup.Validate(),
             (betaSpendLimitOrganizationService) => betaSpendLimitOrganizationService.Validate(),
             (betaSpendLimitOrganization) => betaSpendLimitOrganization.Validate(),
-            (betaSpendLimitWorkspace) => betaSpendLimitWorkspace.Validate()
+            (betaSpendLimitWorkspace) => betaSpendLimitWorkspace.Validate(),
+            (betaSpendLimitUsageTier) => betaSpendLimitUsageTier.Validate()
         );
     }
 
@@ -853,6 +895,7 @@ public record class BetaSpendSummaryScope : ModelBase
             BetaSpendLimitOrganizationServiceScope _ => 3,
             BetaSpendLimitOrganizationScope _ => 4,
             BetaSpendLimitWorkspaceScope _ => 5,
+            BetaSpendLimitUsageTierScope _ => 6,
             _ => -1,
         };
     }
@@ -1000,6 +1043,26 @@ sealed class BetaSpendSummaryScopeConverter : JsonConverter<BetaSpendSummaryScop
 
                 return new(element);
             }
+            case "usage_tier":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaSpendLimitUsageTierScope>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             default:
             {
                 return new BetaSpendSummaryScope(element);
@@ -1047,6 +1110,7 @@ public record class Source : ModelBase
                 BetaSpendLimitOrganizationServiceScope x => x.Type,
                 BetaSpendLimitOrganizationScope x => x.Type,
                 BetaSpendLimitWorkspaceScope x => x.Type,
+                BetaSpendLimitUsageTierScope x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
             };
         }
@@ -1083,6 +1147,12 @@ public record class Source : ModelBase
     }
 
     public Source(BetaSpendLimitWorkspaceScope value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Source(BetaSpendLimitUsageTierScope value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -1232,6 +1302,29 @@ public record class Source : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaSpendLimitUsageTierScope"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaSpendLimitUsageTierScope(out var value)) {
+    ///     // `value` is of type `BetaSpendLimitUsageTierScope`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaSpendLimitUsageTierScope(
+        [NotNullWhen(true)] out BetaSpendLimitUsageTierScope? value
+    )
+    {
+        value = this.Value as BetaSpendLimitUsageTierScope;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -1250,7 +1343,8 @@ public record class Source : ModelBase
     ///     (BetaSpendLimitRbacGroupScope value) =&gt; {...},
     ///     (BetaSpendLimitOrganizationServiceScope value) =&gt; {...},
     ///     (BetaSpendLimitOrganizationScope value) =&gt; {...},
-    ///     (BetaSpendLimitWorkspaceScope value) =&gt; {...}
+    ///     (BetaSpendLimitWorkspaceScope value) =&gt; {...},
+    ///     (BetaSpendLimitUsageTierScope value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -1261,7 +1355,8 @@ public record class Source : ModelBase
         Action<BetaSpendLimitRbacGroupScope> betaSpendLimitRbacGroupScope,
         Action<BetaSpendLimitOrganizationServiceScope> betaSpendLimitOrganizationServiceScope,
         Action<BetaSpendLimitOrganizationScope> betaSpendLimitOrganizationScope,
-        Action<BetaSpendLimitWorkspaceScope> betaSpendLimitWorkspaceScope
+        Action<BetaSpendLimitWorkspaceScope> betaSpendLimitWorkspaceScope,
+        Action<BetaSpendLimitUsageTierScope> betaSpendLimitUsageTierScope
     )
     {
         switch (this.Value)
@@ -1283,6 +1378,9 @@ public record class Source : ModelBase
                 break;
             case BetaSpendLimitWorkspaceScope value:
                 betaSpendLimitWorkspaceScope(value);
+                break;
+            case BetaSpendLimitUsageTierScope value:
+                betaSpendLimitUsageTierScope(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Source");
@@ -1309,7 +1407,8 @@ public record class Source : ModelBase
     ///     (BetaSpendLimitRbacGroupScope value) =&gt; {...},
     ///     (BetaSpendLimitOrganizationServiceScope value) =&gt; {...},
     ///     (BetaSpendLimitOrganizationScope value) =&gt; {...},
-    ///     (BetaSpendLimitWorkspaceScope value) =&gt; {...}
+    ///     (BetaSpendLimitWorkspaceScope value) =&gt; {...},
+    ///     (BetaSpendLimitUsageTierScope value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -1320,7 +1419,8 @@ public record class Source : ModelBase
         Func<BetaSpendLimitRbacGroupScope, T> betaSpendLimitRbacGroupScope,
         Func<BetaSpendLimitOrganizationServiceScope, T> betaSpendLimitOrganizationServiceScope,
         Func<BetaSpendLimitOrganizationScope, T> betaSpendLimitOrganizationScope,
-        Func<BetaSpendLimitWorkspaceScope, T> betaSpendLimitWorkspaceScope
+        Func<BetaSpendLimitWorkspaceScope, T> betaSpendLimitWorkspaceScope,
+        Func<BetaSpendLimitUsageTierScope, T> betaSpendLimitUsageTierScope
     )
     {
         return this.Value switch
@@ -1333,6 +1433,7 @@ public record class Source : ModelBase
             ),
             BetaSpendLimitOrganizationScope value => betaSpendLimitOrganizationScope(value),
             BetaSpendLimitWorkspaceScope value => betaSpendLimitWorkspaceScope(value),
+            BetaSpendLimitUsageTierScope value => betaSpendLimitUsageTierScope(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Source"
             ),
@@ -1351,6 +1452,8 @@ public record class Source : ModelBase
     public static implicit operator Source(BetaSpendLimitOrganizationScope value) => new(value);
 
     public static implicit operator Source(BetaSpendLimitWorkspaceScope value) => new(value);
+
+    public static implicit operator Source(BetaSpendLimitUsageTierScope value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -1375,7 +1478,8 @@ public record class Source : ModelBase
             (betaSpendLimitOrganizationServiceScope) =>
                 betaSpendLimitOrganizationServiceScope.Validate(),
             (betaSpendLimitOrganizationScope) => betaSpendLimitOrganizationScope.Validate(),
-            (betaSpendLimitWorkspaceScope) => betaSpendLimitWorkspaceScope.Validate()
+            (betaSpendLimitWorkspaceScope) => betaSpendLimitWorkspaceScope.Validate(),
+            (betaSpendLimitUsageTierScope) => betaSpendLimitUsageTierScope.Validate()
         );
     }
 
@@ -1405,6 +1509,7 @@ public record class Source : ModelBase
             BetaSpendLimitOrganizationServiceScope _ => 3,
             BetaSpendLimitOrganizationScope _ => 4,
             BetaSpendLimitWorkspaceScope _ => 5,
+            BetaSpendLimitUsageTierScope _ => 6,
             _ => -1,
         };
     }
@@ -1537,6 +1642,26 @@ sealed class SourceConverter : JsonConverter<Source>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaSpendLimitWorkspaceScope>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "usage_tier":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaSpendLimitUsageTierScope>(
                         element,
                         options
                     );

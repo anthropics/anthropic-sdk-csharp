@@ -612,6 +612,7 @@
         "dependencies": {
           "Microsoft.Extensions.AI.Abstractions": "[10.5.1, )",
           "System.Collections.Immutable": "[8.0.0, )",
+          "System.Diagnostics.DiagnosticSource": "[8.0.1, )",
           "System.Net.ServerSentEvents": "[10.0.1, )",
           "System.Text.Json": "[10.0.6, )",
           "System.Threading.Tasks.Extensions": "[4.6.3, )"
@@ -623,7 +624,7 @@
           "AWSSDK.Core": "[4.0.3.3, )",
           "AWSSDK.SSO": "[4.0.2.5, )",
           "AWSSDK.SSOOIDC": "[4.0.3.6, )",
-          "Anthropic": "[12.30.0, )",
+          "Anthropic": "[12.46.0, )",
           "Microsoft.Bcl.Memory": "[10.0.4, )",
           "System.Collections.Immutable": "[8.0.0, )",
           "System.Threading.Tasks.Extensions": "[4.6.3, )"
@@ -635,7 +636,7 @@
           "AWSSDK.Core": "[4.0.3.3, )",
           "AWSSDK.SSO": "[4.0.2.5, )",
           "AWSSDK.SSOOIDC": "[4.0.3.6, )",
-          "Anthropic": "[12.30.0, )",
+          "Anthropic": "[12.46.0, )",
           "Microsoft.Bcl.Memory": "[10.0.4, )",
           "System.Collections.Immutable": "[8.0.0, )",
           "System.Threading.Tasks.Extensions": "[4.6.3, )"
@@ -644,7 +645,7 @@
       "anthropic.foundry": {
         "type": "Project",
         "dependencies": {
-          "Anthropic": "[12.30.0, )",
+          "Anthropic": "[12.46.0, )",
           "Azure.Identity": "[1.17.0, )",
           "System.Collections.Immutable": "[8.0.0, )",
           "System.Threading.Tasks.Extensions": "[4.6.3, )"
@@ -653,7 +654,7 @@
       "anthropic.googlecloud": {
         "type": "Project",
         "dependencies": {
-          "Anthropic": "[12.30.0, )",
+          "Anthropic": "[12.46.0, )",
           "Google.Apis.Oauth2.v2": "[1.68.0.1869, )",
           "System.Collections.Immutable": "[8.0.0, )",
           "System.Threading.Tasks.Extensions": "[4.6.3, )"
@@ -662,7 +663,7 @@
       "anthropic.mcp": {
         "type": "Project",
         "dependencies": {
-          "Anthropic": "[12.30.0, )",
+          "Anthropic": "[12.46.0, )",
           "ModelContextProtocol.Core": "[1.2.0, )",
           "System.Memory": "[4.6.3, )",
           "System.Threading.Tasks.Extensions": "[4.6.3, )"
@@ -671,7 +672,7 @@
       "anthropic.vertex": {
         "type": "Project",
         "dependencies": {
-          "Anthropic": "[12.30.0, )",
+          "Anthropic": "[12.46.0, )",
           "Google.Apis.Oauth2.v2": "[1.68.0.1869, )",
           "System.Collections.Immutable": "[8.0.0, )",
           "System.Threading.Tasks.Extensions": "[4.6.3, )"
@@ -1668,7 +1669,7 @@
           "AWSSDK.Core": "[4.0.3.3, )",
           "AWSSDK.SSO": "[4.0.2.5, )",
           "AWSSDK.SSOOIDC": "[4.0.3.6, )",
-          "Anthropic": "[12.30.0, )",
+          "Anthropic": "[12.46.0, )",
           "Microsoft.Bcl.Memory": "[10.0.4, )"
         }
       },
@@ -1678,35 +1679,35 @@
           "AWSSDK.Core": "[4.0.3.3, )",
           "AWSSDK.SSO": "[4.0.2.5, )",
           "AWSSDK.SSOOIDC": "[4.0.3.6, )",
-          "Anthropic": "[12.30.0, )",
+          "Anthropic": "[12.46.0, )",
           "Microsoft.Bcl.Memory": "[10.0.4, )"
         }
       },
       "anthropic.foundry": {
         "type": "Project",
         "dependencies": {
-          "Anthropic": "[12.30.0, )",
+          "Anthropic": "[12.46.0, )",
           "Azure.Identity": "[1.17.0, )"
         }
       },
       "anthropic.googlecloud": {
         "type": "Project",
         "dependencies": {
-          "Anthropic": "[12.30.0, )",
+          "Anthropic": "[12.46.0, )",
           "Google.Apis.Oauth2.v2": "[1.68.0.1869, )"
         }
       },
       "anthropic.mcp": {
         "type": "Project",
         "dependencies": {
-          "Anthropic": "[12.30.0, )",
+          "Anthropic": "[12.46.0, )",
           "ModelContextProtocol.Core": "[1.2.0, )"
         }
       },
       "anthropic.vertex": {
         "type": "Project",
         "dependencies": {
-          "Anthropic": "[12.30.0, )",
+          "Anthropic": "[12.46.0, )",
           "Google.Apis.Oauth2.v2": "[1.68.0.1869, )"
         }
       }

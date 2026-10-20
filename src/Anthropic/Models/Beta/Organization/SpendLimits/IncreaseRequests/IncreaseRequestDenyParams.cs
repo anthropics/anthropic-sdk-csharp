@@ -157,6 +157,9 @@ public record class IncreaseRequestDenyParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route =>
+        "/v1/organizations/spend_limit_increase_requests/{spend_limit_increase_request_id}/deny";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

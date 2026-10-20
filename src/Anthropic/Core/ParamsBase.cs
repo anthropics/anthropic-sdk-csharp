@@ -70,6 +70,23 @@ public abstract record class ParamsBase
 
     public abstract Uri Url(ClientOptions options);
 
+    /// <summary>
+    /// The path of the endpoint that these parameters are for, as the API's description gives it:
+    /// with the name of each path parameter in place of its value, such as
+    /// <c>/v1/files/{file_id}</c>. The call span has it as <c>http.route</c>.
+    /// </summary>
+    internal virtual string? Route => null;
+
+    /// <summary>
+    /// The names of the query parameters that the endpoint's description defines, as the API
+    /// spells them. The call span's <c>url.query</c> leaves out every other part of a query
+    /// string.
+    /// </summary>
+    internal virtual IReadOnlyList<string> QueryParams => [];
+
+    /// <summary>The query parameters whose value is content on this endpoint only.</summary>
+    internal virtual IReadOnlyList<string> ContentQueryParams => [];
+
     protected static void AddQueryElementToCollection(
         NameValueCollection collection,
         string key,

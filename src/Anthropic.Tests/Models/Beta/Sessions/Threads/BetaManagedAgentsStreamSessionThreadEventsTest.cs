@@ -632,6 +632,7 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                 {
                     ID = "agent_011CZkYpogX7uDKUyvBTophP",
                     Description = "A general-purpose starter agent.",
+                    ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -643,7 +644,7 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                     ],
                     Model = new()
                     {
-                        ID = BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
@@ -656,6 +657,8 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                             {
                                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                                 Description = "A focused research subagent.",
+                                ExecutionIdentity =
+                                    new BetaManagedAgentsServiceAccountExecutionIdentity(),
                                 McpServers =
                                 [
                                     new()
@@ -667,7 +670,7 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                                 ],
                                 Model = new()
                                 {
-                                    ID = BetaManagedAgentsModel.ClaudeOpus5,
+                                    ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                                     Effort = new BetaManagedAgentsEffortLow(
                                         BetaManagedAgentsEffortLowType.Low
                                     ),
@@ -1777,6 +1780,7 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                 {
                     ID = "agent_011CZkYpogX7uDKUyvBTophP",
                     Description = "A general-purpose starter agent.",
+                    ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -1788,7 +1792,7 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                     ],
                     Model = new()
                     {
-                        ID = BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
@@ -1801,6 +1805,8 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                             {
                                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                                 Description = "A focused research subagent.",
+                                ExecutionIdentity =
+                                    new BetaManagedAgentsServiceAccountExecutionIdentity(),
                                 McpServers =
                                 [
                                     new()
@@ -1812,7 +1818,7 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
                                 ],
                                 Model = new()
                                 {
-                                    ID = BetaManagedAgentsModel.ClaudeOpus5,
+                                    ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                                     Effort = new BetaManagedAgentsEffortLow(
                                         BetaManagedAgentsEffortLowType.Low
                                     ),

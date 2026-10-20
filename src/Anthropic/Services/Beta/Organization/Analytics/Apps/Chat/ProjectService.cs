@@ -74,6 +74,7 @@ public sealed class ProjectServiceWithRawResponse : IProjectServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.analytics.apps.chat.projects.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

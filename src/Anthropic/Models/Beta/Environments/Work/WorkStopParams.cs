@@ -220,6 +220,8 @@ public record class WorkStopParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/environments/{environment_id}/work/{work_id}/stop";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

@@ -206,6 +206,11 @@ public record class ArtifactListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/analytics/artifacts";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["date", "filter", "group_by", "limit", "page"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

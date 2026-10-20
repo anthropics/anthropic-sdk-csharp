@@ -111,6 +111,8 @@ public record class ExternalKeyDeleteParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/external_keys/{external_key_id}";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

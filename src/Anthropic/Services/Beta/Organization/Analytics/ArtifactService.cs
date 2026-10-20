@@ -72,6 +72,7 @@ public sealed class ArtifactServiceWithRawResponse : IArtifactServiceWithRawResp
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.analytics.artifacts.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

@@ -171,6 +171,10 @@ public record class IncreaseRequestListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/spend_limit_increase_requests";
+
+    internal override IReadOnlyList<string> QueryParams => ["actor_ids", "limit", "page", "status"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

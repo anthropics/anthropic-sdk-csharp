@@ -110,6 +110,8 @@ public record class SpendLimitRetrieveParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/spend_limits/{spend_limit_id}";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

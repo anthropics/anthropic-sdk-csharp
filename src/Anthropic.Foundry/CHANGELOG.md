@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Foundry-v0.7.1...Foundry-v0.8.0) (2026-10-14)
+
+### Features
+
+* **client:** add native support for OpenTelemetry tracing
+
+  To get the SDK's spans, add the `com.anthropic.sdk.csharp*` source to your tracer provider. To disable, initialize the client with `OpenTelemetry = false` or set `ANTHROPIC_OPEN_TELEMETRY=false`. Learn more in the [documentation](https://platform.claude.com/docs/en/manage-claude/opentelemetry/sdk).
+
 ## 0.7.1 (2026-06-24)
 
 Full Changelog: [Foundry-v0.7.0...Foundry-v0.7.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Foundry-v0.7.0...Foundry-v0.7.1)

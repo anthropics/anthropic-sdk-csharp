@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Core.Telemetry;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 using Anthropic.Services.Beta;
@@ -25,6 +27,13 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
     private readonly ConcurrentDictionary<string, IBetaRunnableTool> _toolsByName;
     private readonly IReadOnlyList<BetaToolUnion> _allToolDefinitions;
     private readonly int? _maxIterations;
+
+    // The options of the SDK client behind _service, which the runner's spans follow, or null
+    // when the service is not the SDK's own and the runner emits none.
+    private readonly ClientOptions? _clientOptions;
+
+    // The tool runner span, while the loop runs.
+    private Activity? _toolRunnerSpan;
     private int _consumed;
 
     private MessageCreateParams _currentParams;
@@ -48,6 +57,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         ThrowIfCompactionParam(parameters);
         _service = service;
         _maxIterations = maxIterations;
+        _clientOptions = (service as MessageService)?.ClientOptions;
 
         _toolsByName = new ConcurrentDictionary<string, IBetaRunnableTool>(StringComparer.Ordinal);
         var allDefs = new List<BetaToolUnion>();
@@ -282,12 +292,15 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         if (Interlocked.Exchange(ref _consumed, 1) != 0)
             throw new InvalidOperationException("Cannot iterate over a consumed tool runner.");
 
-        return RunLoopAsync<BetaMessage>(
-                async (parameters, ct) =>
-                {
-                    var message = await _service.Create(parameters, ct).ConfigureAwait(false);
-                    return (message, () => message);
-                },
+        return RunLoopInToolRunnerSpan(
+                RunLoopAsync<BetaMessage>(
+                    async (parameters, ct) =>
+                    {
+                        var message = await _service.Create(parameters, ct).ConfigureAwait(false);
+                        return (message, () => message);
+                    },
+                    cancellationToken
+                ),
                 cancellationToken
             )
             .GetAsyncEnumerator(cancellationToken);
@@ -304,15 +317,21 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         if (Interlocked.Exchange(ref _consumed, 1) != 0)
             throw new InvalidOperationException("Cannot iterate over a consumed tool runner.");
 
-        return RunLoopAsync(
-            (parameters, ct) =>
-            {
-                // Yield the stream wrapped with the aggregator so events flow through to the
-                // caller while the aggregator collects them for tool dispatch.
-                var aggregator = new BetaMessageContentAggregator();
-                var stream = aggregator.CollectAsync(_service.CreateStreaming(parameters, ct));
-                return Task.FromResult((stream, (Func<BetaMessage>)aggregator.Message));
-            },
+        return RunLoopInToolRunnerSpan(
+            RunLoopAsync(
+                (parameters, ct) =>
+                {
+                    // Yield the stream wrapped with the aggregator so events flow through to the
+                    // caller while the aggregator collects them for tool dispatch.
+                    var aggregator = new BetaMessageContentAggregator();
+                    var stream = InToolRunnerSpan(
+                        aggregator.CollectAsync(_service.CreateStreaming(parameters, ct)),
+                        ct
+                    );
+                    return Task.FromResult((stream, (Func<BetaMessage>)aggregator.Message));
+                },
+                cancellationToken
+            ),
             cancellationToken
         );
     }
@@ -644,6 +663,107 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
             );
     }
 
+    /// <summary>
+    /// Runs <paramref name="turns"/>, the turns of the loop, inside the tool runner span, which
+    /// starts with the first turn when the client emits spans. The span ends with the loop:
+    /// <c>Ok</c> when the turns run out, <c>Error</c> when one throws, and no status when the
+    /// application stops early, cancels, or disposes of the enumerator.
+    /// </summary>
+    private async IAsyncEnumerable<T> RunLoopInToolRunnerSpan<T>(
+        IAsyncEnumerable<T> turns,
+        CancellationToken cancellationToken,
+        [EnumeratorCancellation] CancellationToken enumeratorToken = default
+    )
+    {
+        var toolRunnerSpan = _clientOptions is { } options
+            ? ToolSpans.StartToolRunnerSpan(options, _currentParams)
+            : null;
+        _toolRunnerSpan = toolRunnerSpan;
+        var complete = false;
+        try
+        {
+            await foreach (
+                var turn in InToolRunnerSpan(turns, cancellationToken)
+                    .WithCancellation(enumeratorToken)
+                    .ConfigureAwait(false)
+            )
+            {
+                yield return turn;
+            }
+            complete = true;
+        }
+        finally
+        {
+            _toolRunnerSpan = null;
+            if (toolRunnerSpan != null)
+            {
+                if (complete)
+                {
+                    toolRunnerSpan.SetStatus(ActivityStatusCode.Ok);
+                }
+                Tracing.End(toolRunnerSpan);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Reads <paramref name="items"/>, the loop's turns or the events of one streamed turn, with
+    /// the tool runner span current in every step, and none of the application's code under it.
+    /// A step that fails, other than by the application's cancellation through
+    /// <paramref name="cancellationToken"/>, fails the span: a streamed turn throws to the
+    /// application without passing through the loop.
+    /// </summary>
+    private async IAsyncEnumerable<T> InToolRunnerSpan<T>(
+        IAsyncEnumerable<T> items,
+        CancellationToken cancellationToken,
+        [EnumeratorCancellation] CancellationToken enumeratorToken = default
+    )
+    {
+        var enumerator = items.GetAsyncEnumerator(enumeratorToken);
+        try
+        {
+            while (true)
+            {
+                // A step resumes in the context of whoever asks for the next item, which can be
+                // another trace each time. Returning from the step puts that context back.
+                if (_toolRunnerSpan is { } toolRunnerSpan)
+                {
+                    Activity.Current = toolRunnerSpan;
+                }
+                bool moved;
+                try
+                {
+                    moved = await enumerator.MoveNextAsync().ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    if (_toolRunnerSpan is { } failedToolRunnerSpan)
+                    {
+                        // The application cancels through either token: the runner's, or the
+                        // enumerator's.
+                        Tracing.SetErrorStatus(
+                            failedToolRunnerSpan,
+                            e,
+                            enumeratorToken.IsCancellationRequested
+                                ? enumeratorToken
+                                : cancellationToken
+                        );
+                    }
+                    throw;
+                }
+                if (!moved)
+                {
+                    yield break;
+                }
+                yield return enumerator.Current;
+            }
+        }
+        finally
+        {
+            await enumerator.DisposeAsync().ConfigureAwait(false);
+        }
+    }
+
     private enum NextStep
     {
         /// <summary>Run the turn's client tool calls, answer them, and continue.</summary>
@@ -826,6 +946,59 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
             return ToolNotFoundResult(toolUse);
         }
 
+        var spanName = tool is BetaRunnableTool { IsMcpTool: true }
+            ? "anthropic.mcp_tool_use"
+            : "anthropic.custom_tool_use";
+        if (
+            _clientOptions is not { } options
+            || !Tracing.IsEnabled(options)
+            || ToolSpans.StartToolUseSpan(options, spanName, toolUse, DefinitionForSpan(tool))
+                is not { } toolUseSpan
+        )
+        {
+            return await RunToolAsync(tool, toolUse, cancellationToken).ConfigureAwait(false);
+        }
+        BetaToolResultBlockParam result;
+        try
+        {
+            result = await RunToolAsync(tool, toolUse, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            ToolSpans.EndToolUseSpan(toolUseSpan, e, cancellationToken);
+            throw;
+        }
+        ToolSpans.EndToolUseSpan(options, toolUseSpan, result);
+        return result;
+    }
+
+    /// <summary>
+    /// The definition of <paramref name="tool"/>, for its span to take the description from. The
+    /// tool computes it, so it is read only when there is a span to start, and a tool that throws
+    /// here still runs: its span has no description.
+    /// </summary>
+    private static BetaToolUnion? DefinitionForSpan(IBetaRunnableTool tool)
+    {
+        try
+        {
+            return tool.Definition;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Executes <paramref name="tool"/> for <paramref name="toolUse"/> and makes the result to
+    /// send back. An error the tool throws becomes an error result.
+    /// </summary>
+    private static async Task<BetaToolResultBlockParam> RunToolAsync(
+        IBetaRunnableTool tool,
+        BetaToolUseBlock toolUse,
+        CancellationToken cancellationToken
+    )
+    {
         try
         {
             var content = await tool.ExecuteAsync(toolUse, cancellationToken).ConfigureAwait(false);

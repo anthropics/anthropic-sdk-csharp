@@ -21,6 +21,7 @@ public class AgentListPageResponseTest : TestBase
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
+                    ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -33,7 +34,7 @@ public class AgentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
@@ -126,6 +127,7 @@ public class AgentListPageResponseTest : TestBase
                 ArchivedAt = null,
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Description = "A general-purpose starter agent.",
+                ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                 McpServers =
                 [
                     new()
@@ -138,7 +140,7 @@ public class AgentListPageResponseTest : TestBase
                 Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                 Model = new()
                 {
-                    ID = BetaManagedAgentsModel.ClaudeOpus5,
+                    ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
@@ -243,6 +245,7 @@ public class AgentListPageResponseTest : TestBase
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
+                    ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -255,7 +258,7 @@ public class AgentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
@@ -362,6 +365,7 @@ public class AgentListPageResponseTest : TestBase
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
+                    ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -374,7 +378,7 @@ public class AgentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
@@ -474,6 +478,7 @@ public class AgentListPageResponseTest : TestBase
                 ArchivedAt = null,
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Description = "A general-purpose starter agent.",
+                ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                 McpServers =
                 [
                     new()
@@ -486,7 +491,7 @@ public class AgentListPageResponseTest : TestBase
                 Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                 Model = new()
                 {
-                    ID = BetaManagedAgentsModel.ClaudeOpus5,
+                    ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                     Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
@@ -591,6 +596,7 @@ public class AgentListPageResponseTest : TestBase
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
+                    ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -603,7 +609,7 @@ public class AgentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
@@ -704,6 +710,7 @@ public class AgentListPageResponseTest : TestBase
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
+                    ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -716,7 +723,7 @@ public class AgentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
@@ -817,6 +824,7 @@ public class AgentListPageResponseTest : TestBase
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
+                    ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -829,7 +837,7 @@ public class AgentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
@@ -929,6 +937,7 @@ public class AgentListPageResponseTest : TestBase
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
+                    ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -941,7 +950,7 @@ public class AgentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
@@ -1044,6 +1053,7 @@ public class AgentListPageResponseTest : TestBase
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
+                    ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -1056,7 +1066,7 @@ public class AgentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
@@ -1158,6 +1168,7 @@ public class AgentListPageResponseTest : TestBase
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description = "A general-purpose starter agent.",
+                    ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -1170,7 +1181,7 @@ public class AgentListPageResponseTest : TestBase
                     Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
                     Model = new()
                     {
-                        ID = BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,

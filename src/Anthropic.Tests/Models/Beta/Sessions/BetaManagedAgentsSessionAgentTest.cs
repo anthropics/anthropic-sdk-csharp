@@ -16,6 +16,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         {
             ID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "A general-purpose starter agent.",
+            ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
             McpServers =
             [
                 new()
@@ -27,7 +28,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             ],
             Model = new()
             {
-                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = new Agents::BetaManagedAgentsEffortLow(
                     Agents::BetaManagedAgentsEffortLowType.Low
                 ),
@@ -42,6 +43,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
+                        ExecutionIdentity =
+                            new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                         McpServers =
                         [
                             new()
@@ -53,7 +56,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                         ],
                         Model = new()
                         {
-                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                             Effort = new Agents::BetaManagedAgentsEffortLow(
                                 Agents::BetaManagedAgentsEffortLowType.Low
                             ),
@@ -152,6 +155,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
 
         string expectedID = "agent_011CZkYpogX7uDKUyvBTophP";
         string expectedDescription = "A general-purpose starter agent.";
+        Agents::BetaManagedAgentsExecutionIdentity expectedExecutionIdentity =
+            new Agents::BetaManagedAgentsServiceAccountExecutionIdentity();
         List<Agents::BetaManagedAgentsMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
@@ -163,7 +168,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         ];
         Agents::BetaManagedAgentsModelConfig expectedModel = new()
         {
-            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
             Effort = new Agents::BetaManagedAgentsEffortLow(
                 Agents::BetaManagedAgentsEffortLowType.Low
             ),
@@ -179,6 +184,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
+                        ExecutionIdentity =
+                            new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                         McpServers =
                         [
                             new()
@@ -190,7 +197,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                         ],
                         Model = new()
                         {
-                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                             Effort = new Agents::BetaManagedAgentsEffortLow(
                                 Agents::BetaManagedAgentsEffortLowType.Low
                             ),
@@ -289,6 +296,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedDescription, model.Description);
+        Assert.Equal(expectedExecutionIdentity, model.ExecutionIdentity);
         Assert.Equal(expectedMcpServers.Count, model.McpServers.Count);
         for (int i = 0; i < expectedMcpServers.Count; i++)
         {
@@ -319,6 +327,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         {
             ID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "A general-purpose starter agent.",
+            ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
             McpServers =
             [
                 new()
@@ -330,7 +339,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             ],
             Model = new()
             {
-                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = new Agents::BetaManagedAgentsEffortLow(
                     Agents::BetaManagedAgentsEffortLowType.Low
                 ),
@@ -345,6 +354,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
+                        ExecutionIdentity =
+                            new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                         McpServers =
                         [
                             new()
@@ -356,7 +367,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                         ],
                         Model = new()
                         {
-                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                             Effort = new Agents::BetaManagedAgentsEffortLow(
                                 Agents::BetaManagedAgentsEffortLowType.Low
                             ),
@@ -469,6 +480,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         {
             ID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "A general-purpose starter agent.",
+            ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
             McpServers =
             [
                 new()
@@ -480,7 +492,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             ],
             Model = new()
             {
-                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = new Agents::BetaManagedAgentsEffortLow(
                     Agents::BetaManagedAgentsEffortLowType.Low
                 ),
@@ -495,6 +507,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
+                        ExecutionIdentity =
+                            new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                         McpServers =
                         [
                             new()
@@ -506,7 +520,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                         ],
                         Model = new()
                         {
-                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                             Effort = new Agents::BetaManagedAgentsEffortLow(
                                 Agents::BetaManagedAgentsEffortLowType.Low
                             ),
@@ -612,6 +626,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
 
         string expectedID = "agent_011CZkYpogX7uDKUyvBTophP";
         string expectedDescription = "A general-purpose starter agent.";
+        Agents::BetaManagedAgentsExecutionIdentity expectedExecutionIdentity =
+            new Agents::BetaManagedAgentsServiceAccountExecutionIdentity();
         List<Agents::BetaManagedAgentsMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
@@ -623,7 +639,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         ];
         Agents::BetaManagedAgentsModelConfig expectedModel = new()
         {
-            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
             Effort = new Agents::BetaManagedAgentsEffortLow(
                 Agents::BetaManagedAgentsEffortLowType.Low
             ),
@@ -639,6 +655,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
+                        ExecutionIdentity =
+                            new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                         McpServers =
                         [
                             new()
@@ -650,7 +668,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                         ],
                         Model = new()
                         {
-                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                             Effort = new Agents::BetaManagedAgentsEffortLow(
                                 Agents::BetaManagedAgentsEffortLowType.Low
                             ),
@@ -749,6 +767,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedDescription, deserialized.Description);
+        Assert.Equal(expectedExecutionIdentity, deserialized.ExecutionIdentity);
         Assert.Equal(expectedMcpServers.Count, deserialized.McpServers.Count);
         for (int i = 0; i < expectedMcpServers.Count; i++)
         {
@@ -779,6 +798,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         {
             ID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "A general-purpose starter agent.",
+            ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
             McpServers =
             [
                 new()
@@ -790,7 +810,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             ],
             Model = new()
             {
-                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = new Agents::BetaManagedAgentsEffortLow(
                     Agents::BetaManagedAgentsEffortLowType.Low
                 ),
@@ -805,6 +825,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
+                        ExecutionIdentity =
+                            new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                         McpServers =
                         [
                             new()
@@ -816,7 +838,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                         ],
                         Model = new()
                         {
-                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                             Effort = new Agents::BetaManagedAgentsEffortLow(
                                 Agents::BetaManagedAgentsEffortLowType.Low
                             ),
@@ -923,6 +945,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
         {
             ID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "A general-purpose starter agent.",
+            ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
             McpServers =
             [
                 new()
@@ -934,7 +957,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
             ],
             Model = new()
             {
-                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = new Agents::BetaManagedAgentsEffortLow(
                     Agents::BetaManagedAgentsEffortLowType.Low
                 ),
@@ -949,6 +972,8 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
+                        ExecutionIdentity =
+                            new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                         McpServers =
                         [
                             new()
@@ -960,7 +985,7 @@ public class BetaManagedAgentsSessionAgentTest : TestBase
                         ],
                         Model = new()
                         {
-                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                             Effort = new Agents::BetaManagedAgentsEffortLow(
                                 Agents::BetaManagedAgentsEffortLowType.Low
                             ),

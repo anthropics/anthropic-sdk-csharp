@@ -48,7 +48,7 @@ public class MessageTest : TestBase
                 },
             ],
             Diagnostics = new(new CacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Category.Cyber,
@@ -68,6 +68,7 @@ public class MessageTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = UsageServiceTier.Standard,
+                Speed = UsageSpeed.Standard,
             },
         };
 
@@ -106,7 +107,7 @@ public class MessageTest : TestBase
             },
         ];
         Diagnostics expectedDiagnostics = new(new CacheMissModelChanged(0));
-        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5_5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         RefusalStopDetails expectedStopDetails = new()
         {
@@ -127,6 +128,7 @@ public class MessageTest : TestBase
             OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = UsageServiceTier.Standard,
+            Speed = UsageSpeed.Standard,
         };
 
         Assert.Equal(expectedID, model.ID);
@@ -186,7 +188,7 @@ public class MessageTest : TestBase
                 },
             ],
             Diagnostics = new(new CacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Category.Cyber,
@@ -206,6 +208,7 @@ public class MessageTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = UsageServiceTier.Standard,
+                Speed = UsageSpeed.Standard,
             },
         };
 
@@ -255,7 +258,7 @@ public class MessageTest : TestBase
                 },
             ],
             Diagnostics = new(new CacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Category.Cyber,
@@ -275,6 +278,7 @@ public class MessageTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = UsageServiceTier.Standard,
+                Speed = UsageSpeed.Standard,
             },
         };
 
@@ -320,7 +324,7 @@ public class MessageTest : TestBase
             },
         ];
         Diagnostics expectedDiagnostics = new(new CacheMissModelChanged(0));
-        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5_5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         RefusalStopDetails expectedStopDetails = new()
         {
@@ -341,6 +345,7 @@ public class MessageTest : TestBase
             OutputTokensDetails = new(0),
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             ServiceTier = UsageServiceTier.Standard,
+            Speed = UsageSpeed.Standard,
         };
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -400,7 +405,7 @@ public class MessageTest : TestBase
                 },
             ],
             Diagnostics = new(new CacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Category.Cyber,
@@ -420,6 +425,7 @@ public class MessageTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = UsageServiceTier.Standard,
+                Speed = UsageSpeed.Standard,
             },
         };
 
@@ -466,7 +472,7 @@ public class MessageTest : TestBase
                 },
             ],
             Diagnostics = new(new CacheMissModelChanged(0)),
-            Model = Model.ClaudeOpus5,
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Category.Cyber,
@@ -486,6 +492,7 @@ public class MessageTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = UsageServiceTier.Standard,
+                Speed = UsageSpeed.Standard,
             },
         };
 

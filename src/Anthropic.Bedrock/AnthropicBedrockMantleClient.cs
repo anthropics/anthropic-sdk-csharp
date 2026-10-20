@@ -127,6 +127,8 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
         _awsOptions = awsOptions;
 
         BackendAdaptationHandler = () => new MantleAwsAdaptationHandler(awsOptions);
+        OpenTelemetryProviderName = "aws.bedrock";
+        OpenTelemetrySource = AnthropicBedrockClient.PackageActivitySource;
     }
 
     private AnthropicBedrockMantleClient(MantleAwsClientOptions awsOptions, ClientOptions options)
@@ -136,6 +138,8 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
         // The options normally carry the backend adaptation handler from the original
         // construction; restore it if a WithOptions modifier returned fresh options.
         BackendAdaptationHandler ??= () => new MantleAwsAdaptationHandler(awsOptions);
+        OpenTelemetryProviderName = "aws.bedrock";
+        OpenTelemetrySource = AnthropicBedrockClient.PackageActivitySource;
     }
 
     /// <inheritdoc />

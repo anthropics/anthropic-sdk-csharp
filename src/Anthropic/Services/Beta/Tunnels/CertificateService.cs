@@ -163,6 +163,8 @@ public sealed class CertificateServiceWithRawResponse : ICertificateServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.tunnels.certificates.create",
+            SpanResourceIds = [new("anthropic.tunnel.id", parameters.TunnelID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -176,6 +178,12 @@ public sealed class CertificateServiceWithRawResponse : ICertificateServiceWithR
                 {
                     betaTunnelCertificate.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.tunnel.certificate.id",
+                    betaTunnelCertificate,
+                    static created => created.ID
+                );
                 return betaTunnelCertificate;
             }
         );
@@ -206,6 +214,12 @@ public sealed class CertificateServiceWithRawResponse : ICertificateServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.tunnels.certificates.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.tunnel.id", parameters.TunnelID),
+                new("anthropic.tunnel.certificate.id", parameters.CertificateID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -249,6 +263,8 @@ public sealed class CertificateServiceWithRawResponse : ICertificateServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.tunnels.certificates.list",
+            SpanResourceIds = [new("anthropic.tunnel.id", parameters.TunnelID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -294,6 +310,12 @@ public sealed class CertificateServiceWithRawResponse : ICertificateServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.tunnels.certificates.archive",
+            SpanResourceIds =
+            [
+                new("anthropic.tunnel.id", parameters.TunnelID),
+                new("anthropic.tunnel.certificate.id", parameters.CertificateID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

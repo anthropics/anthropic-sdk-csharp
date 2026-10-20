@@ -196,6 +196,9 @@ public record class ServiceAccountUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route =>
+        "/v1/organizations/workspaces/{workspace_id}/service_accounts/{service_account_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

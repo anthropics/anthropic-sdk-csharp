@@ -198,6 +198,8 @@ public record class PluginUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/plugins/{plugin_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

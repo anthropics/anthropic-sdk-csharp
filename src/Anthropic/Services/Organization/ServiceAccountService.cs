@@ -195,6 +195,7 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.service_accounts.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -208,6 +209,12 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
                 {
                     serviceAccount.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.service_account.id",
+                    serviceAccount,
+                    static created => created.ID
+                );
                 return serviceAccount;
             }
         );
@@ -228,6 +235,11 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.service_accounts.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.service_account.id", parameters.ServiceAccountID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -279,6 +291,11 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.service_accounts.update",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.service_account.id", parameters.ServiceAccountID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -327,6 +344,7 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.service_accounts.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -360,6 +378,11 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.service_accounts.archive",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.service_account.id", parameters.ServiceAccountID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

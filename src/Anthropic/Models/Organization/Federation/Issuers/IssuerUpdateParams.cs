@@ -234,6 +234,8 @@ public record class IssuerUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/federation_issuers/{federation_issuer_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

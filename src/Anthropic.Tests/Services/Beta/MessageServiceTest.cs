@@ -22,7 +22,7 @@ public class MessageServiceTest : TestBase
                         OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
                     },
                 ],
-                Model = Messages::Model.ClaudeOpus5,
+                Model = Messages::Model.ClaudeOpus5_5,
             },
             TestContext.Current.CancellationToken
         );
@@ -45,7 +45,7 @@ public class MessageServiceTest : TestBase
                         OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
                     },
                 ],
-                Model = Messages::Model.ClaudeOpus5,
+                Model = Messages::Model.ClaudeOpus5_5,
             },
             TestContext.Current.CancellationToken
         );
@@ -71,7 +71,7 @@ public class MessageServiceTest : TestBase
                         OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
                     },
                 ],
-                Model = Messages::Model.ClaudeOpus5,
+                Model = Messages::Model.ClaudeOpus5_5,
             },
             TestContext.Current.CancellationToken
         );

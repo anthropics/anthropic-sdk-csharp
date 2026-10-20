@@ -179,6 +179,10 @@ public record class MemberListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/workspaces/{workspace_id}/members";
+
+    internal override IReadOnlyList<string> QueryParams => ["after_id", "before_id", "limit"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

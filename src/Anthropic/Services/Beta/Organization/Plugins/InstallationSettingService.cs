@@ -144,6 +144,8 @@ public sealed class InstallationSettingServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.plugins.installation_settings.list",
+            SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -189,6 +191,12 @@ public sealed class InstallationSettingServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.organization.plugins.installation_settings.remove",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.plugin.id", parameters.PluginID),
+                new("anthropic.organization.plugin.installation_setting.id", parameters.Target),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -232,6 +240,12 @@ public sealed class InstallationSettingServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.plugins.installation_settings.set",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.plugin.id", parameters.PluginID),
+                new("anthropic.organization.plugin.installation_setting.id", parameters.Target),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

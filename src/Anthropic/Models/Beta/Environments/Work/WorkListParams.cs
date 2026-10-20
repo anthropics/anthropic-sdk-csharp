@@ -179,6 +179,10 @@ public record class WorkListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/environments/{environment_id}/work";
+
+    internal override IReadOnlyList<string> QueryParams => ["limit", "page"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

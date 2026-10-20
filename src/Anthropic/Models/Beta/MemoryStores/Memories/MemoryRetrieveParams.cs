@@ -52,7 +52,8 @@ public record class MemoryRetrieveParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `agent-memory-2026-07-22` or
+    /// `managed-agents-2026-04-01` in this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -203,6 +204,10 @@ public record class MemoryRetrieveParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/memory_stores/{memory_store_id}/memories/{memory_id}";
+
+    internal override IReadOnlyList<string> QueryParams => ["view"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

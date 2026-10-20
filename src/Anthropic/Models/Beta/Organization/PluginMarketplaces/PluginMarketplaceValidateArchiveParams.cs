@@ -186,6 +186,8 @@ public record class PluginMarketplaceValidateArchiveParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/plugin_marketplaces/validate_archive";
+
     internal override HttpContent? BodyContent()
     {
         return MultipartJsonSerializer.Serialize(RawBodyData);

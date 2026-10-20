@@ -183,6 +183,9 @@ public record class IncreaseRequestApproveParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route =>
+        "/v1/organizations/spend_limit_increase_requests/{spend_limit_increase_request_id}/approve";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

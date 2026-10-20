@@ -69,15 +69,7 @@ public enum BetaManagedAgentsModel
     /// Best combination of speed and intelligence
     /// </summary>
     ClaudeSonnet4_6,
-
-    /// <summary>
-    /// Fastest model with near-frontier intelligence
-    /// </summary>
     ClaudeHaiku4_5,
-
-    /// <summary>
-    /// Fastest model with near-frontier intelligence
-    /// </summary>
     ClaudeHaiku4_5_20251001,
 
     /// <summary>

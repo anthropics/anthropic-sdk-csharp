@@ -9,7 +9,7 @@ public class AgentServiceTest : TestBase
     public async Task Create_Works()
     {
         var betaManagedAgentsAgent = await this.client.Beta.Agents.Create(
-            new() { Model = BetaManagedAgentsModel.ClaudeOpus5, Name = "My First Agent" },
+            new() { Model = BetaManagedAgentsModel.ClaudeOpus5_5, Name = "My First Agent" },
             TestContext.Current.CancellationToken
         );
         betaManagedAgentsAgent.Validate();

@@ -29,9 +29,29 @@ public sealed record class ThinkingTypes : JsonModel
     }
 
     /// <summary>
+    /// Whether the model accepts thinking with type 'between_tools' (thinking turned
+    /// off, and any short progress updates the model writes between tool calls come
+    /// back as thinking blocks). False exactly when a request that sends it gets
+    /// a 400 from this model. A request that sends 'between_tools' can still be rejected
+    /// for another reason, such as an effort level the model does not allow with
+    /// thinking off.
+    /// </summary>
+    public required CapabilitySupport BetweenTools
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<CapabilitySupport>("between_tools");
+        }
+        init { this._rawData.Set("between_tools", value); }
+    }
+
+    /// <summary>
     /// Whether the model accepts thinking with type 'disabled' (thinking turned
     /// off). False exactly when a request that sends it gets a 400 from this model.
-    /// True on a model that does not support thinking.
+    /// True on a model that does not support thinking. A request that sends 'disabled'
+    /// can still be rejected for another reason, such as an effort level the model
+    /// does not allow with thinking off.
     /// </summary>
     public required CapabilitySupport Disabled
     {
@@ -61,6 +81,7 @@ public sealed record class ThinkingTypes : JsonModel
     public override void Validate()
     {
         this.Adaptive.Validate();
+        this.BetweenTools.Validate();
         this.Disabled.Validate();
         this.Enabled.Validate();
     }

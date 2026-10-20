@@ -188,6 +188,11 @@ public record class WorkspaceListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route =>
+        "/v1/organizations/federation_rules/{federation_rule_id}/workspaces";
+
+    internal override IReadOnlyList<string> QueryParams => ["limit", "page"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

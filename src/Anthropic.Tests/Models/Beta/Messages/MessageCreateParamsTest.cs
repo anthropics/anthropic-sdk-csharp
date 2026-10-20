@@ -28,7 +28,7 @@ public class MessageCreateParamsTest : TestBase
                     OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
                 },
             ],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()
@@ -173,7 +173,7 @@ public class MessageCreateParamsTest : TestBase
                 OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
             },
         ];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5_5;
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCompactionConfig expectedCompaction = new() { Instructions = "instructions" };
         Container expectedContainer = new BetaContainerParams()
@@ -385,7 +385,7 @@ public class MessageCreateParamsTest : TestBase
                     OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
                 },
             ],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()
@@ -477,7 +477,7 @@ public class MessageCreateParamsTest : TestBase
                     OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
                 },
             ],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()
@@ -586,7 +586,7 @@ public class MessageCreateParamsTest : TestBase
                     OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
                 },
             ],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()
@@ -786,7 +786,7 @@ public class MessageCreateParamsTest : TestBase
                     OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
                 },
             ],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             McpServers =
             [
                 new()
@@ -917,7 +917,7 @@ public class MessageCreateParamsTest : TestBase
                     OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
                 },
             ],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             McpServers =
             [
                 new()
@@ -1059,7 +1059,7 @@ public class MessageCreateParamsTest : TestBase
                     OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
                 },
             ],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -1086,7 +1086,7 @@ public class MessageCreateParamsTest : TestBase
                     OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
                 },
             ],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -1124,7 +1124,7 @@ public class MessageCreateParamsTest : TestBase
                     OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
                 },
             ],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()

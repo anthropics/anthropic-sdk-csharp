@@ -249,6 +249,8 @@ public record class EnvironmentCreateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/environments";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Anthropic.Core;
 
 namespace Anthropic.Vertex;
@@ -7,6 +8,14 @@ namespace Anthropic.Vertex;
 /// </summary>
 public class AnthropicVertexClient : AnthropicClient
 {
+    /// <summary>
+    /// The source of the spans of this package's clients.
+    /// </summary>
+    internal static readonly ActivitySource PackageActivitySource = Tracing.PlatformSource(
+        "vertex",
+        typeof(AnthropicVertexClient).Assembly
+    );
+
     /// <inheritdoc/>
     protected override bool ShouldAutoResolveCredentials => false;
 
@@ -28,6 +37,8 @@ public class AnthropicVertexClient : AnthropicClient
         AuthToken = null;
         BaseUrl = ComputeBaseUrl(vertexCredentials);
         BackendAdaptationHandler = () => new VertexAdaptationHandler(vertexCredentials);
+        OpenTelemetryProviderName = "gcp.vertex_ai";
+        OpenTelemetrySource = PackageActivitySource;
     }
 
     private AnthropicVertexClient(
@@ -41,6 +52,8 @@ public class AnthropicVertexClient : AnthropicClient
         // The options normally carry the backend adaptation handler from the original
         // construction; restore it if a WithOptions modifier returned fresh options.
         BackendAdaptationHandler ??= () => new VertexAdaptationHandler(vertexCredentials);
+        OpenTelemetryProviderName = "gcp.vertex_ai";
+        OpenTelemetrySource = PackageActivitySource;
     }
 
     private static string ComputeBaseUrl(IAnthropicVertexCredentials vertexCredentials) =>

@@ -15,6 +15,7 @@ public class BetaThinkingCapabilityTest : TestBase
             Types = new()
             {
                 Adaptive = new(true),
+                BetweenTools = new(true),
                 Disabled = new(true),
                 Enabled = new(true),
             },
@@ -24,6 +25,7 @@ public class BetaThinkingCapabilityTest : TestBase
         BetaThinkingTypes expectedTypes = new()
         {
             Adaptive = new(true),
+            BetweenTools = new(true),
             Disabled = new(true),
             Enabled = new(true),
         };
@@ -41,6 +43,7 @@ public class BetaThinkingCapabilityTest : TestBase
             Types = new()
             {
                 Adaptive = new(true),
+                BetweenTools = new(true),
                 Disabled = new(true),
                 Enabled = new(true),
             },
@@ -64,6 +67,7 @@ public class BetaThinkingCapabilityTest : TestBase
             Types = new()
             {
                 Adaptive = new(true),
+                BetweenTools = new(true),
                 Disabled = new(true),
                 Enabled = new(true),
             },
@@ -80,6 +84,7 @@ public class BetaThinkingCapabilityTest : TestBase
         BetaThinkingTypes expectedTypes = new()
         {
             Adaptive = new(true),
+            BetweenTools = new(true),
             Disabled = new(true),
             Enabled = new(true),
         };
@@ -97,6 +102,7 @@ public class BetaThinkingCapabilityTest : TestBase
             Types = new()
             {
                 Adaptive = new(true),
+                BetweenTools = new(true),
                 Disabled = new(true),
                 Enabled = new(true),
             },
@@ -114,6 +120,7 @@ public class BetaThinkingCapabilityTest : TestBase
             Types = new()
             {
                 Adaptive = new(true),
+                BetweenTools = new(true),
                 Disabled = new(true),
                 Enabled = new(true),
             },

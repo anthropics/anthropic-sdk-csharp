@@ -248,6 +248,11 @@ public record class InviteListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/invites";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["after_id", "before_id", "email", "limit", "roles", "statuses"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

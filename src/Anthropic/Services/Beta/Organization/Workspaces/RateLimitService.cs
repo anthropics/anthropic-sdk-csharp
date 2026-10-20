@@ -90,6 +90,8 @@ public sealed class RateLimitServiceWithRawResponse : IRateLimitServiceWithRawRe
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.rate_limits.list",
+            SpanResourceIds = [new("anthropic.organization.workspace.id", parameters.WorkspaceID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

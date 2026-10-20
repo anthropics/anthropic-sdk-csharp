@@ -19,7 +19,7 @@ public class BetaAnalyticsUsageBucketedResultTest : TestBase
             ClaudeTagUserID = "U0123ABCDEF",
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
             InferenceGeo = BetaAnalyticsUsageBucketedResultInferenceGeo.Global,
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             OutputTokens = 0,
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
@@ -43,7 +43,7 @@ public class BetaAnalyticsUsageBucketedResultTest : TestBase
             BetaAnalyticsContextWindow.From0To200k;
         ApiEnum<string, BetaAnalyticsUsageBucketedResultInferenceGeo> expectedInferenceGeo =
             BetaAnalyticsUsageBucketedResultInferenceGeo.Global;
-        string expectedModel = "claude-opus-5";
+        string expectedModel = "claude-opus-5-5";
         long expectedOutputTokens = 0;
         string expectedProduct = "chat";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
@@ -82,7 +82,7 @@ public class BetaAnalyticsUsageBucketedResultTest : TestBase
             ClaudeTagUserID = "U0123ABCDEF",
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
             InferenceGeo = BetaAnalyticsUsageBucketedResultInferenceGeo.Global,
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             OutputTokens = 0,
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
@@ -113,7 +113,7 @@ public class BetaAnalyticsUsageBucketedResultTest : TestBase
             ClaudeTagUserID = "U0123ABCDEF",
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
             InferenceGeo = BetaAnalyticsUsageBucketedResultInferenceGeo.Global,
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             OutputTokens = 0,
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
@@ -144,7 +144,7 @@ public class BetaAnalyticsUsageBucketedResultTest : TestBase
             BetaAnalyticsContextWindow.From0To200k;
         ApiEnum<string, BetaAnalyticsUsageBucketedResultInferenceGeo> expectedInferenceGeo =
             BetaAnalyticsUsageBucketedResultInferenceGeo.Global;
-        string expectedModel = "claude-opus-5";
+        string expectedModel = "claude-opus-5-5";
         long expectedOutputTokens = 0;
         string expectedProduct = "chat";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
@@ -183,7 +183,7 @@ public class BetaAnalyticsUsageBucketedResultTest : TestBase
             ClaudeTagUserID = "U0123ABCDEF",
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
             InferenceGeo = BetaAnalyticsUsageBucketedResultInferenceGeo.Global,
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             OutputTokens = 0,
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
@@ -208,7 +208,7 @@ public class BetaAnalyticsUsageBucketedResultTest : TestBase
             ClaudeTagUserID = "U0123ABCDEF",
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
             InferenceGeo = BetaAnalyticsUsageBucketedResultInferenceGeo.Global,
-            Model = "claude-opus-5",
+            Model = "claude-opus-5-5",
             OutputTokens = 0,
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",

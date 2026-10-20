@@ -227,6 +227,11 @@ public record class InstallationSettingListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/plugins/{plugin_id}/installation_settings";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["limit", "organization_id", "page", "target_type"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

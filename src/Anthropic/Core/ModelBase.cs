@@ -4,7 +4,6 @@ using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments.Work;
 using Anthropic.Models.Beta.Organization;
-using Anthropic.Models.Beta.Organization.Analytics;
 using Anthropic.Models.Beta.Organization.Analytics.Users;
 using Anthropic.Models.Beta.Organization.Plugins.InstallationSettings;
 using Anthropic.Models.Beta.Organization.Plugins.Versions;
@@ -12,6 +11,7 @@ using Anthropic.Models.Beta.Organization.RbacGroups;
 using Anthropic.Models.Beta.Organization.SpendLimits;
 using Anthropic.Models.Beta.Organization.SpendLimits.Effective;
 using Anthropic.Models.Beta.Organization.SpendLimits.IncreaseRequests;
+using Anthropic.Models.Beta.Organization.TelemetryDestinations;
 using Anthropic.Models.Messages;
 using Anthropic.Models.Models;
 using Anthropic.Models.Organization;
@@ -19,6 +19,7 @@ using Anthropic.Models.Organization.ExternalKeys;
 using Anthropic.Models.Organization.Workspaces;
 using Anthropic.Models.Organization.Workspaces.RateLimits;
 using Agents = Anthropic.Models.Beta.Agents;
+using Analytics = Anthropic.Models.Beta.Organization.Analytics;
 using AnalyticsSkills = Anthropic.Models.Beta.Organization.Analytics.Skills;
 using ApiKeys = Anthropic.Models.Organization.ApiKeys;
 using Artifacts = Anthropic.Models.Beta.Organization.Analytics.Artifacts;
@@ -126,6 +127,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, ToolTextEditor20250429AllowedCaller>(),
             new ApiEnumConverter<string, ToolTextEditor20250728AllowedCaller>(),
             new ApiEnumConverter<string, UsageServiceTier>(),
+            new ApiEnumConverter<string, UsageSpeed>(),
             new ApiEnumConverter<string, WebFetchTool20250910AllowedCaller>(),
             new ApiEnumConverter<string, WebFetchTool20260209AllowedCaller>(),
             new ApiEnumConverter<string, WebFetchTool20260309AllowedCaller>(),
@@ -138,8 +140,11 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, WebSearchTool20260318ResponseInclusion>(),
             new ApiEnumConverter<string, WebSearchToolResultErrorCode>(),
             new ApiEnumConverter<string, ServiceTier>(),
+            new ApiEnumConverter<string, Speed>(),
+            new ApiEnumConverter<string, MessageCountTokensParamsSpeed>(),
             new ApiEnumConverter<string, Batches::ProcessingStatus>(),
             new ApiEnumConverter<string, Batches::ServiceTier>(),
+            new ApiEnumConverter<string, Batches::Speed>(),
             new ApiEnumConverter<string, ModelInfoLifecycle>(),
             new ApiEnumConverter<string, ModelLine>(),
             new ApiEnumConverter<string, Lifecycle>(),
@@ -838,21 +843,21 @@ public abstract record class ModelBase
                 OrganizationRateLimits::BetaOrganizationRateLimitGroupType
             >(),
             new ApiEnumConverter<string, OrganizationRateLimits::GroupType>(),
-            new ApiEnumConverter<string, BetaAnalyticsClaudeTagCategory>(),
-            new ApiEnumConverter<string, BetaAnalyticsContextWindow>(),
-            new ApiEnumConverter<string, InferenceGeo>(),
-            new ApiEnumConverter<string, Speed>(),
-            new ApiEnumConverter<string, BetaAnalyticsCostType>(),
-            new ApiEnumConverter<string, BetaAnalyticsCostUsersItemInferenceGeo>(),
-            new ApiEnumConverter<string, BetaAnalyticsCostUsersItemSpeed>(),
-            new ApiEnumConverter<string, BetaAnalyticsInferenceGeoFilter>(),
-            new ApiEnumConverter<string, BetaAnalyticsProductFilter>(),
-            new ApiEnumConverter<string, ShareStatus>(),
-            new ApiEnumConverter<string, BetaAnalyticsTokenType>(),
-            new ApiEnumConverter<string, BetaAnalyticsUsageBucketedResultInferenceGeo>(),
-            new ApiEnumConverter<string, BetaAnalyticsUsageBucketedResultSpeed>(),
-            new ApiEnumConverter<string, BetaAnalyticsUsageUsersItemInferenceGeo>(),
-            new ApiEnumConverter<string, BetaAnalyticsUsageUsersItemSpeed>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsClaudeTagCategory>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsContextWindow>(),
+            new ApiEnumConverter<string, Analytics::InferenceGeo>(),
+            new ApiEnumConverter<string, Analytics::Speed>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsCostType>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsCostUsersItemInferenceGeo>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsCostUsersItemSpeed>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsInferenceGeoFilter>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsProductFilter>(),
+            new ApiEnumConverter<string, Analytics::ShareStatus>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsTokenType>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageBucketedResultInferenceGeo>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageBucketedResultSpeed>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageUsersItemInferenceGeo>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageUsersItemSpeed>(),
             new ApiEnumConverter<string, GroupBy>(),
             new ApiEnumConverter<string, Order>(),
             new ApiEnumConverter<string, Projects::GroupBy>(),
@@ -905,6 +910,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, PluginMarketplaces::DefaultInstallationPreference>(),
             new ApiEnumConverter<string, PluginMarketplaces::OwnerType>(),
             new ApiEnumConverter<string, PluginMarketplaces::Source>(),
+            new ApiEnumConverter<string, BetaTelemetryDestinationContentMode>(),
         },
     };
 

@@ -227,6 +227,11 @@ public record class PluginMarketplaceListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/plugin_marketplaces";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["limit", "organization_id", "owner_type", "page", "source"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

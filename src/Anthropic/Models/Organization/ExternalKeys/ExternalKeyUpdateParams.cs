@@ -175,6 +175,8 @@ public record class ExternalKeyUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/external_keys/{external_key_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

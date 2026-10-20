@@ -159,6 +159,10 @@ public record class ServiceAccountListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/service_accounts";
+
+    internal override IReadOnlyList<string> QueryParams => ["include_archived", "limit", "page"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

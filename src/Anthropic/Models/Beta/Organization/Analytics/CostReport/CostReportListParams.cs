@@ -426,6 +426,28 @@ public record class CostReportListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/analytics/cost_report";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        [
+            "bucket_width",
+            "claude_tag_categories",
+            "claude_tag_user_ids",
+            "context_windows",
+            "ending_at",
+            "group_by",
+            "inference_geos",
+            "limit",
+            "models",
+            "page",
+            "products",
+            "rbac_group_ids",
+            "slack_channel_ids",
+            "speeds",
+            "starting_at",
+            "user_ids",
+        ];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

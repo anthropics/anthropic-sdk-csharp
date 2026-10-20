@@ -177,6 +177,10 @@ public record class VersionRetrieveParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/plugins/{plugin_id}/versions/{version}";
+
+    internal override IReadOnlyList<string> QueryParams => ["organization_id"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

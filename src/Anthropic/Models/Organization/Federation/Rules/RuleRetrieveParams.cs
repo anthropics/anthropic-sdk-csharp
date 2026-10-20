@@ -119,6 +119,8 @@ public record class RuleRetrieveParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/federation_rules/{federation_rule_id}";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

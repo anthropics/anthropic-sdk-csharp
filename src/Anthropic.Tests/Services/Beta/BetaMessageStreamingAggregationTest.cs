@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Anthropic.Core;
 using Anthropic.Helpers;
 using Anthropic.Models.Beta.Messages;
 using Anthropic.Services.Beta;
@@ -237,6 +238,33 @@ public class BetaMessageStreamingAggregationTest
         Assert.Single(stream.Content);
         Assert.IsType<BetaTextBlock>(stream.Content[0].Value);
         Assert.Equal("this is a Test", ((BetaTextBlock)stream.Content[0].Value!).Text);
+    }
+
+    [Fact]
+    public async Task CollectAsync_ReadsTheSourceToItsEnd_AndPassesNothingOnAfterTheEndMessage()
+    {
+        var readToTheEnd = false;
+        async IAsyncEnumerable<BetaRawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new BetaRawMessageStartEvent(GenerateStartMessage));
+            yield return new(new BetaRawMessageStopEvent());
+            // Nothing follows `message_stop`. An event that did is read and left out.
+            yield return new(new BetaRawContentBlockStopEvent() { Index = 0 });
+            await Task.CompletedTask;
+            readToTheEnd = true;
+        }
+        BetaMessageContentAggregator aggregator = new();
+
+        List<BetaRawMessageStreamEvent> passedOn = [];
+        await foreach (var streamEvent in GetTestValues().CollectAsync(aggregator))
+        {
+            passedOn.Add(streamEvent);
+        }
+
+        Assert.True(readToTheEnd);
+        Assert.Equal(2, passedOn.Count);
+        Assert.IsType<BetaRawMessageStopEvent>(passedOn[1].Value);
+        Assert.Empty(aggregator.Message().Content);
     }
 
     [Fact]
@@ -528,6 +556,64 @@ public class BetaMessageStreamingAggregationTest
         stream.Validate();
         Assert.NotNull(stream.Usage.FallbackCredit);
         Assert.IsType<BetaFallbackCreditRedeemed>(stream.Usage.FallbackCredit!.Status.Value);
+    }
+
+    [Fact]
+    public async Task Add_BuildsTheSameMessageAsCollectAsync()
+    {
+        // arrange
+
+        BetaRawMessageStreamEvent[] events =
+        [
+            new(new BetaRawMessageStartEvent(GenerateStartMessage)),
+            new(
+                new BetaRawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(
+                        new BetaTextBlock() { Citations = null, Text = "This is a " }
+                    ),
+                }
+            ),
+            new(
+                new BetaRawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new BetaTextDelta("Test")),
+                }
+            ),
+            new(new BetaRawContentBlockStopEvent() { Index = 0 }),
+            new(new BetaRawMessageStopEvent()),
+        ];
+        static async IAsyncEnumerable<BetaRawMessageStreamEvent> Stream(
+            IEnumerable<BetaRawMessageStreamEvent> events
+        )
+        {
+            foreach (var streamEvent in events)
+            {
+                yield return streamEvent;
+            }
+            await Task.CompletedTask;
+        }
+
+        // act
+
+        var collected = await Stream(events).Aggregate();
+        var aggregator = new BetaMessageContentAggregator();
+        foreach (var streamEvent in events)
+        {
+            aggregator.Add(streamEvent);
+        }
+        var pushed = aggregator.Message();
+
+        // assert
+
+        pushed.Validate();
+        Assert.Equal("This is a Test", ((BetaTextBlock)pushed.Content[0].Value!).Text);
+        Assert.Equal(
+            JsonSerializer.Serialize(collected, ModelBase.SerializerOptions),
+            JsonSerializer.Serialize(pushed, ModelBase.SerializerOptions)
+        );
     }
 
     [Fact]

@@ -21,6 +21,7 @@ public class BetaManagedAgentsSessionMultiagentSubagentsTest : TestBase
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
+                        ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                         McpServers =
                         [
                             new()
@@ -32,7 +33,7 @@ public class BetaManagedAgentsSessionMultiagentSubagentsTest : TestBase
                         ],
                         Model = new()
                         {
-                            ID = BetaManagedAgentsModel.ClaudeOpus5,
+                            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),
@@ -105,6 +106,7 @@ public class BetaManagedAgentsSessionMultiagentSubagentsTest : TestBase
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                         Description = "A focused research subagent.",
+                        ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
                         McpServers =
                         [
                             new()
@@ -116,7 +118,7 @@ public class BetaManagedAgentsSessionMultiagentSubagentsTest : TestBase
                         ],
                         Model = new()
                         {
-                            ID = BetaManagedAgentsModel.ClaudeOpus5,
+                            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                             Effort = new BetaManagedAgentsEffortLow(
                                 BetaManagedAgentsEffortLowType.Low
                             ),

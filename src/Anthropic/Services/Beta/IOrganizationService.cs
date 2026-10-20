@@ -57,6 +57,8 @@ public interface IOrganizationService
 
     IPluginMarketplaceService PluginMarketplaces { get; }
 
+    ITelemetryDestinationService TelemetryDestinations { get; }
+
     /// <summary>
     /// Retrieve information about the organization associated with the authenticated
     /// API key.
@@ -109,6 +111,8 @@ public interface IOrganizationServiceWithRawResponse
     IPluginServiceWithRawResponse Plugins { get; }
 
     IPluginMarketplaceServiceWithRawResponse PluginMarketplaces { get; }
+
+    ITelemetryDestinationServiceWithRawResponse TelemetryDestinations { get; }
 
     /// <summary>
     /// Returns a raw HTTP response for <c>get /v1/organizations/me?beta=true</c>, but is otherwise the

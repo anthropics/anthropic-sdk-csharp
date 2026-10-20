@@ -30,6 +30,21 @@ public sealed record class BetaManagedAgentsInlineAgent : JsonModel
         init { this._rawData.Set("description", value); }
     }
 
+    /// <summary>
+    /// The session's execution principal.
+    /// </summary>
+    public required BetaManagedAgentsExecutionIdentity ExecutionIdentity
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaManagedAgentsExecutionIdentity>(
+                "execution_identity"
+            );
+        }
+        init { this._rawData.Set("execution_identity", value); }
+    }
+
     public required IReadOnlyList<BetaManagedAgentsMcpServerUrlDefinition> McpServers
     {
         get
@@ -134,6 +149,7 @@ public sealed record class BetaManagedAgentsInlineAgent : JsonModel
     public override void Validate()
     {
         _ = this.Description;
+        this.ExecutionIdentity.Validate();
         foreach (var item in this.McpServers)
         {
             item.Validate();

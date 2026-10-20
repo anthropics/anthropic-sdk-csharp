@@ -173,6 +173,7 @@ public sealed class RbacGroupServiceWithRawResponse : IRbacGroupServiceWithRawRe
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.rbac_groups.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -186,6 +187,12 @@ public sealed class RbacGroupServiceWithRawResponse : IRbacGroupServiceWithRawRe
                 {
                     betaRbacGroup.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.rbac_group.id",
+                    betaRbacGroup,
+                    static created => created.ID
+                );
                 return betaRbacGroup;
             }
         );
@@ -206,6 +213,8 @@ public sealed class RbacGroupServiceWithRawResponse : IRbacGroupServiceWithRawRe
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.rbac_groups.retrieve",
+            SpanResourceIds = [new("anthropic.organization.rbac_group.id", parameters.RbacGroupID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -251,6 +260,8 @@ public sealed class RbacGroupServiceWithRawResponse : IRbacGroupServiceWithRawRe
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.rbac_groups.update",
+            SpanResourceIds = [new("anthropic.organization.rbac_group.id", parameters.RbacGroupID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -293,6 +304,7 @@ public sealed class RbacGroupServiceWithRawResponse : IRbacGroupServiceWithRawRe
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.rbac_groups.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -326,6 +338,8 @@ public sealed class RbacGroupServiceWithRawResponse : IRbacGroupServiceWithRawRe
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.organization.rbac_groups.delete",
+            SpanResourceIds = [new("anthropic.organization.rbac_group.id", parameters.RbacGroupID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

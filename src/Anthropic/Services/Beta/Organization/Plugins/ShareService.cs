@@ -95,6 +95,8 @@ public sealed class ShareServiceWithRawResponse : IShareServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.plugins.shares.list",
+            SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

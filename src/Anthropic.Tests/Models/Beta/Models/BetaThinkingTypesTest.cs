@@ -12,15 +12,18 @@ public class BetaThinkingTypesTest : TestBase
         var model = new BetaThinkingTypes
         {
             Adaptive = new(true),
+            BetweenTools = new(true),
             Disabled = new(true),
             Enabled = new(true),
         };
 
         BetaCapabilitySupport expectedAdaptive = new(true);
+        BetaCapabilitySupport expectedBetweenTools = new(true);
         BetaCapabilitySupport expectedDisabled = new(true);
         BetaCapabilitySupport expectedEnabled = new(true);
 
         Assert.Equal(expectedAdaptive, model.Adaptive);
+        Assert.Equal(expectedBetweenTools, model.BetweenTools);
         Assert.Equal(expectedDisabled, model.Disabled);
         Assert.Equal(expectedEnabled, model.Enabled);
     }
@@ -31,6 +34,7 @@ public class BetaThinkingTypesTest : TestBase
         var model = new BetaThinkingTypes
         {
             Adaptive = new(true),
+            BetweenTools = new(true),
             Disabled = new(true),
             Enabled = new(true),
         };
@@ -50,6 +54,7 @@ public class BetaThinkingTypesTest : TestBase
         var model = new BetaThinkingTypes
         {
             Adaptive = new(true),
+            BetweenTools = new(true),
             Disabled = new(true),
             Enabled = new(true),
         };
@@ -62,10 +67,12 @@ public class BetaThinkingTypesTest : TestBase
         Assert.NotNull(deserialized);
 
         BetaCapabilitySupport expectedAdaptive = new(true);
+        BetaCapabilitySupport expectedBetweenTools = new(true);
         BetaCapabilitySupport expectedDisabled = new(true);
         BetaCapabilitySupport expectedEnabled = new(true);
 
         Assert.Equal(expectedAdaptive, deserialized.Adaptive);
+        Assert.Equal(expectedBetweenTools, deserialized.BetweenTools);
         Assert.Equal(expectedDisabled, deserialized.Disabled);
         Assert.Equal(expectedEnabled, deserialized.Enabled);
     }
@@ -76,6 +83,7 @@ public class BetaThinkingTypesTest : TestBase
         var model = new BetaThinkingTypes
         {
             Adaptive = new(true),
+            BetweenTools = new(true),
             Disabled = new(true),
             Enabled = new(true),
         };
@@ -89,6 +97,7 @@ public class BetaThinkingTypesTest : TestBase
         var model = new BetaThinkingTypes
         {
             Adaptive = new(true),
+            BetweenTools = new(true),
             Disabled = new(true),
             Enabled = new(true),
         };

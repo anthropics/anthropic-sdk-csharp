@@ -1,5 +1,63 @@
 # Changelog
 
+## [12.58.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.57.0...Anthropic-v12.58.0) (2026-10-15)
+
+### Features
+
+* **api:** add between_tools to thinking types in model capabilities
+* **api:** add the speed parameter and usage.speed to Messages
+
+
+### Chores
+
+* **docs:** describe headers on Managed Agents and telemetry endpoints
+
+
+### Documentation
+
+* **api:** note that some models need a beta header to use speed
+
+## [12.57.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.56.0...Anthropic-v12.57.0) (2026-10-14)
+
+### Features
+
+* **api:** return a Console organization's usage-tier spend cap as a read-only spend limit
+
+## [12.56.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.55.0...Anthropic-v12.56.0) (2026-10-14)
+
+### Features
+
+* **api:** add execution_identity to Managed Agents agents
+* **api:** add organization_type_not_supported error to spend limit lists
+* **api:** add telemetry destination test endpoint
+* **api:** add telemetry destinations to the Admin API
+* **client:** add native support for OpenTelemetry tracing
+
+  To get the SDK's spans, add the `com.anthropic.sdk.csharp*` source to your tracer provider. To disable, initialize the client with `OpenTelemetry = false` or set `ANTHROPIC_OPEN_TELEMETRY=false`. Learn more in the [documentation](https://platform.claude.com/docs/en/manage-claude/opentelemetry/sdk).
+
+* **client:** `Aggregate()` and `CollectAsync` now return when the response body ends, not at `message_stop`
+
+
+### Bug Fixes
+
+* **api:** rename telemetry destination test response model
+* **client:** don't follow redirects on token requests
+* **client:** leave the trace context headers unsigned with released `Anthropic.Aws` and `Anthropic.Bedrock` packages too
+
+
+### Chores
+
+* **docs:** correct prefill, thinking, fallback and model descriptions
+* **docs:** document the scope required to assign the managed role
+* **docs:** update model examples
+* **internal:** observe the redirecting test server's task
+
+
+### Documentation
+
+* **api:** clarify when custom tool results can be sent
+* **api:** say is_enabled is always true for user spend limits
+
 ## [12.55.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.54.1...Anthropic-v12.55.0) (2026-10-09)
 
 ### Features

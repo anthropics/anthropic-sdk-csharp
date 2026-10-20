@@ -218,6 +218,8 @@ public record class WorkUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/environments/{environment_id}/work/{work_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

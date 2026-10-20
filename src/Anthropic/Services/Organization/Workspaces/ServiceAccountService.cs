@@ -201,6 +201,15 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.service_accounts.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.workspace.id", parameters.WorkspaceID),
+                new(
+                    "anthropic.organization.workspace.service_account.id",
+                    parameters.ServiceAccountID
+                ),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -250,6 +259,15 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.service_accounts.update",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.workspace.id", parameters.WorkspaceID),
+                new(
+                    "anthropic.organization.workspace.service_account.id",
+                    parameters.ServiceAccountID
+                ),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -299,6 +317,8 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.service_accounts.list",
+            SpanResourceIds = [new("anthropic.organization.workspace.id", parameters.WorkspaceID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -344,6 +364,8 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.service_accounts.add",
+            SpanResourceIds = [new("anthropic.organization.workspace.id", parameters.WorkspaceID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -357,6 +379,12 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
                 {
                     serviceAccountWorkspaceMember.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.workspace.service_account.id",
+                    serviceAccountWorkspaceMember,
+                    static created => created.ServiceAccountID
+                );
                 return serviceAccountWorkspaceMember;
             }
         );
@@ -387,6 +415,15 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.service_accounts.remove",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.workspace.id", parameters.WorkspaceID),
+                new(
+                    "anthropic.organization.workspace.service_account.id",
+                    parameters.ServiceAccountID
+                ),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

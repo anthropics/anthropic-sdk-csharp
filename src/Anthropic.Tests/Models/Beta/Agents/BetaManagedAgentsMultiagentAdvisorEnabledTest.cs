@@ -9,9 +9,9 @@ public class BetaManagedAgentsMultiagentAdvisorEnabledTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsMultiagentAdvisorEnabled { Model = "claude-fable-5" };
+        var model = new BetaManagedAgentsMultiagentAdvisorEnabled { Model = "claude-opus-5-5" };
 
-        string expectedModel = "claude-fable-5";
+        string expectedModel = "claude-opus-5-5";
         JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
 
         Assert.Equal(expectedModel, model.Model);
@@ -21,7 +21,7 @@ public class BetaManagedAgentsMultiagentAdvisorEnabledTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsMultiagentAdvisorEnabled { Model = "claude-fable-5" };
+        var model = new BetaManagedAgentsMultiagentAdvisorEnabled { Model = "claude-opus-5-5" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagentAdvisorEnabled>(
@@ -35,7 +35,7 @@ public class BetaManagedAgentsMultiagentAdvisorEnabledTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaManagedAgentsMultiagentAdvisorEnabled { Model = "claude-fable-5" };
+        var model = new BetaManagedAgentsMultiagentAdvisorEnabled { Model = "claude-opus-5-5" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagentAdvisorEnabled>(
@@ -44,7 +44,7 @@ public class BetaManagedAgentsMultiagentAdvisorEnabledTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedModel = "claude-fable-5";
+        string expectedModel = "claude-opus-5-5";
         JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
 
         Assert.Equal(expectedModel, deserialized.Model);
@@ -54,7 +54,7 @@ public class BetaManagedAgentsMultiagentAdvisorEnabledTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaManagedAgentsMultiagentAdvisorEnabled { Model = "claude-fable-5" };
+        var model = new BetaManagedAgentsMultiagentAdvisorEnabled { Model = "claude-opus-5-5" };
 
         model.Validate();
     }
@@ -62,7 +62,7 @@ public class BetaManagedAgentsMultiagentAdvisorEnabledTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaManagedAgentsMultiagentAdvisorEnabled { Model = "claude-fable-5" };
+        var model = new BetaManagedAgentsMultiagentAdvisorEnabled { Model = "claude-opus-5-5" };
 
         BetaManagedAgentsMultiagentAdvisorEnabled copied = new(model);
 

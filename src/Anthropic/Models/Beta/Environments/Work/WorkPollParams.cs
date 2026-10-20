@@ -195,6 +195,10 @@ public record class WorkPollParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/environments/{environment_id}/work/poll";
+
+    internal override IReadOnlyList<string> QueryParams => ["block_ms", "reclaim_older_than_ms"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

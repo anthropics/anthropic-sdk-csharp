@@ -230,6 +230,10 @@ public record class FileListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/files";
+
+    internal override IReadOnlyList<string> QueryParams => ["ids", "limit", "page", "scope_id"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

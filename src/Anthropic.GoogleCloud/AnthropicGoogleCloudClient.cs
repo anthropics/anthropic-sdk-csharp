@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Google.Apis.Auth.OAuth2;
@@ -22,6 +23,14 @@ namespace Anthropic.GoogleCloud;
 /// </remarks>
 public sealed class AnthropicGoogleCloudClient : AnthropicClient
 {
+    /// <summary>
+    /// The source of the spans of this package's clients.
+    /// </summary>
+    internal static readonly ActivitySource PackageActivitySource = Tracing.PlatformSource(
+        "googlecloud",
+        typeof(AnthropicGoogleCloudClient).Assembly
+    );
+
     internal const string EnvAnthropicGoogleCloudProject = "ANTHROPIC_GOOGLE_CLOUD_PROJECT";
     internal const string EnvGoogleCloudProject = "GOOGLE_CLOUD_PROJECT";
     internal const string EnvLocation = "ANTHROPIC_GOOGLE_CLOUD_LOCATION";
@@ -149,6 +158,7 @@ public sealed class AnthropicGoogleCloudClient : AnthropicClient
         _googleCloudConfig = googleCloudConfig;
 
         BackendAdaptationHandler = () => new GoogleCloudAdaptationHandler(googleCloudConfig);
+        OpenTelemetrySource = PackageActivitySource;
     }
 
     private AnthropicGoogleCloudClient(
@@ -161,6 +171,7 @@ public sealed class AnthropicGoogleCloudClient : AnthropicClient
         // The options normally carry the backend adaptation handler from the original
         // construction; restore it if a WithOptions modifier returned fresh options.
         BackendAdaptationHandler ??= () => new GoogleCloudAdaptationHandler(googleCloudConfig);
+        OpenTelemetrySource = PackageActivitySource;
     }
 
     /// <summary>

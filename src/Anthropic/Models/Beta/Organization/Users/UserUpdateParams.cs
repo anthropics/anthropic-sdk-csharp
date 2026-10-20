@@ -34,7 +34,8 @@ public record class UserUpdateParams : ParamsBase
     /// <para>The accepted values depend on the organization type. Console and API
     /// organizations accept `user`, `developer`, `billing`, and `claude_code_user`;
     /// `admin` cannot be assigned through the API. Claude Enterprise organizations
-    /// accept `user` and `managed`.</para>
+    /// accept `user` and `managed`; changing a User's role to `managed` requires
+    /// the `write:rbac_groups` scope in addition to `write:members`.</para>
     /// </summary>
     public required ApiEnum<string, Role> Role
     {
@@ -147,6 +148,8 @@ public record class UserUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/users/{user_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(
@@ -176,7 +179,9 @@ public record class UserUpdateParams : ParamsBase
 ///
 /// <para>The accepted values depend on the organization type. Console and API organizations
 /// accept `user`, `developer`, `billing`, and `claude_code_user`; `admin` cannot
-/// be assigned through the API. Claude Enterprise organizations accept `user` and `managed`.</para>
+/// be assigned through the API. Claude Enterprise organizations accept `user` and
+/// `managed`; changing a User's role to `managed` requires the `write:rbac_groups`
+/// scope in addition to `write:members`.</para>
 /// </summary>
 [JsonConverter(typeof(RoleConverter))]
 public enum Role

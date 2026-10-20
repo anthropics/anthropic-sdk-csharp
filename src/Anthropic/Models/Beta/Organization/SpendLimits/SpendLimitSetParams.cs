@@ -204,6 +204,8 @@ public record class SpendLimitSetParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/spend_limits";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

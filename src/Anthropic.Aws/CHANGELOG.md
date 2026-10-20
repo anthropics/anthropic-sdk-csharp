@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v0.5.3...Aws-v0.6.0) (2026-10-14)
+
+### Features
+
+* **client:** add native support for OpenTelemetry tracing
+
+  To get the SDK's spans, add the `com.anthropic.sdk.csharp*` source to your tracer provider. To disable, initialize the client with `OpenTelemetry = false` or set `ANTHROPIC_OPEN_TELEMETRY=false`. Learn more in the [documentation](https://platform.claude.com/docs/en/manage-claude/opentelemetry/sdk).
+
 ## 0.5.3 (2026-08-27)
 
 Full Changelog: [Aws-v0.5.2...Aws-v0.5.3](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v0.5.2...Aws-v0.5.3)

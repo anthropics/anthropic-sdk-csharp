@@ -228,6 +228,8 @@ public record class VersionCreateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/plugins/{plugin_id}/versions";
+
     internal override HttpContent? BodyContent()
     {
         return MultipartJsonSerializer.Serialize(RawBodyData);

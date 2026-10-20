@@ -310,6 +310,13 @@ public class BetaSpendSummaryScopeTest : TestBase
     }
 
     [Fact]
+    public void BetaSpendLimitUsageTierValidationWorks()
+    {
+        BetaSpendSummaryScope value = new BetaSpendLimitUsageTierScope();
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaSpendLimitUserSerializationRoundtripWorks()
     {
         BetaSpendSummaryScope value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
@@ -390,6 +397,19 @@ public class BetaSpendSummaryScopeTest : TestBase
     }
 
     [Fact]
+    public void BetaSpendLimitUsageTierSerializationRoundtripWorks()
+    {
+        BetaSpendSummaryScope value = new BetaSpendLimitUsageTierScope();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaSpendSummaryScope>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaSpendSummaryScope value = new(
@@ -458,6 +478,13 @@ public class SourceTest : TestBase
     }
 
     [Fact]
+    public void BetaSpendLimitUsageTierScopeValidationWorks()
+    {
+        Source value = new BetaSpendLimitUsageTierScope();
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaSpendLimitUserScopeSerializationRoundtripWorks()
     {
         Source value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
@@ -511,6 +538,16 @@ public class SourceTest : TestBase
     public void BetaSpendLimitWorkspaceScopeSerializationRoundtripWorks()
     {
         Source value = new BetaSpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaSpendLimitUsageTierScopeSerializationRoundtripWorks()
+    {
+        Source value = new BetaSpendLimitUsageTierScope();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
 

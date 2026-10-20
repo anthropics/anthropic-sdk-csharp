@@ -207,6 +207,10 @@ public record class EnvironmentListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/environments";
+
+    internal override IReadOnlyList<string> QueryParams => ["include_archived", "limit", "page"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

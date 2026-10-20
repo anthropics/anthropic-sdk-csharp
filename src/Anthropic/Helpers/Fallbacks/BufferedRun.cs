@@ -43,7 +43,8 @@ internal sealed class BufferedRun
 
     public async Task<HttpResponseMessage> Run(CancellationToken cancellationToken)
     {
-        var response = await _send(_snapshot.Request(_policy.CurrentIndex), cancellationToken)
+        var response = await _snapshot
+            .Send(_send, _policy.CurrentIndex, fallbackCreditToken: null, cancellationToken)
             .ConfigureAwait(false);
 
         while (true)
@@ -163,7 +164,7 @@ internal sealed class BufferedRun
         var token =
             directive == ChainPolicy.Directive.ResendWithoutExtra ? null : _policy.CarriedToken;
         _tokenAttached = token != null;
-        return _send(_snapshot.Request(_policy.CurrentIndex, token), cancellationToken);
+        return _snapshot.Send(_send, _policy.CurrentIndex, token, cancellationToken);
     }
 
     /// <summary>

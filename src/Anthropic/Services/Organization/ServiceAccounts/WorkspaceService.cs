@@ -141,6 +141,11 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.service_accounts.workspaces.list",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.service_account.id", parameters.ServiceAccountID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -192,6 +197,11 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.service_accounts.workspaces.add",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.service_account.id", parameters.ServiceAccountID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -205,6 +215,12 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
                 {
                     serviceAccountWorkspaceMember.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.service_account.workspace.id",
+                    serviceAccountWorkspaceMember,
+                    static created => created.WorkspaceID
+                );
                 return serviceAccountWorkspaceMember;
             }
         );
@@ -235,6 +251,12 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.organization.service_accounts.workspaces.remove",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.service_account.id", parameters.ServiceAccountID),
+                new("anthropic.organization.service_account.workspace.id", parameters.WorkspaceID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

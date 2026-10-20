@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -33,6 +34,17 @@ public class HttpResponse : IDisposable
     }
 
     public Threading::CancellationToken CancellationToken { get; init; } = default;
+
+    /// <summary>
+    /// The call span of the API call that returned this response, when it has one: reading the
+    /// response, or disposing of it, ends the span.
+    /// </summary>
+    internal Activity? Span { get; set; }
+
+    /// <summary>
+    /// Whether the body is a stream, which the application reads item by item or not at all.
+    /// </summary>
+    internal virtual bool IsStream => false;
 
     /// <summary>
     /// Returns the value of the <c>request-id</c> header,
@@ -141,6 +153,19 @@ public class HttpResponse : IDisposable
 
     public void Dispose()
     {
+        if (this.Span is { } span)
+        {
+            // The application is done with the response, so this ends the call unless reading it
+            // did: a body counts as read, and a stream as stopped early.
+            if (this.IsStream)
+            {
+                Tracing.EndApiCallSpanOfUnreadStream(span);
+            }
+            else
+            {
+                Tracing.EndApiCallSpan(span);
+            }
+        }
         this.RawMessage.Dispose();
         GC.SuppressFinalize(this);
     }
@@ -164,6 +189,7 @@ public sealed class HttpResponse<T> : HttpResponse
     {
         this.RawMessage = response.RawMessage;
         this.CancellationToken = response.CancellationToken;
+        this.Span = response.Span;
     }
 
     public async Task<T> Deserialize(Threading::CancellationToken cancellationToken = default)
@@ -174,13 +200,38 @@ public sealed class HttpResponse<T> : HttpResponse
             this.CancellationToken,
             cancellationToken
         );
-        return await this._deserialize(cts.Token).ConfigureAwait(false);
+        if (this.Span is not { } span)
+        {
+            return await this._deserialize(cts.Token).ConfigureAwait(false);
+        }
+        // The call ends when its value has been read.
+        T value;
+        try
+        {
+            value = await this._deserialize(cts.Token).ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            Tracing.EndApiCallSpan(span, e, cts.Token);
+            throw;
+        }
+        Tracing.EndApiCallSpan(span);
+        return value;
     }
 }
 
 public sealed class StreamingHttpResponse<T> : HttpResponse
 {
     readonly Func<Threading::CancellationToken, IAsyncEnumerable<T>> _enumerate;
+
+    /// <inheritdoc/>
+    internal override bool IsStream => true;
+
+    /// <summary>
+    /// For a stream that has an end event, whether the items read so far include it. The SDK
+    /// method that makes the stream sets it.
+    /// </summary>
+    internal Func<bool>? HasReadEndEvent { get; init; }
 
     internal StreamingHttpResponse(
         Func<Threading::CancellationToken, IAsyncEnumerable<T>> enumerate
@@ -198,6 +249,7 @@ public sealed class StreamingHttpResponse<T> : HttpResponse
     {
         this.RawMessage = response.RawMessage;
         this.CancellationToken = response.CancellationToken;
+        this.Span = response.Span;
     }
 
     public async IAsyncEnumerable<T> Enumerate(
@@ -208,7 +260,18 @@ public sealed class StreamingHttpResponse<T> : HttpResponse
             this.CancellationToken,
             cancellationToken
         );
-        await foreach (var item in this._enumerate(cts.Token))
+        var items = this._enumerate(cts.Token);
+        if (this.Span is { } span)
+        {
+            items = Tracing.EndApiCallSpanWhenStreamEnds(
+                span,
+                items,
+                this.RawMessage,
+                this.HasReadEndEvent,
+                cts.Token
+            );
+        }
+        await foreach (var item in items)
         {
             yield return item;
         }

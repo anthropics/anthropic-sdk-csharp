@@ -165,6 +165,8 @@ public record class SkillDeleteParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/skills/{skill_id}";
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

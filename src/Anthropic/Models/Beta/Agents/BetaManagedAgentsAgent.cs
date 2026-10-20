@@ -63,6 +63,22 @@ public sealed record class BetaManagedAgentsAgent : JsonModel
         init { this._rawData.Set("description", value); }
     }
 
+    /// <summary>
+    /// Execution principal for runs of this agent. Always present; `{"type": "service_account"}`
+    /// when runs carry no customer-named principal.
+    /// </summary>
+    public required BetaManagedAgentsExecutionIdentity ExecutionIdentity
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaManagedAgentsExecutionIdentity>(
+                "execution_identity"
+            );
+        }
+        init { this._rawData.Set("execution_identity", value); }
+    }
+
     public required IReadOnlyList<BetaManagedAgentsMcpServerUrlDefinition> McpServers
     {
         get
@@ -224,6 +240,7 @@ public sealed record class BetaManagedAgentsAgent : JsonModel
         _ = this.ArchivedAt;
         _ = this.CreatedAt;
         _ = this.Description;
+        this.ExecutionIdentity.Validate();
         foreach (var item in this.McpServers)
         {
             item.Validate();

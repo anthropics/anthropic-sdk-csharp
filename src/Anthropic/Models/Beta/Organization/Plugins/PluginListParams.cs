@@ -289,6 +289,22 @@ public record class PluginListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/plugins";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        [
+            "created_at[gt]",
+            "created_at[gte]",
+            "created_at[lt]",
+            "created_at[lte]",
+            "limit",
+            "marketplace_id",
+            "organization_id",
+            "owner_type",
+            "owner_user_id",
+            "page",
+        ];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

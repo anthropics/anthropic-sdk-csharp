@@ -208,6 +208,11 @@ public record class WorkspaceListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/workspaces";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["after_id", "before_id", "include_archived", "include_default", "limit"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

@@ -206,6 +206,7 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.retrieve",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

@@ -243,6 +243,8 @@ public record class PluginCreateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/plugins";
+
     internal override HttpContent? BodyContent()
     {
         return MultipartJsonSerializer.Serialize(RawBodyData);

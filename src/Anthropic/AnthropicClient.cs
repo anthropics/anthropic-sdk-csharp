@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Core.Telemetry;
 using Anthropic.Credentials;
 using Anthropic.Exceptions;
 using Anthropic.Services;
@@ -68,6 +70,13 @@ public class AnthropicClient : IAnthropicClient
     }
 
     /// <inheritdoc/>
+    public OpenTelemetryOptions? OpenTelemetry
+    {
+        get { return this._options.OpenTelemetry; }
+        init { this._options.OpenTelemetry = value; }
+    }
+
+    /// <inheritdoc/>
     public virtual string? ApiKey
     {
         get { return this._options.ApiKey; }
@@ -100,6 +109,25 @@ public class AnthropicClient : IAnthropicClient
     {
         get { return this._options.ExtraHeaders; }
         init { this._options.ExtraHeaders = value; }
+    }
+
+    /// <inheritdoc cref="ClientOptions.OpenTelemetryProviderName"/>
+    internal string OpenTelemetryProviderName
+    {
+        get { return this._options.OpenTelemetryProviderName; }
+        init { this._options.OpenTelemetryProviderName = value; }
+    }
+
+    internal ClientOptions Options
+    {
+        get { return this._options; }
+    }
+
+    /// <inheritdoc cref="ClientOptions.OpenTelemetrySource"/>
+    internal ActivitySource? OpenTelemetrySource
+    {
+        get { return this._options.OpenTelemetrySource; }
+        init { this._options.OpenTelemetrySource = value; }
     }
 
     readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
@@ -249,6 +277,9 @@ public class AnthropicClient : IAnthropicClient
             options.Credentials = new TokenCache(options.Credentials!);
         }
 
+        // The tracing environment variables are read now: a later change of the environment does
+        // not reach this client.
+        _ = options.ResolvedOpenTelemetry;
         _options = options;
 
         _withRawResponse = new(() => new AnthropicClientWithRawResponse(this._options));
@@ -264,6 +295,11 @@ public class AnthropicClient : IAnthropicClient
 /// <inheritdoc/>
 public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
 {
+    internal ClientOptions Options
+    {
+        get { return this._options; }
+    }
+
 #if NET
     static readonly Random Random = Random.Shared;
 #else
@@ -322,6 +358,13 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
     }
 
     /// <inheritdoc/>
+    public OpenTelemetryOptions? OpenTelemetry
+    {
+        get { return this._options.OpenTelemetry; }
+        init { this._options.OpenTelemetry = value; }
+    }
+
+    /// <inheritdoc/>
     public virtual string? ApiKey
     {
         get { return this._options.ApiKey; }
@@ -360,6 +403,8 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         {
             options.BackendAdaptationHandler = this._options.BackendAdaptationHandler;
         }
+        // The spans of such a client keep the scope of its package too.
+        options.OpenTelemetrySource ??= this._options.OpenTelemetrySource;
         return new AnthropicClientWithRawResponse(options);
     }
 
@@ -399,10 +444,10 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         get { return _beta.Value; }
     }
 
-    /// <inheritdoc/>
-    public async Task<HttpResponse> Execute<T>(
+    async Task<HttpResponse> ExecuteWithRetries<T>(
         HttpRequest<T> request,
-        CancellationToken cancellationToken = default
+        Activity? span,
+        CancellationToken cancellationToken
     )
         where T : ParamsBase
     {
@@ -417,7 +462,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
             HttpResponse? response = null;
             try
             {
-                response = await ExecuteOnce(request, retries, cancellationToken)
+                response = await ExecuteOnce(request, retries, span, cancellationToken)
                     .ConfigureAwait(false);
             }
             catch (Exception e)
@@ -472,6 +517,12 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
 
             if (response != null && (++retries > maxRetries || !ShouldRetry(response)))
             {
+                if (span != null)
+                {
+                    // The span records the final attempt's response.
+                    Tracing.SetResponseStatusCode(span, response.RawMessage);
+                    ApiCallSpans.SetResponseHeaderAttributes(span, response.RawMessage);
+                }
                 if (response.IsSuccessStatusCode)
                 {
                     return response;
@@ -610,9 +661,52 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         return default;
     }
 
+    /// <inheritdoc/>
+    public async Task<HttpResponse> Execute<T>(
+        HttpRequest<T> request,
+        CancellationToken cancellationToken = default
+    )
+        where T : ParamsBase
+    {
+        // One span covers every attempt of the call, and ends when its response has been read.
+        // A request that was not made through an SDK method has no span name, and no span. The
+        // attributes are built only for a span that would be emitted.
+        var span =
+            request.Span
+            ?? (
+                request.SpanName == null || !Tracing.IsEnabled(this._options)
+                    ? null
+                    : Tracing.StartApiCallSpan(
+                        this._options.ResolvedOpenTelemetry,
+                        request.SpanName,
+                        Tracing.StartAttributes(this._options, request),
+                        this._options.OpenTelemetrySource
+                    )
+            );
+        if (span == null)
+        {
+            return await this.ExecuteWithRetries(request, null, cancellationToken)
+                .ConfigureAwait(false);
+        }
+        HttpResponse response;
+        try
+        {
+            response = await this.ExecuteWithRetries(request, span, cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            Tracing.EndApiCallSpan(span, e, cancellationToken);
+            throw;
+        }
+        response.Span = span;
+        return response;
+    }
+
     async Task<HttpResponse> ExecuteOnce<T>(
         HttpRequest<T> request,
         int retryCount,
+        Activity? span,
         CancellationToken cancellationToken = default
     )
         where T : ParamsBase
@@ -648,6 +742,16 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         try
         {
             await BeforeSend(request, requestMessage, cts.Token).ConfigureAwait(false);
+            if (span != null)
+            {
+                Tracing.InjectTraceHeaders(span, requestMessage.Headers);
+                Tracing.TrackRequest(
+                    requestMessage,
+                    span,
+                    request.Params,
+                    Content.IsRecorded(this._options.ResolvedOpenTelemetry)
+                );
+            }
             responseMessage = await this
                 ._options.SendRequestAsync(requestMessage, cts.Token)
                 .ConfigureAwait(false);
@@ -833,6 +937,9 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
     public AnthropicClientWithRawResponse()
     {
         _options = new();
+        // The tracing environment variables are read now: a later change of the environment does
+        // not reach this client.
+        _ = _options.ResolvedOpenTelemetry;
 
         _messages = new(() => new MessageServiceWithRawResponse(this));
         _models = new(() => new ModelServiceWithRawResponse(this));
@@ -854,6 +961,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         {
             options.Credentials = new TokenCache(options.Credentials!);
         }
+        _ = options.ResolvedOpenTelemetry;
         _options = options;
         _tokenCache = _options.Credentials as TokenCache;
     }

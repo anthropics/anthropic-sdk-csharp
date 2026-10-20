@@ -95,6 +95,8 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.agents.versions.list",
+            SpanResourceIds = [new("gen_ai.agent.id", parameters.AgentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

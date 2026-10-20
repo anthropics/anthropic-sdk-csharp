@@ -158,6 +158,11 @@ public sealed class PluginMarketplaceServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.plugin_marketplaces.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.plugin_marketplace.id", parameters.MarketplaceID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -203,6 +208,11 @@ public sealed class PluginMarketplaceServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.plugin_marketplaces.update",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.plugin_marketplace.id", parameters.MarketplaceID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -243,6 +253,7 @@ public sealed class PluginMarketplaceServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.plugin_marketplaces.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -271,6 +282,7 @@ public sealed class PluginMarketplaceServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.plugin_marketplaces.validate_archive",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -299,6 +311,7 @@ public sealed class PluginMarketplaceServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.plugin_marketplaces.validate_repository",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

@@ -102,6 +102,15 @@
         "resolved": "7.0.0",
         "contentHash": "GLltyqEsE5/3IE+zYRP5sNa1l44qKl9v+bfdMcwg+M9qnQf47wK3H0SUR/T+3N4JEQXF3vV4CSuuo0rsg+nq2A=="
       },
+      "System.Diagnostics.DiagnosticSource": {
+        "type": "Transitive",
+        "resolved": "8.0.1",
+        "contentHash": "vaoWjvkG1aenR2XdjaVivlCV9fADfgyhW5bZtXT23qaEea0lWiUljdQuze4E31vKM7ZWJaSUsbYIKE3rnzfZUg==",
+        "dependencies": {
+          "System.Memory": "4.5.5",
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        }
+      },
       "System.IO.Pipelines": {
         "type": "Transitive",
         "resolved": "10.0.6",
@@ -179,6 +188,7 @@
         "dependencies": {
           "Microsoft.Extensions.AI.Abstractions": "[10.5.1, )",
           "System.Collections.Immutable": "[8.0.0, )",
+          "System.Diagnostics.DiagnosticSource": "[8.0.1, )",
           "System.Net.ServerSentEvents": "[10.0.1, )",
           "System.Text.Json": "[10.0.6, )",
           "System.Threading.Tasks.Extensions": "[4.6.3, )"

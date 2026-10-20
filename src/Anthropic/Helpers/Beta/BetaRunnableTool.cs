@@ -52,6 +52,13 @@ public class BetaRunnableTool : IBetaRunnableTool
         Task<BetaToolResultBlockParamContent>
     > Run { get; init; }
 
+    /// <summary>
+    /// Whether an MCP helper made this tool, which then runs against the MCP server. The tool
+    /// runner names the span of such a tool <c>anthropic.mcp_tool_use</c> rather than
+    /// <c>anthropic.custom_tool_use</c>.
+    /// </summary>
+    internal bool IsMcpTool { get; init; }
+
     /// <inheritdoc />
     public Task<BetaToolResultBlockParamContent> ExecuteAsync(
         BetaToolUseBlock toolUseBlock,

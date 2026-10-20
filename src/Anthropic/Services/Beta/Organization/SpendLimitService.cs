@@ -170,6 +170,11 @@ public sealed class SpendLimitServiceWithRawResponse : ISpendLimitServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.spend_limits.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.spend_limit.id", parameters.SpendLimitID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -212,6 +217,7 @@ public sealed class SpendLimitServiceWithRawResponse : ISpendLimitServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.spend_limits.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -245,6 +251,11 @@ public sealed class SpendLimitServiceWithRawResponse : ISpendLimitServiceWithRaw
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.organization.spend_limits.delete",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.spend_limit.id", parameters.SpendLimitID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -285,6 +296,7 @@ public sealed class SpendLimitServiceWithRawResponse : ISpendLimitServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.spend_limits.set",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -298,6 +310,12 @@ public sealed class SpendLimitServiceWithRawResponse : ISpendLimitServiceWithRaw
                 {
                     betaSpendLimit.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.spend_limit.id",
+                    betaSpendLimit,
+                    static created => created.ID
+                );
                 return betaSpendLimit;
             }
         );

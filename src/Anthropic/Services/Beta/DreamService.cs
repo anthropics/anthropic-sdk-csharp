@@ -162,6 +162,7 @@ public sealed class DreamServiceWithRawResponse : IDreamServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.dreams.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -173,6 +174,12 @@ public sealed class DreamServiceWithRawResponse : IDreamServiceWithRawResponse
                 {
                     betaDream.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.dream.id",
+                    betaDream,
+                    static created => created.ID
+                );
                 return betaDream;
             }
         );
@@ -193,6 +200,8 @@ public sealed class DreamServiceWithRawResponse : IDreamServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.dreams.retrieve",
+            SpanResourceIds = [new("anthropic.dream.id", parameters.DreamID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -233,6 +242,7 @@ public sealed class DreamServiceWithRawResponse : IDreamServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.dreams.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -266,6 +276,8 @@ public sealed class DreamServiceWithRawResponse : IDreamServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.dreams.archive",
+            SpanResourceIds = [new("anthropic.dream.id", parameters.DreamID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -309,6 +321,8 @@ public sealed class DreamServiceWithRawResponse : IDreamServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.dreams.cancel",
+            SpanResourceIds = [new("anthropic.dream.id", parameters.DreamID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

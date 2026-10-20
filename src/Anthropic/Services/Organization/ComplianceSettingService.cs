@@ -91,6 +91,7 @@ public sealed class ComplianceSettingServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.compliance_settings.retrieve",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -119,6 +120,7 @@ public sealed class ComplianceSettingServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.compliance_settings.update",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

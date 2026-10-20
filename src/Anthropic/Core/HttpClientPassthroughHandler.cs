@@ -23,6 +23,7 @@ sealed class HttpClientPassthroughHandler : HttpMessageHandler
         CancellationToken cancellationToken
     )
     {
+        Tracing.RecordRequest(request);
         return _httpClient.SendAsync(
             request,
             HttpCompletionOption.ResponseHeadersRead,

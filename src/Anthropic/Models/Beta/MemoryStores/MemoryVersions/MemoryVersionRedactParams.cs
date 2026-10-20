@@ -24,7 +24,8 @@ public record class MemoryVersionRedactParams : ParamsBase
     public string? MemoryVersionID { get; init; }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `agent-memory-2026-07-22` or
+    /// `managed-agents-2026-04-01` in this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -177,6 +178,9 @@ public record class MemoryVersionRedactParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route =>
+        "/v1/memory_stores/{memory_store_id}/memory_versions/{memory_version_id}/redact";
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

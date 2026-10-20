@@ -14,7 +14,7 @@ public class BetaModelInfoTest : TestBase
     {
         var model = new BetaModelInfo
         {
-            ID = "claude-opus-5",
+            ID = "claude-opus-5-5",
             AllowedFallbackModels = ["string"],
             Capabilities = new()
             {
@@ -53,14 +53,15 @@ public class BetaModelInfoTest : TestBase
                     Types = new()
                     {
                         Adaptive = new(true),
+                        BetweenTools = new(true),
                         Disabled = new(true),
                         Enabled = new(true),
                     },
                 },
             },
-            CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
+            CreatedAt = DateTimeOffset.Parse("2026-09-21T00:00:00Z"),
             DeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            DisplayName = "Claude Opus 5",
+            DisplayName = "Claude Opus 5.5",
             Lifecycle = BetaModelInfoLifecycle.Active,
             Line = BetaModelLine.Haiku,
             MaxInputTokens = 0,
@@ -68,7 +69,7 @@ public class BetaModelInfoTest : TestBase
             RetiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
-        string expectedID = "claude-opus-5";
+        string expectedID = "claude-opus-5-5";
         List<string> expectedAllowedFallbackModels = ["string"];
         BetaModelCapabilities expectedCapabilities = new()
         {
@@ -107,14 +108,15 @@ public class BetaModelInfoTest : TestBase
                 Types = new()
                 {
                     Adaptive = new(true),
+                    BetweenTools = new(true),
                     Disabled = new(true),
                     Enabled = new(true),
                 },
             },
         };
-        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z");
+        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-09-21T00:00:00Z");
         DateTimeOffset expectedDeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        string expectedDisplayName = "Claude Opus 5";
+        string expectedDisplayName = "Claude Opus 5.5";
         ApiEnum<string, BetaModelInfoLifecycle> expectedLifecycle = BetaModelInfoLifecycle.Active;
         ApiEnum<string, BetaModelLine> expectedLine = BetaModelLine.Haiku;
         long expectedMaxInputTokens = 0;
@@ -146,7 +148,7 @@ public class BetaModelInfoTest : TestBase
     {
         var model = new BetaModelInfo
         {
-            ID = "claude-opus-5",
+            ID = "claude-opus-5-5",
             AllowedFallbackModels = ["string"],
             Capabilities = new()
             {
@@ -185,14 +187,15 @@ public class BetaModelInfoTest : TestBase
                     Types = new()
                     {
                         Adaptive = new(true),
+                        BetweenTools = new(true),
                         Disabled = new(true),
                         Enabled = new(true),
                     },
                 },
             },
-            CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
+            CreatedAt = DateTimeOffset.Parse("2026-09-21T00:00:00Z"),
             DeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            DisplayName = "Claude Opus 5",
+            DisplayName = "Claude Opus 5.5",
             Lifecycle = BetaModelInfoLifecycle.Active,
             Line = BetaModelLine.Haiku,
             MaxInputTokens = 0,
@@ -214,7 +217,7 @@ public class BetaModelInfoTest : TestBase
     {
         var model = new BetaModelInfo
         {
-            ID = "claude-opus-5",
+            ID = "claude-opus-5-5",
             AllowedFallbackModels = ["string"],
             Capabilities = new()
             {
@@ -253,14 +256,15 @@ public class BetaModelInfoTest : TestBase
                     Types = new()
                     {
                         Adaptive = new(true),
+                        BetweenTools = new(true),
                         Disabled = new(true),
                         Enabled = new(true),
                     },
                 },
             },
-            CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
+            CreatedAt = DateTimeOffset.Parse("2026-09-21T00:00:00Z"),
             DeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            DisplayName = "Claude Opus 5",
+            DisplayName = "Claude Opus 5.5",
             Lifecycle = BetaModelInfoLifecycle.Active,
             Line = BetaModelLine.Haiku,
             MaxInputTokens = 0,
@@ -275,7 +279,7 @@ public class BetaModelInfoTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "claude-opus-5";
+        string expectedID = "claude-opus-5-5";
         List<string> expectedAllowedFallbackModels = ["string"];
         BetaModelCapabilities expectedCapabilities = new()
         {
@@ -314,14 +318,15 @@ public class BetaModelInfoTest : TestBase
                 Types = new()
                 {
                     Adaptive = new(true),
+                    BetweenTools = new(true),
                     Disabled = new(true),
                     Enabled = new(true),
                 },
             },
         };
-        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z");
+        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-09-21T00:00:00Z");
         DateTimeOffset expectedDeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        string expectedDisplayName = "Claude Opus 5";
+        string expectedDisplayName = "Claude Opus 5.5";
         ApiEnum<string, BetaModelInfoLifecycle> expectedLifecycle = BetaModelInfoLifecycle.Active;
         ApiEnum<string, BetaModelLine> expectedLine = BetaModelLine.Haiku;
         long expectedMaxInputTokens = 0;
@@ -353,7 +358,7 @@ public class BetaModelInfoTest : TestBase
     {
         var model = new BetaModelInfo
         {
-            ID = "claude-opus-5",
+            ID = "claude-opus-5-5",
             AllowedFallbackModels = ["string"],
             Capabilities = new()
             {
@@ -392,14 +397,15 @@ public class BetaModelInfoTest : TestBase
                     Types = new()
                     {
                         Adaptive = new(true),
+                        BetweenTools = new(true),
                         Disabled = new(true),
                         Enabled = new(true),
                     },
                 },
             },
-            CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
+            CreatedAt = DateTimeOffset.Parse("2026-09-21T00:00:00Z"),
             DeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            DisplayName = "Claude Opus 5",
+            DisplayName = "Claude Opus 5.5",
             Lifecycle = BetaModelInfoLifecycle.Active,
             Line = BetaModelLine.Haiku,
             MaxInputTokens = 0,
@@ -415,7 +421,7 @@ public class BetaModelInfoTest : TestBase
     {
         var model = new BetaModelInfo
         {
-            ID = "claude-opus-5",
+            ID = "claude-opus-5-5",
             AllowedFallbackModels = ["string"],
             Capabilities = new()
             {
@@ -454,14 +460,15 @@ public class BetaModelInfoTest : TestBase
                     Types = new()
                     {
                         Adaptive = new(true),
+                        BetweenTools = new(true),
                         Disabled = new(true),
                         Enabled = new(true),
                     },
                 },
             },
-            CreatedAt = DateTimeOffset.Parse("2026-07-24T00:00:00Z"),
+            CreatedAt = DateTimeOffset.Parse("2026-09-21T00:00:00Z"),
             DeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            DisplayName = "Claude Opus 5",
+            DisplayName = "Claude Opus 5.5",
             Lifecycle = BetaModelInfoLifecycle.Active,
             Line = BetaModelLine.Haiku,
             MaxInputTokens = 0,

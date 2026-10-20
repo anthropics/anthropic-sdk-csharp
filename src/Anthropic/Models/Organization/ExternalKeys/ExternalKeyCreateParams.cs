@@ -162,6 +162,8 @@ public record class ExternalKeyCreateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/external_keys";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

@@ -134,6 +134,10 @@ public record class RbacGroupListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/rbac_groups";
+
+    internal override IReadOnlyList<string> QueryParams => ["limit", "page"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

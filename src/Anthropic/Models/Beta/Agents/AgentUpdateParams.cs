@@ -45,6 +45,22 @@ public record class AgentUpdateParams : ParamsBase
     }
 
     /// <summary>
+    /// Execution principal for runs of this agent. Full replacement. Omit to preserve;
+    /// send null or `{"type": "service_account"}` to restore the default.
+    /// </summary>
+    public BetaManagedAgentsExecutionIdentityParams? ExecutionIdentity
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaManagedAgentsExecutionIdentityParams>(
+                "execution_identity"
+            );
+        }
+        init { this._rawBodyData.Set("execution_identity", value); }
+    }
+
+    /// <summary>
     /// MCP servers. Full replacement. Omit to preserve; send empty array or `null`
     /// to clear. Names must be unique. Maximum 20. Every server must be referenced
     /// by an `mcp_toolset` in the agent's resulting `tools`; unreferenced servers
@@ -93,7 +109,7 @@ public record class AgentUpdateParams : ParamsBase
 
     /// <summary>
     /// Model identifier. Accepts the [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison),
-    /// e.g. `claude-opus-5`, or a `model_config` object for additional configuration
+    /// e.g. `claude-opus-5-5`, or a `model_config` object for additional configuration
     /// control. Omit to preserve. Cannot be cleared.
     /// </summary>
     public AgentUpdateParamsModel? Model
@@ -235,7 +251,8 @@ public record class AgentUpdateParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `managed-agents-2026-04-01` in
+    /// this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -389,6 +406,8 @@ public record class AgentUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/agents/{agent_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(
@@ -416,7 +435,7 @@ public record class AgentUpdateParams : ParamsBase
 
 /// <summary>
 /// Model identifier. Accepts the [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison),
-/// e.g. `claude-opus-5`, or a `model_config` object for additional configuration
+/// e.g. `claude-opus-5-5`, or a `model_config` object for additional configuration
 /// control. Omit to preserve. Cannot be cleared.
 /// </summary>
 [JsonConverter(typeof(AgentUpdateParamsModelConverter))]

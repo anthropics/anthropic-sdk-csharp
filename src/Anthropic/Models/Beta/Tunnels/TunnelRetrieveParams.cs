@@ -26,7 +26,8 @@ public record class TunnelRetrieveParams : ParamsBase
     public string? TunnelID { get; init; }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `mcp-tunnels-2026-06-22` in
+    /// this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -169,6 +170,8 @@ public record class TunnelRetrieveParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/tunnels/{tunnel_id}";
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

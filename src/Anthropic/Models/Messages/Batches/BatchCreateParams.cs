@@ -193,6 +193,8 @@ public record class BatchCreateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/messages/batches";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(
@@ -341,7 +343,9 @@ public sealed record class Params : JsonModel
     ///
     /// <para>If the final message uses the `assistant` role, the response content
     /// will continue immediately from the content in that message. This can be used
-    /// to constrain part of the model's response.</para>
+    /// to constrain part of the model's response. This is called prefill. On models
+    /// that don't support prefill, creating a message that ends with a partial `assistant`
+    /// response returns a 400 error. See [Prefill not supported](https://platform.claude.com/docs/en/api/errors#prefill-not-supported).</para>
     ///
     /// <para>Example with a single `user` message:</para>
     ///
@@ -353,7 +357,8 @@ public sealed record class Params : JsonModel
     /// "assistant", "content": "Hi, I'm Claude. How can I help you?"},   {"role":
     /// "user", "content": "Can you explain LLMs in plain English?"}, ] ```</para>
     ///
-    /// <para>Example with a partially-filled response from Claude:</para>
+    /// <para>Example with a partially-filled response from Claude, for models that
+    /// support prefill:</para>
     ///
     /// <para>```json [   {"role": "user", "content": "What's the Greek name for
     /// Sun? (A) Sol (B) Helios (C) Sun"},   {"role": "assistant", "content": "The
@@ -537,6 +542,23 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
+    /// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
+    ///
+    /// <para>Some models require the `fast-mode-2026-02-01` beta header for any `speed`
+    /// value. See [fast mode](https://platform.claude.com/docs/en/build-with-claude/fast-mode)
+    /// for which models.</para>
+    /// </summary>
+    public ApiEnum<string, Speed>? Speed
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, Speed>>("speed");
+        }
+        init { this._rawData.Set("speed", value); }
+    }
+
+    /// <summary>
     /// Custom text sequences that will cause the model to stop generating.
     ///
     /// <para>Our models will normally stop when they have naturally completed their
@@ -656,14 +678,15 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
-    /// Configuration for enabling Claude's extended thinking.
+    /// Configuration for Claude's thinking.
     ///
-    /// <para>When enabled, responses include `thinking` content blocks showing Claude's
-    /// thinking process before the final answer. Requires a minimum budget of 1,024
-    /// tokens and counts towards your `max_tokens` limit.</para>
+    /// <para>With `{"type": "adaptive"}`, Claude decides when and how much to think.
+    /// With `{"type": "enabled"}` (manual extended thinking), you set a `budget_tokens`
+    /// of at least 1,024. Thinking tokens count toward your `max_tokens` limit.</para>
     ///
-    /// <para>See [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
-    /// for details.</para>
+    /// <para>Which `type` values are accepted, and what happens when you omit `thinking`,
+    /// depend on the model. See [thinking](https://platform.claude.com/docs/en/build-with-claude/thinking#configuring-thinking)
+    /// for each model's behavior.</para>
     /// </summary>
     public ThinkingConfigParam? Thinking
     {
@@ -854,6 +877,7 @@ public sealed record class Params : JsonModel
         this.Metadata?.Validate();
         this.OutputConfig?.Validate();
         this.ServiceTier?.Validate();
+        this.Speed?.Validate();
         _ = this.StopSequences;
         _ = this.Stream;
         this.System?.Validate();
@@ -945,6 +969,53 @@ sealed class ServiceTierConverter : JsonConverter<ServiceTier>
             {
                 ServiceTier.Auto => "auto",
                 ServiceTier.StandardOnly => "standard_only",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
+/// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
+///
+/// <para>Some models require the `fast-mode-2026-02-01` beta header for any `speed`
+/// value. See [fast mode](https://platform.claude.com/docs/en/build-with-claude/fast-mode)
+/// for which models.</para>
+/// </summary>
+[JsonConverter(typeof(SpeedConverter))]
+public enum Speed
+{
+    Standard,
+    Fast,
+}
+
+sealed class SpeedConverter : JsonConverter<Speed>
+{
+    public override Speed Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "standard" => Speed.Standard,
+            "fast" => Speed.Fast,
+            _ => (Speed)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, Speed value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                Speed.Standard => "standard",
+                Speed.Fast => "fast",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

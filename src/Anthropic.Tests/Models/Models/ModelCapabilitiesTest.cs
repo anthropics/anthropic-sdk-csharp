@@ -45,6 +45,7 @@ public class ModelCapabilitiesTest : TestBase
                 Types = new()
                 {
                     Adaptive = new(true),
+                    BetweenTools = new(true),
                     Disabled = new(true),
                     Enabled = new(true),
                 },
@@ -85,6 +86,7 @@ public class ModelCapabilitiesTest : TestBase
             Types = new()
             {
                 Adaptive = new(true),
+                BetweenTools = new(true),
                 Disabled = new(true),
                 Enabled = new(true),
             },
@@ -141,6 +143,7 @@ public class ModelCapabilitiesTest : TestBase
                 Types = new()
                 {
                     Adaptive = new(true),
+                    BetweenTools = new(true),
                     Disabled = new(true),
                     Enabled = new(true),
                 },
@@ -195,6 +198,7 @@ public class ModelCapabilitiesTest : TestBase
                 Types = new()
                 {
                     Adaptive = new(true),
+                    BetweenTools = new(true),
                     Disabled = new(true),
                     Enabled = new(true),
                 },
@@ -242,6 +246,7 @@ public class ModelCapabilitiesTest : TestBase
             Types = new()
             {
                 Adaptive = new(true),
+                BetweenTools = new(true),
                 Disabled = new(true),
                 Enabled = new(true),
             },
@@ -298,6 +303,7 @@ public class ModelCapabilitiesTest : TestBase
                 Types = new()
                 {
                     Adaptive = new(true),
+                    BetweenTools = new(true),
                     Disabled = new(true),
                     Enabled = new(true),
                 },
@@ -346,6 +352,7 @@ public class ModelCapabilitiesTest : TestBase
                 Types = new()
                 {
                     Adaptive = new(true),
+                    BetweenTools = new(true),
                     Disabled = new(true),
                     Enabled = new(true),
                 },

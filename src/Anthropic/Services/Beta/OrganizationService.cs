@@ -49,6 +49,7 @@ public sealed class OrganizationService : IOrganizationService
         _rbacRoles = new(() => new RbacRoleService(client));
         _plugins = new(() => new PluginService(client));
         _pluginMarketplaces = new(() => new PluginMarketplaceService(client));
+        _telemetryDestinations = new(() => new TelemetryDestinationService(client));
     }
 
     readonly Lazy<IApiKeyService> _apiKeys;
@@ -141,6 +142,12 @@ public sealed class OrganizationService : IOrganizationService
         get { return _pluginMarketplaces.Value; }
     }
 
+    readonly Lazy<ITelemetryDestinationService> _telemetryDestinations;
+    public ITelemetryDestinationService TelemetryDestinations
+    {
+        get { return _telemetryDestinations.Value; }
+    }
+
     /// <inheritdoc/>
     public async Task<BetaOrganization> Retrieve(
         OrganizationRetrieveParams? parameters = null,
@@ -186,6 +193,7 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
         _rbacRoles = new(() => new RbacRoleServiceWithRawResponse(client));
         _plugins = new(() => new PluginServiceWithRawResponse(client));
         _pluginMarketplaces = new(() => new PluginMarketplaceServiceWithRawResponse(client));
+        _telemetryDestinations = new(() => new TelemetryDestinationServiceWithRawResponse(client));
     }
 
     readonly Lazy<IApiKeyServiceWithRawResponse> _apiKeys;
@@ -278,6 +286,12 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
         get { return _pluginMarketplaces.Value; }
     }
 
+    readonly Lazy<ITelemetryDestinationServiceWithRawResponse> _telemetryDestinations;
+    public ITelemetryDestinationServiceWithRawResponse TelemetryDestinations
+    {
+        get { return _telemetryDestinations.Value; }
+    }
+
     /// <inheritdoc/>
     public async Task<HttpResponse<BetaOrganization>> Retrieve(
         OrganizationRetrieveParams? parameters = null,
@@ -290,6 +304,7 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.retrieve",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

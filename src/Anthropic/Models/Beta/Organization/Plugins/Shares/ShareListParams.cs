@@ -226,6 +226,11 @@ public record class ShareListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/plugins/{plugin_id}/shares";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["limit", "organization_id", "page", "target_type"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);

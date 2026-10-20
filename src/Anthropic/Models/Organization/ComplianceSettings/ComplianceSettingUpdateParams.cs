@@ -139,6 +139,8 @@ public record class ComplianceSettingUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/organizations/compliance_settings";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

@@ -155,6 +155,12 @@ public sealed class MemoryVersionServiceWithRawResponse : IMemoryVersionServiceW
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.memory_stores.memory_versions.retrieve",
+            SpanResourceIds =
+            [
+                new("gen_ai.memory.store.id", parameters.MemoryStoreID),
+                new("anthropic.memory_store.memory_version.id", parameters.MemoryVersionID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -204,6 +210,8 @@ public sealed class MemoryVersionServiceWithRawResponse : IMemoryVersionServiceW
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.memory_stores.memory_versions.list",
+            SpanResourceIds = [new("gen_ai.memory.store.id", parameters.MemoryStoreID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -249,6 +257,12 @@ public sealed class MemoryVersionServiceWithRawResponse : IMemoryVersionServiceW
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.memory_stores.memory_versions.redact",
+            SpanResourceIds =
+            [
+                new("gen_ai.memory.store.id", parameters.MemoryStoreID),
+                new("anthropic.memory_store.memory_version.id", parameters.MemoryVersionID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
