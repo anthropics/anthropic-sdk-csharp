@@ -47,6 +47,17 @@ public class UserProfileServiceTest : TestBase
     }
 
     [Fact]
+    public async Task Delete_Works()
+    {
+        var betaDeletedUserProfile = await this.client.Beta.UserProfiles.Delete(
+            "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        betaDeletedUserProfile.Validate();
+    }
+
+    [Fact]
     public async Task CreateEnrollmentUrl_Works()
     {
         var betaUserProfileEnrollmentUrl = await this.client.Beta.UserProfiles.CreateEnrollmentUrl(

@@ -11,7 +11,7 @@ namespace Anthropic.Models.Beta.UserProfiles;
 
 /// <summary>
 /// A URL to give to the entity that a user profile represents, so that the entity
-/// can enroll for a trust grant.
+/// can enroll in a program.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaUserProfileEnrollmentUrl, BetaUserProfileEnrollmentUrlFromRaw>)

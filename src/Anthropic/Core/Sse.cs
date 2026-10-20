@@ -25,62 +25,29 @@ static class Sse
 
         await foreach (var item in SseParser.Create(stream).EnumerateAsync(cancellationToken))
         {
-            switch (item.EventType)
+            switch (
+                ReferenceEquals(item.EventType, default(SseItem<string>).EventType)
+                    ? null
+                    : item.EventType
+            )
             {
-                case "completion":
-                case "message_start":
-                case "message_delta":
-                case "message_stop":
-                case "content_block_start":
-                case "content_block_delta":
-                case "content_block_stop":
-                case "message":
-                case "user.message":
-                case "user.interrupt":
-                case "user.tool_confirmation":
-                case "user.custom_tool_result":
-                case "user.tool_result":
-                case "agent.message":
-                case "agent.thinking":
-                case "agent.tool_use":
-                case "agent.tool_result":
-                case "agent.mcp_tool_use":
-                case "agent.mcp_tool_result":
-                case "agent.custom_tool_use":
-                case "agent.thread_context_compacted":
-                case "session.status_running":
-                case "session.status_idle":
-                case "session.status_rescheduled":
-                case "session.status_terminated":
-                case "session.error":
-                case "session.deleted":
-                case "session.updated":
-                case "span.model_request_start":
-                case "span.model_request_end":
-                case "span.outcome_evaluation_start":
-                case "span.outcome_evaluation_ongoing":
-                case "span.outcome_evaluation_end":
-                case "user.define_outcome":
-                case "agent.thread_message_received":
-                case "agent.thread_message_sent":
-                case "agent.session_thread_message_received":
-                case "agent.session_thread_message_sent":
-                case "session.thread_created":
-                case "session.thread_status_created":
-                case "session.thread_status_running":
-                case "session.thread_status_idle":
-                case "session.thread_status_rescheduled":
-                case "session.thread_status_terminated":
-                case "event_start":
-                case "event_delta":
-                case "system.message":
-                case "workflow_run.created":
-                case "workflow_run.status_running":
-                case "workflow_run.status_idle":
-                case "workflow_run.status_ended":
-                case "workflow_run.error":
-                case "workflow_run.phase_started":
-                case "workflow_run.phase_ended":
+                case "ping":
+                case null:
+                    continue;
+                case "error":
+                    throw new AnthropicSseException(
+                        string.Format("SSE error returned from server: '{0}'", item.Data)
+                    )
+                    {
+                        ErrorType = AnthropicExceptionFactory.ExtractErrorType(item.Data),
+                        EventData = item.Data,
+                    };
+                default:
+                    if (item.Data.Length == 0)
+                    {
+                        continue;
+                    }
+
                     T? message;
                     try
                     {
@@ -99,16 +66,6 @@ static class Sse
                     yield return message
                         ?? throw new AnthropicInvalidDataException("Message cannot be null");
                     break;
-                case "ping":
-                    continue;
-                case "error":
-                    throw new AnthropicSseException(
-                        string.Format("SSE error returned from server: '{0}'", item.Data)
-                    )
-                    {
-                        ErrorType = AnthropicExceptionFactory.ExtractErrorType(item.Data),
-                        EventData = item.Data,
-                    };
             }
         }
     }

@@ -49,7 +49,8 @@ public sealed record class BetaManagedAgentsEnvironmentVariableCreateParams : Js
     }
 
     /// <summary>
-    /// Secret value. Write-only; never returned in responses.
+    /// The secret to substitute into the agent's outbound requests. It's write-only
+    /// and never returned in responses.
     /// </summary>
     public required string SecretValue
     {

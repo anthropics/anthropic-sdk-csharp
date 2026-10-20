@@ -21,7 +21,7 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class BetaManagedAgentsMcpOAuthCreateParams : JsonModel
 {
     /// <summary>
-    /// OAuth access token.
+    /// The OAuth access token to send to the MCP server.
     /// </summary>
     public required string AccessToken
     {
@@ -59,7 +59,9 @@ public sealed record class BetaManagedAgentsMcpOAuthCreateParams : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When `access_token` expires, in RFC 3339.
+    ///
+    /// <para>Must be in the future.</para>
     /// </summary>
     public System::DateTimeOffset? ExpiresAt
     {

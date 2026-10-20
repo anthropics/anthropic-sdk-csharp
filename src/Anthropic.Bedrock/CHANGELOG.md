@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.14.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.14.0...Bedrock-v0.14.1) (2026-10-19)
+
+### Bug Fixes
+
+* **bedrock:** sign requests with temporary AWS credentials in `FromEnv()`
+
 ## [0.14.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.13.7...Bedrock-v0.14.0) (2026-10-14)
 
 ### Features

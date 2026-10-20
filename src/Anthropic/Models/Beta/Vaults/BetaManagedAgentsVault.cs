@@ -16,7 +16,7 @@ namespace Anthropic.Models.Beta.Vaults;
 public sealed record class BetaManagedAgentsVault : JsonModel
 {
     /// <summary>
-    /// Unique identifier for the vault.
+    /// The unique ID of the vault (`vlt_...`).
     /// </summary>
     public required string ID
     {

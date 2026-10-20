@@ -27,7 +27,7 @@ public interface IMemoryService
     IMemoryService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Create a memory
+    /// Create a Memory
     /// </summary>
     Task<BetaManagedAgentsMemory> Create(
         MemoryCreateParams parameters,
@@ -42,7 +42,7 @@ public interface IMemoryService
     );
 
     /// <summary>
-    /// Retrieve a memory
+    /// Retrieve a Memory
     /// </summary>
     Task<BetaManagedAgentsMemory> Retrieve(
         MemoryRetrieveParams parameters,
@@ -57,7 +57,7 @@ public interface IMemoryService
     );
 
     /// <summary>
-    /// Update a memory
+    /// Update a Memory
     /// </summary>
     Task<BetaManagedAgentsMemory> Update(
         MemoryUpdateParams parameters,
@@ -72,7 +72,7 @@ public interface IMemoryService
     );
 
     /// <summary>
-    /// List memories
+    /// List Memories
     /// </summary>
     Task<MemoryListPage> List(
         MemoryListParams parameters,
@@ -87,7 +87,7 @@ public interface IMemoryService
     );
 
     /// <summary>
-    /// Delete a memory
+    /// Delete a Memory
     /// </summary>
     Task<BetaManagedAgentsDeletedMemory> Delete(
         MemoryDeleteParams parameters,

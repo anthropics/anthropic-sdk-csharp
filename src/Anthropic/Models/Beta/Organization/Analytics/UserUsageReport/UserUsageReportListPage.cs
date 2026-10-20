@@ -30,6 +30,10 @@ public sealed class UserUsageReportListPage(
     {
         try
         {
+            if (response.HasMore == false)
+            {
+                return false;
+            }
             return response.NextPage != null;
         }
         catch (AnthropicInvalidDataException)

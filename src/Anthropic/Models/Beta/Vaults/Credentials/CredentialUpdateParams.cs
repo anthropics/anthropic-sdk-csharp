@@ -14,7 +14,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
 /// <summary>
-/// Update Credential
+/// Update a Credential
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -33,8 +33,8 @@ public record class CredentialUpdateParams : ParamsBase
     public string? CredentialID { get; init; }
 
     /// <summary>
-    /// Updated authentication configuration. The `type` is immutable; the variant
-    /// sent must match the stored credential's type.
+    /// New authentication settings for the credential. The `type` must match the
+    /// credential's current type, which can't be changed.
     /// </summary>
     public CredentialUpdateParamsAuth? Auth
     {
@@ -282,8 +282,8 @@ public record class CredentialUpdateParams : ParamsBase
 }
 
 /// <summary>
-/// Updated authentication configuration. The `type` is immutable; the variant sent
-/// must match the stored credential's type.
+/// New authentication settings for the credential. The `type` must match the credential's
+/// current type, which can't be changed.
 /// </summary>
 [JsonConverter(typeof(CredentialUpdateParamsAuthConverter))]
 public record class CredentialUpdateParamsAuth : ModelBase

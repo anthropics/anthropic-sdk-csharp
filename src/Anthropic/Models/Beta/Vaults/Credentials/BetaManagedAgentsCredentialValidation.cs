@@ -47,7 +47,8 @@ public sealed record class BetaManagedAgentsCredentialValidation : JsonModel
     }
 
     /// <summary>
-    /// Details of the failing MCP probe step. Null when the probe succeeded.
+    /// Details of the MCP probe step that failed, or `null` if the probe succeeded
+    /// or there was no access token to test.
     /// </summary>
     public required BetaManagedAgentsMcpProbe? McpProbe
     {

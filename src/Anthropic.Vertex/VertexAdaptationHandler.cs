@@ -124,6 +124,16 @@ internal sealed class VertexAdaptationHandler : DelegatingHandler
             );
         }
 
+        if (
+            requestMessage.RequestUri.Segments.Length >= 3
+            && requestMessage.RequestUri.Segments[2].Trim('/') is "user_profiles"
+        )
+        {
+            throw new NotSupportedException(
+                "The UserProfiles resource is not supported on Vertex."
+            );
+        }
+
         isCountEndpoint =
             requestMessage.RequestUri.Segments.Length >= 4
             && requestMessage.RequestUri.Segments[2].Trim('/') is "messages"

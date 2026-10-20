@@ -8,8 +8,8 @@ using System = System;
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
 /// <summary>
-/// One item in a [List memories](/en/api/beta/memory_stores/memories/list) response:
-/// either a `memory` object or, when `depth` is set, a `memory_prefix` rollup marker.
+/// One item in a [List Memories](https://platform.claude.com/docs/en/api/beta/memory_stores/memories/list)
+/// response: a `memory`, or a `memory_prefix` marker when `depth` is `1`.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsMemoryListItemConverter))]
 public record class BetaManagedAgentsMemoryListItem : ModelBase

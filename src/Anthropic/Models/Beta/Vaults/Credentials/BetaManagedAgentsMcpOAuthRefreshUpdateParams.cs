@@ -21,7 +21,7 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class BetaManagedAgentsMcpOAuthRefreshUpdateParams : JsonModel
 {
     /// <summary>
-    /// Updated OAuth refresh token.
+    /// The new OAuth refresh token to replace the stored one.
     /// </summary>
     public string? RefreshToken
     {
@@ -34,7 +34,8 @@ public sealed record class BetaManagedAgentsMcpOAuthRefreshUpdateParams : JsonMo
     }
 
     /// <summary>
-    /// Updated OAuth scope for the refresh request.
+    /// The new OAuth scope for refresh requests. Send an empty string to clear the
+    /// stored scope.
     /// </summary>
     public string? Scope
     {

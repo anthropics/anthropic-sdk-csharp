@@ -57,7 +57,7 @@ public sealed record class BetaManagedAgentsEnvironmentVariableUpdateParams : Js
     }
 
     /// <summary>
-    /// Updated networking scope. Full replacement.
+    /// The new networking scope, which replaces the stored one as a whole.
     /// </summary>
     public BetaManagedAgentsCredentialNetworkingParams? Networking
     {
@@ -72,7 +72,7 @@ public sealed record class BetaManagedAgentsEnvironmentVariableUpdateParams : Js
     }
 
     /// <summary>
-    /// Updated secret value.
+    /// The new secret value to replace the stored one.
     /// </summary>
     public string? SecretValue
     {

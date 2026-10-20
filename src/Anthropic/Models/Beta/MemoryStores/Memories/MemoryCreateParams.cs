@@ -12,7 +12,7 @@ using Anthropic.Services.Beta.MemoryStores;
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
 /// <summary>
-/// Create a memory
+/// Create a Memory
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -29,8 +29,9 @@ public record class MemoryCreateParams : ParamsBase
     public string? MemoryStoreID { get; init; }
 
     /// <summary>
-    /// UTF-8 text content for the new memory. Maximum 100 kB (102,400 bytes). Required;
-    /// pass `""` explicitly to create an empty memory.
+    /// The UTF-8 text content of the new memory. Pass `""` to create an empty memory.
+    ///
+    /// <para>The maximum size is 100 kB (102,400 bytes).</para>
     /// </summary>
     public required string? Content
     {
@@ -43,11 +44,12 @@ public record class MemoryCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Hierarchical path for the new memory, e.g. `/projects/foo/notes.md`. Must
-    /// start with `/`, contain at least one non-empty segment, and be at most 1,024
-    /// bytes. Must not contain empty segments, `.` or `..` segments, control or format
-    /// characters, or the Unicode line and paragraph separators (U+2028, U+2029),
-    /// and must be NFC-normalized. Paths are case-sensitive.
+    /// The path of the new memory, such as `/projects/foo/notes.md`. Paths are case-sensitive.
+    ///
+    /// <para>A path starts with `/` and has 1 to 20 segments. A segment can't be
+    /// empty and can't be `.` or `..`. A path can't contain control characters,
+    /// format characters, or the line and paragraph separators U+2028 and U+2029.
+    /// It must be in Unicode Normalization Form C and at most 1,024 bytes long.</para>
     /// </summary>
     public required string Path
     {
@@ -60,11 +62,11 @@ public record class MemoryCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Selects which projection of a `memory` or `memory_version` the server returns.
-    /// `basic` returns the object with `content` set to `null`; `full` populates
-    /// `content`. When omitted, the default is endpoint-specific: retrieve operations
-    /// default to `full`; list, create, and update operations default to `basic`.
-    /// Listing with `view=full` caps `limit` at 20.
+    /// Whether a `memory` or `memory_version` in the response includes its `content`.
+    /// Defaults to `full` on retrieve operations and to `basic` on list, create,
+    /// and update operations.
+    ///
+    /// <para>With `full`, list operations return at most 20 items per page.</para>
     /// </summary>
     public ApiEnum<string, BetaManagedAgentsMemoryView>? View
     {

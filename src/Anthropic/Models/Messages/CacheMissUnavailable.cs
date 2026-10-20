@@ -8,6 +8,17 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
+/// <summary>
+/// A `cache_miss_reason` for when the API can't give a diagnosis. The request itself
+/// was processed normally.
+///
+/// <para>This includes a request whose `model`, `system`, and `tools` match the previous
+/// request's but whose other prompt-affecting parameters, such as `thinking` or
+/// `tool_choice`, differ.</para>
+///
+/// <para>See the [cache diagnostics guide](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics#cache-miss-reason-types)
+/// to learn what to change for each reason.</para>
+/// </summary>
 [JsonConverter(typeof(JsonModelConverter<CacheMissUnavailable, CacheMissUnavailableFromRaw>))]
 public sealed record class CacheMissUnavailable : JsonModel
 {

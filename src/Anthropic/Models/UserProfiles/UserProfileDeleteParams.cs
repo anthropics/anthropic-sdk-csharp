@@ -1,0 +1,154 @@
+using System;
+using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
+using System.Text.Json;
+using Anthropic.Core;
+
+namespace Anthropic.Models.UserProfiles;
+
+/// <summary>
+/// Delete User Profile
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
+/// </summary>
+public record class UserProfileDeleteParams : ParamsBase
+{
+    public string? UserProfileID { get; init; }
+
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
+    public UserProfileDeleteParams() { }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    public UserProfileDeleteParams(UserProfileDeleteParams userProfileDeleteParams)
+        : base(userProfileDeleteParams)
+    {
+        this.UserProfileID = userProfileDeleteParams.UserProfileID;
+    }
+#pragma warning restore CS8618
+
+    public UserProfileDeleteParams(
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData
+    )
+    {
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    UserProfileDeleteParams(
+        FrozenDictionary<string, JsonElement> rawHeaderData,
+        FrozenDictionary<string, JsonElement> rawQueryData,
+        string userProfileID
+    )
+    {
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this.UserProfileID = userProfileID;
+    }
+#pragma warning restore CS8618
+
+    /// <inheritdoc cref="IFromRawJson{T}.FromRawUnchecked"/>
+    public static UserProfileDeleteParams FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        string userProfileID
+    )
+    {
+        return new(
+            FrozenDictionary.ToFrozenDictionary(rawHeaderData),
+            FrozenDictionary.ToFrozenDictionary(rawQueryData),
+            userProfileID
+        );
+    }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            FriendlyJsonPrinter.PrintValue(
+                new Dictionary<string, JsonElement>()
+                {
+                    ["UserProfileID"] = JsonSerializer.SerializeToElement(this.UserProfileID),
+                    ["HeaderData"] = FriendlyJsonPrinter.PrintValue(
+                        JsonSerializer.SerializeToElement(this._rawHeaderData.Freeze())
+                    ),
+                    ["QueryData"] = FriendlyJsonPrinter.PrintValue(
+                        JsonSerializer.SerializeToElement(this._rawQueryData.Freeze())
+                    ),
+                }
+            ),
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public virtual bool Equals(UserProfileDeleteParams? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        return (this.UserProfileID?.Equals(other.UserProfileID) ?? other.UserProfileID == null)
+            && this._rawHeaderData.Equals(other._rawHeaderData)
+            && this._rawQueryData.Equals(other._rawQueryData);
+    }
+
+    public override Uri Url(ClientOptions options)
+    {
+        return new UriBuilder(
+            options.BaseUrl.ToString().TrimEnd('/')
+                + string.Format(
+                    "/v1/user_profiles/{0}",
+                    ParamsBase.EncodePathSegment(this.UserProfileID, nameof(this.UserProfileID))
+                )
+        )
+        {
+            Query = this.QueryString(options),
+        }.Uri;
+    }
+
+    internal override string Route => "/v1/user_profiles/{user_profile_id}";
+
+    internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
+    {
+        ParamsBase.AddDefaultHeaders(request, options);
+        foreach (var item in this.RawHeaderData)
+        {
+            ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
+        }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
+}

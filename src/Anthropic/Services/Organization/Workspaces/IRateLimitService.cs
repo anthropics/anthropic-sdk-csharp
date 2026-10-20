@@ -27,6 +27,30 @@ public interface IRateLimitService
     IRateLimitService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
+    /// Set or clear rate-limit overrides for one rate-limit group in a workspace.
+    ///
+    /// <para>Only the limiter types named in `limits` change: an integer `value` sets
+    /// that type's override and `null` clears it. Types not named keep their current
+    /// value. A value above the organization's own limit is stored, but the
+    /// organization limit still applies, so the lower of the two is enforced.</para>
+    ///
+    /// <para>Returns the targeted group's entry with this request applied, in the shape
+    /// `GET /v1/organizations/workspaces/{workspace_id}/rate_limits` returns. Changes
+    /// take effect within about an hour.</para>
+    /// </summary>
+    Task<WorkspaceRateLimit> Update(
+        RateLimitUpdateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Update(RateLimitUpdateParams, CancellationToken)"/>
+    Task<WorkspaceRateLimit> Update(
+        string rateLimitID,
+        RateLimitUpdateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// List a workspace's rate limits.
     ///
     /// <para>By default, returns only the groups and limiter types that have a
@@ -64,6 +88,22 @@ public interface IRateLimitServiceWithRawResponse
     /// <para>The original service is not modified.</para>
     /// </summary>
     IRateLimitServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
+    /// <summary>
+    /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}/rate_limits/{rate_limit_id}</c>, but is otherwise the
+    /// same as <see cref="IRateLimitService.Update(RateLimitUpdateParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<WorkspaceRateLimit>> Update(
+        RateLimitUpdateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Update(RateLimitUpdateParams, CancellationToken)"/>
+    Task<HttpResponse<WorkspaceRateLimit>> Update(
+        string rateLimitID,
+        RateLimitUpdateParams parameters,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces/{workspace_id}/rate_limits</c>, but is otherwise the

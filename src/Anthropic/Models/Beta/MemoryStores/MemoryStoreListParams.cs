@@ -11,7 +11,7 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.MemoryStores;
 
 /// <summary>
-/// List memory stores
+/// List Memory Stores
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -20,8 +20,7 @@ namespace Anthropic.Models.Beta.MemoryStores;
 public record class MemoryStoreListParams : ParamsBase
 {
     /// <summary>
-    /// Return only stores whose `created_at` is at or after this time (inclusive).
-    /// Sent on the wire as `created_at[gte]`.
+    /// Return only memory stores created at or after this time (inclusive).
     /// </summary>
     public DateTimeOffset? CreatedAtGte
     {
@@ -43,8 +42,7 @@ public record class MemoryStoreListParams : ParamsBase
     }
 
     /// <summary>
-    /// Return only stores whose `created_at` is at or before this time (inclusive).
-    /// Sent on the wire as `created_at[lte]`.
+    /// Return only memory stores created at or before this time (inclusive).
     /// </summary>
     public DateTimeOffset? CreatedAtLte
     {
@@ -112,8 +110,8 @@ public record class MemoryStoreListParams : ParamsBase
     }
 
     /// <summary>
-    /// Opaque pagination cursor (a `page_...` value). Pass the `next_page` value
-    /// from a previous response to fetch the next page; omit for the first page.
+    /// The `next_page` value from a previous response, to get the next page. Omit
+    /// it to get the first page.
     /// </summary>
     public string? Page
     {

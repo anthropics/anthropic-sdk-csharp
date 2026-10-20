@@ -22,7 +22,7 @@ public record class CredentialListParams : ParamsBase
     public string? VaultID { get; init; }
 
     /// <summary>
-    /// Whether to include archived credentials in the results.
+    /// Whether to include archived credentials in the results. Defaults to `false`.
     /// </summary>
     public bool? IncludeArchived
     {
@@ -66,7 +66,8 @@ public record class CredentialListParams : ParamsBase
     }
 
     /// <summary>
-    /// Opaque pagination token from a previous `list_credentials` response.
+    /// The `next_page` value from a previous [List Credentials](https://platform.claude.com/docs/en/api/beta/vaults/credentials/list)
+    /// response, to get the next page. Leave it out to get the first page.
     /// </summary>
     public string? Page
     {

@@ -35,6 +35,28 @@ public sealed class RateLimitService : IRateLimitService
     }
 
     /// <inheritdoc/>
+    public async Task<BetaWorkspaceRateLimit> Update(
+        RateLimitUpdateParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var response = await this
+            .WithRawResponse.Update(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public Task<BetaWorkspaceRateLimit> Update(
+        string rateLimitID,
+        RateLimitUpdateParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return this.Update(parameters with { RateLimitID = rateLimitID }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
     public async Task<RateLimitListPage> List(
         RateLimitListParams parameters,
         CancellationToken cancellationToken = default
@@ -73,6 +95,55 @@ public sealed class RateLimitServiceWithRawResponse : IRateLimitServiceWithRawRe
     public RateLimitServiceWithRawResponse(IAnthropicClientWithRawResponse client)
     {
         _client = client;
+    }
+
+    /// <inheritdoc/>
+    public async Task<HttpResponse<BetaWorkspaceRateLimit>> Update(
+        RateLimitUpdateParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (parameters.RateLimitID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.RateLimitID' cannot be null");
+        }
+
+        HttpRequest<RateLimitUpdateParams> request = new()
+        {
+            Method = HttpMethod.Post,
+            Params = parameters,
+            SpanName = "anthropic.organization.workspaces.rate_limits.update",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.workspace.id", parameters.WorkspaceID),
+                new("anthropic.organization.workspace.rate_limit.id", parameters.RateLimitID),
+            ],
+        };
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var betaWorkspaceRateLimit = await response
+                    .Deserialize<BetaWorkspaceRateLimit>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    betaWorkspaceRateLimit.Validate();
+                }
+                return betaWorkspaceRateLimit;
+            }
+        );
+    }
+
+    /// <inheritdoc/>
+    public Task<HttpResponse<BetaWorkspaceRateLimit>> Update(
+        string rateLimitID,
+        RateLimitUpdateParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return this.Update(parameters with { RateLimitID = rateLimitID }, cancellationToken);
     }
 
     /// <inheritdoc/>

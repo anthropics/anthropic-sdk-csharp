@@ -20,7 +20,7 @@ namespace Anthropic.Models.Beta.Vaults;
 public record class VaultListParams : ParamsBase
 {
     /// <summary>
-    /// Whether to include archived vaults in the results.
+    /// Whether to include archived vaults in the results. Defaults to `false`.
     /// </summary>
     public bool? IncludeArchived
     {
@@ -64,7 +64,8 @@ public record class VaultListParams : ParamsBase
     }
 
     /// <summary>
-    /// Opaque pagination token from a previous `list_vaults` response.
+    /// The `next_page` value from a previous [List Vaults](https://platform.claude.com/docs/en/api/beta/vaults/list)
+    /// response, to get the next page. Leave it out to get the first page.
     /// </summary>
     public string? Page
     {

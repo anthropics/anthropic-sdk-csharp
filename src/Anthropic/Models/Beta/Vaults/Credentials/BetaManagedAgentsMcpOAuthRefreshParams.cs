@@ -21,7 +21,8 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class BetaManagedAgentsMcpOAuthRefreshParams : JsonModel
 {
     /// <summary>
-    /// OAuth client ID.
+    /// The OAuth client ID to use when refreshing the access token. It can't be
+    /// changed after the credential is created.
     /// </summary>
     public required string ClientID
     {
@@ -34,7 +35,8 @@ public sealed record class BetaManagedAgentsMcpOAuthRefreshParams : JsonModel
     }
 
     /// <summary>
-    /// OAuth refresh token.
+    /// The OAuth refresh token that the API uses to get a new access token when the
+    /// current one expires.
     /// </summary>
     public required string RefreshToken
     {

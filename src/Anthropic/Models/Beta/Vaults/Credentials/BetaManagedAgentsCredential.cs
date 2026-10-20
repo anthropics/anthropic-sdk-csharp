@@ -18,7 +18,7 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class BetaManagedAgentsCredential : JsonModel
 {
     /// <summary>
-    /// Unique identifier for the credential.
+    /// The unique ID of the credential (`vcrd_...`).
     /// </summary>
     public required string ID
     {

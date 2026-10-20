@@ -17,6 +17,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -28,20 +29,20 @@ public class BetaUserProfileTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfiles::AccountStatus.Active,
-                Country = "country",
-                EmailHash = "email_hash",
-                EntityType = UserProfiles::EntityType.Individual,
-                NameHash = "name_hash",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "reference_id",
+                Country = "US",
+                EmailHash = null,
+                EntityType = UserProfiles::EntityType.Business,
+                NameHash = null,
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-            Name = "Example User",
         };
 
         string expectedID = "uprof_011CZkZCu8hGbp5mYRQgUmz9";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         Dictionary<string, string> expectedMetadata = new();
+        string expectedName = "Example User";
         Dictionary<string, UserProfiles::BetaUserProfileTrustGrant> expectedTrustGrants = new()
         {
             { "cyber", new(UserProfiles::Status.Active) },
@@ -54,17 +55,16 @@ public class BetaUserProfileTest : TestBase
         UserProfiles::BetaUserProfileExternalUserDetails expectedExternalUserDetails = new()
         {
             AccountStatus = UserProfiles::AccountStatus.Active,
-            Country = "country",
-            EmailHash = "email_hash",
-            EntityType = UserProfiles::EntityType.Individual,
-            NameHash = "name_hash",
-            OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            ReferenceID = "reference_id",
+            Country = "US",
+            EmailHash = null,
+            EntityType = UserProfiles::EntityType.Business,
+            NameHash = null,
+            OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+            ReferenceID = "user_12345",
         };
         DateTimeOffset expectedExternalUserOnboardedAt = DateTimeOffset.Parse(
             "2024-11-02T08:15:00Z"
         );
-        string expectedName = "Example User";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
@@ -75,6 +75,7 @@ public class BetaUserProfileTest : TestBase
 
             Assert.Equal(value, model.Metadata[item.Key]);
         }
+        Assert.Equal(expectedName, model.Name);
         Assert.Equal(expectedTrustGrants.Count, model.TrustGrants.Count);
         foreach (var item in expectedTrustGrants)
         {
@@ -88,7 +89,6 @@ public class BetaUserProfileTest : TestBase
         Assert.Equal(expectedExternalID, model.ExternalID);
         Assert.Equal(expectedExternalUserDetails, model.ExternalUserDetails);
         Assert.Equal(expectedExternalUserOnboardedAt, model.ExternalUserOnboardedAt);
-        Assert.Equal(expectedName, model.Name);
     }
 
     [Fact]
@@ -99,6 +99,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -110,15 +111,14 @@ public class BetaUserProfileTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfiles::AccountStatus.Active,
-                Country = "country",
-                EmailHash = "email_hash",
-                EntityType = UserProfiles::EntityType.Individual,
-                NameHash = "name_hash",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "reference_id",
+                Country = "US",
+                EmailHash = null,
+                EntityType = UserProfiles::EntityType.Business,
+                NameHash = null,
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-            Name = "Example User",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -138,6 +138,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -149,15 +150,14 @@ public class BetaUserProfileTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfiles::AccountStatus.Active,
-                Country = "country",
-                EmailHash = "email_hash",
-                EntityType = UserProfiles::EntityType.Individual,
-                NameHash = "name_hash",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "reference_id",
+                Country = "US",
+                EmailHash = null,
+                EntityType = UserProfiles::EntityType.Business,
+                NameHash = null,
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-            Name = "Example User",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -170,6 +170,7 @@ public class BetaUserProfileTest : TestBase
         string expectedID = "uprof_011CZkZCu8hGbp5mYRQgUmz9";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         Dictionary<string, string> expectedMetadata = new();
+        string expectedName = "Example User";
         Dictionary<string, UserProfiles::BetaUserProfileTrustGrant> expectedTrustGrants = new()
         {
             { "cyber", new(UserProfiles::Status.Active) },
@@ -182,17 +183,16 @@ public class BetaUserProfileTest : TestBase
         UserProfiles::BetaUserProfileExternalUserDetails expectedExternalUserDetails = new()
         {
             AccountStatus = UserProfiles::AccountStatus.Active,
-            Country = "country",
-            EmailHash = "email_hash",
-            EntityType = UserProfiles::EntityType.Individual,
-            NameHash = "name_hash",
-            OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            ReferenceID = "reference_id",
+            Country = "US",
+            EmailHash = null,
+            EntityType = UserProfiles::EntityType.Business,
+            NameHash = null,
+            OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+            ReferenceID = "user_12345",
         };
         DateTimeOffset expectedExternalUserOnboardedAt = DateTimeOffset.Parse(
             "2024-11-02T08:15:00Z"
         );
-        string expectedName = "Example User";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
@@ -203,6 +203,7 @@ public class BetaUserProfileTest : TestBase
 
             Assert.Equal(value, deserialized.Metadata[item.Key]);
         }
+        Assert.Equal(expectedName, deserialized.Name);
         Assert.Equal(expectedTrustGrants.Count, deserialized.TrustGrants.Count);
         foreach (var item in expectedTrustGrants)
         {
@@ -216,7 +217,6 @@ public class BetaUserProfileTest : TestBase
         Assert.Equal(expectedExternalID, deserialized.ExternalID);
         Assert.Equal(expectedExternalUserDetails, deserialized.ExternalUserDetails);
         Assert.Equal(expectedExternalUserOnboardedAt, deserialized.ExternalUserOnboardedAt);
-        Assert.Equal(expectedName, deserialized.Name);
     }
 
     [Fact]
@@ -227,6 +227,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -238,15 +239,14 @@ public class BetaUserProfileTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfiles::AccountStatus.Active,
-                Country = "country",
-                EmailHash = "email_hash",
-                EntityType = UserProfiles::EntityType.Individual,
-                NameHash = "name_hash",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "reference_id",
+                Country = "US",
+                EmailHash = null,
+                EntityType = UserProfiles::EntityType.Business,
+                NameHash = null,
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-            Name = "Example User",
         };
 
         model.Validate();
@@ -260,6 +260,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -268,7 +269,6 @@ public class BetaUserProfileTest : TestBase
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             ExternalID = "user_12345",
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-            Name = "Example User",
         };
 
         Assert.Null(model.AccessType);
@@ -285,6 +285,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -293,7 +294,6 @@ public class BetaUserProfileTest : TestBase
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             ExternalID = "user_12345",
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-            Name = "Example User",
         };
 
         model.Validate();
@@ -307,6 +307,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -315,7 +316,6 @@ public class BetaUserProfileTest : TestBase
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             ExternalID = "user_12345",
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-            Name = "Example User",
 
             // Null should be interpreted as omitted for these properties
             AccessType = null,
@@ -336,6 +336,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -347,15 +348,14 @@ public class BetaUserProfileTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfiles::AccountStatus.Active,
-                Country = "country",
-                EmailHash = "email_hash",
-                EntityType = UserProfiles::EntityType.Individual,
-                NameHash = "name_hash",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "reference_id",
+                Country = "US",
+                EmailHash = null,
+                EntityType = UserProfiles::EntityType.Business,
+                NameHash = null,
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-            Name = "Example User",
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -377,6 +377,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -385,7 +386,6 @@ public class BetaUserProfileTest : TestBase
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             ExternalID = "user_12345",
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-            Name = "Example User",
 
             // Null should be interpreted as omitted for these properties
             AccessType = null,
@@ -403,6 +403,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -413,12 +414,12 @@ public class BetaUserProfileTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfiles::AccountStatus.Active,
-                Country = "country",
-                EmailHash = "email_hash",
-                EntityType = UserProfiles::EntityType.Individual,
-                NameHash = "name_hash",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "reference_id",
+                Country = "US",
+                EmailHash = null,
+                EntityType = UserProfiles::EntityType.Business,
+                NameHash = null,
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
         };
 
@@ -426,8 +427,6 @@ public class BetaUserProfileTest : TestBase
         Assert.False(model.RawData.ContainsKey("external_id"));
         Assert.Null(model.ExternalUserOnboardedAt);
         Assert.False(model.RawData.ContainsKey("external_user_onboarded_at"));
-        Assert.Null(model.Name);
-        Assert.False(model.RawData.ContainsKey("name"));
     }
 
     [Fact]
@@ -438,6 +437,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -448,12 +448,12 @@ public class BetaUserProfileTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfiles::AccountStatus.Active,
-                Country = "country",
-                EmailHash = "email_hash",
-                EntityType = UserProfiles::EntityType.Individual,
-                NameHash = "name_hash",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "reference_id",
+                Country = "US",
+                EmailHash = null,
+                EntityType = UserProfiles::EntityType.Business,
+                NameHash = null,
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
         };
 
@@ -468,6 +468,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -478,25 +479,22 @@ public class BetaUserProfileTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfiles::AccountStatus.Active,
-                Country = "country",
-                EmailHash = "email_hash",
-                EntityType = UserProfiles::EntityType.Individual,
-                NameHash = "name_hash",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "reference_id",
+                Country = "US",
+                EmailHash = null,
+                EntityType = UserProfiles::EntityType.Business,
+                NameHash = null,
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
 
             ExternalID = null,
             ExternalUserOnboardedAt = null,
-            Name = null,
         };
 
         Assert.Null(model.ExternalID);
         Assert.True(model.RawData.ContainsKey("external_id"));
         Assert.Null(model.ExternalUserOnboardedAt);
         Assert.True(model.RawData.ContainsKey("external_user_onboarded_at"));
-        Assert.Null(model.Name);
-        Assert.True(model.RawData.ContainsKey("name"));
     }
 
     [Fact]
@@ -507,6 +505,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -517,17 +516,16 @@ public class BetaUserProfileTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfiles::AccountStatus.Active,
-                Country = "country",
-                EmailHash = "email_hash",
-                EntityType = UserProfiles::EntityType.Individual,
-                NameHash = "name_hash",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "reference_id",
+                Country = "US",
+                EmailHash = null,
+                EntityType = UserProfiles::EntityType.Business,
+                NameHash = null,
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
 
             ExternalID = null,
             ExternalUserOnboardedAt = null,
-            Name = null,
         };
 
         model.Validate();
@@ -541,6 +539,7 @@ public class BetaUserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
+            Name = "Example User",
             TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
             {
                 { "cyber", new(UserProfiles::Status.Active) },
@@ -552,15 +551,14 @@ public class BetaUserProfileTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfiles::AccountStatus.Active,
-                Country = "country",
-                EmailHash = "email_hash",
-                EntityType = UserProfiles::EntityType.Individual,
-                NameHash = "name_hash",
-                OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                ReferenceID = "reference_id",
+                Country = "US",
+                EmailHash = null,
+                EntityType = UserProfiles::EntityType.Business,
+                NameHash = null,
+                OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                ReferenceID = "user_12345",
             },
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-            Name = "Example User",
         };
 
         UserProfiles::BetaUserProfile copied = new(model);

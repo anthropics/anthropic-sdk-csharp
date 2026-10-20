@@ -17,9 +17,9 @@ namespace Anthropic.Bedrock;
 ///   - <c>AWS_BEARER_TOKEN_BEDROCK</c>: when present and non-empty, used to construct <c>AnthropicBedrockApiTokenCredentials</c>.
 ///   - <c>AWS_REGION</c>: used as the Bedrock region. If not set, this method consults <c>FallbackRegionFactory</c>.
 /// - If no bearer token is found, the method queries <c>DefaultAWSCredentialsIdentityResolver</c> for credentials.
-///   - If the returned credentials indicate <c>UseToken</c>, the session token is used to create
-///     <c>AnthropicBedrockApiTokenCredentials</c>.
-///   - Otherwise the access key and secret key are used to create <c>AnthropicBedrockPrivateKeyCredentials</c>.
+///   - The access key and secret key are used to create <c>AnthropicBedrockPrivateKeyCredentials</c>.
+///   - Temporary credentials also have a session token, which is signed and sent with each request.
+///   - The credentials are read once. Call this method again after temporary credentials expire.
 /// - The method returns <c>null</c> in scenarios where the region cannot be determined or no credentials are available.
 /// - The method performs asynchronous credential resolution and should be awaited.
 /// </remarks>
@@ -68,19 +68,11 @@ public static class AnthropicBedrockCredentialsHelper
             return null;
         }
 
-        if (defaultCreds.UseToken)
-        {
-            return new AnthropicBedrockApiTokenCredentials()
-            {
-                BearerToken = defaultCreds.Token,
-                Region = region,
-            };
-        }
-
         return new AnthropicBedrockPrivateKeyCredentials
         {
             ApiAccessKey = defaultCreds.AccessKey,
             ApiSecret = defaultCreds.SecretKey,
+            SessionToken = defaultCreds.UseToken ? defaultCreds.Token : null,
             Region = region,
         };
     }

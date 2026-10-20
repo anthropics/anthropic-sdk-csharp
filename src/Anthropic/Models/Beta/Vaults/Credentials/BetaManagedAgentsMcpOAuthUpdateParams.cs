@@ -33,7 +33,7 @@ public sealed record class BetaManagedAgentsMcpOAuthUpdateParams : JsonModel
     }
 
     /// <summary>
-    /// Updated OAuth access token.
+    /// The new OAuth access token to replace the stored one.
     /// </summary>
     public string? AccessToken
     {
@@ -46,7 +46,13 @@ public sealed record class BetaManagedAgentsMcpOAuthUpdateParams : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When the credential's access token expires, in RFC 3339. Leave it out to keep
+    /// the stored expiry.
+    ///
+    /// <para>If you send a new `access_token`, send its `expires_at` too, or the
+    /// new token keeps the old expiry.</para>
+    ///
+    /// <para>Must be in the future.</para>
     /// </summary>
     public System::DateTimeOffset? ExpiresAt
     {

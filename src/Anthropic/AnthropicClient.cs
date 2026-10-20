@@ -168,6 +168,12 @@ public class AnthropicClient : IAnthropicClient
         get { return _skills.Value; }
     }
 
+    readonly Lazy<IUserProfileService> _userProfiles;
+    public IUserProfileService UserProfiles
+    {
+        get { return _userProfiles.Value; }
+    }
+
     readonly Lazy<IOrganizationService> _organization;
     public IOrganizationService Organization
     {
@@ -287,6 +293,7 @@ public class AnthropicClient : IAnthropicClient
         _models = new(() => new ModelService(this));
         _files = new(() => new FileService(this));
         _skills = new(() => new SkillService(this));
+        _userProfiles = new(() => new UserProfileService(this));
         _organization = new(() => new OrganizationService(this));
         _beta = new(() => new BetaService(this));
     }
@@ -430,6 +437,12 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
     public ISkillServiceWithRawResponse Skills
     {
         get { return _skills.Value; }
+    }
+
+    readonly Lazy<IUserProfileServiceWithRawResponse> _userProfiles;
+    public IUserProfileServiceWithRawResponse UserProfiles
+    {
+        get { return _userProfiles.Value; }
     }
 
     readonly Lazy<IOrganizationServiceWithRawResponse> _organization;
@@ -945,6 +958,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         _models = new(() => new ModelServiceWithRawResponse(this));
         _files = new(() => new FileServiceWithRawResponse(this));
         _skills = new(() => new SkillServiceWithRawResponse(this));
+        _userProfiles = new(() => new UserProfileServiceWithRawResponse(this));
         _organization = new(() => new OrganizationServiceWithRawResponse(this));
         _beta = new(() => new BetaServiceWithRawResponse(this));
     }
