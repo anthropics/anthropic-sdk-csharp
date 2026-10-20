@@ -408,8 +408,7 @@ public sealed record class Params : JsonModel
     /// <para>See [input examples](https://platform.claude.com/docs/en/build-with-claude/working-with-messages).</para>
     ///
     /// <para>Note that if you want to include a [system prompt](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role),
-    /// you can use the top-level `system` parameter — there is no `"system"` role
-    /// for input messages in the Messages API.</para>
+    /// you can use the top-level `system` parameter.</para>
     ///
     /// <para>There is a limit of 100,000 messages in a single request.</para>
     /// </summary>

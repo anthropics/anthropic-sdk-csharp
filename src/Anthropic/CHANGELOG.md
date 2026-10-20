@@ -1,5 +1,11 @@
 # Changelog
 
+## [12.60.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.60.0...Anthropic-v12.60.1) (2026-10-20)
+
+### Documentation
+
+* **api:** remove outdated system role note from messages description
+
 ## [12.60.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.59.0...Anthropic-v12.60.0) (2026-10-20)
 
 ### Features
