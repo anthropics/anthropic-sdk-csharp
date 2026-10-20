@@ -3,7 +3,7 @@
     <VersionPrefix>0.8.0</VersionPrefix>
   </PropertyGroup>
   <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Anthropic.Bedrock'">
-    <VersionPrefix>0.14.0</VersionPrefix>
+    <VersionPrefix>0.14.1</VersionPrefix>
   </PropertyGroup>
   <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Anthropic.Vertex'">
     <VersionPrefix>0.6.0</VersionPrefix>
@@ -12,6 +12,6 @@
     <VersionPrefix>0.6.0</VersionPrefix>
   </PropertyGroup>
   <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Anthropic.GoogleCloud'">
-    <VersionPrefix>0.2.0</VersionPrefix>
+    <VersionPrefix>0.3.0</VersionPrefix>
   </PropertyGroup>
 </Project>
