@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Organization;
-using Anthropic.Services.Beta.Organization;
+using Organization = Anthropic.Services.Beta.Organization;
 
 namespace Anthropic.Services.Beta;
 
@@ -27,37 +27,39 @@ public interface IOrganizationService
     /// </summary>
     IOrganizationService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
-    IApiKeyService ApiKeys { get; }
+    Organization::IApiKeyService ApiKeys { get; }
 
-    IExternalKeyService ExternalKeys { get; }
+    Organization::IExternalKeyService ExternalKeys { get; }
 
-    IFederationService Federation { get; }
+    Organization::IFederationService Federation { get; }
 
-    IInviteService Invites { get; }
+    Organization::IInviteService Invites { get; }
 
-    IServiceAccountService ServiceAccounts { get; }
+    Organization::IServiceAccountService ServiceAccounts { get; }
 
-    IUserService Users { get; }
+    Organization::IUserService Users { get; }
 
-    IWorkspaceService Workspaces { get; }
+    Organization::IWorkspaceService Workspaces { get; }
 
-    IRateLimitService RateLimits { get; }
+    Organization::IRateLimitService RateLimits { get; }
 
-    IComplianceSettingService ComplianceSettings { get; }
+    Organization::IComplianceSettingService ComplianceSettings { get; }
 
-    IAnalyticsService Analytics { get; }
+    Organization::IAnalyticsService Analytics { get; }
 
-    ISpendLimitService SpendLimits { get; }
+    Organization::ISpendLimitService SpendLimits { get; }
 
-    IRbacGroupService RbacGroups { get; }
+    Organization::IRbacGroupService RbacGroups { get; }
 
-    IRbacRoleService RbacRoles { get; }
+    Organization::IRbacRoleService RbacRoles { get; }
 
-    IPluginService Plugins { get; }
+    Organization::IPluginService Plugins { get; }
 
-    IPluginMarketplaceService PluginMarketplaces { get; }
+    Organization::IPluginMarketplaceService PluginMarketplaces { get; }
 
-    ITelemetryDestinationService TelemetryDestinations { get; }
+    Organization::ITelemetryDestinationService TelemetryDestinations { get; }
+
+    Organization::IWebhookService Webhooks { get; }
 
     /// <summary>
     /// Retrieve information about the organization associated with the authenticated
@@ -82,37 +84,39 @@ public interface IOrganizationServiceWithRawResponse
     /// </summary>
     IOrganizationServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
-    IApiKeyServiceWithRawResponse ApiKeys { get; }
+    Organization::IApiKeyServiceWithRawResponse ApiKeys { get; }
 
-    IExternalKeyServiceWithRawResponse ExternalKeys { get; }
+    Organization::IExternalKeyServiceWithRawResponse ExternalKeys { get; }
 
-    IFederationServiceWithRawResponse Federation { get; }
+    Organization::IFederationServiceWithRawResponse Federation { get; }
 
-    IInviteServiceWithRawResponse Invites { get; }
+    Organization::IInviteServiceWithRawResponse Invites { get; }
 
-    IServiceAccountServiceWithRawResponse ServiceAccounts { get; }
+    Organization::IServiceAccountServiceWithRawResponse ServiceAccounts { get; }
 
-    IUserServiceWithRawResponse Users { get; }
+    Organization::IUserServiceWithRawResponse Users { get; }
 
-    IWorkspaceServiceWithRawResponse Workspaces { get; }
+    Organization::IWorkspaceServiceWithRawResponse Workspaces { get; }
 
-    IRateLimitServiceWithRawResponse RateLimits { get; }
+    Organization::IRateLimitServiceWithRawResponse RateLimits { get; }
 
-    IComplianceSettingServiceWithRawResponse ComplianceSettings { get; }
+    Organization::IComplianceSettingServiceWithRawResponse ComplianceSettings { get; }
 
-    IAnalyticsServiceWithRawResponse Analytics { get; }
+    Organization::IAnalyticsServiceWithRawResponse Analytics { get; }
 
-    ISpendLimitServiceWithRawResponse SpendLimits { get; }
+    Organization::ISpendLimitServiceWithRawResponse SpendLimits { get; }
 
-    IRbacGroupServiceWithRawResponse RbacGroups { get; }
+    Organization::IRbacGroupServiceWithRawResponse RbacGroups { get; }
 
-    IRbacRoleServiceWithRawResponse RbacRoles { get; }
+    Organization::IRbacRoleServiceWithRawResponse RbacRoles { get; }
 
-    IPluginServiceWithRawResponse Plugins { get; }
+    Organization::IPluginServiceWithRawResponse Plugins { get; }
 
-    IPluginMarketplaceServiceWithRawResponse PluginMarketplaces { get; }
+    Organization::IPluginMarketplaceServiceWithRawResponse PluginMarketplaces { get; }
 
-    ITelemetryDestinationServiceWithRawResponse TelemetryDestinations { get; }
+    Organization::ITelemetryDestinationServiceWithRawResponse TelemetryDestinations { get; }
+
+    Organization::IWebhookServiceWithRawResponse Webhooks { get; }
 
     /// <summary>
     /// Returns a raw HTTP response for <c>get /v1/organizations/me?beta=true</c>, but is otherwise the
