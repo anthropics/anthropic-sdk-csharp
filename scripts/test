@@ -56,6 +56,15 @@ else
   echo
 fi
 
+FRAMEWORK_ARGS=()
+case "$OSTYPE" in
+linux* | darwin*)
+  # net472 tests need Windows: elsewhere they would depend on mono.
+  FRAMEWORK_ARGS=(--framework net8.0)
+  ;;
+*) ;;
+esac
+
 echo "==> Running tests"
 # Names the test project so that only what the tests use is built. Add a line for any new test project.
-dotnet test src/Anthropic.Tests/Anthropic.Tests.csproj
+dotnet test src/Anthropic.Tests/Anthropic.Tests.csproj "${FRAMEWORK_ARGS[@]}"
