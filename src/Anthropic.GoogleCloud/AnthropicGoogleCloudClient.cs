@@ -75,15 +75,7 @@ public sealed class AnthropicGoogleCloudClient : AnthropicClient
             opts.Location ?? Environment.GetEnvironmentVariable(EnvLocation) ?? DefaultLocation;
         var resolvedWorkspaceId =
             opts.WorkspaceId ?? Environment.GetEnvironmentVariable(EnvWorkspaceId);
-        var resolvedBaseUrl = opts.BaseUrl ?? Environment.GetEnvironmentVariable(EnvBaseUrl);
-
-        if (resolvedWorkspaceId == null && !opts.SkipAuth)
-        {
-            throw new AnthropicException(
-                $"Workspace ID is required; set {nameof(opts.WorkspaceId)} or the "
-                    + $"{EnvWorkspaceId} environment variable."
-            );
-        }
+        var explicitBaseUrl = opts.BaseUrl ?? Environment.GetEnvironmentVariable(EnvBaseUrl);
 
         // Resolve credentials before deriving the base URL: ADC may yield a project that
         // backfills both an unset Project and the derived URL.
@@ -115,6 +107,7 @@ public sealed class AnthropicGoogleCloudClient : AnthropicClient
             }
         }
 
+        var resolvedBaseUrl = explicitBaseUrl;
         if (resolvedBaseUrl == null)
         {
             if (resolvedProject == null)
@@ -125,14 +118,12 @@ public sealed class AnthropicGoogleCloudClient : AnthropicClient
                         + "application default credentials with a project."
                 );
             }
-            if (resolvedWorkspaceId == null)
-            {
-                throw new AnthropicException(
-                    $"Workspace ID is required; set {nameof(opts.WorkspaceId)} or the "
-                        + $"{EnvWorkspaceId} environment variable."
-                );
-            }
-            resolvedBaseUrl = DeriveBaseUrl(resolvedLocation, resolvedProject, resolvedWorkspaceId);
+            // Without a workspace ID the organization endpoint is the only one this
+            // client can address.
+            resolvedBaseUrl =
+                resolvedWorkspaceId != null
+                    ? DeriveWorkspaceBaseUrl(resolvedLocation, resolvedProject, resolvedWorkspaceId)
+                    : DeriveOrganizationBaseUrl(resolvedLocation, resolvedProject);
         }
 
         // This client's auth comes solely from Google credentials. Suppress the base
@@ -150,7 +141,9 @@ public sealed class AnthropicGoogleCloudClient : AnthropicClient
             Project = resolvedProject,
             Location = resolvedLocation,
             WorkspaceId = resolvedWorkspaceId,
-            BaseUrl = resolvedBaseUrl,
+            // Left unset for a derived URL: that is how the adaptation handler knows to
+            // select the base per request.
+            BaseUrl = explicitBaseUrl,
             TokenProvider = opts.TokenProvider,
             GoogleCredential = googleCredential,
             SkipAuth = opts.SkipAuth,
@@ -198,7 +191,15 @@ public sealed class AnthropicGoogleCloudClient : AnthropicClient
         return new AnthropicGoogleCloudClient(_googleCloudConfig, modifier(_options));
     }
 
-    private static string DeriveBaseUrl(string location, string project, string workspaceId) =>
-        $"https://claude.googleapis.com/v1alpha/projects/{project}"
-        + $"/locations/{location}/workspaces/{workspaceId}/invoke";
+    internal static string DeriveWorkspaceBaseUrl(
+        string location,
+        string project,
+        string workspaceId
+    ) => $"{DeriveLocationUrl(location, project)}/workspaces/{workspaceId}/invoke";
+
+    internal static string DeriveOrganizationBaseUrl(string location, string project) =>
+        $"{DeriveLocationUrl(location, project)}/claudeOrganization/invoke";
+
+    private static string DeriveLocationUrl(string location, string project) =>
+        $"https://claude.googleapis.com/v1/projects/{project}/locations/{location}";
 }
