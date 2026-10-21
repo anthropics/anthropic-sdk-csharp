@@ -1,8 +1,8 @@
 {
-  "src/Anthropic": "12.60.0",
-  "src/Anthropic.Foundry": "0.8.0",
-  "src/Anthropic.Bedrock": "0.14.1",
-  "src/Anthropic.Vertex": "0.7.0",
-  "src/Anthropic.Aws": "0.7.0",
-  "src/Anthropic.GoogleCloud": "0.3.0"
+  "src/Anthropic": "13.0.0",
+  "src/Anthropic.Foundry": "1.0.0",
+  "src/Anthropic.Bedrock": "1.0.0",
+  "src/Anthropic.Vertex": "1.0.0",
+  "src/Anthropic.Aws": "1.0.0",
+  "src/Anthropic.GoogleCloud": "1.0.0"
 }
