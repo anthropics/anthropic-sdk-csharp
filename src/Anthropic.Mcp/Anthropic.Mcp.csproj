@@ -3,7 +3,7 @@
     <RootNamespace>Anthropic.Helpers.Beta.Mcp</RootNamespace>
     <AssemblyName>Anthropic.Mcp</AssemblyName>
     <PackageId>Anthropic.Mcp</PackageId>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionPrefix>1.0.0</VersionPrefix>
     <AssemblyTitle>Anthropic MCP Helpers</AssemblyTitle>
     <Description>Helpers for using Model Context Protocol (MCP) servers with the Anthropic .NET SDK.</Description>
     <PackageIcon>logo.png</PackageIcon>

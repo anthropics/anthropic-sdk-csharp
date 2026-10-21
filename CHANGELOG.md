@@ -8,5 +8,6 @@ This workspace contains multiple Anthropic C# SDK packages. Each package maintai
 - **[Anthropic.Vertex](src/Anthropic.Vertex/CHANGELOG.md)** - Vertex AI provider
 - **[Anthropic.Aws](src/Anthropic.Aws/CHANGELOG.md)** - AWS provider
 - **[Anthropic.GoogleCloud](src/Anthropic.GoogleCloud/CHANGELOG.md)** - Google Cloud provider
+- **[Anthropic.Mcp](src/Anthropic.Mcp/CHANGELOG.md)** - MCP helpers
 
 See the individual changelogs for release notes and version history for each package.
