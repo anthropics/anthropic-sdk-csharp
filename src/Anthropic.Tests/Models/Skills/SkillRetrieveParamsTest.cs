@@ -47,6 +47,23 @@ public class SkillRetrieveParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new SkillRetrieveParams
+        {
+            SkillID = "skill_id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         SkillRetrieveParams parameters = new() { SkillID = "skill_id" };

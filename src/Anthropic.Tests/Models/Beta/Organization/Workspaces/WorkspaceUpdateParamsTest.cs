@@ -107,6 +107,38 @@ public class WorkspaceUpdateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new WorkspaceUpdateParams
+        {
+            WorkspaceID = "workspace_id",
+            DataResidency = new()
+            {
+                AllowedInferenceGeos =
+                    new BetaDataResidencyUpdateConfigAllowedInferenceGeosUnrestricted(),
+                DefaultInferenceGeo = BetaDataResidencyUpdateConfigDefaultInferenceGeo.Global,
+            },
+            DisplayColor = "#6C5BB9",
+            ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
+            Name = "x",
+            Tags = new Dictionary<string, string?>() { { "env", "prod" }, { "team", "platform" } },
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            DisplayColor = null,
+            ExternalKeyID = null,
+            Name = null,
+        };
+
+        Assert.Null(parameters.DisplayColor);
+        Assert.False(parameters.RawBodyData.ContainsKey("display_color"));
+        Assert.Null(parameters.ExternalKeyID);
+        Assert.False(parameters.RawBodyData.ContainsKey("external_key_id"));
+        Assert.Null(parameters.Name);
+        Assert.False(parameters.RawBodyData.ContainsKey("name"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new WorkspaceUpdateParams

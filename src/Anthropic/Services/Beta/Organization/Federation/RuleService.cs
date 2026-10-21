@@ -191,6 +191,7 @@ public sealed class RuleServiceWithRawResponse : IRuleServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.federation.rules.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -204,6 +205,12 @@ public sealed class RuleServiceWithRawResponse : IRuleServiceWithRawResponse
                 {
                     betaFederationRule.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.federation_rule.id",
+                    betaFederationRule,
+                    static created => created.ID
+                );
                 return betaFederationRule;
             }
         );
@@ -224,6 +231,11 @@ public sealed class RuleServiceWithRawResponse : IRuleServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.federation.rules.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.federation_rule.id", parameters.FederationRuleID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -275,6 +287,11 @@ public sealed class RuleServiceWithRawResponse : IRuleServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.federation.rules.update",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.federation_rule.id", parameters.FederationRuleID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -323,6 +340,7 @@ public sealed class RuleServiceWithRawResponse : IRuleServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.federation.rules.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -356,6 +374,11 @@ public sealed class RuleServiceWithRawResponse : IRuleServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.federation.rules.archive",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.federation_rule.id", parameters.FederationRuleID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

@@ -31,7 +31,7 @@ public sealed class EventListPage(
     {
         try
         {
-            return this.Items.Count > 0 && response.NextPage != null;
+            return response.NextPage != null;
         }
         catch (AnthropicInvalidDataException)
         {

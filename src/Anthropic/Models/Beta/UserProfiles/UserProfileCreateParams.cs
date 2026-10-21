@@ -29,11 +29,9 @@ public record class UserProfileCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// How the platform uses the API on behalf of the entity this profile represents.
-    /// `application`: the platform sells a product that uses the API behind the
-    /// scenes, and the profile represents an individual end-user of that product.
-    /// `passthrough`: the platform resells raw inference, and the profile identifies
-    /// the resold-to company.
+    /// How the platform uses the API for this entity. `application` (default): the
+    /// profile represents an individual end-user of the platform's product. `passthrough`:
+    /// the profile identifies a company the platform resells Claude access to.
     /// </summary>
     public ApiEnum<string, AccessType>? AccessType
     {
@@ -46,6 +44,7 @@ public record class UserProfileCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("access_type");
                 return;
             }
 
@@ -55,8 +54,8 @@ public record class UserProfileCreateParams : ParamsBase
 
     /// <summary>
     /// Platform's own identifier for this user. Not enforced unique. Maximum 255
-    /// characters. Accepted under the `user-profiles-2026-03-24` and `user-profiles-2026-08-18`
-    /// beta headers; under `user-profiles-2026-09-04` send `external_user_details.reference_id` instead.
+    /// characters. Legacy field, accepted only under the `user-profiles-2026-03-24`
+    /// and `user-profiles-2026-08-18` beta headers; without one of them, send `external_user_details.reference_id`.
     /// </summary>
     public string? ExternalID
     {
@@ -70,8 +69,9 @@ public record class UserProfileCreateParams : ParamsBase
 
     /// <summary>
     /// Details about the entity this profile represents, as the platform states them.
-    /// Every field is optional. Accepted under the `user-profiles-2026-09-04` beta
-    /// header only.
+    /// Every field is optional. Not accepted under the legacy `user-profiles-2026-03-24`
+    /// and `user-profiles-2026-08-18` beta headers, which take the top-level `external_id`
+    /// (and, under `user-profiles-2026-08-18`, `external_user_onboarded_at`) instead.
     /// </summary>
     public BetaUserProfileExternalUserDetailsParams? ExternalUserDetails
     {
@@ -86,6 +86,7 @@ public record class UserProfileCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("external_user_details");
                 return;
             }
 
@@ -94,7 +95,12 @@ public record class UserProfileCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When the entity this profile represents opened its account with the platform,
+    /// in RFC 3339 format: for an `application` profile, when the end-user signed
+    /// up; for a `passthrough` profile, when the company became the platform's customer.
+    /// Must be a complete timestamp no more than 1 minute in the future. Optional.
+    /// Legacy field, accepted only under the `user-profiles-2026-08-18` beta header;
+    /// without a legacy header, send `external_user_details.onboarded_at`.
     /// </summary>
     public System::DateTimeOffset? ExternalUserOnboardedAt
     {
@@ -109,6 +115,7 @@ public record class UserProfileCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("external_user_onboarded_at");
                 return;
             }
 
@@ -132,6 +139,7 @@ public record class UserProfileCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("metadata");
                 return;
             }
 
@@ -174,6 +182,7 @@ public record class UserProfileCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -184,6 +193,14 @@ public record class UserProfileCreateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -195,6 +212,7 @@ public record class UserProfileCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -289,6 +307,8 @@ public record class UserProfileCreateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/user_profiles";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(
@@ -315,15 +335,22 @@ public record class UserProfileCreateParams : ParamsBase
 }
 
 /// <summary>
-/// How the platform uses the API on behalf of the entity this profile represents.
-/// `application`: the platform sells a product that uses the API behind the scenes,
-/// and the profile represents an individual end-user of that product. `passthrough`:
-/// the platform resells raw inference, and the profile identifies the resold-to company.
+/// How the platform uses the API for this entity. `application` (default): the profile
+/// represents an individual end-user of the platform's product. `passthrough`: the
+/// profile identifies a company the platform resells Claude access to.
 /// </summary>
 [JsonConverter(typeof(AccessTypeConverter))]
 public enum AccessType
 {
+    /// <summary>
+    /// The user profile represents an individual end-user of a product that the
+    /// platform builds on the API. New profiles get this value by default.
+    /// </summary>
     Application,
+
+    /// <summary>
+    /// The user profile represents a company that the platform resells Claude access to.
+    /// </summary>
     Passthrough,
 }
 

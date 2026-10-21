@@ -333,11 +333,19 @@ internal sealed class SpliceRun : LazySseBody.ISource
         var prefillIncluded = partial.Count > 0;
         while (true)
         {
-            using var hopRequest = _snapshot.HopRequest(model, _policy.CarriedToken!, continuation);
             HttpResponseMessage response;
             try
             {
-                response = await _send(hopRequest, cancellationToken).ConfigureAwait(false);
+                response = await _snapshot
+                    .SendHop(
+                        _send,
+                        _policy.CurrentIndex,
+                        _policy.CarriedToken!,
+                        continuation,
+                        () => Closed,
+                        cancellationToken
+                    )
+                    .ConfigureAwait(false);
             }
             catch (Exception e) when (e is not OperationCanceledException)
             {

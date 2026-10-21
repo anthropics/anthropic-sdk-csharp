@@ -57,6 +57,7 @@ public sealed record class ToolResultBlockParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("content");
                 return;
             }
 
@@ -75,6 +76,7 @@ public sealed record class ToolResultBlockParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("is_error");
                 return;
             }
 

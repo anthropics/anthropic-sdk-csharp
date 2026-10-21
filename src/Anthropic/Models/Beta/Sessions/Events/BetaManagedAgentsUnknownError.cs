@@ -33,7 +33,7 @@ public sealed record class BetaManagedAgentsUnknownError : JsonModel
     }
 
     /// <summary>
-    /// What the client should do next in response to this error.
+    /// What the client should do next.
     /// </summary>
     public required BetaManagedAgentsUnknownErrorRetryStatus RetryStatus
     {
@@ -108,7 +108,7 @@ class BetaManagedAgentsUnknownErrorFromRaw : IFromRawJson<BetaManagedAgentsUnkno
 }
 
 /// <summary>
-/// What the client should do next in response to this error.
+/// What the client should do next.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsUnknownErrorRetryStatusConverter))]
 public record class BetaManagedAgentsUnknownErrorRetryStatus : ModelBase

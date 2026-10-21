@@ -141,6 +141,7 @@ public sealed record class BetaPackages : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("type");
                 return;
             }
 

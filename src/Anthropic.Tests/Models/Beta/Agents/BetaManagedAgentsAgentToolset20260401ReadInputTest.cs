@@ -121,6 +121,23 @@ public class BetaManagedAgentsAgentToolset20260401ReadInputTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsAgentToolset20260401ReadInput
+        {
+            FilePath = "file_path",
+            ViewRange = [0, 0],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            ViewRange = null,
+        };
+
+        Assert.Null(model.ViewRange);
+        Assert.False(model.RawData.ContainsKey("view_range"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsAgentToolset20260401ReadInput

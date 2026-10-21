@@ -35,6 +35,7 @@ public record class InviteListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("after_id");
                 return;
             }
 
@@ -57,6 +58,7 @@ public record class InviteListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("before_id");
                 return;
             }
 
@@ -79,6 +81,7 @@ public record class InviteListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("email");
                 return;
             }
 
@@ -102,6 +105,7 @@ public record class InviteListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -129,6 +133,7 @@ public record class InviteListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("roles");
                 return;
             }
 
@@ -156,6 +161,7 @@ public record class InviteListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("statuses");
                 return;
             }
 
@@ -241,6 +247,11 @@ public record class InviteListParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/organizations/invites";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["after_id", "before_id", "email", "limit", "roles", "statuses"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

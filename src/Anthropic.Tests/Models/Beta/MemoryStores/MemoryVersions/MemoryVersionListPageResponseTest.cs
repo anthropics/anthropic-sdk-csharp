@@ -17,22 +17,23 @@ public class MemoryVersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    MemoryID = "memory_id",
-                    MemoryStoreID = "memory_store_id",
+                    ID = "memver_011CZkZBJq5dWxk9fVLNcPht",
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
+                    MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
                     Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-                    Content = "content",
-                    ContentSha256 = "content_sha256",
-                    ContentSizeBytes = 0,
+                    Content = null,
+                    ContentSha256 =
+                        "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
+                    ContentSizeBytes = 28,
                     CreatedBy = new BetaManagedAgentsSessionActor()
                     {
-                        SessionID = "x",
+                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
                         Type = BetaManagedAgentsSessionActorType.SessionActor,
                     },
-                    Path = "path",
-                    RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Path = "/preferences/formatting.md",
+                    RedactedAt = null,
                     RedactedBy = new BetaManagedAgentsSessionActor()
                     {
                         SessionID = "x",
@@ -40,29 +41,29 @@ public class MemoryVersionListPageResponseTest : TestBase
                     },
                 },
             ],
-            NextPage = "next_page",
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
         List<BetaManagedAgentsMemoryVersion> expectedData =
         [
             new()
             {
-                ID = "id",
-                CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                MemoryID = "memory_id",
-                MemoryStoreID = "memory_store_id",
+                ID = "memver_011CZkZBJq5dWxk9fVLNcPht",
+                CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
+                MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                 Operation = BetaManagedAgentsMemoryVersionOperation.Created,
                 Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-                Content = "content",
-                ContentSha256 = "content_sha256",
-                ContentSizeBytes = 0,
+                Content = null,
+                ContentSha256 = "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
+                ContentSizeBytes = 28,
                 CreatedBy = new BetaManagedAgentsSessionActor()
                 {
-                    SessionID = "x",
+                    SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
                     Type = BetaManagedAgentsSessionActorType.SessionActor,
                 },
-                Path = "path",
-                RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Path = "/preferences/formatting.md",
+                RedactedAt = null,
                 RedactedBy = new BetaManagedAgentsSessionActor()
                 {
                     SessionID = "x",
@@ -70,7 +71,7 @@ public class MemoryVersionListPageResponseTest : TestBase
                 },
             },
         ];
-        string expectedNextPage = "next_page";
+        string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
 
         Assert.NotNull(model.Data);
         Assert.Equal(expectedData.Count, model.Data.Count);
@@ -90,22 +91,23 @@ public class MemoryVersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    MemoryID = "memory_id",
-                    MemoryStoreID = "memory_store_id",
+                    ID = "memver_011CZkZBJq5dWxk9fVLNcPht",
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
+                    MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
                     Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-                    Content = "content",
-                    ContentSha256 = "content_sha256",
-                    ContentSizeBytes = 0,
+                    Content = null,
+                    ContentSha256 =
+                        "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
+                    ContentSizeBytes = 28,
                     CreatedBy = new BetaManagedAgentsSessionActor()
                     {
-                        SessionID = "x",
+                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
                         Type = BetaManagedAgentsSessionActorType.SessionActor,
                     },
-                    Path = "path",
-                    RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Path = "/preferences/formatting.md",
+                    RedactedAt = null,
                     RedactedBy = new BetaManagedAgentsSessionActor()
                     {
                         SessionID = "x",
@@ -113,7 +115,7 @@ public class MemoryVersionListPageResponseTest : TestBase
                     },
                 },
             ],
-            NextPage = "next_page",
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -134,22 +136,23 @@ public class MemoryVersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    MemoryID = "memory_id",
-                    MemoryStoreID = "memory_store_id",
+                    ID = "memver_011CZkZBJq5dWxk9fVLNcPht",
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
+                    MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
                     Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-                    Content = "content",
-                    ContentSha256 = "content_sha256",
-                    ContentSizeBytes = 0,
+                    Content = null,
+                    ContentSha256 =
+                        "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
+                    ContentSizeBytes = 28,
                     CreatedBy = new BetaManagedAgentsSessionActor()
                     {
-                        SessionID = "x",
+                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
                         Type = BetaManagedAgentsSessionActorType.SessionActor,
                     },
-                    Path = "path",
-                    RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Path = "/preferences/formatting.md",
+                    RedactedAt = null,
                     RedactedBy = new BetaManagedAgentsSessionActor()
                     {
                         SessionID = "x",
@@ -157,7 +160,7 @@ public class MemoryVersionListPageResponseTest : TestBase
                     },
                 },
             ],
-            NextPage = "next_page",
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -171,22 +174,22 @@ public class MemoryVersionListPageResponseTest : TestBase
         [
             new()
             {
-                ID = "id",
-                CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                MemoryID = "memory_id",
-                MemoryStoreID = "memory_store_id",
+                ID = "memver_011CZkZBJq5dWxk9fVLNcPht",
+                CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
+                MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                 Operation = BetaManagedAgentsMemoryVersionOperation.Created,
                 Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-                Content = "content",
-                ContentSha256 = "content_sha256",
-                ContentSizeBytes = 0,
+                Content = null,
+                ContentSha256 = "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
+                ContentSizeBytes = 28,
                 CreatedBy = new BetaManagedAgentsSessionActor()
                 {
-                    SessionID = "x",
+                    SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
                     Type = BetaManagedAgentsSessionActorType.SessionActor,
                 },
-                Path = "path",
-                RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                Path = "/preferences/formatting.md",
+                RedactedAt = null,
                 RedactedBy = new BetaManagedAgentsSessionActor()
                 {
                     SessionID = "x",
@@ -194,7 +197,7 @@ public class MemoryVersionListPageResponseTest : TestBase
                 },
             },
         ];
-        string expectedNextPage = "next_page";
+        string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
 
         Assert.NotNull(deserialized.Data);
         Assert.Equal(expectedData.Count, deserialized.Data.Count);
@@ -214,22 +217,23 @@ public class MemoryVersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    MemoryID = "memory_id",
-                    MemoryStoreID = "memory_store_id",
+                    ID = "memver_011CZkZBJq5dWxk9fVLNcPht",
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
+                    MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
                     Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-                    Content = "content",
-                    ContentSha256 = "content_sha256",
-                    ContentSizeBytes = 0,
+                    Content = null,
+                    ContentSha256 =
+                        "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
+                    ContentSizeBytes = 28,
                     CreatedBy = new BetaManagedAgentsSessionActor()
                     {
-                        SessionID = "x",
+                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
                         Type = BetaManagedAgentsSessionActorType.SessionActor,
                     },
-                    Path = "path",
-                    RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Path = "/preferences/formatting.md",
+                    RedactedAt = null,
                     RedactedBy = new BetaManagedAgentsSessionActor()
                     {
                         SessionID = "x",
@@ -237,7 +241,7 @@ public class MemoryVersionListPageResponseTest : TestBase
                     },
                 },
             ],
-            NextPage = "next_page",
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
         model.Validate();
@@ -246,7 +250,10 @@ public class MemoryVersionListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new MemoryVersionListPageResponse { NextPage = "next_page" };
+        var model = new MemoryVersionListPageResponse
+        {
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+        };
 
         Assert.Null(model.Data);
         Assert.False(model.RawData.ContainsKey("data"));
@@ -255,7 +262,10 @@ public class MemoryVersionListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new MemoryVersionListPageResponse { NextPage = "next_page" };
+        var model = new MemoryVersionListPageResponse
+        {
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+        };
 
         model.Validate();
     }
@@ -265,8 +275,52 @@ public class MemoryVersionListPageResponseTest : TestBase
     {
         var model = new MemoryVersionListPageResponse
         {
-            NextPage = "next_page",
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
 
+            // Null should be interpreted as omitted for these properties
+            Data = null,
+        };
+
+        Assert.Null(model.Data);
+        Assert.False(model.RawData.ContainsKey("data"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new MemoryVersionListPageResponse
+        {
+            Data =
+            [
+                new()
+                {
+                    ID = "memver_011CZkZBJq5dWxk9fVLNcPht",
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
+                    MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
+                    Operation = BetaManagedAgentsMemoryVersionOperation.Created,
+                    Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
+                    Content = null,
+                    ContentSha256 =
+                        "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
+                    ContentSizeBytes = 28,
+                    CreatedBy = new BetaManagedAgentsSessionActor()
+                    {
+                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+                        Type = BetaManagedAgentsSessionActorType.SessionActor,
+                    },
+                    Path = "/preferences/formatting.md",
+                    RedactedAt = null,
+                    RedactedBy = new BetaManagedAgentsSessionActor()
+                    {
+                        SessionID = "x",
+                        Type = BetaManagedAgentsSessionActorType.SessionActor,
+                    },
+                },
+            ],
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
+        } with
+        {
             // Null should be interpreted as omitted for these properties
             Data = null,
         };
@@ -280,7 +334,7 @@ public class MemoryVersionListPageResponseTest : TestBase
     {
         var model = new MemoryVersionListPageResponse
         {
-            NextPage = "next_page",
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
 
             // Null should be interpreted as omitted for these properties
             Data = null,
@@ -298,22 +352,23 @@ public class MemoryVersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    MemoryID = "memory_id",
-                    MemoryStoreID = "memory_store_id",
+                    ID = "memver_011CZkZBJq5dWxk9fVLNcPht",
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
+                    MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
                     Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-                    Content = "content",
-                    ContentSha256 = "content_sha256",
-                    ContentSizeBytes = 0,
+                    Content = null,
+                    ContentSha256 =
+                        "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
+                    ContentSizeBytes = 28,
                     CreatedBy = new BetaManagedAgentsSessionActor()
                     {
-                        SessionID = "x",
+                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
                         Type = BetaManagedAgentsSessionActorType.SessionActor,
                     },
-                    Path = "path",
-                    RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Path = "/preferences/formatting.md",
+                    RedactedAt = null,
                     RedactedBy = new BetaManagedAgentsSessionActor()
                     {
                         SessionID = "x",
@@ -336,22 +391,23 @@ public class MemoryVersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    MemoryID = "memory_id",
-                    MemoryStoreID = "memory_store_id",
+                    ID = "memver_011CZkZBJq5dWxk9fVLNcPht",
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
+                    MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
                     Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-                    Content = "content",
-                    ContentSha256 = "content_sha256",
-                    ContentSizeBytes = 0,
+                    Content = null,
+                    ContentSha256 =
+                        "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
+                    ContentSizeBytes = 28,
                     CreatedBy = new BetaManagedAgentsSessionActor()
                     {
-                        SessionID = "x",
+                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
                         Type = BetaManagedAgentsSessionActorType.SessionActor,
                     },
-                    Path = "path",
-                    RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Path = "/preferences/formatting.md",
+                    RedactedAt = null,
                     RedactedBy = new BetaManagedAgentsSessionActor()
                     {
                         SessionID = "x",
@@ -373,22 +429,23 @@ public class MemoryVersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    MemoryID = "memory_id",
-                    MemoryStoreID = "memory_store_id",
+                    ID = "memver_011CZkZBJq5dWxk9fVLNcPht",
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
+                    MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
                     Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-                    Content = "content",
-                    ContentSha256 = "content_sha256",
-                    ContentSizeBytes = 0,
+                    Content = null,
+                    ContentSha256 =
+                        "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
+                    ContentSizeBytes = 28,
                     CreatedBy = new BetaManagedAgentsSessionActor()
                     {
-                        SessionID = "x",
+                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
                         Type = BetaManagedAgentsSessionActorType.SessionActor,
                     },
-                    Path = "path",
-                    RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Path = "/preferences/formatting.md",
+                    RedactedAt = null,
                     RedactedBy = new BetaManagedAgentsSessionActor()
                     {
                         SessionID = "x",
@@ -413,22 +470,23 @@ public class MemoryVersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    MemoryID = "memory_id",
-                    MemoryStoreID = "memory_store_id",
+                    ID = "memver_011CZkZBJq5dWxk9fVLNcPht",
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
+                    MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
                     Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-                    Content = "content",
-                    ContentSha256 = "content_sha256",
-                    ContentSizeBytes = 0,
+                    Content = null,
+                    ContentSha256 =
+                        "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
+                    ContentSizeBytes = 28,
                     CreatedBy = new BetaManagedAgentsSessionActor()
                     {
-                        SessionID = "x",
+                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
                         Type = BetaManagedAgentsSessionActorType.SessionActor,
                     },
-                    Path = "path",
-                    RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Path = "/preferences/formatting.md",
+                    RedactedAt = null,
                     RedactedBy = new BetaManagedAgentsSessionActor()
                     {
                         SessionID = "x",
@@ -452,22 +510,23 @@ public class MemoryVersionListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "id",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    MemoryID = "memory_id",
-                    MemoryStoreID = "memory_store_id",
+                    ID = "memver_011CZkZBJq5dWxk9fVLNcPht",
+                    CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+                    MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
+                    MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
                     Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-                    Content = "content",
-                    ContentSha256 = "content_sha256",
-                    ContentSizeBytes = 0,
+                    Content = null,
+                    ContentSha256 =
+                        "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
+                    ContentSizeBytes = 28,
                     CreatedBy = new BetaManagedAgentsSessionActor()
                     {
-                        SessionID = "x",
+                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
                         Type = BetaManagedAgentsSessionActorType.SessionActor,
                     },
-                    Path = "path",
-                    RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Path = "/preferences/formatting.md",
+                    RedactedAt = null,
                     RedactedBy = new BetaManagedAgentsSessionActor()
                     {
                         SessionID = "x",
@@ -475,7 +534,7 @@ public class MemoryVersionListPageResponseTest : TestBase
                     },
                 },
             ],
-            NextPage = "next_page",
+            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
         MemoryVersionListPageResponse copied = new(model);

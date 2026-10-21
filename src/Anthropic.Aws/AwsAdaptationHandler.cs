@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
 using Amazon.Runtime.Credentials;
+using Anthropic.Core.Telemetry;
 using Anthropic.Exceptions;
 
 namespace Anthropic.Aws;
@@ -42,6 +43,15 @@ internal sealed class AwsAdaptationHandler : DelegatingHandler
         CancellationToken cancellationToken
     )
     {
+        var segments = requestMessage.RequestUri!.Segments;
+        var last = segments.Length - 1;
+        if (last >= 2 && segments[last - 2] is "user_profiles/" && segments[last] is "action_urls")
+        {
+            throw new NotSupportedException(
+                "The UserProfiles.ActionUrls resource is not supported on the AWS gateway."
+            );
+        }
+
         // Backstop for the workspace ID: the client ctor merges it into ExtraHeaders so
         // user handlers can observe it, but a WithOptions modifier that replaces
         // ExtraHeaders would drop it. Re-add here (before signing) when missing.
@@ -147,8 +157,10 @@ internal sealed class AwsAdaptationHandler : DelegatingHandler
                 Now = now,
                 // Sign both request headers and content headers (Content-Type,
                 // Content-Length) so the canonical request matches the bytes on the wire.
-                Headers = requestMessage
-                    .Headers.Concat(requestMessage.Content.Headers)
+                // The trace-context headers stay unsigned: an HTTP instrumentation may
+                // replace them after signing.
+                Headers = TraceContextHeaders
+                    .Signed(requestMessage.Headers.Concat(requestMessage.Content.Headers))
                     .ToDictionary(
                         e => e.Key,
                         e => string.Join(",", e.Value),

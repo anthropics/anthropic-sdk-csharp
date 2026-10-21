@@ -29,6 +29,7 @@ public sealed record class BetaSelfHostedWorkStopRequest : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("force");
                 return;
             }
 

@@ -47,7 +47,8 @@ public sealed record class BetaManagedAgentsGrepToolConfigParams : JsonModel
     }
 
     /// <summary>
-    /// Permission policy for tool execution.
+    /// Permission policy for this tool. Controls whether tool calls are auto-approved
+    /// or require confirmation.
     /// </summary>
     public BetaManagedAgentsGrepToolConfigParamsPermissionPolicy? PermissionPolicy
     {
@@ -74,6 +75,7 @@ public sealed record class BetaManagedAgentsGrepToolConfigParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("type");
                 return;
             }
 
@@ -140,7 +142,8 @@ class BetaManagedAgentsGrepToolConfigParamsFromRaw
 }
 
 /// <summary>
-/// Permission policy for tool execution.
+/// Permission policy for this tool. Controls whether tool calls are auto-approved
+/// or require confirmation.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsGrepToolConfigParamsPermissionPolicyConverter))]
 public record class BetaManagedAgentsGrepToolConfigParamsPermissionPolicy : ModelBase

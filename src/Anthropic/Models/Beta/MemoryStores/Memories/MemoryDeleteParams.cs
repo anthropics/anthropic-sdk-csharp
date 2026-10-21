@@ -11,7 +11,7 @@ using Anthropic.Services.Beta.MemoryStores;
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
 /// <summary>
-/// Delete a memory
+/// Delete a Memory
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -24,7 +24,11 @@ public record class MemoryDeleteParams : ParamsBase
     public string? MemoryID { get; init; }
 
     /// <summary>
-    /// Query parameter for expected_content_sha256
+    /// Delete the memory only if its current `content_sha256` equals this value,
+    /// given as 64 lowercase hexadecimal characters. Omit it to delete unconditionally.
+    ///
+    /// <para>If the hashes differ, the request fails with HTTP status 409 and nothing
+    /// is deleted.</para>
     /// </summary>
     public string? ExpectedContentSha256
     {
@@ -37,6 +41,7 @@ public record class MemoryDeleteParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("expected_content_sha256");
                 return;
             }
 
@@ -45,7 +50,8 @@ public record class MemoryDeleteParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `agent-memory-2026-07-22` or
+    /// `managed-agents-2026-04-01` in this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -60,6 +66,7 @@ public record class MemoryDeleteParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -70,6 +77,14 @@ public record class MemoryDeleteParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -81,6 +96,7 @@ public record class MemoryDeleteParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -186,6 +202,10 @@ public record class MemoryDeleteParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/memory_stores/{memory_store_id}/memories/{memory_id}";
+
+    internal override IReadOnlyList<string> QueryParams => ["expected_content_sha256"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

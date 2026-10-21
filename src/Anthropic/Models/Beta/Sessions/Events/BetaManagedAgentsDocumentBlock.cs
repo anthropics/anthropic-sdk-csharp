@@ -22,7 +22,7 @@ namespace Anthropic.Models.Beta.Sessions.Events;
 public sealed record class BetaManagedAgentsDocumentBlock : JsonModel
 {
     /// <summary>
-    /// Union type for document source variants.
+    /// The source of the document data.
     /// </summary>
     public required Source Source
     {
@@ -122,7 +122,7 @@ class BetaManagedAgentsDocumentBlockFromRaw : IFromRawJson<BetaManagedAgentsDocu
 }
 
 /// <summary>
-/// Union type for document source variants.
+/// The source of the document data.
 /// </summary>
 [JsonConverter(typeof(SourceConverter))]
 public record class Source : ModelBase

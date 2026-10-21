@@ -41,7 +41,7 @@ public class BetaManagedAgentsMultiagentRosterEntryParamsTest : TestBase
     {
         BetaManagedAgentsMultiagentRosterEntryParams value = new BetaManagedAgentsAdvisorParams()
         {
-            Model = "claude-fable-5",
+            Model = "claude-opus-5-5",
             Type = Type.Advisor,
         };
         value.Validate();
@@ -99,7 +99,7 @@ public class BetaManagedAgentsMultiagentRosterEntryParamsTest : TestBase
     {
         BetaManagedAgentsMultiagentRosterEntryParams value = new BetaManagedAgentsAdvisorParams()
         {
-            Model = "claude-fable-5",
+            Model = "claude-opus-5-5",
             Type = Type.Advisor,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

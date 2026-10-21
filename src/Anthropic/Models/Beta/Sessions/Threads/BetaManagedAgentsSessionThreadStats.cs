@@ -32,6 +32,7 @@ public sealed record class BetaManagedAgentsSessionThreadStats : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("active_seconds");
                 return;
             }
 
@@ -54,6 +55,7 @@ public sealed record class BetaManagedAgentsSessionThreadStats : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("duration_seconds");
                 return;
             }
 
@@ -76,6 +78,7 @@ public sealed record class BetaManagedAgentsSessionThreadStats : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("startup_seconds");
                 return;
             }
 

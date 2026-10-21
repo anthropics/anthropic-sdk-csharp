@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
@@ -109,6 +110,30 @@ public class WebFetchUrlSourcesTest : TestBase
     public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
     {
         var model = new WebFetchUrlSources
+        {
+            // Null should be interpreted as omitted for these properties
+            ClientToolResults = null,
+            ServerToolResults = null,
+            UserInput = null,
+        };
+
+        Assert.Null(model.ClientToolResults);
+        Assert.False(model.RawData.ContainsKey("client_tool_results"));
+        Assert.Null(model.ServerToolResults);
+        Assert.False(model.RawData.ContainsKey("server_tool_results"));
+        Assert.Null(model.UserInput);
+        Assert.False(model.RawData.ContainsKey("user_input"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new WebFetchUrlSources
+        {
+            ClientToolResults = new WebFetchUrlSourceAll(),
+            ServerToolResults = new WebFetchUrlSourceAll(),
+            UserInput = new WebFetchUrlSourceAll(),
+        } with
         {
             // Null should be interpreted as omitted for these properties
             ClientToolResults = null,
@@ -243,7 +268,13 @@ public class ClientToolResultsTest : TestBase
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "type": "all"
+                  "type": "all",
+                  "tools": [
+                    {
+                      "name": "name",
+                      "type": "tool_reference"
+                    }
+                  ]
                 }
                 """
             )
@@ -251,12 +282,20 @@ public class ClientToolResultsTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("all");
+        List<WebFetchUrlSourceToolReference> expectedTools = [new("name")];
 
         Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.NotNull(value.Tools);
+        Assert.Equal(expectedTools.Count, value.Tools.Count);
+        for (int i = 0; i < expectedTools.Count; i++)
+        {
+            Assert.Equal(expectedTools[i], value.Tools[i]);
+        }
 
         ClientToolResults emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.Tools);
     }
 }
 
@@ -349,7 +388,13 @@ public class ServerToolResultsTest : TestBase
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "type": "all"
+                  "type": "all",
+                  "tools": [
+                    {
+                      "name": "name",
+                      "type": "tool_reference"
+                    }
+                  ]
                 }
                 """
             )
@@ -357,12 +402,20 @@ public class ServerToolResultsTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("all");
+        List<WebFetchUrlSourceToolReference> expectedTools = [new("name")];
 
         Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.NotNull(value.Tools);
+        Assert.Equal(expectedTools.Count, value.Tools.Count);
+        for (int i = 0; i < expectedTools.Count; i++)
+        {
+            Assert.Equal(expectedTools[i], value.Tools[i]);
+        }
 
         ServerToolResults emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.Tools);
     }
 }
 

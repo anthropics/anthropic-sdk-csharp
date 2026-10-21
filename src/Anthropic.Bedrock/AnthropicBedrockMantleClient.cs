@@ -127,6 +127,8 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
         _awsOptions = awsOptions;
 
         BackendAdaptationHandler = () => new MantleAwsAdaptationHandler(awsOptions);
+        OpenTelemetryProviderName = "aws.bedrock";
+        OpenTelemetrySource = AnthropicBedrockClient.PackageActivitySource;
     }
 
     private AnthropicBedrockMantleClient(MantleAwsClientOptions awsOptions, ClientOptions options)
@@ -136,6 +138,8 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
         // The options normally carry the backend adaptation handler from the original
         // construction; restore it if a WithOptions modifier returned fresh options.
         BackendAdaptationHandler ??= () => new MantleAwsAdaptationHandler(awsOptions);
+        OpenTelemetryProviderName = "aws.bedrock";
+        OpenTelemetrySource = AnthropicBedrockClient.PackageActivitySource;
     }
 
     /// <inheritdoc />
@@ -171,6 +175,16 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
     public new ISkillService Skills =>
         throw new NotSupportedException(
             "The Skills resource is not supported on Bedrock Mantle. "
+                + "Only Messages and Beta.Messages are available."
+        );
+
+    /// <summary>
+    /// Not supported on Bedrock Mantle. Only Messages (and Beta.Messages) are available.
+    /// </summary>
+    /// <exception cref="NotSupportedException">Always thrown.</exception>
+    public new IUserProfileService UserProfiles =>
+        throw new NotSupportedException(
+            "The UserProfiles resource is not supported on Bedrock Mantle. "
                 + "Only Messages and Beta.Messages are available."
         );
 

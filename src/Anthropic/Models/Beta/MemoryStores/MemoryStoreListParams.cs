@@ -11,7 +11,7 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.MemoryStores;
 
 /// <summary>
-/// List memory stores
+/// List Memory Stores
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -20,8 +20,7 @@ namespace Anthropic.Models.Beta.MemoryStores;
 public record class MemoryStoreListParams : ParamsBase
 {
     /// <summary>
-    /// Return only stores whose `created_at` is at or after this time (inclusive).
-    /// Sent on the wire as `created_at[gte]`.
+    /// Return only memory stores created at or after this time (inclusive).
     /// </summary>
     public DateTimeOffset? CreatedAtGte
     {
@@ -34,6 +33,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[gte]");
                 return;
             }
 
@@ -42,8 +42,7 @@ public record class MemoryStoreListParams : ParamsBase
     }
 
     /// <summary>
-    /// Return only stores whose `created_at` is at or before this time (inclusive).
-    /// Sent on the wire as `created_at[lte]`.
+    /// Return only memory stores created at or before this time (inclusive).
     /// </summary>
     public DateTimeOffset? CreatedAtLte
     {
@@ -56,6 +55,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[lte]");
                 return;
             }
 
@@ -78,6 +78,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("include_archived");
                 return;
             }
 
@@ -100,6 +101,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -108,8 +110,8 @@ public record class MemoryStoreListParams : ParamsBase
     }
 
     /// <summary>
-    /// Opaque pagination cursor (a `page_...` value). Pass the `next_page` value
-    /// from a previous response to fetch the next page; omit for the first page.
+    /// The `next_page` value from a previous response, to get the next page. Omit
+    /// it to get the first page.
     /// </summary>
     public string? Page
     {
@@ -122,6 +124,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -130,7 +133,8 @@ public record class MemoryStoreListParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `agent-memory-2026-07-22` or
+    /// `managed-agents-2026-04-01` in this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -145,6 +149,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -155,6 +160,14 @@ public record class MemoryStoreListParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -166,6 +179,7 @@ public record class MemoryStoreListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -248,6 +262,11 @@ public record class MemoryStoreListParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/memory_stores";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["created_at[gte]", "created_at[lte]", "include_archived", "limit", "page"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

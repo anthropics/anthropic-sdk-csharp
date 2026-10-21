@@ -80,6 +80,7 @@ public sealed record class BetaToolComputerUse20251124 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("allowed_callers");
                 return;
             }
 
@@ -117,6 +118,7 @@ public sealed record class BetaToolComputerUse20251124 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("defer_loading");
                 return;
             }
 
@@ -151,6 +153,7 @@ public sealed record class BetaToolComputerUse20251124 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("enable_zoom");
                 return;
             }
 
@@ -171,6 +174,7 @@ public sealed record class BetaToolComputerUse20251124 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("input_examples");
                 return;
             }
 
@@ -202,6 +206,7 @@ public sealed record class BetaToolComputerUse20251124 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("strict");
                 return;
             }
 

@@ -4,7 +4,8 @@ using Anthropic.Exceptions;
 namespace Anthropic.GoogleCloud;
 
 /// <summary>
-/// Adapts requests for the Google Cloud gateway: attaches the Google OAuth2 bearer token.
+/// Adapts requests for the Google Cloud gateway: sends organization-level routes to the
+/// organization endpoint and attaches the Google OAuth2 bearer token.
 ///
 /// <para>Attached as the innermost handler so user handlers observe the request before the
 /// bearer token is applied. Unlike SigV4, a bearer token does not depend on the request
@@ -17,11 +18,41 @@ namespace Anthropic.GoogleCloud;
 /// </summary>
 internal sealed class GoogleCloudAdaptationHandler : DelegatingHandler
 {
+    internal const string OrganizationPathPrefix = "/v1/organizations/";
+
     private readonly GoogleCloudClientOptions _googleCloudConfig;
+    private readonly string? _workspaceBaseUrl;
+    private readonly string? _organizationBaseUrl;
 
     public GoogleCloudAdaptationHandler(GoogleCloudClientOptions googleCloudConfig)
     {
         _googleCloudConfig = googleCloudConfig;
+
+        if (
+            googleCloudConfig.BaseUrl != null
+            || googleCloudConfig.Project == null
+            || googleCloudConfig.Location == null
+        )
+        {
+            return;
+        }
+        // Normalized the way request URIs are, so the prefix comparison holds.
+        _organizationBaseUrl = new Uri(
+            AnthropicGoogleCloudClient.DeriveOrganizationBaseUrl(
+                googleCloudConfig.Location,
+                googleCloudConfig.Project
+            )
+        ).AbsoluteUri;
+        if (googleCloudConfig.WorkspaceId != null)
+        {
+            _workspaceBaseUrl = new Uri(
+                AnthropicGoogleCloudClient.DeriveWorkspaceBaseUrl(
+                    googleCloudConfig.Location,
+                    googleCloudConfig.Project,
+                    googleCloudConfig.WorkspaceId
+                )
+            ).AbsoluteUri;
+        }
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(
@@ -29,8 +60,41 @@ internal sealed class GoogleCloudAdaptationHandler : DelegatingHandler
         CancellationToken cancellationToken
     )
     {
+        RouteRequest(requestMessage);
         await AdaptRequestAsync(requestMessage, cancellationToken).ConfigureAwait(false);
         return await base.SendAsync(requestMessage, cancellationToken).ConfigureAwait(false);
+    }
+
+    private void RouteRequest(HttpRequestMessage requestMessage)
+    {
+        if (_organizationBaseUrl == null || requestMessage.RequestUri == null)
+        {
+            return;
+        }
+
+        // A base URL assigned after construction takes every route, like an explicit
+        // one: only requests still addressed to the derived URL are routed.
+        var derivedBaseUrl = _workspaceBaseUrl ?? _organizationBaseUrl;
+        var requestUrl = requestMessage.RequestUri.AbsoluteUri;
+        if (!requestUrl.StartsWith(derivedBaseUrl + "/", StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        var path = requestUrl.Substring(derivedBaseUrl.Length);
+        if (path.StartsWith(OrganizationPathPrefix, StringComparison.Ordinal))
+        {
+            requestMessage.RequestUri = new Uri(_organizationBaseUrl + path);
+            return;
+        }
+
+        if (_workspaceBaseUrl == null)
+        {
+            throw new AnthropicException(
+                $"Workspace ID is required; set {nameof(GoogleCloudClientOptions.WorkspaceId)} "
+                    + $"or the {AnthropicGoogleCloudClient.EnvWorkspaceId} environment variable."
+            );
+        }
     }
 
     private async Task AdaptRequestAsync(

@@ -38,6 +38,7 @@ public record class EventListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[gt]");
                 return;
             }
 
@@ -60,6 +61,7 @@ public record class EventListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[gte]");
                 return;
             }
 
@@ -82,6 +84,7 @@ public record class EventListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[lt]");
                 return;
             }
 
@@ -104,6 +107,7 @@ public record class EventListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[lte]");
                 return;
             }
 
@@ -111,9 +115,6 @@ public record class EventListParams : ParamsBase
         }
     }
 
-    /// <summary>
-    /// Query parameter for limit
-    /// </summary>
     public int? Limit
     {
         get
@@ -125,6 +126,7 @@ public record class EventListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -147,6 +149,7 @@ public record class EventListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("order");
                 return;
             }
 
@@ -168,6 +171,7 @@ public record class EventListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -179,29 +183,32 @@ public record class EventListParams : ParamsBase
     /// Filter by event type. Values match the `type` field on returned events (for
     /// example, `user.message` or `agent.tool_use`). Omit to return all event types.
     /// </summary>
-    public IReadOnlyList<string>? Types
+    public IReadOnlyList<ApiEnum<string, BetaManagedAgentsSessionEventType>>? Types
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableStruct<ImmutableArray<string>>("types");
+            return this._rawQueryData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaManagedAgentsSessionEventType>>
+            >("types");
         }
         init
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("types");
                 return;
             }
 
-            this._rawQueryData.Set<ImmutableArray<string>?>(
-                "types",
-                value == null ? null : ImmutableArray.ToImmutableArray(value)
-            );
+            this._rawQueryData.Set<ImmutableArray<
+                ApiEnum<string, BetaManagedAgentsSessionEventType>
+            >?>("types", value == null ? null : ImmutableArray.ToImmutableArray(value));
         }
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `managed-agents-2026-04-01` in
+    /// this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -216,6 +223,7 @@ public record class EventListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -226,6 +234,14 @@ public record class EventListParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -237,6 +253,7 @@ public record class EventListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -334,6 +351,20 @@ public record class EventListParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/sessions/{session_id}/events";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        [
+            "created_at[gt]",
+            "created_at[gte]",
+            "created_at[lt]",
+            "created_at[lte]",
+            "limit",
+            "order",
+            "page",
+            "types",
+        ];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

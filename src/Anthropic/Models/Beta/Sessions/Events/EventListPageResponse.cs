@@ -30,6 +30,7 @@ public sealed record class EventListPageResponse : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("data");
                 return;
             }
 

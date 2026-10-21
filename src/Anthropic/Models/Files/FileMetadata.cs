@@ -108,6 +108,7 @@ public sealed record class FileMetadata : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("downloadable");
                 return;
             }
 

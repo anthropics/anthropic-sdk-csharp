@@ -12,7 +12,7 @@ using Anthropic.Services.Beta.MemoryStores;
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
 /// <summary>
-/// Update a memory
+/// Update a Memory
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -31,7 +31,11 @@ public record class MemoryUpdateParams : ParamsBase
     public string? MemoryID { get; init; }
 
     /// <summary>
-    /// Query parameter for view
+    /// Whether a `memory` or `memory_version` in the response includes its `content`.
+    /// Defaults to `full` on retrieve operations and to `basic` on list, create,
+    /// and update operations.
+    ///
+    /// <para>With `full`, list operations return at most 20 items per page.</para>
     /// </summary>
     public ApiEnum<string, BetaManagedAgentsMemoryView>? View
     {
@@ -46,6 +50,7 @@ public record class MemoryUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("view");
                 return;
             }
 
@@ -68,12 +73,13 @@ public record class MemoryUpdateParams : ParamsBase
     }
 
     /// <summary>
-    /// New path for the memory (a rename). Must start with `/`, contain at least
-    /// one non-empty segment, and be at most 1,024 bytes. Must not contain empty
-    /// segments, `.` or `..` segments, control or format characters, or the Unicode
-    /// line and paragraph separators (U+2028, U+2029), and must be NFC-normalized.
-    /// Paths are case-sensitive. The memory's `id` is preserved across renames. Omit
-    /// to leave the path unchanged.
+    /// The new path of the memory, which renames it. Omit it to keep the current path.
+    ///
+    /// <para>The memory keeps its `id`. A path starts with `/` and has 1 to 20 segments.
+    /// A segment can't be empty and can't be `.` or `..`. A path can't contain control
+    /// characters, format characters, or the line and paragraph separators U+2028
+    /// and U+2029. It must be in Unicode Normalization Form C and at most 1,024
+    /// bytes long. Paths are case-sensitive.</para>
     /// </summary>
     public string? Path
     {
@@ -86,12 +92,10 @@ public record class MemoryUpdateParams : ParamsBase
     }
 
     /// <summary>
-    /// Optimistic-concurrency precondition: the update applies only if the memory's
-    /// stored `content_sha256` equals the supplied value. On mismatch, the request
-    /// returns `memory_precondition_failed_error` (HTTP 409); re-read the memory
-    /// and retry against the fresh state. If the precondition fails but the stored
-    /// state already exactly matches the requested `content` and `path`, the server
-    /// returns 200 instead of 409.
+    /// The condition that the memory must meet for the update to apply. Omit it
+    /// to update unconditionally.
+    ///
+    /// <para>If the condition fails, the request fails with HTTP status 409.</para>
     /// </summary>
     public BetaManagedAgentsPrecondition? Precondition
     {
@@ -106,6 +110,7 @@ public record class MemoryUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("precondition");
                 return;
             }
 
@@ -114,7 +119,8 @@ public record class MemoryUpdateParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `agent-memory-2026-07-22` or
+    /// `managed-agents-2026-04-01` in this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -129,6 +135,7 @@ public record class MemoryUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -139,6 +146,14 @@ public record class MemoryUpdateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -150,6 +165,7 @@ public record class MemoryUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -265,6 +281,10 @@ public record class MemoryUpdateParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/memory_stores/{memory_store_id}/memories/{memory_id}";
+
+    internal override IReadOnlyList<string> QueryParams => ["view"];
 
     internal override HttpContent? BodyContent()
     {

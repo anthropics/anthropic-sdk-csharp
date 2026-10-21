@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -35,6 +36,22 @@ public record class BetaCodeExecutionToolResultBlockContent : ModelBase
                 BetaCodeExecutionResultBlock x => x.Type,
                 BetaEncryptedCodeExecutionResultBlock x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+            };
+        }
+    }
+
+    public IReadOnlyList<BetaCodeExecutionOutputBlock>? Content
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaCodeExecutionToolResultError _ => null,
+                BetaCodeExecutionResultBlock x => x.Content,
+                BetaEncryptedCodeExecutionResultBlock x => x.Content,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<
+                    IReadOnlyList<BetaCodeExecutionOutputBlock>
+                >(this.Json, "content"),
             };
         }
     }

@@ -4,11 +4,11 @@ namespace Anthropic.Tests.Services.Beta.Sessions.Threads;
 
 public class EventServiceTest : TestBase
 {
-    [Fact(Skip = "buildURL drops path-level query params")]
+    [Fact]
     public async Task List_Works()
     {
         var page = await this.client.Beta.Sessions.Threads.Events.List(
-            "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
             TestContext.Current.CancellationToken
         );
@@ -19,7 +19,7 @@ public class EventServiceTest : TestBase
     public async Task StreamStreaming_Works()
     {
         var stream = this.client.Beta.Sessions.Threads.Events.StreamStreaming(
-            "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
             TestContext.Current.CancellationToken
         );

@@ -1,0 +1,158 @@
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using Anthropic.Core;
+using Anthropic.Models.Beta;
+using Anthropic.Models.Beta.UserProfiles.ActionUrls;
+
+namespace Anthropic.Tests.Models.Beta.UserProfiles.ActionUrls;
+
+public class ActionUrlCreateParamsTest : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var parameters = new ActionUrlCreateParams
+        {
+            UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            Action = new(),
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
+
+        string expectedUserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9";
+        BetaUserProfileEnrollEndUserAction expectedAction = new();
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
+        [
+            AnthropicBeta.MessageBatches2024_09_24,
+        ];
+        string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
+
+        Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
+        Assert.Equal(expectedAction, parameters.Action);
+        Assert.NotNull(parameters.Betas);
+        Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
+        for (int i = 0; i < expectedBetas.Count; i++)
+        {
+            Assert.Equal(expectedBetas[i], parameters.Betas[i]);
+        }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsUnsetAreNotSet_Works()
+    {
+        var parameters = new ActionUrlCreateParams
+        {
+            UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            Action = new(),
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
+    {
+        var parameters = new ActionUrlCreateParams
+        {
+            UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            Action = new(),
+
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new ActionUrlCreateParams
+        {
+            UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            Action = new(),
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
+    public void Url_Works()
+    {
+        ActionUrlCreateParams parameters = new()
+        {
+            UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            Action = new(),
+        };
+
+        var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.True(
+            TestBase.UrisEqual(
+                new Uri(
+                    "https://api.anthropic.com/v1/user_profiles/uprof_011CZkZCu8hGbp5mYRQgUmz9/action_urls?beta=true"
+                ),
+                url
+            )
+        );
+    }
+
+    [Fact]
+    public void AddHeadersToRequest_Works()
+    {
+        HttpRequestMessage requestMessage = new();
+        ActionUrlCreateParams parameters = new()
+        {
+            UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            Action = new(),
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
+
+        parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.Equal(
+            ["message-batches-2024-09-24,user-profiles-2026-08-18"],
+            requestMessage.Headers.GetValues("anthropic-beta")
+        );
+        Assert.Equal(
+            ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
+            requestMessage.Headers.GetValues("anthropic-workspace-id")
+        );
+    }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new ActionUrlCreateParams
+        {
+            UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            Action = new(),
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
+
+        ActionUrlCreateParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
+}

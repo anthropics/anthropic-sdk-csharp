@@ -43,6 +43,7 @@ public sealed record class DeletedFile : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("type");
                 return;
             }
 

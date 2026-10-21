@@ -10,10 +10,14 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 /// <summary>
-/// Mid-conversation directive to surface a declared tool.
+/// Mid-conversation directive to make a tool available.
 ///
-/// <para>``tool`` references a tool (or MCP toolset) by name from the request's
-/// ``tools``; it is offered to the model from this point in the conversation onward.</para>
+/// <para>``tool`` is a reference to a tool (or MCP toolset) declared in the request's
+/// ``tools``. Under the ``inline-tools-2026-09-15`` beta it may instead be a reference
+/// to a tool defined earlier in ``messages``, or a ``tool_definition`` object that
+/// carries an inline tool definition in ``definition`` (the same object a ``tools``
+/// entry holds). An ``mcp_toolset`` definition also requires the ``mcp-client-2026-09-15``
+/// beta. The tool is offered to the model from this point in the conversation onward.</para>
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaRequestToolAdditionBlock, BetaRequestToolAdditionBlockFromRaw>)
@@ -141,6 +145,7 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
                 BetaToolChangeToolReference x => x.Name,
                 BetaToolChangeMcpToolReference x => x.Name,
                 BetaToolChangeMcpToolsetReference _ => null,
+                BetaToolChangeToolDefinitionParam _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "name"),
             };
         }
@@ -155,6 +160,7 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
                 BetaToolChangeToolReference x => x.Type,
                 BetaToolChangeMcpToolReference x => x.Type,
                 BetaToolChangeMcpToolsetReference x => x.Type,
+                BetaToolChangeToolDefinitionParam x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
             };
         }
@@ -169,6 +175,7 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
                 BetaToolChangeToolReference _ => null,
                 BetaToolChangeMcpToolReference x => x.ServerName,
                 BetaToolChangeMcpToolsetReference x => x.ServerName,
+                BetaToolChangeToolDefinitionParam _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "server_name"
@@ -197,6 +204,15 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
 
     public BetaRequestToolAdditionBlockTool(
         BetaToolChangeMcpToolsetReference value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaRequestToolAdditionBlockTool(
+        BetaToolChangeToolDefinitionParam value,
         JsonElement? element = null
     )
     {
@@ -279,6 +295,29 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolChangeToolDefinitionParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolChangeToolDefinitionParam(out var value)) {
+    ///     // `value` is of type `BetaToolChangeToolDefinitionParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaToolChangeToolDefinitionParam(
+        [NotNullWhen(true)] out BetaToolChangeToolDefinitionParam? value
+    )
+    {
+        value = this.Value as BetaToolChangeToolDefinitionParam;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -294,7 +333,8 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
     /// instance.Switch(
     ///     (BetaToolChangeToolReference value) =&gt; {...},
     ///     (BetaToolChangeMcpToolReference value) =&gt; {...},
-    ///     (BetaToolChangeMcpToolsetReference value) =&gt; {...}
+    ///     (BetaToolChangeMcpToolsetReference value) =&gt; {...},
+    ///     (BetaToolChangeToolDefinitionParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -302,7 +342,8 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
     public void Switch(
         System::Action<BetaToolChangeToolReference> betaToolChangeToolReference,
         System::Action<BetaToolChangeMcpToolReference> betaToolChangeMcpToolReference,
-        System::Action<BetaToolChangeMcpToolsetReference> betaToolChangeMcpToolsetReference
+        System::Action<BetaToolChangeMcpToolsetReference> betaToolChangeMcpToolsetReference,
+        System::Action<BetaToolChangeToolDefinitionParam> betaToolChangeToolDefinitionParam
     )
     {
         switch (this.Value)
@@ -315,6 +356,9 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
                 break;
             case BetaToolChangeMcpToolsetReference value:
                 betaToolChangeMcpToolsetReference(value);
+                break;
+            case BetaToolChangeToolDefinitionParam value:
+                betaToolChangeToolDefinitionParam(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -340,7 +384,8 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
     /// var result = instance.Match(
     ///     (BetaToolChangeToolReference value) =&gt; {...},
     ///     (BetaToolChangeMcpToolReference value) =&gt; {...},
-    ///     (BetaToolChangeMcpToolsetReference value) =&gt; {...}
+    ///     (BetaToolChangeMcpToolsetReference value) =&gt; {...},
+    ///     (BetaToolChangeToolDefinitionParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -348,7 +393,8 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
     public T Match<T>(
         System::Func<BetaToolChangeToolReference, T> betaToolChangeToolReference,
         System::Func<BetaToolChangeMcpToolReference, T> betaToolChangeMcpToolReference,
-        System::Func<BetaToolChangeMcpToolsetReference, T> betaToolChangeMcpToolsetReference
+        System::Func<BetaToolChangeMcpToolsetReference, T> betaToolChangeMcpToolsetReference,
+        System::Func<BetaToolChangeToolDefinitionParam, T> betaToolChangeToolDefinitionParam
     )
     {
         return this.Value switch
@@ -356,6 +402,7 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
             BetaToolChangeToolReference value => betaToolChangeToolReference(value),
             BetaToolChangeMcpToolReference value => betaToolChangeMcpToolReference(value),
             BetaToolChangeMcpToolsetReference value => betaToolChangeMcpToolsetReference(value),
+            BetaToolChangeToolDefinitionParam value => betaToolChangeToolDefinitionParam(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaRequestToolAdditionBlockTool"
             ),
@@ -372,6 +419,10 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
 
     public static implicit operator BetaRequestToolAdditionBlockTool(
         BetaToolChangeMcpToolsetReference value
+    ) => new(value);
+
+    public static implicit operator BetaRequestToolAdditionBlockTool(
+        BetaToolChangeToolDefinitionParam value
     ) => new(value);
 
     /// <summary>
@@ -395,7 +446,8 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
         this.Switch(
             (betaToolChangeToolReference) => betaToolChangeToolReference.Validate(),
             (betaToolChangeMcpToolReference) => betaToolChangeMcpToolReference.Validate(),
-            (betaToolChangeMcpToolsetReference) => betaToolChangeMcpToolsetReference.Validate()
+            (betaToolChangeMcpToolsetReference) => betaToolChangeMcpToolsetReference.Validate(),
+            (betaToolChangeToolDefinitionParam) => betaToolChangeToolDefinitionParam.Validate()
         );
     }
 
@@ -422,6 +474,7 @@ public record class BetaRequestToolAdditionBlockTool : ModelBase
             BetaToolChangeToolReference _ => 0,
             BetaToolChangeMcpToolReference _ => 1,
             BetaToolChangeMcpToolsetReference _ => 2,
+            BetaToolChangeToolDefinitionParam _ => 3,
             _ => -1,
         };
     }
@@ -495,6 +548,27 @@ sealed class BetaRequestToolAdditionBlockToolConverter
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaToolChangeMcpToolsetReference>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "tool_definition":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaToolChangeToolDefinitionParam>(
                             element,
                             options
                         );

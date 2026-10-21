@@ -165,6 +165,29 @@ public class BetaClearToolUses20250919EditTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaClearToolUses20250919Edit
+        {
+            ClearAtLeast = new(0),
+            ClearToolInputs = true,
+            ExcludeTools = ["string"],
+            Keep = new(0),
+            Trigger = new BetaInputTokensTrigger(1),
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Keep = null,
+            Trigger = null,
+        };
+
+        Assert.Null(model.Keep);
+        Assert.False(model.RawData.ContainsKey("keep"));
+        Assert.Null(model.Trigger);
+        Assert.False(model.RawData.ContainsKey("trigger"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaClearToolUses20250919Edit

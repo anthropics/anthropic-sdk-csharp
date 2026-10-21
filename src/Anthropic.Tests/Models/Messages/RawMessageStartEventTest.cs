@@ -48,7 +48,8 @@ public class RawMessageStartEventTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus5,
+                Diagnostics = new(new CacheMissModelChanged(0)),
+                Model = Model.ClaudeOpus5_5,
                 StopDetails = new()
                 {
                     Category = Category.Cyber,
@@ -72,6 +73,7 @@ public class RawMessageStartEventTest : TestBase
                     OutputTokensDetails = new(0),
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -112,7 +114,8 @@ public class RawMessageStartEventTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus5,
+            Diagnostics = new(new CacheMissModelChanged(0)),
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Category.Cyber,
@@ -132,6 +135,7 @@ public class RawMessageStartEventTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = UsageServiceTier.Standard,
+                Speed = UsageSpeed.Standard,
             },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("message_start");
@@ -181,7 +185,8 @@ public class RawMessageStartEventTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus5,
+                Diagnostics = new(new CacheMissModelChanged(0)),
+                Model = Model.ClaudeOpus5_5,
                 StopDetails = new()
                 {
                     Category = Category.Cyber,
@@ -205,6 +210,7 @@ public class RawMessageStartEventTest : TestBase
                     OutputTokensDetails = new(0),
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -259,7 +265,8 @@ public class RawMessageStartEventTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus5,
+                Diagnostics = new(new CacheMissModelChanged(0)),
+                Model = Model.ClaudeOpus5_5,
                 StopDetails = new()
                 {
                     Category = Category.Cyber,
@@ -283,6 +290,7 @@ public class RawMessageStartEventTest : TestBase
                     OutputTokensDetails = new(0),
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -330,7 +338,8 @@ public class RawMessageStartEventTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus5,
+            Diagnostics = new(new CacheMissModelChanged(0)),
+            Model = Model.ClaudeOpus5_5,
             StopDetails = new()
             {
                 Category = Category.Cyber,
@@ -350,6 +359,7 @@ public class RawMessageStartEventTest : TestBase
                 OutputTokensDetails = new(0),
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                 ServiceTier = UsageServiceTier.Standard,
+                Speed = UsageSpeed.Standard,
             },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("message_start");
@@ -399,7 +409,8 @@ public class RawMessageStartEventTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus5,
+                Diagnostics = new(new CacheMissModelChanged(0)),
+                Model = Model.ClaudeOpus5_5,
                 StopDetails = new()
                 {
                     Category = Category.Cyber,
@@ -423,6 +434,7 @@ public class RawMessageStartEventTest : TestBase
                     OutputTokensDetails = new(0),
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             },
         };
@@ -471,7 +483,8 @@ public class RawMessageStartEventTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus5,
+                Diagnostics = new(new CacheMissModelChanged(0)),
+                Model = Model.ClaudeOpus5_5,
                 StopDetails = new()
                 {
                     Category = Category.Cyber,
@@ -495,6 +508,7 @@ public class RawMessageStartEventTest : TestBase
                     OutputTokensDetails = new(0),
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             },
         };

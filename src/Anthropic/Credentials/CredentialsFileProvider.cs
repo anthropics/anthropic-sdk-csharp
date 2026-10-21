@@ -60,7 +60,7 @@ public sealed class CredentialsFileProvider : IAccessTokenProvider
         }
         else
         {
-            _tokenHttpClient = new HttpClient();
+            _tokenHttpClient = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false });
             _ownsHttpClient = true;
         }
     }

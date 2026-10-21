@@ -16,9 +16,10 @@ public class AgentCreateParamsTest : TestBase
     {
         var parameters = new AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5,
+            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
             McpServers =
             [
                 new()
@@ -29,7 +30,7 @@ public class AgentCreateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -38,7 +39,7 @@ public class AgentCreateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Skills =
             [
@@ -80,9 +81,11 @@ public class AgentCreateParamsTest : TestBase
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
-        Model expectedModel = BetaManagedAgentsModel.ClaudeOpus5;
+        Model expectedModel = BetaManagedAgentsModel.ClaudeOpus5_5;
         string expectedName = "My First Agent";
         string expectedDescription = "A general-purpose starter agent.";
+        BetaManagedAgentsExecutionIdentityParams expectedExecutionIdentity =
+            new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn");
         List<BetaManagedAgentsUrlMcpServerParams> expectedMcpServers =
         [
             new()
@@ -93,17 +96,18 @@ public class AgentCreateParamsTest : TestBase
             },
         ];
         Dictionary<string, string> expectedMetadata = new() { { "foo", "bar" } };
-        Sessions::BetaManagedAgentsMultiagentParams expectedMultiagent = new()
-        {
-            Agents =
-            [
-                "agent_011CZkYqphY8vELVzwCUpqiQ",
-                new BetaManagedAgentsMultiagentSelfParams(
-                    BetaManagedAgentsMultiagentSelfParamsType.Self
-                ),
-            ],
-            Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
-        };
+        Sessions::BetaManagedAgentsMultiagentParams expectedMultiagent =
+            new BetaManagedAgentsMultiagentCoordinatorParams()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
+            };
         List<BetaManagedAgentsSkillParams> expectedSkills =
         [
             new BetaManagedAgentsAnthropicSkillParams()
@@ -149,6 +153,7 @@ public class AgentCreateParamsTest : TestBase
         Assert.Equal(expectedModel, parameters.Model);
         Assert.Equal(expectedName, parameters.Name);
         Assert.Equal(expectedDescription, parameters.Description);
+        Assert.Equal(expectedExecutionIdentity, parameters.ExecutionIdentity);
         Assert.NotNull(parameters.McpServers);
         Assert.Equal(expectedMcpServers.Count, parameters.McpServers.Count);
         for (int i = 0; i < expectedMcpServers.Count; i++)
@@ -191,10 +196,11 @@ public class AgentCreateParamsTest : TestBase
     {
         var parameters = new AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5,
+            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
-            Multiagent = new()
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -203,7 +209,7 @@ public class AgentCreateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             System =
                 "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
@@ -228,10 +234,11 @@ public class AgentCreateParamsTest : TestBase
     {
         var parameters = new AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5,
+            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
-            Multiagent = new()
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -240,7 +247,7 @@ public class AgentCreateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             System =
                 "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
@@ -269,11 +276,104 @@ public class AgentCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new AgentCreateParams
+        {
+            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
+            Name = "My First Agent",
+            Description = "A general-purpose starter agent.",
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
+            McpServers =
+            [
+                new()
+                {
+                    Name = "example-mcp",
+                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
+                    Url = "https://example-server.modelcontextprotocol.io/sse",
+                },
+            ],
+            Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
+            },
+            Skills =
+            [
+                new BetaManagedAgentsAnthropicSkillParams()
+                {
+                    SkillID = "xlsx",
+                    Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
+                    Version = "1",
+                },
+            ],
+            System =
+                "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
+            Tools =
+            [
+                new BetaManagedAgentsAgentToolset20260401Params()
+                {
+                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                    Configs =
+                    [
+                        new BetaManagedAgentsBashToolConfigParams()
+                        {
+                            Enabled = true,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                        },
+                    ],
+                    DefaultConfig = new()
+                    {
+                        Enabled = true,
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        ),
+                    },
+                },
+            ],
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            McpServers = null,
+            Metadata = null,
+            Skills = null,
+            Tools = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.McpServers);
+        Assert.False(parameters.RawBodyData.ContainsKey("mcp_servers"));
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Skills);
+        Assert.False(parameters.RawBodyData.ContainsKey("skills"));
+        Assert.Null(parameters.Tools);
+        Assert.False(parameters.RawBodyData.ContainsKey("tools"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5,
+            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             McpServers =
             [
@@ -325,6 +425,8 @@ public class AgentCreateParamsTest : TestBase
 
         Assert.Null(parameters.Description);
         Assert.False(parameters.RawBodyData.ContainsKey("description"));
+        Assert.Null(parameters.ExecutionIdentity);
+        Assert.False(parameters.RawBodyData.ContainsKey("execution_identity"));
         Assert.Null(parameters.Multiagent);
         Assert.False(parameters.RawBodyData.ContainsKey("multiagent"));
         Assert.Null(parameters.System);
@@ -336,7 +438,7 @@ public class AgentCreateParamsTest : TestBase
     {
         var parameters = new AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5,
+            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             McpServers =
             [
@@ -386,12 +488,15 @@ public class AgentCreateParamsTest : TestBase
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Description = null,
+            ExecutionIdentity = null,
             Multiagent = null,
             System = null,
         };
 
         Assert.Null(parameters.Description);
         Assert.True(parameters.RawBodyData.ContainsKey("description"));
+        Assert.Null(parameters.ExecutionIdentity);
+        Assert.True(parameters.RawBodyData.ContainsKey("execution_identity"));
         Assert.Null(parameters.Multiagent);
         Assert.True(parameters.RawBodyData.ContainsKey("multiagent"));
         Assert.Null(parameters.System);
@@ -403,7 +508,7 @@ public class AgentCreateParamsTest : TestBase
     {
         AgentCreateParams parameters = new()
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5,
+            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
         };
 
@@ -420,7 +525,7 @@ public class AgentCreateParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         AgentCreateParams parameters = new()
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5,
+            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -429,7 +534,7 @@ public class AgentCreateParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,managed-agents-2026-04-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -443,9 +548,10 @@ public class AgentCreateParamsTest : TestBase
     {
         var parameters = new AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5,
+            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
             McpServers =
             [
                 new()
@@ -456,7 +562,7 @@ public class AgentCreateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -465,7 +571,7 @@ public class AgentCreateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = Sessions::BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Skills =
             [
@@ -518,7 +624,7 @@ public class ModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsValidationWorks()
     {
-        Model value = BetaManagedAgentsModel.ClaudeFable5_1;
+        Model value = BetaManagedAgentsModel.ClaudeHaiku5_5;
         value.Validate();
     }
 
@@ -527,7 +633,7 @@ public class ModelTest : TestBase
     {
         Model value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus5,
+            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -538,7 +644,7 @@ public class ModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsSerializationRoundtripWorks()
     {
-        Model value = BetaManagedAgentsModel.ClaudeFable5_1;
+        Model value = BetaManagedAgentsModel.ClaudeHaiku5_5;
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Model>(element, ModelBase.SerializerOptions);
 
@@ -550,7 +656,7 @@ public class ModelTest : TestBase
     {
         Model value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus5,
+            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,

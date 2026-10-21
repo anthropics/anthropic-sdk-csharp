@@ -35,6 +35,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("agent_id");
                 return;
             }
 
@@ -56,6 +57,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("agent_version");
                 return;
             }
 
@@ -77,6 +79,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[gt]");
                 return;
             }
 
@@ -98,6 +101,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[gte]");
                 return;
             }
 
@@ -119,6 +123,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[lt]");
                 return;
             }
 
@@ -140,6 +145,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[lte]");
                 return;
             }
 
@@ -161,6 +167,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("deployment_id");
                 return;
             }
 
@@ -182,6 +189,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("include_archived");
                 return;
             }
 
@@ -203,6 +211,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -225,6 +234,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("memory_store_id");
                 return;
             }
 
@@ -246,6 +256,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("order");
                 return;
             }
 
@@ -267,6 +278,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -290,6 +302,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("statuses");
                 return;
             }
 
@@ -301,7 +314,8 @@ public record class SessionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `managed-agents-2026-04-01` in
+    /// this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -316,6 +330,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -326,6 +341,14 @@ public record class SessionListParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -337,6 +360,7 @@ public record class SessionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -420,6 +444,25 @@ public record class SessionListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/sessions";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        [
+            "agent_id",
+            "agent_version",
+            "created_at[gt]",
+            "created_at[gte]",
+            "created_at[lt]",
+            "created_at[lte]",
+            "deployment_id",
+            "include_archived",
+            "limit",
+            "memory_store_id",
+            "order",
+            "page",
+            "statuses",
+        ];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
@@ -479,9 +522,6 @@ sealed class OrderConverter : JsonConverter<Order>
     }
 }
 
-/// <summary>
-/// SessionStatus enum
-/// </summary>
 [JsonConverter(typeof(StatusConverter))]
 public enum Status
 {

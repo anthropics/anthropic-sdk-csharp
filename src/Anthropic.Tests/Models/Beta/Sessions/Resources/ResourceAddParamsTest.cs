@@ -86,6 +86,30 @@ public class ResourceAddParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new Resources::ResourceAddParams
+        {
+            SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            Type = Resources::Type.File,
+            MountPath = "/uploads/receipt.pdf",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new Resources::ResourceAddParams
@@ -157,7 +181,7 @@ public class ResourceAddParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,managed-agents-2026-04-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(

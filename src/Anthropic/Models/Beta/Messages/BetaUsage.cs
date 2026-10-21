@@ -54,7 +54,11 @@ public sealed record class BetaUsage : JsonModel
     }
 
     /// <summary>
-    /// Outcome of the ``fallback_credit_token`` presented on this request.
+    /// Outcome of the `fallback_credit_token` presented on this request.
+    ///
+    /// <para>Present on every response to a non-batch request that carried a `fallback_credit_token`,
+    /// in either redemption mode; absent otherwise (batch items accept and ignore
+    /// the token and carry no outcome object).</para>
     /// </summary>
     public required BetaFallbackCreditUsage? FallbackCredit
     {
@@ -98,10 +102,9 @@ public sealed record class BetaUsage : JsonModel
     /// <para>Each entry represents one sampling iteration, with its own input/output
     /// token counts and cache statistics, discriminated by `type`. For `message`
     /// entries (model sampling iterations, such as the turns of a server-side tool
-    /// use loop), this allows you to: - Determine which iterations exceeded long
-    /// context thresholds (&gt;=200k tokens) - Calculate the context window size
-    /// from the last `message` entry - Understand token accumulation across server-side
-    /// tool use loops</para>
+    /// use loop), this allows you to: - Calculate the context window size from the
+    /// last `message` entry - Understand token accumulation across server-side tool
+    /// use loops</para>
     ///
     /// <para>A `compaction` entry reports the token usage of the compaction operation
     /// itself — the server-side request that summarizes the context being closed
@@ -193,9 +196,7 @@ public sealed record class BetaUsage : JsonModel
     }
 
     /// <summary>
-    /// Inference speed mode. `fast` provides significantly faster output token generation
-    /// at premium pricing. Not all models support `fast`; invalid combinations are
-    /// rejected at create time.
+    /// The inference speed mode used for this request.
     /// </summary>
     public required ApiEnum<string, BetaUsageSpeed>? Speed
     {
@@ -853,9 +854,7 @@ sealed class BetaUsageServiceTierConverter : JsonConverter<BetaUsageServiceTier>
 }
 
 /// <summary>
-/// Inference speed mode. `fast` provides significantly faster output token generation
-/// at premium pricing. Not all models support `fast`; invalid combinations are rejected
-/// at create time.
+/// The inference speed mode used for this request.
 /// </summary>
 [JsonConverter(typeof(BetaUsageSpeedConverter))]
 public enum BetaUsageSpeed

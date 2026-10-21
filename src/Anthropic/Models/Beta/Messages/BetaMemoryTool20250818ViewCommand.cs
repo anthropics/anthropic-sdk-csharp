@@ -57,6 +57,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("view_range");
                 return;
             }
 

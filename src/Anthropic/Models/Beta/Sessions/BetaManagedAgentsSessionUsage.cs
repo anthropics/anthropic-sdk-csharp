@@ -32,6 +32,7 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("active_seconds");
                 return;
             }
 
@@ -40,7 +41,7 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
     }
 
     /// <summary>
-    /// Prompt-cache creation token usage broken down by cache lifetime.
+    /// Tokens used to create prompt cache entries, broken down by cache TTL.
     /// </summary>
     public BetaManagedAgentsCacheCreationUsage? CacheCreation
     {
@@ -55,6 +56,7 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("cache_creation");
                 return;
             }
 
@@ -76,6 +78,7 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("cache_read_input_tokens");
                 return;
             }
 
@@ -97,6 +100,7 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("input_tokens");
                 return;
             }
 
@@ -105,7 +109,8 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
     }
 
     /// <summary>
-    /// A monetary amount in a specific currency.
+    /// Cumulative list cost of the session across all turns, priced at public list
+    /// rates. Absent until cost tracking is available for the session.
     /// </summary>
     public BetaMonetaryAmount? ListCost
     {
@@ -131,6 +136,7 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("output_tokens");
                 return;
             }
 
@@ -139,7 +145,8 @@ public sealed record class BetaManagedAgentsSessionUsage : JsonModel
     }
 
     /// <summary>
-    /// Cumulative count of server-executed tool invocations, broken down by tool.
+    /// Cumulative server-executed tool usage across all turns. Absent until server-tool
+    /// tracking is available for the session.
     /// </summary>
     public BetaManagedAgentsServerToolUsage? ServerToolUse
     {

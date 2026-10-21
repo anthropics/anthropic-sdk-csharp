@@ -35,6 +35,7 @@ public record class ThreadListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -56,6 +57,7 @@ public record class ThreadListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -64,7 +66,37 @@ public record class ThreadListParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// Return only threads that have one of these statuses.
+    ///
+    /// <para>Repeat the parameter to give more than one status. Leave it out to return
+    /// threads of every status.</para>
+    /// </summary>
+    public IReadOnlyList<ApiEnum<string, BetaManagedAgentsSessionThreadStatus>>? Statuses
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaManagedAgentsSessionThreadStatus>>
+            >("statuses");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawQueryData.Remove("statuses");
+                return;
+            }
+
+            this._rawQueryData.Set<ImmutableArray<
+                ApiEnum<string, BetaManagedAgentsSessionThreadStatus>
+            >?>("statuses", value == null ? null : ImmutableArray.ToImmutableArray(value));
+        }
+    }
+
+    /// <summary>
+    /// This endpoint is in beta: requests must send `managed-agents-2026-04-01` in
+    /// this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -79,6 +111,7 @@ public record class ThreadListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -89,6 +122,14 @@ public record class ThreadListParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -100,6 +141,7 @@ public record class ThreadListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -197,6 +239,10 @@ public record class ThreadListParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/sessions/{session_id}/threads";
+
+    internal override IReadOnlyList<string> QueryParams => ["limit", "page", "statuses"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

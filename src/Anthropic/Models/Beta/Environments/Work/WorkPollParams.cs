@@ -70,6 +70,7 @@ public record class WorkPollParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -95,6 +96,7 @@ public record class WorkPollParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("Anthropic-Worker-ID");
                 return;
             }
 
@@ -192,6 +194,10 @@ public record class WorkPollParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/environments/{environment_id}/work/poll";
+
+    internal override IReadOnlyList<string> QueryParams => ["block_ms", "reclaim_older_than_ms"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

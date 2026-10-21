@@ -35,6 +35,7 @@ public sealed record class BetaManagedAgentsSendSessionEvents : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("data");
                 return;
             }
 

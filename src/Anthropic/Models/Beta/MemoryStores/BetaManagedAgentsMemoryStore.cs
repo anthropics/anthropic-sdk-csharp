@@ -20,9 +20,8 @@ namespace Anthropic.Models.Beta.MemoryStores;
 public sealed record class BetaManagedAgentsMemoryStore : JsonModel
 {
     /// <summary>
-    /// Unique identifier for the memory store (a `memstore_...` tagged ID). Use this
-    /// when attaching the store to a session, or in the `{memory_store_id}` path
-    /// parameter of subsequent calls.
+    /// The unique ID of the memory store (`memstore_...`). Use it to attach the store
+    /// to a session.
     /// </summary>
     public required string ID
     {
@@ -35,7 +34,28 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When the memory store was archived, in RFC 3339, or `null` if it hasn't been.
+    ///
+    /// <para>Archiving can't be undone. An archived store can't be attached to new
+    /// sessions. You can't create or update its memories or update the store. You
+    /// can still read and delete its memories, redact their versions, and delete
+    /// the store.</para>
+    ///
+    /// <para>See the [memory guide](https://platform.claude.com/docs/en/managed-agents/memory#archive-a-store)
+    /// to learn more about archiving.</para>
+    /// </summary>
+    public required System::DateTimeOffset? ArchivedAt
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
+        }
+        init { this._rawData.Set("archived_at", value); }
+    }
+
+    /// <summary>
+    /// When the memory store was created, in RFC 3339.
     /// </summary>
     public required System::DateTimeOffset CreatedAt
     {
@@ -45,6 +65,43 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
             return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
+    }
+
+    /// <summary>
+    /// Free-text description of what the store contains, up to 1,024 characters.
+    /// Included in the agent's system prompt when the store is attached, so word
+    /// it to be useful to the agent. Empty string when unset.
+    /// </summary>
+    public required string Description
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("description");
+        }
+        init { this._rawData.Set("description", value); }
+    }
+
+    /// <summary>
+    /// Key-value pairs for your own use, such as the end user that the store belongs to.
+    ///
+    /// <para>A store has at most 16 pairs. Keys are 1 to 64 characters long and values
+    /// at most 512 characters. You can't filter lists by metadata.</para>
+    /// </summary>
+    public required IReadOnlyDictionary<string, string> Metadata
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<FrozenDictionary<string, string>>("metadata");
+        }
+        init
+        {
+            this._rawData.Set<FrozenDictionary<string, string>>(
+                "metadata",
+                FrozenDictionary.ToFrozenDictionary(value)
+            );
+        }
     }
 
     /// <summary>
@@ -74,7 +131,10 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When the memory store was last changed, in RFC 3339.
+    ///
+    /// <para>Changing its `name`, `description`, or `metadata` updates it. Archiving
+    /// the store does too. Changes to the store's memories don't.</para>
     /// </summary>
     public required System::DateTimeOffset UpdatedAt
     {
@@ -86,79 +146,17 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
         init { this._rawData.Set("updated_at", value); }
     }
 
-    /// <summary>
-    /// A timestamp in RFC 3339 format
-    /// </summary>
-    public System::DateTimeOffset? ArchivedAt
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
-        }
-        init { this._rawData.Set("archived_at", value); }
-    }
-
-    /// <summary>
-    /// Free-text description of what the store contains, up to 1024 characters. Included
-    /// in the agent's system prompt when the store is attached, so word it to be
-    /// useful to the agent. Empty string when unset.
-    /// </summary>
-    public string? Description
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("description");
-        }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawData.Set("description", value);
-        }
-    }
-
-    /// <summary>
-    /// Arbitrary key-value tags for your own bookkeeping (such as the end user a
-    /// store belongs to). Up to 16 pairs; keys 1–64 characters; values up to 512
-    /// characters. Returned on retrieve/list but not filterable.
-    /// </summary>
-    public IReadOnlyDictionary<string, string>? Metadata
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<FrozenDictionary<string, string>>("metadata");
-        }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            this._rawData.Set<FrozenDictionary<string, string>?>(
-                "metadata",
-                value == null ? null : FrozenDictionary.ToFrozenDictionary(value)
-            );
-        }
-    }
-
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
+        _ = this.ArchivedAt;
         _ = this.CreatedAt;
+        _ = this.Description;
+        _ = this.Metadata;
         _ = this.Name;
         this.Type.Validate();
         _ = this.UpdatedAt;
-        _ = this.ArchivedAt;
-        _ = this.Description;
-        _ = this.Metadata;
     }
 
     public BetaManagedAgentsMemoryStore() { }

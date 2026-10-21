@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.GoogleCloud;
+using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.GoogleCloud;
@@ -108,5 +109,58 @@ public class AnthropicGoogleCloudLiveTests
             )
         );
         Assert.InRange((int)ex.StatusCode, 400, 499);
+    }
+
+    [Fact]
+    public async Task Live_OrganizationRoute()
+    {
+        Assert.SkipUnless(Live, "set ANTHROPIC_LIVE=1 to run live integration tests");
+
+        var workspaceId = Environment.GetEnvironmentVariable("ANTHROPIC_GOOGLE_CLOUD_WORKSPACE_ID");
+        Assert.SkipWhen(
+            workspaceId is null,
+            "set ANTHROPIC_GOOGLE_CLOUD_WORKSPACE_ID to run this test"
+        );
+
+        var client = NewLiveClient();
+        var workspace = await client.Organization.Workspaces.Retrieve(
+            workspaceId,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+        Assert.Equal(workspaceId, workspace.ID);
+    }
+
+    [Fact]
+    public async Task Live_ManagedAgentsRoutes()
+    {
+        Assert.SkipUnless(Live, "set ANTHROPIC_LIVE=1 to run live integration tests");
+
+        var client = NewLiveClient();
+        var agent = await client.Beta.Agents.Create(
+            new() { Model = new(Model), Name = "sdk-live-test" },
+            TestContext.Current.CancellationToken
+        );
+        BetaManagedAgentsAgent archived;
+        try
+        {
+            var retrieved = await client.Beta.Agents.Retrieve(
+                agent.ID,
+                cancellationToken: TestContext.Current.CancellationToken
+            );
+            Assert.Equal(agent.ID, retrieved.ID);
+            var page = await client.Beta.Agents.List(
+                new() { Limit = 1 },
+                TestContext.Current.CancellationToken
+            );
+            Assert.NotEmpty(page.Items);
+        }
+        finally
+        {
+            archived = await client.Beta.Agents.Archive(
+                agent.ID,
+                cancellationToken: TestContext.Current.CancellationToken
+            );
+        }
+        Assert.NotNull(archived.ArchivedAt);
     }
 }

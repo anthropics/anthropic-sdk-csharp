@@ -49,8 +49,10 @@ public sealed record class BetaWorkspaceRateLimit : JsonModel
     }
 
     /// <summary>
-    /// The limiter values overridden for this group in this workspace. Limiter types
-    /// without a workspace override are omitted and inherit the organization value.
+    /// The workspace's limiter values for this group. By default only the limiter
+    /// types with a workspace-level override are listed. With `include_inherited`
+    /// set to `true`, the limiter types the workspace inherits from the organization
+    /// are listed too, each marked by `source`.
     /// </summary>
     public required IReadOnlyList<BetaWorkspaceRateLimitValue> Limits
     {
@@ -91,7 +93,7 @@ public sealed record class BetaWorkspaceRateLimit : JsonModel
     }
 
     /// <summary>
-    /// The `id` of the organization's RateLimit entry this override applies to.
+    /// The `id` of the organization's RateLimit entry this entry applies to.
     /// </summary>
     public required string RateLimitID
     {
@@ -117,7 +119,7 @@ public sealed record class BetaWorkspaceRateLimit : JsonModel
     }
 
     /// <summary>
-    /// ID of the Workspace this override applies to.
+    /// ID of the Workspace this entry applies to.
     /// </summary>
     public required string WorkspaceID
     {

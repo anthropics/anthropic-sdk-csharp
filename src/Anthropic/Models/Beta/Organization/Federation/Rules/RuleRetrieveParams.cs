@@ -40,6 +40,7 @@ public record class RuleRetrieveParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -146,6 +147,8 @@ public record class RuleRetrieveParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/organizations/federation_rules/{federation_rule_id}";
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

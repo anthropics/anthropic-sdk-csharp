@@ -264,6 +264,41 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsMcpToolsetParams
+        {
+            McpServerName = "x",
+            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
+            Configs =
+            [
+                new()
+                {
+                    Name = "x",
+                    Enabled = true,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                    ),
+                },
+            ],
+            DefaultConfig = new()
+            {
+                Enabled = true,
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                ),
+            },
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Configs = null,
+        };
+
+        Assert.Null(model.Configs);
+        Assert.False(model.RawData.ContainsKey("configs"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsMcpToolsetParams

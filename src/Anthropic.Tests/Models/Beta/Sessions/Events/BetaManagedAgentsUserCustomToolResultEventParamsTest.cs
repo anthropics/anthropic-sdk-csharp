@@ -194,6 +194,32 @@ public class BetaManagedAgentsUserCustomToolResultEventParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsUserCustomToolResultEventParams
+        {
+            CustomToolUseID = "x",
+            Type = BetaManagedAgentsUserCustomToolResultEventParamsType.UserCustomToolResult,
+            Content =
+            [
+                new BetaManagedAgentsTextBlock()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = BetaManagedAgentsTextBlockType.Text,
+                },
+            ],
+            IsError = true,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Content = null,
+        };
+
+        Assert.Null(model.Content);
+        Assert.False(model.RawData.ContainsKey("content"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsUserCustomToolResultEventParams

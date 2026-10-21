@@ -76,7 +76,7 @@ var agentV1 = await client.Beta.Agents.Create(
     new AgentCreateParams
     {
         Name = "comprehensive-example-agent",
-        Model = BetaManagedAgentsModel.ClaudeSonnet5,
+        Model = BetaManagedAgentsModel.ClaudeSonnet5_5,
         System = "You are a helpful assistant.",
         McpServers =
         [
@@ -219,9 +219,11 @@ await foreach (var streamEvent in client.Beta.Sessions.Events.StreamStreaming(se
         );
     }
 
+    // A requires_action idle waits on the tool result sent above; after any other
+    // idle nothing more arrives, so stop reading.
     if (
         streamEvent.TryPickSessionStatusIdleEvent(out var idleEvent)
-        && idleEvent.StopReason.TryPickBetaManagedAgentsSessionEndTurn(out var _)
+        && !idleEvent.StopReason.TryPickBetaManagedAgentsSessionRequiresAction(out var _)
     )
     {
         break;

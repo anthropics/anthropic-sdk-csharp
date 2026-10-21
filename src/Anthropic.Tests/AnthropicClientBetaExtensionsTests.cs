@@ -1606,8 +1606,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         );
         Assert.NotNull(response);
         Assert.NotNull(capturedBetaHeaders);
-        Assert.Contains("code-execution-2025-08-25", capturedBetaHeaders);
-        Assert.Contains("mcp-client-2025-11-20", capturedBetaHeaders);
+        string[] betas = [.. capturedBetaHeaders.SelectMany(h => h.Split(','))];
+        Assert.Contains("code-execution-2025-08-25", betas);
+        Assert.Contains("mcp-client-2025-11-20", betas);
     }
 
     [Fact]
@@ -1685,10 +1686,11 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         );
         Assert.NotNull(response);
         Assert.NotNull(capturedBetaHeaders);
-        Assert.Equal(3, capturedBetaHeaders.Count());
-        Assert.Contains("custom-beta-feature", capturedBetaHeaders);
-        Assert.Contains("code-execution-2025-08-25", capturedBetaHeaders);
-        Assert.Contains("mcp-client-2025-11-20", capturedBetaHeaders);
+        string[] betas = [.. capturedBetaHeaders.SelectMany(h => h.Split(','))];
+        Assert.Equal(3, betas.Length);
+        Assert.Contains("custom-beta-feature", betas);
+        Assert.Contains("code-execution-2025-08-25", betas);
+        Assert.Contains("mcp-client-2025-11-20", betas);
     }
 
     [Fact]

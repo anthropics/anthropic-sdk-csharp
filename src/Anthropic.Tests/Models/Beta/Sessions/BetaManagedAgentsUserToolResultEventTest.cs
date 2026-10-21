@@ -227,6 +227,35 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsUserToolResultEvent
+        {
+            ID = "id",
+            ToolUseID = "tool_use_id",
+            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
+            Content =
+            [
+                new Events::BetaManagedAgentsTextBlock()
+                {
+                    Text = "Where is my order #1234?",
+                    Type = Events::BetaManagedAgentsTextBlockType.Text,
+                },
+            ],
+            IsError = true,
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Content = null,
+        };
+
+        Assert.Null(model.Content);
+        Assert.False(model.RawData.ContainsKey("content"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsUserToolResultEvent

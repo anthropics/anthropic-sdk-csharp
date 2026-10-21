@@ -16,14 +16,15 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ID = "sevt_011CZkZWXb7pJkx1shYaqoCu",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
+            WorkflowRunID = null,
         };
 
         string expectedID = "sevt_011CZkZWXb7pJkx1shYaqoCu";
         string expectedAgentName = "Researcher";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        string expectedSessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
+        string expectedSessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
         ApiEnum<string, BetaManagedAgentsSessionThreadCreatedEventType> expectedType =
             BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated;
 
@@ -32,6 +33,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
         Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
         Assert.Equal(expectedType, model.Type);
+        Assert.Null(model.WorkflowRunID);
     }
 
     [Fact]
@@ -42,8 +44,9 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ID = "sevt_011CZkZWXb7pJkx1shYaqoCu",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
+            WorkflowRunID = null,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -63,8 +66,9 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ID = "sevt_011CZkZWXb7pJkx1shYaqoCu",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
+            WorkflowRunID = null,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -77,7 +81,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
         string expectedID = "sevt_011CZkZWXb7pJkx1shYaqoCu";
         string expectedAgentName = "Researcher";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        string expectedSessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt";
+        string expectedSessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
         ApiEnum<string, BetaManagedAgentsSessionThreadCreatedEventType> expectedType =
             BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated;
 
@@ -86,6 +90,7 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
         Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
         Assert.Equal(expectedType, deserialized.Type);
+        Assert.Null(deserialized.WorkflowRunID);
     }
 
     [Fact]
@@ -96,8 +101,9 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ID = "sevt_011CZkZWXb7pJkx1shYaqoCu",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
+            WorkflowRunID = null,
         };
 
         model.Validate();
@@ -111,8 +117,9 @@ public class BetaManagedAgentsSessionThreadCreatedEventTest : TestBase
             ID = "sevt_011CZkZWXb7pJkx1shYaqoCu",
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            SessionThreadID = "sthr_011CZkZVWa6oIjw0rgXZpnBt",
+            SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Type = BetaManagedAgentsSessionThreadCreatedEventType.SessionThreadCreated,
+            WorkflowRunID = null,
         };
 
         BetaManagedAgentsSessionThreadCreatedEvent copied = new(model);

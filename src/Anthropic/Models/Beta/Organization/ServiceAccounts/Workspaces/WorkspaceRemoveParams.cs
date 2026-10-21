@@ -49,6 +49,7 @@ public record class WorkspaceRemoveParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -160,6 +161,9 @@ public record class WorkspaceRemoveParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route =>
+        "/v1/organizations/service_accounts/{service_account_id}/workspaces/{workspace_id}";
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

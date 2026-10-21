@@ -40,7 +40,7 @@ public class SessionServiceTest : TestBase
         betaManagedAgentsSession.Validate();
     }
 
-    [Fact(Skip = "buildURL drops path-level query params")]
+    [Fact]
     public async Task List_Works()
     {
         var page = await this.client.Beta.Sessions.List(

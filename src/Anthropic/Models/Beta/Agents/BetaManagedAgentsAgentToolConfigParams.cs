@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -62,6 +63,50 @@ public record class BetaManagedAgentsAgentToolConfigParams : ModelBase
                 BetaManagedAgentsWebFetchToolConfigParams x => x.Enabled,
                 BetaManagedAgentsWebSearchToolConfigParams x => x.Enabled,
                 _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(this.Json, "enabled"),
+            };
+        }
+    }
+
+    public IReadOnlyList<string>? AllowedDomains
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsBashToolConfigParams _ => null,
+                BetaManagedAgentsEditToolConfigParams _ => null,
+                BetaManagedAgentsReadToolConfigParams _ => null,
+                BetaManagedAgentsWriteToolConfigParams _ => null,
+                BetaManagedAgentsGlobToolConfigParams _ => null,
+                BetaManagedAgentsGrepToolConfigParams _ => null,
+                BetaManagedAgentsWebFetchToolConfigParams x => x.AllowedDomains,
+                BetaManagedAgentsWebSearchToolConfigParams x => x.AllowedDomains,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<IReadOnlyList<string>>(
+                    this.Json,
+                    "allowed_domains"
+                ),
+            };
+        }
+    }
+
+    public IReadOnlyList<string>? BlockedDomains
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsBashToolConfigParams _ => null,
+                BetaManagedAgentsEditToolConfigParams _ => null,
+                BetaManagedAgentsReadToolConfigParams _ => null,
+                BetaManagedAgentsWriteToolConfigParams _ => null,
+                BetaManagedAgentsGlobToolConfigParams _ => null,
+                BetaManagedAgentsGrepToolConfigParams _ => null,
+                BetaManagedAgentsWebFetchToolConfigParams x => x.BlockedDomains,
+                BetaManagedAgentsWebSearchToolConfigParams x => x.BlockedDomains,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<IReadOnlyList<string>>(
+                    this.Json,
+                    "blocked_domains"
+                ),
             };
         }
     }

@@ -34,8 +34,7 @@ public sealed record class BetaManagedAgentsAgentToolset20260401GlobInput : Json
     }
 
     /// <summary>
-    /// Optional directory root to search under. Defaults to the runner's working
-    /// directory.
+    /// Optional directory root to search under. Defaults to the runner's working directory.
     /// </summary>
     public string? Path
     {
@@ -48,6 +47,7 @@ public sealed record class BetaManagedAgentsAgentToolset20260401GlobInput : Json
         {
             if (value == null)
             {
+                this._rawData.Remove("path");
                 return;
             }
 

@@ -48,6 +48,7 @@ public record class BetaContentBlock : ModelBase
                 BetaContainerUploadBlock x => x.Type,
                 BetaCompactionBlock x => x.Type,
                 BetaFallbackBlock x => x.Type,
+                BetaMcpToolListingBlock x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
             };
         }
@@ -76,6 +77,7 @@ public record class BetaContentBlock : ModelBase
                 BetaContainerUploadBlock _ => null,
                 BetaCompactionBlock x => x.Signature,
                 BetaFallbackBlock _ => null,
+                BetaMcpToolListingBlock _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "signature"),
             };
         }
@@ -104,6 +106,7 @@ public record class BetaContentBlock : ModelBase
                 BetaContainerUploadBlock _ => null,
                 BetaCompactionBlock _ => null,
                 BetaFallbackBlock _ => null,
+                BetaMcpToolListingBlock _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "id"),
             };
         }
@@ -132,6 +135,7 @@ public record class BetaContentBlock : ModelBase
                 BetaContainerUploadBlock _ => null,
                 BetaCompactionBlock _ => null,
                 BetaFallbackBlock _ => null,
+                BetaMcpToolListingBlock _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "tool_use_id"
@@ -240,6 +244,12 @@ public record class BetaContentBlock : ModelBase
     }
 
     public BetaContentBlock(BetaFallbackBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaContentBlock(BetaMcpToolListingBlock value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -620,6 +630,27 @@ public record class BetaContentBlock : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMcpToolListingBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickMcpToolListing(out var value)) {
+    ///     // `value` is of type `BetaMcpToolListingBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickMcpToolListing([NotNullWhen(true)] out BetaMcpToolListingBlock? value)
+    {
+        value = this.Value as BetaMcpToolListingBlock;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -649,7 +680,8 @@ public record class BetaContentBlock : ModelBase
     ///     (BetaMcpToolResultBlock value) =&gt; {...},
     ///     (BetaContainerUploadBlock value) =&gt; {...},
     ///     (BetaCompactionBlock value) =&gt; {...},
-    ///     (BetaFallbackBlock value) =&gt; {...}
+    ///     (BetaFallbackBlock value) =&gt; {...},
+    ///     (BetaMcpToolListingBlock value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -671,7 +703,8 @@ public record class BetaContentBlock : ModelBase
         System::Action<BetaMcpToolResultBlock> mcpToolResult,
         System::Action<BetaContainerUploadBlock> containerUpload,
         System::Action<BetaCompactionBlock> compaction,
-        System::Action<BetaFallbackBlock> fallback
+        System::Action<BetaFallbackBlock> fallback,
+        System::Action<BetaMcpToolListingBlock> mcpToolListing
     )
     {
         switch (this.Value)
@@ -727,6 +760,9 @@ public record class BetaContentBlock : ModelBase
             case BetaFallbackBlock value:
                 fallback(value);
                 break;
+            case BetaMcpToolListingBlock value:
+                mcpToolListing(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of BetaContentBlock"
@@ -765,7 +801,8 @@ public record class BetaContentBlock : ModelBase
     ///     (BetaMcpToolResultBlock value) =&gt; {...},
     ///     (BetaContainerUploadBlock value) =&gt; {...},
     ///     (BetaCompactionBlock value) =&gt; {...},
-    ///     (BetaFallbackBlock value) =&gt; {...}
+    ///     (BetaFallbackBlock value) =&gt; {...},
+    ///     (BetaMcpToolListingBlock value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -790,7 +827,8 @@ public record class BetaContentBlock : ModelBase
         System::Func<BetaMcpToolResultBlock, T> mcpToolResult,
         System::Func<BetaContainerUploadBlock, T> containerUpload,
         System::Func<BetaCompactionBlock, T> compaction,
-        System::Func<BetaFallbackBlock, T> fallback
+        System::Func<BetaFallbackBlock, T> fallback,
+        System::Func<BetaMcpToolListingBlock, T> mcpToolListing
     )
     {
         return this.Value switch
@@ -814,6 +852,7 @@ public record class BetaContentBlock : ModelBase
             BetaContainerUploadBlock value => containerUpload(value),
             BetaCompactionBlock value => compaction(value),
             BetaFallbackBlock value => fallback(value),
+            BetaMcpToolListingBlock value => mcpToolListing(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaContentBlock"
             ),
@@ -862,6 +901,8 @@ public record class BetaContentBlock : ModelBase
 
     public static implicit operator BetaContentBlock(BetaFallbackBlock value) => new(value);
 
+    public static implicit operator BetaContentBlock(BetaMcpToolListingBlock value) => new(value);
+
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -897,7 +938,8 @@ public record class BetaContentBlock : ModelBase
             (mcpToolResult) => mcpToolResult.Validate(),
             (containerUpload) => containerUpload.Validate(),
             (compaction) => compaction.Validate(),
-            (fallback) => fallback.Validate()
+            (fallback) => fallback.Validate(),
+            (mcpToolListing) => mcpToolListing.Validate()
         );
     }
 
@@ -938,6 +980,7 @@ public record class BetaContentBlock : ModelBase
             BetaContainerUploadBlock _ => 14,
             BetaCompactionBlock _ => 15,
             BetaFallbackBlock _ => 16,
+            BetaMcpToolListingBlock _ => 17,
             _ => -1,
         };
     }
@@ -1288,6 +1331,26 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaFallbackBlock>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "mcp_tool_listing":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaMcpToolListingBlock>(
                         element,
                         options
                     );

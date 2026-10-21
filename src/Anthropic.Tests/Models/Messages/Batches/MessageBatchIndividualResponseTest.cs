@@ -51,7 +51,8 @@ public class MessageBatchIndividualResponseTest : TestBase
                             Text = "Hi! My name is Claude.",
                         },
                     ],
-                    Model = Model.ClaudeOpus5,
+                    Diagnostics = new(new CacheMissModelChanged(0)),
+                    Model = Model.ClaudeOpus5_5,
                     StopDetails = new()
                     {
                         Category = Category.Cyber,
@@ -75,6 +76,7 @@ public class MessageBatchIndividualResponseTest : TestBase
                         OutputTokensDetails = new(0),
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = UsageServiceTier.Standard,
+                        Speed = UsageSpeed.Standard,
                     },
                 }
             ),
@@ -118,7 +120,8 @@ public class MessageBatchIndividualResponseTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus5,
+                Diagnostics = new(new CacheMissModelChanged(0)),
+                Model = Model.ClaudeOpus5_5,
                 StopDetails = new()
                 {
                     Category = Category.Cyber,
@@ -142,6 +145,7 @@ public class MessageBatchIndividualResponseTest : TestBase
                     OutputTokensDetails = new(0),
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             }
         );
@@ -193,7 +197,8 @@ public class MessageBatchIndividualResponseTest : TestBase
                             Text = "Hi! My name is Claude.",
                         },
                     ],
-                    Model = Model.ClaudeOpus5,
+                    Diagnostics = new(new CacheMissModelChanged(0)),
+                    Model = Model.ClaudeOpus5_5,
                     StopDetails = new()
                     {
                         Category = Category.Cyber,
@@ -217,6 +222,7 @@ public class MessageBatchIndividualResponseTest : TestBase
                         OutputTokensDetails = new(0),
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = UsageServiceTier.Standard,
+                        Speed = UsageSpeed.Standard,
                     },
                 }
             ),
@@ -274,7 +280,8 @@ public class MessageBatchIndividualResponseTest : TestBase
                             Text = "Hi! My name is Claude.",
                         },
                     ],
-                    Model = Model.ClaudeOpus5,
+                    Diagnostics = new(new CacheMissModelChanged(0)),
+                    Model = Model.ClaudeOpus5_5,
                     StopDetails = new()
                     {
                         Category = Category.Cyber,
@@ -298,6 +305,7 @@ public class MessageBatchIndividualResponseTest : TestBase
                         OutputTokensDetails = new(0),
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = UsageServiceTier.Standard,
+                        Speed = UsageSpeed.Standard,
                     },
                 }
             ),
@@ -348,7 +356,8 @@ public class MessageBatchIndividualResponseTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus5,
+                Diagnostics = new(new CacheMissModelChanged(0)),
+                Model = Model.ClaudeOpus5_5,
                 StopDetails = new()
                 {
                     Category = Category.Cyber,
@@ -372,6 +381,7 @@ public class MessageBatchIndividualResponseTest : TestBase
                     OutputTokensDetails = new(0),
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                     ServiceTier = UsageServiceTier.Standard,
+                    Speed = UsageSpeed.Standard,
                 },
             }
         );
@@ -423,7 +433,8 @@ public class MessageBatchIndividualResponseTest : TestBase
                             Text = "Hi! My name is Claude.",
                         },
                     ],
-                    Model = Model.ClaudeOpus5,
+                    Diagnostics = new(new CacheMissModelChanged(0)),
+                    Model = Model.ClaudeOpus5_5,
                     StopDetails = new()
                     {
                         Category = Category.Cyber,
@@ -447,6 +458,7 @@ public class MessageBatchIndividualResponseTest : TestBase
                         OutputTokensDetails = new(0),
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = UsageServiceTier.Standard,
+                        Speed = UsageSpeed.Standard,
                     },
                 }
             ),
@@ -498,7 +510,8 @@ public class MessageBatchIndividualResponseTest : TestBase
                             Text = "Hi! My name is Claude.",
                         },
                     ],
-                    Model = Model.ClaudeOpus5,
+                    Diagnostics = new(new CacheMissModelChanged(0)),
+                    Model = Model.ClaudeOpus5_5,
                     StopDetails = new()
                     {
                         Category = Category.Cyber,
@@ -522,6 +535,7 @@ public class MessageBatchIndividualResponseTest : TestBase
                         OutputTokensDetails = new(0),
                         ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
                         ServiceTier = UsageServiceTier.Standard,
+                        Speed = UsageSpeed.Standard,
                     },
                 }
             ),

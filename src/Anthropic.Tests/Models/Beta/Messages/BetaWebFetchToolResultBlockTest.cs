@@ -148,6 +148,26 @@ public class BetaWebFetchToolResultBlockTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaWebFetchToolResultBlock
+        {
+            Content = new BetaWebFetchToolResultErrorBlock(
+                BetaWebFetchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            Caller = new BetaDirectCaller(),
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Caller = null,
+        };
+
+        Assert.Null(model.Caller);
+        Assert.False(model.RawData.ContainsKey("caller"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaWebFetchToolResultBlock

@@ -8,13 +8,15 @@ using Anthropic.Core;
 namespace Anthropic.Models.Beta.Models;
 
 /// <summary>
-/// Supported thinking type configurations.
+/// Which `thinking.type` values the model accepts on requests. Read each key on
+/// its own: for example, `enabled` can be false while `disabled` is true.
 /// </summary>
 [JsonConverter(typeof(JsonModelConverter<BetaThinkingTypes, BetaThinkingTypesFromRaw>))]
 public sealed record class BetaThinkingTypes : JsonModel
 {
     /// <summary>
-    /// Whether the model supports thinking with type 'adaptive' (auto).
+    /// Whether the model accepts thinking with type 'adaptive' (the model decides
+    /// whether and how much to think).
     /// </summary>
     public required BetaCapabilitySupport Adaptive
     {
@@ -27,7 +29,43 @@ public sealed record class BetaThinkingTypes : JsonModel
     }
 
     /// <summary>
-    /// Whether the model supports thinking with type 'enabled'.
+    /// Whether the model accepts thinking with type 'between_tools' (thinking turned
+    /// off, and any short progress updates the model writes between tool calls come
+    /// back as thinking blocks). False exactly when a request that sends it gets
+    /// a 400 from this model. A request that sends 'between_tools' can still be rejected
+    /// for another reason, such as an effort level the model does not allow with
+    /// thinking off.
+    /// </summary>
+    public required BetaCapabilitySupport BetweenTools
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaCapabilitySupport>("between_tools");
+        }
+        init { this._rawData.Set("between_tools", value); }
+    }
+
+    /// <summary>
+    /// Whether the model accepts thinking with type 'disabled' (thinking turned
+    /// off). False exactly when a request that sends it gets a 400 from this model.
+    /// True on a model that does not support thinking. A request that sends 'disabled'
+    /// can still be rejected for another reason, such as an effort level the model
+    /// does not allow with thinking off.
+    /// </summary>
+    public required BetaCapabilitySupport Disabled
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaCapabilitySupport>("disabled");
+        }
+        init { this._rawData.Set("disabled", value); }
+    }
+
+    /// <summary>
+    /// Whether the model accepts thinking with type 'enabled' (extended thinking
+    /// with a caller-set `budget_tokens`).
     /// </summary>
     public required BetaCapabilitySupport Enabled
     {
@@ -43,6 +81,8 @@ public sealed record class BetaThinkingTypes : JsonModel
     public override void Validate()
     {
         this.Adaptive.Validate();
+        this.BetweenTools.Validate();
+        this.Disabled.Validate();
         this.Enabled.Validate();
     }
 

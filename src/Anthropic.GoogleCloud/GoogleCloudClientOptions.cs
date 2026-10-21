@@ -34,7 +34,8 @@ namespace Anthropic.GoogleCloud;
 ///
 /// <para>
 /// Workspace ID: <see cref="WorkspaceId"/> → <c>ANTHROPIC_GOOGLE_CLOUD_WORKSPACE_ID</c> env var.
-/// Required unless <see cref="SkipAuth"/> is set together with an explicit <see cref="BaseUrl"/>.
+/// Required when the base URL is derived, except for organization-level routes
+/// (<c>/v1/organizations</c>), which need none.
 /// </para>
 ///
 /// <para>
@@ -81,9 +82,8 @@ public sealed class GoogleCloudClientOptions
     /// <summary>
     /// When <c>true</c>, all authentication is disabled — no bearer token is attached.
     /// Use when requests go through a gateway or proxy that handles authentication.
-    /// A workspace ID is still required to derive the base URL unless
-    /// <see cref="BaseUrl"/> is set explicitly. Mutually exclusive with
-    /// <see cref="TokenProvider"/> and <see cref="GoogleCredential"/>.
+    /// Mutually exclusive with <see cref="TokenProvider"/> and
+    /// <see cref="GoogleCredential"/>.
     /// </summary>
     public bool SkipAuth { get; init; }
 

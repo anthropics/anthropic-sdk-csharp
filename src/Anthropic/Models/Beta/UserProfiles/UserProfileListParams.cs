@@ -22,7 +22,7 @@ namespace Anthropic.Models.Beta.UserProfiles;
 public record class UserProfileListParams : ParamsBase
 {
     /// <summary>
-    /// Query parameter for limit
+    /// The maximum number of user profiles to return, from 1 to 100. Defaults to 20.
     /// </summary>
     public int? Limit
     {
@@ -35,6 +35,7 @@ public record class UserProfileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -43,7 +44,8 @@ public record class UserProfileListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for order
+    /// The sort direction, applied to the field that `order_by` selects. Defaults
+    /// to `desc`.
     /// </summary>
     public ApiEnum<string, Order>? Order
     {
@@ -56,6 +58,7 @@ public record class UserProfileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("order");
                 return;
             }
 
@@ -64,7 +67,8 @@ public record class UserProfileListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for order_by
+    /// The field to sort user profiles by, in the direction that `order` sets. Defaults
+    /// to `created_at`.
     /// </summary>
     public ApiEnum<string, OrderBy>? OrderBy
     {
@@ -77,6 +81,7 @@ public record class UserProfileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("order_by");
                 return;
             }
 
@@ -85,7 +90,9 @@ public record class UserProfileListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for page
+    /// The cursor for the page to return, taken from `next_page` in a previous response.
+    ///
+    /// <para>Leave it out to get the first page.</para>
     /// </summary>
     public string? Page
     {
@@ -98,6 +105,7 @@ public record class UserProfileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -121,6 +129,7 @@ public record class UserProfileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -131,6 +140,14 @@ public record class UserProfileListParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -142,6 +159,7 @@ public record class UserProfileListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -225,6 +243,10 @@ public record class UserProfileListParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/user_profiles";
+
+    internal override IReadOnlyList<string> QueryParams => ["limit", "order", "order_by", "page"];
+
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
@@ -242,12 +264,21 @@ public record class UserProfileListParams : ParamsBase
 }
 
 /// <summary>
-/// Query parameter for order
+/// The sort direction, applied to the field that `order_by` selects. Defaults to `desc`.
 /// </summary>
 [JsonConverter(typeof(OrderConverter))]
 public enum Order
 {
+    /// <summary>
+    /// Oldest first when `order_by` is `created_at`, or names in ascending order
+    /// when `order_by` is `name`.
+    /// </summary>
     Asc,
+
+    /// <summary>
+    /// Newest first when `order_by` is `created_at`, or names in descending order
+    /// when `order_by` is `name`. This is the default.
+    /// </summary>
     Desc,
 }
 
@@ -285,12 +316,21 @@ sealed class OrderConverter : JsonConverter<Order>
 }
 
 /// <summary>
-/// Query parameter for order_by
+/// The field to sort user profiles by, in the direction that `order` sets. Defaults
+/// to `created_at`.
 /// </summary>
 [JsonConverter(typeof(OrderByConverter))]
 public enum OrderBy
 {
+    /// <summary>
+    /// Sort by when each user profile was created. This is the default.
+    /// </summary>
     CreatedAt,
+
+    /// <summary>
+    /// Sort by `name`, ignoring the case of ASCII letters. Profiles without a name
+    /// come last in either direction.
+    /// </summary>
     Name,
 }
 

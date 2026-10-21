@@ -20,6 +20,7 @@ public class UserProfileListPageResponseTest : TestBase
                     ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
+                    Name = "Example User",
                     TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                     {
                         { "cyber", new(UserProfiles::Status.Active) },
@@ -31,15 +32,14 @@ public class UserProfileListPageResponseTest : TestBase
                     ExternalUserDetails = new()
                     {
                         AccountStatus = UserProfiles::AccountStatus.Active,
-                        Country = "country",
-                        EmailHash = "email_hash",
-                        EntityType = UserProfiles::EntityType.Individual,
-                        NameHash = "name_hash",
-                        OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        ReferenceID = "reference_id",
+                        Country = "US",
+                        EmailHash = null,
+                        EntityType = UserProfiles::EntityType.Business,
+                        NameHash = null,
+                        OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                        ReferenceID = "user_12345",
                     },
                     ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-                    Name = "Example User",
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -52,6 +52,7 @@ public class UserProfileListPageResponseTest : TestBase
                 ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Metadata = new Dictionary<string, string>(),
+                Name = "Example User",
                 TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                 {
                     { "cyber", new(UserProfiles::Status.Active) },
@@ -63,15 +64,14 @@ public class UserProfileListPageResponseTest : TestBase
                 ExternalUserDetails = new()
                 {
                     AccountStatus = UserProfiles::AccountStatus.Active,
-                    Country = "country",
-                    EmailHash = "email_hash",
-                    EntityType = UserProfiles::EntityType.Individual,
-                    NameHash = "name_hash",
-                    OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    ReferenceID = "reference_id",
+                    Country = "US",
+                    EmailHash = null,
+                    EntityType = UserProfiles::EntityType.Business,
+                    NameHash = null,
+                    OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                    ReferenceID = "user_12345",
                 },
                 ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-                Name = "Example User",
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -96,6 +96,7 @@ public class UserProfileListPageResponseTest : TestBase
                     ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
+                    Name = "Example User",
                     TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                     {
                         { "cyber", new(UserProfiles::Status.Active) },
@@ -107,15 +108,14 @@ public class UserProfileListPageResponseTest : TestBase
                     ExternalUserDetails = new()
                     {
                         AccountStatus = UserProfiles::AccountStatus.Active,
-                        Country = "country",
-                        EmailHash = "email_hash",
-                        EntityType = UserProfiles::EntityType.Individual,
-                        NameHash = "name_hash",
-                        OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        ReferenceID = "reference_id",
+                        Country = "US",
+                        EmailHash = null,
+                        EntityType = UserProfiles::EntityType.Business,
+                        NameHash = null,
+                        OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                        ReferenceID = "user_12345",
                     },
                     ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-                    Name = "Example User",
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -142,6 +142,7 @@ public class UserProfileListPageResponseTest : TestBase
                     ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
+                    Name = "Example User",
                     TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                     {
                         { "cyber", new(UserProfiles::Status.Active) },
@@ -153,15 +154,14 @@ public class UserProfileListPageResponseTest : TestBase
                     ExternalUserDetails = new()
                     {
                         AccountStatus = UserProfiles::AccountStatus.Active,
-                        Country = "country",
-                        EmailHash = "email_hash",
-                        EntityType = UserProfiles::EntityType.Individual,
-                        NameHash = "name_hash",
-                        OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        ReferenceID = "reference_id",
+                        Country = "US",
+                        EmailHash = null,
+                        EntityType = UserProfiles::EntityType.Business,
+                        NameHash = null,
+                        OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                        ReferenceID = "user_12345",
                     },
                     ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-                    Name = "Example User",
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -181,6 +181,7 @@ public class UserProfileListPageResponseTest : TestBase
                 ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Metadata = new Dictionary<string, string>(),
+                Name = "Example User",
                 TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                 {
                     { "cyber", new(UserProfiles::Status.Active) },
@@ -192,15 +193,14 @@ public class UserProfileListPageResponseTest : TestBase
                 ExternalUserDetails = new()
                 {
                     AccountStatus = UserProfiles::AccountStatus.Active,
-                    Country = "country",
-                    EmailHash = "email_hash",
-                    EntityType = UserProfiles::EntityType.Individual,
-                    NameHash = "name_hash",
-                    OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    ReferenceID = "reference_id",
+                    Country = "US",
+                    EmailHash = null,
+                    EntityType = UserProfiles::EntityType.Business,
+                    NameHash = null,
+                    OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                    ReferenceID = "user_12345",
                 },
                 ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-                Name = "Example User",
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -225,6 +225,7 @@ public class UserProfileListPageResponseTest : TestBase
                     ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
+                    Name = "Example User",
                     TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                     {
                         { "cyber", new(UserProfiles::Status.Active) },
@@ -236,15 +237,14 @@ public class UserProfileListPageResponseTest : TestBase
                     ExternalUserDetails = new()
                     {
                         AccountStatus = UserProfiles::AccountStatus.Active,
-                        Country = "country",
-                        EmailHash = "email_hash",
-                        EntityType = UserProfiles::EntityType.Individual,
-                        NameHash = "name_hash",
-                        OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        ReferenceID = "reference_id",
+                        Country = "US",
+                        EmailHash = null,
+                        EntityType = UserProfiles::EntityType.Business,
+                        NameHash = null,
+                        OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                        ReferenceID = "user_12345",
                     },
                     ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-                    Name = "Example User",
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -265,6 +265,7 @@ public class UserProfileListPageResponseTest : TestBase
                     ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
+                    Name = "Example User",
                     TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
                     {
                         { "cyber", new(UserProfiles::Status.Active) },
@@ -276,15 +277,14 @@ public class UserProfileListPageResponseTest : TestBase
                     ExternalUserDetails = new()
                     {
                         AccountStatus = UserProfiles::AccountStatus.Active,
-                        Country = "country",
-                        EmailHash = "email_hash",
-                        EntityType = UserProfiles::EntityType.Individual,
-                        NameHash = "name_hash",
-                        OnboardedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        ReferenceID = "reference_id",
+                        Country = "US",
+                        EmailHash = null,
+                        EntityType = UserProfiles::EntityType.Business,
+                        NameHash = null,
+                        OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
+                        ReferenceID = "user_12345",
                     },
                     ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
-                    Name = "Example User",
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",

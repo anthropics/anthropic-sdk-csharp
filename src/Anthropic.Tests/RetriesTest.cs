@@ -759,6 +759,7 @@ public class RetriesTest : TestBase
                 HttpClient = httpClient,
                 MaxRetries = 1,
                 Timeout = TimeSpan.FromMilliseconds(1500),
+                ApiKey = "my-anthropic-api-key",
             };
 
             var stopwatch = Stopwatch.StartNew();

@@ -5,9 +5,6 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
-/// <summary>
-/// EventDeltaType enum
-/// </summary>
 [JsonConverter(typeof(BetaManagedAgentsDeltaTypeConverter))]
 public enum BetaManagedAgentsDeltaType
 {

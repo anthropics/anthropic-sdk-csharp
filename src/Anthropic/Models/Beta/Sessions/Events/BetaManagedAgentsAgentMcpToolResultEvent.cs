@@ -48,7 +48,7 @@ public sealed record class BetaManagedAgentsAgentMcpToolResultEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when this event was processed.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {
@@ -86,6 +86,7 @@ public sealed record class BetaManagedAgentsAgentMcpToolResultEvent : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("content");
                 return;
             }
 

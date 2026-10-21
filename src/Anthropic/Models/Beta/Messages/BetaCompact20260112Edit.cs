@@ -51,6 +51,7 @@ public sealed record class BetaCompact20260112Edit : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("pause_after_compaction");
                 return;
             }
 

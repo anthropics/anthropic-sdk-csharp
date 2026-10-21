@@ -53,6 +53,7 @@ public record class BetaContentBlockParam : ModelBase
                 BetaCompactionBlockParam x => x.Type,
                 BetaRequestToolAdditionBlock x => x.Type,
                 BetaRequestToolRemovalBlock x => x.Type,
+                BetaMcpToolListingBlockParam x => x.Type,
                 BetaFallbackBlockParam x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
             };
@@ -87,6 +88,7 @@ public record class BetaContentBlockParam : ModelBase
                 BetaCompactionBlockParam x => x.CacheControl,
                 BetaRequestToolAdditionBlock x => x.CacheControl,
                 BetaRequestToolRemovalBlock x => x.CacheControl,
+                BetaMcpToolListingBlockParam _ => null,
                 BetaFallbackBlockParam _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<BetaCacheControlEphemeral>(
                     this.Json,
@@ -124,6 +126,7 @@ public record class BetaContentBlockParam : ModelBase
                 BetaCompactionBlockParam _ => null,
                 BetaRequestToolAdditionBlock _ => null,
                 BetaRequestToolRemovalBlock _ => null,
+                BetaMcpToolListingBlockParam _ => null,
                 BetaFallbackBlockParam _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "title"),
             };
@@ -158,6 +161,7 @@ public record class BetaContentBlockParam : ModelBase
                 BetaCompactionBlockParam x => x.Signature,
                 BetaRequestToolAdditionBlock _ => null,
                 BetaRequestToolRemovalBlock _ => null,
+                BetaMcpToolListingBlockParam _ => null,
                 BetaFallbackBlockParam _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "signature"),
             };
@@ -192,6 +196,7 @@ public record class BetaContentBlockParam : ModelBase
                 BetaCompactionBlockParam _ => null,
                 BetaRequestToolAdditionBlock _ => null,
                 BetaRequestToolRemovalBlock _ => null,
+                BetaMcpToolListingBlockParam _ => null,
                 BetaFallbackBlockParam _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "id"),
             };
@@ -226,6 +231,7 @@ public record class BetaContentBlockParam : ModelBase
                 BetaCompactionBlockParam _ => null,
                 BetaRequestToolAdditionBlock _ => null,
                 BetaRequestToolRemovalBlock _ => null,
+                BetaMcpToolListingBlockParam _ => null,
                 BetaFallbackBlockParam _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
@@ -263,6 +269,7 @@ public record class BetaContentBlockParam : ModelBase
                 BetaCompactionBlockParam _ => null,
                 BetaRequestToolAdditionBlock _ => null,
                 BetaRequestToolRemovalBlock _ => null,
+                BetaMcpToolListingBlockParam _ => null,
                 BetaFallbackBlockParam _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
@@ -300,6 +307,7 @@ public record class BetaContentBlockParam : ModelBase
                 BetaCompactionBlockParam _ => null,
                 BetaRequestToolAdditionBlock _ => null,
                 BetaRequestToolRemovalBlock _ => null,
+                BetaMcpToolListingBlockParam _ => null,
                 BetaFallbackBlockParam _ => null,
                 _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(this.Json, "is_error"),
             };
@@ -454,6 +462,12 @@ public record class BetaContentBlockParam : ModelBase
     }
 
     public BetaContentBlockParam(BetaRequestToolRemovalBlock value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaContentBlockParam(BetaMcpToolListingBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -956,6 +970,27 @@ public record class BetaContentBlockParam : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMcpToolListingBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickMcpToolListing(out var value)) {
+    ///     // `value` is of type `BetaMcpToolListingBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickMcpToolListing([NotNullWhen(true)] out BetaMcpToolListingBlockParam? value)
+    {
+        value = this.Value as BetaMcpToolListingBlockParam;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaFallbackBlockParam"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -1011,6 +1046,7 @@ public record class BetaContentBlockParam : ModelBase
     ///     (BetaCompactionBlockParam value) =&gt; {...},
     ///     (BetaRequestToolAdditionBlock value) =&gt; {...},
     ///     (BetaRequestToolRemovalBlock value) =&gt; {...},
+    ///     (BetaMcpToolListingBlockParam value) =&gt; {...},
     ///     (BetaFallbackBlockParam value) =&gt; {...}
     /// );
     /// </code>
@@ -1039,6 +1075,7 @@ public record class BetaContentBlockParam : ModelBase
         System::Action<BetaCompactionBlockParam> compaction,
         System::Action<BetaRequestToolAdditionBlock> requestToolAdditionBlock,
         System::Action<BetaRequestToolRemovalBlock> requestToolRemovalBlock,
+        System::Action<BetaMcpToolListingBlockParam> mcpToolListing,
         System::Action<BetaFallbackBlockParam> fallback
     )
     {
@@ -1110,6 +1147,9 @@ public record class BetaContentBlockParam : ModelBase
             case BetaRequestToolRemovalBlock value:
                 requestToolRemovalBlock(value);
                 break;
+            case BetaMcpToolListingBlockParam value:
+                mcpToolListing(value);
+                break;
             case BetaFallbackBlockParam value:
                 fallback(value);
                 break;
@@ -1157,6 +1197,7 @@ public record class BetaContentBlockParam : ModelBase
     ///     (BetaCompactionBlockParam value) =&gt; {...},
     ///     (BetaRequestToolAdditionBlock value) =&gt; {...},
     ///     (BetaRequestToolRemovalBlock value) =&gt; {...},
+    ///     (BetaMcpToolListingBlockParam value) =&gt; {...},
     ///     (BetaFallbackBlockParam value) =&gt; {...}
     /// );
     /// </code>
@@ -1188,6 +1229,7 @@ public record class BetaContentBlockParam : ModelBase
         System::Func<BetaCompactionBlockParam, T> compaction,
         System::Func<BetaRequestToolAdditionBlock, T> requestToolAdditionBlock,
         System::Func<BetaRequestToolRemovalBlock, T> requestToolRemovalBlock,
+        System::Func<BetaMcpToolListingBlockParam, T> mcpToolListing,
         System::Func<BetaFallbackBlockParam, T> fallback
     )
     {
@@ -1216,6 +1258,7 @@ public record class BetaContentBlockParam : ModelBase
             BetaCompactionBlockParam value => compaction(value),
             BetaRequestToolAdditionBlock value => requestToolAdditionBlock(value),
             BetaRequestToolRemovalBlock value => requestToolRemovalBlock(value),
+            BetaMcpToolListingBlockParam value => mcpToolListing(value),
             BetaFallbackBlockParam value => fallback(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaContentBlockParam"
@@ -1293,6 +1336,9 @@ public record class BetaContentBlockParam : ModelBase
     public static implicit operator BetaContentBlockParam(BetaRequestToolRemovalBlock value) =>
         new(value);
 
+    public static implicit operator BetaContentBlockParam(BetaMcpToolListingBlockParam value) =>
+        new(value);
+
     public static implicit operator BetaContentBlockParam(BetaFallbackBlockParam value) =>
         new(value);
 
@@ -1337,6 +1383,7 @@ public record class BetaContentBlockParam : ModelBase
             (compaction) => compaction.Validate(),
             (requestToolAdditionBlock) => requestToolAdditionBlock.Validate(),
             (requestToolRemovalBlock) => requestToolRemovalBlock.Validate(),
+            (mcpToolListing) => mcpToolListing.Validate(),
             (fallback) => fallback.Validate()
         );
     }
@@ -1383,7 +1430,8 @@ public record class BetaContentBlockParam : ModelBase
             BetaCompactionBlockParam _ => 19,
             BetaRequestToolAdditionBlock _ => 20,
             BetaRequestToolRemovalBlock _ => 21,
-            BetaFallbackBlockParam _ => 22,
+            BetaMcpToolListingBlockParam _ => 22,
+            BetaFallbackBlockParam _ => 23,
             _ => -1,
         };
     }
@@ -1841,6 +1889,26 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRequestToolRemovalBlock>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "mcp_tool_listing":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaMcpToolListingBlockParam>(
                         element,
                         options
                     );

@@ -76,6 +76,7 @@ public sealed record class BetaFallbackBlockParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("trigger");
                 return;
             }
 

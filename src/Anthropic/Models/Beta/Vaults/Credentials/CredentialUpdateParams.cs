@@ -14,7 +14,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
 /// <summary>
-/// Update Credential
+/// Update a Credential
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -33,7 +33,8 @@ public record class CredentialUpdateParams : ParamsBase
     public string? CredentialID { get; init; }
 
     /// <summary>
-    /// Updated authentication details for a credential.
+    /// New authentication settings for the credential. The `type` must match the
+    /// credential's current type, which can't be changed.
     /// </summary>
     public CredentialUpdateParamsAuth? Auth
     {
@@ -46,6 +47,7 @@ public record class CredentialUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("auth");
                 return;
             }
 
@@ -89,7 +91,8 @@ public record class CredentialUpdateParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `managed-agents-2026-04-01` in
+    /// this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -104,6 +107,7 @@ public record class CredentialUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -114,6 +118,14 @@ public record class CredentialUpdateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -125,6 +137,7 @@ public record class CredentialUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -241,6 +254,8 @@ public record class CredentialUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/vaults/{vault_id}/credentials/{credential_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(
@@ -267,7 +282,8 @@ public record class CredentialUpdateParams : ParamsBase
 }
 
 /// <summary>
-/// Updated authentication details for a credential.
+/// New authentication settings for the credential. The `type` must match the credential's
+/// current type, which can't be changed.
 /// </summary>
 [JsonConverter(typeof(CredentialUpdateParamsAuthConverter))]
 public record class CredentialUpdateParamsAuth : ModelBase

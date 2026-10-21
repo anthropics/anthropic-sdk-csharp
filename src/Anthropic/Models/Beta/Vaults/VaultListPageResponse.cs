@@ -15,7 +15,7 @@ namespace Anthropic.Models.Beta.Vaults;
 public sealed record class VaultListPageResponse : JsonModel
 {
     /// <summary>
-    /// List of vaults.
+    /// The vaults on this page, newest first.
     /// </summary>
     public IReadOnlyList<BetaManagedAgentsVault>? Data
     {
@@ -28,6 +28,7 @@ public sealed record class VaultListPageResponse : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("data");
                 return;
             }
 

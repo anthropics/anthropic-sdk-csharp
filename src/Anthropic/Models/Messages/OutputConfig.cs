@@ -13,7 +13,10 @@ namespace Anthropic.Models.Messages;
 public sealed record class OutputConfig : JsonModel
 {
     /// <summary>
-    /// All possible effort levels.
+    /// How much effort the model should put into its response. Higher effort levels
+    /// may result in more thorough analysis but take longer.
+    ///
+    /// <para>Valid values are `low`, `medium`, `high`, `xhigh`, or `max`.</para>
     /// </summary>
     public ApiEnum<string, Effort>? Effort
     {
@@ -81,7 +84,10 @@ class OutputConfigFromRaw : IFromRawJson<OutputConfig>
 }
 
 /// <summary>
-/// All possible effort levels.
+/// How much effort the model should put into its response. Higher effort levels may
+/// result in more thorough analysis but take longer.
+///
+/// <para>Valid values are `low`, `medium`, `high`, `xhigh`, or `max`.</para>
 /// </summary>
 [JsonConverter(typeof(EffortConverter))]
 public enum Effort

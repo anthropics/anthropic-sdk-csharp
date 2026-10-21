@@ -93,6 +93,19 @@ public class BetaDreamModelConfigTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaDreamModelConfig { ID = "x", Speed = Speed.Standard } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Speed = null,
+        };
+
+        Assert.Null(model.Speed);
+        Assert.False(model.RawData.ContainsKey("speed"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaDreamModelConfig

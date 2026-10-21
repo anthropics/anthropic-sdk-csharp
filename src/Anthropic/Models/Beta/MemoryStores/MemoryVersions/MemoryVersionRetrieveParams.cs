@@ -12,7 +12,7 @@ using Anthropic.Services.Beta.MemoryStores;
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
 /// <summary>
-/// Retrieve a memory version
+/// Retrieve a Memory Version
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -25,7 +25,11 @@ public record class MemoryVersionRetrieveParams : ParamsBase
     public string? MemoryVersionID { get; init; }
 
     /// <summary>
-    /// Query parameter for view
+    /// Whether a `memory` or `memory_version` in the response includes its `content`.
+    /// Defaults to `full` on retrieve operations and to `basic` on list, create,
+    /// and update operations.
+    ///
+    /// <para>With `full`, list operations return at most 20 items per page.</para>
     /// </summary>
     public ApiEnum<string, BetaManagedAgentsMemoryView>? View
     {
@@ -40,6 +44,7 @@ public record class MemoryVersionRetrieveParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("view");
                 return;
             }
 
@@ -48,7 +53,8 @@ public record class MemoryVersionRetrieveParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `agent-memory-2026-07-22` or
+    /// `managed-agents-2026-04-01` in this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -63,6 +69,7 @@ public record class MemoryVersionRetrieveParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -73,6 +80,14 @@ public record class MemoryVersionRetrieveParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -84,6 +99,7 @@ public record class MemoryVersionRetrieveParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -191,6 +207,11 @@ public record class MemoryVersionRetrieveParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route =>
+        "/v1/memory_stores/{memory_store_id}/memory_versions/{memory_version_id}";
+
+    internal override IReadOnlyList<string> QueryParams => ["view"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

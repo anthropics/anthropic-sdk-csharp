@@ -136,6 +136,25 @@ public class BrowserStateTabEntryTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BrowserStateTabEntry
+        {
+            TabID = "tab_id",
+            Title = "title",
+            Url = "url",
+            Active = true,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Active = null,
+        };
+
+        Assert.Null(model.Active);
+        Assert.False(model.RawData.ContainsKey("active"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BrowserStateTabEntry

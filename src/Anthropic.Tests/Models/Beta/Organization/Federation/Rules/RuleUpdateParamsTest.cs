@@ -153,6 +153,42 @@ public class RuleUpdateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new RuleUpdateParams
+        {
+            FederationRuleID = "federation_rule_id",
+            AppliesToAllWorkspaces = true,
+            Attributes = new Dictionary<string, string>() { { "foo", "string" } },
+            Description = "description",
+            Match = new()
+            {
+                Audience = "audience",
+                Claims = new Dictionary<string, string>() { { "foo", "string" } },
+                Condition = "condition",
+                SubjectPrefix = "subject_prefix",
+            },
+            Name = "x",
+            OAuthScope = "x",
+            Target = new()
+            {
+                ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
+                ServiceAccountName = "service_account_name",
+            },
+            TokenLifetimeSeconds = 60,
+            WorkspaceID = "workspace_id",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new RuleUpdateParams

@@ -20,6 +20,8 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
+                    ExecutionIdentity =
+                        new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -31,7 +33,7 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                     ],
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new Agents::BetaManagedAgentsEffortLow(
                             Agents::BetaManagedAgentsEffortLowType.Low
                         ),
@@ -89,6 +91,7 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                 Description = "A focused research subagent.",
+                ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                 McpServers =
                 [
                     new()
@@ -100,7 +103,7 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                 ],
                 Model = new()
                 {
-                    ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                    ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                     Effort = new Agents::BetaManagedAgentsEffortLow(
                         Agents::BetaManagedAgentsEffortLowType.Low
                     ),
@@ -170,6 +173,8 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
+                    ExecutionIdentity =
+                        new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -181,7 +186,7 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                     ],
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new Agents::BetaManagedAgentsEffortLow(
                             Agents::BetaManagedAgentsEffortLowType.Low
                         ),
@@ -254,6 +259,8 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
+                    ExecutionIdentity =
+                        new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -265,7 +272,7 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                     ],
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new Agents::BetaManagedAgentsEffortLow(
                             Agents::BetaManagedAgentsEffortLowType.Low
                         ),
@@ -331,6 +338,7 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                 Description = "A focused research subagent.",
+                ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                 McpServers =
                 [
                     new()
@@ -342,7 +350,7 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                 ],
                 Model = new()
                 {
-                    ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                    ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                     Effort = new Agents::BetaManagedAgentsEffortLow(
                         Agents::BetaManagedAgentsEffortLowType.Low
                     ),
@@ -412,6 +420,8 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
+                    ExecutionIdentity =
+                        new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -423,7 +433,7 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                     ],
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new Agents::BetaManagedAgentsEffortLow(
                             Agents::BetaManagedAgentsEffortLowType.Low
                         ),
@@ -489,6 +499,8 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
+                    ExecutionIdentity =
+                        new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                     McpServers =
                     [
                         new()
@@ -500,7 +512,7 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorTest : TestBase
                     ],
                     Model = new()
                     {
-                        ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                        ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                         Effort = new Agents::BetaManagedAgentsEffortLow(
                             Agents::BetaManagedAgentsEffortLowType.Low
                         ),
@@ -568,6 +580,7 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorAgentTest : TestBase
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                 Description = "A focused research subagent.",
+                ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                 McpServers =
                 [
                     new()
@@ -579,7 +592,7 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorAgentTest : TestBase
                 ],
                 Model = new()
                 {
-                    ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                    ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                     Effort = new Agents::BetaManagedAgentsEffortLow(
                         Agents::BetaManagedAgentsEffortLowType.Low
                     ),
@@ -645,6 +658,7 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorAgentTest : TestBase
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                 Description = "A focused research subagent.",
+                ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
                 McpServers =
                 [
                     new()
@@ -656,7 +670,7 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorAgentTest : TestBase
                 ],
                 Model = new()
                 {
-                    ID = Agents::BetaManagedAgentsModel.ClaudeOpus5,
+                    ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
                     Effort = new Agents::BetaManagedAgentsEffortLow(
                         Agents::BetaManagedAgentsEffortLowType.Low
                     ),

@@ -136,6 +136,19 @@ public sealed record class Usage : JsonModel
         init { this._rawData.Set("service_tier", value); }
     }
 
+    /// <summary>
+    /// The inference speed mode used for this request.
+    /// </summary>
+    public required ApiEnum<string, UsageSpeed>? Speed
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, UsageSpeed>>("speed");
+        }
+        init { this._rawData.Set("speed", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -148,6 +161,7 @@ public sealed record class Usage : JsonModel
         this.OutputTokensDetails?.Validate();
         this.ServerToolUse?.Validate();
         this.ServiceTier?.Validate();
+        this.Speed?.Validate();
     }
 
     public Usage() { }
@@ -226,6 +240,53 @@ sealed class UsageServiceTierConverter : JsonConverter<UsageServiceTier>
                 UsageServiceTier.Standard => "standard",
                 UsageServiceTier.Priority => "priority",
                 UsageServiceTier.Batch => "batch",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
+/// The inference speed mode used for this request.
+/// </summary>
+[JsonConverter(typeof(UsageSpeedConverter))]
+public enum UsageSpeed
+{
+    Standard,
+    Fast,
+}
+
+sealed class UsageSpeedConverter : JsonConverter<UsageSpeed>
+{
+    public override UsageSpeed Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "standard" => UsageSpeed.Standard,
+            "fast" => UsageSpeed.Fast,
+            _ => (UsageSpeed)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        UsageSpeed value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                UsageSpeed.Standard => "standard",
+                UsageSpeed.Fast => "fast",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

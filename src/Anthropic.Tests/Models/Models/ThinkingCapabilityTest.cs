@@ -12,11 +12,23 @@ public class ThinkingCapabilityTest : TestBase
         var model = new ThinkingCapability
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                BetweenTools = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         bool expectedSupported = true;
-        ThinkingTypes expectedTypes = new() { Adaptive = new(true), Enabled = new(true) };
+        ThinkingTypes expectedTypes = new()
+        {
+            Adaptive = new(true),
+            BetweenTools = new(true),
+            Disabled = new(true),
+            Enabled = new(true),
+        };
 
         Assert.Equal(expectedSupported, model.Supported);
         Assert.Equal(expectedTypes, model.Types);
@@ -28,7 +40,13 @@ public class ThinkingCapabilityTest : TestBase
         var model = new ThinkingCapability
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                BetweenTools = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -46,7 +64,13 @@ public class ThinkingCapabilityTest : TestBase
         var model = new ThinkingCapability
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                BetweenTools = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -57,7 +81,13 @@ public class ThinkingCapabilityTest : TestBase
         Assert.NotNull(deserialized);
 
         bool expectedSupported = true;
-        ThinkingTypes expectedTypes = new() { Adaptive = new(true), Enabled = new(true) };
+        ThinkingTypes expectedTypes = new()
+        {
+            Adaptive = new(true),
+            BetweenTools = new(true),
+            Disabled = new(true),
+            Enabled = new(true),
+        };
 
         Assert.Equal(expectedSupported, deserialized.Supported);
         Assert.Equal(expectedTypes, deserialized.Types);
@@ -69,7 +99,13 @@ public class ThinkingCapabilityTest : TestBase
         var model = new ThinkingCapability
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                BetweenTools = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         model.Validate();
@@ -81,7 +117,13 @@ public class ThinkingCapabilityTest : TestBase
         var model = new ThinkingCapability
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                BetweenTools = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         ThinkingCapability copied = new(model);

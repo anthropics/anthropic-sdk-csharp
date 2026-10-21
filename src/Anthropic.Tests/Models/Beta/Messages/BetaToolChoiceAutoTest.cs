@@ -90,6 +90,19 @@ public class BetaToolChoiceAutoTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaToolChoiceAuto { DisableParallelToolUse = true } with
+        {
+            // Null should be interpreted as omitted for these properties
+            DisableParallelToolUse = null,
+        };
+
+        Assert.Null(model.DisableParallelToolUse);
+        Assert.False(model.RawData.ContainsKey("disable_parallel_tool_use"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaToolChoiceAuto

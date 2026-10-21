@@ -12,7 +12,7 @@ using Anthropic.Services.Beta.MemoryStores;
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
 /// <summary>
-/// List memory versions
+/// List Memory Versions
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -23,7 +23,7 @@ public record class MemoryVersionListParams : ParamsBase
     public string? MemoryStoreID { get; init; }
 
     /// <summary>
-    /// Query parameter for api_key_id
+    /// Return only versions written with the API key that has this ID.
     /// </summary>
     public string? ApiKeyID
     {
@@ -36,6 +36,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("api_key_id");
                 return;
             }
 
@@ -57,6 +58,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[gte]");
                 return;
             }
 
@@ -78,6 +80,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("created_at[lte]");
                 return;
             }
 
@@ -86,7 +89,10 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for limit
+    /// The maximum number of versions to return per page, from 1 to 100. Defaults
+    /// to 20.
+    ///
+    /// <para>With `view=full`, a page holds at most 20 versions.</para>
     /// </summary>
     public int? Limit
     {
@@ -99,6 +105,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -107,7 +114,11 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for memory_id
+    /// Return only versions of the memory with this ID (`mem_...`).
+    ///
+    /// <para>The filter still works after the memory is deleted. While that memory's
+    /// versions are retained, the results include the version whose `operation`
+    /// is `deleted`.</para>
     /// </summary>
     public string? MemoryID
     {
@@ -120,6 +131,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("memory_id");
                 return;
             }
 
@@ -128,7 +140,7 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for operation
+    /// Return only versions that record this kind of change.
     /// </summary>
     public ApiEnum<string, BetaManagedAgentsMemoryVersionOperation>? Operation
     {
@@ -143,6 +155,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("operation");
                 return;
             }
 
@@ -151,7 +164,8 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for page
+    /// The `next_page` value from a previous response, to get the next page. Omit
+    /// it to get the first page.
     /// </summary>
     public string? Page
     {
@@ -164,6 +178,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -172,7 +187,7 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for service_account_id
+    /// Return only versions written by the service account with this ID (`svac_...`).
     /// </summary>
     public string? ServiceAccountID
     {
@@ -185,6 +200,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("service_account_id");
                 return;
             }
 
@@ -193,7 +209,7 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for session_id
+    /// Return only versions written by the session with this ID.
     /// </summary>
     public string? SessionID
     {
@@ -206,6 +222,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("session_id");
                 return;
             }
 
@@ -214,7 +231,11 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Query parameter for view
+    /// Whether a `memory` or `memory_version` in the response includes its `content`.
+    /// Defaults to `full` on retrieve operations and to `basic` on list, create,
+    /// and update operations.
+    ///
+    /// <para>With `full`, list operations return at most 20 items per page.</para>
     /// </summary>
     public ApiEnum<string, BetaManagedAgentsMemoryView>? View
     {
@@ -229,6 +250,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("view");
                 return;
             }
 
@@ -237,7 +259,8 @@ public record class MemoryVersionListParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `agent-memory-2026-07-22` or
+    /// `managed-agents-2026-04-01` in this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -252,6 +275,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -262,6 +286,14 @@ public record class MemoryVersionListParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -273,6 +305,7 @@ public record class MemoryVersionListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -370,6 +403,22 @@ public record class MemoryVersionListParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/memory_stores/{memory_store_id}/memory_versions";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        [
+            "api_key_id",
+            "created_at[gte]",
+            "created_at[lte]",
+            "limit",
+            "memory_id",
+            "operation",
+            "page",
+            "service_account_id",
+            "session_id",
+            "view",
+        ];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

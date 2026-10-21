@@ -58,6 +58,7 @@ public sealed record class BetaManagedAgentsAgentParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("version");
                 return;
             }
 

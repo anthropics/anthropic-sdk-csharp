@@ -202,6 +202,7 @@ public sealed class VaultServiceWithRawResponse : IVaultServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.vaults.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -215,6 +216,12 @@ public sealed class VaultServiceWithRawResponse : IVaultServiceWithRawResponse
                 {
                     betaManagedAgentsVault.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.vault.id",
+                    betaManagedAgentsVault,
+                    static created => created.ID
+                );
                 return betaManagedAgentsVault;
             }
         );
@@ -235,6 +242,8 @@ public sealed class VaultServiceWithRawResponse : IVaultServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.vaults.retrieve",
+            SpanResourceIds = [new("anthropic.vault.id", parameters.VaultID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -280,6 +289,8 @@ public sealed class VaultServiceWithRawResponse : IVaultServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.vaults.update",
+            SpanResourceIds = [new("anthropic.vault.id", parameters.VaultID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -322,6 +333,7 @@ public sealed class VaultServiceWithRawResponse : IVaultServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.vaults.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -355,6 +367,8 @@ public sealed class VaultServiceWithRawResponse : IVaultServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.vaults.delete",
+            SpanResourceIds = [new("anthropic.vault.id", parameters.VaultID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -400,6 +414,8 @@ public sealed class VaultServiceWithRawResponse : IVaultServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.vaults.archive",
+            SpanResourceIds = [new("anthropic.vault.id", parameters.VaultID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

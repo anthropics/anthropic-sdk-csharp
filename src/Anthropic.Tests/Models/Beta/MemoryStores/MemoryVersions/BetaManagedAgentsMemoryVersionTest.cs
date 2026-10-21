@@ -291,6 +291,45 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsMemoryVersion
+        {
+            ID = "id",
+            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            MemoryID = "memory_id",
+            MemoryStoreID = "memory_store_id",
+            Operation = BetaManagedAgentsMemoryVersionOperation.Created,
+            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
+            Content = "content",
+            ContentSha256 = "content_sha256",
+            ContentSizeBytes = 0,
+            CreatedBy = new BetaManagedAgentsSessionActor()
+            {
+                SessionID = "x",
+                Type = BetaManagedAgentsSessionActorType.SessionActor,
+            },
+            Path = "path",
+            RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            RedactedBy = new BetaManagedAgentsSessionActor()
+            {
+                SessionID = "x",
+                Type = BetaManagedAgentsSessionActorType.SessionActor,
+            },
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            CreatedBy = null,
+            RedactedBy = null,
+        };
+
+        Assert.Null(model.CreatedBy);
+        Assert.False(model.RawData.ContainsKey("created_by"));
+        Assert.Null(model.RedactedBy);
+        Assert.False(model.RawData.ContainsKey("redacted_by"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsMemoryVersion

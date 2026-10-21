@@ -79,7 +79,7 @@ public sealed record class BetaEffortCapability : JsonModel
     }
 
     /// <summary>
-    /// Indicates whether a capability is supported.
+    /// Whether the model supports xhigh effort level.
     /// </summary>
     public required BetaCapabilitySupport? Xhigh
     {

@@ -93,8 +93,11 @@ public record class DeploymentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// A hard spend ceiling. The session stops issuing new model requests once the
-    /// tracked list cost reaches `max_list_cost`.
+    /// Enforced spend ceiling stamped onto each session created from this deployment,
+    /// copied at session-creation time. Omit to leave sessions uncapped. The deployment
+    /// agent's model must have a public list price, or the request is rejected; a
+    /// multiagent roster is re-validated in full when each fire copies the cap,
+    /// which fails closed the same way.
     /// </summary>
     public Sessions::BetaManagedAgentsBudgetLimit? Budget
     {
@@ -136,6 +139,7 @@ public record class DeploymentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("metadata");
                 return;
             }
 
@@ -161,6 +165,7 @@ public record class DeploymentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("resources");
                 return;
             }
 
@@ -172,7 +177,8 @@ public record class DeploymentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// 5-field POSIX cron schedule. Literal wall-clock matching in the configured timezone.
+    /// Optional recurring cron schedule. When present, the deployment fires automatically.
+    /// Both expression and timezone are required when schedule is set.
     /// </summary>
     public BetaManagedAgentsScheduleParams? Schedule
     {
@@ -199,6 +205,7 @@ public record class DeploymentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("vault_ids");
                 return;
             }
 
@@ -210,7 +217,8 @@ public record class DeploymentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `managed-agents-2026-04-01` in
+    /// this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -225,6 +233,7 @@ public record class DeploymentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -235,6 +244,14 @@ public record class DeploymentCreateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -246,6 +263,7 @@ public record class DeploymentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -339,6 +357,8 @@ public record class DeploymentCreateParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/deployments";
 
     internal override HttpContent? BodyContent()
     {

@@ -8,6 +8,12 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
+/// <summary>
+/// A `cache_miss_reason` for a request whose `system` differs from the previous request's.
+///
+/// <para>See the [cache diagnostics guide](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics#cache-miss-reason-types)
+/// to learn what to change for each reason.</para>
+/// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaCacheMissSystemChanged, BetaCacheMissSystemChangedFromRaw>)
 )]

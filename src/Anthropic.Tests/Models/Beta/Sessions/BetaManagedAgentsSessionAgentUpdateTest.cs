@@ -325,6 +325,58 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsSessionAgentUpdate
+        {
+            McpServers =
+            [
+                new()
+                {
+                    Name = "example-mcp",
+                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
+                    Url = "https://example-server.modelcontextprotocol.io/sse",
+                },
+            ],
+            Tools =
+            [
+                new BetaManagedAgentsAgentToolset20260401Params()
+                {
+                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                    Configs =
+                    [
+                        new BetaManagedAgentsBashToolConfigParams()
+                        {
+                            Enabled = true,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                        },
+                    ],
+                    DefaultConfig = new()
+                    {
+                        Enabled = true,
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        ),
+                    },
+                },
+            ],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            McpServers = null,
+            Tools = null,
+        };
+
+        Assert.Null(model.McpServers);
+        Assert.False(model.RawData.ContainsKey("mcp_servers"));
+        Assert.Null(model.Tools);
+        Assert.False(model.RawData.ContainsKey("tools"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsSessionAgentUpdate

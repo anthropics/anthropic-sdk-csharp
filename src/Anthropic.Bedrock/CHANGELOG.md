@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.14.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.14.0...Bedrock-v0.14.1) (2026-10-19)
+
+### Bug Fixes
+
+* **bedrock:** sign requests with temporary AWS credentials in `FromEnv()`
+
+## [0.14.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.13.7...Bedrock-v0.14.0) (2026-10-14)
+
+### Features
+
+* **client:** add native support for OpenTelemetry tracing
+
+  To get the SDK's spans, add the `com.anthropic.sdk.csharp*` source to your tracer provider. To disable, initialize the client with `OpenTelemetry = false` or set `ANTHROPIC_OPEN_TELEMETRY=false`. Learn more in the [documentation](https://platform.claude.com/docs/en/manage-claude/opentelemetry/sdk).
+
+## 0.13.7 (2026-10-07)
+
+Full Changelog: [Bedrock-v0.13.6...Bedrock-v0.13.7](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.13.6...Bedrock-v0.13.7)
+
+## 0.13.6 (2026-09-30)
+
+Full Changelog: [Bedrock-v0.13.5...Bedrock-v0.13.6](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.13.5...Bedrock-v0.13.6)
+
+## 0.13.5 (2026-09-30)
+
+Full Changelog: [Bedrock-v0.13.4...Bedrock-v0.13.5](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.13.4...Bedrock-v0.13.5)
+
+## 0.13.4 (2026-09-28)
+
+Full Changelog: [Bedrock-v0.13.3...Bedrock-v0.13.4](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.13.3...Bedrock-v0.13.4)
+
+## 0.13.3 (2026-09-22)
+
+Full Changelog: [Bedrock-v0.13.2...Bedrock-v0.13.3](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.13.2...Bedrock-v0.13.3)
+
 ## 0.13.2 (2026-09-18)
 
 Full Changelog: [Bedrock-v0.13.1...Bedrock-v0.13.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.13.1...Bedrock-v0.13.2)

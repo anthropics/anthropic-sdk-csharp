@@ -7,6 +7,9 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Dreams;
 
+/// <summary>
+/// A source that a dream reads, such as a memory store or a set of sessions.
+/// </summary>
 [JsonConverter(typeof(BetaDreamInputConverter))]
 public record class BetaDreamInput : ModelBase
 {

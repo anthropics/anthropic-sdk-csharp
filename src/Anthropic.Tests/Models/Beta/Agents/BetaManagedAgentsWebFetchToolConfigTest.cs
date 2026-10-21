@@ -16,6 +16,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             MaxContentTokens = 0,
@@ -28,6 +34,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             );
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch");
+        BetaManagedAgentsWebFetchUrlSources expectedUrlSources = new()
+        {
+            ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+        };
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
         int expectedMaxContentTokens = 0;
@@ -36,6 +48,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
         Assert.Equal(expectedPermissionPolicy, model.PermissionPolicy);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.Equal(expectedUrlSources, model.UrlSources);
         Assert.NotNull(model.AllowedDomains);
         Assert.Equal(expectedAllowedDomains.Count, model.AllowedDomains.Count);
         for (int i = 0; i < expectedAllowedDomains.Count; i++)
@@ -60,6 +73,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             MaxContentTokens = 0,
@@ -83,6 +102,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             MaxContentTokens = 0,
@@ -102,6 +127,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             );
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch");
+        BetaManagedAgentsWebFetchUrlSources expectedUrlSources = new()
+        {
+            ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+        };
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
         int expectedMaxContentTokens = 0;
@@ -110,6 +141,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
         Assert.Equal(expectedPermissionPolicy, deserialized.PermissionPolicy);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.Equal(expectedUrlSources, deserialized.UrlSources);
         Assert.NotNull(deserialized.AllowedDomains);
         Assert.Equal(expectedAllowedDomains.Count, deserialized.AllowedDomains.Count);
         for (int i = 0; i < expectedAllowedDomains.Count; i++)
@@ -134,6 +166,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             MaxContentTokens = 0,
@@ -151,6 +189,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             MaxContentTokens = 0,
         };
 
@@ -169,6 +213,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             MaxContentTokens = 0,
         };
 
@@ -184,8 +234,45 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             MaxContentTokens = 0,
 
+            // Null should be interpreted as omitted for these properties
+            AllowedDomains = null,
+            BlockedDomains = null,
+        };
+
+        Assert.Null(model.AllowedDomains);
+        Assert.False(model.RawData.ContainsKey("allowed_domains"));
+        Assert.Null(model.BlockedDomains);
+        Assert.False(model.RawData.ContainsKey("blocked_domains"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsWebFetchToolConfig
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+            ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            MaxContentTokens = 0,
+        } with
+        {
             // Null should be interpreted as omitted for these properties
             AllowedDomains = null,
             BlockedDomains = null,
@@ -206,6 +293,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             MaxContentTokens = 0,
 
             // Null should be interpreted as omitted for these properties
@@ -225,6 +318,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
         };
@@ -242,6 +341,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
         };
@@ -258,6 +363,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
 
@@ -277,6 +388,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
 
@@ -295,6 +412,12 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             MaxContentTokens = 0,

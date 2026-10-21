@@ -29,7 +29,9 @@ public sealed record class BetaMessage : JsonModel
     }
 
     /// <summary>
-    /// Information about the container used in the request (for the code execution tool)
+    /// Information about the container used in this request.
+    ///
+    /// <para>This will be non-null if a container tool (e.g. code execution) was used.</para>
     /// </summary>
     public required BetaContainer? Container
     {
@@ -97,8 +99,8 @@ public sealed record class BetaMessage : JsonModel
     }
 
     /// <summary>
-    /// Response envelope for request-level diagnostics. Present (possibly null)
-    /// whenever the caller supplied `diagnostics` on the request.
+    /// Request-level diagnostics. `null` when the request did not supply `diagnostics`,
+    /// or when it did and no prompt-cache divergence was detected.
     /// </summary>
     public required BetaDiagnostics? Diagnostics
     {
@@ -142,7 +144,9 @@ public sealed record class BetaMessage : JsonModel
     }
 
     /// <summary>
-    /// Structured information about a refusal.
+    /// Structured information about why model output stopped.
+    ///
+    /// <para>This is `null` when the `stop_reason` has no additional detail to report.</para>
     /// </summary>
     public required BetaRefusalStopDetails? StopDetails
     {

@@ -133,6 +133,7 @@ public sealed class InviteServiceWithRawResponse : IInviteServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.invites.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -146,6 +147,12 @@ public sealed class InviteServiceWithRawResponse : IInviteServiceWithRawResponse
                 {
                     betaOrganizationInvite.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.invite.id",
+                    betaOrganizationInvite,
+                    static created => created.ID
+                );
                 return betaOrganizationInvite;
             }
         );
@@ -166,6 +173,8 @@ public sealed class InviteServiceWithRawResponse : IInviteServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.invites.retrieve",
+            SpanResourceIds = [new("anthropic.organization.invite.id", parameters.InviteID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -208,6 +217,7 @@ public sealed class InviteServiceWithRawResponse : IInviteServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.invites.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -241,6 +251,8 @@ public sealed class InviteServiceWithRawResponse : IInviteServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.organization.invites.delete",
+            SpanResourceIds = [new("anthropic.organization.invite.id", parameters.InviteID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

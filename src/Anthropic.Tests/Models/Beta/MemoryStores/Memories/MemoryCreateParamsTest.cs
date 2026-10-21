@@ -88,6 +88,33 @@ public class MemoryCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new MemoryCreateParams
+        {
+            MemoryStoreID = "memory_store_id",
+            Content = "content",
+            Path = "xx",
+            View = BetaManagedAgentsMemoryView.Basic,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            View = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.View);
+        Assert.False(parameters.RawQueryData.ContainsKey("view"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         MemoryCreateParams parameters = new()
@@ -126,7 +153,7 @@ public class MemoryCreateParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["agent-memory-2026-07-22", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,agent-memory-2026-07-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(

@@ -51,6 +51,7 @@ public sealed record class WebFetchTool20250910 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("allowed_callers");
                 return;
             }
 
@@ -140,6 +141,7 @@ public sealed record class WebFetchTool20250910 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("defer_loading");
                 return;
             }
 
@@ -188,6 +190,7 @@ public sealed record class WebFetchTool20250910 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("strict");
                 return;
             }
 
@@ -196,12 +199,8 @@ public sealed record class WebFetchTool20250910 : JsonModel
     }
 
     /// <summary>
-    /// Which sources contribute to the set of URLs web fetch may fetch.
-    ///
-    /// <para>Each key is a tagged variant: ``user_input`` is ``all`` or ``none``;
-    /// the two tool filters are ``all``, ``none``, ``only`` (only the named tools'
-    /// results) or ``except`` (every result but the named tools'). A named tool must
-    /// be declared in this request's ``tools[]``.</para>
+    /// Which sources contribute to the set of URLs the tool may fetch. Omitted means
+    /// every source.
     /// </summary>
     public WebFetchUrlSources? UrlSources
     {

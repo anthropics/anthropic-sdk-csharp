@@ -66,6 +66,22 @@ public sealed record class BetaManagedAgentsWebFetchToolConfig : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
+    /// <summary>
+    /// Which sources contribute URLs the tool may fetch, always in the object form.
+    /// Null when not set, which allows every source.
+    /// </summary>
+    public required BetaManagedAgentsWebFetchUrlSources? UrlSources
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaManagedAgentsWebFetchUrlSources>(
+                "url_sources"
+            );
+        }
+        init { this._rawData.Set("url_sources", value); }
+    }
+
     public IReadOnlyList<string>? AllowedDomains
     {
         get
@@ -77,6 +93,7 @@ public sealed record class BetaManagedAgentsWebFetchToolConfig : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("allowed_domains");
                 return;
             }
 
@@ -98,6 +115,7 @@ public sealed record class BetaManagedAgentsWebFetchToolConfig : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("blocked_domains");
                 return;
             }
 
@@ -131,6 +149,7 @@ public sealed record class BetaManagedAgentsWebFetchToolConfig : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
+        this.UrlSources?.Validate();
         _ = this.AllowedDomains;
         _ = this.BlockedDomains;
         _ = this.MaxContentTokens;

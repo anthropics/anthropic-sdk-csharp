@@ -186,6 +186,30 @@ public class BetaManagedAgentsScheduleTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsSchedule
+        {
+            Expression = "0 9 * * 1-5",
+            Timezone = "America/Los_Angeles",
+            Type = BetaManagedAgentsScheduleType.Cron,
+            LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
+            UpcomingRunsAt =
+            [
+                DateTimeOffset.Parse("2026-03-17T16:00:00Z"),
+                DateTimeOffset.Parse("2026-03-18T16:00:00Z"),
+            ],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            UpcomingRunsAt = null,
+        };
+
+        Assert.Null(model.UpcomingRunsAt);
+        Assert.False(model.RawData.ContainsKey("upcoming_runs_at"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsSchedule

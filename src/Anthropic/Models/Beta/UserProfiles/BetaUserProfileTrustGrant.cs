@@ -9,6 +9,10 @@ using System = System;
 
 namespace Anthropic.Models.Beta.UserProfiles;
 
+/// <summary>
+/// The status of one trust grant on a user profile, listed in the profile's `trust_grants`
+/// map under the grant's name.
+/// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaUserProfileTrustGrant, BetaUserProfileTrustGrantFromRaw>)
 )]

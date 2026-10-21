@@ -14,26 +14,28 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
         var model = new BetaManagedAgentsSessionErrorEvent
         {
             ID = "id",
-            Error = new BetaManagedAgentsUnknownError()
+            Error = new BetaManagedAgentsRepositoryAuthenticationError()
             {
-                Message = "message",
+                Message =
+                    "The repository host rejected the credentials for the repository, or required credentials and received none.",
+                RepositoryUrl = "https://github.com/example-org/example-repo",
                 RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
                     BetaManagedAgentsRetryStatusRetryingType.Retrying
                 ),
-                Type = BetaManagedAgentsUnknownErrorType.UnknownError,
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsSessionErrorEventType.SessionError,
         };
 
         string expectedID = "id";
-        Error expectedError = new BetaManagedAgentsUnknownError()
+        Error expectedError = new BetaManagedAgentsRepositoryAuthenticationError()
         {
-            Message = "message",
+            Message =
+                "The repository host rejected the credentials for the repository, or required credentials and received none.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
             RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
                 BetaManagedAgentsRetryStatusRetryingType.Retrying
             ),
-            Type = BetaManagedAgentsUnknownErrorType.UnknownError,
         };
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         ApiEnum<string, BetaManagedAgentsSessionErrorEventType> expectedType =
@@ -51,13 +53,14 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
         var model = new BetaManagedAgentsSessionErrorEvent
         {
             ID = "id",
-            Error = new BetaManagedAgentsUnknownError()
+            Error = new BetaManagedAgentsRepositoryAuthenticationError()
             {
-                Message = "message",
+                Message =
+                    "The repository host rejected the credentials for the repository, or required credentials and received none.",
+                RepositoryUrl = "https://github.com/example-org/example-repo",
                 RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
                     BetaManagedAgentsRetryStatusRetryingType.Retrying
                 ),
-                Type = BetaManagedAgentsUnknownErrorType.UnknownError,
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsSessionErrorEventType.SessionError,
@@ -78,13 +81,14 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
         var model = new BetaManagedAgentsSessionErrorEvent
         {
             ID = "id",
-            Error = new BetaManagedAgentsUnknownError()
+            Error = new BetaManagedAgentsRepositoryAuthenticationError()
             {
-                Message = "message",
+                Message =
+                    "The repository host rejected the credentials for the repository, or required credentials and received none.",
+                RepositoryUrl = "https://github.com/example-org/example-repo",
                 RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
                     BetaManagedAgentsRetryStatusRetryingType.Retrying
                 ),
-                Type = BetaManagedAgentsUnknownErrorType.UnknownError,
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsSessionErrorEventType.SessionError,
@@ -98,13 +102,14 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedID = "id";
-        Error expectedError = new BetaManagedAgentsUnknownError()
+        Error expectedError = new BetaManagedAgentsRepositoryAuthenticationError()
         {
-            Message = "message",
+            Message =
+                "The repository host rejected the credentials for the repository, or required credentials and received none.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
             RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
                 BetaManagedAgentsRetryStatusRetryingType.Retrying
             ),
-            Type = BetaManagedAgentsUnknownErrorType.UnknownError,
         };
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         ApiEnum<string, BetaManagedAgentsSessionErrorEventType> expectedType =
@@ -122,13 +127,14 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
         var model = new BetaManagedAgentsSessionErrorEvent
         {
             ID = "id",
-            Error = new BetaManagedAgentsUnknownError()
+            Error = new BetaManagedAgentsRepositoryAuthenticationError()
             {
-                Message = "message",
+                Message =
+                    "The repository host rejected the credentials for the repository, or required credentials and received none.",
+                RepositoryUrl = "https://github.com/example-org/example-repo",
                 RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
                     BetaManagedAgentsRetryStatusRetryingType.Retrying
                 ),
-                Type = BetaManagedAgentsUnknownErrorType.UnknownError,
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsSessionErrorEventType.SessionError,
@@ -143,13 +149,14 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
         var model = new BetaManagedAgentsSessionErrorEvent
         {
             ID = "id",
-            Error = new BetaManagedAgentsUnknownError()
+            Error = new BetaManagedAgentsRepositoryAuthenticationError()
             {
-                Message = "message",
+                Message =
+                    "The repository host rejected the credentials for the repository, or required credentials and received none.",
+                RepositoryUrl = "https://github.com/example-org/example-repo",
                 RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
                     BetaManagedAgentsRetryStatusRetryingType.Retrying
                 ),
-                Type = BetaManagedAgentsUnknownErrorType.UnknownError,
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Type = BetaManagedAgentsSessionErrorEventType.SessionError,
@@ -276,6 +283,77 @@ public class ErrorTest : TestBase
             Type =
                 BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError,
             VaultID = "vault_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryAuthenticationValidationWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryAuthenticationError()
+        {
+            Message =
+                "The repository host rejected the credentials for the repository, or required credentials and received none.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
+                BetaManagedAgentsRetryStatusRetryingType.Retrying
+            ),
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryForbiddenValidationWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryForbiddenError()
+        {
+            Message = "The repository host refused access to the repository.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
+                BetaManagedAgentsRetryStatusRetryingType.Retrying
+            ),
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryNotFoundValidationWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryNotFoundError()
+        {
+            Message = "The repository host reported the repository as not found.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
+                BetaManagedAgentsRetryStatusRetryingType.Retrying
+            ),
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryCheckoutValidationWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryCheckoutError()
+        {
+            Message = "The requested branch or commit does not exist in the repository.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
+                BetaManagedAgentsRetryStatusRetryingType.Retrying
+            ),
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryCloneValidationWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryCloneError()
+        {
+            Message = "The repository could not be cloned.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
+                BetaManagedAgentsRetryStatusRetryingType.Retrying
+            ),
         };
         value.Validate();
     }
@@ -422,6 +500,92 @@ public class ErrorTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsRepositoryAuthenticationSerializationRoundtripWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryAuthenticationError()
+        {
+            Message =
+                "The repository host rejected the credentials for the repository, or required credentials and received none.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
+                BetaManagedAgentsRetryStatusRetryingType.Retrying
+            ),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryForbiddenSerializationRoundtripWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryForbiddenError()
+        {
+            Message = "The repository host refused access to the repository.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
+                BetaManagedAgentsRetryStatusRetryingType.Retrying
+            ),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryNotFoundSerializationRoundtripWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryNotFoundError()
+        {
+            Message = "The repository host reported the repository as not found.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
+                BetaManagedAgentsRetryStatusRetryingType.Retrying
+            ),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryCheckoutSerializationRoundtripWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryCheckoutError()
+        {
+            Message = "The requested branch or commit does not exist in the repository.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
+                BetaManagedAgentsRetryStatusRetryingType.Retrying
+            ),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryCloneSerializationRoundtripWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryCloneError()
+        {
+            Message = "The repository could not be cloned.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
+                BetaManagedAgentsRetryStatusRetryingType.Retrying
+            ),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Error value = new(
@@ -429,7 +593,8 @@ public class ErrorTest : TestBase
                 """
                 {
                   "message": "message",
-                  "mcp_server_name": "mcp_server_name"
+                  "mcp_server_name": "mcp_server_name",
+                  "repository_url": "https://github.com/example-org/example-repo"
                 }
                 """
             )
@@ -438,14 +603,17 @@ public class ErrorTest : TestBase
 
         string expectedMessage = "message";
         string expectedMcpServerName = "mcp_server_name";
+        string expectedRepositoryUrl = "https://github.com/example-org/example-repo";
 
         Assert.Equal(expectedMessage, value.Message);
         Assert.Equal(expectedMcpServerName, value.McpServerName);
+        Assert.Equal(expectedRepositoryUrl, value.RepositoryUrl);
 
         Error emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Message);
         Assert.Null(emptyValue.McpServerName);
+        Assert.Null(emptyValue.RepositoryUrl);
 
         Error mismatchedValue = new(
             JsonSerializer.Deserialize<JsonElement>(
@@ -456,6 +624,9 @@ public class ErrorTest : TestBase
                   ],
                   "mcp_server_name": [
                     "invalid"
+                  ],
+                  "repository_url": [
+                    "invalid"
                   ]
                 }
                 """
@@ -464,6 +635,7 @@ public class ErrorTest : TestBase
 
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.Message);
         Assert.Null(mismatchedValue.McpServerName);
+        Assert.Null(mismatchedValue.RepositoryUrl);
     }
 }
 

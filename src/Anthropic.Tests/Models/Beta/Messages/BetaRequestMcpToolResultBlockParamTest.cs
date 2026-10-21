@@ -142,6 +142,28 @@ public class BetaRequestMcpToolResultBlockParamTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaRequestMcpToolResultBlockParam
+        {
+            ToolUseID = "tool_use_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Content = "string",
+            IsError = true,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Content = null,
+            IsError = null,
+        };
+
+        Assert.Null(model.Content);
+        Assert.False(model.RawData.ContainsKey("content"));
+        Assert.Null(model.IsError);
+        Assert.False(model.RawData.ContainsKey("is_error"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaRequestMcpToolResultBlockParam

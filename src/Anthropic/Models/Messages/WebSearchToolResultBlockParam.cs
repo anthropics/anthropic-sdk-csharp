@@ -68,6 +68,7 @@ public sealed record class WebSearchToolResultBlockParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("caller");
                 return;
             }
 

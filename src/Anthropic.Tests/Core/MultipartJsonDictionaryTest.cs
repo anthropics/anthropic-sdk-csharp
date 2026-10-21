@@ -34,6 +34,16 @@ public class MultipartJsonDictionaryTest : TestBase
     }
 
     [Fact]
+    public void DictionaryConstructor_AcceptsEmptyDictionary()
+    {
+        var dict = new MultipartJsonDictionary(new Dictionary<string, MultipartJsonElement>());
+
+        dict.Set("name", "Alice");
+
+        Assert.Equal("Alice", dict.GetNotNullClass<string>("name"));
+    }
+
+    [Fact]
     public void FrozenDictionaryConstructor_UsesProvidedDictionary()
     {
         var source = FrozenDictionary.ToFrozenDictionary(
@@ -47,6 +57,20 @@ public class MultipartJsonDictionaryTest : TestBase
 
         var frozen = dict.Freeze();
         Assert.Same(source, frozen);
+    }
+
+    [Fact]
+    public void CopyConstructor_CopiesData()
+    {
+        var source = new MultipartJsonDictionary();
+        source.Set("name", "Alice");
+
+        var dict = new MultipartJsonDictionary(source);
+        dict.Set("age", 30);
+
+        Assert.Equal("Alice", dict.GetNotNullClass<string>("name"));
+        Assert.Equal(30, dict.GetNotNullStruct<int>("age"));
+        Assert.Single(source.Freeze());
     }
 
     [Fact]
@@ -81,6 +105,39 @@ public class MultipartJsonDictionaryTest : TestBase
         dict.Freeze();
 
         Assert.Throws<InvalidOperationException>(() => dict.Set("foo", "bar"));
+    }
+
+    [Fact]
+    public void Remove_RemovesValue()
+    {
+        var dict = new MultipartJsonDictionary();
+        dict.Set("name", "Alice");
+        dict.Set("age", 30);
+
+        dict.Remove("name");
+
+        Assert.Null(dict.GetNullableClass<string>("name"));
+        Assert.Equal(30, dict.GetNotNullStruct<int>("age"));
+        Assert.False(dict.Freeze().ContainsKey("name"));
+    }
+
+    [Fact]
+    public void Remove_IgnoresAbsentKey()
+    {
+        var dict = new MultipartJsonDictionary();
+
+        dict.Remove("missing");
+
+        Assert.Empty(dict.Freeze());
+    }
+
+    [Fact]
+    public void Remove_ThrowsAfterFreezing()
+    {
+        var dict = new MultipartJsonDictionary();
+        dict.Freeze();
+
+        Assert.Throws<InvalidOperationException>(() => dict.Remove("foo"));
     }
 
     [Fact]

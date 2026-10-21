@@ -11,7 +11,15 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.Dreams;
 
 /// <summary>
-/// Cancel a Dream
+/// Stop a `pending` or `running` dream.
+///
+/// <para>The response shows `status` as `canceled`, unless the dream reached `completed`
+/// or `failed` first. `usage` can keep changing after the response. Canceling a `canceled`
+/// dream returns it unchanged. Canceling a `completed` or `failed` dream returns
+/// a 400 error.</para>
+///
+/// <para>See the [Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#cancel-a-dream)
+/// to learn more about canceling dreams.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -22,7 +30,7 @@ public record class DreamCancelParams : ParamsBase
     public string? DreamID { get; init; }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `dreaming-2026-04-21` in this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -37,6 +45,7 @@ public record class DreamCancelParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -47,6 +56,14 @@ public record class DreamCancelParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -58,6 +75,7 @@ public record class DreamCancelParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -155,6 +173,8 @@ public record class DreamCancelParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/dreams/{dream_id}/cancel";
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

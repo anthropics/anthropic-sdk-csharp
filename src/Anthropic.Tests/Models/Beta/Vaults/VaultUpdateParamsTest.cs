@@ -86,6 +86,29 @@ public class VaultUpdateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new VaultUpdateParams
+        {
+            VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
+            DisplayName = "Example vault",
+            Metadata = new Dictionary<string, string?>() { { "environment", "production" } },
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new VaultUpdateParams
@@ -151,7 +174,7 @@ public class VaultUpdateParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,managed-agents-2026-04-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(

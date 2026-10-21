@@ -8,10 +8,9 @@ using System = System;
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
 /// <summary>
-/// Identifies who performed a write or redact operation. Captured at write time
-/// on the `memory_version` row. The API key that created a session is not recorded
-/// on agent writes; attribution answers who made the write, not who is ultimately
-/// responsible. Look up session provenance separately via the [Sessions API](/en/api/beta/sessions/retrieve).
+/// Identifies who performed an operation. Recorded when the operation happens and
+/// not updated afterwards, so the ID may refer to a user, service account, API key,
+/// or session that has since been deleted.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsActorConverter))]
 public record class BetaManagedAgentsActor : ModelBase

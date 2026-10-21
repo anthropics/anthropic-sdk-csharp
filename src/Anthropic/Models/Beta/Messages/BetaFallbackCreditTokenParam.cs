@@ -55,6 +55,7 @@ public sealed record class BetaFallbackCreditTokenParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("mode");
                 return;
             }
 

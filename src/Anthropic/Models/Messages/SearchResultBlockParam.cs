@@ -82,6 +82,7 @@ public sealed record class SearchResultBlockParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("citations");
                 return;
             }
 

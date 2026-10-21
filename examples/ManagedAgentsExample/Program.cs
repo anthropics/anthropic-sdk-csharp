@@ -18,7 +18,7 @@ var agent = await client.Beta.Agents.Create(
     new AgentCreateParams
     {
         Name = "simple-example-agent",
-        Model = BetaManagedAgentsModel.ClaudeSonnet5,
+        Model = BetaManagedAgentsModel.ClaudeSonnet5_5,
     }
 );
 Console.WriteLine($"Created agent: {agent.ID}");

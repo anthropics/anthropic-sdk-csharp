@@ -155,6 +155,12 @@ public sealed class ThreadServiceWithRawResponse : IThreadServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.sessions.threads.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.session.id", parameters.SessionID),
+                new("anthropic.session.thread.id", parameters.ThreadID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -198,6 +204,8 @@ public sealed class ThreadServiceWithRawResponse : IThreadServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.sessions.threads.list",
+            SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -243,6 +251,12 @@ public sealed class ThreadServiceWithRawResponse : IThreadServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.sessions.threads.archive",
+            SpanResourceIds =
+            [
+                new("anthropic.session.id", parameters.SessionID),
+                new("anthropic.session.thread.id", parameters.ThreadID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

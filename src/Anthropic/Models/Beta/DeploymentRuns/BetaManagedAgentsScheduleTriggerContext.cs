@@ -21,7 +21,9 @@ namespace Anthropic.Models.Beta.DeploymentRuns;
 public sealed record class BetaManagedAgentsScheduleTriggerContext : JsonModel
 {
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// The UTC instant at which the cron expression matched in the configured timezone,
+    /// before jitter is applied. At most one run is recorded per (`deployment_id`,
+    /// `scheduled_at`) pair.
     /// </summary>
     public required System::DateTimeOffset ScheduledAt
     {

@@ -51,6 +51,7 @@ public sealed record class BetaManagedAgentsWebSearchToolConfigParams : JsonMode
         {
             if (value == null)
             {
+                this._rawData.Remove("allowed_domains");
                 return;
             }
 
@@ -78,6 +79,7 @@ public sealed record class BetaManagedAgentsWebSearchToolConfigParams : JsonMode
         {
             if (value == null)
             {
+                this._rawData.Remove("blocked_domains");
                 return;
             }
 
@@ -102,7 +104,8 @@ public sealed record class BetaManagedAgentsWebSearchToolConfigParams : JsonMode
     }
 
     /// <summary>
-    /// Permission policy for tool execution.
+    /// Permission policy for this tool. Controls whether tool calls are auto-approved
+    /// or require confirmation.
     /// </summary>
     public BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicy? PermissionPolicy
     {
@@ -129,6 +132,7 @@ public sealed record class BetaManagedAgentsWebSearchToolConfigParams : JsonMode
         {
             if (value == null)
             {
+                this._rawData.Remove("type");
                 return;
             }
 
@@ -213,7 +217,8 @@ class BetaManagedAgentsWebSearchToolConfigParamsFromRaw
 }
 
 /// <summary>
-/// Permission policy for tool execution.
+/// Permission policy for this tool. Controls whether tool calls are auto-approved
+/// or require confirmation.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicyConverter))]
 public record class BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicy : ModelBase

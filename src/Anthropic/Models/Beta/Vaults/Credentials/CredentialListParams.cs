@@ -22,7 +22,7 @@ public record class CredentialListParams : ParamsBase
     public string? VaultID { get; init; }
 
     /// <summary>
-    /// Whether to include archived credentials in the results.
+    /// Whether to include archived credentials in the results. Defaults to `false`.
     /// </summary>
     public bool? IncludeArchived
     {
@@ -35,6 +35,7 @@ public record class CredentialListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("include_archived");
                 return;
             }
 
@@ -56,6 +57,7 @@ public record class CredentialListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -64,7 +66,8 @@ public record class CredentialListParams : ParamsBase
     }
 
     /// <summary>
-    /// Opaque pagination token from a previous `list_credentials` response.
+    /// The `next_page` value from a previous [List Credentials](https://platform.claude.com/docs/en/api/beta/vaults/credentials/list)
+    /// response, to get the next page. Leave it out to get the first page.
     /// </summary>
     public string? Page
     {
@@ -77,6 +80,7 @@ public record class CredentialListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -85,7 +89,8 @@ public record class CredentialListParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `managed-agents-2026-04-01` in
+    /// this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -100,6 +105,7 @@ public record class CredentialListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -110,6 +116,14 @@ public record class CredentialListParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -121,6 +135,7 @@ public record class CredentialListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -218,6 +233,10 @@ public record class CredentialListParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/vaults/{vault_id}/credentials";
+
+    internal override IReadOnlyList<string> QueryParams => ["include_archived", "limit", "page"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

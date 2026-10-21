@@ -63,6 +63,7 @@ public sealed record class BetaManagedAgentsMcpToolsetParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("configs");
                 return;
             }
 
@@ -74,7 +75,7 @@ public sealed record class BetaManagedAgentsMcpToolsetParams : JsonModel
     }
 
     /// <summary>
-    /// Default configuration for all tools from an MCP server.
+    /// Default configuration for all tools from this server.
     /// </summary>
     public BetaManagedAgentsMcpToolsetDefaultConfigParams? DefaultConfig
     {

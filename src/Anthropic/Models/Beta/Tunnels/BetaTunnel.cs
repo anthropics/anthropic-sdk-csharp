@@ -29,7 +29,8 @@ public sealed record class BetaTunnel : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// RFC 3339 datetime string indicating when the tunnel was archived. Null if
+    /// it is not archived.
     /// </summary>
     public required DateTimeOffset? ArchivedAt
     {
@@ -42,7 +43,7 @@ public sealed record class BetaTunnel : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// RFC 3339 datetime string indicating when the tunnel was created.
     /// </summary>
     public required DateTimeOffset CreatedAt
     {

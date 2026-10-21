@@ -73,6 +73,7 @@ public sealed record class BetaWebFetchToolResultBlockParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("caller");
                 return;
             }
 

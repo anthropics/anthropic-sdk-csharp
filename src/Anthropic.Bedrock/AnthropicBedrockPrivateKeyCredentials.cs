@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Anthropic.Core.Telemetry;
 
 namespace Anthropic.Bedrock;
 
@@ -28,6 +29,11 @@ public sealed class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCre
     /// </summary>
     public required string ApiAccessKey { get; init; }
 
+    /// <summary>
+    /// Gets the session token of temporary credentials, or <c>null</c> for long-term ones.
+    /// </summary>
+    internal string? SessionToken { get; init; }
+
     /// <inheritdoc />
     public async Task Apply(HttpRequestMessage requestMessage)
     {
@@ -37,6 +43,10 @@ public sealed class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCre
         var content = await requestMessage.Content!.ReadAsStringAsync().ConfigureAwait(false);
         var payloadHash = AWSSigner.CalculateHash(content);
         requestMessage.Headers.TryAddWithoutValidation("x-amz-content-sha256", payloadHash);
+        if (SessionToken != null)
+        {
+            requestMessage.Headers.TryAddWithoutValidation("x-amz-security-token", SessionToken);
+        }
 
         // Collapse any multi-value request headers (e.g. anthropic-beta when several betas are
         // supplied) to a single comma-joined value before signing AND sending. HttpClient
@@ -62,11 +72,16 @@ public sealed class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCre
             requestMessage.Method.ToString(),
             requestMessage.RequestUri!,
             now,
-            requestMessage.Headers.ToDictionary(
-                e => e.Key,
-                e => string.Join(",", e.Value),
-                StringComparer.InvariantCultureIgnoreCase
-            ),
+            // The trace-context headers stay unsigned: an HTTP instrumentation may replace
+            // them after signing. The multi-value collapse above already made every signed
+            // header a single comma-joined value, so this join preserves those bytes.
+            TraceContextHeaders
+                .Signed(requestMessage.Headers)
+                .ToDictionary(
+                    e => e.Key,
+                    e => string.Join(",", e.Value),
+                    StringComparer.InvariantCultureIgnoreCase
+                ),
             payloadHash,
             ApiAccessKey,
             ApiSecret

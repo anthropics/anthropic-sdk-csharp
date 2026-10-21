@@ -34,6 +34,7 @@ public sealed record class BetaManagedAgentsAgentToolset20260401BashInput : Json
         {
             if (value == null)
             {
+                this._rawData.Remove("command");
                 return;
             }
 
@@ -56,6 +57,7 @@ public sealed record class BetaManagedAgentsAgentToolset20260401BashInput : Json
         {
             if (value == null)
             {
+                this._rawData.Remove("restart");
                 return;
             }
 
@@ -78,6 +80,7 @@ public sealed record class BetaManagedAgentsAgentToolset20260401BashInput : Json
         {
             if (value == null)
             {
+                this._rawData.Remove("timeout_ms");
                 return;
             }
 

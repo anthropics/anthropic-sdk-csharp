@@ -118,6 +118,24 @@ public class SkillParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new SkillParams
+        {
+            SkillID = "pdf",
+            Type = SkillParamsType.Anthropic,
+            Version = "latest",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Version = null,
+        };
+
+        Assert.Null(model.Version);
+        Assert.False(model.RawData.ContainsKey("version"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new SkillParams

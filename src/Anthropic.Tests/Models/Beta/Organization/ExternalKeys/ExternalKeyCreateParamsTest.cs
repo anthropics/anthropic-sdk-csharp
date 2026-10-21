@@ -80,6 +80,30 @@ public class ExternalKeyCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new ExternalKeyCreateParams
+        {
+            ProviderConfig = new BetaAwsExternalKeyConfig()
+            {
+                KmsArn =
+                    "arn:aws:kms:us-east-1:111122223333:key/abcd1234-5678-90ab-cdef-000011112222",
+                Region = "us-east-1",
+                RoleArn = "arn:aws:iam::111122223333:role/anthropic-cmek",
+            },
+            DisplayName = "x",
+            Geo = Geo.Us,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Geo = null,
+        };
+
+        Assert.Null(parameters.Geo);
+        Assert.False(parameters.RawBodyData.ContainsKey("geo"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new ExternalKeyCreateParams

@@ -69,6 +69,7 @@ public sealed record class BetaServerToolUseBlock : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("caller");
                 return;
             }
 

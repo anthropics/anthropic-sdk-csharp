@@ -34,6 +34,7 @@ public record class ExternalKeyListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -131,6 +132,10 @@ public record class ExternalKeyListParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/organizations/external_keys";
+
+    internal override IReadOnlyList<string> QueryParams => ["limit", "page"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

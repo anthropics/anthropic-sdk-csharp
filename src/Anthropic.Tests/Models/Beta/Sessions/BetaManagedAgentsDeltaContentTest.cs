@@ -165,6 +165,28 @@ public class BetaManagedAgentsDeltaContentTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsDeltaContent
+        {
+            Content = new()
+            {
+                Text = "Where is my order #1234?",
+                Type = BetaManagedAgentsTextBlockType.Text,
+            },
+            Type = BetaManagedAgentsDeltaContentType.ContentDelta,
+            Index = 0,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Index = null,
+        };
+
+        Assert.Null(model.Index);
+        Assert.False(model.RawData.ContainsKey("index"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsDeltaContent

@@ -170,6 +170,29 @@ public class CredentialsFileProviderTests : IDisposable
     }
 
     [Fact]
+    public async Task Refresh_DoesNotFollowRedirects()
+    {
+        var path = WriteCredentialsFile(
+            new
+            {
+                version = "1.0",
+                type = "oauth_token",
+                access_token = "expired-token",
+                expires_at = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - 100,
+                refresh_token = "refresh-tok",
+            }
+        );
+
+        using var server = new RedirectingServer();
+        using var provider = new CredentialsFileProvider(path, server.BaseUrl);
+
+        var ex = await Assert.ThrowsAsync<WorkloadIdentityException>(async () =>
+            await provider.GetTokenAsync()
+        );
+        Assert.Equal(HttpStatusCode.TemporaryRedirect, ex.StatusCode);
+    }
+
+    [Fact]
     public async Task ThrowsWhenFileNotFound()
     {
         var missing = Path.Combine(_tempDir, "does-not-exist.json");

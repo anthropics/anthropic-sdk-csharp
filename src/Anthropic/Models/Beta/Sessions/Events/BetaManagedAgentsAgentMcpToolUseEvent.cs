@@ -79,7 +79,7 @@ public sealed record class BetaManagedAgentsAgentMcpToolUseEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when this event was processed.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {
@@ -104,21 +104,22 @@ public sealed record class BetaManagedAgentsAgentMcpToolUseEvent : JsonModel
     }
 
     /// <summary>
-    /// AgentEvaluatedPermission enum
+    /// The evaluated permission policy for this tool invocation.
     /// </summary>
-    public ApiEnum<string, EvaluatedPermission>? EvaluatedPermission
+    public ApiEnum<string, BetaManagedAgentsAgentEvaluatedPermission>? EvaluatedPermission
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<ApiEnum<string, EvaluatedPermission>>(
-                "evaluated_permission"
-            );
+            return this._rawData.GetNullableClass<
+                ApiEnum<string, BetaManagedAgentsAgentEvaluatedPermission>
+            >("evaluated_permission");
         }
         init
         {
             if (value == null)
             {
+                this._rawData.Remove("evaluated_permission");
                 return;
             }
 
@@ -127,8 +128,12 @@ public sealed record class BetaManagedAgentsAgentMcpToolUseEvent : JsonModel
     }
 
     /// <summary>
-    /// Names the resolved permission_policy that produced evaluated_permission, and
-    /// under auto carries the judgement. Open union: clients must tolerate unknown variants.
+    /// Which resolved permission_policy produced evaluated_permission: always_allow,
+    /// always_ask, or auto (with the server's per-invocation judgement). Absent only
+    /// when the server refused the call before any policy applied (for example,
+    /// the named tool is not enabled in the session); such a refusal has evaluated_permission
+    /// deny. An event recorded before this field existed reads as the arm its evaluated_permission
+    /// implies (always_allow for allow, always_ask for ask).
     /// </summary>
     public BetaManagedAgentsAgentToolEvaluation? Evaluation
     {
@@ -143,6 +148,7 @@ public sealed record class BetaManagedAgentsAgentMcpToolUseEvent : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("evaluation");
                 return;
             }
 
@@ -254,56 +260,6 @@ sealed class BetaManagedAgentsAgentMcpToolUseEventTypeConverter
             value switch
             {
                 BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse => "agent.mcp_tool_use",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-/// <summary>
-/// AgentEvaluatedPermission enum
-/// </summary>
-[JsonConverter(typeof(EvaluatedPermissionConverter))]
-public enum EvaluatedPermission
-{
-    Allow,
-    Ask,
-    Deny,
-}
-
-sealed class EvaluatedPermissionConverter : JsonConverter<EvaluatedPermission>
-{
-    public override EvaluatedPermission Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "allow" => EvaluatedPermission.Allow,
-            "ask" => EvaluatedPermission.Ask,
-            "deny" => EvaluatedPermission.Deny,
-            _ => (EvaluatedPermission)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        EvaluatedPermission value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                EvaluatedPermission.Allow => "allow",
-                EvaluatedPermission.Ask => "ask",
-                EvaluatedPermission.Deny => "deny",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

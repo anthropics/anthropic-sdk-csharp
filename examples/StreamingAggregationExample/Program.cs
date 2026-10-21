@@ -18,7 +18,7 @@ MessageCreateParams parameters = new()
             Role = Role.User,
         },
     ],
-    Model = Model.ClaudeSonnet5,
+    Model = Model.ClaudeSonnet5_5,
     Thinking = new ThinkingConfigAdaptive() { Display = Display.Summarized },
     OutputConfig = new OutputConfig() { Effort = Effort.High },
 };

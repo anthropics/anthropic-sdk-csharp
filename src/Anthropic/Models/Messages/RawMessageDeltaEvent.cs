@@ -116,7 +116,9 @@ class RawMessageDeltaEventFromRaw : IFromRawJson<RawMessageDeltaEvent>
 public sealed record class Delta : JsonModel
 {
     /// <summary>
-    /// Information about the container used in the request (for the code execution tool)
+    /// Information about the container used in this request.
+    ///
+    /// <para>This will be non-null if a container tool (e.g. code execution) was used.</para>
     /// </summary>
     public required Container? Container
     {
@@ -129,7 +131,9 @@ public sealed record class Delta : JsonModel
     }
 
     /// <summary>
-    /// Structured information about a refusal.
+    /// Structured information about why model output stopped.
+    ///
+    /// <para>This is `null` when the `stop_reason` has no additional detail to report.</para>
     /// </summary>
     public required RefusalStopDetails? StopDetails
     {

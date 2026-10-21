@@ -148,6 +148,8 @@ public sealed class UserServiceWithRawResponse : IUserServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.users.retrieve",
+            SpanResourceIds = [new("anthropic.organization.user.id", parameters.UserID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -193,6 +195,8 @@ public sealed class UserServiceWithRawResponse : IUserServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.users.update",
+            SpanResourceIds = [new("anthropic.organization.user.id", parameters.UserID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -233,6 +237,7 @@ public sealed class UserServiceWithRawResponse : IUserServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.users.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -266,6 +271,8 @@ public sealed class UserServiceWithRawResponse : IUserServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.organization.users.remove",
+            SpanResourceIds = [new("anthropic.organization.user.id", parameters.UserID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

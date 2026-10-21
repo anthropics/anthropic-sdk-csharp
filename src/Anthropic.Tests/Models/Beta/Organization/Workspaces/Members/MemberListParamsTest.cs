@@ -62,6 +62,31 @@ public class MemberListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new MemberListParams
+        {
+            WorkspaceID = "workspace_id",
+            AfterID = "after_id",
+            BeforeID = "before_id",
+            Limit = 1,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AfterID = null,
+            BeforeID = null,
+            Limit = null,
+        };
+
+        Assert.Null(parameters.AfterID);
+        Assert.False(parameters.RawQueryData.ContainsKey("after_id"));
+        Assert.Null(parameters.BeforeID);
+        Assert.False(parameters.RawQueryData.ContainsKey("before_id"));
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         MemberListParams parameters = new()

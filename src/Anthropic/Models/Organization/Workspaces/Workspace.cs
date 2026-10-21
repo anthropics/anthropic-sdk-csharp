@@ -1,0 +1,230 @@
+using System;
+using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Anthropic.Core;
+using Anthropic.Exceptions;
+
+namespace Anthropic.Models.Organization.Workspaces;
+
+[JsonConverter(typeof(JsonModelConverter<Workspace, WorkspaceFromRaw>))]
+public sealed record class Workspace : JsonModel
+{
+    /// <summary>
+    /// ID of the Workspace.
+    /// </summary>
+    public required string ID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
+    }
+
+    /// <summary>
+    /// RFC 3339 datetime string indicating when the Workspace was archived, or `null`
+    /// if the Workspace is not archived.
+    /// </summary>
+    public required DateTimeOffset? ArchivedAt
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<DateTimeOffset>("archived_at");
+        }
+        init { this._rawData.Set("archived_at", value); }
+    }
+
+    /// <summary>
+    /// Identifier for this Workspace's encryption compartment. When you configure
+    /// a customer-managed encryption key (CMEK) on AWS, reference this value in
+    /// your KMS key-policy condition so the key is scoped to this compartment. On
+    /// GCP and Azure, Anthropic enforces the compartment binding automatically;
+    /// you do not need to reference this value in your key configuration. See the
+    /// CMEK integration guide for the required key configuration; unless your organization
+    /// is on Claude Platform on AWS, it includes a separate value used during key
+    /// validation. On Claude Platform on AWS there is no separate validation value:
+    /// the key is validated against this Workspace's own value when it is attached,
+    /// so if your key policy uses the compartment condition, add this value to it
+    /// before attaching the key.
+    /// </summary>
+    public required string CompartmentID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("compartment_id");
+        }
+        init { this._rawData.Set("compartment_id", value); }
+    }
+
+    /// <summary>
+    /// RFC 3339 datetime string indicating when the Workspace was created.
+    /// </summary>
+    public required DateTimeOffset CreatedAt
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
+        }
+        init { this._rawData.Set("created_at", value); }
+    }
+
+    /// <summary>
+    /// Data residency configuration.
+    /// </summary>
+    public required DataResidency DataResidency
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<DataResidency>("data_residency");
+        }
+        init { this._rawData.Set("data_residency", value); }
+    }
+
+    /// <summary>
+    /// Hex color code representing the Workspace in the Anthropic Console.
+    /// </summary>
+    public required string DisplayColor
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("display_color");
+        }
+        init { this._rawData.Set("display_color", value); }
+    }
+
+    /// <summary>
+    /// ID of the customer-managed encryption key (CMEK) configuration to use for
+    /// this Workspace. Setting this field requires CMEK to be enabled for your organization.
+    /// When set, data stored for this Workspace is encrypted with the referenced
+    /// key. Create key configurations with the External Keys API. On Claude Platform
+    /// on AWS the value is the AWS KMS key ARN, and the key must be a single-Region
+    /// key in the same AWS account and Region as the Workspace. On that platform
+    /// the key is validated against this Workspace when it is attached, so a key-policy
+    /// problem is reported as an error on this request. This field is write-once:
+    /// once a key is attached to a Workspace it cannot be detached or replaced.
+    /// To rotate key material, rotate the underlying key on your cloud KMS; the `external_key_id`
+    /// stays the same.
+    /// </summary>
+    public required string? ExternalKeyID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("external_key_id");
+        }
+        init { this._rawData.Set("external_key_id", value); }
+    }
+
+    /// <summary>
+    /// Name of the Workspace.
+    /// </summary>
+    public required string Name
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("name");
+        }
+        init { this._rawData.Set("name", value); }
+    }
+
+    /// <summary>
+    /// User-defined tags as string key-value pairs. Keys may not begin with `anthropic`.
+    /// </summary>
+    public required IReadOnlyDictionary<string, string> Tags
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<FrozenDictionary<string, string>>("tags");
+        }
+        init
+        {
+            this._rawData.Set<FrozenDictionary<string, string>>(
+                "tags",
+                FrozenDictionary.ToFrozenDictionary(value)
+            );
+        }
+    }
+
+    /// <summary>
+    /// Object type.
+    ///
+    /// <para>For Workspaces, this is always `"workspace"`.</para>
+    /// </summary>
+    public JsonElement Type
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
+    }
+
+    /// <inheritdoc/>
+    public override void Validate()
+    {
+        _ = this.ID;
+        _ = this.ArchivedAt;
+        _ = this.CompartmentID;
+        _ = this.CreatedAt;
+        this.DataResidency.Validate();
+        _ = this.DisplayColor;
+        _ = this.ExternalKeyID;
+        _ = this.Name;
+        _ = this.Tags;
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("workspace")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
+    }
+
+    public Workspace()
+    {
+        this.Type = JsonSerializer.SerializeToElement("workspace");
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    public Workspace(Workspace workspace)
+        : base(workspace) { }
+#pragma warning restore CS8618
+
+    public Workspace(IReadOnlyDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("workspace");
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    Workspace(FrozenDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = new(rawData);
+    }
+#pragma warning restore CS8618
+
+    /// <inheritdoc cref="WorkspaceFromRaw.FromRawUnchecked"/>
+    public static Workspace FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
+    {
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+}
+
+class WorkspaceFromRaw : IFromRawJson<Workspace>
+{
+    /// <inheritdoc/>
+    public Workspace FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        Workspace.FromRawUnchecked(rawData);
+}

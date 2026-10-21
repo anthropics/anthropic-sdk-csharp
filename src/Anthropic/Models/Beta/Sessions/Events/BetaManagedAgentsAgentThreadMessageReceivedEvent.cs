@@ -69,7 +69,7 @@ public sealed record class BetaManagedAgentsAgentThreadMessageReceivedEvent : Js
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the message was received.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {

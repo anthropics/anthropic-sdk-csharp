@@ -12,12 +12,12 @@ public class BetaManagedAgentsCustomSkillTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkill
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };
 
-        string expectedSkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx";
+        string expectedSkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx";
         ApiEnum<string, BetaManagedAgentsCustomSkillType> expectedType =
             BetaManagedAgentsCustomSkillType.Custom;
         string expectedVersion = "2";
@@ -32,7 +32,7 @@ public class BetaManagedAgentsCustomSkillTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkill
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };
@@ -51,7 +51,7 @@ public class BetaManagedAgentsCustomSkillTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkill
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };
@@ -63,7 +63,7 @@ public class BetaManagedAgentsCustomSkillTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedSkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx";
+        string expectedSkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx";
         ApiEnum<string, BetaManagedAgentsCustomSkillType> expectedType =
             BetaManagedAgentsCustomSkillType.Custom;
         string expectedVersion = "2";
@@ -78,7 +78,7 @@ public class BetaManagedAgentsCustomSkillTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkill
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };
@@ -91,7 +91,7 @@ public class BetaManagedAgentsCustomSkillTest : TestBase
     {
         var model = new BetaManagedAgentsCustomSkill
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };

@@ -36,7 +36,8 @@ public sealed record class BetaManagedAgentsDeploymentRun : JsonModel
     }
 
     /// <summary>
-    /// A resolved agent reference with a concrete version.
+    /// Snapshot of the agent at fire time. Always fully resolved — deployments pin
+    /// agent + version.
     /// </summary>
     public required BetaManagedAgentsAgentReference Agent
     {
@@ -49,7 +50,7 @@ public sealed record class BetaManagedAgentsDeploymentRun : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Time this run record was persisted.
     /// </summary>
     public required System::DateTimeOffset CreatedAt
     {
@@ -75,8 +76,8 @@ public sealed record class BetaManagedAgentsDeploymentRun : JsonModel
     }
 
     /// <summary>
-    /// Why the run failed to create a session. The type identifies the failure; message
-    /// is human-readable detail.
+    /// Populated on creation failure. Null on success. Exactly one of `session_id`
+    /// or `error` is non-null.
     /// </summary>
     public required Error? Error
     {
@@ -103,7 +104,7 @@ public sealed record class BetaManagedAgentsDeploymentRun : JsonModel
     }
 
     /// <summary>
-    /// Describes what triggered a deployment run, with trigger-specific metadata.
+    /// What triggered this run and trigger-specific metadata.
     /// </summary>
     public required BetaManagedAgentsTriggerContext TriggerContext
     {
@@ -183,8 +184,8 @@ class BetaManagedAgentsDeploymentRunFromRaw : IFromRawJson<BetaManagedAgentsDepl
 }
 
 /// <summary>
-/// Why the run failed to create a session. The type identifies the failure; message
-/// is human-readable detail.
+/// Populated on creation failure. Null on success. Exactly one of `session_id` or
+/// `error` is non-null.
 /// </summary>
 [JsonConverter(typeof(ErrorConverter))]
 public record class Error : ModelBase

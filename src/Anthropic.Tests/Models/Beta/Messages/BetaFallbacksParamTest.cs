@@ -16,7 +16,7 @@ public class BetaFallbacksParamTest : TestBase
             [
                 new BetaFallbackParam()
                 {
-                    Model = Messages::Model.ClaudeFable5_1,
+                    Model = Messages::Model.ClaudeHaiku5_5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {
@@ -60,7 +60,7 @@ public class BetaFallbacksParamTest : TestBase
             [
                 new BetaFallbackParam()
                 {
-                    Model = Messages::Model.ClaudeFable5_1,
+                    Model = Messages::Model.ClaudeHaiku5_5,
                     MaxTokens = 0,
                     OutputConfig = new()
                     {

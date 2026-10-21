@@ -204,6 +204,7 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.environments.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -217,6 +218,12 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
                 {
                     betaEnvironment.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.environment.id",
+                    betaEnvironment,
+                    static created => created.ID
+                );
                 return betaEnvironment;
             }
         );
@@ -237,6 +244,8 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.environments.retrieve",
+            SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -282,6 +291,8 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.environments.update",
+            SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -324,6 +335,7 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.environments.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -357,6 +369,8 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.environments.delete",
+            SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -402,6 +416,8 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.environments.archive",
+            SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

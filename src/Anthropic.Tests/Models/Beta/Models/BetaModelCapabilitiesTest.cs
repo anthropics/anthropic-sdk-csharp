@@ -33,11 +33,23 @@ public class BetaModelCapabilitiesTest : TestBase
             },
             ImageInput = new(true),
             PdfInput = new(true),
+            ServerTools = new()
+            {
+                CodeExecution = new(true),
+                Supported = true,
+                WebSearch = new(true),
+            },
             StructuredOutputs = new(true),
             Thinking = new()
             {
                 Supported = true,
-                Types = new() { Adaptive = new(true), Enabled = new(true) },
+                Types = new()
+                {
+                    Adaptive = new(true),
+                    BetweenTools = new(true),
+                    Disabled = new(true),
+                    Enabled = new(true),
+                },
             },
         };
 
@@ -67,11 +79,23 @@ public class BetaModelCapabilitiesTest : TestBase
         };
         BetaCapabilitySupport expectedImageInput = new(true);
         BetaCapabilitySupport expectedPdfInput = new(true);
+        BetaServerToolsCapability expectedServerTools = new()
+        {
+            CodeExecution = new(true),
+            Supported = true,
+            WebSearch = new(true),
+        };
         BetaCapabilitySupport expectedStructuredOutputs = new(true);
         BetaThinkingCapability expectedThinking = new()
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                BetweenTools = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         Assert.Equal(expectedBatch, model.Batch);
@@ -82,6 +106,7 @@ public class BetaModelCapabilitiesTest : TestBase
         Assert.Equal(expectedEffort, model.Effort);
         Assert.Equal(expectedImageInput, model.ImageInput);
         Assert.Equal(expectedPdfInput, model.PdfInput);
+        Assert.Equal(expectedServerTools, model.ServerTools);
         Assert.Equal(expectedStructuredOutputs, model.StructuredOutputs);
         Assert.Equal(expectedThinking, model.Thinking);
     }
@@ -113,11 +138,23 @@ public class BetaModelCapabilitiesTest : TestBase
             },
             ImageInput = new(true),
             PdfInput = new(true),
+            ServerTools = new()
+            {
+                CodeExecution = new(true),
+                Supported = true,
+                WebSearch = new(true),
+            },
             StructuredOutputs = new(true),
             Thinking = new()
             {
                 Supported = true,
-                Types = new() { Adaptive = new(true), Enabled = new(true) },
+                Types = new()
+                {
+                    Adaptive = new(true),
+                    BetweenTools = new(true),
+                    Disabled = new(true),
+                    Enabled = new(true),
+                },
             },
         };
 
@@ -157,11 +194,23 @@ public class BetaModelCapabilitiesTest : TestBase
             },
             ImageInput = new(true),
             PdfInput = new(true),
+            ServerTools = new()
+            {
+                CodeExecution = new(true),
+                Supported = true,
+                WebSearch = new(true),
+            },
             StructuredOutputs = new(true),
             Thinking = new()
             {
                 Supported = true,
-                Types = new() { Adaptive = new(true), Enabled = new(true) },
+                Types = new()
+                {
+                    Adaptive = new(true),
+                    BetweenTools = new(true),
+                    Disabled = new(true),
+                    Enabled = new(true),
+                },
             },
         };
 
@@ -198,11 +247,23 @@ public class BetaModelCapabilitiesTest : TestBase
         };
         BetaCapabilitySupport expectedImageInput = new(true);
         BetaCapabilitySupport expectedPdfInput = new(true);
+        BetaServerToolsCapability expectedServerTools = new()
+        {
+            CodeExecution = new(true),
+            Supported = true,
+            WebSearch = new(true),
+        };
         BetaCapabilitySupport expectedStructuredOutputs = new(true);
         BetaThinkingCapability expectedThinking = new()
         {
             Supported = true,
-            Types = new() { Adaptive = new(true), Enabled = new(true) },
+            Types = new()
+            {
+                Adaptive = new(true),
+                BetweenTools = new(true),
+                Disabled = new(true),
+                Enabled = new(true),
+            },
         };
 
         Assert.Equal(expectedBatch, deserialized.Batch);
@@ -213,6 +274,7 @@ public class BetaModelCapabilitiesTest : TestBase
         Assert.Equal(expectedEffort, deserialized.Effort);
         Assert.Equal(expectedImageInput, deserialized.ImageInput);
         Assert.Equal(expectedPdfInput, deserialized.PdfInput);
+        Assert.Equal(expectedServerTools, deserialized.ServerTools);
         Assert.Equal(expectedStructuredOutputs, deserialized.StructuredOutputs);
         Assert.Equal(expectedThinking, deserialized.Thinking);
     }
@@ -244,11 +306,23 @@ public class BetaModelCapabilitiesTest : TestBase
             },
             ImageInput = new(true),
             PdfInput = new(true),
+            ServerTools = new()
+            {
+                CodeExecution = new(true),
+                Supported = true,
+                WebSearch = new(true),
+            },
             StructuredOutputs = new(true),
             Thinking = new()
             {
                 Supported = true,
-                Types = new() { Adaptive = new(true), Enabled = new(true) },
+                Types = new()
+                {
+                    Adaptive = new(true),
+                    BetweenTools = new(true),
+                    Disabled = new(true),
+                    Enabled = new(true),
+                },
             },
         };
 
@@ -282,11 +356,23 @@ public class BetaModelCapabilitiesTest : TestBase
             },
             ImageInput = new(true),
             PdfInput = new(true),
+            ServerTools = new()
+            {
+                CodeExecution = new(true),
+                Supported = true,
+                WebSearch = new(true),
+            },
             StructuredOutputs = new(true),
             Thinking = new()
             {
                 Supported = true,
-                Types = new() { Adaptive = new(true), Enabled = new(true) },
+                Types = new()
+                {
+                    Adaptive = new(true),
+                    BetweenTools = new(true),
+                    Disabled = new(true),
+                    Enabled = new(true),
+                },
             },
         };
 

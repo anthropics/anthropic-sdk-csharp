@@ -13,7 +13,7 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
     {
         var model = new BetaManagedAgentsCredentialValidation
         {
-            CredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             HasRefreshToken = true,
             McpProbe = new()
             {
@@ -43,7 +43,7 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
         };
 
-        string expectedCredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw";
+        string expectedCredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw";
         bool expectedHasRefreshToken = true;
         BetaManagedAgentsMcpProbe expectedMcpProbe = new()
         {
@@ -89,7 +89,7 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
     {
         var model = new BetaManagedAgentsCredentialValidation
         {
-            CredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             HasRefreshToken = true,
             McpProbe = new()
             {
@@ -133,7 +133,7 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
     {
         var model = new BetaManagedAgentsCredentialValidation
         {
-            CredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             HasRefreshToken = true,
             McpProbe = new()
             {
@@ -170,7 +170,7 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedCredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw";
+        string expectedCredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw";
         bool expectedHasRefreshToken = true;
         BetaManagedAgentsMcpProbe expectedMcpProbe = new()
         {
@@ -216,7 +216,7 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
     {
         var model = new BetaManagedAgentsCredentialValidation
         {
-            CredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             HasRefreshToken = true,
             McpProbe = new()
             {
@@ -254,7 +254,7 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
     {
         var model = new BetaManagedAgentsCredentialValidation
         {
-            CredentialID = "vcrd_011CZkZEMt8gZan2iYOQfSkw",
+            CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             HasRefreshToken = true,
             McpProbe = new()
             {

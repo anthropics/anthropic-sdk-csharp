@@ -9,13 +9,13 @@ public class AgentServiceTest : TestBase
     public async Task Create_Works()
     {
         var betaManagedAgentsAgent = await this.client.Beta.Agents.Create(
-            new() { Model = BetaManagedAgentsModel.ClaudeOpus5, Name = "My First Agent" },
+            new() { Model = BetaManagedAgentsModel.ClaudeOpus5_5, Name = "My First Agent" },
             TestContext.Current.CancellationToken
         );
         betaManagedAgentsAgent.Validate();
     }
 
-    [Fact(Skip = "buildURL drops path-level query params")]
+    [Fact]
     public async Task Retrieve_Works()
     {
         var betaManagedAgentsAgent = await this.client.Beta.Agents.Retrieve(
@@ -37,7 +37,7 @@ public class AgentServiceTest : TestBase
         betaManagedAgentsAgent.Validate();
     }
 
-    [Fact(Skip = "buildURL drops path-level query params")]
+    [Fact]
     public async Task List_Works()
     {
         var page = await this.client.Beta.Agents.List(new(), TestContext.Current.CancellationToken);

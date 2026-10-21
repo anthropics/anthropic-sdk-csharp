@@ -40,6 +40,7 @@ public sealed record class BetaManagedAgentsConflictError : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("message");
                 return;
             }
 

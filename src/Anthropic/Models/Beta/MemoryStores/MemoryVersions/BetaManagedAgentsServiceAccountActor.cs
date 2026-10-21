@@ -9,8 +9,7 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
 /// <summary>
-/// Attribution for a write made by a workload authenticated as a service account,
-/// for example via Workload Identity Federation.
+/// A workload authenticated as a service account, for example via Workload Identity Federation.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<
@@ -21,7 +20,7 @@ namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 public sealed record class BetaManagedAgentsServiceAccountActor : JsonModel
 {
     /// <summary>
-    /// ID of the service account that performed the write (a `svac_...` value).
+    /// ID of the service account (a `svac_...` value).
     /// </summary>
     public required string ServiceAccountID
     {

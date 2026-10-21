@@ -17,7 +17,7 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class CredentialListPageResponse : JsonModel
 {
     /// <summary>
-    /// List of credentials.
+    /// The credentials on this page, newest first.
     /// </summary>
     public IReadOnlyList<BetaManagedAgentsCredential>? Data
     {
@@ -32,6 +32,7 @@ public sealed record class CredentialListPageResponse : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("data");
                 return;
             }
 

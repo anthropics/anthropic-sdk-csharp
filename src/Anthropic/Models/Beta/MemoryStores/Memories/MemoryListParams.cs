@@ -11,7 +11,7 @@ using Anthropic.Services.Beta.MemoryStores;
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
 /// <summary>
-/// List memories
+/// List Memories
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -22,9 +22,11 @@ public record class MemoryListParams : ParamsBase
     public string? MemoryStoreID { get; init; }
 
     /// <summary>
-    /// `0` (or omitted) returns all descendants below `path_prefix` (recursive).
-    /// `1` returns immediate children only; deeper entries roll up as `memory_prefix`
-    /// items. `depth=1` behaves like `ls`; omitting `depth` behaves like `find`.
+    /// How far below `path_prefix` to list. Defaults to `0`, which lists every memory
+    /// below the prefix.
+    ///
+    /// <para>Pass `1` to list only the direct children. Deeper memories are then
+    /// grouped into `memory_prefix` items.</para>
     /// </summary>
     public int? Depth
     {
@@ -37,6 +39,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("depth");
                 return;
             }
 
@@ -45,9 +48,10 @@ public record class MemoryListParams : ParamsBase
     }
 
     /// <summary>
-    /// Maximum number of items to return per page. Must be between 1 and 100. Defaults
-    /// to 20 when omitted. Capped at 20 when `view=full`. Both `memory` and `memory_prefix`
-    /// items count toward the limit.
+    /// The maximum number of items to return per page, from 1 to 100. Defaults to 20.
+    ///
+    /// <para>With `view=full`, a page holds at most 20 items. `memory` and `memory_prefix`
+    /// items both count toward the limit.</para>
     /// </summary>
     public int? Limit
     {
@@ -60,6 +64,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -68,8 +73,8 @@ public record class MemoryListParams : ParamsBase
     }
 
     /// <summary>
-    /// Opaque pagination cursor (a `page_...` value). Pass the `next_page` value
-    /// from a previous response to fetch the next page; omit for the first page.
+    /// The `next_page` value from a previous response, to get the next page. Omit
+    /// it to get the first page.
     /// </summary>
     public string? Page
     {
@@ -82,6 +87,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("page");
                 return;
             }
 
@@ -90,8 +96,12 @@ public record class MemoryListParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional path prefix filter. Must end with `/` (segment-aligned), e.g., `/notes/`.
-    /// This value appears in request URLs. Do not include secrets or personally identifiable information.
+    /// Return only memories whose path starts with this prefix, such as `/notes/`.
+    /// This value appears in request URLs. Do not include secrets or personally
+    /// identifiable information.
+    ///
+    /// <para>Omit it to list the whole store. The prefix must end with `/` and matches
+    /// whole segments, so `/notes/` matches `/notes/todo.md` but not `/notes-archive/todo.md`.</para>
     /// </summary>
     public string? PathPrefix
     {
@@ -104,6 +114,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("path_prefix");
                 return;
             }
 
@@ -112,9 +123,10 @@ public record class MemoryListParams : ParamsBase
     }
 
     /// <summary>
-    /// Which projection of each `memory` to return. Defaults to `basic` (content
-    /// omitted). `full` populates `content` on each item and caps `limit` at 20;
-    /// use this as the bulk-read path for export and sync.
+    /// Whether each memory in the response includes `content`. Defaults to `basic`,
+    /// which sets it to `null`.
+    ///
+    /// <para>With `full`, a page holds at most 20 items.</para>
     /// </summary>
     public ApiEnum<string, BetaManagedAgentsMemoryView>? View
     {
@@ -129,6 +141,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("view");
                 return;
             }
 
@@ -137,7 +150,8 @@ public record class MemoryListParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `agent-memory-2026-07-22` or
+    /// `managed-agents-2026-04-01` in this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -152,6 +166,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -162,6 +177,14 @@ public record class MemoryListParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -173,6 +196,7 @@ public record class MemoryListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -270,6 +294,13 @@ public record class MemoryListParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/memory_stores/{memory_store_id}/memories";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["depth", "limit", "page", "path_prefix", "view"];
+
+    internal override IReadOnlyList<string> ContentQueryParams => ["page"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

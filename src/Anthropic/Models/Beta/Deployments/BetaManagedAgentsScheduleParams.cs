@@ -10,7 +10,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Deployments;
 
 /// <summary>
-/// 5-field POSIX cron schedule. Literal wall-clock matching in the configured timezone.
+/// A recurring schedule. Discriminated union — only cron is supported currently.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<

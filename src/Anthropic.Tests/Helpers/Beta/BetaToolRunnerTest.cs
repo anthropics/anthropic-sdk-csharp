@@ -438,6 +438,679 @@ public class BetaToolRunnerTest
         Assert.Equal("Sunny", result.GetProperty("content").GetString());
     }
 
+    // --- AddTools / RemoveTools ---
+
+    /// <summary>
+    /// A messages service that hands out the given turns in order and records each request.
+    /// </summary>
+    private sealed class ScriptedTurns
+    {
+        public List<MessageCreateParams> Requests { get; } = [];
+
+        public IMessageService Service { get; }
+
+        public ScriptedTurns(params BetaMessage[] turns)
+        {
+            var remaining = new Queue<BetaMessage>(turns);
+            var mock = new Mock<IMessageService>();
+            mock.Setup(s =>
+                    s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>())
+                )
+                .ReturnsAsync(
+                    (MessageCreateParams p, CancellationToken _) =>
+                    {
+                        Requests.Add(p);
+                        return remaining.Dequeue();
+                    }
+                );
+            Service = mock.Object;
+        }
+
+        public ScriptedTurns(params IAsyncEnumerable<BetaRawMessageStreamEvent>[] turns)
+        {
+            var remaining = new Queue<IAsyncEnumerable<BetaRawMessageStreamEvent>>(turns);
+            var mock = new Mock<IMessageService>();
+            mock.Setup(s =>
+                    s.CreateStreaming(
+                        It.IsAny<MessageCreateParams>(),
+                        It.IsAny<CancellationToken>()
+                    )
+                )
+                .Returns(
+                    (MessageCreateParams p, CancellationToken _) =>
+                    {
+                        Requests.Add(p);
+                        return remaining.Dequeue();
+                    }
+                );
+            Service = mock.Object;
+        }
+    }
+
+    private static BetaMessage MakeToolUseTurn(params string[] toolNames) =>
+        MakeMessage(
+            [.. toolNames.Select(name => MakeToolUseBlock($"tu_{name}", name, new()))],
+            BetaStopReason.ToolUse
+        );
+
+    private static BetaMessage MakeFinalTurn() => MakeMessage([MakeTextBlock("Done")]);
+
+    private static BetaTool TimeToolDefinition =>
+        new()
+        {
+            Name = "get_time",
+            Description = "Get the current time",
+            InputSchema = new(),
+        };
+
+    private static BetaRunnableTool MakeRecordingTool(
+        string name,
+        BetaTool definition,
+        List<string> calls,
+        string? result = null
+    ) =>
+        new()
+        {
+            Name = name,
+            Definition = definition,
+            Run = (_, _) =>
+            {
+                calls.Add(result ?? name);
+                return Task.FromResult<BetaToolResultBlockParamContent>(result ?? name);
+            },
+        };
+
+    private static string ToolAdditionJson(BetaToolUnion definition) =>
+        """{"type":"tool_addition","tool":{"type":"tool_definition","definition":"""
+        + JsonSerializer.Serialize(definition, s_jsonOptions)
+        + "}}";
+
+    private static string ToolRemovalJson(string name) =>
+        """{"type":"tool_removal","tool":{"type":"tool_reference","name":"""
+        + JsonSerializer.Serialize(name)
+        + "}}";
+
+    private static string ToolChangesJson(params string[] blocks) =>
+        """{"role":"system","content":[""" + string.Join(",", blocks) + "]}";
+
+    private static List<JsonElement> SentMessages(MessageCreateParams request) =>
+        [.. request.RawBodyData["messages"].EnumerateArray()];
+
+    private static List<string?> SentRoles(MessageCreateParams request) =>
+        [.. SentMessages(request).Select(m => m.GetProperty("role").GetString())];
+
+    private static void AssertJson(string expectedJson, JsonElement actual)
+    {
+        using var expected = JsonDocument.Parse(expectedJson);
+        Assert.True(
+            JsonElement.DeepEquals(expected.RootElement, actual),
+            $"Expected {expectedJson} but got {actual.GetRawText()}"
+        );
+    }
+
+    /// <summary>
+    /// Asserts that a request's last two messages are the results of the turn's tool calls,
+    /// then <paramref name="expectedToolChangesJson"/>.
+    /// </summary>
+    private static List<JsonElement> AssertToolResultsThenToolChanges(
+        MessageCreateParams request,
+        string expectedToolChangesJson
+    )
+    {
+        var messages = SentMessages(request);
+        AssertJson(expectedToolChangesJson, messages[^1]);
+        var toolResults = messages[^2];
+        Assert.Equal("user", toolResults.GetProperty("role").GetString());
+        return [.. toolResults.GetProperty("content").EnumerateArray()];
+    }
+
+    private static void AssertToolNotFound(JsonElement toolResult, string name)
+    {
+        Assert.True(toolResult.GetProperty("is_error").GetBoolean());
+        Assert.Equal($"Tool '{name}' not found", toolResult.GetProperty("content").GetString());
+    }
+
+    private static void AssertToolsNeverChange(ScriptedTurns turns) =>
+        Assert.Single(turns.Requests.Select(r => r.RawBodyData["tools"].GetRawText()).Distinct());
+
+    [Fact]
+    public async Task AddTools_RunsToolFromTheRequestCarryingItsDefinition()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(
+            MakeToolUseTurn("get_weather"),
+            MakeToolUseTurn("get_time"),
+            MakeFinalTurn()
+        );
+        var calls = new List<string>();
+        var runner = turns.Service.ToolRunner(
+            BaseParams,
+            [MakeRecordingTool("get_weather", WeatherToolDefinition, calls)]
+        );
+
+        await foreach (var _ in runner.WithCancellation(ct))
+        {
+            if (turns.Requests.Count == 1)
+            {
+                runner.AddTools(MakeRecordingTool("get_time", TimeToolDefinition, calls));
+            }
+        }
+
+        Assert.Equal(["get_weather", "get_time"], calls);
+        AssertToolsNeverChange(turns);
+        AssertToolResultsThenToolChanges(
+            turns.Requests[1],
+            ToolChangesJson(ToolAdditionJson(TimeToolDefinition))
+        );
+    }
+
+    [Fact]
+    public async Task ToolChanges_BeforeFirstRequest_FollowInitialMessagesWithoutBetaHeader()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(MakeFinalTurn());
+        var runner = turns.Service.ToolRunner(BaseParams, []);
+
+        runner.AddTools(MakeRecordingTool("get_time", TimeToolDefinition, []));
+        await runner.RunUntilDoneAsync(ct);
+
+        var request = Assert.Single(turns.Requests);
+        Assert.Equal(["user", "system"], SentRoles(request));
+        Assert.Null(request.Betas);
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task RemoveTools_RefusesCallAlreadyInTurn(bool byName)
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(MakeToolUseTurn("get_weather"), MakeFinalTurn());
+        var calls = new List<string>();
+        var weatherTool = MakeRecordingTool("get_weather", WeatherToolDefinition, calls);
+        var runner = turns.Service.ToolRunner(BaseParams, [weatherTool]);
+
+        await foreach (var _ in runner.WithCancellation(ct))
+        {
+            if (turns.Requests.Count == 1)
+            {
+                if (byName)
+                {
+                    runner.RemoveTools("get_weather");
+                }
+                else
+                {
+                    runner.RemoveTools(weatherTool);
+                }
+            }
+        }
+
+        Assert.Empty(calls);
+        var toolResults = AssertToolResultsThenToolChanges(
+            turns.Requests[1],
+            ToolChangesJson(ToolRemovalJson("get_weather"))
+        );
+        AssertToolNotFound(Assert.Single(toolResults), "get_weather");
+    }
+
+    [Fact]
+    public async Task RemoveTools_ToolStaysRemovedWhenRemovalLeavesHistory_UntilAddedAgain()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(
+            MakeToolUseTurn("get_weather"),
+            MakeToolUseTurn("get_weather"),
+            MakeToolUseTurn("get_weather"),
+            MakeFinalTurn()
+        );
+        var calls = new List<string>();
+        var weatherTool = MakeRecordingTool("get_weather", WeatherToolDefinition, calls);
+        var runner = turns.Service.ToolRunner(BaseParams, [weatherTool]);
+
+        runner.RemoveTools(weatherTool);
+        await foreach (var _ in runner.WithCancellation(ct))
+        {
+            if (turns.Requests.Count == 1)
+            {
+                runner.SetParams(p =>
+                    p with
+                    {
+                        Messages = [new() { Content = "Start over", Role = Role.User }],
+                    }
+                );
+            }
+            else if (turns.Requests.Count == 3)
+            {
+                runner.AddTools(weatherTool);
+            }
+        }
+
+        Assert.Equal(["user"], SentRoles(turns.Requests[1]));
+        AssertToolNotFound(
+            Assert.Single(
+                SentMessages(turns.Requests[2])[^1].GetProperty("content").EnumerateArray()
+            ),
+            "get_weather"
+        );
+        Assert.Equal(["get_weather"], calls);
+    }
+
+    [Fact]
+    public async Task ToolChanges_InOneTurn_AreSentTogetherInCallOrder()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(
+            MakeToolUseTurn("get_weather"),
+            MakeToolUseTurn("get_time", "get_weather"),
+            MakeFinalTurn()
+        );
+        var calls = new List<string>();
+        var weatherTool = MakeRecordingTool("get_weather", WeatherToolDefinition, calls);
+        var runner = turns.Service.ToolRunner(BaseParams, [weatherTool]);
+
+        await foreach (var _ in runner.WithCancellation(ct))
+        {
+            if (turns.Requests.Count == 1)
+            {
+                runner.AddTools(MakeRecordingTool("get_time", TimeToolDefinition, calls));
+                runner.RemoveTools("get_time", "get_weather");
+                runner.AddTools(weatherTool);
+            }
+        }
+
+        // Adding then removing a name, or removing then adding it, is not collapsed.
+        var firstResults = AssertToolResultsThenToolChanges(
+            turns.Requests[1],
+            ToolChangesJson(
+                ToolAdditionJson(TimeToolDefinition),
+                ToolRemovalJson("get_time"),
+                ToolRemovalJson("get_weather"),
+                ToolAdditionJson(WeatherToolDefinition)
+            )
+        );
+        Assert.Equal("get_weather", Assert.Single(firstResults).GetProperty("content").GetString());
+
+        Assert.Equal(["get_weather", "get_weather"], calls);
+        var results = SentMessages(turns.Requests[2])[^1]
+            .GetProperty("content")
+            .EnumerateArray()
+            .ToList();
+        AssertToolNotFound(results[0], "get_time");
+        Assert.Equal("get_weather", results[1].GetProperty("content").GetString());
+    }
+
+    [Fact]
+    public async Task AddTools_ReplacesToolOfSameNameForCallAlreadyInTurn()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(
+            MakeToolUseTurn("get_weather"),
+            MakeToolUseTurn("get_weather"),
+            MakeFinalTurn()
+        );
+        var calls = new List<string>();
+        var runner = turns.Service.ToolRunner(
+            BaseParams,
+            [MakeRecordingTool("get_weather", WeatherToolDefinition, calls, "old")]
+        );
+
+        await foreach (var _ in runner.WithCancellation(ct))
+        {
+            if (turns.Requests.Count == 1)
+            {
+                runner.AddTools(
+                    MakeRecordingTool("get_weather", WeatherToolDefinition, calls, "new")
+                );
+            }
+        }
+
+        Assert.Equal(["new", "new"], calls);
+    }
+
+    [Fact]
+    public async Task AddTools_AnswersCallAlreadyInTurnFromTheToolAddedUnderItsName()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(MakeToolUseTurn("get_weather"), MakeFinalTurn());
+        var calls = new List<string>();
+        var runner = turns.Service.ToolRunner(
+            BaseParams,
+            [MakeRecordingTool("get_weather", WeatherToolDefinition, calls, "old")]
+        );
+        var forecastDefinition = WeatherToolDefinition with { Description = "Get the forecast" };
+
+        await foreach (var _ in runner.WithCancellation(ct))
+        {
+            if (turns.Requests.Count == 1)
+            {
+                runner.AddTools(MakeRecordingTool("get_weather", forecastDefinition, calls, "new"));
+            }
+        }
+
+        Assert.Equal(["new"], calls);
+        var toolResults = AssertToolResultsThenToolChanges(
+            turns.Requests[1],
+            ToolChangesJson(ToolAdditionJson(forecastDefinition))
+        );
+        Assert.Equal("new", Assert.Single(toolResults).GetProperty("content").GetString());
+    }
+
+    [Fact]
+    public async Task AddTools_RunsCallAlreadyInTurnToAToolTheHistoryRemoved()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(MakeToolUseTurn("get_weather"), MakeFinalTurn());
+        var calls = new List<string>();
+        var weatherTool = MakeRecordingTool("get_weather", WeatherToolDefinition, calls);
+        var runner = turns.Service.ToolRunner(
+            BaseParams with
+            {
+                Messages =
+                [
+                    .. BaseParams.Messages,
+                    MakeSystemToolChangeMessage(MakeToolRemovalBlock("get_weather")),
+                ],
+            },
+            [weatherTool]
+        );
+
+        await foreach (var _ in runner.WithCancellation(ct))
+        {
+            if (turns.Requests.Count == 1)
+            {
+                runner.AddTools(weatherTool);
+            }
+        }
+
+        Assert.Equal(["get_weather"], calls);
+    }
+
+    [Fact]
+    public async Task AddTools_RawDefinitions_AreSentAsGivenAndNeverRun()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(MakeToolUseTurn("get_time"), MakeFinalTurn());
+        var runner = turns.Service.ToolRunner(BaseParams, []);
+
+        runner.AddTools(new BetaWebSearchTool20250305 { MaxUses = 3 }, TimeToolDefinition);
+        await runner.RunUntilDoneAsync(ct);
+
+        AssertJson(
+            ToolChangesJson(
+                """{"type":"tool_addition","tool":{"type":"tool_definition","definition":{"type":"web_search_20250305","name":"web_search","max_uses":3}}}""",
+                ToolAdditionJson(TimeToolDefinition)
+            ),
+            SentMessages(turns.Requests[0])[1]
+        );
+        AssertToolNotFound(
+            Assert.Single(
+                SentMessages(turns.Requests[1])[^1].GetProperty("content").EnumerateArray()
+            ),
+            "get_time"
+        );
+    }
+
+    [Fact]
+    public async Task AddTools_RawDefinition_DropsRunnableToolOfSameName()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(
+            MakeToolUseTurn("get_weather"),
+            MakeToolUseTurn("get_weather"),
+            MakeFinalTurn()
+        );
+        var calls = new List<string>();
+        var runner = turns.Service.ToolRunner(
+            BaseParams,
+            [MakeRecordingTool("get_weather", WeatherToolDefinition, calls)]
+        );
+
+        await foreach (var _ in runner.WithCancellation(ct))
+        {
+            if (turns.Requests.Count == 1)
+            {
+                runner.AddTools(WeatherToolDefinition);
+            }
+        }
+
+        Assert.Empty(calls);
+        AssertToolNotFound(
+            Assert.Single(
+                SentMessages(turns.Requests[2])[^1].GetProperty("content").EnumerateArray()
+            ),
+            "get_weather"
+        );
+    }
+
+    [Fact]
+    public async Task ToolChanges_WaitOnlyWhileAPausedTurnIsResumed()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(
+            MakePausedTurn(),
+            MakeMessage([MakeCompactionBlock("Summary so far.")], BetaStopReason.Compaction),
+            MakeFinalTurn()
+        );
+        var runner = turns.Service.ToolRunner(BaseParams, []);
+
+        await foreach (var _ in runner.WithCancellation(ct))
+        {
+            if (turns.Requests.Count == 1)
+            {
+                runner.AddTools(TimeToolDefinition);
+            }
+        }
+
+        Assert.Equal(["user", "assistant"], SentRoles(turns.Requests[1]));
+        Assert.Equal(["user", "assistant", "assistant", "system"], SentRoles(turns.Requests[2]));
+    }
+
+    [Fact]
+    public async Task ToolChanges_PendingWhenRunEnds_AreNeverSent()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(MakeFinalTurn());
+        var runner = turns.Service.ToolRunner(BaseParams, [MakeWeatherToolSync(_ => "Sunny")]);
+
+        await foreach (var _ in runner.WithCancellation(ct))
+        {
+            runner.AddTools(TimeToolDefinition);
+            runner.RemoveTools("get_weather");
+        }
+
+        Assert.Equal(["user"], SentRoles(Assert.Single(turns.Requests)));
+    }
+
+    [Fact]
+    public async Task ToolChanges_MadeByToolsRunningInParallel_AreAllSent()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(MakeToolUseTurn("first", "second"), MakeFinalTurn());
+        using var bothRunning = new Barrier(2);
+        BetaToolRunner runner = null!;
+        BetaRunnableTool MakeTool(string name, Action change) =>
+            new()
+            {
+                Name = name,
+                Definition = TimeToolDefinition with { Name = name },
+                Run = (_, _) =>
+                    Task.Run<BetaToolResultBlockParamContent>(() =>
+                    {
+                        Assert.True(bothRunning.SignalAndWait(TimeSpan.FromSeconds(10), ct));
+                        change();
+                        return name;
+                    }),
+            };
+        runner = turns.Service.ToolRunner(
+            BaseParams,
+            [
+                MakeTool("first", () => runner.RemoveTools("second")),
+                MakeTool("second", () => runner.AddTools(TimeToolDefinition)),
+            ]
+        );
+
+        await runner.RunUntilDoneAsync(ct);
+
+        var changes = SentMessages(turns.Requests[1])[^1];
+        Assert.Equal("system", changes.GetProperty("role").GetString());
+        Assert.Equal(
+            ["tool_addition", "tool_removal"],
+            changes
+                .GetProperty("content")
+                .EnumerateArray()
+                .Select(block => block.GetProperty("type").GetString())
+                .OrderBy(type => type)
+        );
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task ToolChanges_AndACompactionOnOneTurn_GoOutInTheCompactionRequest(bool addFirst)
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(
+            MakeToolUseTurn("get_weather"),
+            MakeMessage([MakeCompactionBlock("Summary so far.")], BetaStopReason.Compaction),
+            MakeToolUseTurn("get_time"),
+            MakeFinalTurn()
+        );
+        var calls = new List<string>();
+        var timeTool = MakeRecordingTool("get_time", TimeToolDefinition, calls);
+        var runner = turns.Service.ToolRunner(
+            BaseParams,
+            [MakeRecordingTool("get_weather", WeatherToolDefinition, calls)]
+        );
+
+        await foreach (var _ in runner.WithCancellation(ct))
+        {
+            if (turns.Requests.Count == 1 && addFirst)
+            {
+                runner.AddTools(timeTool);
+                runner.CompactBeforeNextTurn();
+            }
+            else if (turns.Requests.Count == 1)
+            {
+                runner.CompactBeforeNextTurn();
+                runner.AddTools(timeTool);
+            }
+        }
+
+        Assert.True(turns.Requests[1].RawBodyData.ContainsKey("compaction"));
+        AssertToolResultsThenToolChanges(
+            turns.Requests[1],
+            ToolChangesJson(ToolAdditionJson(TimeToolDefinition))
+        );
+        Assert.Equal(["assistant"], SentRoles(turns.Requests[2]));
+        Assert.Equal(["get_weather", "get_time"], calls);
+    }
+
+    [Fact]
+    public async Task RemoveTools_BeforeACompaction_IsSentWithItAndHoldsUntilAddTools()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var compaction = JsonSerializer.Deserialize<BetaContentBlock>(
+            """{"type":"compaction","content":"Summary so far.","encrypted_content":null,"signature":"sig_01","tool_changes":[{"type":"tool_removal","tool":{"type":"tool_reference","name":"get_weather"}}]}""",
+            s_jsonOptions
+        )!;
+        var turns = new ScriptedTurns(
+            MakeMessage([compaction], BetaStopReason.Compaction),
+            MakeToolUseTurn("get_weather"),
+            MakeToolUseTurn("get_weather"),
+            MakeFinalTurn()
+        );
+        var calls = new List<string>();
+        var weatherTool = MakeRecordingTool("get_weather", WeatherToolDefinition, calls);
+        var runner = turns.Service.ToolRunner(BaseParams, [weatherTool]);
+
+        runner.RemoveTools(weatherTool);
+        runner.CompactBeforeNextTurn();
+        await foreach (var _ in runner.WithCancellation(ct))
+        {
+            if (turns.Requests.Count == 3)
+            {
+                runner.AddTools(weatherTool);
+            }
+        }
+
+        Assert.True(turns.Requests[0].RawBodyData.ContainsKey("compaction"));
+        Assert.Equal(["user", "system"], SentRoles(turns.Requests[0]));
+        Assert.Equal(["assistant"], SentRoles(turns.Requests[1]));
+        AssertToolNotFound(
+            Assert.Single(
+                SentMessages(turns.Requests[2])[^1].GetProperty("content").EnumerateArray()
+            ),
+            "get_weather"
+        );
+        Assert.Equal(["get_weather"], calls);
+    }
+
+    private static IAsyncEnumerable<BetaRawMessageStreamEvent> MakeToolUseStream(string name) =>
+        MakeEventStream(
+            """{"type":"message_start","message":{"id":"msg_1","type":"message","role":"assistant","content":[],"model":"claude-opus-4-6-20250929","stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":10}}}""",
+            """{"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"tu_NAME","name":"NAME","input":{}}}""".Replace(
+                "NAME",
+                name
+            ),
+            """{"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{}"}}""",
+            """{"type":"content_block_stop","index":0}""",
+            """{"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null},"usage":{"output_tokens":10}}""",
+            """{"type":"message_stop"}"""
+        );
+
+    private static IAsyncEnumerable<BetaRawMessageStreamEvent> MakeStream(
+        string text,
+        string stopReason
+    ) =>
+        MakeEventStream(
+            """{"type":"message_start","message":{"id":"msg_2","type":"message","role":"assistant","content":[],"model":"claude-opus-4-6-20250929","stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":10}}}""",
+            """{"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}""",
+            """{"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"TEXT"}}""".Replace(
+                "TEXT",
+                text
+            ),
+            """{"type":"content_block_stop","index":0}""",
+            """{"type":"message_delta","delta":{"stop_reason":"STOP_REASON","stop_sequence":null},"usage":{"output_tokens":10}}""".Replace(
+                "STOP_REASON",
+                stopReason
+            ),
+            """{"type":"message_stop"}"""
+        );
+
+    [Fact]
+    public async Task Streaming_ToolChanges_WaitForPausedTurnThenAreSentAfterToolResults()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var turns = new ScriptedTurns(
+            MakeStream("Let me look that up.", "pause_turn"),
+            MakeToolUseStream("get_weather"),
+            MakeToolUseStream("get_time"),
+            MakeStream("Done", "end_turn")
+        );
+        var calls = new List<string>();
+        var weatherTool = MakeRecordingTool("get_weather", WeatherToolDefinition, calls);
+        var runner = turns.Service.ToolRunner(BaseParams, [weatherTool]);
+
+        await foreach (var stream in runner.Streaming(ct).WithCancellation(ct))
+        {
+            await foreach (var _ in stream.WithCancellation(ct)) { }
+            if (turns.Requests.Count == 1)
+            {
+                runner.RemoveTools(weatherTool);
+                runner.AddTools(MakeRecordingTool("get_time", TimeToolDefinition, calls));
+            }
+        }
+
+        Assert.Equal(["get_time"], calls);
+        AssertToolsNeverChange(turns);
+        Assert.Equal(["user", "assistant"], SentRoles(turns.Requests[1]));
+        var toolResults = AssertToolResultsThenToolChanges(
+            turns.Requests[2],
+            ToolChangesJson(ToolRemovalJson("get_weather"), ToolAdditionJson(TimeToolDefinition))
+        );
+        AssertToolNotFound(Assert.Single(toolResults), "get_weather");
+    }
+
     [Fact]
     public async Task ToolException_ReturnsErrorResult()
     {
@@ -2009,12 +2682,16 @@ public class BetaToolRunnerTest
         var mock = new Mock<IMessageService>();
         var callCount = 0;
         MessageCreateParams? secondCallParams = null;
+        const string ToolChanges =
+            """[{"type":"tool_removal","tool":{"type":"tool_reference","name":"get_tides"}},{"type":"tool_addition","tool":{"type":"tool_definition","definition":{"name":"get_time","description":"Get the local time.","input_schema":{"type":"object","properties":{"zone":{"type":"string"},"city":{"type":"string"}},"required":["zone"]}}}}]""";
 
         static IAsyncEnumerable<BetaRawMessageStreamEvent> MakeCompactionStream()
         {
             return MakeEventStream(
                 """{"type":"message_start","message":{"id":"msg_1","type":"message","role":"assistant","content":[],"model":"claude-opus-4-6-20250929","stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":10}}}""",
-                """{"type":"content_block_start","index":0,"content_block":{"type":"compaction","content":null,"encrypted_content":null,"signature":"sig_01"}}""",
+                """{"type":"content_block_start","index":0,"content_block":{"type":"compaction","content":null,"encrypted_content":null,"signature":"sig_01","tool_changes":"""
+                    + ToolChanges
+                    + "}}",
                 """{"type":"content_block_delta","index":0,"delta":{"type":"compaction_delta","content":"Summary of the conversation so far.","encrypted_content":null}}""",
                 """{"type":"content_block_stop","index":0}""",
                 """{"type":"message_delta","delta":{"stop_reason":"compaction","stop_sequence":null},"usage":{"output_tokens":10}}""",
@@ -2078,6 +2755,7 @@ public class BetaToolRunnerTest
         // The block arrives whole on content_block_start; what the deltas don't carry is
         // sent back as it arrived.
         Assert.Equal("sig_01", block.GetProperty("signature").GetString());
+        Assert.Equal(ToolChanges, block.GetProperty("tool_changes").GetRawText());
     }
 
     private class CustomWeatherTool : IBetaRunnableTool

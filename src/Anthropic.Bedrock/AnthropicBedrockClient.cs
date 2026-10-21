@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Anthropic.Core;
 
 namespace Anthropic.Bedrock;
@@ -7,6 +8,14 @@ namespace Anthropic.Bedrock;
 /// </summary>
 public sealed class AnthropicBedrockClient : AnthropicClient
 {
+    /// <summary>
+    /// The source of the spans of this package's clients.
+    /// </summary>
+    internal static readonly ActivitySource PackageActivitySource = Tracing.PlatformSource(
+        "bedrock",
+        typeof(AnthropicBedrockClient).Assembly
+    );
+
     /// <inheritdoc/>
     protected override bool ShouldAutoResolveCredentials => false;
 
@@ -30,6 +39,8 @@ public sealed class AnthropicBedrockClient : AnthropicClient
         AuthToken = null;
         BaseUrl = $"https://{ServiceName}.{_bedrockCredentials.Region}.amazonaws.com";
         BackendAdaptationHandler = () => new BedrockAdaptationHandler(bedrockCredentials);
+        OpenTelemetryProviderName = "aws.bedrock";
+        OpenTelemetrySource = PackageActivitySource;
     }
 
     private AnthropicBedrockClient(
@@ -42,6 +53,8 @@ public sealed class AnthropicBedrockClient : AnthropicClient
         // The options normally carry the backend adaptation handler from the original
         // construction; restore it if a WithOptions modifier returned fresh options.
         BackendAdaptationHandler ??= () => new BedrockAdaptationHandler(bedrockCredentials);
+        OpenTelemetryProviderName = "aws.bedrock";
+        OpenTelemetrySource = PackageActivitySource;
     }
 
     /// <inheritdoc />

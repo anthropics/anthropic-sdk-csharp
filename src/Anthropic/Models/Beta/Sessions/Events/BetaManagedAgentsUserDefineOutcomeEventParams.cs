@@ -35,7 +35,7 @@ public sealed record class BetaManagedAgentsUserDefineOutcomeEventParams : JsonM
     }
 
     /// <summary>
-    /// Rubric for grading the quality of an outcome.
+    /// How to grade the outcome. Text or file reference.
     /// </summary>
     public required BetaManagedAgentsUserDefineOutcomeEventParamsRubric Rubric
     {
@@ -127,7 +127,7 @@ class BetaManagedAgentsUserDefineOutcomeEventParamsFromRaw
 }
 
 /// <summary>
-/// Rubric for grading the quality of an outcome.
+/// How to grade the outcome. Text or file reference.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsUserDefineOutcomeEventParamsRubricConverter))]
 public record class BetaManagedAgentsUserDefineOutcomeEventParamsRubric : ModelBase

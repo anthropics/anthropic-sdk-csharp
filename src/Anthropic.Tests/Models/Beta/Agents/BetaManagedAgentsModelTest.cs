@@ -8,6 +8,9 @@ namespace Anthropic.Tests.Models.Beta.Agents;
 public class BetaManagedAgentsModelTest : TestBase
 {
     [Theory]
+    [InlineData(BetaManagedAgentsModel.ClaudeHaiku5_5)]
+    [InlineData(BetaManagedAgentsModel.ClaudeSonnet5_5)]
+    [InlineData(BetaManagedAgentsModel.ClaudeOpus5_5)]
     [InlineData(BetaManagedAgentsModel.ClaudeFable5_1)]
     [InlineData(BetaManagedAgentsModel.ClaudeSonnet5)]
     [InlineData(BetaManagedAgentsModel.ClaudeFable5)]
@@ -42,6 +45,9 @@ public class BetaManagedAgentsModelTest : TestBase
     }
 
     [Theory]
+    [InlineData(BetaManagedAgentsModel.ClaudeHaiku5_5)]
+    [InlineData(BetaManagedAgentsModel.ClaudeSonnet5_5)]
+    [InlineData(BetaManagedAgentsModel.ClaudeOpus5_5)]
     [InlineData(BetaManagedAgentsModel.ClaudeFable5_1)]
     [InlineData(BetaManagedAgentsModel.ClaudeSonnet5)]
     [InlineData(BetaManagedAgentsModel.ClaudeFable5)]

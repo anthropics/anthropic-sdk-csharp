@@ -34,7 +34,7 @@ public sealed record class BetaManagedAgentsMcpToolsetDefaultConfigParams : Json
     }
 
     /// <summary>
-    /// Permission policy for tool execution.
+    /// Default permission policy for tools from this server.
     /// </summary>
     public BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy? PermissionPolicy
     {
@@ -99,7 +99,7 @@ class BetaManagedAgentsMcpToolsetDefaultConfigParamsFromRaw
 }
 
 /// <summary>
-/// Permission policy for tool execution.
+/// Default permission policy for tools from this server.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyConverter))]
 public record class BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy : ModelBase

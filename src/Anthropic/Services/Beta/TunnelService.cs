@@ -204,6 +204,7 @@ public sealed class TunnelServiceWithRawResponse : ITunnelServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.tunnels.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -217,6 +218,12 @@ public sealed class TunnelServiceWithRawResponse : ITunnelServiceWithRawResponse
                 {
                     betaTunnel.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.tunnel.id",
+                    betaTunnel,
+                    static created => created.ID
+                );
                 return betaTunnel;
             }
         );
@@ -237,6 +244,8 @@ public sealed class TunnelServiceWithRawResponse : ITunnelServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.tunnels.retrieve",
+            SpanResourceIds = [new("anthropic.tunnel.id", parameters.TunnelID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -279,6 +288,7 @@ public sealed class TunnelServiceWithRawResponse : ITunnelServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.tunnels.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -312,6 +322,8 @@ public sealed class TunnelServiceWithRawResponse : ITunnelServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.tunnels.archive",
+            SpanResourceIds = [new("anthropic.tunnel.id", parameters.TunnelID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -357,6 +369,8 @@ public sealed class TunnelServiceWithRawResponse : ITunnelServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.tunnels.reveal_token",
+            SpanResourceIds = [new("anthropic.tunnel.id", parameters.TunnelID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -402,6 +416,8 @@ public sealed class TunnelServiceWithRawResponse : ITunnelServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.tunnels.rotate_token",
+            SpanResourceIds = [new("anthropic.tunnel.id", parameters.TunnelID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

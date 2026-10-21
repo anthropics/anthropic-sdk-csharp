@@ -34,7 +34,7 @@ public sealed record class BetaManagedAgentsModelOverloadedError : JsonModel
     }
 
     /// <summary>
-    /// What the client should do next in response to this error.
+    /// What the client should do next.
     /// </summary>
     public required BetaManagedAgentsModelOverloadedErrorRetryStatus RetryStatus
     {
@@ -110,7 +110,7 @@ class BetaManagedAgentsModelOverloadedErrorFromRaw
 }
 
 /// <summary>
-/// What the client should do next in response to this error.
+/// What the client should do next.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsModelOverloadedErrorRetryStatusConverter))]
 public record class BetaManagedAgentsModelOverloadedErrorRetryStatus : ModelBase

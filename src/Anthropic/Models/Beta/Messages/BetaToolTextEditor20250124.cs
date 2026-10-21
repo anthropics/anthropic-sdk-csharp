@@ -54,6 +54,7 @@ public sealed record class BetaToolTextEditor20250124 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("allowed_callers");
                 return;
             }
 
@@ -91,6 +92,7 @@ public sealed record class BetaToolTextEditor20250124 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("defer_loading");
                 return;
             }
 
@@ -111,6 +113,7 @@ public sealed record class BetaToolTextEditor20250124 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("input_examples");
                 return;
             }
 
@@ -142,6 +145,7 @@ public sealed record class BetaToolTextEditor20250124 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("strict");
                 return;
             }
 

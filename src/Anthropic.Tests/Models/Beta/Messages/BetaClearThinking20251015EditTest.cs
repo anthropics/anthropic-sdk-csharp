@@ -91,6 +91,19 @@ public class BetaClearThinking20251015EditTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaClearThinking20251015Edit { Keep = new All() } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Keep = null,
+        };
+
+        Assert.Null(model.Keep);
+        Assert.False(model.RawData.ContainsKey("keep"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaClearThinking20251015Edit

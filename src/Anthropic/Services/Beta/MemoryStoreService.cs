@@ -218,6 +218,7 @@ public sealed class MemoryStoreServiceWithRawResponse : IMemoryStoreServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.memory_stores.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -231,6 +232,12 @@ public sealed class MemoryStoreServiceWithRawResponse : IMemoryStoreServiceWithR
                 {
                     betaManagedAgentsMemoryStore.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "gen_ai.memory.store.id",
+                    betaManagedAgentsMemoryStore,
+                    static created => created.ID
+                );
                 return betaManagedAgentsMemoryStore;
             }
         );
@@ -251,6 +258,8 @@ public sealed class MemoryStoreServiceWithRawResponse : IMemoryStoreServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.memory_stores.retrieve",
+            SpanResourceIds = [new("gen_ai.memory.store.id", parameters.MemoryStoreID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -296,6 +305,8 @@ public sealed class MemoryStoreServiceWithRawResponse : IMemoryStoreServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.memory_stores.update",
+            SpanResourceIds = [new("gen_ai.memory.store.id", parameters.MemoryStoreID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -338,6 +349,7 @@ public sealed class MemoryStoreServiceWithRawResponse : IMemoryStoreServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.memory_stores.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -371,6 +383,8 @@ public sealed class MemoryStoreServiceWithRawResponse : IMemoryStoreServiceWithR
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.memory_stores.delete",
+            SpanResourceIds = [new("gen_ai.memory.store.id", parameters.MemoryStoreID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -416,6 +430,8 @@ public sealed class MemoryStoreServiceWithRawResponse : IMemoryStoreServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.memory_stores.archive",
+            SpanResourceIds = [new("gen_ai.memory.store.id", parameters.MemoryStoreID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

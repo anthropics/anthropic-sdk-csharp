@@ -27,9 +27,7 @@ public class BetaManagedAgentsAgentToolEvaluationTest : TestBase
     public void AutoValidationWorks()
     {
         BetaManagedAgentsAgentToolEvaluation value = new BetaManagedAgentsAgentToolEvaluationAuto(
-            new BetaManagedAgentsAgentAutoEvaluatedPermission(
-                new BetaManagedAgentsAgentAutoEvaluatedPermissionAllow()
-            )
+            new BetaManagedAgentsAgentAutoEvaluatedPermissionAllow()
         );
         value.Validate();
     }
@@ -66,9 +64,7 @@ public class BetaManagedAgentsAgentToolEvaluationTest : TestBase
     public void AutoSerializationRoundtripWorks()
     {
         BetaManagedAgentsAgentToolEvaluation value = new BetaManagedAgentsAgentToolEvaluationAuto(
-            new BetaManagedAgentsAgentAutoEvaluatedPermission(
-                new BetaManagedAgentsAgentAutoEvaluatedPermissionAllow()
-            )
+            new BetaManagedAgentsAgentAutoEvaluatedPermissionAllow()
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolEvaluation>(

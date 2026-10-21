@@ -45,7 +45,7 @@ public sealed class WorkloadIdentityCredentials : IAccessTokenProvider
         }
         else
         {
-            _tokenHttpClient = new HttpClient();
+            _tokenHttpClient = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false });
             _ownsHttpClient = true;
         }
     }

@@ -86,6 +86,19 @@ public class BetaSelfHostedWorkStopRequestTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaSelfHostedWorkStopRequest { Force = true } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Force = null,
+        };
+
+        Assert.Null(model.Force);
+        Assert.False(model.RawData.ContainsKey("force"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaSelfHostedWorkStopRequest

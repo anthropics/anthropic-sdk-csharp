@@ -33,6 +33,7 @@ public sealed record class MemoryStoreListPageResponse : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("data");
                 return;
             }
 
@@ -44,8 +45,8 @@ public sealed record class MemoryStoreListPageResponse : JsonModel
     }
 
     /// <summary>
-    /// Opaque cursor for the next page (a `page_...` value). Pass as `page` on the
-    /// next request. `null` when there are no more results.
+    /// The value to pass as `page` to get the next page, or `null` if there are
+    /// no more results.
     /// </summary>
     public string? NextPage
     {

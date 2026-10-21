@@ -41,6 +41,7 @@ public sealed record class ToolChoiceAuto : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("disable_parallel_tool_use");
                 return;
             }
 

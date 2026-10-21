@@ -179,6 +179,12 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.members.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.workspace.id", parameters.WorkspaceID),
+                new("anthropic.organization.workspace.member.id", parameters.UserID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -222,6 +228,12 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.members.update",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.workspace.id", parameters.WorkspaceID),
+                new("anthropic.organization.workspace.member.id", parameters.UserID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -265,6 +277,8 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.members.list",
+            SpanResourceIds = [new("anthropic.organization.workspace.id", parameters.WorkspaceID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -310,6 +324,8 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.members.add",
+            SpanResourceIds = [new("anthropic.organization.workspace.id", parameters.WorkspaceID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -323,6 +339,12 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
                 {
                     betaWorkspaceMember.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.workspace.member.id",
+                    betaWorkspaceMember,
+                    static created => created.UserID
+                );
                 return betaWorkspaceMember;
             }
         );
@@ -353,6 +375,12 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.organization.workspaces.members.remove",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.workspace.id", parameters.WorkspaceID),
+                new("anthropic.organization.workspace.member.id", parameters.UserID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

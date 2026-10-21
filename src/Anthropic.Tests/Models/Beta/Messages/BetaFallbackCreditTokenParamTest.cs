@@ -93,6 +93,19 @@ public class BetaFallbackCreditTokenParamTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaFallbackCreditTokenParam { Token = "x", Mode = Mode.Strict } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Mode = null,
+        };
+
+        Assert.Null(model.Mode);
+        Assert.False(model.RawData.ContainsKey("mode"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaFallbackCreditTokenParam

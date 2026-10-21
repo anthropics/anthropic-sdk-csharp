@@ -111,6 +111,26 @@ public class BetaManagedAgentsCacheCreationUsageTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsCacheCreationUsage
+        {
+            Ephemeral1hInputTokens = 0,
+            Ephemeral5mInputTokens = 0,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Ephemeral1hInputTokens = null,
+            Ephemeral5mInputTokens = null,
+        };
+
+        Assert.Null(model.Ephemeral1hInputTokens);
+        Assert.False(model.RawData.ContainsKey("ephemeral_1h_input_tokens"));
+        Assert.Null(model.Ephemeral5mInputTokens);
+        Assert.False(model.RawData.ContainsKey("ephemeral_5m_input_tokens"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsCacheCreationUsage

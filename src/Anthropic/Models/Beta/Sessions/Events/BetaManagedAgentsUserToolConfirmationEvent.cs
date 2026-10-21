@@ -34,7 +34,7 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEvent : JsonMode
     }
 
     /// <summary>
-    /// UserToolConfirmationResult enum
+    /// The confirmation result: 'allow' or 'deny'.
     /// </summary>
     public required ApiEnum<string, Result> Result
     {
@@ -88,7 +88,7 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEvent : JsonMode
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the confirmation was processed.
     /// </summary>
     public System::DateTimeOffset? ProcessedAt
     {
@@ -170,7 +170,7 @@ class BetaManagedAgentsUserToolConfirmationEventFromRaw
 }
 
 /// <summary>
-/// UserToolConfirmationResult enum
+/// The confirmation result: 'allow' or 'deny'.
 /// </summary>
 [JsonConverter(typeof(ResultConverter))]
 public enum Result

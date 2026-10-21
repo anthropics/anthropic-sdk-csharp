@@ -40,6 +40,22 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
         init { this._rawData.Set("description", value); }
     }
 
+    /// <summary>
+    /// Execution principal snapshotted from the agent at session creation. Always
+    /// present; `{"type": "service_account"}` when runs carry no customer-named principal.
+    /// </summary>
+    public required BetaManagedAgentsExecutionIdentity ExecutionIdentity
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaManagedAgentsExecutionIdentity>(
+                "execution_identity"
+            );
+        }
+        init { this._rawData.Set("execution_identity", value); }
+    }
+
     public required IReadOnlyList<BetaManagedAgentsMcpServerUrlDefinition> McpServers
     {
         get
@@ -72,16 +88,14 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
     }
 
     /// <summary>
-    /// Resolved coordinator topology with full agent definitions for each roster member.
+    /// Resolved multiagent orchestration configuration. Null when the agent is single-threaded.
     /// </summary>
-    public required BetaManagedAgentsSessionMultiagentCoordinator? Multiagent
+    public required BetaManagedAgentsSessionMultiagent? Multiagent
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<BetaManagedAgentsSessionMultiagentCoordinator>(
-                "multiagent"
-            );
+            return this._rawData.GetNullableClass<BetaManagedAgentsSessionMultiagent>("multiagent");
         }
         init { this._rawData.Set("multiagent", value); }
     }
@@ -169,6 +183,7 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
     {
         _ = this.ID;
         _ = this.Description;
+        this.ExecutionIdentity.Validate();
         foreach (var item in this.McpServers)
         {
             item.Validate();

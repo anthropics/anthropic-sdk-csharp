@@ -90,7 +90,7 @@ public sealed record class BetaManagedAgentsSpanOutcomeEvaluationEndEvent : Json
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when outcome evaluation ended.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {
@@ -133,7 +133,8 @@ public sealed record class BetaManagedAgentsSpanOutcomeEvaluationEndEvent : Json
     }
 
     /// <summary>
-    /// Token usage for a single model request.
+    /// Aggregate token usage for this evaluation cycle. Sums across all grader model
+    /// requests within the cycle.
     /// </summary>
     public required BetaManagedAgentsSpanModelUsage Usage
     {

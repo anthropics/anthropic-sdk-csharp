@@ -5,7 +5,7 @@ namespace Anthropic.Tests.Services.Beta.Sessions;
 
 public class ResourceServiceTest : TestBase
 {
-    [Fact(Skip = "prism can't find endpoint with beta only tag")]
+    [Fact]
     public async Task Retrieve_Works()
     {
         var resource = await this.client.Beta.Sessions.Resources.Retrieve(
@@ -16,7 +16,7 @@ public class ResourceServiceTest : TestBase
         resource.Validate();
     }
 
-    [Fact(Skip = "prism can't find endpoint with beta only tag")]
+    [Fact]
     public async Task Update_Works()
     {
         var resource = await this.client.Beta.Sessions.Resources.Update(
@@ -31,7 +31,7 @@ public class ResourceServiceTest : TestBase
         resource.Validate();
     }
 
-    [Fact(Skip = "prism can't find endpoint with beta only tag")]
+    [Fact]
     public async Task List_Works()
     {
         var page = await this.client.Beta.Sessions.Resources.List(
@@ -42,7 +42,7 @@ public class ResourceServiceTest : TestBase
         page.Validate();
     }
 
-    [Fact(Skip = "prism can't find endpoint with beta only tag")]
+    [Fact]
     public async Task Delete_Works()
     {
         var betaManagedAgentsDeleteSessionResource =
@@ -54,7 +54,7 @@ public class ResourceServiceTest : TestBase
         betaManagedAgentsDeleteSessionResource.Validate();
     }
 
-    [Fact(Skip = "prism can't find endpoint with beta only tag")]
+    [Fact]
     public async Task Add_Works()
     {
         var betaManagedAgentsFileResource = await this.client.Beta.Sessions.Resources.Add(

@@ -18,6 +18,7 @@ public class AgentUpdateParamsTest : TestBase
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
             McpServers =
             [
                 new()
@@ -30,12 +31,12 @@ public class AgentUpdateParamsTest : TestBase
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -44,7 +45,7 @@ public class AgentUpdateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Name = "name",
             Skills =
@@ -90,6 +91,8 @@ public class AgentUpdateParamsTest : TestBase
 
         string expectedAgentID = "agent_011CZkYpogX7uDKUyvBTophP";
         string expectedDescription = "updated";
+        BetaManagedAgentsExecutionIdentityParams expectedExecutionIdentity =
+            new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn");
         List<BetaManagedAgentsUrlMcpServerParams> expectedMcpServers =
         [
             new()
@@ -102,22 +105,23 @@ public class AgentUpdateParamsTest : TestBase
         Dictionary<string, string?> expectedMetadata = new() { { "foo", "string" } };
         AgentUpdateParamsModel expectedModel = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus5,
+            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
-        BetaManagedAgentsMultiagentParams expectedMultiagent = new()
-        {
-            Agents =
-            [
-                "agent_011CZkYqphY8vELVzwCUpqiQ",
-                new BetaManagedAgentsMultiagentSelfParams(
-                    BetaManagedAgentsMultiagentSelfParamsType.Self
-                ),
-            ],
-            Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
-        };
+        BetaManagedAgentsMultiagentParams expectedMultiagent =
+            new BetaManagedAgentsMultiagentCoordinatorParams()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
+            };
         string expectedName = "name";
         List<BetaManagedAgentsSkillParams> expectedSkills =
         [
@@ -164,6 +168,7 @@ public class AgentUpdateParamsTest : TestBase
 
         Assert.Equal(expectedAgentID, parameters.AgentID);
         Assert.Equal(expectedDescription, parameters.Description);
+        Assert.Equal(expectedExecutionIdentity, parameters.ExecutionIdentity);
         Assert.NotNull(parameters.McpServers);
         Assert.Equal(expectedMcpServers.Count, parameters.McpServers.Count);
         for (int i = 0; i < expectedMcpServers.Count; i++)
@@ -211,6 +216,7 @@ public class AgentUpdateParamsTest : TestBase
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
             McpServers =
             [
                 new()
@@ -221,7 +227,7 @@ public class AgentUpdateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -230,7 +236,7 @@ public class AgentUpdateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Skills =
             [
@@ -289,6 +295,7 @@ public class AgentUpdateParamsTest : TestBase
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
             McpServers =
             [
                 new()
@@ -299,7 +306,7 @@ public class AgentUpdateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -308,7 +315,7 @@ public class AgentUpdateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Skills =
             [
@@ -368,6 +375,104 @@ public class AgentUpdateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new AgentUpdateParams
+        {
+            AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
+            Description = "updated",
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
+            McpServers =
+            [
+                new()
+                {
+                    Name = "example-mcp",
+                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
+                    Url = "https://example-server.modelcontextprotocol.io/sse",
+                },
+            ],
+            Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
+            Model = new BetaManagedAgentsModelConfigParams()
+            {
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
+                Effort = BetaManagedAgentsEffortLevel.Low,
+                InferenceGeo = "inference_geo",
+                Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+            },
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
+            {
+                Agents =
+                [
+                    "agent_011CZkYqphY8vELVzwCUpqiQ",
+                    new BetaManagedAgentsMultiagentSelfParams(
+                        BetaManagedAgentsMultiagentSelfParamsType.Self
+                    ),
+                ],
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
+            },
+            Name = "name",
+            Skills =
+            [
+                new BetaManagedAgentsAnthropicSkillParams()
+                {
+                    SkillID = "xlsx",
+                    Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
+                    Version = "1",
+                },
+            ],
+            System =
+                "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
+            Tools =
+            [
+                new BetaManagedAgentsAgentToolset20260401Params()
+                {
+                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+                    Configs =
+                    [
+                        new BetaManagedAgentsBashToolConfigParams()
+                        {
+                            Enabled = true,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                            ),
+                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                        },
+                    ],
+                    DefaultConfig = new()
+                    {
+                        Enabled = true,
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                        ),
+                    },
+                },
+            ],
+            Version = 1,
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Model = null,
+            Name = null,
+            Version = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Model);
+        Assert.False(parameters.RawBodyData.ContainsKey("model"));
+        Assert.Null(parameters.Name);
+        Assert.False(parameters.RawBodyData.ContainsKey("name"));
+        Assert.Null(parameters.Version);
+        Assert.False(parameters.RawBodyData.ContainsKey("version"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
         var parameters = new AgentUpdateParams
@@ -375,7 +480,7 @@ public class AgentUpdateParamsTest : TestBase
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -388,6 +493,8 @@ public class AgentUpdateParamsTest : TestBase
 
         Assert.Null(parameters.Description);
         Assert.False(parameters.RawBodyData.ContainsKey("description"));
+        Assert.Null(parameters.ExecutionIdentity);
+        Assert.False(parameters.RawBodyData.ContainsKey("execution_identity"));
         Assert.Null(parameters.McpServers);
         Assert.False(parameters.RawBodyData.ContainsKey("mcp_servers"));
         Assert.Null(parameters.Metadata);
@@ -410,7 +517,7 @@ public class AgentUpdateParamsTest : TestBase
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -421,6 +528,7 @@ public class AgentUpdateParamsTest : TestBase
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Description = null,
+            ExecutionIdentity = null,
             McpServers = null,
             Metadata = null,
             Multiagent = null,
@@ -431,6 +539,8 @@ public class AgentUpdateParamsTest : TestBase
 
         Assert.Null(parameters.Description);
         Assert.True(parameters.RawBodyData.ContainsKey("description"));
+        Assert.Null(parameters.ExecutionIdentity);
+        Assert.True(parameters.RawBodyData.ContainsKey("execution_identity"));
         Assert.Null(parameters.McpServers);
         Assert.True(parameters.RawBodyData.ContainsKey("mcp_servers"));
         Assert.Null(parameters.Metadata);
@@ -476,7 +586,7 @@ public class AgentUpdateParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["managed-agents-2026-04-01", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,managed-agents-2026-04-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -492,6 +602,7 @@ public class AgentUpdateParamsTest : TestBase
         {
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
+            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
             McpServers =
             [
                 new()
@@ -504,12 +615,12 @@ public class AgentUpdateParamsTest : TestBase
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Model = new BetaManagedAgentsModelConfigParams()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = BetaManagedAgentsEffortLevel.Low,
                 InferenceGeo = "inference_geo",
                 Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
             {
                 Agents =
                 [
@@ -518,7 +629,7 @@ public class AgentUpdateParamsTest : TestBase
                         BetaManagedAgentsMultiagentSelfParamsType.Self
                     ),
                 ],
-                Type = BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
             },
             Name = "name",
             Skills =
@@ -573,7 +684,7 @@ public class AgentUpdateParamsModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsValidationWorks()
     {
-        AgentUpdateParamsModel value = BetaManagedAgentsModel.ClaudeFable5_1;
+        AgentUpdateParamsModel value = BetaManagedAgentsModel.ClaudeHaiku5_5;
         value.Validate();
     }
 
@@ -582,7 +693,7 @@ public class AgentUpdateParamsModelTest : TestBase
     {
         AgentUpdateParamsModel value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus5,
+            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
@@ -593,7 +704,7 @@ public class AgentUpdateParamsModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsSerializationRoundtripWorks()
     {
-        AgentUpdateParamsModel value = BetaManagedAgentsModel.ClaudeFable5_1;
+        AgentUpdateParamsModel value = BetaManagedAgentsModel.ClaudeHaiku5_5;
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<AgentUpdateParamsModel>(
             element,
@@ -608,7 +719,7 @@ public class AgentUpdateParamsModelTest : TestBase
     {
         AgentUpdateParamsModel value = new BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus5,
+            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
             Effort = BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
             Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,

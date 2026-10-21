@@ -170,6 +170,32 @@ public class BetaContextManagementConfigTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaContextManagementConfig
+        {
+            Edits =
+            [
+                new BetaClearToolUses20250919Edit()
+                {
+                    ClearAtLeast = new(0),
+                    ClearToolInputs = true,
+                    ExcludeTools = ["string"],
+                    Keep = new(0),
+                    Trigger = new BetaInputTokensTrigger(1),
+                },
+            ],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Edits = null,
+        };
+
+        Assert.Null(model.Edits);
+        Assert.False(model.RawData.ContainsKey("edits"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaContextManagementConfig

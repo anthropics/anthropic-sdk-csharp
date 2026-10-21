@@ -63,6 +63,24 @@ public class InviteCreateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new InviteCreateParams
+        {
+            Email = "user@emaildomain.com",
+            Role = Role.User,
+            RbacGroupIds = ["string"],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            RbacGroupIds = null,
+        };
+
+        Assert.Null(parameters.RbacGroupIds);
+        Assert.False(parameters.RawBodyData.ContainsKey("rbac_group_ids"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         InviteCreateParams parameters = new() { Email = "user@emaildomain.com", Role = Role.User };

@@ -33,6 +33,7 @@ public record class UserListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("after_id");
                 return;
             }
 
@@ -55,6 +56,7 @@ public record class UserListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("before_id");
                 return;
             }
 
@@ -76,6 +78,7 @@ public record class UserListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("email");
                 return;
             }
 
@@ -99,6 +102,7 @@ public record class UserListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("limit");
                 return;
             }
 
@@ -126,6 +130,7 @@ public record class UserListParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawQueryData.Remove("roles");
                 return;
             }
 
@@ -211,6 +216,11 @@ public record class UserListParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/organizations/users";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["after_id", "before_id", "email", "limit", "roles"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

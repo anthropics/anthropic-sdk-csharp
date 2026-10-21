@@ -188,6 +188,7 @@
         "dependencies": {
           "Microsoft.Extensions.AI.Abstractions": "[10.5.1, )",
           "System.Collections.Immutable": "[8.0.0, )",
+          "System.Diagnostics.DiagnosticSource": "[8.0.1, )",
           "System.Net.ServerSentEvents": "[10.0.1, )",
           "System.Text.Json": "[10.0.6, )",
           "System.Threading.Tasks.Extensions": "[4.6.3, )"

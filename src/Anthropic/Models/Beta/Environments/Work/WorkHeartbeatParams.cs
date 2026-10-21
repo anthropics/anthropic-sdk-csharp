@@ -73,6 +73,7 @@ public record class WorkHeartbeatParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -181,6 +182,11 @@ public record class WorkHeartbeatParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/environments/{environment_id}/work/{work_id}/heartbeat";
+
+    internal override IReadOnlyList<string> QueryParams =>
+        ["desired_ttl_seconds", "expected_last_heartbeat"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

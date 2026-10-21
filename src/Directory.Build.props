@@ -1,4 +1,5 @@
 <Project>
+  <Import Project="Versions.props" />
   <PropertyGroup>
     <Authors>Anthropic</Authors>
     <Company>Anthropic</Company>
@@ -36,4 +37,9 @@
     <!-- Disable deprecation warnings since we may reference our own deprecated symbols. -->
     <NoWarn>$(NoWarn),0618</NoWarn>
   </PropertyGroup>
+  <ItemGroup>
+    <LicenseFile Include="$(MSBuildProjectDirectory)\LICENSE*" />
+    <LicenseFile Include="$(MSBuildThisFileDirectory)..\LICENSE*" Exclude="@(LicenseFile->'$(MSBuildThisFileDirectory)..\%(Filename)%(Extension)')" />
+    <None Include="@(LicenseFile)" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>

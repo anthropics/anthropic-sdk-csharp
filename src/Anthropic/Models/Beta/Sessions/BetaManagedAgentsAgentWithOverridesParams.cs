@@ -65,6 +65,7 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("mcp_servers");
                 return;
             }
 
@@ -76,8 +77,8 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
     }
 
     /// <summary>
-    /// Replacement model. Accepts the model string, e.g. `claude-opus-5`, or a `model_config`
-    /// object. Omit to use the agent's model.
+    /// Replacement model. Accepts the model string, e.g. `claude-opus-5-5`, or a
+    /// `model_config` object. Omit to use the agent's model.
     /// </summary>
     public global::Anthropic.Models.Beta.Sessions.Model? Model
     {
@@ -92,6 +93,7 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("model");
                 return;
             }
 
@@ -116,6 +118,7 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("skills");
                 return;
             }
 
@@ -157,6 +160,7 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("tools");
                 return;
             }
 
@@ -181,6 +185,7 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("version");
                 return;
             }
 
@@ -298,7 +303,7 @@ sealed class BetaManagedAgentsAgentWithOverridesParamsTypeConverter
 }
 
 /// <summary>
-/// Replacement model. Accepts the model string, e.g. `claude-opus-5`, or a `model_config`
+/// Replacement model. Accepts the model string, e.g. `claude-opus-5-5`, or a `model_config`
 /// object. Omit to use the agent's model.
 /// </summary>
 [JsonConverter(typeof(global::Anthropic.Models.Beta.Sessions.ModelConverter))]
@@ -338,7 +343,7 @@ public record class Model : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="ApiEnum{TRaw, TEnum}"/> with a <c>TRaw</c> of <c>string</c> and a <c>TEnum</c> of BetaManagedAgentsModel>.
+    /// type <see cref="ApiEnum{TRaw, TEnum}"/> with a <c>TRaw</c> of <c>string</c> and a <c>TEnum</c> of BetaManagedAgentsModel.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///

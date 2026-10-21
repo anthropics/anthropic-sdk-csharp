@@ -21,7 +21,7 @@ namespace Anthropic.Models.Beta.Sessions.Events;
 public sealed record class BetaManagedAgentsUserToolConfirmationEventParams : JsonModel
 {
     /// <summary>
-    /// UserToolConfirmationResult enum
+    /// The confirmation result: 'allow' or 'deny'.
     /// </summary>
     public required ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsResult> Result
     {
@@ -129,7 +129,7 @@ class BetaManagedAgentsUserToolConfirmationEventParamsFromRaw
 }
 
 /// <summary>
-/// UserToolConfirmationResult enum
+/// The confirmation result: 'allow' or 'deny'.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsUserToolConfirmationEventParamsResultConverter))]
 public enum BetaManagedAgentsUserToolConfirmationEventParamsResult

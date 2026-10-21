@@ -19,6 +19,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Description = "A general-purpose starter agent.",
+            ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
             McpServers =
             [
                 new()
@@ -31,23 +32,40 @@ public class BetaManagedAgentsAgentTest : TestBase
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
             Model = new()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagent20261001()
             {
-                Agents =
-                [
-                    new BetaManagedAgentsAgentReference()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
-                Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
             },
             Name = "My First Agent",
             Skills =
@@ -60,7 +78,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 },
                 new BetaManagedAgentsCustomSkill()
                 {
-                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                     Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
@@ -99,6 +117,8 @@ public class BetaManagedAgentsAgentTest : TestBase
         string expectedID = "agent_011CZkYpogX7uDKUyvBTophP";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedDescription = "A general-purpose starter agent.";
+        BetaManagedAgentsExecutionIdentity expectedExecutionIdentity =
+            new BetaManagedAgentsServiceAccountExecutionIdentity();
         List<BetaManagedAgentsMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
@@ -111,24 +131,42 @@ public class BetaManagedAgentsAgentTest : TestBase
         Dictionary<string, string> expectedMetadata = new() { { "foo", "bar" } };
         BetaManagedAgentsModelConfig expectedModel = new()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus5,
+            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
             Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
             InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
-        Sessions::BetaManagedAgentsMultiagent expectedMultiagent = new()
-        {
-            Agents =
-            [
-                new BetaManagedAgentsAgentReference()
+        Sessions::BetaManagedAgentsMultiagent expectedMultiagent =
+            new BetaManagedAgentsMultiagent20261001()
+            {
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
                 {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
                 },
-            ],
-            Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
-        };
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+            };
         string expectedName = "My First Agent";
         List<Skill> expectedSkills =
         [
@@ -140,7 +178,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             },
             new BetaManagedAgentsCustomSkill()
             {
-                SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                 Type = BetaManagedAgentsCustomSkillType.Custom,
                 Version = "2",
             },
@@ -179,6 +217,7 @@ public class BetaManagedAgentsAgentTest : TestBase
         Assert.Null(model.ArchivedAt);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
         Assert.Equal(expectedDescription, model.Description);
+        Assert.Equal(expectedExecutionIdentity, model.ExecutionIdentity);
         Assert.Equal(expectedMcpServers.Count, model.McpServers.Count);
         for (int i = 0; i < expectedMcpServers.Count; i++)
         {
@@ -219,6 +258,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Description = "A general-purpose starter agent.",
+            ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
             McpServers =
             [
                 new()
@@ -231,23 +271,40 @@ public class BetaManagedAgentsAgentTest : TestBase
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
             Model = new()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagent20261001()
             {
-                Agents =
-                [
-                    new BetaManagedAgentsAgentReference()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
-                Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
             },
             Name = "My First Agent",
             Skills =
@@ -260,7 +317,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 },
                 new BetaManagedAgentsCustomSkill()
                 {
-                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                     Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
@@ -314,6 +371,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Description = "A general-purpose starter agent.",
+            ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
             McpServers =
             [
                 new()
@@ -326,23 +384,40 @@ public class BetaManagedAgentsAgentTest : TestBase
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
             Model = new()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagent20261001()
             {
-                Agents =
-                [
-                    new BetaManagedAgentsAgentReference()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
-                Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
             },
             Name = "My First Agent",
             Skills =
@@ -355,7 +430,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 },
                 new BetaManagedAgentsCustomSkill()
                 {
-                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                     Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
@@ -401,6 +476,8 @@ public class BetaManagedAgentsAgentTest : TestBase
         string expectedID = "agent_011CZkYpogX7uDKUyvBTophP";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedDescription = "A general-purpose starter agent.";
+        BetaManagedAgentsExecutionIdentity expectedExecutionIdentity =
+            new BetaManagedAgentsServiceAccountExecutionIdentity();
         List<BetaManagedAgentsMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
@@ -413,24 +490,42 @@ public class BetaManagedAgentsAgentTest : TestBase
         Dictionary<string, string> expectedMetadata = new() { { "foo", "bar" } };
         BetaManagedAgentsModelConfig expectedModel = new()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus5,
+            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
             Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
             InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
-        Sessions::BetaManagedAgentsMultiagent expectedMultiagent = new()
-        {
-            Agents =
-            [
-                new BetaManagedAgentsAgentReference()
+        Sessions::BetaManagedAgentsMultiagent expectedMultiagent =
+            new BetaManagedAgentsMultiagent20261001()
+            {
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
                 {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
                 },
-            ],
-            Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
-        };
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+            };
         string expectedName = "My First Agent";
         List<Skill> expectedSkills =
         [
@@ -442,7 +537,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             },
             new BetaManagedAgentsCustomSkill()
             {
-                SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                 Type = BetaManagedAgentsCustomSkillType.Custom,
                 Version = "2",
             },
@@ -481,6 +576,7 @@ public class BetaManagedAgentsAgentTest : TestBase
         Assert.Null(deserialized.ArchivedAt);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
         Assert.Equal(expectedDescription, deserialized.Description);
+        Assert.Equal(expectedExecutionIdentity, deserialized.ExecutionIdentity);
         Assert.Equal(expectedMcpServers.Count, deserialized.McpServers.Count);
         for (int i = 0; i < expectedMcpServers.Count; i++)
         {
@@ -521,6 +617,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Description = "A general-purpose starter agent.",
+            ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
             McpServers =
             [
                 new()
@@ -533,23 +630,40 @@ public class BetaManagedAgentsAgentTest : TestBase
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
             Model = new()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagent20261001()
             {
-                Agents =
-                [
-                    new BetaManagedAgentsAgentReference()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
-                Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
             },
             Name = "My First Agent",
             Skills =
@@ -562,7 +676,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 },
                 new BetaManagedAgentsCustomSkill()
                 {
-                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                     Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
@@ -610,6 +724,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             ArchivedAt = null,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Description = "A general-purpose starter agent.",
+            ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
             McpServers =
             [
                 new()
@@ -622,23 +737,40 @@ public class BetaManagedAgentsAgentTest : TestBase
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
             Model = new()
             {
-                ID = BetaManagedAgentsModel.ClaudeOpus5,
+                ID = BetaManagedAgentsModel.ClaudeOpus5_5,
                 Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new()
+            Multiagent = new BetaManagedAgentsMultiagent20261001()
             {
-                Agents =
-                [
-                    new BetaManagedAgentsAgentReference()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
-                Type = Sessions::BetaManagedAgentsMultiagentType.Coordinator,
+                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
+                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+                {
+                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                    PredefinedAgents =
+                    [
+                        new()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Type = BetaManagedAgentsAgentReferenceType.Agent,
+                            Version = 1,
+                        },
+                    ],
+                },
             },
             Name = "My First Agent",
             Skills =
@@ -651,7 +783,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 },
                 new BetaManagedAgentsCustomSkill()
                 {
-                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+                    SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
                     Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
@@ -712,7 +844,7 @@ public class SkillTest : TestBase
     {
         Skill value = new BetaManagedAgentsCustomSkill()
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };
@@ -739,7 +871,7 @@ public class SkillTest : TestBase
     {
         Skill value = new BetaManagedAgentsCustomSkill()
         {
-            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTlx",
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
             Type = BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };

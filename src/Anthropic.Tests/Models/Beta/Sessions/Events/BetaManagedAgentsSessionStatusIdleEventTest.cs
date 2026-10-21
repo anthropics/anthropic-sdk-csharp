@@ -15,6 +15,7 @@ public class BetaManagedAgentsSessionStatusIdleEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
             ),
@@ -23,6 +24,11 @@ public class BetaManagedAgentsSessionStatusIdleEventTest : TestBase
 
         string expectedID = "id";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        BetaManagedAgentsSessionRefusalStopDetails expectedStopDetails = new()
+        {
+            Category = Category.Cyber,
+            Explanation = "explanation",
+        };
         StopReason expectedStopReason = new BetaManagedAgentsSessionEndTurn(
             BetaManagedAgentsSessionEndTurnType.EndTurn
         );
@@ -31,6 +37,7 @@ public class BetaManagedAgentsSessionStatusIdleEventTest : TestBase
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
+        Assert.Equal(expectedStopDetails, model.StopDetails);
         Assert.Equal(expectedStopReason, model.StopReason);
         Assert.Equal(expectedType, model.Type);
     }
@@ -42,6 +49,7 @@ public class BetaManagedAgentsSessionStatusIdleEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
             ),
@@ -64,6 +72,7 @@ public class BetaManagedAgentsSessionStatusIdleEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
             ),
@@ -79,6 +88,11 @@ public class BetaManagedAgentsSessionStatusIdleEventTest : TestBase
 
         string expectedID = "id";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        BetaManagedAgentsSessionRefusalStopDetails expectedStopDetails = new()
+        {
+            Category = Category.Cyber,
+            Explanation = "explanation",
+        };
         StopReason expectedStopReason = new BetaManagedAgentsSessionEndTurn(
             BetaManagedAgentsSessionEndTurnType.EndTurn
         );
@@ -87,6 +101,7 @@ public class BetaManagedAgentsSessionStatusIdleEventTest : TestBase
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
+        Assert.Equal(expectedStopDetails, deserialized.StopDetails);
         Assert.Equal(expectedStopReason, deserialized.StopReason);
         Assert.Equal(expectedType, deserialized.Type);
     }
@@ -98,6 +113,7 @@ public class BetaManagedAgentsSessionStatusIdleEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
             ),
@@ -114,6 +130,7 @@ public class BetaManagedAgentsSessionStatusIdleEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
             StopReason = new BetaManagedAgentsSessionEndTurn(
                 BetaManagedAgentsSessionEndTurnType.EndTurn
             ),
@@ -163,6 +180,13 @@ public class StopReasonTest : TestBase
         StopReason value = new BetaManagedAgentsSessionBudgetReached(
             BetaManagedAgentsSessionBudgetReachedType.BudgetReached
         );
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSessionRefusalValidationWorks()
+    {
+        StopReason value = new BetaManagedAgentsSessionRefusal();
         value.Validate();
     }
 
@@ -219,6 +243,19 @@ public class StopReasonTest : TestBase
         StopReason value = new BetaManagedAgentsSessionBudgetReached(
             BetaManagedAgentsSessionBudgetReachedType.BudgetReached
         );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<StopReason>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSessionRefusalSerializationRoundtripWorks()
+    {
+        StopReason value = new BetaManagedAgentsSessionRefusal();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<StopReason>(
             element,

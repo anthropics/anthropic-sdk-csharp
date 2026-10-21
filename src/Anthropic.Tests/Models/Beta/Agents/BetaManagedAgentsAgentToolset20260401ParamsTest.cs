@@ -253,6 +253,40 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsAgentToolset20260401Params
+        {
+            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
+            Configs =
+            [
+                new BetaManagedAgentsBashToolConfigParams()
+                {
+                    Enabled = true,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                    ),
+                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                },
+            ],
+            DefaultConfig = new()
+            {
+                Enabled = true,
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
+                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
+                ),
+            },
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Configs = null,
+        };
+
+        Assert.Null(model.Configs);
+        Assert.False(model.RawData.ContainsKey("configs"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params

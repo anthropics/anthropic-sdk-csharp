@@ -21,7 +21,7 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class BetaManagedAgentsMcpOAuthRefreshResponse : JsonModel
 {
     /// <summary>
-    /// OAuth client ID.
+    /// The OAuth client ID used when refreshing the access token.
     /// </summary>
     public required string ClientID
     {

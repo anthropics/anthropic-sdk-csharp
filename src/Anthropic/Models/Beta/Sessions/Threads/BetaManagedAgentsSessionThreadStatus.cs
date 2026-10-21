@@ -5,9 +5,6 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Threads;
 
-/// <summary>
-/// SessionThreadStatus enum
-/// </summary>
 [JsonConverter(typeof(BetaManagedAgentsSessionThreadStatusConverter))]
 public enum BetaManagedAgentsSessionThreadStatus
 {

@@ -322,6 +322,44 @@ public class BetaSearchResultBlockParamTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaSearchResultBlockParam
+        {
+            Content =
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    Citations =
+                    [
+                        new BetaCitationCharLocationParam()
+                        {
+                            CitedText = "The grass is green. The sky is blue.",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ],
+            Source = "source",
+            Title = "title",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Citations = null,
+        };
+
+        Assert.Null(model.Citations);
+        Assert.False(model.RawData.ContainsKey("citations"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaSearchResultBlockParam

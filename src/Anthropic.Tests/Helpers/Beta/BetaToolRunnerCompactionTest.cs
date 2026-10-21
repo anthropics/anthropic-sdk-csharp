@@ -245,6 +245,172 @@ public class BetaToolRunnerCompactionTest
         );
     }
 
+    [Theory]
+    [InlineData("""{"type":"any"}""", false, true)]
+    [InlineData("""{"type":"tool","name":"get_weather"}""", false, true)]
+    [InlineData("""{"type":"auto"}""", true, true)]
+    [InlineData("""{"type":"auto"}""", true, false)]
+    public async Task CompactionRequest_LeavesOffTheReplyOnlyParams(
+        string toolChoice,
+        bool toolChoiceIsSent,
+        bool outputConfigHasEffort
+    )
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var format = new BetaJsonOutputFormat
+        {
+            Schema = new Dictionary<string, JsonElement>
+            {
+                ["type"] = JsonSerializer.SerializeToElement("object"),
+            },
+        };
+        BetaOutputConfig outputConfig = outputConfigHasEffort
+            ? new() { Effort = Effort.Low, Format = format }
+            : new() { Format = format };
+        var parameters = BaseParams with
+        {
+            Betas = ["compact-2026-09-04"],
+            System = "Be brief.",
+            StopSequences = ["END"],
+            ToolChoice = JsonSerializer.Deserialize<BetaToolChoice>(toolChoice)!,
+            OutputConfig = outputConfig,
+            OutputFormat = format,
+            Fallbacks = new List<BetaFallbackParam>
+            {
+                new("fallback-model") { OutputConfig = outputConfig },
+            },
+        };
+        var script = new Script(CompactedResponse(), FinalTurn());
+        var runner = WeatherRunner(script, parameters);
+
+        runner.CompactBeforeNextTurn();
+        await runner.RunUntilDoneAsync(ct);
+
+        Assert.Equal(2, script.Requests.Count);
+        var compaction = script.Requests[0];
+        var after = script.Requests[1];
+
+        Assert.True(compaction.RawBodyData.ContainsKey("compaction"));
+        Assert.False(compaction.RawBodyData.ContainsKey("stop_sequences"));
+        Assert.False(compaction.RawBodyData.ContainsKey("output_format"));
+        if (outputConfigHasEffort)
+        {
+            AssertJson("""{"effort":"low"}""", compaction.RawBodyData["output_config"]);
+            AssertJson(
+                """[{"model":"fallback-model","output_config":{"effort":"low"}}]""",
+                compaction.RawBodyData["fallbacks"]
+            );
+        }
+        else
+        {
+            Assert.False(compaction.RawBodyData.ContainsKey("output_config"));
+            AssertJson("""[{"model":"fallback-model"}]""", compaction.RawBodyData["fallbacks"]);
+        }
+        Assert.Equal(toolChoiceIsSent, compaction.RawBodyData.ContainsKey("tool_choice"));
+        foreach (var key in new[] { "tools", "system", "max_tokens" })
+        {
+            Assert.True(
+                JsonElement.DeepEquals(after.RawBodyData[key], compaction.RawBodyData[key]),
+                key
+            );
+        }
+
+        foreach (
+            var key in new[]
+            {
+                "stop_sequences",
+                "tool_choice",
+                "output_config",
+                "output_format",
+                "fallbacks",
+            }
+        )
+        {
+            Assert.True(
+                JsonElement.DeepEquals(parameters.RawBodyData[key], after.RawBodyData[key]),
+                key
+            );
+        }
+        Assert.All(
+            script.Requests,
+            r => AssertJson("""["compact-2026-09-04"]""", r.RawHeaderData["anthropic-beta"])
+        );
+    }
+
+    private static BetaMessageParam WeatherToolRemoval =>
+        new()
+        {
+            Role = Role.System,
+            Content = new BetaMessageParamContent(
+                [new BetaRequestToolRemovalBlock(new BetaToolChangeToolReference("get_weather"))]
+            ),
+        };
+
+    [Fact]
+    public async Task Compaction_KeepsARemovalThatOnlyTheHistoryHeld()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var script = new Script(CompactedResponse(), ToolUseTurn(), FinalTurn());
+        var runs = 0;
+        var runner = script.Service.ToolRunner(
+            BaseParams,
+            [
+                MakeWeatherToolSync(_ =>
+                {
+                    runs++;
+                    return "Sunny";
+                }),
+            ]
+        );
+
+        runner.PushMessages(WeatherToolRemoval);
+        runner.CompactBeforeNextTurn();
+        await runner.RunUntilDoneAsync(ct);
+
+        Assert.Equal(0, runs);
+        var result = script
+            .Requests[2]
+            .RawBodyData["messages"]
+            .EnumerateArray()
+            .Last()
+            .GetProperty("content")
+            .EnumerateArray()
+            .Single();
+        Assert.True(result.GetProperty("is_error").GetBoolean());
+        Assert.Equal("Tool 'get_weather' not found", result.GetProperty("content").GetString());
+    }
+
+    [Fact]
+    public async Task Compaction_KeepsAToolAddedBackWhileItsResponseIsHandled()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var script = new Script(CompactedResponse(), ToolUseTurn(), FinalTurn());
+        var weatherTool = MakeWeatherToolSync(_ => "Sunny");
+        var runner = script.Service.ToolRunner(BaseParams, [weatherTool]);
+
+        runner.PushMessages(WeatherToolRemoval);
+        runner.CompactBeforeNextTurn();
+        await foreach (var message in runner.WithCancellation(ct))
+        {
+            if (message.StopReason == BetaStopReason.Compaction)
+            {
+                runner.AddTools(weatherTool);
+            }
+        }
+
+        Assert.Equal(["assistant", "system"], Roles(script.Requests[1]));
+        Assert.Equal("tool_addition", LastBlockType(script.Requests[1]));
+        var result = script
+            .Requests[2]
+            .RawBodyData["messages"]
+            .EnumerateArray()
+            .Last()
+            .GetProperty("content")
+            .EnumerateArray()
+            .Single();
+        Assert.Equal("Sunny", result.GetProperty("content").GetString());
+    }
+
     [Fact]
     public async Task CompactBeforeNextTurn_DuringPausedTurn_WaitsForTheTurnToFinish()
     {

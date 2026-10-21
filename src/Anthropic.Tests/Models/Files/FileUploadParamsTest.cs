@@ -64,6 +64,29 @@ public class FileUploadParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        BinaryContent file = Encoding.UTF8.GetBytes("Example data");
+
+        var parameters = new FileUploadParams
+        {
+            File = file,
+            ExpiresInSeconds = 3600,
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            ExpiresInSeconds = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.ExpiresInSeconds);
+        Assert.False(parameters.RawBodyData.ContainsKey("expires_in_seconds"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         FileUploadParams parameters = new() { File = Encoding.UTF8.GetBytes("Example data") };

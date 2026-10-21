@@ -28,6 +28,7 @@ public class RateLimitListPageResponseTest : TestBase
                         new()
                         {
                             OrgLimit = 0,
+                            Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                             Type = "type",
                             Value = 0,
                         },
@@ -55,6 +56,7 @@ public class RateLimitListPageResponseTest : TestBase
                     new()
                     {
                         OrgLimit = 0,
+                        Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                         Type = "type",
                         Value = 0,
                     },
@@ -94,6 +96,7 @@ public class RateLimitListPageResponseTest : TestBase
                         new()
                         {
                             OrgLimit = 0,
+                            Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                             Type = "type",
                             Value = 0,
                         },
@@ -135,6 +138,7 @@ public class RateLimitListPageResponseTest : TestBase
                         new()
                         {
                             OrgLimit = 0,
+                            Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                             Type = "type",
                             Value = 0,
                         },
@@ -169,6 +173,7 @@ public class RateLimitListPageResponseTest : TestBase
                     new()
                     {
                         OrgLimit = 0,
+                        Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                         Type = "type",
                         Value = 0,
                     },
@@ -208,6 +213,7 @@ public class RateLimitListPageResponseTest : TestBase
                         new()
                         {
                             OrgLimit = 0,
+                            Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                             Type = "type",
                             Value = 0,
                         },
@@ -243,6 +249,7 @@ public class RateLimitListPageResponseTest : TestBase
                         new()
                         {
                             OrgLimit = 0,
+                            Source = new BetaWorkspaceRateLimitWorkspaceSource(),
                             Type = "type",
                             Value = 0,
                         },

@@ -152,6 +152,28 @@ public class BetaManagedAgentsMcpOAuthRefreshUpdateParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaManagedAgentsMcpOAuthRefreshUpdateParams
+        {
+            RefreshToken = "x",
+            Scope = "scope",
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam()
+            {
+                Type = BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
+                ClientSecret = "x",
+            },
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            TokenEndpointAuth = null,
+        };
+
+        Assert.Null(model.TokenEndpointAuth);
+        Assert.False(model.RawData.ContainsKey("token_endpoint_auth"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaManagedAgentsMcpOAuthRefreshUpdateParams

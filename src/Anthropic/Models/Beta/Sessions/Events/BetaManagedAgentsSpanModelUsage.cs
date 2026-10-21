@@ -73,9 +73,8 @@ public sealed record class BetaManagedAgentsSpanModelUsage : JsonModel
     }
 
     /// <summary>
-    /// Inference speed mode. `fast` provides significantly faster output token generation
-    /// at premium pricing. Not all models support `fast`; invalid combinations are
-    /// rejected at create time.
+    /// Inference speed tier this request actually ran at. Mirrors `usage.speed`
+    /// on /v1/messages. Only present when the fast-mode beta is active.
     /// </summary>
     public ApiEnum<string, Speed>? Speed
     {
@@ -138,9 +137,8 @@ class BetaManagedAgentsSpanModelUsageFromRaw : IFromRawJson<BetaManagedAgentsSpa
 }
 
 /// <summary>
-/// Inference speed mode. `fast` provides significantly faster output token generation
-/// at premium pricing. Not all models support `fast`; invalid combinations are rejected
-/// at create time.
+/// Inference speed tier this request actually ran at. Mirrors `usage.speed` on /v1/messages.
+/// Only present when the fast-mode beta is active.
 /// </summary>
 [JsonConverter(typeof(SpeedConverter))]
 public enum Speed

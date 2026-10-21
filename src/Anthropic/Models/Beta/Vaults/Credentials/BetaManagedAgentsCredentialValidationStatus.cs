@@ -17,14 +17,16 @@ public enum BetaManagedAgentsCredentialValidationStatus
     Valid,
 
     /// <summary>
-    /// The probe reached the MCP server and was rejected, and a refresh (if attempted)
-    /// did not recover it.
+    /// The probe reached the MCP server and the server rejected the credential,
+    /// or no access token is stored. A refresh, if one was tried, didn't recover
+    /// it. Usually the end user needs to authorize again.
     /// </summary>
     Invalid,
 
     /// <summary>
-    /// The probe could not determine validity — for example, a transport error or
-    /// a successful refresh that was not re-probed.
+    /// The probe couldn't tell whether the credential works, for example because
+    /// of a network error or because a refresh succeeded but the new access token
+    /// wasn't tested. Validate the credential again to find out.
     /// </summary>
     Unknown,
 }

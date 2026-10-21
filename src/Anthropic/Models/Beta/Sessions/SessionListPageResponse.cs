@@ -30,6 +30,7 @@ public sealed record class SessionListPageResponse : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("data");
                 return;
             }
 

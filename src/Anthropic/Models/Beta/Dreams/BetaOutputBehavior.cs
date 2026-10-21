@@ -7,6 +7,10 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Dreams;
 
+/// <summary>
+/// Which memory store a dream writes its result to. Defaults to `create_new` when
+/// left out of a create request.
+/// </summary>
 [JsonConverter(typeof(BetaOutputBehaviorConverter))]
 public record class BetaOutputBehavior : ModelBase
 {

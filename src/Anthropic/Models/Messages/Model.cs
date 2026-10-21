@@ -15,10 +15,25 @@ namespace Anthropic.Models.Messages;
 public enum Model
 {
     /// <summary>
+    /// Fastest model for high-volume, real-time tasks
+    /// </summary>
+    ClaudeHaiku5_5,
+
+    /// <summary>
+    /// Efficient model for coding and agents
+    /// </summary>
+    ClaudeSonnet5_5,
+
+    /// <summary>
     /// Frontier intelligence for ambitious tasks across coding, scientific discovery,
     /// and enterprise workflows
     /// </summary>
     ClaudeFable5_1,
+
+    /// <summary>
+    /// Powerful intelligence for coding, knowledge work, and long-running agents
+    /// </summary>
+    ClaudeOpus5_5,
 
     /// <summary>
     /// Our most capable model for cybersecurity and biology research, available
@@ -27,7 +42,7 @@ public enum Model
     ClaudeMythos5_1,
 
     /// <summary>
-    /// High-performance model for coding and agents
+    /// Efficient model for coding and agents
     /// </summary>
     ClaudeSonnet5,
 
@@ -73,15 +88,7 @@ public enum Model
     /// Best combination of speed and intelligence
     /// </summary>
     ClaudeSonnet4_6,
-
-    /// <summary>
-    /// Fastest model with near-frontier intelligence
-    /// </summary>
     ClaudeHaiku4_5,
-
-    /// <summary>
-    /// Fastest model with near-frontier intelligence
-    /// </summary>
     ClaudeHaiku4_5_20251001,
 
     /// <summary>
@@ -97,11 +104,17 @@ public enum Model
     /// <summary>
     /// High-performance model for agents and coding
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on November 30, 2026. Please migrate to claude-sonnet-5-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     ClaudeSonnet4_5,
 
     /// <summary>
     /// High-performance model for agents and coding
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on November 30, 2026. Please migrate to claude-sonnet-5-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     ClaudeSonnet4_5_20250929,
 }
 
@@ -115,7 +128,10 @@ sealed class ModelConverter : JsonConverter<Model>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
+            "claude-haiku-5-5" => Model.ClaudeHaiku5_5,
+            "claude-sonnet-5-5" => Model.ClaudeSonnet5_5,
             "claude-fable-5-1" => Model.ClaudeFable5_1,
+            "claude-opus-5-5" => Model.ClaudeOpus5_5,
             "claude-mythos-5-1" => Model.ClaudeMythos5_1,
             "claude-sonnet-5" => Model.ClaudeSonnet5,
             "claude-fable-5" => Model.ClaudeFable5,
@@ -142,7 +158,10 @@ sealed class ModelConverter : JsonConverter<Model>
             writer,
             value switch
             {
+                Model.ClaudeHaiku5_5 => "claude-haiku-5-5",
+                Model.ClaudeSonnet5_5 => "claude-sonnet-5-5",
                 Model.ClaudeFable5_1 => "claude-fable-5-1",
+                Model.ClaudeOpus5_5 => "claude-opus-5-5",
                 Model.ClaudeMythos5_1 => "claude-mythos-5-1",
                 Model.ClaudeSonnet5 => "claude-sonnet-5",
                 Model.ClaudeFable5 => "claude-fable-5",

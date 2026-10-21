@@ -117,6 +117,8 @@ public sealed class DeploymentRunServiceWithRawResponse : IDeploymentRunServiceW
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.deployment_runs.retrieve",
+            SpanResourceIds = [new("anthropic.deployment_run.id", parameters.DeploymentRunID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -165,6 +167,7 @@ public sealed class DeploymentRunServiceWithRawResponse : IDeploymentRunServiceW
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.deployment_runs.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

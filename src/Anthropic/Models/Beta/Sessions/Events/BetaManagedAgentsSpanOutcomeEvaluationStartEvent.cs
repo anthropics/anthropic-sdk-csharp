@@ -61,7 +61,7 @@ public sealed record class BetaManagedAgentsSpanOutcomeEvaluationStartEvent : Js
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when outcome evaluation started.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {

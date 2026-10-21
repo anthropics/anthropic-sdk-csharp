@@ -14,7 +14,9 @@ namespace Anthropic.Models.Beta.Organization.Workspaces.RateLimits;
 public sealed record class RateLimitListPageResponse : JsonModel
 {
     /// <summary>
-    /// Rate-limit entries for the workspace, one per group that has at least one override.
+    /// Rate-limit entries for the workspace: one per group with at least one override,
+    /// or, with `include_inherited` set to `true`, one per group the workspace can
+    /// see that has organization-level limits.
     /// </summary>
     public required IReadOnlyList<BetaWorkspaceRateLimit> Data
     {

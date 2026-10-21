@@ -46,7 +46,7 @@ public sealed record class BetaManagedAgentsUserInterruptEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the interrupt was processed.
     /// </summary>
     public System::DateTimeOffset? ProcessedAt
     {

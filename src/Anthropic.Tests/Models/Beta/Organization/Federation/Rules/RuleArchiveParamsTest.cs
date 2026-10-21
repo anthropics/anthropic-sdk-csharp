@@ -58,6 +58,23 @@ public class RuleArchiveParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new RuleArchiveParams
+        {
+            FederationRuleID = "federation_rule_id",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         RuleArchiveParams parameters = new() { FederationRuleID = "federation_rule_id" };

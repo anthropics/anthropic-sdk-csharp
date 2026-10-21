@@ -235,6 +235,26 @@ public class WorkloadIdentityCredentialsTests
     }
 
     [Fact]
+    public async Task ExchangeToken_DoesNotFollowRedirects()
+    {
+        using var server = new RedirectingServer();
+        using var creds = new WorkloadIdentityCredentials(
+            new WorkloadIdentityOptions
+            {
+                FederationRuleId = "fdrl_01test",
+                OrganizationId = "org",
+                IdentityTokenProvider = new StaticIdentityTokenProvider("jwt"),
+                BaseUrl = server.BaseUrl,
+            }
+        );
+
+        var ex = await Assert.ThrowsAsync<WorkloadIdentityException>(async () =>
+            await creds.GetTokenAsync()
+        );
+        Assert.Equal(HttpStatusCode.TemporaryRedirect, ex.StatusCode);
+    }
+
+    [Fact]
     public async Task ExchangeToken_401WithoutWorkspaceId_IncludesFullHint()
     {
         // Without a workspace_id, the hint should include the federation-rule

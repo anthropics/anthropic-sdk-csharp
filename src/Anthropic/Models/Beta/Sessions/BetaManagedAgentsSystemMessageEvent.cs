@@ -69,7 +69,7 @@ public sealed record class BetaManagedAgentsSystemMessageEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when this system message was processed.
     /// </summary>
     public System::DateTimeOffset? ProcessedAt
     {

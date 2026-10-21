@@ -14,7 +14,7 @@ public class ResourceUpdateResponseTest : TestBase
     {
         ResourceUpdateResponse value = new BetaManagedAgentsGitHubRepositoryResource()
         {
-            ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+            ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             MountPath = "/workspace/example-repo",
             Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -65,7 +65,7 @@ public class ResourceUpdateResponseTest : TestBase
     {
         ResourceUpdateResponse value = new BetaManagedAgentsGitHubRepositoryResource()
         {
-            ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+            ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             MountPath = "/workspace/example-repo",
             Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -136,7 +136,7 @@ public class ResourceUpdateResponseTest : TestBase
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "id": "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+                  "id": "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                   "created_at": "2026-03-15T10:00:00Z",
                   "mount_path": "/workspace/example-repo",
                   "updated_at": "2026-03-15T10:00:00Z"
@@ -146,7 +146,7 @@ public class ResourceUpdateResponseTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        string expectedID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu";
+        string expectedID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedMountPath = "/workspace/example-repo";
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");

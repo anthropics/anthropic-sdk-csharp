@@ -24,6 +24,14 @@ public record class BatchDeleteParams : ParamsBase
 {
     public string? MessageBatchID { get; init; }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -35,6 +43,7 @@ public record class BatchDeleteParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -131,6 +140,8 @@ public record class BatchDeleteParams : ParamsBase
             Query = this.QueryString(options),
         }.Uri;
     }
+
+    internal override string Route => "/v1/messages/batches/{message_batch_id}";
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

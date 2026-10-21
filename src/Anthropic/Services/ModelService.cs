@@ -102,6 +102,8 @@ public sealed class ModelServiceWithRawResponse : IModelServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.models.retrieve",
+            SpanResourceIds = [new("anthropic.model.id", parameters.ModelID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -142,6 +144,7 @@ public sealed class ModelServiceWithRawResponse : IModelServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.models.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

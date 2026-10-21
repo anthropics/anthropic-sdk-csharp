@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Models.Beta.UserProfiles;
+using Anthropic.Services.Beta.UserProfiles;
 
 namespace Anthropic.Services.Beta;
 
@@ -25,6 +26,8 @@ public interface IUserProfileService
     /// <para>The original service is not modified.</para>
     /// </summary>
     IUserProfileService WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
+    IActionUrlService ActionUrls { get; }
 
     /// <summary>
     /// Create User Profile
@@ -73,6 +76,21 @@ public interface IUserProfileService
     );
 
     /// <summary>
+    /// Delete User Profile
+    /// </summary>
+    Task<BetaDeletedUserProfile> Delete(
+        UserProfileDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Delete(UserProfileDeleteParams, CancellationToken)"/>
+    Task<BetaDeletedUserProfile> Delete(
+        string userProfileID,
+        UserProfileDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// Create Enrollment URL
     /// </summary>
     Task<BetaUserProfileEnrollmentUrl> CreateEnrollmentUrl(
@@ -100,6 +118,8 @@ public interface IUserProfileServiceWithRawResponse
     /// <para>The original service is not modified.</para>
     /// </summary>
     IUserProfileServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
+    IActionUrlServiceWithRawResponse ActionUrls { get; }
 
     /// <summary>
     /// Returns a raw HTTP response for <c>post /v1/user_profiles?beta=true</c>, but is otherwise the
@@ -148,6 +168,22 @@ public interface IUserProfileServiceWithRawResponse
     /// </summary>
     Task<HttpResponse<UserProfileListPage>> List(
         UserProfileListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for <c>delete /v1/user_profiles/{user_profile_id}?beta=true</c>, but is otherwise the
+    /// same as <see cref="IUserProfileService.Delete(UserProfileDeleteParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<BetaDeletedUserProfile>> Delete(
+        UserProfileDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Delete(UserProfileDeleteParams, CancellationToken)"/>
+    Task<HttpResponse<BetaDeletedUserProfile>> Delete(
+        string userProfileID,
+        UserProfileDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 

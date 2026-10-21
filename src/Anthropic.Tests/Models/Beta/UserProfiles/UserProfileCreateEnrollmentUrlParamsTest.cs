@@ -69,6 +69,27 @@ public class UserProfileCreateEnrollmentUrlParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new UserProfileCreateEnrollmentUrlParams
+        {
+            UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         UserProfileCreateEnrollmentUrlParams parameters = new()
@@ -102,7 +123,7 @@ public class UserProfileCreateEnrollmentUrlParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["user-profiles-2026-08-18", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,user-profiles-2026-08-18"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(

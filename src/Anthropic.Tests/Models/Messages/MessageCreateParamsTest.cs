@@ -17,7 +17,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -32,6 +32,7 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -46,6 +47,7 @@ public class MessageCreateParamsTest : TestBase
                 },
             },
             ServiceTier = Messages::ServiceTier.Auto,
+            Speed = Messages::Speed.Standard,
             StopSequences = ["string"],
             System = new(
                 [
@@ -114,7 +116,7 @@ public class MessageCreateParamsTest : TestBase
         [
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5_5;
         Messages::CacheControlEphemeral expectedCacheControl = new() { Ttl = Messages::Ttl.Ttl5m };
         Messages::MessageCreateParamsContainer expectedContainer = new Messages::ContainerParams()
         {
@@ -128,6 +130,10 @@ public class MessageCreateParamsTest : TestBase
                     Version = "latest",
                 },
             ],
+        };
+        Messages::DiagnosticsParam expectedDiagnostics = new()
+        {
+            PreviousMessageID = "previous_message_id",
         };
         string expectedInferenceGeo = "inference_geo";
         Messages::Metadata expectedMetadata = new()
@@ -146,6 +152,7 @@ public class MessageCreateParamsTest : TestBase
             },
         };
         ApiEnum<string, Messages::ServiceTier> expectedServiceTier = Messages::ServiceTier.Auto;
+        ApiEnum<string, Messages::Speed> expectedSpeed = Messages::Speed.Standard;
         List<string> expectedStopSequences = ["string"];
         Messages::MessageCreateParamsSystem expectedSystem = new(
             [
@@ -220,10 +227,12 @@ public class MessageCreateParamsTest : TestBase
         Assert.Equal(expectedModel, parameters.Model);
         Assert.Equal(expectedCacheControl, parameters.CacheControl);
         Assert.Equal(expectedContainer, parameters.Container);
+        Assert.Equal(expectedDiagnostics, parameters.Diagnostics);
         Assert.Equal(expectedInferenceGeo, parameters.InferenceGeo);
         Assert.Equal(expectedMetadata, parameters.Metadata);
         Assert.Equal(expectedOutputConfig, parameters.OutputConfig);
         Assert.Equal(expectedServiceTier, parameters.ServiceTier);
+        Assert.Equal(expectedSpeed, parameters.Speed);
         Assert.NotNull(parameters.StopSequences);
         Assert.Equal(expectedStopSequences.Count, parameters.StopSequences.Count);
         for (int i = 0; i < expectedStopSequences.Count; i++)
@@ -253,7 +262,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -268,7 +277,9 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
+            Speed = Messages::Speed.Standard,
         };
 
         Assert.Null(parameters.Metadata);
@@ -306,7 +317,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -321,8 +332,155 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
+            Speed = Messages::Speed.Standard,
 
+            // Null should be interpreted as omitted for these properties
+            Metadata = null,
+            OutputConfig = null,
+            ServiceTier = null,
+            StopSequences = null,
+            System = null,
+            Temperature = null,
+            Thinking = null,
+            ToolChoice = null,
+            Tools = null,
+            TopK = null,
+            TopP = null,
+            UserProfileID = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.OutputConfig);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_config"));
+        Assert.Null(parameters.ServiceTier);
+        Assert.False(parameters.RawBodyData.ContainsKey("service_tier"));
+        Assert.Null(parameters.StopSequences);
+        Assert.False(parameters.RawBodyData.ContainsKey("stop_sequences"));
+        Assert.Null(parameters.System);
+        Assert.False(parameters.RawBodyData.ContainsKey("system"));
+        Assert.Null(parameters.Temperature);
+        Assert.False(parameters.RawBodyData.ContainsKey("temperature"));
+        Assert.Null(parameters.Thinking);
+        Assert.False(parameters.RawBodyData.ContainsKey("thinking"));
+        Assert.Null(parameters.ToolChoice);
+        Assert.False(parameters.RawBodyData.ContainsKey("tool_choice"));
+        Assert.Null(parameters.Tools);
+        Assert.False(parameters.RawBodyData.ContainsKey("tools"));
+        Assert.Null(parameters.TopK);
+        Assert.False(parameters.RawBodyData.ContainsKey("top_k"));
+        Assert.Null(parameters.TopP);
+        Assert.False(parameters.RawBodyData.ContainsKey("top_p"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new Messages::MessageCreateParams
+        {
+            MaxTokens = 1024,
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus5_5,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Container = new Messages::ContainerParams()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = Messages::SkillParamsType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
+            },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            InferenceGeo = "inference_geo",
+            Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            ServiceTier = Messages::ServiceTier.Auto,
+            Speed = Messages::Speed.Standard,
+            StopSequences = ["string"],
+            System = new(
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "The grass is green. The sky is blue.",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Temperature = 1,
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
+            ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new Messages::Tool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = Messages::Type.Custom,
+                },
+            ],
+            TopK = 5,
+            TopP = 0.7,
+            UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
             // Null should be interpreted as omitted for these properties
             Metadata = null,
             OutputConfig = null,
@@ -374,7 +532,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
             {
@@ -455,8 +613,12 @@ public class MessageCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("cache_control"));
         Assert.Null(parameters.Container);
         Assert.False(parameters.RawBodyData.ContainsKey("container"));
+        Assert.Null(parameters.Diagnostics);
+        Assert.False(parameters.RawBodyData.ContainsKey("diagnostics"));
         Assert.Null(parameters.InferenceGeo);
         Assert.False(parameters.RawBodyData.ContainsKey("inference_geo"));
+        Assert.Null(parameters.Speed);
+        Assert.False(parameters.RawBodyData.ContainsKey("speed"));
     }
 
     [Fact]
@@ -466,7 +628,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
             {
@@ -544,15 +706,21 @@ public class MessageCreateParamsTest : TestBase
 
             CacheControl = null,
             Container = null,
+            Diagnostics = null,
             InferenceGeo = null,
+            Speed = null,
         };
 
         Assert.Null(parameters.CacheControl);
         Assert.True(parameters.RawBodyData.ContainsKey("cache_control"));
         Assert.Null(parameters.Container);
         Assert.True(parameters.RawBodyData.ContainsKey("container"));
+        Assert.Null(parameters.Diagnostics);
+        Assert.True(parameters.RawBodyData.ContainsKey("diagnostics"));
         Assert.Null(parameters.InferenceGeo);
         Assert.True(parameters.RawBodyData.ContainsKey("inference_geo"));
+        Assert.Null(parameters.Speed);
+        Assert.True(parameters.RawBodyData.ContainsKey("speed"));
     }
 
     [Fact]
@@ -562,7 +730,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -578,7 +746,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -602,7 +770,7 @@ public class MessageCreateParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -617,6 +785,7 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -631,6 +800,7 @@ public class MessageCreateParamsTest : TestBase
                 },
             },
             ServiceTier = Messages::ServiceTier.Auto,
+            Speed = Messages::Speed.Standard,
             StopSequences = ["string"],
             System = new(
                 [
@@ -750,6 +920,64 @@ public class ServiceTierTest : TestBase
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Messages::ServiceTier>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class SpeedTest : TestBase
+{
+    [Theory]
+    [InlineData(Messages::Speed.Standard)]
+    [InlineData(Messages::Speed.Fast)]
+    public void Validation_Works(Messages::Speed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Messages::Speed> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Messages::Speed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(Messages::Speed.Standard)]
+    [InlineData(Messages::Speed.Fast)]
+    public void SerializationRoundtrip_Works(Messages::Speed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Messages::Speed> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Messages::Speed>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Messages::Speed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Messages::Speed>>(
             json,
             ModelBase.SerializerOptions
         );

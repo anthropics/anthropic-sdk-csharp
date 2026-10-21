@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.UserProfiles;
+using Anthropic.Services.Beta.UserProfiles;
 
 namespace Anthropic.Services.Beta;
 
@@ -37,6 +38,13 @@ public sealed class UserProfileService : IUserProfileService
         _client = client;
 
         _withRawResponse = new(() => new UserProfileServiceWithRawResponse(client.WithRawResponse));
+        _actionUrls = new(() => new ActionUrlService(client));
+    }
+
+    readonly Lazy<IActionUrlService> _actionUrls;
+    public IActionUrlService ActionUrls
+    {
+        get { return _actionUrls.Value; }
     }
 
     /// <inheritdoc/>
@@ -112,6 +120,30 @@ public sealed class UserProfileService : IUserProfileService
     }
 
     /// <inheritdoc/>
+    public async Task<BetaDeletedUserProfile> Delete(
+        UserProfileDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var response = await this
+            .WithRawResponse.Delete(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public Task<BetaDeletedUserProfile> Delete(
+        string userProfileID,
+        UserProfileDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.Delete(parameters with { UserProfileID = userProfileID }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
     public async Task<BetaUserProfileEnrollmentUrl> CreateEnrollmentUrl(
         UserProfileCreateEnrollmentUrlParams parameters,
         CancellationToken cancellationToken = default
@@ -158,6 +190,14 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
     public UserProfileServiceWithRawResponse(IAnthropicClientWithRawResponse client)
     {
         _client = client;
+
+        _actionUrls = new(() => new ActionUrlServiceWithRawResponse(client));
+    }
+
+    readonly Lazy<IActionUrlServiceWithRawResponse> _actionUrls;
+    public IActionUrlServiceWithRawResponse ActionUrls
+    {
+        get { return _actionUrls.Value; }
     }
 
     /// <inheritdoc/>
@@ -172,6 +212,7 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.user_profiles.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -185,6 +226,12 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
                 {
                     betaUserProfile.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.user_profile.id",
+                    betaUserProfile,
+                    static created => created.ID
+                );
                 return betaUserProfile;
             }
         );
@@ -205,6 +252,8 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.user_profiles.retrieve",
+            SpanResourceIds = [new("anthropic.user_profile.id", parameters.UserProfileID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -250,6 +299,8 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.user_profiles.update",
+            SpanResourceIds = [new("anthropic.user_profile.id", parameters.UserProfileID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -292,6 +343,7 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.user_profiles.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -311,6 +363,53 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
     }
 
     /// <inheritdoc/>
+    public async Task<HttpResponse<BetaDeletedUserProfile>> Delete(
+        UserProfileDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (parameters.UserProfileID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.UserProfileID' cannot be null");
+        }
+
+        HttpRequest<UserProfileDeleteParams> request = new()
+        {
+            Method = HttpMethod.Delete,
+            Params = parameters,
+            SpanName = "anthropic.user_profiles.delete",
+            SpanResourceIds = [new("anthropic.user_profile.id", parameters.UserProfileID)],
+        };
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var betaDeletedUserProfile = await response
+                    .Deserialize<BetaDeletedUserProfile>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    betaDeletedUserProfile.Validate();
+                }
+                return betaDeletedUserProfile;
+            }
+        );
+    }
+
+    /// <inheritdoc/>
+    public Task<HttpResponse<BetaDeletedUserProfile>> Delete(
+        string userProfileID,
+        UserProfileDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.Delete(parameters with { UserProfileID = userProfileID }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
     public async Task<HttpResponse<BetaUserProfileEnrollmentUrl>> CreateEnrollmentUrl(
         UserProfileCreateEnrollmentUrlParams parameters,
         CancellationToken cancellationToken = default
@@ -325,6 +424,8 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.user_profiles.create_enrollment_url",
+            SpanResourceIds = [new("anthropic.user_profile.id", parameters.UserProfileID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

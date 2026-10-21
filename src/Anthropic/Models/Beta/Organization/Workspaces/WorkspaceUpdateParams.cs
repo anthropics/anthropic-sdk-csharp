@@ -55,6 +55,7 @@ public record class WorkspaceUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("display_color");
                 return;
             }
 
@@ -86,6 +87,7 @@ public record class WorkspaceUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("external_key_id");
                 return;
             }
 
@@ -107,6 +109,7 @@ public record class WorkspaceUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("name");
                 return;
             }
 
@@ -233,6 +236,8 @@ public record class WorkspaceUpdateParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/organizations/workspaces/{workspace_id}";
 
     internal override HttpContent? BodyContent()
     {

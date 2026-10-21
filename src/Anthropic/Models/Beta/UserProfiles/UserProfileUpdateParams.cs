@@ -31,11 +31,7 @@ public record class UserProfileUpdateParams : ParamsBase
     public string? UserProfileID { get; init; }
 
     /// <summary>
-    /// How the platform uses the API on behalf of the entity this profile represents.
-    /// `application`: the platform sells a product that uses the API behind the
-    /// scenes, and the profile represents an individual end-user of that product.
-    /// `passthrough`: the platform resells raw inference, and the profile identifies
-    /// the resold-to company.
+    /// If present, replaces the stored access type. Omit to leave unchanged.
     /// </summary>
     public ApiEnum<string, UserProfileUpdateParamsAccessType>? AccessType
     {
@@ -51,8 +47,8 @@ public record class UserProfileUpdateParams : ParamsBase
 
     /// <summary>
     /// If present, replaces the stored external_id. Omit to leave unchanged. Maximum
-    /// 255 characters. Accepted under the `user-profiles-2026-03-24` and `user-profiles-2026-08-18`
-    /// beta headers; under `user-profiles-2026-09-04` send `external_user_details.reference_id` instead.
+    /// 255 characters. Legacy field, accepted only under the `user-profiles-2026-03-24`
+    /// and `user-profiles-2026-08-18` beta headers; without one of them, send `external_user_details.reference_id`.
     /// </summary>
     public string? ExternalID
     {
@@ -67,8 +63,8 @@ public record class UserProfileUpdateParams : ParamsBase
     /// <summary>
     /// Details about the entity this profile represents, as the platform states them.
     /// Each field sent replaces the stored value; omit a field to leave it unchanged.
-    /// Once set, a value cannot be cleared and `null` is rejected. Accepted under
-    /// the `user-profiles-2026-09-04` beta header only.
+    /// Once set, a value cannot be cleared and `null` is rejected. Not accepted under
+    /// the legacy `user-profiles-2026-03-24` and `user-profiles-2026-08-18` beta headers.
     /// </summary>
     public BetaUserProfileExternalUserDetailsParams? ExternalUserDetails
     {
@@ -83,6 +79,7 @@ public record class UserProfileUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("external_user_details");
                 return;
             }
 
@@ -91,7 +88,11 @@ public record class UserProfileUpdateParams : ParamsBase
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// If present, replaces the stored account creation time. Omit to leave unchanged;
+    /// once set, the value cannot be cleared and `null` is rejected. Must be a complete
+    /// RFC 3339 timestamp no more than 1 minute in the future. Legacy field, accepted
+    /// only under the `user-profiles-2026-08-18` beta header; without a legacy header,
+    /// send `external_user_details.onboarded_at`.
     /// </summary>
     public System::DateTimeOffset? ExternalUserOnboardedAt
     {
@@ -106,6 +107,7 @@ public record class UserProfileUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("external_user_onboarded_at");
                 return;
             }
 
@@ -130,6 +132,7 @@ public record class UserProfileUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("metadata");
                 return;
             }
 
@@ -169,6 +172,7 @@ public record class UserProfileUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -179,6 +183,14 @@ public record class UserProfileUpdateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -190,6 +202,7 @@ public record class UserProfileUpdateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -298,6 +311,8 @@ public record class UserProfileUpdateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/user_profiles/{user_profile_id}";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(
@@ -324,15 +339,20 @@ public record class UserProfileUpdateParams : ParamsBase
 }
 
 /// <summary>
-/// How the platform uses the API on behalf of the entity this profile represents.
-/// `application`: the platform sells a product that uses the API behind the scenes,
-/// and the profile represents an individual end-user of that product. `passthrough`:
-/// the platform resells raw inference, and the profile identifies the resold-to company.
+/// If present, replaces the stored access type. Omit to leave unchanged.
 /// </summary>
 [JsonConverter(typeof(UserProfileUpdateParamsAccessTypeConverter))]
 public enum UserProfileUpdateParamsAccessType
 {
+    /// <summary>
+    /// The user profile represents an individual end-user of a product that the
+    /// platform builds on the API. New profiles get this value by default.
+    /// </summary>
     Application,
+
+    /// <summary>
+    /// The user profile represents a company that the platform resells Claude access to.
+    /// </summary>
     Passthrough,
 }
 

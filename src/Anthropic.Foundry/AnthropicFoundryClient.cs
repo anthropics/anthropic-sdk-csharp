@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Anthropic.Core;
 
 namespace Anthropic.Foundry;
@@ -7,6 +8,14 @@ namespace Anthropic.Foundry;
 /// </summary>
 public class AnthropicFoundryClient : AnthropicClient
 {
+    /// <summary>
+    /// The source of the spans of this package's clients.
+    /// </summary>
+    internal static readonly ActivitySource PackageActivitySource = Tracing.PlatformSource(
+        "foundry",
+        typeof(AnthropicFoundryClient).Assembly
+    );
+
     /// <inheritdoc/>
     protected override bool ShouldAutoResolveCredentials => false;
 
@@ -28,6 +37,7 @@ public class AnthropicFoundryClient : AnthropicClient
         AuthToken = null;
         BaseUrl = $"https://{azureCredentials.ResourceName}.services.ai.azure.com/anthropic";
         BackendAdaptationHandler = () => CreateAdaptationHandler(azureCredentials);
+        OpenTelemetrySource = PackageActivitySource;
     }
 
     private AnthropicFoundryClient(
@@ -41,6 +51,7 @@ public class AnthropicFoundryClient : AnthropicClient
         // The options normally carry the backend adaptation handler from the original
         // construction; restore it if a WithOptions modifier returned fresh options.
         BackendAdaptationHandler ??= () => CreateAdaptationHandler(azureCredentials);
+        OpenTelemetrySource = PackageActivitySource;
     }
 
     /// <summary>

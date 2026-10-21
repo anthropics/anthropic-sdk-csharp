@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -123,6 +124,76 @@ public record class MessageCountTokensTool : ModelBase
                 ToolSearchToolBm25_20251119 x => x.Strict,
                 ToolSearchToolRegex20251119 x => x.Strict,
                 _ => WrappedJsonSerializer.GetNullableStructProperty<bool>(this.Json, "strict"),
+            };
+        }
+    }
+
+    public IReadOnlyList<string>? AllowedDomains
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Tool _ => null,
+                ToolBash20250124 _ => null,
+                CodeExecutionTool20250522 _ => null,
+                CodeExecutionTool20250825 _ => null,
+                CodeExecutionTool20260120 _ => null,
+                CodeExecutionTool20260521 _ => null,
+                BrowserToolset20260801 _ => null,
+                MemoryTool20250818 _ => null,
+                ComputerToolset20260801 _ => null,
+                ToolTextEditor20250124 _ => null,
+                ToolTextEditor20250429 _ => null,
+                ToolTextEditor20250728 _ => null,
+                WebSearchTool20250305 x => x.AllowedDomains,
+                WebFetchTool20250910 x => x.AllowedDomains,
+                WebSearchTool20260209 x => x.AllowedDomains,
+                WebFetchTool20260209 x => x.AllowedDomains,
+                WebFetchTool20260309 x => x.AllowedDomains,
+                WebSearchTool20260318 x => x.AllowedDomains,
+                WebFetchTool20260318 x => x.AllowedDomains,
+                ToolSearchToolBm25_20251119 _ => null,
+                ToolSearchToolRegex20251119 _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<IReadOnlyList<string>>(
+                    this.Json,
+                    "allowed_domains"
+                ),
+            };
+        }
+    }
+
+    public IReadOnlyList<string>? BlockedDomains
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Tool _ => null,
+                ToolBash20250124 _ => null,
+                CodeExecutionTool20250522 _ => null,
+                CodeExecutionTool20250825 _ => null,
+                CodeExecutionTool20260120 _ => null,
+                CodeExecutionTool20260521 _ => null,
+                BrowserToolset20260801 _ => null,
+                MemoryTool20250818 _ => null,
+                ComputerToolset20260801 _ => null,
+                ToolTextEditor20250124 _ => null,
+                ToolTextEditor20250429 _ => null,
+                ToolTextEditor20250728 _ => null,
+                WebSearchTool20250305 x => x.BlockedDomains,
+                WebFetchTool20250910 x => x.BlockedDomains,
+                WebSearchTool20260209 x => x.BlockedDomains,
+                WebFetchTool20260209 x => x.BlockedDomains,
+                WebFetchTool20260309 x => x.BlockedDomains,
+                WebSearchTool20260318 x => x.BlockedDomains,
+                WebFetchTool20260318 x => x.BlockedDomains,
+                ToolSearchToolBm25_20251119 _ => null,
+                ToolSearchToolRegex20251119 _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<IReadOnlyList<string>>(
+                    this.Json,
+                    "blocked_domains"
+                ),
             };
         }
     }

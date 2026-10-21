@@ -46,7 +46,8 @@ public sealed record class BetaManagedAgentsMcpOAuthAuthResponse : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When the credential's access token expires, in RFC 3339. Absent if the expiry
+    /// isn't known.
     /// </summary>
     public System::DateTimeOffset? ExpiresAt
     {
@@ -59,7 +60,7 @@ public sealed record class BetaManagedAgentsMcpOAuthAuthResponse : JsonModel
     }
 
     /// <summary>
-    /// OAuth refresh token configuration returned in credential responses.
+    /// Refresh token configuration, if the credential supports token refresh.
     /// </summary>
     public BetaManagedAgentsMcpOAuthRefreshResponse? Refresh
     {

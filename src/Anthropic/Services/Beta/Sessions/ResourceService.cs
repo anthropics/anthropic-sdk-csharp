@@ -183,6 +183,12 @@ public sealed class ResourceServiceWithRawResponse : IResourceServiceWithRawResp
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.sessions.resources.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.session.id", parameters.SessionID),
+                new("anthropic.session.resource.id", parameters.ResourceID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -226,6 +232,12 @@ public sealed class ResourceServiceWithRawResponse : IResourceServiceWithRawResp
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.sessions.resources.update",
+            SpanResourceIds =
+            [
+                new("anthropic.session.id", parameters.SessionID),
+                new("anthropic.session.resource.id", parameters.ResourceID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -269,6 +281,8 @@ public sealed class ResourceServiceWithRawResponse : IResourceServiceWithRawResp
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.sessions.resources.list",
+            SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -314,6 +328,12 @@ public sealed class ResourceServiceWithRawResponse : IResourceServiceWithRawResp
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.sessions.resources.delete",
+            SpanResourceIds =
+            [
+                new("anthropic.session.id", parameters.SessionID),
+                new("anthropic.session.resource.id", parameters.ResourceID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -357,6 +377,8 @@ public sealed class ResourceServiceWithRawResponse : IResourceServiceWithRawResp
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.sessions.resources.add",
+            SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -370,6 +392,12 @@ public sealed class ResourceServiceWithRawResponse : IResourceServiceWithRawResp
                 {
                     betaManagedAgentsFileResource.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.session.resource.id",
+                    betaManagedAgentsFileResource,
+                    static created => created.ID
+                );
                 return betaManagedAgentsFileResource;
             }
         );

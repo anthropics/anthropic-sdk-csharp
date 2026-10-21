@@ -25,7 +25,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = Messages::Model.ClaudeOpus5,
+                        Model = Messages::Model.ClaudeOpus5_5,
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Container = new Messages::ContainerParams()
                         {
@@ -40,6 +40,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                         OutputConfig = new()
@@ -54,6 +55,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         },
                         ServiceTier = ServiceTier.Auto,
+                        Speed = Speed.Standard,
                         StopSequences = ["string"],
                         Stream = false,
                         System = new(
@@ -133,7 +135,7 @@ public class BatchCreateParamsTest : TestBase
                 {
                     MaxTokens = 1024,
                     Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                    Model = Messages::Model.ClaudeOpus5,
+                    Model = Messages::Model.ClaudeOpus5_5,
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Container = new Messages::ContainerParams()
                     {
@@ -148,6 +150,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                     },
+                    Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                     InferenceGeo = "inference_geo",
                     Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                     OutputConfig = new()
@@ -162,6 +165,7 @@ public class BatchCreateParamsTest : TestBase
                         },
                     },
                     ServiceTier = ServiceTier.Auto,
+                    Speed = Speed.Standard,
                     StopSequences = ["string"],
                     Stream = false,
                     System = new(
@@ -251,7 +255,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = Messages::Model.ClaudeOpus5,
+                        Model = Messages::Model.ClaudeOpus5_5,
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Container = new Messages::ContainerParams()
                         {
@@ -266,6 +270,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                         OutputConfig = new()
@@ -280,6 +285,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         },
                         ServiceTier = ServiceTier.Auto,
+                        Speed = Speed.Standard,
                         StopSequences = ["string"],
                         Stream = false,
                         System = new(
@@ -368,7 +374,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = Messages::Model.ClaudeOpus5,
+                        Model = Messages::Model.ClaudeOpus5_5,
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Container = new Messages::ContainerParams()
                         {
@@ -383,6 +389,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                         OutputConfig = new()
@@ -397,6 +404,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         },
                         ServiceTier = ServiceTier.Auto,
+                        Speed = Speed.Standard,
                         StopSequences = ["string"],
                         Stream = false,
                         System = new(
@@ -476,9 +484,9 @@ public class BatchCreateParamsTest : TestBase
     }
 
     [Fact]
-    public void Url_Works()
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
     {
-        BatchCreateParams parameters = new()
+        var parameters = new BatchCreateParams
         {
             Requests =
             [
@@ -489,7 +497,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = Messages::Model.ClaudeOpus5,
+                        Model = Messages::Model.ClaudeOpus5_5,
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Container = new Messages::ContainerParams()
                         {
@@ -504,6 +512,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                         OutputConfig = new()
@@ -518,6 +527,133 @@ public class BatchCreateParamsTest : TestBase
                             },
                         },
                         ServiceTier = ServiceTier.Auto,
+                        Speed = Speed.Standard,
+                        StopSequences = ["string"],
+                        Stream = false,
+                        System = new(
+                            [
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "The grass is green. The sky is blue.",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ]
+                        ),
+                        Temperature = 1,
+                        Thinking = new Messages::ThinkingConfigAdaptive()
+                        {
+                            Display = Messages::Display.Summarized,
+                        },
+                        ToolChoice = new Messages::ToolChoiceAuto()
+                        {
+                            DisableParallelToolUse = true,
+                        },
+                        Tools =
+                        [
+                            new Messages::Tool()
+                            {
+                                InputSchema = new()
+                                {
+                                    Properties = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "location", JsonSerializer.SerializeToElement("bar") },
+                                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                    Required = ["location"],
+                                },
+                                Name = "name",
+                                AllowedCallers = [Messages::ToolAllowedCaller.Direct],
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                DeferLoading = true,
+                                Description = "Get the current weather in a given location",
+                                EagerInputStreaming = true,
+                                InputExamples =
+                                [
+                                    new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                ],
+                                Strict = true,
+                                Type = Messages::Type.Custom,
+                            },
+                        ],
+                        TopK = 5,
+                        TopP = 0.7,
+                    },
+                },
+            ],
+            UserProfileID = "anthropic-user-profile-id",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            UserProfileID = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
+    public void Url_Works()
+    {
+        BatchCreateParams parameters = new()
+        {
+            Requests =
+            [
+                new()
+                {
+                    CustomID = "my-custom-id-1",
+                    Params = new()
+                    {
+                        MaxTokens = 1024,
+                        Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                        Model = Messages::Model.ClaudeOpus5_5,
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Container = new Messages::ContainerParams()
+                        {
+                            ID = "id",
+                            Skills =
+                            [
+                                new()
+                                {
+                                    SkillID = "pdf",
+                                    Type = Messages::SkillParamsType.Anthropic,
+                                    Version = "latest",
+                                },
+                            ],
+                        },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                        InferenceGeo = "inference_geo",
+                        Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
+                        ServiceTier = ServiceTier.Auto,
+                        Speed = Speed.Standard,
                         StopSequences = ["string"],
                         Stream = false,
                         System = new(
@@ -608,7 +744,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = Messages::Model.ClaudeOpus5,
+                        Model = Messages::Model.ClaudeOpus5_5,
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Container = new Messages::ContainerParams()
                         {
@@ -623,6 +759,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                         OutputConfig = new()
@@ -637,6 +774,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         },
                         ServiceTier = ServiceTier.Auto,
+                        Speed = Speed.Standard,
                         StopSequences = ["string"],
                         Stream = false,
                         System = new(
@@ -733,7 +871,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = Messages::Model.ClaudeOpus5,
+                        Model = Messages::Model.ClaudeOpus5_5,
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Container = new Messages::ContainerParams()
                         {
@@ -748,6 +886,7 @@ public class BatchCreateParamsTest : TestBase
                                 },
                             ],
                         },
+                        Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                         InferenceGeo = "inference_geo",
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                         OutputConfig = new()
@@ -762,6 +901,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                         },
                         ServiceTier = ServiceTier.Auto,
+                        Speed = Speed.Standard,
                         StopSequences = ["string"],
                         Stream = false,
                         System = new(
@@ -850,7 +990,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = Messages::Model.ClaudeOpus5,
+                Model = Messages::Model.ClaudeOpus5_5,
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Container = new Messages::ContainerParams()
                 {
@@ -865,6 +1005,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 OutputConfig = new()
@@ -879,6 +1020,7 @@ public class RequestTest : TestBase
                     },
                 },
                 ServiceTier = ServiceTier.Auto,
+                Speed = Speed.Standard,
                 StopSequences = ["string"],
                 Stream = false,
                 System = new(
@@ -947,7 +1089,7 @@ public class RequestTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -962,6 +1104,7 @@ public class RequestTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -976,6 +1119,7 @@ public class RequestTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = false,
             System = new(
@@ -1052,7 +1196,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = Messages::Model.ClaudeOpus5,
+                Model = Messages::Model.ClaudeOpus5_5,
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Container = new Messages::ContainerParams()
                 {
@@ -1067,6 +1211,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 OutputConfig = new()
@@ -1081,6 +1226,7 @@ public class RequestTest : TestBase
                     },
                 },
                 ServiceTier = ServiceTier.Auto,
+                Speed = Speed.Standard,
                 StopSequences = ["string"],
                 Stream = false,
                 System = new(
@@ -1160,7 +1306,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = Messages::Model.ClaudeOpus5,
+                Model = Messages::Model.ClaudeOpus5_5,
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Container = new Messages::ContainerParams()
                 {
@@ -1175,6 +1321,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 OutputConfig = new()
@@ -1189,6 +1336,7 @@ public class RequestTest : TestBase
                     },
                 },
                 ServiceTier = ServiceTier.Auto,
+                Speed = Speed.Standard,
                 StopSequences = ["string"],
                 Stream = false,
                 System = new(
@@ -1264,7 +1412,7 @@ public class RequestTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -1279,6 +1427,7 @@ public class RequestTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -1293,6 +1442,7 @@ public class RequestTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = false,
             System = new(
@@ -1369,7 +1519,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = Messages::Model.ClaudeOpus5,
+                Model = Messages::Model.ClaudeOpus5_5,
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Container = new Messages::ContainerParams()
                 {
@@ -1384,6 +1534,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 OutputConfig = new()
@@ -1398,6 +1549,7 @@ public class RequestTest : TestBase
                     },
                 },
                 ServiceTier = ServiceTier.Auto,
+                Speed = Speed.Standard,
                 StopSequences = ["string"],
                 Stream = false,
                 System = new(
@@ -1474,7 +1626,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = Messages::Model.ClaudeOpus5,
+                Model = Messages::Model.ClaudeOpus5_5,
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Container = new Messages::ContainerParams()
                 {
@@ -1489,6 +1641,7 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
+                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
                 InferenceGeo = "inference_geo",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 OutputConfig = new()
@@ -1503,6 +1656,7 @@ public class RequestTest : TestBase
                     },
                 },
                 ServiceTier = ServiceTier.Auto,
+                Speed = Speed.Standard,
                 StopSequences = ["string"],
                 Stream = false,
                 System = new(
@@ -1581,7 +1735,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -1596,6 +1750,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -1610,6 +1765,7 @@ public class ParamsTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = false,
             System = new(
@@ -1677,7 +1833,7 @@ public class ParamsTest : TestBase
         [
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5_5;
         Messages::CacheControlEphemeral expectedCacheControl = new() { Ttl = Messages::Ttl.Ttl5m };
         Messages::MessageCreateParamsContainer expectedContainer = new Messages::ContainerParams()
         {
@@ -1691,6 +1847,10 @@ public class ParamsTest : TestBase
                     Version = "latest",
                 },
             ],
+        };
+        Messages::DiagnosticsParam expectedDiagnostics = new()
+        {
+            PreviousMessageID = "previous_message_id",
         };
         string expectedInferenceGeo = "inference_geo";
         Messages::Metadata expectedMetadata = new()
@@ -1709,6 +1869,7 @@ public class ParamsTest : TestBase
             },
         };
         ApiEnum<string, ServiceTier> expectedServiceTier = ServiceTier.Auto;
+        ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
         List<string> expectedStopSequences = ["string"];
         bool expectedStream = false;
         ParamsSystem expectedSystem = new(
@@ -1782,10 +1943,12 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedModel, model.Model);
         Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedContainer, model.Container);
+        Assert.Equal(expectedDiagnostics, model.Diagnostics);
         Assert.Equal(expectedInferenceGeo, model.InferenceGeo);
         Assert.Equal(expectedMetadata, model.Metadata);
         Assert.Equal(expectedOutputConfig, model.OutputConfig);
         Assert.Equal(expectedServiceTier, model.ServiceTier);
+        Assert.Equal(expectedSpeed, model.Speed);
         Assert.NotNull(model.StopSequences);
         Assert.Equal(expectedStopSequences.Count, model.StopSequences.Count);
         for (int i = 0; i < expectedStopSequences.Count; i++)
@@ -1814,7 +1977,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -1829,6 +1992,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -1843,6 +2007,7 @@ public class ParamsTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = false,
             System = new(
@@ -1918,7 +2083,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -1933,6 +2098,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -1947,6 +2113,7 @@ public class ParamsTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = false,
             System = new(
@@ -2018,7 +2185,7 @@ public class ParamsTest : TestBase
         [
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5;
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5_5;
         Messages::CacheControlEphemeral expectedCacheControl = new() { Ttl = Messages::Ttl.Ttl5m };
         Messages::MessageCreateParamsContainer expectedContainer = new Messages::ContainerParams()
         {
@@ -2032,6 +2199,10 @@ public class ParamsTest : TestBase
                     Version = "latest",
                 },
             ],
+        };
+        Messages::DiagnosticsParam expectedDiagnostics = new()
+        {
+            PreviousMessageID = "previous_message_id",
         };
         string expectedInferenceGeo = "inference_geo";
         Messages::Metadata expectedMetadata = new()
@@ -2050,6 +2221,7 @@ public class ParamsTest : TestBase
             },
         };
         ApiEnum<string, ServiceTier> expectedServiceTier = ServiceTier.Auto;
+        ApiEnum<string, Speed> expectedSpeed = Speed.Standard;
         List<string> expectedStopSequences = ["string"];
         bool expectedStream = false;
         ParamsSystem expectedSystem = new(
@@ -2123,10 +2295,12 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedContainer, deserialized.Container);
+        Assert.Equal(expectedDiagnostics, deserialized.Diagnostics);
         Assert.Equal(expectedInferenceGeo, deserialized.InferenceGeo);
         Assert.Equal(expectedMetadata, deserialized.Metadata);
         Assert.Equal(expectedOutputConfig, deserialized.OutputConfig);
         Assert.Equal(expectedServiceTier, deserialized.ServiceTier);
+        Assert.Equal(expectedSpeed, deserialized.Speed);
         Assert.NotNull(deserialized.StopSequences);
         Assert.Equal(expectedStopSequences.Count, deserialized.StopSequences.Count);
         for (int i = 0; i < expectedStopSequences.Count; i++)
@@ -2155,7 +2329,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -2170,6 +2344,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -2184,6 +2359,7 @@ public class ParamsTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = false,
             System = new(
@@ -2256,7 +2432,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -2271,7 +2447,9 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
+            Speed = Speed.Standard,
         };
 
         Assert.Null(model.Metadata);
@@ -2307,7 +2485,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -2322,7 +2500,9 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
+            Speed = Speed.Standard,
         };
 
         model.Validate();
@@ -2335,7 +2515,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -2350,8 +2530,151 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
+            Speed = Speed.Standard,
 
+            // Null should be interpreted as omitted for these properties
+            Metadata = null,
+            OutputConfig = null,
+            ServiceTier = null,
+            StopSequences = null,
+            Stream = null,
+            System = null,
+            Temperature = null,
+            Thinking = null,
+            ToolChoice = null,
+            Tools = null,
+            TopK = null,
+            TopP = null,
+        };
+
+        Assert.Null(model.Metadata);
+        Assert.False(model.RawData.ContainsKey("metadata"));
+        Assert.Null(model.OutputConfig);
+        Assert.False(model.RawData.ContainsKey("output_config"));
+        Assert.Null(model.ServiceTier);
+        Assert.False(model.RawData.ContainsKey("service_tier"));
+        Assert.Null(model.StopSequences);
+        Assert.False(model.RawData.ContainsKey("stop_sequences"));
+        Assert.Null(model.Stream);
+        Assert.False(model.RawData.ContainsKey("stream"));
+        Assert.Null(model.System);
+        Assert.False(model.RawData.ContainsKey("system"));
+        Assert.Null(model.Temperature);
+        Assert.False(model.RawData.ContainsKey("temperature"));
+        Assert.Null(model.Thinking);
+        Assert.False(model.RawData.ContainsKey("thinking"));
+        Assert.Null(model.ToolChoice);
+        Assert.False(model.RawData.ContainsKey("tool_choice"));
+        Assert.Null(model.Tools);
+        Assert.False(model.RawData.ContainsKey("tools"));
+        Assert.Null(model.TopK);
+        Assert.False(model.RawData.ContainsKey("top_k"));
+        Assert.Null(model.TopP);
+        Assert.False(model.RawData.ContainsKey("top_p"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new Params
+        {
+            MaxTokens = 1024,
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = Messages::Model.ClaudeOpus5_5,
+            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+            Container = new Messages::ContainerParams()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "pdf",
+                        Type = Messages::SkillParamsType.Anthropic,
+                        Version = "latest",
+                    },
+                ],
+            },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+            InferenceGeo = "inference_geo",
+            Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
+            StopSequences = ["string"],
+            Stream = false,
+            System = new(
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "The grass is green. The sky is blue.",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Temperature = 1,
+            Thinking = new Messages::ThinkingConfigAdaptive()
+            {
+                Display = Messages::Display.Summarized,
+            },
+            ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new Messages::Tool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [Messages::ToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    EagerInputStreaming = true,
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = Messages::Type.Custom,
+                },
+            ],
+            TopK = 5,
+            TopP = 0.7,
+        } with
+        {
             // Null should be interpreted as omitted for these properties
             Metadata = null,
             OutputConfig = null,
@@ -2400,7 +2723,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -2415,7 +2738,9 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
+            Speed = Speed.Standard,
 
             // Null should be interpreted as omitted for these properties
             Metadata = null,
@@ -2442,7 +2767,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
             {
@@ -2522,8 +2847,12 @@ public class ParamsTest : TestBase
         Assert.False(model.RawData.ContainsKey("cache_control"));
         Assert.Null(model.Container);
         Assert.False(model.RawData.ContainsKey("container"));
+        Assert.Null(model.Diagnostics);
+        Assert.False(model.RawData.ContainsKey("diagnostics"));
         Assert.Null(model.InferenceGeo);
         Assert.False(model.RawData.ContainsKey("inference_geo"));
+        Assert.Null(model.Speed);
+        Assert.False(model.RawData.ContainsKey("speed"));
     }
 
     [Fact]
@@ -2533,7 +2862,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
             {
@@ -2619,7 +2948,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
             {
@@ -2696,15 +3025,21 @@ public class ParamsTest : TestBase
 
             CacheControl = null,
             Container = null,
+            Diagnostics = null,
             InferenceGeo = null,
+            Speed = null,
         };
 
         Assert.Null(model.CacheControl);
         Assert.True(model.RawData.ContainsKey("cache_control"));
         Assert.Null(model.Container);
         Assert.True(model.RawData.ContainsKey("container"));
+        Assert.Null(model.Diagnostics);
+        Assert.True(model.RawData.ContainsKey("diagnostics"));
         Assert.Null(model.InferenceGeo);
         Assert.True(model.RawData.ContainsKey("inference_geo"));
+        Assert.Null(model.Speed);
+        Assert.True(model.RawData.ContainsKey("speed"));
     }
 
     [Fact]
@@ -2714,7 +3049,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
             {
@@ -2791,7 +3126,9 @@ public class ParamsTest : TestBase
 
             CacheControl = null,
             Container = null,
+            Diagnostics = null,
             InferenceGeo = null,
+            Speed = null,
         };
 
         model.Validate();
@@ -2804,7 +3141,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = Messages::Model.ClaudeOpus5,
+            Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
             {
@@ -2819,6 +3156,7 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
+            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
             InferenceGeo = "inference_geo",
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -2833,6 +3171,7 @@ public class ParamsTest : TestBase
                 },
             },
             ServiceTier = ServiceTier.Auto,
+            Speed = Speed.Standard,
             StopSequences = ["string"],
             Stream = false,
             System = new(
@@ -2951,6 +3290,64 @@ public class ServiceTierTest : TestBase
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ServiceTier>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class SpeedTest : TestBase
+{
+    [Theory]
+    [InlineData(Speed.Standard)]
+    [InlineData(Speed.Fast)]
+    public void Validation_Works(Speed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Speed> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(Speed.Standard)]
+    [InlineData(Speed.Fast)]
+    public void SerializationRoundtrip_Works(Speed rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Speed> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
             json,
             ModelBase.SerializerOptions
         );

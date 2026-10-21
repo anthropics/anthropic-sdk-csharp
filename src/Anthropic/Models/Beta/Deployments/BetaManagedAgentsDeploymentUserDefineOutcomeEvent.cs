@@ -35,7 +35,7 @@ public sealed record class BetaManagedAgentsDeploymentUserDefineOutcomeEvent : J
     }
 
     /// <summary>
-    /// Rubric for grading the quality of an outcome.
+    /// How to grade the outcome. Text or file reference.
     /// </summary>
     public required Rubric Rubric
     {
@@ -125,7 +125,7 @@ class BetaManagedAgentsDeploymentUserDefineOutcomeEventFromRaw
 }
 
 /// <summary>
-/// Rubric for grading the quality of an outcome.
+/// How to grade the outcome. Text or file reference.
 /// </summary>
 [JsonConverter(typeof(RubricConverter))]
 public record class Rubric : ModelBase

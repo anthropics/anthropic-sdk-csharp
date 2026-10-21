@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
@@ -105,6 +106,12 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                 ),
                 Type = BetaManagedAgentsWebFetchToolConfigParamsType.WebFetch,
+                UrlSources = new()
+                {
+                    ClientToolResults = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                    ServerToolResults = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                    UserInput = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                },
             };
         value.Validate();
     }
@@ -267,6 +274,12 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
                     BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
                 ),
                 Type = BetaManagedAgentsWebFetchToolConfigParamsType.WebFetch,
+                UrlSources = new()
+                {
+                    ClientToolResults = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                    ServerToolResults = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                    UserInput = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                },
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolConfigParams>(
@@ -315,7 +328,13 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
                 """
                 {
                   "name": "bash",
-                  "enabled": true
+                  "enabled": true,
+                  "allowed_domains": [
+                    "string"
+                  ],
+                  "blocked_domains": [
+                    "string"
+                  ]
                 }
                 """
             )
@@ -324,9 +343,23 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
         bool expectedEnabled = true;
+        List<string> expectedAllowedDomains = ["string"];
+        List<string> expectedBlockedDomains = ["string"];
 
         Assert.True(JsonElement.DeepEquals(expectedName, value.Name));
         Assert.Equal(expectedEnabled, value.Enabled);
+        Assert.NotNull(value.AllowedDomains);
+        Assert.Equal(expectedAllowedDomains.Count, value.AllowedDomains.Count);
+        for (int i = 0; i < expectedAllowedDomains.Count; i++)
+        {
+            Assert.Equal(expectedAllowedDomains[i], value.AllowedDomains[i]);
+        }
+        Assert.NotNull(value.BlockedDomains);
+        Assert.Equal(expectedBlockedDomains.Count, value.BlockedDomains.Count);
+        for (int i = 0; i < expectedBlockedDomains.Count; i++)
+        {
+            Assert.Equal(expectedBlockedDomains[i], value.BlockedDomains[i]);
+        }
 
         BetaManagedAgentsAgentToolConfigParams emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
@@ -334,6 +367,8 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Name);
         Assert.Null(emptyValue.Enabled);
+        Assert.Null(emptyValue.AllowedDomains);
+        Assert.Null(emptyValue.BlockedDomains);
 
         BetaManagedAgentsAgentToolConfigParams mismatchedValue = new(
             JsonSerializer.Deserialize<JsonElement>(

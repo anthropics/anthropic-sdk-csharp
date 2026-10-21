@@ -109,6 +109,23 @@ public class BetaDeletedFileTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaDeletedFile
+        {
+            ID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            Type = Type.FileDeleted,
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            Type = null,
+        };
+
+        Assert.Null(model.Type);
+        Assert.False(model.RawData.ContainsKey("type"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaDeletedFile

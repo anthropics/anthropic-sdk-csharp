@@ -90,6 +90,39 @@ public class CertificateListParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new CertificateListParams
+        {
+            TunnelID = "tunnel_id",
+            IncludeArchived = true,
+            Limit = 0,
+            Page = "page",
+            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            IncludeArchived = null,
+            Limit = null,
+            Page = null,
+            Betas = null,
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.IncludeArchived);
+        Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
+        Assert.Null(parameters.Limit);
+        Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Page);
+        Assert.False(parameters.RawQueryData.ContainsKey("page"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         CertificateListParams parameters = new()
@@ -126,7 +159,7 @@ public class CertificateListParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["mcp-tunnels-2026-06-22", "message-batches-2024-09-24"],
+            ["message-batches-2024-09-24,mcp-tunnels-2026-06-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(

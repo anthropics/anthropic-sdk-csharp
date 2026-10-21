@@ -51,6 +51,24 @@ public class VersionDeleteParamsTest : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
+    {
+        var parameters = new VersionDeleteParams
+        {
+            SkillID = "skill_id",
+            Version = "version",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            WorkspaceID = null,
+        };
+
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
+    }
+
+    [Fact]
     public void Url_Works()
     {
         VersionDeleteParams parameters = new() { SkillID = "skill_id", Version = "version" };

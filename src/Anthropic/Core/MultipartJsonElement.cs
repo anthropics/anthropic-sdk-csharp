@@ -3,6 +3,7 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -252,6 +253,27 @@ public static class MultipartJsonSerializer
     )
     {
         MultipartFormDataContent formDataContent = new();
+
+#if NET
+        // Add(content, name, fileName) writes a non-ASCII file name as an RFC 2047 encoded-word plus
+        // `filename*`, which form-data servers don't read (RFC 7578 §4.2), so it goes out as raw UTF-8.
+        formDataContent.HeaderEncodingSelector = (_, _) => Encoding.UTF8;
+        void AddFile(HttpContent part, string partName, string partFileName)
+        {
+            formDataContent.Add(part, partName);
+            var disposition = part.Headers.ContentDisposition;
+            var escapedFileName = partFileName
+                .Replace("\r", "%0D")
+                .Replace("\n", "%0A")
+                .Replace("\"", "%22");
+            part.Headers.Remove("Content-Disposition");
+            part.Headers.TryAddWithoutValidation(
+                "Content-Disposition",
+                $"{disposition}; filename=\"{escapedFileName}\""
+            );
+        }
+#endif
+
         var multipartElement = MultipartJsonSerializer.SerializeToElement(value, options);
         void SerializeParts(string name, JsonElement element)
         {
@@ -311,13 +333,17 @@ public static class MultipartJsonSerializer
                 {
                     formDataContent.Add(content);
                 }
-                else if (fileName == null)
+                else if (string.IsNullOrEmpty(fileName))
                 {
                     formDataContent.Add(content, name);
                 }
                 else
                 {
+#if NET
+                    AddFile(content, name, fileName);
+#else
                     formDataContent.Add(content, name, fileName);
+#endif
                 }
             }
         }

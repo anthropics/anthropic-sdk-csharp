@@ -31,7 +31,7 @@ public record class AgentCreateParams : ParamsBase
 
     /// <summary>
     /// Model identifier. Accepts the [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison),
-    /// e.g. `claude-opus-5`, or a `model_config` object for additional configuration control
+    /// e.g. `claude-opus-5-5`, or a `model_config` object for additional configuration control
     /// </summary>
     public required Model Model
     {
@@ -70,6 +70,22 @@ public record class AgentCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// Execution principal for runs of this agent. Omitting it, sending null, or
+    /// sending `{"type": "service_account"}` stores the default.
+    /// </summary>
+    public BetaManagedAgentsExecutionIdentityParams? ExecutionIdentity
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaManagedAgentsExecutionIdentityParams>(
+                "execution_identity"
+            );
+        }
+        init { this._rawBodyData.Set("execution_identity", value); }
+    }
+
+    /// <summary>
     /// MCP servers this agent connects to. Maximum 20. Names must be unique within
     /// the array. Every server must be referenced by an `mcp_toolset` in `tools`;
     /// unreferenced servers are rejected. See the [MCP connector guide](https://platform.claude.com/docs/en/managed-agents/mcp-connector).
@@ -87,6 +103,7 @@ public record class AgentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("mcp_servers");
                 return;
             }
 
@@ -112,6 +129,7 @@ public record class AgentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("metadata");
                 return;
             }
 
@@ -123,8 +141,7 @@ public record class AgentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// A coordinator topology: the session's primary thread orchestrates work by
-    /// spawning session threads, each running an agent drawn from the `agents` roster.
+    /// Multiagent orchestration configuration.
     /// </summary>
     public Sessions::BetaManagedAgentsMultiagentParams? Multiagent
     {
@@ -154,6 +171,7 @@ public record class AgentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("skills");
                 return;
             }
 
@@ -178,7 +196,7 @@ public record class AgentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Tool configurations available to the agent. Maximum of 128 tools across all
+    /// Tool configurations available to the agent. Maximum of 256 tools across all
     /// toolsets allowed.
     /// </summary>
     public IReadOnlyList<Tool>? Tools
@@ -192,6 +210,7 @@ public record class AgentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("tools");
                 return;
             }
 
@@ -203,7 +222,8 @@ public record class AgentCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `managed-agents-2026-04-01` in
+    /// this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -218,6 +238,7 @@ public record class AgentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -228,6 +249,14 @@ public record class AgentCreateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -239,6 +268,7 @@ public record class AgentCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -333,6 +363,8 @@ public record class AgentCreateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/agents";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(
@@ -360,7 +392,7 @@ public record class AgentCreateParams : ParamsBase
 
 /// <summary>
 /// Model identifier. Accepts the [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison),
-/// e.g. `claude-opus-5`, or a `model_config` object for additional configuration control
+/// e.g. `claude-opus-5-5`, or a `model_config` object for additional configuration control
 /// </summary>
 [JsonConverter(typeof(ModelConverter))]
 public record class Model : ModelBase
@@ -399,7 +431,7 @@ public record class Model : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="ApiEnum{TRaw, TEnum}"/> with a <c>TRaw</c> of <c>string</c> and a <c>TEnum</c> of BetaManagedAgentsModel>.
+    /// type <see cref="ApiEnum{TRaw, TEnum}"/> with a <c>TRaw</c> of <c>string</c> and a <c>TEnum</c> of BetaManagedAgentsModel.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///

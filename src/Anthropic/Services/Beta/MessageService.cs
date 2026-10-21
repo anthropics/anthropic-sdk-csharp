@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -7,6 +8,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Core.Telemetry;
 using Anthropic.Models.Beta.Messages;
 using Anthropic.Services.Beta.Messages;
 
@@ -24,6 +26,16 @@ public sealed class MessageService : IMessageService
     }
 
     internal readonly IAnthropicClient _client;
+
+    /// <summary>
+    /// The options of the client that this service makes its calls with, which the spans of a tool
+    /// runner over this service follow, when that client is the SDK's own. The client's public
+    /// interface does not have all of them.
+    /// </summary>
+    internal ClientOptions? ClientOptions
+    {
+        get { return (this._client as AnthropicClient)?.Options; }
+    }
 
     /// <inheritdoc/>
     public IMessageService WithOptions(Func<ClientOptions, ClientOptions> modifier)
@@ -117,26 +129,32 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
     {
         MessageServiceHelpers.WarnIfDeprecatedThinkingConfig(parameters);
 
+        // The options are made before the span starts, so that a request that they refuse, such
+        // as one that needs streaming, fails without a span to leave open.
+        var client = this._client.WithOptions(options =>
+            options with
+            {
+                Timeout =
+                    options.Timeout
+                    ?? ClientOptions.TimeoutFromMaxTokens(
+                        parameters.MaxTokens,
+                        isStreaming: false,
+                        parameters.Model
+                    ),
+            }
+        );
+        var (span, requestContent) = RequestAttributes.StartMessagesCreateSpan(
+            this._client,
+            parameters,
+            stream: false
+        );
         HttpRequest<MessageCreateParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Span = span,
         };
-        var response = await this
-            ._client.WithOptions(options =>
-                options with
-                {
-                    Timeout =
-                        options.Timeout
-                        ?? ClientOptions.TimeoutFromMaxTokens(
-                            parameters.MaxTokens,
-                            isStreaming: false,
-                            parameters.Model
-                        ),
-                }
-            )
-            .Execute(request, cancellationToken)
-            .ConfigureAwait(false);
+        var response = await client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
             response,
             async (token) =>
@@ -148,6 +166,11 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
                 {
                     betaMessage.Validate();
                 }
+                ResponseAttributes.SetMessagesCreateResponseAttributes(
+                    span,
+                    requestContent,
+                    betaMessage
+                );
                 return betaMessage;
             }
         );
@@ -173,26 +196,34 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
             rawBodyData
         );
 
+        // The options are made before the span starts, so that a request that they refuse, such
+        // as one that needs streaming, fails without a span to leave open.
+        var client = this._client.WithOptions(options =>
+            options with
+            {
+                Timeout =
+                    options.Timeout
+                    ?? ClientOptions.TimeoutFromMaxTokens(
+                        parameters.MaxTokens,
+                        isStreaming: true,
+                        parameters.Model
+                    ),
+            }
+        );
+        var (span, requestContent) = RequestAttributes.StartMessagesCreateSpan(
+            this._client,
+            parameters,
+            stream: true
+        );
+        // The time to the first chunk runs from here, on the monotonic clock.
+        var startTimestamp = Stopwatch.GetTimestamp();
         HttpRequest<MessageCreateParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Span = span,
         };
-        var response = await this
-            ._client.WithOptions(options =>
-                options with
-                {
-                    Timeout =
-                        options.Timeout
-                        ?? ClientOptions.TimeoutFromMaxTokens(
-                            parameters.MaxTokens,
-                            isStreaming: true,
-                            parameters.Model
-                        ),
-                }
-            )
-            .Execute(request, cancellationToken)
-            .ConfigureAwait(false);
+        var response = await client.Execute(request, cancellationToken).ConfigureAwait(false);
 
         async IAsyncEnumerable<BetaRawMessageStreamEvent> Enumerate(
             [EnumeratorCancellation] CancellationToken token
@@ -212,7 +243,27 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
                 yield return betaMessage;
             }
         }
-        return new(response, Enumerate);
+        if (span == null)
+        {
+            // No span: the events are read as they are, with nothing made to record them.
+            return new(response, Enumerate);
+        }
+        var streamedMessage = StreamRecording.BetaStreamedMessage(this._client);
+        return new(
+            response,
+            token =>
+                StreamRecording.RecordStreamedMessage(
+                    span,
+                    requestContent,
+                    startTimestamp,
+                    Enumerate(token),
+                    streamedMessage,
+                    token
+                )
+        )
+        {
+            HasReadEndEvent = () => streamedMessage.ReachedMessageStop,
+        };
     }
 
     /// <inheritdoc/>
@@ -223,10 +274,16 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
     {
         MessageServiceHelpers.WarnIfDeprecatedThinkingConfig(parameters);
 
+        var span = RequestAttributes.StartCountTokensSpan(
+            this._client,
+            parameters,
+            parameters.RawBodyData
+        );
         HttpRequest<MessageCountTokensParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Span = span,
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -240,6 +297,7 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
                 {
                     betaMessageTokensCount.Validate();
                 }
+                ResponseAttributes.SetCountTokensResponseAttributes(span, betaMessageTokensCount);
                 return betaMessageTokensCount;
             }
         );

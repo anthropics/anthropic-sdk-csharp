@@ -14,7 +14,16 @@ using System = System;
 namespace Anthropic.Models.Beta.Dreams;
 
 /// <summary>
-/// Create a Dream
+/// Start an asynchronous job that uses past sessions to produce a reorganized version
+/// of a memory store and get back the dream to poll for the result.
+///
+/// <para>By default the dream writes its result to a new memory store and doesn't
+/// change the input memory store. The response has `status` set to `pending` and
+/// an empty `outputs` array. Poll the dream until `status` is `completed`, `failed`,
+/// or `canceled`.</para>
+///
+/// <para>See the [Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#create-a-dream)
+/// to learn more about creating dreams.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -28,6 +37,10 @@ public record class DreamCreateParams : ParamsBase
         get { return this._rawBodyData.Freeze(); }
     }
 
+    /// <summary>
+    /// The memory store and sessions for the dream to read, as exactly one `memory_store`
+    /// entry and exactly one `sessions` entry.
+    /// </summary>
     public required IReadOnlyList<BetaDreamInput> Inputs
     {
         get
@@ -44,6 +57,15 @@ public record class DreamCreateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// The model that runs a dream, given as a model ID or as an object with `id`
+    /// and `speed`.
+    ///
+    /// <para>In the object form, `speed` can only be `standard`.</para>
+    ///
+    /// <para>The [limits table in the Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#limits)
+    /// lists the supported models.</para>
+    /// </summary>
     public required Model Model
     {
         get
@@ -54,6 +76,13 @@ public record class DreamCreateParams : ParamsBase
         init { this._rawBodyData.Set("model", value); }
     }
 
+    /// <summary>
+    /// Guidance that steers how the dream reads the sessions and organizes the output
+    /// memory store, from 1 to 4,096 characters.
+    ///
+    /// <para>See the [Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#steer-with-instructions)
+    /// for what kinds of instructions work well.</para>
+    /// </summary>
     public string? Instructions
     {
         get
@@ -64,6 +93,10 @@ public record class DreamCreateParams : ParamsBase
         init { this._rawBodyData.Set("instructions", value); }
     }
 
+    /// <summary>
+    /// Which memory store a dream writes its result to. Defaults to `create_new`
+    /// when left out of a create request.
+    /// </summary>
     public BetaOutputBehavior? OutputBehavior
     {
         get
@@ -75,6 +108,7 @@ public record class DreamCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("output_behavior");
                 return;
             }
 
@@ -83,7 +117,7 @@ public record class DreamCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
+    /// This endpoint is in beta: requests must send `dreaming-2026-04-21` in this header.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
@@ -98,6 +132,7 @@ public record class DreamCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -108,6 +143,14 @@ public record class DreamCreateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -119,6 +162,7 @@ public record class DreamCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -213,6 +257,8 @@ public record class DreamCreateParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/dreams";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(
@@ -238,6 +284,14 @@ public record class DreamCreateParams : ParamsBase
     }
 }
 
+/// <summary>
+/// The model that runs a dream, given as a model ID or as an object with `id` and `speed`.
+///
+/// <para>In the object form, `speed` can only be `standard`.</para>
+///
+/// <para>The [limits table in the Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#limits)
+/// lists the supported models.</para>
+/// </summary>
 [JsonConverter(typeof(ModelConverter))]
 public record class Model : ModelBase
 {

@@ -16,7 +16,7 @@ namespace Anthropic.Models.Beta.Vaults;
 public sealed record class BetaManagedAgentsVault : JsonModel
 {
     /// <summary>
-    /// Unique identifier for the vault.
+    /// The unique ID of the vault (`vlt_...`).
     /// </summary>
     public required string ID
     {
@@ -29,7 +29,7 @@ public sealed record class BetaManagedAgentsVault : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// When the vault was archived. Null if not archived.
     /// </summary>
     public required System::DateTimeOffset? ArchivedAt
     {

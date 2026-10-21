@@ -21,6 +21,7 @@ public sealed record class CitationsConfigParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("enabled");
                 return;
             }
 

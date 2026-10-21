@@ -30,7 +30,7 @@ public interface IVaultService
     ICredentialService Credentials { get; }
 
     /// <summary>
-    /// Create Vault
+    /// Create a Vault
     /// </summary>
     Task<BetaManagedAgentsVault> Create(
         VaultCreateParams parameters,
@@ -38,7 +38,7 @@ public interface IVaultService
     );
 
     /// <summary>
-    /// Get Vault
+    /// Retrieve a Vault
     /// </summary>
     Task<BetaManagedAgentsVault> Retrieve(
         VaultRetrieveParams parameters,
@@ -53,7 +53,7 @@ public interface IVaultService
     );
 
     /// <summary>
-    /// Update Vault
+    /// Update a Vault
     /// </summary>
     Task<BetaManagedAgentsVault> Update(
         VaultUpdateParams parameters,
@@ -76,7 +76,7 @@ public interface IVaultService
     );
 
     /// <summary>
-    /// Delete Vault
+    /// Delete a Vault
     /// </summary>
     Task<BetaManagedAgentsDeletedVault> Delete(
         VaultDeleteParams parameters,
@@ -91,7 +91,7 @@ public interface IVaultService
     );
 
     /// <summary>
-    /// Archive Vault
+    /// Archive a Vault
     /// </summary>
     Task<BetaManagedAgentsVault> Archive(
         VaultArchiveParams parameters,

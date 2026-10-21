@@ -32,6 +32,7 @@ public sealed record class BetaManagedAgentsCacheCreationUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("ephemeral_1h_input_tokens");
                 return;
             }
 
@@ -53,6 +54,7 @@ public sealed record class BetaManagedAgentsCacheCreationUsage : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("ephemeral_5m_input_tokens");
                 return;
             }
 

@@ -32,6 +32,7 @@ public sealed record class BetaManagedAgentsInjectionLocationParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("body");
                 return;
             }
 
@@ -53,6 +54,7 @@ public sealed record class BetaManagedAgentsInjectionLocationParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("header");
                 return;
             }
 

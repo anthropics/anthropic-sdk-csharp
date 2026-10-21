@@ -48,7 +48,9 @@ public record class MessageCountTokensParams : ParamsBase
     ///
     /// <para>If the final message uses the `assistant` role, the response content
     /// will continue immediately from the content in that message. This can be used
-    /// to constrain part of the model's response.</para>
+    /// to constrain part of the model's response. This is called prefill. On models
+    /// that don't support prefill, creating a message that ends with a partial `assistant`
+    /// response returns a 400 error. See [Prefill not supported](https://platform.claude.com/docs/en/api/errors#prefill-not-supported).</para>
     ///
     /// <para>Example with a single `user` message:</para>
     ///
@@ -60,7 +62,8 @@ public record class MessageCountTokensParams : ParamsBase
     /// "assistant", "content": "Hi, I'm Claude. How can I help you?"},   {"role":
     /// "user", "content": "Can you explain LLMs in plain English?"}, ] ```</para>
     ///
-    /// <para>Example with a partially-filled response from Claude:</para>
+    /// <para>Example with a partially-filled response from Claude, for models that
+    /// support prefill:</para>
     ///
     /// <para>```json [   {"role": "user", "content": "What's the Greek name for
     /// Sun? (A) Sol (B) Helios (C) Sun"},   {"role": "assistant", "content": "The
@@ -131,14 +134,15 @@ public record class MessageCountTokensParams : ParamsBase
     }
 
     /// <summary>
-    /// Compact the whole conversation and return a signed `compaction` block, alone,
-    /// that a later request sends back first in `messages`, in place of the messages
-    /// it summarizes. There is no trigger and no pause flag: sending the parameter
-    /// compacts, and nothing is sampled after the block.
+    /// Compaction configuration.
     ///
-    /// <para>The summarization prompt is the server's own unless `instructions` are
-    /// given, which then replace it for this request; a value that is empty or only
-    /// whitespace counts as absent.</para>
+    /// <para>When set on `POST /v1/messages`, the request is a compaction request:
+    /// the conversation in `messages` is summarized and the response holds only
+    /// the resulting `compaction` block (`stop_reason` `"compaction"`), which later
+    /// requests send first in `messages` in place of the messages it summarizes.
+    /// `POST /v1/messages/count_tokens` accepts this parameter and ignores it: the
+    /// count it returns is for the conversation in `messages` as sent. Cannot be
+    /// combined with `context_management`.</para>
     /// </summary>
     public BetaCompactionConfig? Compaction
     {
@@ -184,6 +188,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("mcp_servers");
                 return;
             }
 
@@ -208,6 +213,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("output_config");
                 return;
             }
 
@@ -233,9 +239,11 @@ public record class MessageCountTokensParams : ParamsBase
     }
 
     /// <summary>
-    /// Inference speed mode. `fast` provides significantly faster output token generation
-    /// at premium pricing. Not all models support `fast`; invalid combinations are
-    /// rejected at create time.
+    /// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
+    ///
+    /// <para>Some models require the `fast-mode-2026-02-01` beta header for any `speed`
+    /// value. See [fast mode](https://platform.claude.com/docs/en/build-with-claude/fast-mode)
+    /// for which models.</para>
     /// </summary>
     public ApiEnum<string, MessageCountTokensParamsSpeed>? Speed
     {
@@ -266,6 +274,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("system");
                 return;
             }
 
@@ -274,14 +283,15 @@ public record class MessageCountTokensParams : ParamsBase
     }
 
     /// <summary>
-    /// Configuration for enabling Claude's extended thinking.
+    /// Configuration for Claude's thinking.
     ///
-    /// <para>When enabled, responses include `thinking` content blocks showing Claude's
-    /// thinking process before the final answer. Requires a minimum budget of 1,024
-    /// tokens and counts towards your `max_tokens` limit.</para>
+    /// <para>With `{"type": "adaptive"}`, Claude decides when and how much to think.
+    /// With `{"type": "enabled"}` (manual extended thinking), you set a `budget_tokens`
+    /// of at least 1,024. Thinking tokens count toward your `max_tokens` limit.</para>
     ///
-    /// <para>See [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
-    /// for details.</para>
+    /// <para>Which `type` values are accepted, and what happens when you omit `thinking`,
+    /// depend on the model. See [thinking](https://platform.claude.com/docs/en/build-with-claude/thinking#configuring-thinking)
+    /// for each model's behavior.</para>
     /// </summary>
     public BetaThinkingConfigParam? Thinking
     {
@@ -294,6 +304,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("thinking");
                 return;
             }
 
@@ -316,6 +327,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("tool_choice");
                 return;
             }
 
@@ -382,6 +394,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("tools");
                 return;
             }
 
@@ -408,6 +421,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -420,7 +434,7 @@ public record class MessageCountTokensParams : ParamsBase
 
     /// <summary>
     /// The user profile ID to attribute this request to. Use when acting on behalf
-    /// of a party other than your organization. Requires the `user-profiles` beta header.
+    /// of a party other than your organization.
     /// </summary>
     public string? UserProfileID
     {
@@ -433,6 +447,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-user-profile-id");
                 return;
             }
 
@@ -440,6 +455,14 @@ public record class MessageCountTokensParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
     public string? WorkspaceID
     {
         get
@@ -451,6 +474,7 @@ public record class MessageCountTokensParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
                 return;
             }
 
@@ -547,6 +571,8 @@ public record class MessageCountTokensParams : ParamsBase
         }.Uri;
     }
 
+    internal override string Route => "/v1/messages/count_tokens";
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(
@@ -572,9 +598,11 @@ public record class MessageCountTokensParams : ParamsBase
 }
 
 /// <summary>
-/// Inference speed mode. `fast` provides significantly faster output token generation
-/// at premium pricing. Not all models support `fast`; invalid combinations are rejected
-/// at create time.
+/// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
+///
+/// <para>Some models require the `fast-mode-2026-02-01` beta header for any `speed`
+/// value. See [fast mode](https://platform.claude.com/docs/en/build-with-claude/fast-mode)
+/// for which models.</para>
 /// </summary>
 [JsonConverter(typeof(MessageCountTokensParamsSpeedConverter))]
 public enum MessageCountTokensParamsSpeed
@@ -1164,6 +1192,90 @@ public record class Tool : ModelBase
                 _ => WrappedJsonSerializer.GetNullableStructProperty<long>(
                     this.Json,
                     "display_number"
+                ),
+            };
+        }
+    }
+
+    public IReadOnlyList<string>? AllowedDomains
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 x => x.AllowedDomains,
+                BetaWebFetchTool20250910 x => x.AllowedDomains,
+                BetaWebSearchTool20260209 x => x.AllowedDomains,
+                BetaWebFetchTool20260209 x => x.AllowedDomains,
+                BetaWebFetchTool20260309 x => x.AllowedDomains,
+                BetaWebSearchTool20260318 x => x.AllowedDomains,
+                BetaWebFetchTool20260318 x => x.AllowedDomains,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<IReadOnlyList<string>>(
+                    this.Json,
+                    "allowed_domains"
+                ),
+            };
+        }
+    }
+
+    public IReadOnlyList<string>? BlockedDomains
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaTool _ => null,
+                BetaToolBash20241022 _ => null,
+                BetaToolBash20250124 _ => null,
+                BetaCodeExecutionTool20250522 _ => null,
+                BetaCodeExecutionTool20250825 _ => null,
+                BetaCodeExecutionTool20260120 _ => null,
+                BetaCodeExecutionTool20260521 _ => null,
+                BetaBrowserToolset20260801 _ => null,
+                BetaToolComputerUse20241022 _ => null,
+                BetaMemoryTool20250818 _ => null,
+                BetaToolComputerUse20250124 _ => null,
+                BetaToolTextEditor20241022 _ => null,
+                BetaToolComputerUse20251124 _ => null,
+                BetaComputerToolset20260801 _ => null,
+                BetaToolTextEditor20250124 _ => null,
+                BetaToolTextEditor20250429 _ => null,
+                BetaToolTextEditor20250728 _ => null,
+                BetaWebSearchTool20250305 x => x.BlockedDomains,
+                BetaWebFetchTool20250910 x => x.BlockedDomains,
+                BetaWebSearchTool20260209 x => x.BlockedDomains,
+                BetaWebFetchTool20260209 x => x.BlockedDomains,
+                BetaWebFetchTool20260309 x => x.BlockedDomains,
+                BetaWebSearchTool20260318 x => x.BlockedDomains,
+                BetaWebFetchTool20260318 x => x.BlockedDomains,
+                BetaAdvisorTool20260301 _ => null,
+                BetaToolSearchToolBm25_20251119 _ => null,
+                BetaToolSearchToolRegex20251119 _ => null,
+                BetaMcpToolset _ => null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<IReadOnlyList<string>>(
+                    this.Json,
+                    "blocked_domains"
                 ),
             };
         }

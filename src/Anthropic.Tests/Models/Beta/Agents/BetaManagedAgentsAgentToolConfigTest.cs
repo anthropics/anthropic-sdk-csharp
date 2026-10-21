@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
@@ -94,6 +95,12 @@ public class BetaManagedAgentsAgentToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             MaxContentTokens = 0,
@@ -246,6 +253,12 @@ public class BetaManagedAgentsAgentToolConfigTest : TestBase
             PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
                 BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
             ),
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
+                UserInput = new BetaManagedAgentsWebFetchUrlSourceAll(),
+            },
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             MaxContentTokens = 0,
@@ -296,7 +309,13 @@ public class BetaManagedAgentsAgentToolConfigTest : TestBase
                 {
                   "enabled": true,
                   "name": "bash",
-                  "type": "bash"
+                  "type": "bash",
+                  "allowed_domains": [
+                    "string"
+                  ],
+                  "blocked_domains": [
+                    "string"
+                  ]
                 }
                 """
             )
@@ -306,10 +325,24 @@ public class BetaManagedAgentsAgentToolConfigTest : TestBase
         bool expectedEnabled = true;
         JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
         JsonElement expectedType = JsonSerializer.SerializeToElement("bash");
+        List<string> expectedAllowedDomains = ["string"];
+        List<string> expectedBlockedDomains = ["string"];
 
         Assert.Equal(expectedEnabled, value.Enabled);
         Assert.True(JsonElement.DeepEquals(expectedName, value.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.NotNull(value.AllowedDomains);
+        Assert.Equal(expectedAllowedDomains.Count, value.AllowedDomains.Count);
+        for (int i = 0; i < expectedAllowedDomains.Count; i++)
+        {
+            Assert.Equal(expectedAllowedDomains[i], value.AllowedDomains[i]);
+        }
+        Assert.NotNull(value.BlockedDomains);
+        Assert.Equal(expectedBlockedDomains.Count, value.BlockedDomains.Count);
+        for (int i = 0; i < expectedBlockedDomains.Count; i++)
+        {
+            Assert.Equal(expectedBlockedDomains[i], value.BlockedDomains[i]);
+        }
 
         BetaManagedAgentsAgentToolConfig emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
@@ -318,6 +351,8 @@ public class BetaManagedAgentsAgentToolConfigTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Enabled);
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Name);
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+        Assert.Null(emptyValue.AllowedDomains);
+        Assert.Null(emptyValue.BlockedDomains);
 
         BetaManagedAgentsAgentToolConfig mismatchedValue = new(
             JsonSerializer.Deserialize<JsonElement>(

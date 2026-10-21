@@ -220,6 +220,10 @@ public class BetaContentBlockTest : TestBase
             Content = "content",
             EncryptedContent = "encrypted_content",
             Signature = "signature",
+            ToolChanges =
+            [
+                new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
+            ],
         };
         value.Validate();
     }
@@ -229,9 +233,31 @@ public class BetaContentBlockTest : TestBase
     {
         BetaContentBlock value = new BetaFallbackBlock()
         {
-            From = new(Messages::Model.ClaudeFable5_1),
-            To = new(Messages::Model.ClaudeFable5_1),
+            From = new(Messages::Model.ClaudeHaiku5_5),
+            To = new(Messages::Model.ClaudeHaiku5_5),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void McpToolListingValidationWorks()
+    {
+        BetaContentBlock value = new BetaMcpToolListingBlock()
+        {
+            McpServerName = "mcp_server_name",
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "name",
+                    Description = "description",
+                },
+            ],
         };
         value.Validate();
     }
@@ -537,6 +563,10 @@ public class BetaContentBlockTest : TestBase
             Content = "content",
             EncryptedContent = "encrypted_content",
             Signature = "signature",
+            ToolChanges =
+            [
+                new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
+            ],
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
@@ -552,9 +582,37 @@ public class BetaContentBlockTest : TestBase
     {
         BetaContentBlock value = new BetaFallbackBlock()
         {
-            From = new(Messages::Model.ClaudeFable5_1),
-            To = new(Messages::Model.ClaudeFable5_1),
+            From = new(Messages::Model.ClaudeHaiku5_5),
+            To = new(Messages::Model.ClaudeHaiku5_5),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void McpToolListingSerializationRoundtripWorks()
+    {
+        BetaContentBlock value = new BetaMcpToolListingBlock()
+        {
+            McpServerName = "mcp_server_name",
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "name",
+                    Description = "description",
+                },
+            ],
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(

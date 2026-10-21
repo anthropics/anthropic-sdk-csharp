@@ -553,7 +553,7 @@ public class BetaToolUnionTest : TestBase
     {
         BetaToolUnion value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeFable5_1,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -608,6 +608,18 @@ public class BetaToolUnionTest : TestBase
                 },
             },
             DefaultConfig = new() { DeferLoading = true, Enabled = true },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
         };
         value.Validate();
     }
@@ -1300,7 +1312,7 @@ public class BetaToolUnionTest : TestBase
     {
         BetaToolUnion value = new BetaAdvisorTool20260301()
         {
-            Model = Messages::Model.ClaudeFable5_1,
+            Model = Messages::Model.ClaudeHaiku5_5,
             AllowedCallers = [AllowedCaller.Direct],
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caching = new() { Ttl = Ttl.Ttl5m },
@@ -1373,6 +1385,18 @@ public class BetaToolUnionTest : TestBase
                 },
             },
             DefaultConfig = new() { DeferLoading = true, Enabled = true },
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "x",
+                    Description = "description",
+                },
+            ],
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
@@ -1399,6 +1423,12 @@ public class BetaToolUnionTest : TestBase
                   "display_height_px": 1,
                   "display_width_px": 1,
                   "display_number": 0,
+                  "allowed_domains": [
+                    "string"
+                  ],
+                  "blocked_domains": [
+                    "string"
+                  ],
                   "max_uses": 1,
                   "user_location": {
                     "type": "approximate",
@@ -1435,6 +1465,8 @@ public class BetaToolUnionTest : TestBase
         long expectedDisplayHeightPx = 1;
         long expectedDisplayWidthPx = 1;
         long expectedDisplayNumber = 0;
+        List<string> expectedAllowedDomains = ["string"];
+        List<string> expectedBlockedDomains = ["string"];
         long expectedMaxUses = 1;
         BetaUserLocation expectedUserLocation = new()
         {
@@ -1459,6 +1491,18 @@ public class BetaToolUnionTest : TestBase
         Assert.Equal(expectedDisplayHeightPx, value.DisplayHeightPx);
         Assert.Equal(expectedDisplayWidthPx, value.DisplayWidthPx);
         Assert.Equal(expectedDisplayNumber, value.DisplayNumber);
+        Assert.NotNull(value.AllowedDomains);
+        Assert.Equal(expectedAllowedDomains.Count, value.AllowedDomains.Count);
+        for (int i = 0; i < expectedAllowedDomains.Count; i++)
+        {
+            Assert.Equal(expectedAllowedDomains[i], value.AllowedDomains[i]);
+        }
+        Assert.NotNull(value.BlockedDomains);
+        Assert.Equal(expectedBlockedDomains.Count, value.BlockedDomains.Count);
+        for (int i = 0; i < expectedBlockedDomains.Count; i++)
+        {
+            Assert.Equal(expectedBlockedDomains[i], value.BlockedDomains[i]);
+        }
         Assert.Equal(expectedMaxUses, value.MaxUses);
         Assert.Equal(expectedUserLocation, value.UserLocation);
         Assert.Equal(expectedCitations, value.Citations);
@@ -1474,6 +1518,8 @@ public class BetaToolUnionTest : TestBase
         Assert.Null(emptyValue.DisplayHeightPx);
         Assert.Null(emptyValue.DisplayWidthPx);
         Assert.Null(emptyValue.DisplayNumber);
+        Assert.Null(emptyValue.AllowedDomains);
+        Assert.Null(emptyValue.BlockedDomains);
         Assert.Null(emptyValue.MaxUses);
         Assert.Null(emptyValue.UserLocation);
         Assert.Null(emptyValue.Citations);

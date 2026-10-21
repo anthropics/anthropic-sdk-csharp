@@ -175,6 +175,7 @@ public sealed class IssuerServiceWithRawResponse : IIssuerServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.federation.issuers.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -188,6 +189,12 @@ public sealed class IssuerServiceWithRawResponse : IIssuerServiceWithRawResponse
                 {
                     betaFederationIssuer.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.organization.federation_issuer.id",
+                    betaFederationIssuer,
+                    static created => created.ID
+                );
                 return betaFederationIssuer;
             }
         );
@@ -210,6 +217,11 @@ public sealed class IssuerServiceWithRawResponse : IIssuerServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.federation.issuers.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.federation_issuer.id", parameters.FederationIssuerID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -263,6 +275,11 @@ public sealed class IssuerServiceWithRawResponse : IIssuerServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.federation.issuers.update",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.federation_issuer.id", parameters.FederationIssuerID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -311,6 +328,7 @@ public sealed class IssuerServiceWithRawResponse : IIssuerServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.organization.federation.issuers.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -346,6 +364,11 @@ public sealed class IssuerServiceWithRawResponse : IIssuerServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.organization.federation.issuers.archive",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.federation_issuer.id", parameters.FederationIssuerID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

@@ -1,6 +1,3 @@
-// xUnit1024: same-name overloads are intentional — base method is parameterless with no test attribute.
-#pragma warning disable xUnit1024
-
 using System.Threading.Tasks;
 
 namespace Anthropic.Tests.Services;
@@ -17,7 +14,7 @@ public class ModelServiceMultiClientTest : ModelServiceTest
 {
     [Theory]
     [AnthropicTestClients(TestSupportTypes.Anthropic)]
-    public async Task Retrieve_Works(IAnthropicClient c)
+    public async Task Retrieve_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.Retrieve_Works();
@@ -25,7 +22,7 @@ public class ModelServiceMultiClientTest : ModelServiceTest
 
     [Theory]
     [AnthropicTestClients]
-    public async Task List_Works(IAnthropicClient c)
+    public async Task List_WorksForClient(IAnthropicClient c)
     {
         client = c;
         await base.List_Works();

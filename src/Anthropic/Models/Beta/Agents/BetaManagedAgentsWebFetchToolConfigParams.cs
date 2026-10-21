@@ -51,6 +51,7 @@ public sealed record class BetaManagedAgentsWebFetchToolConfigParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("allowed_domains");
                 return;
             }
 
@@ -78,6 +79,7 @@ public sealed record class BetaManagedAgentsWebFetchToolConfigParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("blocked_domains");
                 return;
             }
 
@@ -116,7 +118,8 @@ public sealed record class BetaManagedAgentsWebFetchToolConfigParams : JsonModel
     }
 
     /// <summary>
-    /// Permission policy for tool execution.
+    /// Permission policy for this tool. Controls whether tool calls are auto-approved
+    /// or require confirmation.
     /// </summary>
     public BetaManagedAgentsWebFetchToolConfigParamsPermissionPolicy? PermissionPolicy
     {
@@ -143,11 +146,27 @@ public sealed record class BetaManagedAgentsWebFetchToolConfigParams : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("type");
                 return;
             }
 
             this._rawData.Set("type", value);
         }
+    }
+
+    /// <summary>
+    /// Which sources contribute URLs the tool may fetch. Omit to allow every source.
+    /// </summary>
+    public BetaManagedAgentsWebFetchUrlSourcesParams? UrlSources
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaManagedAgentsWebFetchUrlSourcesParams>(
+                "url_sources"
+            );
+        }
+        init { this._rawData.Set("url_sources", value); }
     }
 
     /// <inheritdoc/>
@@ -163,6 +182,7 @@ public sealed record class BetaManagedAgentsWebFetchToolConfigParams : JsonModel
         _ = this.MaxContentTokens;
         this.PermissionPolicy?.Validate();
         this.Type?.Validate();
+        this.UrlSources?.Validate();
     }
 
     public BetaManagedAgentsWebFetchToolConfigParams()
@@ -214,7 +234,8 @@ class BetaManagedAgentsWebFetchToolConfigParamsFromRaw
 }
 
 /// <summary>
-/// Permission policy for tool execution.
+/// Permission policy for this tool. Controls whether tool calls are auto-approved
+/// or require confirmation.
 /// </summary>
 [JsonConverter(typeof(BetaManagedAgentsWebFetchToolConfigParamsPermissionPolicyConverter))]
 public record class BetaManagedAgentsWebFetchToolConfigParamsPermissionPolicy : ModelBase

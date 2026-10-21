@@ -297,6 +297,42 @@ public class BetaWebFetchTool20260209Test : TestBase
     }
 
     [Fact]
+    public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
+    {
+        var model = new BetaWebFetchTool20260209
+        {
+            AllowedCallers = [BetaWebFetchTool20260209AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            DeferLoading = true,
+            MaxContentTokens = 1,
+            MaxUses = 1,
+            Strict = true,
+            UrlSources = new()
+            {
+                ClientToolResults = new BetaWebFetchUrlSourceAll(),
+                ServerToolResults = new BetaWebFetchUrlSourceAll(),
+                UserInput = new BetaWebFetchUrlSourceAll(),
+            },
+        } with
+        {
+            // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
+            Strict = null,
+        };
+
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
+        Assert.Null(model.Strict);
+        Assert.False(model.RawData.ContainsKey("strict"));
+    }
+
+    [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
         var model = new BetaWebFetchTool20260209

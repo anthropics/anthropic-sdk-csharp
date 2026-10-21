@@ -26,6 +26,13 @@ public class ThinkingConfigParamTest : TestBase
     }
 
     [Fact]
+    public void BetweenToolsValidationWorks()
+    {
+        ThinkingConfigParam value = new ThinkingConfigBetweenTools();
+        value.Validate();
+    }
+
+    [Fact]
     public void AdaptiveValidationWorks()
     {
         ThinkingConfigParam value = new ThinkingConfigAdaptive() { Display = Display.Summarized };
@@ -53,6 +60,19 @@ public class ThinkingConfigParamTest : TestBase
     public void DisabledSerializationRoundtripWorks()
     {
         ThinkingConfigParam value = new ThinkingConfigDisabled();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetweenToolsSerializationRoundtripWorks()
+    {
+        ThinkingConfigParam value = new ThinkingConfigBetweenTools();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(
             element,

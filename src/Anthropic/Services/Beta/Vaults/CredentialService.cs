@@ -235,6 +235,8 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.vaults.credentials.create",
+            SpanResourceIds = [new("anthropic.vault.id", parameters.VaultID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -248,6 +250,12 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
                 {
                     betaManagedAgentsCredential.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.vault.credential.id",
+                    betaManagedAgentsCredential,
+                    static created => created.ID
+                );
                 return betaManagedAgentsCredential;
             }
         );
@@ -278,6 +286,12 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.vaults.credentials.retrieve",
+            SpanResourceIds =
+            [
+                new("anthropic.vault.id", parameters.VaultID),
+                new("anthropic.vault.credential.id", parameters.CredentialID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -321,6 +335,12 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.vaults.credentials.update",
+            SpanResourceIds =
+            [
+                new("anthropic.vault.id", parameters.VaultID),
+                new("anthropic.vault.credential.id", parameters.CredentialID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -364,6 +384,8 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.vaults.credentials.list",
+            SpanResourceIds = [new("anthropic.vault.id", parameters.VaultID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -409,6 +431,12 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            SpanName = "anthropic.vaults.credentials.delete",
+            SpanResourceIds =
+            [
+                new("anthropic.vault.id", parameters.VaultID),
+                new("anthropic.vault.credential.id", parameters.CredentialID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -452,6 +480,12 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.vaults.credentials.archive",
+            SpanResourceIds =
+            [
+                new("anthropic.vault.id", parameters.VaultID),
+                new("anthropic.vault.credential.id", parameters.CredentialID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -495,6 +529,12 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.vaults.credentials.mcp_oauth_validate",
+            SpanResourceIds =
+            [
+                new("anthropic.vault.id", parameters.VaultID),
+                new("anthropic.vault.credential.id", parameters.CredentialID),
+            ],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

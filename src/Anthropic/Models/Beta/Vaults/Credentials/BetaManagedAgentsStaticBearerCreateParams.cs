@@ -21,7 +21,8 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class BetaManagedAgentsStaticBearerCreateParams : JsonModel
 {
     /// <summary>
-    /// Static bearer token value.
+    /// The static bearer token to send to the MCP server, such as an API key or
+    /// personal access token.
     /// </summary>
     public required string Token
     {

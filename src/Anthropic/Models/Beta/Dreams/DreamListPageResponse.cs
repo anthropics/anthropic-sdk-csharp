@@ -8,9 +8,15 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Dreams;
 
+/// <summary>
+/// A page of dreams, newest first.
+/// </summary>
 [JsonConverter(typeof(JsonModelConverter<DreamListPageResponse, DreamListPageResponseFromRaw>))]
 public sealed record class DreamListPageResponse : JsonModel
 {
+    /// <summary>
+    /// The dreams on this page, newest first.
+    /// </summary>
     public required IReadOnlyList<BetaDream> Data
     {
         get
@@ -27,6 +33,11 @@ public sealed record class DreamListPageResponse : JsonModel
         }
     }
 
+    /// <summary>
+    /// The cursor for the next page, or `null` if this is the last page.
+    ///
+    /// <para>Pass it as `page` to get the next page.</para>
+    /// </summary>
     public required string? NextPage
     {
         get

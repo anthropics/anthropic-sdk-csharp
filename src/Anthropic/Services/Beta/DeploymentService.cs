@@ -237,6 +237,7 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.deployments.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -250,6 +251,12 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
                 {
                     betaManagedAgentsDeployment.Validate();
                 }
+                Tracing.SetCreatedId(
+                    response.Span,
+                    "anthropic.deployment.id",
+                    betaManagedAgentsDeployment,
+                    static created => created.ID
+                );
                 return betaManagedAgentsDeployment;
             }
         );
@@ -270,6 +277,8 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.deployments.retrieve",
+            SpanResourceIds = [new("anthropic.deployment.id", parameters.DeploymentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -315,6 +324,8 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.deployments.update",
+            SpanResourceIds = [new("anthropic.deployment.id", parameters.DeploymentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -357,6 +368,7 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            SpanName = "anthropic.deployments.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -390,6 +402,8 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.deployments.archive",
+            SpanResourceIds = [new("anthropic.deployment.id", parameters.DeploymentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -435,6 +449,8 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.deployments.pause",
+            SpanResourceIds = [new("anthropic.deployment.id", parameters.DeploymentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -480,6 +496,8 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.deployments.run",
+            SpanResourceIds = [new("anthropic.deployment.id", parameters.DeploymentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -525,6 +543,8 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            SpanName = "anthropic.deployments.unpause",
+            SpanResourceIds = [new("anthropic.deployment.id", parameters.DeploymentID)],
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(

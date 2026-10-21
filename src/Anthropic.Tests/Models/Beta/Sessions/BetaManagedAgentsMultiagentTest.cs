@@ -1,274 +1,130 @@
-using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
+using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
-using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
 
 public class BetaManagedAgentsMultiagentTest : TestBase
 {
     [Fact]
-    public void FieldRoundtrip_Works()
+    public void CoordinatorValidationWorks()
     {
-        var model = new BetaManagedAgentsMultiagent
+        BetaManagedAgentsMultiagent value = new BetaManagedAgentsMultiagentCoordinator()
         {
             Agents =
             [
-                new Agents::BetaManagedAgentsAgentReference()
+                new BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                    Type = BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
             ],
-            Type = BetaManagedAgentsMultiagentType.Coordinator,
+            Type = BetaManagedAgentsMultiagentCoordinatorType.Coordinator,
         };
+        value.Validate();
+    }
 
-        List<BetaManagedAgentsMultiagentAgent> expectedAgents =
-        [
-            new Agents::BetaManagedAgentsAgentReference()
+    [Fact]
+    public void Multiagent20261001ValidationWorks()
+    {
+        BetaManagedAgentsMultiagent value = new BetaManagedAgentsMultiagent20261001()
+        {
+            Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+            Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
             {
-                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
-                Version = 1,
+                InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                PredefinedAgents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Type = BetaManagedAgentsAgentReferenceType.Agent,
+                        Version = 1,
+                    },
+                ],
             },
-        ];
-        ApiEnum<string, BetaManagedAgentsMultiagentType> expectedType =
-            BetaManagedAgentsMultiagentType.Coordinator;
-
-        Assert.Equal(expectedAgents.Count, model.Agents.Count);
-        for (int i = 0; i < expectedAgents.Count; i++)
-        {
-            Assert.Equal(expectedAgents[i], model.Agents[i]);
-        }
-        Assert.Equal(expectedType, model.Type);
+            Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+            {
+                InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                PredefinedAgents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Type = BetaManagedAgentsAgentReferenceType.Agent,
+                        Version = 1,
+                    },
+                ],
+            },
+        };
+        value.Validate();
     }
 
     [Fact]
-    public void SerializationRoundtrip_Works()
+    public void CoordinatorSerializationRoundtripWorks()
     {
-        var model = new BetaManagedAgentsMultiagent
+        BetaManagedAgentsMultiagent value = new BetaManagedAgentsMultiagentCoordinator()
         {
             Agents =
             [
-                new Agents::BetaManagedAgentsAgentReference()
+                new BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
+                    Type = BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
             ],
-            Type = BetaManagedAgentsMultiagentType.Coordinator,
+            Type = BetaManagedAgentsMultiagentCoordinatorType.Coordinator,
         };
-
-        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagent>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(model, deserialized);
-    }
-
-    [Fact]
-    public void FieldRoundtripThroughSerialization_Works()
-    {
-        var model = new BetaManagedAgentsMultiagent
-        {
-            Agents =
-            [
-                new Agents::BetaManagedAgentsAgentReference()
-                {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
-                },
-            ],
-            Type = BetaManagedAgentsMultiagentType.Coordinator,
-        };
-
-        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagent>(
             element,
             ModelBase.SerializerOptions
         );
-        Assert.NotNull(deserialized);
 
-        List<BetaManagedAgentsMultiagentAgent> expectedAgents =
-        [
-            new Agents::BetaManagedAgentsAgentReference()
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void Multiagent20261001SerializationRoundtripWorks()
+    {
+        BetaManagedAgentsMultiagent value = new BetaManagedAgentsMultiagent20261001()
+        {
+            Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
+            Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
             {
-                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
-                Version = 1,
+                InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                PredefinedAgents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Type = BetaManagedAgentsAgentReferenceType.Agent,
+                        Version = 1,
+                    },
+                ],
             },
-        ];
-        ApiEnum<string, BetaManagedAgentsMultiagentType> expectedType =
-            BetaManagedAgentsMultiagentType.Coordinator;
-
-        Assert.Equal(expectedAgents.Count, deserialized.Agents.Count);
-        for (int i = 0; i < expectedAgents.Count; i++)
-        {
-            Assert.Equal(expectedAgents[i], deserialized.Agents[i]);
-        }
-        Assert.Equal(expectedType, deserialized.Type);
-    }
-
-    [Fact]
-    public void Validation_Works()
-    {
-        var model = new BetaManagedAgentsMultiagent
-        {
-            Agents =
-            [
-                new Agents::BetaManagedAgentsAgentReference()
-                {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
-                },
-            ],
-            Type = BetaManagedAgentsMultiagentType.Coordinator,
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void CopyConstructor_Works()
-    {
-        var model = new BetaManagedAgentsMultiagent
-        {
-            Agents =
-            [
-                new Agents::BetaManagedAgentsAgentReference()
-                {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
-                },
-            ],
-            Type = BetaManagedAgentsMultiagentType.Coordinator,
-        };
-
-        BetaManagedAgentsMultiagent copied = new(model);
-
-        Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsMultiagentAgentTest : TestBase
-{
-    [Fact]
-    public void BetaManagedAgentsAgentReferenceValidationWorks()
-    {
-        BetaManagedAgentsMultiagentAgent value = new Agents::BetaManagedAgentsAgentReference()
-        {
-            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-            Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
-            Version = 1,
-        };
-        value.Validate();
-    }
-
-    [Fact]
-    public void BetaManagedAgentsAdvisorValidationWorks()
-    {
-        BetaManagedAgentsMultiagentAgent value = new Agents::BetaManagedAgentsAdvisor()
-        {
-            Model = "model",
-            Type = Agents::Type.Advisor,
-        };
-        value.Validate();
-    }
-
-    [Fact]
-    public void BetaManagedAgentsAgentReferenceSerializationRoundtripWorks()
-    {
-        BetaManagedAgentsMultiagentAgent value = new Agents::BetaManagedAgentsAgentReference()
-        {
-            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-            Type = Agents::BetaManagedAgentsAgentReferenceType.Agent,
-            Version = 1,
+            Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
+            {
+                InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                PredefinedAgents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Type = BetaManagedAgentsAgentReferenceType.Agent,
+                        Version = 1,
+                    },
+                ],
+            },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagentAgent>(
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagent>(
             element,
             ModelBase.SerializerOptions
         );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void BetaManagedAgentsAdvisorSerializationRoundtripWorks()
-    {
-        BetaManagedAgentsMultiagentAgent value = new Agents::BetaManagedAgentsAdvisor()
-        {
-            Model = "model",
-            Type = Agents::Type.Advisor,
-        };
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagentAgent>(
-            element,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-}
-
-public class BetaManagedAgentsMultiagentTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsMultiagentType.Coordinator)]
-    public void Validation_Works(BetaManagedAgentsMultiagentType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMultiagentType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsMultiagentType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsMultiagentType.Coordinator)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMultiagentType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMultiagentType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMultiagentType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsMultiagentType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMultiagentType>
-        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

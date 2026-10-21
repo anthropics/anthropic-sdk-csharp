@@ -35,7 +35,7 @@ public class BatchServiceTest : TestBase
                                     },
                                 },
                             ],
-                            Model = Messages::Model.ClaudeOpus5,
+                            Model = Messages::Model.ClaudeOpus5_5,
                             CacheControl = new() { Ttl = Ttl.Ttl5m },
                             Compaction = new() { Instructions = "instructions" },
                             Container = new BetaContainerParams()

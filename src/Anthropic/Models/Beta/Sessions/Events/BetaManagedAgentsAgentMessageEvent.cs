@@ -56,7 +56,7 @@ public sealed record class BetaManagedAgentsAgentMessageEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when this response was generated.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {

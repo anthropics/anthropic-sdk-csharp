@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Anthropic.Core.Telemetry;
 using Anthropic.Credentials;
 
 namespace Anthropic.Core;
@@ -94,11 +96,12 @@ public record struct ClientOptions
     /// Factory for the handler that adapts requests and responses for a cloud backend
     /// (URL/body rewriting, request signing, response normalization).
     ///
-    /// <para>The created handler is attached as the innermost handler, inside all user
+    /// <para>The created handler is attached inside all user
     /// <see cref="Handlers"/>, so user handlers observe Anthropic-shaped requests and
     /// normalized responses, and any request mutation they perform is covered by backend
-    /// request signing. A factory (rather than an instance) because every attached handler
-    /// chain needs its own unattached instance.</para>
+    /// request signing, except for the trace-context headers, which the handler does not see
+    /// (<see cref="UnsignedTraceContextHandler"/>). A factory (rather than an instance) because
+    /// every attached handler chain needs its own unattached instance.</para>
     /// </summary>
     internal Func<DelegatingHandler>? BackendAdaptationHandler
     {
@@ -195,6 +198,62 @@ public record struct ClientOptions
     /// <para>Defaults to <c>TimeSpan.FromMinutes(10)</c> when null.</para>
     /// </summary>
     public TimeSpan? Timeout { get; set; } = null;
+
+    /// <summary>
+    /// The telemetry that the client emits through OpenTelemetry. <c>false</c> disables its spans.
+    ///
+    /// <para>Defaults to null. A client that is given none takes its settings from the
+    /// <c>ANTHROPIC_OPEN_TELEMETRY</c>, <c>ANTHROPIC_OPEN_TELEMETRY_TRACES_CONTENT_MODE</c> and
+    /// <c>ANTHROPIC_OPEN_TELEMETRY_TRACES_MAX_CONTENT_BYTES</c> environment variables, which it
+    /// reads once, when it is made; a variable that is not set leaves its setting at the default.
+    /// A client that is given any value here takes none of them, and a setting that the value
+    /// leaves unset has its default. See <see cref="OpenTelemetryTraces"/>.</para>
+    ///
+    /// <para>Setting this through <c>WithOptions</c> replaces the options of the client it was
+    /// called on as a whole: the two are not merged. A client that <c>WithOptions</c> makes
+    /// without setting this keeps what the client it was called on has, what that client read
+    /// from the variables included. See <see cref="OpenTelemetryOptions"/>.</para>
+    /// </summary>
+    public OpenTelemetryOptions? OpenTelemetry { get; set; } = null;
+
+    /// <summary>
+    /// The OpenTelemetry options of the calls made with these options, such as the conversation
+    /// that they belong to. Set it for one call through <c>WithOptions</c>:
+    /// <c>client.WithOptions(options => options with { OpenTelemetryRequest = new() { ConversationId = id } })</c>.
+    ///
+    /// <para>Defaults to null.</para>
+    /// </summary>
+    public OpenTelemetryRequestOptions? OpenTelemetryRequest { get; set; } = null;
+
+    readonly Lazy<OpenTelemetryDefaults> _openTelemetryDefaults = new(() => new());
+
+    /// <summary>
+    /// <see cref="OpenTelemetry"/> with nothing left unset. When it is null, every setting is what
+    /// the <c>ANTHROPIC_OPEN_TELEMETRY</c>, <c>ANTHROPIC_OPEN_TELEMETRY_TRACES_CONTENT_MODE</c> and
+    /// <c>ANTHROPIC_OPEN_TELEMETRY_TRACES_MAX_CONTENT_BYTES</c> environment variables said. They are
+    /// read once, when a client is made with these options, and the copies that <c>WithOptions</c>
+    /// makes of the options keep what was read. Options that the modifier of <c>WithOptions</c>
+    /// makes anew read the environment again, as they do for the API key. When it is set, the
+    /// variables do not count, and what it leaves unset has its built-in default.
+    /// </summary>
+    internal readonly OpenTelemetryOptions ResolvedOpenTelemetry
+    {
+        get { return _openTelemetryDefaults.Value.Resolve(OpenTelemetry); }
+    }
+
+    /// <summary>
+    /// The <c>gen_ai.provider.name</c> of the spans: the platform that serves the requests. The
+    /// clients for Amazon Bedrock and Vertex AI set it; every other client has <c>anthropic</c>.
+    /// </summary>
+    internal string OpenTelemetryProviderName { get; set; } = "anthropic";
+
+    /// <summary>
+    /// The source of the spans, which gives them their instrumentation scope. The clients for a
+    /// cloud platform set it to the source of their package
+    /// (<see cref="Tracing.PlatformSource"/>); without one, the spans are those of
+    /// <see cref="Tracing.Source"/>.
+    /// </summary>
+    internal ActivitySource? OpenTelemetrySource { get; set; }
 
     Lazy<string?> _apiKey = new(() => Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY"));
     internal bool ApiKeyExplicit { get; private set; }
@@ -319,7 +378,8 @@ public record struct ClientOptions
     /// through the chain.
     ///
     /// <para>When a backend adaptation handler factory is given, the created handler is
-    /// placed inside all the given handlers, just outside the HTTP client itself.</para>
+    /// placed inside all the given handlers, in an <see cref="UnsignedTraceContextHandler"/>
+    /// just outside the HTTP client itself.</para>
     /// </summary>
     static HttpMessageInvoker AttachHandlers(
         HttpClient httpClient,
@@ -330,9 +390,10 @@ public record struct ClientOptions
         HttpMessageHandler innerHandler = new HttpClientPassthroughHandler(httpClient);
         if (backendAdaptationHandler != null)
         {
-            var handler = backendAdaptationHandler();
-            handler.InnerHandler = innerHandler;
-            innerHandler = handler;
+            innerHandler = new UnsignedTraceContextHandler(
+                backendAdaptationHandler(),
+                innerHandler
+            );
         }
         for (var index = handlers.Count - 1; index >= 0; index--)
         {

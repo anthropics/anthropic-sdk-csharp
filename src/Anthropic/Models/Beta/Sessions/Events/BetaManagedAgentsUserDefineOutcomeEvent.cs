@@ -75,7 +75,7 @@ public sealed record class BetaManagedAgentsUserDefineOutcomeEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp when the outcome was accepted.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {
@@ -88,7 +88,8 @@ public sealed record class BetaManagedAgentsUserDefineOutcomeEvent : JsonModel
     }
 
     /// <summary>
-    /// Rubric for grading the quality of an outcome.
+    /// How to grade the outcome. File rubrics are currently resolved to their text
+    /// content; clients should handle both variants.
     /// </summary>
     public required Rubric Rubric
     {
@@ -166,7 +167,8 @@ class BetaManagedAgentsUserDefineOutcomeEventFromRaw
 }
 
 /// <summary>
-/// Rubric for grading the quality of an outcome.
+/// How to grade the outcome. File rubrics are currently resolved to their text content;
+/// clients should handle both variants.
 /// </summary>
 [JsonConverter(typeof(RubricConverter))]
 public record class Rubric : ModelBase

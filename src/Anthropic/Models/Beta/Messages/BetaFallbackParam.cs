@@ -36,6 +36,14 @@ public sealed record class BetaFallbackParam : JsonModel
         init { this._rawData.Set("model", value); }
     }
 
+    /// <summary>
+    /// The `max_tokens` for the fallback attempt that uses this `fallbacks` entry's
+    /// `model`, in place of the request's `max_tokens`. If you leave it out or set
+    /// it to `null`, the attempt uses the request's `max_tokens`.
+    ///
+    /// <para>See the [refusals and fallback guide](https://platform.claude.com/docs/en/build-with-claude/refusals-and-fallback#naming-your-own-fallback-models)
+    /// to learn more about fallback entries.</para>
+    /// </summary>
     public long? MaxTokens
     {
         get
@@ -46,6 +54,26 @@ public sealed record class BetaFallbackParam : JsonModel
         init { this._rawData.Set("max_tokens", value); }
     }
 
+    /// <summary>
+    /// Output parameters for the fallback attempt that uses this `fallbacks` entry's
+    /// `model`, combined with the request's `output_config` one field at a time.
+    ///
+    /// <para>- `format`: If you leave it out, the attempt uses the request's `format`.
+    /// If you set it to `null`, the attempt runs without a format. - `effort`: If
+    /// you leave it out, the attempt uses the request's `effort` when `model` supports
+    /// that level with the attempt's `thinking`. If the request doesn't set `effort`,
+    /// if `model` doesn't support the level, or if you set `effort` to `null`, the
+    /// attempt runs at the default effort of `model`. - `task_budget`: If you leave
+    /// it out, the attempt uses the request's `task_budget` when `model` accepts
+    /// a task budget of that size. If the request doesn't set `task_budget`, if
+    /// `model` doesn't accept it, or if you set `task_budget` to `null`, the attempt
+    /// runs without a task budget.</para>
+    ///
+    /// <para>Set `output_config` to `null` to run the attempt without a format or
+    /// a task budget, at the default effort of `model`.</para>
+    ///
+    /// <para>These rules apply with the `server-side-fallback-2026-07-01` beta header.</para>
+    /// </summary>
     public BetaOutputConfig? OutputConfig
     {
         get
@@ -57,9 +85,15 @@ public sealed record class BetaFallbackParam : JsonModel
     }
 
     /// <summary>
-    /// Inference speed mode. `fast` provides significantly faster output token generation
-    /// at premium pricing. Not all models support `fast`; invalid combinations are
-    /// rejected at create time.
+    /// The inference speed mode for the fallback attempt that uses this `fallbacks`
+    /// entry's `model`. If you leave it out, the attempt runs at `fast` speed only
+    /// when the request sets `speed` to `fast` and your organization can use fast
+    /// mode on `model`.
+    ///
+    /// <para>Otherwise, or when you set this field to `null`, the attempt runs at
+    /// `standard` speed.</para>
+    ///
+    /// <para>These rules apply with the `server-side-fallback-2026-07-01` beta header.</para>
     /// </summary>
     public ApiEnum<string, BetaFallbackParamSpeed>? Speed
     {
@@ -71,6 +105,21 @@ public sealed record class BetaFallbackParam : JsonModel
         init { this._rawData.Set("speed", value); }
     }
 
+    /// <summary>
+    /// The thinking configuration for the fallback attempt that uses this `fallbacks`
+    /// entry's `model`. If you leave it out, the attempt uses the request's `thinking`
+    /// when `model` supports that thinking `type`.
+    ///
+    /// <para>If you leave it out and the request's thinking `type` is `between_tools`
+    /// but `model` doesn't support `between_tools`, the attempt uses `disabled` if
+    /// `model` supports it. Otherwise, if `model` doesn't support the request's
+    /// thinking `type`, if the request doesn't set `thinking`, or if you set this
+    /// field to `null`, the attempt uses the thinking `type` that `model` uses when
+    /// a request leaves out `thinking`. The request's `thinking.display` still applies
+    /// where `model` allows it.</para>
+    ///
+    /// <para>These rules apply with the `server-side-fallback-2026-07-01` beta header.</para>
+    /// </summary>
     public Thinking? Thinking
     {
         get
@@ -136,9 +185,13 @@ class BetaFallbackParamFromRaw : IFromRawJson<BetaFallbackParam>
 }
 
 /// <summary>
-/// Inference speed mode. `fast` provides significantly faster output token generation
-/// at premium pricing. Not all models support `fast`; invalid combinations are rejected
-/// at create time.
+/// The inference speed mode for the fallback attempt that uses this `fallbacks`
+/// entry's `model`. If you leave it out, the attempt runs at `fast` speed only when
+/// the request sets `speed` to `fast` and your organization can use fast mode on `model`.
+///
+/// <para>Otherwise, or when you set this field to `null`, the attempt runs at `standard` speed.</para>
+///
+/// <para>These rules apply with the `server-side-fallback-2026-07-01` beta header.</para>
 /// </summary>
 [JsonConverter(typeof(BetaFallbackParamSpeedConverter))]
 public enum BetaFallbackParamSpeed
@@ -184,6 +237,20 @@ sealed class BetaFallbackParamSpeedConverter : JsonConverter<BetaFallbackParamSp
     }
 }
 
+/// <summary>
+/// The thinking configuration for the fallback attempt that uses this `fallbacks`
+/// entry's `model`. If you leave it out, the attempt uses the request's `thinking`
+/// when `model` supports that thinking `type`.
+///
+/// <para>If you leave it out and the request's thinking `type` is `between_tools`
+/// but `model` doesn't support `between_tools`, the attempt uses `disabled` if `model`
+/// supports it. Otherwise, if `model` doesn't support the request's thinking `type`,
+/// if the request doesn't set `thinking`, or if you set this field to `null`, the
+/// attempt uses the thinking `type` that `model` uses when a request leaves out
+/// `thinking`. The request's `thinking.display` still applies where `model` allows it.</para>
+///
+/// <para>These rules apply with the `server-side-fallback-2026-07-01` beta header.</para>
+/// </summary>
 [JsonConverter(typeof(ThinkingConverter))]
 public record class Thinking : ModelBase
 {
@@ -210,6 +277,7 @@ public record class Thinking : ModelBase
             {
                 BetaThinkingConfigEnabled x => x.Type,
                 BetaThinkingConfigDisabled x => x.Type,
+                BetaThinkingConfigBetweenTools x => x.Type,
                 BetaThinkingConfigAdaptive x => x.Type,
                 _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
             };
@@ -224,6 +292,7 @@ public record class Thinking : ModelBase
             {
                 BetaThinkingConfigEnabled x => x.BlockBinding,
                 BetaThinkingConfigDisabled _ => null,
+                BetaThinkingConfigBetweenTools _ => null,
                 BetaThinkingConfigAdaptive x => x.BlockBinding,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<BetaThinkingBlockBinding>(
                     this.Json,
@@ -240,6 +309,12 @@ public record class Thinking : ModelBase
     }
 
     public Thinking(BetaThinkingConfigDisabled value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Thinking(BetaThinkingConfigBetweenTools value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -304,6 +379,29 @@ public record class Thinking : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaThinkingConfigBetweenTools"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaThinkingConfigBetweenTools(out var value)) {
+    ///     // `value` is of type `BetaThinkingConfigBetweenTools`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaThinkingConfigBetweenTools(
+        [NotNullWhen(true)] out BetaThinkingConfigBetweenTools? value
+    )
+    {
+        value = this.Value as BetaThinkingConfigBetweenTools;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaThinkingConfigAdaptive"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -341,6 +439,7 @@ public record class Thinking : ModelBase
     /// instance.Switch(
     ///     (BetaThinkingConfigEnabled value) =&gt; {...},
     ///     (BetaThinkingConfigDisabled value) =&gt; {...},
+    ///     (BetaThinkingConfigBetweenTools value) =&gt; {...},
     ///     (BetaThinkingConfigAdaptive value) =&gt; {...}
     /// );
     /// </code>
@@ -349,6 +448,7 @@ public record class Thinking : ModelBase
     public void Switch(
         System::Action<BetaThinkingConfigEnabled> betaThinkingConfigEnabled,
         System::Action<BetaThinkingConfigDisabled> betaThinkingConfigDisabled,
+        System::Action<BetaThinkingConfigBetweenTools> betaThinkingConfigBetweenTools,
         System::Action<BetaThinkingConfigAdaptive> betaThinkingConfigAdaptive
     )
     {
@@ -359,6 +459,9 @@ public record class Thinking : ModelBase
                 break;
             case BetaThinkingConfigDisabled value:
                 betaThinkingConfigDisabled(value);
+                break;
+            case BetaThinkingConfigBetweenTools value:
+                betaThinkingConfigBetweenTools(value);
                 break;
             case BetaThinkingConfigAdaptive value:
                 betaThinkingConfigAdaptive(value);
@@ -387,6 +490,7 @@ public record class Thinking : ModelBase
     /// var result = instance.Match(
     ///     (BetaThinkingConfigEnabled value) =&gt; {...},
     ///     (BetaThinkingConfigDisabled value) =&gt; {...},
+    ///     (BetaThinkingConfigBetweenTools value) =&gt; {...},
     ///     (BetaThinkingConfigAdaptive value) =&gt; {...}
     /// );
     /// </code>
@@ -395,6 +499,7 @@ public record class Thinking : ModelBase
     public T Match<T>(
         System::Func<BetaThinkingConfigEnabled, T> betaThinkingConfigEnabled,
         System::Func<BetaThinkingConfigDisabled, T> betaThinkingConfigDisabled,
+        System::Func<BetaThinkingConfigBetweenTools, T> betaThinkingConfigBetweenTools,
         System::Func<BetaThinkingConfigAdaptive, T> betaThinkingConfigAdaptive
     )
     {
@@ -402,6 +507,7 @@ public record class Thinking : ModelBase
         {
             BetaThinkingConfigEnabled value => betaThinkingConfigEnabled(value),
             BetaThinkingConfigDisabled value => betaThinkingConfigDisabled(value),
+            BetaThinkingConfigBetweenTools value => betaThinkingConfigBetweenTools(value),
             BetaThinkingConfigAdaptive value => betaThinkingConfigAdaptive(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Thinking"
@@ -412,6 +518,8 @@ public record class Thinking : ModelBase
     public static implicit operator Thinking(BetaThinkingConfigEnabled value) => new(value);
 
     public static implicit operator Thinking(BetaThinkingConfigDisabled value) => new(value);
+
+    public static implicit operator Thinking(BetaThinkingConfigBetweenTools value) => new(value);
 
     public static implicit operator Thinking(BetaThinkingConfigAdaptive value) => new(value);
 
@@ -434,6 +542,7 @@ public record class Thinking : ModelBase
         this.Switch(
             (betaThinkingConfigEnabled) => betaThinkingConfigEnabled.Validate(),
             (betaThinkingConfigDisabled) => betaThinkingConfigDisabled.Validate(),
+            (betaThinkingConfigBetweenTools) => betaThinkingConfigBetweenTools.Validate(),
             (betaThinkingConfigAdaptive) => betaThinkingConfigAdaptive.Validate()
         );
     }
@@ -460,7 +569,8 @@ public record class Thinking : ModelBase
         {
             BetaThinkingConfigEnabled _ => 0,
             BetaThinkingConfigDisabled _ => 1,
-            BetaThinkingConfigAdaptive _ => 2,
+            BetaThinkingConfigBetweenTools _ => 2,
+            BetaThinkingConfigAdaptive _ => 3,
             _ => -1,
         };
     }
@@ -512,6 +622,26 @@ sealed class ThinkingConverter : JsonConverter<Thinking?>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigDisabled>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "between_tools":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigBetweenTools>(
                         element,
                         options
                     );

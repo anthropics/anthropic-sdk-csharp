@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Anthropic.Core;
 
 namespace Anthropic.Tests.Core;
@@ -207,4 +209,26 @@ public class MultipartJsonElementTest
 
         Assert.False(MultipartJsonElement.DeepEquals(a, b));
     }
+
+#if NET
+    [Fact]
+    public async Task NonAsciiFileName_SentAsRawUtf8()
+    {
+        var file = new BinaryContent
+        {
+            Stream = new MemoryStream(Encoding.UTF8.GetBytes("text")),
+            FileName = "naïve.txt",
+        };
+
+        using var content = MultipartJsonSerializer.Serialize(
+            new Dictionary<string, object> { { "file", file } }
+        );
+        var body = Encoding.UTF8.GetString(
+            await content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken)
+        );
+
+        Assert.Contains("; filename=\"naïve.txt\"\r\n", body);
+        Assert.DoesNotContain("filename*", body);
+    }
+#endif
 }

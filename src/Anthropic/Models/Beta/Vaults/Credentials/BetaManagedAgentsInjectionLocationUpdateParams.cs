@@ -8,7 +8,13 @@ using Anthropic.Core;
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
 /// <summary>
-/// Updated injection location.
+/// Changes which parts of an outbound request the secret is substituted into. A location
+/// you leave out keeps its current setting.
+///
+/// <para>After the change, at least one location must be enabled.</para>
+///
+/// <para>See [Authenticate with vaults](https://platform.claude.com/docs/en/managed-agents/vaults#add-a-credential)
+/// to learn more about injection locations.</para>
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<
@@ -32,6 +38,7 @@ public sealed record class BetaManagedAgentsInjectionLocationUpdateParams : Json
         {
             if (value == null)
             {
+                this._rawData.Remove("body");
                 return;
             }
 
@@ -53,6 +60,7 @@ public sealed record class BetaManagedAgentsInjectionLocationUpdateParams : Json
         {
             if (value == null)
             {
+                this._rawData.Remove("header");
                 return;
             }
 

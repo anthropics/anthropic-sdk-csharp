@@ -14,7 +14,7 @@ public class BetaManagedAgentsGitHubRepositoryResourceTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResource
         {
-            ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+            ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             MountPath = "/workspace/example-repo",
             Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -27,7 +27,7 @@ public class BetaManagedAgentsGitHubRepositoryResourceTest : TestBase
             },
         };
 
-        string expectedID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu";
+        string expectedID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedMountPath = "/workspace/example-repo";
         ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceType> expectedType =
@@ -54,7 +54,7 @@ public class BetaManagedAgentsGitHubRepositoryResourceTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResource
         {
-            ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+            ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             MountPath = "/workspace/example-repo",
             Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -81,7 +81,7 @@ public class BetaManagedAgentsGitHubRepositoryResourceTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResource
         {
-            ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+            ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             MountPath = "/workspace/example-repo",
             Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -101,7 +101,7 @@ public class BetaManagedAgentsGitHubRepositoryResourceTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu";
+        string expectedID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedMountPath = "/workspace/example-repo";
         ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceType> expectedType =
@@ -128,7 +128,7 @@ public class BetaManagedAgentsGitHubRepositoryResourceTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResource
         {
-            ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+            ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             MountPath = "/workspace/example-repo",
             Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -149,7 +149,7 @@ public class BetaManagedAgentsGitHubRepositoryResourceTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResource
         {
-            ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+            ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             MountPath = "/workspace/example-repo",
             Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -166,7 +166,7 @@ public class BetaManagedAgentsGitHubRepositoryResourceTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResource
         {
-            ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+            ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             MountPath = "/workspace/example-repo",
             Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -182,7 +182,7 @@ public class BetaManagedAgentsGitHubRepositoryResourceTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResource
         {
-            ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+            ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             MountPath = "/workspace/example-repo",
             Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -201,7 +201,7 @@ public class BetaManagedAgentsGitHubRepositoryResourceTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResource
         {
-            ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+            ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             MountPath = "/workspace/example-repo",
             Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
@@ -219,7 +219,7 @@ public class BetaManagedAgentsGitHubRepositoryResourceTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResource
         {
-            ID = "sesrsc_011CZkZCKr6eXyl0gWMOdQiu",
+            ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             MountPath = "/workspace/example-repo",
             Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,

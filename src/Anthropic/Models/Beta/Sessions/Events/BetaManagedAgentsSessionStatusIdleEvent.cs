@@ -34,7 +34,7 @@ public sealed record class BetaManagedAgentsSessionStatusIdleEvent : JsonModel
     }
 
     /// <summary>
-    /// A timestamp in RFC 3339 format
+    /// Timestamp of status change.
     /// </summary>
     public required System::DateTimeOffset ProcessedAt
     {
@@ -44,6 +44,22 @@ public sealed record class BetaManagedAgentsSessionStatusIdleEvent : JsonModel
             return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
+    }
+
+    /// <summary>
+    /// Structured information about why the session stopped. `null` when there is
+    /// nothing more to report.
+    /// </summary>
+    public required BetaManagedAgentsSessionRefusalStopDetails? StopDetails
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaManagedAgentsSessionRefusalStopDetails>(
+                "stop_details"
+            );
+        }
+        init { this._rawData.Set("stop_details", value); }
     }
 
     public required StopReason StopReason
@@ -73,6 +89,7 @@ public sealed record class BetaManagedAgentsSessionStatusIdleEvent : JsonModel
     {
         _ = this.ID;
         _ = this.ProcessedAt;
+        this.StopDetails?.Validate();
         this.StopReason.Validate();
         this.Type.Validate();
     }
@@ -155,6 +172,12 @@ public record class StopReason : ModelBase
     }
 
     public StopReason(BetaManagedAgentsSessionBudgetReached value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public StopReason(BetaManagedAgentsSessionRefusal value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -258,6 +281,29 @@ public record class StopReason : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsSessionRefusal"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsSessionRefusal(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsSessionRefusal`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsSessionRefusal(
+        [NotNullWhen(true)] out BetaManagedAgentsSessionRefusal? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsSessionRefusal;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -274,7 +320,8 @@ public record class StopReason : ModelBase
     ///     (BetaManagedAgentsSessionEndTurn value) =&gt; {...},
     ///     (BetaManagedAgentsSessionRequiresAction value) =&gt; {...},
     ///     (BetaManagedAgentsSessionRetriesExhausted value) =&gt; {...},
-    ///     (BetaManagedAgentsSessionBudgetReached value) =&gt; {...}
+    ///     (BetaManagedAgentsSessionBudgetReached value) =&gt; {...},
+    ///     (BetaManagedAgentsSessionRefusal value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -283,7 +330,8 @@ public record class StopReason : ModelBase
         System::Action<BetaManagedAgentsSessionEndTurn> betaManagedAgentsSessionEndTurn,
         System::Action<BetaManagedAgentsSessionRequiresAction> betaManagedAgentsSessionRequiresAction,
         System::Action<BetaManagedAgentsSessionRetriesExhausted> betaManagedAgentsSessionRetriesExhausted,
-        System::Action<BetaManagedAgentsSessionBudgetReached> betaManagedAgentsSessionBudgetReached
+        System::Action<BetaManagedAgentsSessionBudgetReached> betaManagedAgentsSessionBudgetReached,
+        System::Action<BetaManagedAgentsSessionRefusal> betaManagedAgentsSessionRefusal
     )
     {
         switch (this.Value)
@@ -299,6 +347,9 @@ public record class StopReason : ModelBase
                 break;
             case BetaManagedAgentsSessionBudgetReached value:
                 betaManagedAgentsSessionBudgetReached(value);
+                break;
+            case BetaManagedAgentsSessionRefusal value:
+                betaManagedAgentsSessionRefusal(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -325,7 +376,8 @@ public record class StopReason : ModelBase
     ///     (BetaManagedAgentsSessionEndTurn value) =&gt; {...},
     ///     (BetaManagedAgentsSessionRequiresAction value) =&gt; {...},
     ///     (BetaManagedAgentsSessionRetriesExhausted value) =&gt; {...},
-    ///     (BetaManagedAgentsSessionBudgetReached value) =&gt; {...}
+    ///     (BetaManagedAgentsSessionBudgetReached value) =&gt; {...},
+    ///     (BetaManagedAgentsSessionRefusal value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -340,7 +392,11 @@ public record class StopReason : ModelBase
             BetaManagedAgentsSessionRetriesExhausted,
             T
         > betaManagedAgentsSessionRetriesExhausted,
-        System::Func<BetaManagedAgentsSessionBudgetReached, T> betaManagedAgentsSessionBudgetReached
+        System::Func<
+            BetaManagedAgentsSessionBudgetReached,
+            T
+        > betaManagedAgentsSessionBudgetReached,
+        System::Func<BetaManagedAgentsSessionRefusal, T> betaManagedAgentsSessionRefusal
     )
     {
         return this.Value switch
@@ -354,6 +410,7 @@ public record class StopReason : ModelBase
             BetaManagedAgentsSessionBudgetReached value => betaManagedAgentsSessionBudgetReached(
                 value
             ),
+            BetaManagedAgentsSessionRefusal value => betaManagedAgentsSessionRefusal(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of StopReason"
             ),
@@ -370,6 +427,8 @@ public record class StopReason : ModelBase
 
     public static implicit operator StopReason(BetaManagedAgentsSessionBudgetReached value) =>
         new(value);
+
+    public static implicit operator StopReason(BetaManagedAgentsSessionRefusal value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -394,7 +453,8 @@ public record class StopReason : ModelBase
             (betaManagedAgentsSessionRetriesExhausted) =>
                 betaManagedAgentsSessionRetriesExhausted.Validate(),
             (betaManagedAgentsSessionBudgetReached) =>
-                betaManagedAgentsSessionBudgetReached.Validate()
+                betaManagedAgentsSessionBudgetReached.Validate(),
+            (betaManagedAgentsSessionRefusal) => betaManagedAgentsSessionRefusal.Validate()
         );
     }
 
@@ -422,6 +482,7 @@ public record class StopReason : ModelBase
             BetaManagedAgentsSessionRequiresAction _ => 1,
             BetaManagedAgentsSessionRetriesExhausted _ => 2,
             BetaManagedAgentsSessionBudgetReached _ => 3,
+            BetaManagedAgentsSessionRefusal _ => 4,
             _ => -1,
         };
     }
@@ -519,6 +580,26 @@ sealed class StopReasonConverter : JsonConverter<StopReason>
                             element,
                             options
                         );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "refusal":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSessionRefusal>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);

@@ -15,33 +15,29 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
         var model = new BetaManagedAgentsMemoryStore
         {
             ID = "id",
+            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Description = "description",
+            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "name",
             Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Description = "description",
-            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
         };
 
         string expectedID = "id";
+        DateTimeOffset expectedArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        string expectedDescription = "description";
+        Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
         string expectedName = "name";
         ApiEnum<string, BetaManagedAgentsMemoryStoreType> expectedType =
             BetaManagedAgentsMemoryStoreType.MemoryStore;
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        DateTimeOffset expectedArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        string expectedDescription = "description";
-        Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
 
         Assert.Equal(expectedID, model.ID);
-        Assert.Equal(expectedCreatedAt, model.CreatedAt);
-        Assert.Equal(expectedName, model.Name);
-        Assert.Equal(expectedType, model.Type);
-        Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
         Assert.Equal(expectedArchivedAt, model.ArchivedAt);
+        Assert.Equal(expectedCreatedAt, model.CreatedAt);
         Assert.Equal(expectedDescription, model.Description);
-        Assert.NotNull(model.Metadata);
         Assert.Equal(expectedMetadata.Count, model.Metadata.Count);
         foreach (var item in expectedMetadata)
         {
@@ -49,6 +45,9 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
 
             Assert.Equal(value, model.Metadata[item.Key]);
         }
+        Assert.Equal(expectedName, model.Name);
+        Assert.Equal(expectedType, model.Type);
+        Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
     }
 
     [Fact]
@@ -57,13 +56,13 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
         var model = new BetaManagedAgentsMemoryStore
         {
             ID = "id",
+            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Description = "description",
+            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "name",
             Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Description = "description",
-            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -81,13 +80,13 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
         var model = new BetaManagedAgentsMemoryStore
         {
             ID = "id",
+            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Description = "description",
+            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "name",
             Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Description = "description",
-            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -98,23 +97,19 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedID = "id";
+        DateTimeOffset expectedArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        string expectedDescription = "description";
+        Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
         string expectedName = "name";
         ApiEnum<string, BetaManagedAgentsMemoryStoreType> expectedType =
             BetaManagedAgentsMemoryStoreType.MemoryStore;
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        DateTimeOffset expectedArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        string expectedDescription = "description";
-        Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
 
         Assert.Equal(expectedID, deserialized.ID);
-        Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
-        Assert.Equal(expectedName, deserialized.Name);
-        Assert.Equal(expectedType, deserialized.Type);
-        Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
         Assert.Equal(expectedArchivedAt, deserialized.ArchivedAt);
+        Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
         Assert.Equal(expectedDescription, deserialized.Description);
-        Assert.NotNull(deserialized.Metadata);
         Assert.Equal(expectedMetadata.Count, deserialized.Metadata.Count);
         foreach (var item in expectedMetadata)
         {
@@ -122,6 +117,9 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
 
             Assert.Equal(value, deserialized.Metadata[item.Key]);
         }
+        Assert.Equal(expectedName, deserialized.Name);
+        Assert.Equal(expectedType, deserialized.Type);
+        Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
     }
 
     [Fact]
@@ -130,165 +128,13 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
         var model = new BetaManagedAgentsMemoryStore
         {
             ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Name = "name",
-            Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
-            UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
-    {
-        var model = new BetaManagedAgentsMemoryStore
-        {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Name = "name",
             Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-        };
-
-        Assert.Null(model.Description);
-        Assert.False(model.RawData.ContainsKey("description"));
-        Assert.Null(model.Metadata);
-        Assert.False(model.RawData.ContainsKey("metadata"));
-    }
-
-    [Fact]
-    public void OptionalNonNullablePropertiesUnsetValidation_Works()
-    {
-        var model = new BetaManagedAgentsMemoryStore
-        {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Name = "name",
-            Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
-            UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
-    {
-        var model = new BetaManagedAgentsMemoryStore
-        {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Name = "name",
-            Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
-            UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-
-            // Null should be interpreted as omitted for these properties
-            Description = null,
-            Metadata = null,
-        };
-
-        Assert.Null(model.Description);
-        Assert.False(model.RawData.ContainsKey("description"));
-        Assert.Null(model.Metadata);
-        Assert.False(model.RawData.ContainsKey("metadata"));
-    }
-
-    [Fact]
-    public void OptionalNonNullablePropertiesSetToNullValidation_Works()
-    {
-        var model = new BetaManagedAgentsMemoryStore
-        {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Name = "name",
-            Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
-            UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-
-            // Null should be interpreted as omitted for these properties
-            Description = null,
-            Metadata = null,
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void OptionalNullablePropertiesUnsetAreNotSet_Works()
-    {
-        var model = new BetaManagedAgentsMemoryStore
-        {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Name = "name",
-            Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
-            UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Description = "description",
-            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-        };
-
-        Assert.Null(model.ArchivedAt);
-        Assert.False(model.RawData.ContainsKey("archived_at"));
-    }
-
-    [Fact]
-    public void OptionalNullablePropertiesUnsetValidation_Works()
-    {
-        var model = new BetaManagedAgentsMemoryStore
-        {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Name = "name",
-            Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
-            UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Description = "description",
-            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
-    {
-        var model = new BetaManagedAgentsMemoryStore
-        {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Name = "name",
-            Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
-            UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Description = "description",
-            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-
-            ArchivedAt = null,
-        };
-
-        Assert.Null(model.ArchivedAt);
-        Assert.True(model.RawData.ContainsKey("archived_at"));
-    }
-
-    [Fact]
-    public void OptionalNullablePropertiesSetToNullValidation_Works()
-    {
-        var model = new BetaManagedAgentsMemoryStore
-        {
-            ID = "id",
-            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Name = "name",
-            Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
-            UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Description = "description",
-            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-
-            ArchivedAt = null,
         };
 
         model.Validate();
@@ -300,13 +146,13 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
         var model = new BetaManagedAgentsMemoryStore
         {
             ID = "id",
+            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Description = "description",
+            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "name",
             Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Description = "description",
-            Metadata = new Dictionary<string, string>() { { "foo", "string" } },
         };
 
         BetaManagedAgentsMemoryStore copied = new(model);

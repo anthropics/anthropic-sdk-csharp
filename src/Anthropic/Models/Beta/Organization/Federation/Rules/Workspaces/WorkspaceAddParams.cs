@@ -68,6 +68,7 @@ public record class WorkspaceAddParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -184,6 +185,9 @@ public record class WorkspaceAddParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route =>
+        "/v1/organizations/federation_rules/{federation_rule_id}/workspaces";
 
     internal override HttpContent? BodyContent()
     {

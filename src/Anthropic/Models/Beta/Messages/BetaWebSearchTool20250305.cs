@@ -53,6 +53,7 @@ public sealed record class BetaWebSearchTool20250305 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("allowed_callers");
                 return;
             }
 
@@ -129,6 +130,7 @@ public sealed record class BetaWebSearchTool20250305 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("defer_loading");
                 return;
             }
 
@@ -163,6 +165,7 @@ public sealed record class BetaWebSearchTool20250305 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("strict");
                 return;
             }
 

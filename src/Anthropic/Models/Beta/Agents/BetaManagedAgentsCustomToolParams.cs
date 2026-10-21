@@ -37,7 +37,7 @@ public sealed record class BetaManagedAgentsCustomToolParams : JsonModel
     }
 
     /// <summary>
-    /// JSON Schema for custom tool input parameters.
+    /// JSON Schema defining the expected input parameters for the tool.
     /// </summary>
     public required BetaManagedAgentsCustomToolInputSchema InputSchema
     {

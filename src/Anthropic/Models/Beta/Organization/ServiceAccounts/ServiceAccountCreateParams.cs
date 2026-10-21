@@ -81,6 +81,7 @@ public record class ServiceAccountCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("organization_role");
                 return;
             }
 
@@ -104,6 +105,7 @@ public record class ServiceAccountCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawHeaderData.Remove("anthropic-beta");
                 return;
             }
 
@@ -202,6 +204,8 @@ public record class ServiceAccountCreateParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/organizations/service_accounts";
 
     internal override HttpContent? BodyContent()
     {

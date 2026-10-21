@@ -22,10 +22,12 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 public sealed record class BetaManagedAgentsLimitedCredentialNetworkingParams : JsonModel
 {
     /// <summary>
-    /// Hostnames on which the secret will be substituted. Each entry is a bare hostname
-    /// (`api.example.com`), an IPv4 address (`192.0.2.1`), or a `*.`-prefixed wildcard
-    /// (`*.example.com`). URLs, ports, paths, and IPv6 addresses are not accepted.
-    /// At most 16 entries.
+    /// The destination hosts of the outbound requests that the credential's secret
+    /// is substituted into.
+    ///
+    /// <para>Each entry is a bare hostname (`api.example.com`), an IPv4 address
+    /// (`192.0.2.1`), or a `*.` wildcard (`*.example.com`). URLs, ports, paths, and
+    /// IPv6 addresses aren't accepted. The list can have up to 16 entries.</para>
     /// </summary>
     public required IReadOnlyList<string> AllowedHosts
     {

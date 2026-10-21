@@ -22,8 +22,7 @@ namespace Anthropic.Models.Beta.Sessions;
 public sealed record class BetaManagedAgentsAdvisorParams : JsonModel
 {
     /// <summary>
-    /// A Claude model id. The model must be permitted as an advisor for this agent's
-    /// model — see the sessions/threads/advisor spec.
+    /// A Claude model id. The model must be permitted as an advisor for this agent's model.
     /// </summary>
     public required string Model
     {

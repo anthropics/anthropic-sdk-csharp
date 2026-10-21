@@ -58,6 +58,7 @@ public sealed record class BetaCodeExecutionTool20260521 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("allowed_callers");
                 return;
             }
 
@@ -95,6 +96,7 @@ public sealed record class BetaCodeExecutionTool20260521 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("defer_loading");
                 return;
             }
 
@@ -116,6 +118,7 @@ public sealed record class BetaCodeExecutionTool20260521 : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("strict");
                 return;
             }
 

@@ -66,6 +66,7 @@ public record class ExternalKeyCreateParams : ParamsBase
         {
             if (value == null)
             {
+                this._rawBodyData.Remove("geo");
                 return;
             }
 
@@ -161,6 +162,8 @@ public record class ExternalKeyCreateParams : ParamsBase
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
     }
+
+    internal override string Route => "/v1/organizations/external_keys";
 
     internal override HttpContent? BodyContent()
     {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -69,6 +70,23 @@ public abstract record class ParamsBase
 
     public abstract Uri Url(ClientOptions options);
 
+    /// <summary>
+    /// The path of the endpoint that these parameters are for, as the API's description gives it:
+    /// with the name of each path parameter in place of its value, such as
+    /// <c>/v1/files/{file_id}</c>. The call span has it as <c>http.route</c>.
+    /// </summary>
+    internal virtual string? Route => null;
+
+    /// <summary>
+    /// The names of the query parameters that the endpoint's description defines, as the API
+    /// spells them. The call span's <c>url.query</c> leaves out every other part of a query
+    /// string.
+    /// </summary>
+    internal virtual IReadOnlyList<string> QueryParams => [];
+
+    /// <summary>The query parameters whose value is content on this endpoint only.</summary>
+    internal virtual IReadOnlyList<string> ContentQueryParams => [];
+
     protected static void AddQueryElementToCollection(
         NameValueCollection collection,
         string key,
@@ -111,6 +129,7 @@ public abstract record class ParamsBase
                             JsonValueKind.Null => "",
                             JsonValueKind.True => "true",
                             JsonValueKind.False => "false",
+                            JsonValueKind.Number => item.ToString(),
                             _ => item.GetString(),
                         }
                     );
@@ -152,18 +171,28 @@ public abstract record class ParamsBase
                 }
                 break;
             case JsonValueKind.Array:
-                foreach (var item in element.EnumerateArray())
+                if (element.GetArrayLength() > 0)
                 {
-                    request.Headers.Add(
-                        key,
-                        item.ValueKind switch
-                        {
-                            JsonValueKind.Null => "",
-                            JsonValueKind.True => "true",
-                            JsonValueKind.False => "false",
-                            _ => item.GetString(),
-                        }
+                    var value = string.Join(
+                        ",",
+                        Enumerable.Concat(
+                            Enumerable.Select(
+                                element.EnumerateArray(),
+                                x =>
+                                    x.ValueKind switch
+                                    {
+                                        JsonValueKind.Null => "",
+                                        JsonValueKind.True => "true",
+                                        JsonValueKind.False => "false",
+                                        JsonValueKind.Number => x.ToString(),
+                                        _ => x.GetString(),
+                                    }
+                            ),
+                            request.Headers.TryGetValues(key, out var existing) ? existing : []
+                        )
                     );
+                    request.Headers.Remove(key);
+                    request.Headers.Add(key, value);
                 }
                 break;
         }
@@ -197,9 +226,11 @@ public abstract record class ParamsBase
 
     internal static string EncodePathSegment(string? value, string paramName)
     {
-        if (value == null)
+        if (value == null || value == "")
         {
-            return "";
+            throw new AnthropicInvalidDataException(
+                $"Expected a non-empty value for `{paramName}`"
+            );
         }
         // "." is unreserved, so escaping leaves it as is and the segment would still resolve as a dot-segment.
         if (value == "." || value == "..")

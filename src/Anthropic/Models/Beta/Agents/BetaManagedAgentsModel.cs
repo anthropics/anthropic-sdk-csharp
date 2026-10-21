@@ -15,13 +15,28 @@ namespace Anthropic.Models.Beta.Agents;
 public enum BetaManagedAgentsModel
 {
     /// <summary>
+    /// Fastest model for high-volume, real-time tasks
+    /// </summary>
+    ClaudeHaiku5_5,
+
+    /// <summary>
+    /// Efficient model for coding and agents
+    /// </summary>
+    ClaudeSonnet5_5,
+
+    /// <summary>
+    /// Powerful intelligence for coding, knowledge work, and long-running agents
+    /// </summary>
+    ClaudeOpus5_5,
+
+    /// <summary>
     /// Frontier intelligence for ambitious tasks across coding, scientific discovery,
     /// and enterprise workflows
     /// </summary>
     ClaudeFable5_1,
 
     /// <summary>
-    /// High-performance model for coding and agents
+    /// Efficient model for coding and agents
     /// </summary>
     ClaudeSonnet5,
 
@@ -54,15 +69,7 @@ public enum BetaManagedAgentsModel
     /// Best combination of speed and intelligence
     /// </summary>
     ClaudeSonnet4_6,
-
-    /// <summary>
-    /// Fastest model with near-frontier intelligence
-    /// </summary>
     ClaudeHaiku4_5,
-
-    /// <summary>
-    /// Fastest model with near-frontier intelligence
-    /// </summary>
     ClaudeHaiku4_5_20251001,
 
     /// <summary>
@@ -78,11 +85,17 @@ public enum BetaManagedAgentsModel
     /// <summary>
     /// High-performance model for agents and coding
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on November 30, 2026. Please migrate to claude-sonnet-5-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     ClaudeSonnet4_5,
 
     /// <summary>
     /// High-performance model for agents and coding
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on November 30, 2026. Please migrate to claude-sonnet-5-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     ClaudeSonnet4_5_20250929,
 }
 
@@ -96,6 +109,9 @@ sealed class BetaManagedAgentsModelConverter : JsonConverter<BetaManagedAgentsMo
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
+            "claude-haiku-5-5" => BetaManagedAgentsModel.ClaudeHaiku5_5,
+            "claude-sonnet-5-5" => BetaManagedAgentsModel.ClaudeSonnet5_5,
+            "claude-opus-5-5" => BetaManagedAgentsModel.ClaudeOpus5_5,
             "claude-fable-5-1" => BetaManagedAgentsModel.ClaudeFable5_1,
             "claude-sonnet-5" => BetaManagedAgentsModel.ClaudeSonnet5,
             "claude-fable-5" => BetaManagedAgentsModel.ClaudeFable5,
@@ -124,6 +140,9 @@ sealed class BetaManagedAgentsModelConverter : JsonConverter<BetaManagedAgentsMo
             writer,
             value switch
             {
+                BetaManagedAgentsModel.ClaudeHaiku5_5 => "claude-haiku-5-5",
+                BetaManagedAgentsModel.ClaudeSonnet5_5 => "claude-sonnet-5-5",
+                BetaManagedAgentsModel.ClaudeOpus5_5 => "claude-opus-5-5",
                 BetaManagedAgentsModel.ClaudeFable5_1 => "claude-fable-5-1",
                 BetaManagedAgentsModel.ClaudeSonnet5 => "claude-sonnet-5",
                 BetaManagedAgentsModel.ClaudeFable5 => "claude-fable-5",

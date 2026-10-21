@@ -34,7 +34,7 @@ public sealed record class BetaManagedAgentsStaticBearerUpdateParams : JsonModel
     }
 
     /// <summary>
-    /// Updated static bearer token value.
+    /// The new static bearer token to replace the stored one.
     /// </summary>
     public string? Token
     {

@@ -23,6 +23,7 @@ public sealed record class BetaCitationsConfigParam : JsonModel
         {
             if (value == null)
             {
+                this._rawData.Remove("enabled");
                 return;
             }
 
